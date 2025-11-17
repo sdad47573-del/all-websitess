@@ -1,0 +1,26 @@
+/** @type {import("prettier").Config} */
+module.exports = {
+	printWidth: 100,
+	semi: true,
+	singleQuote: true,
+	tabWidth: 2,
+	trailingComma: 'all',
+	useTabs: true,
+
+	plugins: ['prettier-plugin-astro', 'prettier-plugin-tailwindcss'],
+
+	overrides: [
+		{
+			files: ['.*', '*.md', '*.toml', '*.yml'],
+			options: {
+				useTabs: false,
+			},
+		},
+		{
+			files: ['**/*.astro'],
+			options: {
+				parser: 'astro',
+			},
+		},
+	],
+};
