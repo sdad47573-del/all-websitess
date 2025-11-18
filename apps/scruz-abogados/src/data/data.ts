@@ -1,8 +1,4 @@
 import despidosImg from "../assets/abogado-de-despidos-min.png";
-import paternidadImg from "../assets/familia.png";
-import generoImg from "../assets/mejor-abogado-violencia-de-genero-malaga-min.png";
-import penalImg from "../assets/mejores-abogados-penales-min.png";
-import questionImg from "../assets/Recurso-3@0.5x-2-980x707.webp";
 import extranjeriaImg from "../assets/abogado-especialistas-en-extranjeria-min.png";
 import traficoImg from "../assets/abogados-de-accidentes-e-indemnizaciones-min-1.png";
 import herenciasImg from "../assets/abogados-de-herencias-y-patrimonios-min.png";
@@ -10,9 +6,13 @@ import divorciosImg from "../assets/abogados-especialistas-en-divorcios-baratos-
 import deudasImg from "../assets/abogados-especializados-en-deudas-e-impagos-min.png";
 import bancoImg from "../assets/abogados-especializados-en-problemas-bancarios-min.png";
 import empresasImg from "../assets/empresa.png";
+import paternidadImg from "../assets/familia.png";
+import generoImg from "../assets/mejor-abogado-violencia-de-genero-malaga-min.png";
+import penalImg from "../assets/mejores-abogados-penales-min.png";
+import logoImg from "../assets/Recurso-2@0.5x.png";
+import questionImg from "../assets/Recurso-3@0.5x-2-980x707.webp";
 import incapacidadImg from "../assets/resfriado.png";
 import laboralImg from "../assets/subiendo.png";
-import logoImg from "../assets/Recurso-2@0.5x.png";
 
 const services = [
   {

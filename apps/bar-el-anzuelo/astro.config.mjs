@@ -1,13 +1,5 @@
-// @ts-check
-import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
+import { createAstroConfig } from 'astro-config';
 
-// https://astro.build/config
-export default defineConfig({
-  site: "https://cerrajeroeconomicomalaga.vercel.app",
-  integrations: [sitemap()],
-  vite: {
-    plugins: [tailwindcss()],
-  },
+export default createAstroConfig({
+	site: 'https://dddd.vercel.app',
 });
