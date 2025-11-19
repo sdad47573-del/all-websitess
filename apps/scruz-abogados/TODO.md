@@ -263,9 +263,9 @@ Para un despacho local, es clave aparecer en búsquedas como “abogado Málaga 
 
 Si quieres, puedo hacer un “análisis técnico” más profundo (velocidad, estructura, SEO, usabilidad) cuando el sitio esté accesible. ¿Te lo hago cuando lo restaures?
 
-[1]: https://bocanegra-abogados.com/?utm_source=chatgpt.com "Bocanegra Abogados - Abogados en Málaga desde 1960"
-[2]: https://www.instagram.com/bocanegrabogados/?utm_source=chatgpt.com "Bocanegra Abogados (@bocanegrabogados)"
-[3]: https://gestoriabocanegra.com/?utm_source=chatgpt.com "Gestoría Bocanegra | Gestoría de Extranjería en Marbella"
+[1]: https://bocanegra-abogados.com/?utm_source=chatgpt.com 'Bocanegra Abogados - Abogados en Málaga desde 1960'
+[2]: https://www.instagram.com/bocanegrabogados/?utm_source=chatgpt.com 'Bocanegra Abogados (@bocanegrabogados)'
+[3]: https://gestoriabocanegra.com/?utm_source=chatgpt.com 'Gestoría Bocanegra | Gestoría de Extranjería en Marbella'
 
 çççççççç
 [1]: https://rojanovera.com/?utm_source=chatgpt.com "Rojano Vera Abogados: Abogados Málaga y Cártama"

@@ -59,4 +59,4 @@ Muy importante para que te encuentren cuando alguien busca cerrajero cerca. Algu
 
 Si quieres, puedo esbozarte un ejemplo concreto adaptado a Málaga: decirte nombres de dominio disponibles, estructura de web con contenido sugerido, mockup o diseño visual sugerido. ¿Te lo preparo?
 
-[1]: https://www.ovhcloud.com/es-es/domains/tld/es/?utm_source=chatgpt.com "Dominio .es: comprar y registrar un dominio .es | OVHcloud España"
+[1]: https://www.ovhcloud.com/es-es/domains/tld/es/?utm_source=chatgpt.com 'Dominio .es: comprar y registrar un dominio .es | OVHcloud España'

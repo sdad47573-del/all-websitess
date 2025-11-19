@@ -82,31 +82,25 @@ Nuestro objetivo es ayudarte a dar el primer paso digital sin costos iniciales, 
 ### 📌 Estructura de la Landing
 
 2. **Beneficios / Propuesta de Valor**
-
    - Explica qué gana el cliente contigo: más clientes, más visibilidad, diseño moderno, SEO básico, velocidad, soporte.
    - Usa iconos + frases cortas (ej. “Diseños rápidos y atractivos”, “Optimizado para móviles”, “Listo para Google”).
 
 3. **Servicios**
-
    - Sección con lo que ofreces (ej. “Web Corporativa”, “Tiendas Online”, “Landing Pages”, “Mantenimiento Web”).
    - Puedes hacerlo en tarjetas con íconos.
 
 4. **Portfolio / Ejemplos de trabajo**
-
    - Screenshots o links a webs que hayas hecho.
    - Si no tienes aún, puedes mostrar “demos” o plantillas.
 
 5. **Testimonios / Casos de Éxito**
-
    - Opiniones de clientes anteriores (aunque sean pocos, son muy potentes).
 
 6. **Sobre ti / Quién soy**
-
    - Foto tuya o una breve bio con enfoque humano: “Soy [tu nombre], desarrollador web freelance especializado en ayudar a negocios a crecer online”.
    - Esto genera confianza.
 
 7. **CTA Final (Contacto rápido)**
-
    - O botones a WhatsApp / Calendly para agendar una llamada.
    - Repite tu promesa de valor.
 
@@ -129,21 +123,17 @@ Nuestro objetivo es ayudarte a dar el primer paso digital sin costos iniciales, 
 
 2. **Beneficios / Features**
 3. **Portafolio / Ejemplos**
-
    - Cards de 3–6 ejemplos de webs (pueden ser demo)
    - Breve descripción de cada una.
 
 4. **Paquetes / Pricing**
-
    - Tabla simple:
-
      - Gratis: web básica, 1 revisión
      - Low-cost: dominio propio, 3 revisiones, SEO básico
 
    - CTA debajo de cada plan: **“Quiero este plan”**
 
 5. **Formulario de contacto**
-
    - Nombre, email, WhatsApp/Telegram
    - Mensaje opcional: “Cuéntanos tu idea”
 
@@ -284,44 +274,35 @@ Aquí tienes varios motivos por los que alguien podría decidir **no** usar el K
 ## Posibles contras o limitaciones
 
 1. **Servicios de calidad variable**
-
    - Algunos agentes digitalizadores ofrecen soluciones estándar, poco personalizadas, que no se adaptan bien a necesidades específicas. ([estudio-lahoguera.es][1])
    - En casos de páginas web u otros servicios, se han detectado webs “hechas deprisa”: con pocos cuidados de diseño, optimización, SEO, seguridad, etc. ([MuySeo][2])
 
 2. **Restricciones en elección de proveedor**
-
    - Solo puedes contratar agentes que estén homologados/adheridos al programa. Si ya tienes un proveedor de confianza que no está en el catálogo, no puedes usarlo bajo la ayuda. ([MuySeo][2])
 
 3. **Obligaciones después de recibir la ayuda**
-
    - Hay requisitos de mantenimiento, justificación, plazos. Se debe usar la ayuda correctamente y justificar los servicios. Si no, puede haber devoluciones. ([MuySeo][2])
    - Por ejemplo, permanecer como empresa/autónomo durante al menos 12 meses tras recibir ciertos beneficios, dependiendo de la solución. Si cierras antes, podrías tener que devolver la ayuda. ([MuySeo][2])
 
 4. **Costes ocultos o no cubiertos**
-
    - El IVA, por ejemplo, no está subvencionado: lo paga el beneficiario. ([Reddit][3])
    - Puede haber costes de servicio adicionales, de mantenimiento, de configuración que no estén incluídos. ([MuySeo][2])
 
 5. **Limitaciones en el plazo para gastar la ayuda**
-
    - Las ayudas deben ponerse en marcha y ejecutarse dentro de un cierto plazo desde su concesión. Si el proyecto se retrasa, puede haber complicaciones. ([comercioconectado.gob.es][4])
 
 6. **Burocracia y trámites administrativos**
-
    - Aunque el objetivo es facilitar digitalización, los trámites para solicitud, justificación, documentación pueden ser engorrosos, especialmente para quienes no tienen experiencia en gestión de subvenciones. ([estudio-lahoguera.es][1])
 
 7. **Riesgo de experiencias negativas o fraudes**
-
    - Hay testimonios de personas que se sienten decepcionadas por la calidad del servicio, por promesas incumplidas, por falta de soporte. ([dinaweb.net][5])
    - Se recomienda investigar bien al agente digitalizador (su reputación, lo que ofrecen concretamente) antes de comprometerse. ([Reddit][6])
 
 8. **Alcance limitado de lo que se subvenciona**
-
    - No todo lo que se podría necesitar para una digitalización óptima está cubierto. Por ejemplo, proyectos muy personalizados o desarrollos complejos podrían quedar fuera. ([estudio-lahoguera.es][1])
    - Para empresas grandes o con necesidades muy específicas, puede que la ayuda no sea suficiente para cubrir todos los costes que implican soluciones más punteras. ([R2 Docuo][7])
 
 9. **Incertidumbre temporal/política**
-
    - El programa depende de convocatorias, presupuestos públicos, plazos y legislación que pueden cambiar. Si esperas usarlo más adelante, puede que cambien las condiciones. ([Plan de Recuperación][8])
 
 ---
