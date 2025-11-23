@@ -1,9 +1,14 @@
 // packages/config-astro/index.mjs
 
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const assetsDir = path.resolve(__dirname, '../@assets');
+const rootDir = path.resolve(__dirname, '../../');
 
 export function createAstroConfig({ site }) {
 	return defineConfig({
@@ -13,7 +18,13 @@ export function createAstroConfig({ site }) {
 			plugins: [tailwindcss()],
 			resolve: {
 				alias: {
-					'@assets': path.resolve('../../packages/@assets'),
+					'@assets': assetsDir,
+				},
+			},
+			server: {
+				fs: {
+					strict: false,
+					allow: [rootDir, assetsDir],
 				},
 			},
 		},
