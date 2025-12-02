@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 import type { Category, Menu, Plato } from '../types.js';
 
 // TODO: Cambiar la URL segun el proyecto
-const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_URL = 'https://aszyqkauxhmjrukpxmca.supabase.co';
 
 // Mock Data
 const mockCategories: Category[] = [
@@ -317,17 +317,17 @@ const mockPlatos: Plato[] = [
 
 export const handlers = [
 	// Categories
-	http.get(`${SUPABASE_URL}/rest/v1/categories*`, () => {
+	http.get(`${SUPABASE_URL}/rest/v1/categories`, () => {
 		return HttpResponse.json(mockCategories);
 	}),
 
 	// Menu
-	http.get(`${SUPABASE_URL}/rest/v1/menu*`, () => {
+	http.get(`${SUPABASE_URL}/rest/v1/menu`, () => {
 		return HttpResponse.json(mockMenu);
 	}),
 
 	// Platos
-	http.get(`${SUPABASE_URL}/rest/v1/platos*`, () => {
+	http.get(`${SUPABASE_URL}/rest/v1/platos`, () => {
 		return HttpResponse.json(mockPlatos);
 	}),
 ];
