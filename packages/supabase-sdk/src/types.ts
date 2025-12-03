@@ -87,6 +87,29 @@ export interface Database {
 					allergens?: Json | null;
 				};
 			};
+			vapers: {
+				Row: {
+					id: number;
+					created_at: string;
+					title: string;
+					amount: number;
+					active: boolean;
+				};
+				Insert: {
+					id?: number;
+					created_at?: string;
+					title: string;
+					amount?: number;
+					active?: boolean;
+				};
+				Update: {
+					id?: number;
+					created_at?: string;
+					title?: string;
+					amount?: number;
+					active?: boolean;
+				};
+			};
 		};
 		Views: {
 			[_ in never]: never;
@@ -100,6 +123,26 @@ export interface Database {
 	};
 }
 
+// Legacy exports for backward compatibility
 export type Category = Database['public']['Tables']['categories']['Row'];
 export type Menu = Database['public']['Tables']['menu']['Row'];
 export type Plato = Database['public']['Tables']['platos']['Row'];
+export type Vaper = Database['public']['Tables']['vapers']['Row'];
+
+// Organized types by domain - Restaurant
+export type RestaurantCategory = Database['public']['Tables']['categories']['Row'];
+export type RestaurantCategoryInsert = Database['public']['Tables']['categories']['Insert'];
+export type RestaurantCategoryUpdate = Database['public']['Tables']['categories']['Update'];
+
+export type RestaurantMenu = Database['public']['Tables']['menu']['Row'];
+export type RestaurantMenuInsert = Database['public']['Tables']['menu']['Insert'];
+export type RestaurantMenuUpdate = Database['public']['Tables']['menu']['Update'];
+
+export type RestaurantPlato = Database['public']['Tables']['platos']['Row'];
+export type RestaurantPlatoInsert = Database['public']['Tables']['platos']['Insert'];
+export type RestaurantPlatoUpdate = Database['public']['Tables']['platos']['Update'];
+
+// Organized types by domain - Vaper Shop
+export type VaperProduct = Database['public']['Tables']['vapers']['Row'];
+export type VaperProductInsert = Database['public']['Tables']['vapers']['Insert'];
+export type VaperProductUpdate = Database['public']['Tables']['vapers']['Update'];

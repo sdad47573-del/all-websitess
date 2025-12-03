@@ -1,96 +1,74 @@
 ---
+import Stats from '../components/Stats.astro';
 import VapListItem from '../components/VapListItem.astro';
 import { BUY, TOTAL_BUY } from '../data/BUY';
-import { getItemImage, imageMap, translateItem } from '../data/data';
 import { TOTAL_INGRESOS } from '../data/INGRESOS';
+import { imageMap } from '../data/maps/img';
+import { translateItem } from '../data/maps/spanish';
 import CustomLayout from '../layouts/CustomLayout.astro';
 ---
 
 <CustomLayout>
 	<!-- <Modal /> -->
-	<main class="px-4 py-6">
-		<!-- <Stats /> -->
+	<main class="pb-6">
+		<Stats
+			items={[
+				{
+					label: 'Cantidad Totales',
+					value: BUY.reduce((total, buy) => total + buy.quantity, 0),
+					icon: 'ri-shopping-cart-line',
+					color: 'bg-blue-500',
+				},
+				{
+					label: 'Compras Totales',
+					value: TOTAL_BUY + '€',
+					icon: 'ri-money-euro-circle-line',
+					color: 'bg-green-500',
+				},
+				{
+					label: 'Cubierto %',
+					value: ((TOTAL_INGRESOS / TOTAL_BUY) * 100).toFixed(2) + '%',
+					icon: 'ri-bar-chart-line',
+					color: 'bg-purple-500',
+				},
+				{
+					label: 'Restante',
+					value: (TOTAL_INGRESOS - TOTAL_BUY).toFixed(2) + '€',
+					icon: 'ri-line-chart-line',
+					color: 'bg-teal-500',
+				},
+			]}
+		/>
 
-		<div class="rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 p-5 shadow-sm">
-			<h2 class="mb-4 flex items-center gap-2 text-lg font-bold text-gray-900">
-				<i class="ri-dashboard-line text-teal-600"></i>Resumen y Estadísticas
-			</h2><div class="grid grid-cols-2 gap-3">
-				<div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-					<div class="mb-2 flex items-center gap-3">
-						<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
-							<i class="ri-shopping-cart-line text-xl text-white"></i>
-						</div>
-					</div><p class="mb-1 text-xs text-gray-500">Cantidad Totales</p><p
-						class="text-xl font-bold text-gray-900"
-					>
-						{BUY.reduce((total, buy) => total + buy.quantity, 0)}
-					</p>
-				</div>
-				<div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-					<div class="mb-2 flex items-center gap-3">
-						<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500">
-							<i class="ri-money-euro-circle-line text-xl text-white"></i>
-						</div>
-					</div><p class="mb-1 text-xs text-gray-500">Compras Totales</p><p
-						class="text-xl font-bold text-gray-900"
-					>
-						{TOTAL_BUY}€
-					</p>
-				</div>
-				<div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-					<div class="mb-2 flex items-center gap-3">
-						<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500">
-							<i class="ri-bar-chart-line text-xl text-white"></i>
-						</div>
-					</div><p class="mb-1 text-xs text-gray-500">Cubierto %</p><p
-						class="text-xl font-bold text-gray-900"
-					>
-						{((TOTAL_INGRESOS / TOTAL_BUY) * 100).toFixed(2)}%
-					</p>
-				</div>
-				<div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-					<div class="mb-2 flex items-center gap-3">
-						<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-500">
-							<i class="ri-line-chart-line text-xl text-white"></i>
-						</div>
-					</div><p class="mb-1 text-xs text-gray-500">Restante</p><p
-						class="text-xl font-bold text-gray-900"
-					>
-						{(TOTAL_INGRESOS - TOTAL_BUY).toFixed(2)}€
-					</p>
-				</div>
-			</div>
+		<div class="p-5">
+			<h2 class="text-xl font-semibold">Compras</h2>
 		</div>
-
-		<h2 class="mb-4 text-xl font-semibold">Compras</h2>
 		<!-- TODO: hacer un comp de vapslit generico -->
 		<!-- <VapList /> -->
 
-		<ul class="space-y-6">
+		<ul class="space-y-">
 			{
 				BUY.map((buy) => (
-					<li class="rounded-lg bg-white p-4 shadow-md">
-						<div class="mb-3">
+					<li class="p-4 pb-6 shadow">
+						<div class="mb-3 flex justify-between">
 							<h3 class="text-lg font-bold text-teal-700">Fecha: {buy.data}</h3>
-							<p class="text-gray-600">
-								Precio: <span class="font-semibold">{buy.price} €</span>
-							</p>
-							<p class="text-gray-600">
-								Cantidad: <span class="font-semibold">{buy.quantity}</span>
-							</p>
+							<div class="w-28">
+								<p class="text-gray-600">
+									Precio: <span class="font-semibold">{buy.price} €</span>
+								</p>
+								<p class="text-gray-600">
+									Cantidad: <span class="font-semibold">{buy.quantity}</span>
+								</p>
+							</div>
 						</div>
-						<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-							{buy.items.map((item) => {
-								const imageName = getItemImage(item.name);
-								const imageObj = imageMap[imageName];
-								return (
-									<VapListItem
-										src={imageObj}
-										title={translateItem(item.name)}
-										amount={item.amount}
-									/>
-								);
-							})}
+						<div class="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+							{buy.items.map((item) => (
+								<VapListItem
+									src={imageMap[item.name]}
+									title={translateItem(item.name)}
+									amount={item.amount}
+								/>
+							))}
 						</div>
 					</li>
 				))

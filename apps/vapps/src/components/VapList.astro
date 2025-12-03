@@ -27,150 +27,83 @@ import SandiaHielo from '@assets/VAPS/sandia-hielo.png';
 import Skittles from '@assets/VAPS/skittles.png';
 import SuenoVerano from '@assets/VAPS/sueno-verano.png';
 import TripleCereza from '@assets/VAPS/triple-cereza.png';
+import { createClient } from 'supabase-sdk';
 import VapListItem from './VapListItem.astro';
+import VapModal from './VapModal';
 
-const DATA = [
-	{
-		src: HieloNegroDragonfruitFresa,
-		title: 'Hielo Negro Drangofruit Fresa',
-		amount: 15,
-	},
-	{
-		src: HieloMorasArandanoAzul,
-		title: 'Hielo Moras Arándano Azul',
-		amount: 15,
-	},
-	{
-		src: FrambuesaAzul,
-		title: 'Frambuesa Azul',
-		amount: 15,
-	},
-	{
-		src: ArandanoAzulGrosellaNegraHielo,
-		title: 'Arándano Azul Grosella Negra Hielo',
-		amount: 15,
-	},
-	{
-		src: ArandanoAzulCerezaCola,
-		title: 'Arándano Azul Cereza Cola',
-		amount: 15,
-	},
-	{
-		src: ArandanosRojos,
-		title: 'Arándano Azul Cereza Arándano Rojo',
-		amount: 15,
-	},
-	{
-		src: ArandanoAzulHielo,
-		title: 'Arándano Azul Hielo',
-		amount: 15,
-	},
-	{
-		src: MentaFresca,
-		title: 'Menta Fresca',
-		amount: 15,
-	},
-	{
-		src: DobleManzana,
-		title: 'Doble Manzana',
-		amount: 15,
-	},
-	{
-		src: ExplosionDeUva,
-		title: 'Explosión de Uva',
-		amount: 15,
-	},
-	{
-		src: KiwiMaracuyaGuayaba,
-		title: 'Kiwi Maracuyá Guayaba',
-		amount: 15,
-	},
-	{
-		src: LimonLima,
-		title: 'Limón Lima',
-		amount: 15,
-	},
-	{
-		src: Love66,
-		title: 'Love 66',
-		amount: 15,
-	},
-	{
-		src: FrutosMixtos,
-		title: 'Frutos Mixtos',
-		amount: 15,
-	},
-	{
-		src: MelocotonFrutosDelBosque,
-		title: 'Melocoton Frutos del Bosque',
-		amount: 15,
-	},
-	{
-		src: MelocotonMangoPina,
-		title: 'Melocoton Mango Piña',
-		amount: 15,
-	},
-	{
-		src: LimonadaRosa,
-		title: 'Limonada Rosa',
-		amount: 15,
-	},
-	{
-		src: FrambuesaSandia,
-		title: 'Frambuesa Sandía',
-		amount: 15,
-	},
-	{
-		src: RedBull,
-		title: 'Red Bull',
-		amount: 15,
-	},
-	{
-		src: Skittles,
-		title: 'Skittles',
-		amount: 15,
-	},
-	{
-		src: FresaHielo,
-		title: 'Fresa Hielo',
-		amount: 15,
-	},
-	{
-		src: FresaBanana,
-		title: 'Fresa Banana',
-		amount: 15,
-	},
-	{
-		src: FresaKiwi,
-		title: 'Fresa Kiwi',
-		amount: 15,
-	},
-	{
-		src: FresaVainillaCola,
-		title: 'Fresa Vainilla Cola',
-		amount: 15,
-	},
-	{
-		src: FresaSandia,
-		title: 'Fresa Sandía',
-		amount: 15,
-	},
-	{
-		src: SuenoVerano,
-		title: 'Sueño de Verano',
-		amount: 15,
-	},
-	{
-		src: TripleCereza,
-		title: 'Triple Cereza',
-		amount: 15,
-	},
-	{
-		src: SandiaHielo,
-		title: 'Sandía Hielo',
-		amount: 15,
-	},
-];
+// Map of vaper titles to their images
+const VAPER_IMAGES: Record<string, any> = {
+	'Hielo Negro Drangofruit Fresa': HieloNegroDragonfruitFresa,
+	'Hielo Moras Arándano Azul': HieloMorasArandanoAzul,
+	'Frambuesa Azul': FrambuesaAzul,
+	'Arándano Azul Grosella Negra Hielo': ArandanoAzulGrosellaNegraHielo,
+	'Arándano Azul Cereza Cola': ArandanoAzulCerezaCola,
+	'Arándano Azul Cereza Arándano Rojo': ArandanosRojos,
+	'Arándano Azul Hielo': ArandanoAzulHielo,
+	'Menta Fresca': MentaFresca,
+	'Doble Manzana': DobleManzana,
+	'Explosión de Uva': ExplosionDeUva,
+	'Kiwi Maracuyá Guayaba': KiwiMaracuyaGuayaba,
+	'Limón Lima': LimonLima,
+	'Love 66': Love66,
+	'Frutos Mixtos': FrutosMixtos,
+	'Melocoton Frutos del Bosque': MelocotonFrutosDelBosque,
+	'Melocoton Mango Piña': MelocotonMangoPina,
+	'Limonada Rosa': LimonadaRosa,
+	'Frambuesa Sandía': FrambuesaSandia,
+	'Red Bull': RedBull,
+	Skittles: Skittles,
+	'Fresa Hielo': FresaHielo,
+	'Fresa Banana': FresaBanana,
+	'Fresa Kiwi': FresaKiwi,
+	'Fresa Vainilla Cola': FresaVainillaCola,
+	'Fresa Sandía': FresaSandia,
+	'Sueño de Verano': SuenoVerano,
+	'Triple Cereza': TripleCereza,
+	'Sandía Hielo': SandiaHielo,
+};
+
+// Fetch vaper data from Supabase
+let DATA: Array<{ src: any; title: string; amount: number }> = [];
+
+try {
+	const supabaseUrl = import.meta.env.SUPABASE_URL;
+	const supabaseAnonKey = import.meta.env.SUPABASE_ANON_KEY;
+
+	if (supabaseUrl && supabaseAnonKey) {
+		const supabase = createClient(supabaseUrl, supabaseAnonKey);
+		const { data: vapers, error } = await supabase
+			.from('vapers')
+			.select('*')
+			.eq('active', true)
+			.returns<Array<{ id: number; title: string; amount: number; active: boolean }>>();
+
+		if (error) {
+			console.error('Error fetching vapers from Supabase:', error);
+		} else if (vapers) {
+			// Map Supabase data to component format
+			DATA = vapers
+				.map((vaper) => ({
+					src: VAPER_IMAGES[vaper.title],
+					title: vaper.title,
+					amount: vaper.amount,
+				}))
+				.filter((item) => item.src); // Only include items with matching images
+		}
+	}
+} catch (error) {
+	console.error('Error initializing Supabase client:', error);
+}
+
+// Fallback to hardcoded data if Supabase is not configured or fails
+if (DATA.length === 0) {
+	console.warn('Using fallback hardcoded vaper data');
+	DATA = Object.entries(VAPER_IMAGES).map(([title, src]) => ({
+		src,
+		title,
+		amount: 15, // Default fallback amount
+	}));
+}
 ---
 
 <div class="mt-6 grid grid-cols-2 gap-4">
@@ -180,3 +113,5 @@ const DATA = [
 		})
 	}
 </div>
+
+<VapModal client:load />

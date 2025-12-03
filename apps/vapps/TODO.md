@@ -1,0 +1,1 @@
+supabase vapps 2sohURGJaJgRz5Hl

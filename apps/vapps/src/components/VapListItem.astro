@@ -5,7 +5,10 @@ const { src, title, amount } = Astro.props;
 ---
 
 <div
-	class="cursor-pointer overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-transform active:scale-95"
+	class="vap-item cursor-pointer overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-transform active:scale-95"
+	data-title={title}
+	data-amount={amount}
+	data-src={JSON.stringify(src)}
 >
 	<div class="relative aspect-square overflow-hidden bg-gray-50">
 		<Image src={src} alt={title} title={title} class="h-full w-full object-cover object-top" />
@@ -19,3 +22,21 @@ const { src, title, amount } = Astro.props;
 		</div>
 	</div>
 </div>
+
+<script>
+	import { openModal } from '../stores/modalStore';
+
+	const items = document.querySelectorAll('.vap-item');
+
+	items.forEach((item) => {
+		item.addEventListener('click', () => {
+			const title = item.getAttribute('data-title');
+			const amount = Number(item.getAttribute('data-amount'));
+			const src = JSON.parse(item.getAttribute('data-src') || '{}');
+
+			if (title && !isNaN(amount)) {
+				openModal({ title, amount, src });
+			}
+		});
+	});
+</script>
