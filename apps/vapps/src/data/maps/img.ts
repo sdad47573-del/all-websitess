@@ -1,4 +1,3 @@
-// Importar todas las imágenes
 import ArandanoAzulGrosellaNegraHielo from '@assets/VAPS/ArandanoAzulGrosellaNegraHielo.png';
 import ArandanosRojos from '@assets/VAPS/arandano-cereza-arandano-rojo.png';
 import ArandanoAzulCerezaCola from '@assets/VAPS/arandano-cereza-cola.png';
@@ -24,34 +23,38 @@ import MentaFresca from '@assets/VAPS/menta-fresca.png';
 import HieloMorasArandanoAzul from '@assets/VAPS/mora-arandano-hielo.png';
 import RedBull from '@assets/VAPS/red-bull.png';
 import SandiaHielo from '@assets/VAPS/sandia-hielo.png';
+import Skittles from '@assets/VAPS/skittles.png';
+import SummerDream from '@assets/VAPS/sueno-verano.png';
 import TripleCereza from '@assets/VAPS/triple-cereza.png';
 
 // Mapa de imágenes importadas
 export const imageMap: Record<string, any> = {
+	'Black Ice Drangofruit Strawberry': HieloNegroDragonfruitFresa,
+	'Blue Razz': FrambuesaAzul,
 	'Blueberry Blackcurrant Ice': ArandanoAzulGrosellaNegraHielo,
-	'Blueberry Cherry Cranberry': ArandanosRojos,
 	'Blueberry Cherry Cola': ArandanoAzulCerezaCola,
+	'Blueberry Cherry Cranberry': ArandanosRojos,
 	'Blueberry Ice': ArandanoAzulHielo,
 	'Double Apple': DobleManzana,
-	'grape burst': ExplosionDeUva,
-	'frambuesa-azul.png': FrambuesaAzul,
+	'Kiwi Passion Fruit Guava': KiwiMaracuyaGuayaba,
+	'Lemon Lime': LimonLima,
+	'Mixed Berry': FrutosMixtos,
+	'Peach Berry': MelocotonFrutosDelBosque,
+	'Peach Mango Pineapple': MelocotonMangoPina,
+	'Pink Lemonade': LimonadaRosa,
 	'Raspberry Watermelon': FrambuesaSandia,
+	'Red Bull': RedBull,
 	'Strawberry Banana': FresaBanana,
 	'Strawberry Ice': FresaHielo,
 	'Strawberry Kiwi': FresaKiwi,
 	'Strawberry Watermelon': FresaSandia,
-	'strawberry vanilla cola': FresaVainillaCola,
-	'Mixed Berry': FrutosMixtos,
-	'Black Ice Drangofruit Strawberry': HieloNegroDragonfruitFresa,
-	'Kiwi Passion Fruit Guava': KiwiMaracuyaGuayaba,
-	'Lemon Lime': LimonLima,
-	'Pink Lemonade': LimonadaRosa,
-	'love 66': Love66,
-	'Peach Berry': MelocotonFrutosDelBosque,
-	'Peach Mango Pineapple': MelocotonMangoPina,
-	'cool mint': MentaFresca,
-	'blackberry blueberry ice': HieloMorasArandanoAzul,
-	'Red Bull': RedBull,
+	'Summer Dream': SummerDream,
 	'Watermelon Ice': SandiaHielo,
+	'blackberry blueberry ice': HieloMorasArandanoAzul,
+	'cool mint': MentaFresca,
+	'grape burst': ExplosionDeUva,
+	'love 66': Love66,
+	'strawberry vanilla cola': FresaVainillaCola,
 	'triple cherry': TripleCereza,
+	Skittles: Skittles,
 };

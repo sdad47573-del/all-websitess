@@ -1,117 +1,53 @@
 ---
-import ArandanoAzulGrosellaNegraHielo from '@assets/VAPS/ArandanoAzulGrosellaNegraHielo.png';
-import ArandanosRojos from '@assets/VAPS/arandano-cereza-arandano-rojo.png';
-import ArandanoAzulCerezaCola from '@assets/VAPS/arandano-cereza-cola.png';
-import ArandanoAzulHielo from '@assets/VAPS/arandano-hielo.png';
-import DobleManzana from '@assets/VAPS/doble-manzana.png';
-import ExplosionDeUva from '@assets/VAPS/explosion-uva.png';
-import FrambuesaAzul from '@assets/VAPS/frambuesa-azul.png';
-import FrambuesaSandia from '@assets/VAPS/frambuesa-sandia.png';
-import FresaBanana from '@assets/VAPS/fresa-banana.png';
-import FresaHielo from '@assets/VAPS/fresa-hielo.png';
-import FresaKiwi from '@assets/VAPS/fresa-kiwi.png';
-import FresaSandia from '@assets/VAPS/fresa-sandia.png';
-import FresaVainillaCola from '@assets/VAPS/fresa-vainilla-cola.png';
-import FrutosMixtos from '@assets/VAPS/frutos-mixtos.png';
-import HieloNegroDragonfruitFresa from '@assets/VAPS/hielo-negro-dragonfruit-fresa.png';
-import KiwiMaracuyaGuayaba from '@assets/VAPS/kiwi-maracuya-guayaba.png';
-import LimonLima from '@assets/VAPS/limon-lima.png';
-import LimonadaRosa from '@assets/VAPS/limonada-rosa.png';
-import Love66 from '@assets/VAPS/love66.png';
-import MelocotonFrutosDelBosque from '@assets/VAPS/melocoton-frutos-bosque.png';
-import MelocotonMangoPina from '@assets/VAPS/melocoton-mango-pina.png';
-import MentaFresca from '@assets/VAPS/menta-fresca.png';
-import HieloMorasArandanoAzul from '@assets/VAPS/mora-arandano-hielo.png';
-import RedBull from '@assets/VAPS/red-bull.png';
-import SandiaHielo from '@assets/VAPS/sandia-hielo.png';
-import Skittles from '@assets/VAPS/skittles.png';
-import SuenoVerano from '@assets/VAPS/sueno-verano.png';
-import TripleCereza from '@assets/VAPS/triple-cereza.png';
-import { createClient } from 'supabase-sdk';
+import { imageMap } from '../data/maps/img';
+import { getAllItems } from '../services/items.service';
+import Modal from './Modal';
 import VapListItem from './VapListItem.astro';
-import VapModal from './VapModal';
 
-// Map of vaper titles to their images
-const VAPER_IMAGES: Record<string, any> = {
-	'Hielo Negro Drangofruit Fresa': HieloNegroDragonfruitFresa,
-	'Hielo Moras Arándano Azul': HieloMorasArandanoAzul,
-	'Frambuesa Azul': FrambuesaAzul,
-	'Arándano Azul Grosella Negra Hielo': ArandanoAzulGrosellaNegraHielo,
-	'Arándano Azul Cereza Cola': ArandanoAzulCerezaCola,
-	'Arándano Azul Cereza Arándano Rojo': ArandanosRojos,
-	'Arándano Azul Hielo': ArandanoAzulHielo,
-	'Menta Fresca': MentaFresca,
-	'Doble Manzana': DobleManzana,
-	'Explosión de Uva': ExplosionDeUva,
-	'Kiwi Maracuyá Guayaba': KiwiMaracuyaGuayaba,
-	'Limón Lima': LimonLima,
-	'Love 66': Love66,
-	'Frutos Mixtos': FrutosMixtos,
-	'Melocoton Frutos del Bosque': MelocotonFrutosDelBosque,
-	'Melocoton Mango Piña': MelocotonMangoPina,
-	'Limonada Rosa': LimonadaRosa,
-	'Frambuesa Sandía': FrambuesaSandia,
-	'Red Bull': RedBull,
-	Skittles: Skittles,
-	'Fresa Hielo': FresaHielo,
-	'Fresa Banana': FresaBanana,
-	'Fresa Kiwi': FresaKiwi,
-	'Fresa Vainilla Cola': FresaVainillaCola,
-	'Fresa Sandía': FresaSandia,
-	'Sueño de Verano': SuenoVerano,
-	'Triple Cereza': TripleCereza,
-	'Sandía Hielo': SandiaHielo,
-};
+const { data: stock } = await getAllItems();
 
-// Fetch vaper data from Supabase
-let DATA: Array<{ src: any; title: string; amount: number }> = [];
-
-try {
-	const supabaseUrl = import.meta.env.SUPABASE_URL;
-	const supabaseAnonKey = import.meta.env.SUPABASE_ANON_KEY;
-
-	if (supabaseUrl && supabaseAnonKey) {
-		const supabase = createClient(supabaseUrl, supabaseAnonKey);
-		const { data: vapers, error } = await supabase
-			.from('vapers')
-			.select('*')
-			.eq('active', true)
-			.returns<Array<{ id: number; title: string; amount: number; active: boolean }>>();
-
-		if (error) {
-			console.error('Error fetching vapers from Supabase:', error);
-		} else if (vapers) {
-			// Map Supabase data to component format
-			DATA = vapers
-				.map((vaper) => ({
-					src: VAPER_IMAGES[vaper.title],
-					title: vaper.title,
-					amount: vaper.amount,
-				}))
-				.filter((item) => item.src); // Only include items with matching images
-		}
-	}
-} catch (error) {
-	console.error('Error initializing Supabase client:', error);
-}
-
-// Fallback to hardcoded data if Supabase is not configured or fails
-if (DATA.length === 0) {
-	console.warn('Using fallback hardcoded vaper data');
-	DATA = Object.entries(VAPER_IMAGES).map(([title, src]) => ({
-		src,
-		title,
-		amount: 15, // Default fallback amount
-	}));
-}
+const DATA = stock
+	.map((vaper) => ({
+		id: vaper.id,
+		src: imageMap[vaper.title],
+		title: vaper.es_title,
+		amount: vaper.amount,
+	}))
+	.filter((item) => item.src);
 ---
 
-<div class="mt-6 grid grid-cols-2 gap-4">
-	{
-		DATA.map((item) => {
-			return <VapListItem {...item} />;
-		})
-	}
+<div
+	class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+	id="vap-list-container"
+>
+	{DATA.map((item) => <VapListItem {...item} />)}
 </div>
 
-<VapModal client:load />
+<Modal client:only="react" />
+
+<script>
+	import { modalData, isModalOpen } from '../stores/modal.store';
+
+	document.addEventListener('click', (e) => {
+		const target = e.target as HTMLElement;
+		const vapItem = target.closest('.vap-item');
+		if (!vapItem) return;
+		const { id, title, src, amount } = vapItem.dataset;
+		if (id && title && src && amount) {
+			let parsedSrc = src;
+			try {
+				const srcObj = JSON.parse(src);
+				parsedSrc = srcObj.src || srcObj;
+			} catch (_) {
+				parsedSrc = src;
+			}
+			modalData.set({
+				id: Number(id),
+				title,
+				src: parsedSrc,
+				amount: Number(amount),
+			});
+			isModalOpen.set(true);
+		}
+	});
+</script>

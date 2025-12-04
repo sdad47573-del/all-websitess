@@ -110,6 +110,26 @@ export interface Database {
 					active?: boolean;
 				};
 			};
+			sales: {
+				Row: {
+					id: number;
+					created_at: string;
+					quantity: number;
+					price: number;
+				};
+				Insert: {
+					id?: number;
+					created_at?: string;
+					quantity: number;
+					price: number;
+				};
+				Update: {
+					id?: number;
+					created_at?: string;
+					quantity?: number;
+					price?: number;
+				};
+			};
 		};
 		Views: {
 			[_ in never]: never;
@@ -146,3 +166,8 @@ export type RestaurantPlatoUpdate = Database['public']['Tables']['platos']['Upda
 export type VaperProduct = Database['public']['Tables']['vapers']['Row'];
 export type VaperProductInsert = Database['public']['Tables']['vapers']['Insert'];
 export type VaperProductUpdate = Database['public']['Tables']['vapers']['Update'];
+
+// Organized types by domain - Sales
+export type Sale = Database['public']['Tables']['sales']['Row'];
+export type SaleInsert = Database['public']['Tables']['sales']['Insert'];
+export type SaleUpdate = Database['public']['Tables']['sales']['Update'];
