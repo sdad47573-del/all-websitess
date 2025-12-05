@@ -1,42 +1,42 @@
 ---
-import Modal from '../components/Modal.astro';
-import Stats from '../components/Stats.astro';
-import VapList from '../components/VapList.astro';
+// obliga a que esta ruta se renderice on-demand en el server
+export const prerender = false;
+
+import { getAllItems } from '../services/items.service';
+import VapList from '../components/VapList';
+import Modal from '../components/Modal';
 import CustomLayout from '../layouts/CustomLayout.astro';
+import Stats from '../components/Stats.astro';
+
+const { data: stock } = await getAllItems();
+
+const total = stock ? (stock as any[]).reduce((acc, item) => acc + item.amount, 0) : 0;
 ---
 
 <CustomLayout>
-	<!-- <Modal /> -->
-
-	<main class="px-4">
-		<!-- <Stats
+	<main>
+		<Stats
 			items={[
 				{
-					label: 'Compras Totales',
-					value: '0.00€',
-					icon: 'ri-shopping-cart-line',
+					label: 'Cantidad de vapers',
+					value: total,
+					icon: 'ri-stack-line',
 					color: 'bg-blue-500',
 				},
 				{
-					label: 'Ventas Totales',
-					value: '0.00€',
-					icon: 'ri-money-euro-circle-line',
-					color: 'bg-green-500',
-				},
-				{
-					label: 'Precio Medio',
-					value: '0.00€',
-					icon: 'ri-bar-chart-line',
-					color: 'bg-purple-500',
-				},
-				{
-					label: 'Beneficio',
-					value: '0.00€',
-					icon: 'ri-line-chart-line',
-					color: 'bg-teal-500',
+					label: 'Vaper más vendido',
+					value: 'Lima Limón',
+					icon: 'ri-medal-line',
+					color: 'bg-yellow-500',
 				},
 			]}
-		/> -->
-		<VapList />
+		/>
+		<div class="px-4">
+			<div class="py-5">
+				<h2 class="text-xl font-semibold">Vapers Disponibles</h2>
+			</div>
+			<VapList client:load />
+			<Modal client:load />
+		</div>
 	</main>
 </CustomLayout>

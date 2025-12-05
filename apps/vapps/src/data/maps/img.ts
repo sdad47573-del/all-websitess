@@ -58,3 +58,39 @@ export const imageMap: Record<string, any> = {
 	'triple cherry': TripleCereza,
 	Skittles: Skittles,
 };
+
+// import { getVaperImageUrl } from '../../utils/supabase-storage';
+
+// // Mapa de imágenes desde Supabase Storage
+// // Bucket: vaper-images
+// // Estructura: VAPS/<nombre-archivo>.png
+// export const imageMap: Record<string, string> = {
+// 	'Black Ice Drangofruit Strawberry': getVaperImageUrl('hielo-negro-dragonfruit-fresa.png'),
+// 	'Blue Razz': getVaperImageUrl('frambuesa-azul.png'),
+// 	'Blueberry Blackcurrant Ice': getVaperImageUrl('ArandanoAzulGrosellaNegraHielo.png'),
+// 	'Blueberry Cherry Cola': getVaperImageUrl('arandano-cereza-cola.png'),
+// 	'Blueberry Cherry Cranberry': getVaperImageUrl('arandano-cereza-arandano-rojo.png'),
+// 	'Blueberry Ice': getVaperImageUrl('arandano-hielo.png'),
+// 	'Double Apple': getVaperImageUrl('doble-manzana.png'),
+// 	'Kiwi Passion Fruit Guava': getVaperImageUrl('kiwi-maracuya-guayaba.png'),
+// 	'Lemon Lime': getVaperImageUrl('limon-lima.png'),
+// 	'Mixed Berry': getVaperImageUrl('frutos-mixtos.png'),
+// 	'Peach Berry': getVaperImageUrl('melocoton-frutos-bosque.png'),
+// 	'Peach Mango Pineapple': getVaperImageUrl('melocoton-mango-pina.png'),
+// 	'Pink Lemonade': getVaperImageUrl('limonada-rosa.png'),
+// 	'Raspberry Watermelon': getVaperImageUrl('frambuesa-sandia.png'),
+// 	'Red Bull': getVaperImageUrl('red-bull.png'),
+// 	'Strawberry Banana': getVaperImageUrl('fresa-banana.png'),
+// 	'Strawberry Ice': getVaperImageUrl('fresa-hielo.png'),
+// 	'Strawberry Kiwi': getVaperImageUrl('fresa-kiwi.png'),
+// 	'Strawberry Watermelon': getVaperImageUrl('fresa-sandia.png'),
+// 	'Summer Dream': getVaperImageUrl('sueno-verano.png'),
+// 	'Watermelon Ice': getVaperImageUrl('sandia-hielo.png'),
+// 	'blackberry blueberry ice': getVaperImageUrl('mora-arandano-hielo.png'),
+// 	'cool mint': getVaperImageUrl('menta-fresca.png'),
+// 	'grape burst': getVaperImageUrl('explosion-uva.png'),
+// 	'love 66': getVaperImageUrl('love66.png'),
+// 	'strawberry vanilla cola': getVaperImageUrl('fresa-vainilla-cola.png'),
+// 	'triple cherry': getVaperImageUrl('triple-cereza.png'),
+// 	Skittles: getVaperImageUrl('skittles.png'),
+// };

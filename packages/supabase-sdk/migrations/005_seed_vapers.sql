@@ -1,9 +1,9 @@
--- Migration: Seed Vapers Data
--- Description: Populates the vapers table with initial inventory data
+-- Migration: Seed Items Data
+-- Description: Populates the items table with initial inventory data
 -- Created: 2025-12-03
 
--- Insert vaper products with initial quantities
-INSERT INTO public.vapers (title,es_title, active, amount) VALUES
+-- Insert item products with initial quantities
+INSERT INTO public.items (title,es_title, active, amount) VALUES
     ('Black Ice Drangofruit Strawberry','Regaliz-Negro Pitaya Fresa Helada',true,50),
     ('blackberry blueberry ice','Moras Arándano-Azul Helada',true,50),
     ('Blueberry Blackcurrant Ice','Arándano-Azul Baya-Negra Helada',true,50),
@@ -35,17 +35,17 @@ INSERT INTO public.vapers (title,es_title, active, amount) VALUES
 ON CONFLICT (title) DO NOTHING;
 
 -- Seed Sales
-INSERT INTO public.sales (vaper_id, seller_id, price_per_unit, amount,concept)
+INSERT INTO public.sales (item_id, seller_id, price_per_unit, amount,concept)
 SELECT id, 'user_placeholder', 10.00, 5,'Niño lolo'
-FROM public.vapers
+FROM public.items
 WHERE es_title = 'Hielo Negro Pitaya Fresa';
 
-INSERT INTO public.sales (vaper_id, seller_id, price_per_unit, amount,concept)
+INSERT INTO public.sales (item_id, seller_id, price_per_unit, amount,concept)
 SELECT id, 'user_placeholder', 12.50, 2,'Bolero'
-FROM public.vapers
+FROM public.items
 WHERE es_title = 'Menta Fresca';
 
-INSERT INTO public.sales (vaper_id, seller_id, price_per_unit, amount,concept)
+INSERT INTO public.sales (item_id, seller_id, price_per_unit, amount,concept)
 SELECT id, 'user_placeholder', 15.00, 10,'Venta ismael'
-FROM public.vapers
+FROM public.items
 WHERE es_title = 'Red Bull';

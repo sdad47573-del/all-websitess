@@ -3,7 +3,7 @@ import { supabaseBrowserClient } from './init.service';
 export async function getAllSales() {
 	let { data, error } = await supabaseBrowserClient
 		.from('sales')
-		.select('*, vapers(id, title)')
+		.select('*, items(id, title)')
 		.order('created_at', { ascending: false });
 
 	if (error) {
@@ -14,7 +14,7 @@ export async function getAllSales() {
 }
 
 export async function insertSale(params: {
-	vaper_id: number;
+	item_id: number;
 	amount: number;
 	price_per_unit: number;
 }) {

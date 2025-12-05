@@ -1,1 +1,2 @@
 supabase vapps 2sohURGJaJgRz5Hl
+supabase vapps-test YkcNgiNCSVCt3a5Y

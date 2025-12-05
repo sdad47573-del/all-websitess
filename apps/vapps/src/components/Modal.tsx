@@ -58,7 +58,7 @@ export default function Modal() {
 
 	const handleSubmit = async (form) => {
 		await insertSale({
-			vaper_id: $data.id,
+			item_id: $data.id,
 			seller_id: 'ISMAEL',
 			price_per_unit: form.price_per_unit,
 			amount: form.amount,
@@ -136,7 +136,7 @@ export default function Modal() {
 								<p className="text-2xl font-bold text-teal-600">{$data.amount}</p>
 							</h4>
 
-							<NumericForm onSubmit={handleSubmit} />
+							<NumericForm onSubmit={handleSubmit} stock={$data.amount} />
 						</div>
 					</div>
 				</div>

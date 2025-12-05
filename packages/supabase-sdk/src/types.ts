@@ -87,7 +87,7 @@ export interface Database {
 					allergens?: Json | null;
 				};
 			};
-			vapers: {
+			items: {
 				Row: {
 					id: number;
 					created_at: string;
@@ -147,7 +147,7 @@ export interface Database {
 export type Category = Database['public']['Tables']['categories']['Row'];
 export type Menu = Database['public']['Tables']['menu']['Row'];
 export type Plato = Database['public']['Tables']['platos']['Row'];
-export type Vaper = Database['public']['Tables']['vapers']['Row'];
+export type Item = Database['public']['Tables']['items']['Row'];
 
 // Organized types by domain - Restaurant
 export type RestaurantCategory = Database['public']['Tables']['categories']['Row'];
@@ -162,10 +162,10 @@ export type RestaurantPlato = Database['public']['Tables']['platos']['Row'];
 export type RestaurantPlatoInsert = Database['public']['Tables']['platos']['Insert'];
 export type RestaurantPlatoUpdate = Database['public']['Tables']['platos']['Update'];
 
-// Organized types by domain - Vaper Shop
-export type VaperProduct = Database['public']['Tables']['vapers']['Row'];
-export type VaperProductInsert = Database['public']['Tables']['vapers']['Insert'];
-export type VaperProductUpdate = Database['public']['Tables']['vapers']['Update'];
+// Organized types by domain - Item Shop
+export type ItemProduct = Database['public']['Tables']['items']['Row'];
+export type ItemProductInsert = Database['public']['Tables']['items']['Insert'];
+export type ItemProductUpdate = Database['public']['Tables']['items']['Update'];
 
 // Organized types by domain - Sales
 export type Sale = Database['public']['Tables']['sales']['Row'];
