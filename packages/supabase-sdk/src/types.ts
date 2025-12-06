@@ -1,5 +1,7 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+export type UserRole = 'admin' | 'seller';
+
 export interface Database {
 	public: {
 		Tables: {
@@ -130,15 +132,45 @@ export interface Database {
 					price?: number;
 				};
 			};
+			profiles: {
+				Row: {
+					id: string;
+					role: UserRole;
+					full_name: string;
+					created_at: string;
+					updated_at: string;
+				};
+				Insert: {
+					id: string;
+					role?: UserRole;
+					full_name: string;
+					created_at?: string;
+					updated_at?: string;
+				};
+				Update: {
+					id?: string;
+					role?: UserRole;
+					full_name?: string;
+					created_at?: string;
+					updated_at?: string;
+				};
+			};
 		};
 		Views: {
 			[_ in never]: never;
 		};
 		Functions: {
-			[_ in never]: never;
+			get_user_role: {
+				Args: Record<string, never>;
+				Returns: UserRole;
+			};
+			has_role: {
+				Args: { required_role: UserRole };
+				Returns: boolean;
+			};
 		};
 		Enums: {
-			[_ in never]: never;
+			user_role: UserRole;
 		};
 	};
 }
@@ -171,3 +203,8 @@ export type ItemProductUpdate = Database['public']['Tables']['items']['Update'];
 export type Sale = Database['public']['Tables']['sales']['Row'];
 export type SaleInsert = Database['public']['Tables']['sales']['Insert'];
 export type SaleUpdate = Database['public']['Tables']['sales']['Update'];
+
+// Organized types by domain - Auth & Profiles
+export type Profile = Database['public']['Tables']['profiles']['Row'];
+export type ProfileInsert = Database['public']['Tables']['profiles']['Insert'];
+export type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];

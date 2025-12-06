@@ -1,0 +1,41 @@
+import Layout from '../layouts/Layout';
+import VapList from '../components/VapList';
+import Modal from '../components/Modal';
+import Stats from '../components/Stats';
+import { useVapItems } from '../hooks/useVapItems';
+
+export default function Home() {
+	const { items } = useVapItems();
+
+	const total = items ? items.reduce((acc, item) => acc + item.amount, 0) : 0;
+
+	return (
+		<Layout title="Vapps - Inicio" description="Gestión de inventario de vapers">
+			<main>
+				<Stats
+					items={[
+						{
+							label: 'Cantidad de vapers',
+							value: total,
+							icon: 'ri-stack-line',
+							color: 'bg-blue-500',
+						},
+						{
+							label: 'Vaper más vendido',
+							value: 'Lima Limón',
+							icon: 'ri-medal-line',
+							color: 'bg-yellow-500',
+						},
+					]}
+				/>
+				<div className="px-4">
+					<div className="py-5">
+						<h2 className="text-xl font-semibold">Vapers Disponibles</h2>
+					</div>
+					<VapList />
+					<Modal />
+				</div>
+			</main>
+		</Layout>
+	);
+}

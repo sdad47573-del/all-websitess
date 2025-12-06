@@ -3,7 +3,7 @@ import { NumericForm } from './NumericForm';
 // import type FormData from './NumericForm';
 import { twJoin } from 'tailwind-merge';
 import { useStore } from '@nanostores/react';
-import { modalData, isModalOpen } from '../stores/modal.store';
+import { modalData, isModalOpen, lastSale } from '../stores/modal.store';
 import { insertSale } from '../services/sales.service';
 import Toastify from 'toastify-js';
 
@@ -56,7 +56,9 @@ export default function Modal() {
 		isModalOpen.set(false);
 	};
 
-	const handleSubmit = async (form) => {
+	const handleSubmit = async (form: any) => {
+		if (!$data) return;
+
 		await insertSale({
 			item_id: $data.id,
 			seller_id: 'ISMAEL',
@@ -70,10 +72,12 @@ export default function Modal() {
 			duration: 3000,
 			gravity: 'bottom', // "top" o "bottom"
 			position: 'right', // "left", "center", "right"
-			style: {
-				background: 'linear-gradient(to right, #00b09b, #96c93d)',
-			},
 		}).showToast();
+		lastSale.set({
+			itemId: $data.id,
+			amountSold: form.amount,
+			timestamp: Date.now(),
+		});
 		handleClose();
 		return;
 	};

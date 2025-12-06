@@ -50,7 +50,7 @@ CREATE TABLE public.sales (
     active BOOLEAN NOT NULL DEFAULT true,
     
     -- Constraints
-    CONSTRAINT sales_price_positive CHECK (price_per_unit > 0),
+    CONSTRAINT sales_price_positive CHECK (price_per_unit >= 0),
     CONSTRAINT sales_payment_positive CHECK (payment >= 0),
     CONSTRAINT sales_amount_positive CHECK (amount > 0)
     -- CONSTRAINT sales_concept_not_empty CHECK (LENGTH(TRIM(concept)) > 0)

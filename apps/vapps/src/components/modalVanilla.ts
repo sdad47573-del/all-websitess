@@ -1,8 +1,8 @@
-import { modalData, isModalOpen } from '../stores/modal.store';
+import { isModalOpen, modalData } from '../stores/modal.store';
 
 document.addEventListener('click', (e) => {
 	const target = e.target as HTMLElement;
-	const vapItem = target.closest('.vap-item');
+	const vapItem = target.closest('.vap-item') as HTMLElement;
 	if (!vapItem) return;
 	const { id, title, src, amount } = vapItem.dataset;
 	if (id && title && src && amount) {
