@@ -10,11 +10,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const assetsDir = path.resolve(__dirname, '../@assets');
 const rootDir = path.resolve(__dirname, '../../');
 
-export function createAstroConfig({ site, integrations = [], ...rest }) {
+export function createAstroConfig({ site, integrations = [], vite, ...rest }) {
 	return defineConfig({
 		site,
 		integrations: [sitemap(), ...integrations],
 		vite: {
+			...vite,
 			plugins: [tailwindcss()],
 			resolve: {
 				alias: {

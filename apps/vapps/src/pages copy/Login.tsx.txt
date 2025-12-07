@@ -1,9 +1,12 @@
+import { LoginForm, type LoginFormData } from '@react-components';
+import Cookies from 'js-cookie';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import Toastify from 'toastify-js';
 import { useAuth } from '../contexts/AuthContext';
-import LoginForm from '../components/LoginForm';
 import Logo from '../layouts/Logo';
+import { signIn } from '../services/auth.service';
 
 export default function Login() {
 	const { user } = useAuth();
@@ -14,6 +17,42 @@ export default function Login() {
 			navigate('/');
 		}
 	}, [user, navigate]);
+
+	const handleLogin = async (data: LoginFormData) => {
+		const { data: dataSignIn, error } = await signIn(data.email, data.password);
+
+		if (error) {
+			Toastify({
+				text: error.message || 'Error al iniciar sesión',
+				duration: 3000,
+				gravity: 'top',
+				position: 'right',
+				style: {
+					background: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+				},
+			}).showToast();
+			return;
+		}
+
+		Toastify({
+			text: '¡Bienvenido!',
+			duration: 2000,
+			gravity: 'top',
+			position: 'right',
+			style: {
+				background: 'linear-gradient(to right, #00b09b, #96c93d)',
+			},
+		}).showToast();
+
+		if (dataSignIn.session) {
+			const { access_token, refresh_token } = dataSignIn.session;
+			Cookies.set('sb-access-token', access_token);
+			Cookies.set('sb-refresh-token', refresh_token);
+		}
+
+		// Redirect to home page
+		window.location.href = '/';
+	};
 
 	return (
 		<>
@@ -41,7 +80,7 @@ export default function Login() {
 					</div>
 
 					{/* Login Form */}
-					<LoginForm />
+					<LoginForm onSubmit={handleLogin} />
 
 					{/* Footer */}
 					<div className="text-base-content/60 mt-8 text-center text-sm">

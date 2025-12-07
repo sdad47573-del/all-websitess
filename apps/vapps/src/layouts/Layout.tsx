@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Topbar from './Topbar';
+
+import '@astro-config/index.css';
 
 interface LayoutProps {
 	children: ReactNode;
