@@ -1,0 +1,91 @@
+import { LoginForm, type LoginFormData } from '@react-components';
+
+import { useEffect } from 'react';
+// import { Helmet } from 'react-helmet-async';
+import Toastify from 'toastify-js';
+import { useAuth } from '../contexts/AuthContext';
+// import Logo from '../layouts/Logo';
+import { signIn } from '../services/auth.service';
+import { useLocation } from 'wouter';
+
+export const Login = () => {
+	const { user } = useAuth();
+	const [, setLocation] = useLocation();
+
+	useEffect(() => {
+		if (user) {
+			setLocation('/');
+		}
+	}, [user, setLocation]);
+
+	const handleLogin = async (data: LoginFormData) => {
+		const { error } = await signIn(data.email, data.password);
+
+		if (error) {
+			Toastify({
+				text: error.message || 'Error al iniciar sesión',
+				duration: 3000,
+				gravity: 'top',
+				position: 'right',
+				style: {
+					background: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+				},
+			}).showToast();
+			return;
+		}
+
+		Toastify({
+			text: '¡Bienvenido!',
+			duration: 2000,
+			gravity: 'top',
+			position: 'right',
+			style: {
+				background: 'linear-gradient(to right, #00b09b, #96c93d)',
+			},
+		}).showToast();
+
+		// if (dataSignIn.session) {
+		// 	const { access_token, refresh_token } = dataSignIn.session;
+		// 	Cookies.set('sb-access-token', access_token);
+		// 	Cookies.set('sb-refresh-token', refresh_token);
+		// }
+
+		// Redirect to home page
+		setLocation('/');
+	};
+
+	return (
+		<>
+			{/* <Helmet>
+				<title>Login - Vapps</title>
+				<meta
+					name="description"
+					content="Inicia sesión en Vapps para gestionar tu inventario de vapers"
+				/>
+			</Helmet> */}
+			<div
+				className="from-primary/10 via-base-100 to-secondary/10 min-h-screen bg-linear-to-br"
+				data-theme="scruz"
+			>
+				<div className="flex min-h-screen flex-col items-center justify-center p-4">
+					{/* Logo */}
+					<div className="mb-8 text-center">
+						<div className="mb-4 flex justify-center">{/* <Logo /> */}</div>
+						<h1 className="from-primary to-secondary bg-linear-to-r bg-clip-text text-4xl font-bold text-transparent">
+							Vapps
+						</h1>
+						<p className="text-base-content/70 mt-2">Sistema de Gestión de Inventario</p>
+					</div>
+
+					{/* Login Form */}
+					<LoginForm onSubmit={handleLogin} />
+
+					{/* Footer */}
+					<div className="text-base-content/60 mt-8 text-center text-sm">
+						<p>&copy; 2025 Vapps. Todos los derechos reservados.</p>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};

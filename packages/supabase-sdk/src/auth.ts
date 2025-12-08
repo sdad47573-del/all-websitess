@@ -133,16 +133,16 @@ export async function isAdmin(client: AuthClient): Promise<boolean> {
 /**
  * Update user profile
  */
-export async function updateProfile(client: AuthClient, userId: string, updates: Partial<Profile>) {
-	const { data, error } = await client
-		.from('profiles')
-		.update(updates)
-		.eq('id', userId)
-		.select()
-		.single();
+// export async function updateProfile(client: AuthClient, userId: string, updates: Partial<Profile>) {
+// 	const { data, error } = await client
+// 		.from('profiles')
+// 		.update(updates)
+// 		.eq('id', userId)
+// 		.select()
+// 		.single();
 
-	return { profile: data, error };
-}
+// 	return { profile: data, error };
+// }
 
 /**
  * Listen to auth state changes

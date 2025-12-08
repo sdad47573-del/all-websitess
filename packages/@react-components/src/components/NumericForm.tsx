@@ -2,33 +2,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// TODO: terminar validaciones y confirmar que se hace el post bien
-// el amount tiene que ser igual o menor al stock
+export interface NumericFormData {
+	concept: string;
+	amount: number;
+	price_per_unit: number;
+	payment: boolean;
+}
+
 const genSchema = (stock: number) =>
 	z.object({
 		concept: z.string(),
 		amount: z
-			.number({ invalid_type_error: 'Debe ser un número' })
-			.positive({ message: 'Debe ser positivo' })
-			.max(stock, { message: `Debe ser menor o igual a ${stock}` }),
+			.number({ error: 'Debe ser un número' })
+			.positive({ error: 'Debe ser positivo' })
+			.max(stock, { error: `Debe ser menor o igual a ${stock}` }),
 		price_per_unit: z
-			.number({ invalid_type_error: 'Debe ser un número' })
-			.positive({ message: 'Debe ser positivo' }),
+			.number({ error: 'Debe ser un número' })
+			.positive({ error: 'Debe ser positivo' }),
 		payment: z.boolean(),
 	});
-
-const schema = z.object({
-	concept: z.string(),
-	amount: z
-		.number({ invalid_type_error: 'Debe ser un número' })
-		.positive({ message: 'Debe ser positivo' }),
-	price_per_unit: z
-		.number({ invalid_type_error: 'Debe ser un número' })
-		.positive({ message: 'Debe ser positivo' }),
-	payment: z.boolean(),
-});
-
-export type NumericFormData = z.infer<typeof schema>;
 
 export const NumericForm = ({
 	onSubmit,

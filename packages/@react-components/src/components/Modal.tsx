@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { twJoin } from 'tailwind-merge';
-import { type FormData, NumericForm } from './NumericForm';
+import { NumericForm, type NumericFormData } from './NumericForm';
 
 export interface ModalData {
 	id: number;
@@ -9,11 +9,11 @@ export interface ModalData {
 	amount: number;
 }
 
-export interface ModalProps {
+interface ModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	data: ModalData | null;
-	onSubmit: (data: FormData) => void;
+	onSubmit: (data: NumericFormData) => void;
 }
 
 export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {

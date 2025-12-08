@@ -1,0 +1,97 @@
+import Stats from '../components/Stats';
+import { BUY, TOTAL_BUY } from '../data/BUY';
+import { INGRESOS, TOTAL_INGRESOS } from '../data/INGRESOS';
+import { SELL } from '../data/SELL';
+
+export const Estadisticas = () => {
+	return (
+		<main>
+			<Stats
+				title="Resumen de Compras"
+				items={[
+					{
+						label: 'Cantidad Totales',
+						value: BUY.reduce((total, buy) => total + buy.quantity, 0),
+						icon: 'ri-shopping-cart-line',
+						color: 'bg-blue-500',
+					},
+					{
+						label: 'Compras Totales',
+						value: TOTAL_BUY + '€',
+						icon: 'ri-money-euro-circle-line',
+						color: 'bg-green-500',
+					},
+					{
+						label: 'Cubierto %',
+						value: ((TOTAL_INGRESOS / TOTAL_BUY) * 100).toFixed(2) + '%',
+						icon: 'ri-bar-chart-line',
+						color: 'bg-purple-500',
+					},
+					{
+						label: 'Restante',
+						value: (TOTAL_INGRESOS - TOTAL_BUY).toFixed(2) + '€',
+						icon: 'ri-line-chart-line',
+						color: 'bg-teal-500',
+					},
+				]}
+			/>
+			<Stats
+				title="Resumen de Ingresos"
+				items={[
+					{
+						label: 'Ingresos Totales',
+						value: INGRESOS.reduce((total, buy) => total + buy.EUR, 0) + '€',
+						icon: 'ri-money-euro-circle-line',
+						color: 'bg-green-500',
+					},
+				]}
+			/>
+			<Stats
+				title="Resumen de Ventas"
+				items={[
+					{
+						label: 'Calculo Total',
+						value: SELL.reduce((total, item) => total + item.price, 0) + '€',
+						icon: 'ri-shopping-cart-line',
+						color: 'bg-blue-500',
+					},
+					{
+						label: 'Cobrado Total',
+						value: SELL.reduce((total, item) => total + item.received, 0) + '€',
+						icon: 'ri-money-euro-circle-line',
+						color: 'bg-green-500',
+					},
+				]}
+			/>
+			<Stats
+				title="Beneficios de Socios"
+				items={[
+					{
+						label: 'ganacias por socio estimadas',
+						value: 1118 + '€',
+						icon: 'ri-shopping-cart-line',
+						color: 'bg-blue-500',
+					},
+					{
+						label: 'ganacias por socio estimadas',
+						value: 1118 + '€',
+						icon: 'ri-shopping-cart-line',
+						color: 'bg-blue-500',
+					},
+					{
+						label: 'Ismael cobrado',
+						value: 180 + '€',
+						icon: 'ri-money-euro-circle-line',
+						color: 'bg-green-500',
+					},
+					{
+						label: 'Jose cobrado',
+						value: 0 + '€',
+						icon: 'ri-money-euro-circle-line',
+						color: 'bg-green-500',
+					},
+				]}
+			/>
+		</main>
+	);
+};

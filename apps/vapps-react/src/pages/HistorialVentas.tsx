@@ -1,0 +1,63 @@
+import Stats from '../components/Stats';
+import { VapListItem } from '@react-components';
+import { imageMap } from '../data/maps/img';
+import { translateItem } from '../data/maps/spanish';
+import { SELL } from '../data/SELL';
+
+export const HistorialVentas = () => {
+	return (
+		<main>
+			<Stats
+				items={[
+					{
+						label: 'Calculo Total',
+						value: SELL.reduce((total, item) => total + item.price, 0) + '€',
+						icon: 'ri-shopping-cart-line',
+						color: 'bg-blue-500',
+					},
+					{
+						label: 'Cobrado Total',
+						value: SELL.reduce((total, item) => total + item.received, 0) + '€',
+						icon: 'ri-money-euro-circle-line',
+						color: 'bg-green-500',
+					},
+				]}
+			/>
+
+			<div className="p-5">
+				<h2 className="mb-4 text-xl font-semibold">Ventas</h2>
+			</div>
+			{/* <!-- TODO: hacer un comp de vapslit generico --> */}
+			{/* <!-- <VapList /> --> */}
+
+			<ul className="space-y-6">
+				{SELL.map((buy) => (
+					<li className="rounded-lg bg-white p-4 shadow-md">
+						<div className="mb-3">
+							<h3 className="text-lg font-bold text-teal-700">Fecha: {buy.data}</h3>
+							<p className="text-gray-600">
+								Precio: <span className="font-semibold">{buy.price} €</span>
+							</p>
+							<p className="text-gray-600">
+								Cantidad: <span className="font-semibold">{buy.quantity}</span>
+							</p>
+						</div>
+						<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+							{buy.items.map((item, index) => (
+								<VapListItem
+									key={index}
+									item={{
+										id: index,
+										title: translateItem(item.name),
+										src: imageMap[item.name],
+										amount: item.amount,
+									}}
+								/>
+							))}
+						</div>
+					</li>
+				))}
+			</ul>
+		</main>
+	);
+};
