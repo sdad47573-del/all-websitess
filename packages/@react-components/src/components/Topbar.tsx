@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import type { ReactNode, ComponentType } from 'react';
 import { twJoin } from 'tailwind-merge';
 
 export interface SocialLinks {
@@ -14,18 +15,18 @@ export interface NavLink {
 }
 
 interface TopbarProps extends SocialLinks {
-	logo: React.ReactNode;
+	logo: ReactNode;
 	links: NavLink[];
 	currentPath: string;
-	LinkComponent: React.ComponentType<{
+	LinkComponent: ComponentType<{
 		href: string;
 		className?: string;
-		children: React.ReactNode;
+		children: ReactNode;
 		onClick?: () => void;
 	}>;
 }
 
-export const Topbar: React.FC<TopbarProps> = ({
+export const Topbar = ({
 	phone,
 	facebook,
 	instagram,
@@ -34,7 +35,7 @@ export const Topbar: React.FC<TopbarProps> = ({
 	links,
 	currentPath,
 	LinkComponent,
-}) => {
+}: TopbarProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);

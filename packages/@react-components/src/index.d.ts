@@ -1,7 +1,5 @@
 export * from './components/NumericForm';
 export * from './components/Modal';
-export * from './components/UserMenu';
-export * from './components/VapListItem';
 export * from './components/VapListItem';
 export * from './components/VapList';
 export * from './components/Topbar';

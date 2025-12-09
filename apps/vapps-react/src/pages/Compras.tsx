@@ -61,12 +61,10 @@ export const Compras = () => {
 							{buy.items.map((item, index) => (
 								<VapListItem
 									key={index}
-									item={{
-										id: index, // Using index as fallback id
-										title: translateItem(item.name),
-										src: imageMap[item.name],
-										amount: item.amount,
-									}}
+									id={index}
+									title={translateItem(item.name)}
+									src={imageMap[item.name]}
+									amount={item.amount}
 								/>
 							))}
 						</div>

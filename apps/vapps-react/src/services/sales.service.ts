@@ -18,9 +18,13 @@ export async function insertSale(params: {
 	amount: number;
 	price_per_unit: number;
 }) {
-	const { data, error } = await supabaseBrowserClient.from('sales').insert({
-		...params,
-	} as any);
+	const { data, error } = await supabaseBrowserClient
+		.from('sales')
+		.insert({
+			...params,
+		} as any)
+		.select()
+		.single();
 
 	if (error) {
 		console.error('Error inserting sell:', error);

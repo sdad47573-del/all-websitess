@@ -1,10 +1,6 @@
-import { useEffect } from 'react';
-import { useStore } from '@nanostores/react';
 import { useQuery } from '@tanstack/react-query';
-import { lastSale } from '../stores/modal.store';
 import { imageMap } from '../data/maps/img';
 import { getAllItems } from '../services/items.service';
-import { queryClient } from '../lib/queryClient';
 
 export interface VapItem {
 	id: number;
@@ -46,27 +42,10 @@ const fetchVapItems = async (): Promise<VapItem[]> => {
 };
 
 export const useVapItems = () => {
-	const $lastSale = useStore(lastSale);
-
 	const { data: items = [], isLoading } = useQuery({
 		queryKey: ['vapItems'],
 		queryFn: fetchVapItems,
 	});
-
-	// Optimistic update / local cache update when a sale happens
-	useEffect(() => {
-		if ($lastSale) {
-			queryClient.setQueryData<VapItem[]>(['vapItems'], (oldItems) => {
-				if (!oldItems) return [];
-				return oldItems.map((item) => {
-					if (item.id === $lastSale.itemId) {
-						return { ...item, amount: item.amount - $lastSale.amountSold };
-					}
-					return item;
-				});
-			});
-		}
-	}, [$lastSale]);
 
 	return { items, isLoading };
 };

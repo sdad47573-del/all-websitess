@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ReactNode, ComponentType } from 'react';
 export interface SocialLinks {
     phone?: string;
     facebook?: string;
@@ -10,15 +10,15 @@ export interface NavLink {
     href: string;
 }
 interface TopbarProps extends SocialLinks {
-    logo: React.ReactNode;
+    logo: ReactNode;
     links: NavLink[];
     currentPath: string;
-    LinkComponent: React.ComponentType<{
+    LinkComponent: ComponentType<{
         href: string;
         className?: string;
-        children: React.ReactNode;
+        children: ReactNode;
         onClick?: () => void;
     }>;
 }
-export declare const Topbar: React.FC<TopbarProps>;
+export declare const Topbar: ({ phone, facebook, instagram, linkedin, logo, links, currentPath, LinkComponent, }: TopbarProps) => import("react/jsx-runtime").JSX.Element;
 export {};

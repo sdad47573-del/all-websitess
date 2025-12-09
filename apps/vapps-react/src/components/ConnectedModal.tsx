@@ -3,11 +3,31 @@ import { Modal, type ModalData, type NumericFormData } from '@react-components';
 import { useEffect } from 'react';
 import Toastify from 'toastify-js';
 import { insertSale } from '../services/sales.service';
-import { isModalOpen, lastSale, modalData } from '../stores/modal.store';
+import { isModalOpen, modalData } from '../stores/modal.store';
+import { useMutation } from '@tanstack/react-query';
+import { queryClient } from '../lib/queryClient';
 
 export default function ConnectedModal() {
 	const $data = useStore(modalData);
 	const $isModalOpen = useStore(isModalOpen);
+	// TODO: abstraer a un hook
+	const mutation = useMutation({
+		mutationFn: insertSale,
+		// onSuccess: () => {
+		// 	queryClient.invalidateQueries(['items']);
+		// },
+		onSuccess: (alteredSale: any) => {
+			queryClient.setQueryData(['items'], (oldItems: any[]) => {
+				if (!oldItems) return oldItems;
+
+				return oldItems.map((item) =>
+					item.id === alteredSale.data.item_id
+						? { ...item, amount: item.amount - alteredSale.data.amount }
+						: item,
+				);
+			});
+		},
+	});
 
 	useEffect(() => {
 		const handleOpenModal = (e: Event) => {
@@ -30,7 +50,7 @@ export default function ConnectedModal() {
 	const handleSubmit = async (form: NumericFormData) => {
 		if (!$data) return;
 
-		await insertSale({
+		mutation.mutate({
 			item_id: $data.id,
 			seller_id: 'ISMAEL',
 			price_per_unit: form.price_per_unit,
@@ -45,12 +65,6 @@ export default function ConnectedModal() {
 			gravity: 'bottom',
 			position: 'right',
 		}).showToast();
-
-		lastSale.set({
-			itemId: $data.id,
-			amountSold: form.amount,
-			timestamp: Date.now(),
-		});
 
 		handleClose();
 	};

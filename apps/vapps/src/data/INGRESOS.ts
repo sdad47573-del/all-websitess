@@ -38,5 +38,7 @@ export const INGRESOS: Ingreso[] = [
 	{ label: 'ALBA CL', EUR: 10, FECHA: new Date('2025-11-26') },
 	{ label: 'ISMA AP', EUR: 25, FECHA: new Date('2025-11-30') },
 	{ label: 'JOSE RR', EUR: 10, FECHA: new Date('2025-12-01') },
+	{ label: 'ISMA AP', EUR: 10, FECHA: new Date('2025-12-04') },
+	{ label: 'efectivo', EUR: 1230, FECHA: new Date('2025-12-09') },
 ];
 export const TOTAL_INGRESOS = INGRESOS.reduce((total, item) => total + item.EUR, 0);

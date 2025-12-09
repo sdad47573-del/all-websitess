@@ -46,12 +46,10 @@ export const HistorialVentas = () => {
 							{buy.items.map((item, index) => (
 								<VapListItem
 									key={index}
-									item={{
-										id: index,
-										title: translateItem(item.name),
-										src: imageMap[item.name],
-										amount: item.amount,
-									}}
+									id={index}
+									title={translateItem(item.name)}
+									src={imageMap[item.name]}
+									amount={item.amount}
 								/>
 							))}
 						</div>
