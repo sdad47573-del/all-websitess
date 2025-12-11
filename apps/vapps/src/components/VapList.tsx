@@ -1,20 +1,19 @@
-import React from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { modalData, isModalOpen } from '../stores/modal.store';
 import { queryClient } from '../lib/queryClient';
 import { useVapItems, type VapItem } from '../hooks/useVapItems';
 
-const VapListContent: React.FC = () => {
+const VapListContent = () => {
 	const { items, isLoading } = useVapItems();
 
-	const handleItemClick = (item: VapItem) => {
-		if (item.amount === 0) return;
+	const handleItemClick = ({ amount, id, title, src }: VapItem) => {
+		if (amount === 0) return;
 
 		modalData.set({
-			id: item.id,
-			title: item.title,
-			src: item.src,
-			amount: item.amount,
+			id,
+			title,
+			src,
+			amount,
 		});
 		isModalOpen.set(true);
 	};
@@ -67,7 +66,7 @@ const VapListContent: React.FC = () => {
 	);
 };
 
-const VapList: React.FC = () => {
+const VapList = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<VapListContent />

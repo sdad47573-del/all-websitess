@@ -1,9 +1,15 @@
 import Stats from '../components/Stats';
 import { BUY, TOTAL_BUY } from '../data/BUY';
-import { INGRESOS, TOTAL_INGRESOS } from '../data/INGRESOS';
 import { SELL } from '../data/SELL';
+import { useGetAllIngresos } from '../services/ingresos.service';
 
+// TODO: hacer un historial de beneficios para cada socio, ismael tal fecha 180€, ismael tal fecha 30€, jose tal fecha 180€
 export const Estadisticas = () => {
+	const { data: ingresos } = useGetAllIngresos();
+	const ingresosTotal = ingresos?.reduce((total, item: any) => total + item.eur, 0) as number;
+	const restante = (ingresosTotal - TOTAL_BUY).toFixed(2);
+	const cubierto = ((ingresosTotal / TOTAL_BUY) * 100).toFixed(2);
+
 	return (
 		<main>
 			<Stats
@@ -19,19 +25,19 @@ export const Estadisticas = () => {
 						label: 'Compras Totales',
 						value: TOTAL_BUY + '€',
 						icon: 'ri-money-euro-circle-line',
-						color: 'bg-green-500',
-					},
-					{
-						label: 'Cubierto %',
-						value: ((TOTAL_INGRESOS / TOTAL_BUY) * 100).toFixed(2) + '%',
-						icon: 'ri-bar-chart-line',
 						color: 'bg-purple-500',
 					},
 					{
-						label: 'Restante',
-						value: (TOTAL_INGRESOS - TOTAL_BUY).toFixed(2) + '€',
+						label: 'Cubierto %',
+						value: cubierto + '%',
+						icon: 'ri-bar-chart-line',
+						color: Number(cubierto) >= 100 ? 'bg-green-500' : 'bg-red-500',
+					},
+					{
+						label: Number(restante) > 0 ? 'Ganancias' : 'Pendiente',
+						value: restante + '€',
 						icon: 'ri-line-chart-line',
-						color: 'bg-teal-500',
+						color: Number(restante) > 0 ? 'bg-teal-500' : 'bg-red-500',
 					},
 				]}
 			/>
@@ -40,7 +46,7 @@ export const Estadisticas = () => {
 				items={[
 					{
 						label: 'Ingresos Totales',
-						value: INGRESOS.reduce((total, buy) => total + buy.EUR, 0) + '€',
+						value: ingresosTotal + '€',
 						icon: 'ri-money-euro-circle-line',
 						color: 'bg-green-500',
 					},
@@ -80,7 +86,7 @@ export const Estadisticas = () => {
 					},
 					{
 						label: 'Ismael cobrado',
-						value: 180 + '€',
+						value: 180 + 30 + '€',
 						icon: 'ri-money-euro-circle-line',
 						color: 'bg-green-500',
 					},

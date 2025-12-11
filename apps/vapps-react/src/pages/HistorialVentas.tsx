@@ -3,8 +3,11 @@ import { VapListItem } from '@react-components';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
+import { useGetAllBuyedItemsPendingSales } from '../services/sales.service';
 
 export const HistorialVentas = () => {
+	const { data } = useGetAllBuyedItemsPendingSales();
+
 	return (
 		<main>
 			<Stats
@@ -25,6 +28,19 @@ export const HistorialVentas = () => {
 			/>
 
 			<div className="p-5">
+				<h2 className="text-xl font-semibold">Pendientes por asignar sus ventas</h2>
+				<h3 className="mb-4 text-lg">Se han vendido pero no hemos registrado su venta</h3>
+				<div className="mb-20 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+					{(data as any)?.map((item: any) => (
+						<VapListItem
+							key={item.item_id}
+							id={item.item_id}
+							title={translateItem(item.title)}
+							src={imageMap[item.title]}
+							amount={item.total_buyed - item.total_sold}
+						/>
+					))}
+				</div>
 				<h2 className="mb-4 text-xl font-semibold">Ventas</h2>
 			</div>
 			{/* <!-- TODO: hacer un comp de vapslit generico --> */}

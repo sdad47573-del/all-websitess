@@ -1,12 +1,10 @@
-import React from 'react';
-
 interface VapListItemProps {
 	src: string;
 	title: string;
 	amount: number;
 }
 
-const VapListItem: React.FC<VapListItemProps> = ({ src, title, amount }) => {
+const VapListItem = ({ src, title, amount }: VapListItemProps) => {
 	return (
 		<div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md">
 			<div className="relative aspect-square overflow-hidden bg-gray-50">

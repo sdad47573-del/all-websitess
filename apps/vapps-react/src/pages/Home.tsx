@@ -4,6 +4,7 @@ import VapList from '../components/VapList';
 import { useGetAllItems } from '../services/items.service';
 import { useEffect, useState } from 'react';
 
+// TODO: hacer un stat para saber la cantidad de vapers que tienen el niño lolo, el bolero, y cualquiera....
 export const Home = () => {
 	const { data: stock, isLoading } = useGetAllItems();
 	const [total, setTotal] = useState(0);

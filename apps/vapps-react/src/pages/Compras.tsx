@@ -1,70 +1,95 @@
 import Stats from '../components/Stats';
 import { VapListItem } from '@react-components';
-import { BUY, TOTAL_BUY } from '../data/BUY';
-import { TOTAL_INGRESOS } from '../data/INGRESOS';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
+import { useGetAllIngresos } from '../services/ingresos.service';
+import { useGetAllBuy, useGetAllBuyedItemsTotals } from '../services/buy.service';
 
 export const Compras = () => {
+	const { data: buy } = useGetAllBuy();
+	const { data: ingresos } = useGetAllIngresos();
+	const { data } = useGetAllBuyedItemsTotals();
+
+	const ingresosTotal = ingresos?.reduce((total, item: any) => total + item.eur, 0) as number;
+
+	const buyUdsTotal = buy?.reduce((total, item: any) => total + item.total, 0) as number;
+	const buyEurTotal = buy?.reduce((total, item: any) => total + item.eur, 0) as number;
+
+	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
+	const cubierto = ((ingresosTotal / buyEurTotal) * 100).toFixed(2);
+
 	return (
 		<main className="pb-6">
-			<Stats
-				items={[
-					{
-						label: 'Cantidad Totales',
-						value: BUY.reduce((total, buy) => total + buy.quantity, 0),
-						icon: 'ri-shopping-cart-line',
-						color: 'bg-blue-500',
-					},
-					{
-						label: 'Compras Totales',
-						value: TOTAL_BUY + '€',
-						icon: 'ri-money-euro-circle-line',
-						color: 'bg-green-500',
-					},
-					{
-						label: 'Cubierto %',
-						value: ((TOTAL_INGRESOS / TOTAL_BUY) * 100).toFixed(2) + '%',
-						icon: 'ri-bar-chart-line',
-						color: 'bg-purple-500',
-					},
-					{
-						label: 'Restante',
-						value: (TOTAL_INGRESOS - TOTAL_BUY).toFixed(2) + '€',
-						icon: 'ri-line-chart-line',
-						color: 'bg-teal-500',
-					},
-				]}
-			/>
-
+			{buy && ingresos && buyUdsTotal && buyEurTotal && ingresosTotal && (
+				<Stats
+					items={[
+						{
+							label: 'Cantidad Totales',
+							value: buyUdsTotal,
+							icon: 'ri-shopping-cart-line',
+							color: 'bg-blue-500',
+						},
+						{
+							label: 'Compras Totales',
+							value: buyEurTotal + '€',
+							icon: 'ri-money-euro-circle-line',
+							color: 'bg-purple-500',
+						},
+						{
+							label: 'Cubierto %',
+							value: cubierto + '%',
+							icon: 'ri-bar-chart-line',
+							color: Number(cubierto) >= 100 ? 'bg-green-500' : 'bg-red-500',
+						},
+						{
+							label: Number(restante) > 0 ? 'Ganancias' : 'Pendiente',
+							value: restante + '€',
+							icon: 'ri-line-chart-line',
+							color: Number(restante) > 0 ? 'bg-teal-500' : 'bg-red-500',
+						},
+					]}
+				/>
+			)}
+			<h2 className="px-5 pt-6 text-xl font-semibold">Compras totales</h2>
+			<h3 className="mb-4 px-5 text-lg">Cantidad de vapers comprados desde el inicio</h3>
+			<div className="mb-20 grid grid-cols-2 gap-3 px-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+				{(data as any)?.map((item: any) => (
+					<VapListItem
+						key={item.item_id}
+						id={item.item_id}
+						title={translateItem(item.title)}
+						src={imageMap[item.title]}
+						amount={item.total_quantity}
+					/>
+				))}
+			</div>
 			<div className="p-5">
-				<h2 className="text-xl font-semibold">Compras</h2>
+				<h2 className="text-xl font-semibold">Historial de Compras</h2>
 			</div>
 			{/* <!-- TODO: hacer un comp de vapslit generico --> */}
 			{/* <!-- <VapList /> --> */}
-
 			<ul className="space-y-">
-				{BUY.map((buy) => (
+				{buy?.map((item: any) => (
 					<li className="p-4 pb-6 shadow">
 						<div className="mb-3 flex justify-between">
-							<h3 className="text-lg font-bold text-teal-700">Fecha: {buy.data}</h3>
+							<h3 className="text-lg font-bold text-teal-700">Fecha: {item.fecha}</h3>
 							<div className="w-28">
 								<p className="text-gray-600">
-									Precio: <span className="font-semibold">{buy.price} €</span>
+									Precio: <span className="font-semibold">{item.eur} €</span>
 								</p>
 								<p className="text-gray-600">
-									Cantidad: <span className="font-semibold">{buy.quantity}</span>
+									Cantidad: <span className="font-semibold">{item.total}</span>
 								</p>
 							</div>
 						</div>
 						<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-							{buy.items.map((item, index) => (
+							{(item as any)?.items?.map((item: any, index: number) => (
 								<VapListItem
 									key={index}
 									id={index}
-									title={translateItem(item.name)}
-									src={imageMap[item.name]}
-									amount={item.amount}
+									title={translateItem(item.title)}
+									src={imageMap[item.title]}
+									amount={item.quantity}
 								/>
 							))}
 						</div>

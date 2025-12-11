@@ -2,32 +2,13 @@ import { useStore } from '@nanostores/react';
 import { Modal, type ModalData, type NumericFormData } from '@react-components';
 import { useEffect } from 'react';
 import Toastify from 'toastify-js';
-import { insertSale } from '../services/sales.service';
 import { isModalOpen, modalData } from '../stores/modal.store';
-import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '../lib/queryClient';
+import { useMutationInsertSale } from '../hooks/useMutationInsertSale';
 
 export default function ConnectedModal() {
 	const $data = useStore(modalData);
 	const $isModalOpen = useStore(isModalOpen);
-	// TODO: abstraer a un hook
-	const mutation = useMutation({
-		mutationFn: insertSale,
-		// onSuccess: () => {
-		// 	queryClient.invalidateQueries(['items']);
-		// },
-		onSuccess: (alteredSale: any) => {
-			queryClient.setQueryData(['items'], (oldItems: any[]) => {
-				if (!oldItems) return oldItems;
-
-				return oldItems.map((item) =>
-					item.id === alteredSale.data.item_id
-						? { ...item, amount: item.amount - alteredSale.data.amount }
-						: item,
-				);
-			});
-		},
-	});
+	const mutation = useMutationInsertSale();
 
 	useEffect(() => {
 		const handleOpenModal = (e: Event) => {

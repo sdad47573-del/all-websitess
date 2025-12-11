@@ -1,14 +1,15 @@
 import Stats from '../components/Stats';
-import { INGRESOS } from '../data/INGRESOS';
+import { useGetAllIngresos } from '../services/ingresos.service';
 
 export const Ingresos = () => {
+	const { data: ingresos } = useGetAllIngresos();
 	return (
 		<main>
 			<Stats
 				items={[
 					{
 						label: 'Ingresos Totales',
-						value: INGRESOS.reduce((total, buy) => total + buy.EUR, 0) + '€',
+						value: ingresos?.reduce((total, item: any) => total + item.eur, 0) + '€',
 						icon: 'ri-money-euro-circle-line',
 						color: 'bg-green-500',
 					},
@@ -21,18 +22,15 @@ export const Ingresos = () => {
 			{/* <!-- <VapList /> --> */}
 
 			<ul className="space-y-6">
-				{INGRESOS.map((buy) => (
+				{ingresos?.map((item: any) => (
 					<li className="rounded-lg bg-white p-4 shadow-md">
 						<div className="mb-3">
-							<h3 className="text-lg font-bold text-teal-700">Concepto: {buy.label}</h3>
+							<h3 className="text-lg font-bold text-teal-700">Concepto: {item.label}</h3>
 							<p className="text-gray-600">
-								Importe: <span className="font-semibold">{buy.EUR} €</span>
+								Importe: <span className="font-semibold">{item.eur} €</span>
 							</p>
 							<p className="text-gray-600">
-								Fecha:{' '}
-								<span className="font-semibold">
-									{buy.FECHA.getDate()}/{buy.FECHA.getMonth() + 1}/{buy.FECHA.getFullYear()}
-								</span>
+								Fecha: <span className="font-semibold">{item.fecha}</span>
 							</p>
 						</div>
 					</li>

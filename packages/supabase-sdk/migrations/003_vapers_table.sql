@@ -99,32 +99,43 @@ CREATE POLICY "Allow authenticated users full access to items"
 -- Description: Automatic inventory management
 -- ============================================================================
 
--- Function to decrease item amount when a sale is created
 CREATE OR REPLACE FUNCTION decrease_item_amount_on_sale()
 RETURNS TRIGGER AS $$
+DECLARE
+    current_amount integer;
 BEGIN
-    -- Decrease the item amount by the sale amount
+    -- obtener stock actual
+    SELECT amount INTO current_amount
+    FROM public.items
+    WHERE id = NEW.item_id;
+
+    IF current_amount IS NULL THEN
+        RAISE EXCEPTION 'Item % no existe', NEW.item_id;
+    END IF;
+
+    -- verificar stock
+    IF current_amount < NEW.amount THEN
+        RAISE EXCEPTION 'Stock insuficiente para item %. Disponible: %, solicitado: %',
+            NEW.item_id, current_amount, NEW.amount;
+    END IF;
+
+    -- actualizar stock
     UPDATE public.items
     SET amount = amount - NEW.amount
     WHERE id = NEW.item_id;
-    
-    -- Check if the update resulted in negative stock
-    IF (SELECT amount FROM public.items WHERE id = NEW.item_id) < 0 THEN
-        RAISE EXCEPTION 'Insufficient stock for item_id %. Available: %, Requested: %',
-            NEW.item_id,
-            (SELECT amount + NEW.amount FROM public.items WHERE id = NEW.item_id),
-            NEW.amount;
-    END IF;
-    
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger to automatically decrease item amount on sale creation
-CREATE TRIGGER trigger_decrease_item_amount
-    AFTER INSERT ON public.sales
+CREATE OR REPLACE TRIGGER trigger_decrease_item_amount
+    BEFORE INSERT ON public.sales
     FOR EACH ROW
     EXECUTE FUNCTION decrease_item_amount_on_sale();
 
--- Add comment to trigger
-COMMENT ON FUNCTION decrease_item_amount_on_sale() IS 'Automatically decreases item amount when a sale is created and validates stock availability';
+CREATE POLICY "allow_update_from_triggers"
+ON public.items
+FOR UPDATE
+TO authenticated
+USING (true)
+WITH CHECK (true);

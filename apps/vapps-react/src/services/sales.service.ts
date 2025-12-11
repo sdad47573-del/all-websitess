@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { supabaseBrowserClient } from './init.service';
 
 export async function getAllSales() {
@@ -31,4 +32,25 @@ export async function insertSale(params: {
 	}
 
 	return { data, error };
+}
+
+export async function getAllBuyedItemsPendingSales() {
+	const { data, error } = await supabaseBrowserClient.rpc('get_items_stock');
+
+	if (error) {
+		console.error('Error getting buyed items pending sales:', error);
+	}
+
+	return { data, error };
+}
+
+export function useGetAllBuyedItemsPendingSales() {
+	return useQuery({
+		queryKey: ['totalsbuyeditems'],
+		queryFn: async () => {
+			const { data, error } = await getAllBuyedItemsPendingSales();
+			if (error) throw error;
+			return data;
+		},
+	});
 }

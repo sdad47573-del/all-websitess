@@ -31,8 +31,8 @@ type Sale = {
 	created_at: string;
 };
 
+// TODO: Poner los vapers que falta aun por vender que esten en la pagina de compras
 // TODO: hacer recuento de los vapers comprados y poner aquellos que faltan de cada sabor por vender
-// TODO: poner un stat de dinero aun pendiente por cobrar
 // TODO: poner la fecha de la deuda mas antigua: niño lolo 10 ene, 40 dias, por ejemplo
 export const Ventas = () => {
 	const [sales, setSales] = useState<Sale[]>([]);
