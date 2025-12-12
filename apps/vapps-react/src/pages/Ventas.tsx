@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
-import { getAllSales } from '../services/sales.service';
+import Stats from '../components/Stats';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
-import Stats from '../components/Stats';
+import { useGetAllSales } from '../services/sales.service';
 
 // Type definitions
-type Item = {
-	id: number;
-	title: string;
-};
+// type Item = {
+// 	id: number;
+// 	title: string;
+// };
 
 const formatDate = (dateString: string): string => {
 	if (!dateString) return 'N/A';
@@ -20,73 +19,58 @@ const formatDate = (dateString: string): string => {
 	});
 };
 
-type Sale = {
-	id: number;
-	item_id: number;
-	items: Item;
-	amount: number;
-	price_per_unit: number;
-	payment?: number;
-	concept?: string;
-	created_at: string;
-};
+// type Sale = {
+// 	id: number;
+// 	item_id: number;
+// 	items: Item;
+// 	amount: number;
+// 	price_per_unit: number;
+// 	payment?: number;
+// 	concept?: string;
+// 	created_at: string;
+// };
 
+// TODO: agrupar por fecha y concepto las ventas
+// TODO: poner un check si los dineros se han pagado y pasado a la caja fuerte(ingresos), y mostrar en stats solo  los dineros aun sin pasar a la caja fuerte pero pagados( poner otra columna en la tabla o hacer una relacion de tablas...)
 // TODO: Poner los vapers que falta aun por vender que esten en la pagina de compras
 // TODO: hacer recuento de los vapers comprados y poner aquellos que faltan de cada sabor por vender
 // TODO: poner la fecha de la deuda mas antigua: niño lolo 10 ene, 40 dias, por ejemplo
 export const Ventas = () => {
-	const [sales, setSales] = useState<Sale[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
-
-	useEffect(() => {
-		const loadSales = async () => {
-			try {
-				const { data, error } = await getAllSales();
-				if (error) throw error;
-				setSales((data || []) as Sale[]);
-			} catch (err: any) {
-				setError(err.message || 'Error desconocido');
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		loadSales();
-	}, []);
-
-	const totalCalculated = sales.reduce(
-		(total, sale) => total + sale.price_per_unit * sale.amount,
-		0,
-	);
-	const totalReceived = sales.reduce((total, sale) => total + (sale.payment || 0), 0);
+	const { data: sales, isLoading, error } = useGetAllSales();
+	const totalCalculated =
+		sales &&
+		(sales as any)?.reduce((total: any, sale: any) => total + sale.price_per_unit * sale.amount, 0);
+	const totalReceived =
+		sales && (sales as any)?.reduce((total: any, sale: any) => total + (sale.payment || 0), 0);
 
 	return (
 		<main className="">
-			<Stats
-				items={[
-					{
-						label: 'Ventas totales',
-						value: `${totalCalculated.toFixed(2)}€`,
-						icon: 'ri-shopping-cart-line',
-						color: 'bg-green-500',
-						isTotal: true,
-					},
-					{
-						label: 'Pendiente de cobro',
-						value: (totalCalculated - totalReceived).toFixed(2) + '€',
-						icon: 'ri-money-euro-circle-line',
-						color: 'bg-orange-500',
-					},
-				]}
-			/>
+			{sales && (
+				<Stats
+					items={[
+						{
+							label: 'Ventas totales',
+							value: `${totalCalculated.toFixed(2)}€`,
+							icon: 'ri-shopping-cart-line',
+							color: 'bg-green-500',
+							isTotal: true,
+						},
+						{
+							label: 'Pendiente de cobro',
+							value: (totalCalculated - totalReceived).toFixed(2) + '€',
+							icon: 'ri-money-euro-circle-line',
+							color: 'bg-orange-500',
+						},
+					]}
+				/>
+			)}
 
 			<div className="p-5">
 				<h2 className="mb-4 text-xl font-semibold">Historial de Ventas</h2>
 			</div>
 
 			{/* Loading State */}
-			{loading && (
+			{isLoading && (
 				<div className="mx-5 rounded-lg bg-blue-50 p-8 text-center">
 					<div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent"></div>
 					<p className="mt-4 text-blue-700">Cargando ventas...</p>
@@ -101,16 +85,16 @@ export const Ventas = () => {
 			)}
 
 			{/* Empty State */}
-			{!loading && !error && sales.length === 0 && (
+			{!isLoading && !error && sales?.length === 0 && (
 				<div className="mx-5 rounded-lg bg-gray-100 p-8 text-center text-gray-600">
 					No hay ventas registradas
 				</div>
 			)}
 
 			{/* Sales List */}
-			{!loading && !error && sales.length > 0 && (
+			{!isLoading && !error && (sales as any)?.length > 0 && (
 				<ul className="space-y-4 px-5 pb-5">
-					{sales.map((sale) => {
+					{(sales as any)?.map((sale: any) => {
 						const total = (sale.price_per_unit * sale.amount).toFixed(2);
 						const imageSrc = imageMap[sale.items.title] || '';
 						const translatedTitle = translateItem(sale.items.title);

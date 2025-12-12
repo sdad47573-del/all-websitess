@@ -34,8 +34,10 @@ export async function getAllBuy() {
 	}, {});
 
 	// Convertimos a array si queremos
-	const result = Object.values(grouped);
-
+	const result = Object.values(grouped).sort(
+		(a: any, b: any) =>
+			new Date(b.fecha as string).getTime() - new Date(a.fecha as string).getTime(),
+	);
 	return { data: result, error };
 }
 

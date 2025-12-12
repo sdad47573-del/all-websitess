@@ -10,8 +10,38 @@ export async function getAllSales() {
 	if (error) {
 		console.error('Error getting sales:', error);
 	}
+	return { data, error };
+}
+
+export function useGetAllSales() {
+	return useQuery({
+		queryKey: ['sales'],
+		queryFn: async () => {
+			const { data, error } = await getAllSales();
+			if (error) throw error;
+			return data;
+		},
+	});
+}
+export async function getBestSellingItem() {
+	const { data, error } = await supabaseBrowserClient.rpc('get_top_selling_item_40_days').single();
+
+	if (error) {
+		console.error('Error getting best selling item:', error);
+	}
 
 	return { data, error };
+}
+
+export function useGetBestSellingItem() {
+	return useQuery({
+		queryKey: ['bestSellingItem'],
+		queryFn: async () => {
+			const { data, error } = await getBestSellingItem();
+			if (error) throw error;
+			return { data, error };
+		},
+	});
 }
 
 export async function insertSale(params: {

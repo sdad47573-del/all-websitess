@@ -3,11 +3,13 @@ import Stats from '../components/Stats';
 import VapList from '../components/VapList';
 import { useGetAllItems } from '../services/items.service';
 import { useEffect, useState } from 'react';
+import { useGetBestSellingItem } from '../services/sales.service';
 
 // TODO: hacer un stat para saber la cantidad de vapers que tienen el niño lolo, el bolero, y cualquiera....
 export const Home = () => {
 	const { data: stock, isLoading } = useGetAllItems();
 	const [total, setTotal] = useState(0);
+	const { data: mostSold } = useGetBestSellingItem();
 
 	// TODO: mejor invalidar query y hacer fetch con usequery
 	useEffect(() => {
@@ -29,7 +31,8 @@ export const Home = () => {
 					},
 					{
 						label: 'Vaper más vendido',
-						value: 'Lima Limón',
+						value: (mostSold as any)?.data?.es_title,
+						// value: mostSold?.data.title,
 						icon: 'ri-medal-line',
 						color: 'bg-yellow-500',
 					},
