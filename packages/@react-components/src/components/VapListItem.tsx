@@ -3,13 +3,14 @@ export interface VapItemData {
 	title: string;
 	src: string;
 	amount: number;
+	price?: number;
 }
 
 type VapListItemProps = VapItemData & {
 	onClick?: (item: VapItemData) => void;
 };
 
-export const VapListItem = ({ id, amount, src, title, onClick }: VapListItemProps) => {
+export const VapListItem = ({ id, amount, src, title, price, onClick }: VapListItemProps) => {
 	const isOutOfStock = amount === 0;
 
 	return (
@@ -34,6 +35,12 @@ export const VapListItem = ({ id, amount, src, title, onClick }: VapListItemProp
 					<span className="text-xs text-gray-500">Cantidad:</span>
 					<span className="text-sm font-bold text-teal-600">{amount}</span>
 				</div>
+				{price && (
+					<div className="flex items-center justify-between">
+						<span className="text-xs text-gray-500">Precio:</span>
+						<span className="text-sm font-bold text-teal-600">{price}€</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);
