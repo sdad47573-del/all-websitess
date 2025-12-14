@@ -1,9 +1,8 @@
-import Stats from '../components/Stats';
 import { VapListItem } from '@react-components';
+import Stats from '../components/Stats';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
-import { useGetAllIngresos } from '../services/ingresos.service';
-import { useGetAllBuy, useGetAllBuyedItemsTotals } from '../services/buy.service';
+import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllIngresos } from '../hooks';
 
 export const Compras = () => {
 	const { data: buy } = useGetAllBuy();

@@ -1,11 +1,12 @@
-import { useLocation, Link } from 'wouter';
 import { Topbar as SharedTopbar } from '@react-components';
+import { Link, useLocation } from 'wouter';
 import Logo from './Logo';
 
 const sections = [
 	{ name: 'Inicio', href: '/' },
 	{ name: 'Ventas', href: '/ventas' },
 	{ name: 'Ingresos', href: '/ingresos' },
+	{ name: 'Beneficios', href: '/beneficios' },
 	{ name: 'Compras', href: '/compras' },
 	{ name: 'Estadísticas', href: '/estadisticas' },
 	{ name: 'Historial de ventas', href: '/ventas-historial' },

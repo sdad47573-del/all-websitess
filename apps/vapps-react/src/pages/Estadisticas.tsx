@@ -1,7 +1,7 @@
 import Stats from '../components/Stats';
 import { BUY, TOTAL_BUY } from '../data/BUY';
 import { SELL } from '../data/SELL';
-import { useGetAllIngresos } from '../services/ingresos.service';
+import { useGetAllIngresos } from '../hooks';
 
 // TODO: hacer un historial de beneficios para cada socio, ismael tal fecha 180€, ismael tal fecha 30€, jose tal fecha 180€
 export const Estadisticas = () => {

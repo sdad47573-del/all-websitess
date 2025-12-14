@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabaseBrowserClient } from './init.service';
+import { supabaseBrowserClient } from '../services/init.service';
 
 export async function getAllIngresos() {
 	const { data, error } = await supabaseBrowserClient.from('ingresos').select('*');

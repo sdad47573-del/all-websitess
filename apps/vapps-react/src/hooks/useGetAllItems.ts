@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabaseBrowserClient } from './init.service';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
+import { supabaseBrowserClient } from '../services/init.service';
 
 export async function getAllItems() {
 	const { data, error } = await supabaseBrowserClient.from('items').select('*').eq('active', true);

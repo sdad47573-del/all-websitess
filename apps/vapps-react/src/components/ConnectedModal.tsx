@@ -2,8 +2,8 @@ import { useStore } from '@nanostores/react';
 import { Modal, type ModalData, type NumericFormData } from '@react-components';
 import { useEffect } from 'react';
 import Toastify from 'toastify-js';
+import { useMutationInsertSale } from '../hooks';
 import { isModalOpen, modalData } from '../stores/modal.store';
-import { useMutationInsertSale } from '../hooks/useMutationInsertSale';
 
 export default function ConnectedModal() {
 	const $data = useStore(modalData);

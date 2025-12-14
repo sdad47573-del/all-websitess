@@ -1,10 +1,11 @@
-import Stats from '../components/Stats';
 import { VapListItem } from '@react-components';
+import Stats from '../components/Stats';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
-import { useGetAllBuyedItemsPendingSales } from '../services/sales.service';
+import { useGetAllBuyedItemsPendingSales } from '../hooks';
 
+// TODO: cuando vienes de navegar de otra pagina y entras, los numeros dan Nan
 export const HistorialVentas = () => {
 	const { data } = useGetAllBuyedItemsPendingSales();
 

@@ -1,9 +1,8 @@
+import { useEffect, useState } from 'react';
 import ConnectedModal from '../components/ConnectedModal';
 import Stats from '../components/Stats';
 import VapList from '../components/VapList';
-import { useGetAllItems } from '../services/items.service';
-import { useEffect, useState } from 'react';
-import { useGetBestSellingItem } from '../services/sales.service';
+import { useGetAllItems, useGetBestSellingItem } from '../hooks';
 
 // TODO: hacer un stat para saber la cantidad de vapers que tienen el niño lolo, el bolero, y cualquiera....
 export const Home = () => {

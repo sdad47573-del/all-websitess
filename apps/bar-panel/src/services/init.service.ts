@@ -1,11 +1,12 @@
-import { getClient, server } from 'supabase-sdk';
+import { getClient } from 'supabase-sdk';
 
 /**
  * Initialize MSW server if in staging environment
  */
 export function initMockServer() {
 	if (process.env.NODE_ENV === 'staging') {
-		server.listen();
+		// TODO: hacer mocks con msw para no depender de supabase
+		// server.listen();
 		console.log('⚡ MSW Server corriendo en staging');
 	}
 }

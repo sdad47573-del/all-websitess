@@ -1,13 +1,14 @@
 import { Route, Switch } from 'wouter';
-import { Home } from './Home';
-import { Login } from './Login';
-import { Ventas } from './Ventas';
-import { Compras } from './Compras';
-import { Estadisticas } from './Estadisticas';
-import { Ingresos } from './Ingresos';
-import { HistorialVentas } from './HistorialVentas';
 import Topbar from '../layouts/Topbar';
 import { PrivateRoute } from '../router/PrivateRoute';
+import { Beneficios } from './Beneficios';
+import { Compras } from './Compras';
+import { Estadisticas } from './Estadisticas';
+import { HistorialVentas } from './HistorialVentas';
+import { Home } from './Home';
+import { Ingresos } from './Ingresos';
+import { Login } from './Login';
+import { Ventas } from './Ventas';
 
 export const Routes = () => {
 	return (
@@ -32,6 +33,7 @@ const AuthedRoutes = () => {
 				<Route path="/compras" component={Compras} />
 				<Route path="/estadisticas" component={Estadisticas} />
 				<Route path="/ingresos" component={Ingresos} />
+				<Route path="/beneficios" component={Beneficios} />
 				<Route path="/ventas-historial" component={HistorialVentas} />
 				<Route>404: No such page!</Route>
 			</Switch>

@@ -3,7 +3,7 @@ import { twJoin } from 'tailwind-merge';
 import Stats from '../components/Stats';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
-import { useGetAllSalesGroupedByDate } from '../services/sales.service';
+import { useGetAllSalesGroupedByDate } from '../hooks';
 
 // Type definitions
 // type Item = {
@@ -31,10 +31,10 @@ const formatDate = (dateString: string): string => {
 // 	concept?: string;
 // 	created_at: string;
 // };
+
 // TODO: poner un check si los dineros se han pagado y pasado a la caja fuerte(ingresos), y mostrar en stats solo  los dineros aun sin pasar a la caja fuerte pero pagados( poner otra columna en la tabla o hacer una relacion de tablas...)
 // TODO: Poner los vapers que falta aun por vender que esten en la pagina de compras
 // TODO: hacer recuento de los vapers comprados y poner aquellos que faltan de cada sabor por vender
-// TODO: poner la fecha de la deuda mas antigua: niño lolo 10 ene, 40 dias, por ejemplo
 export const Ventas = () => {
 	const { data: sales, isLoading, error } = useGetAllSalesGroupedByDate();
 	const totalCalculated =

@@ -1,5 +1,5 @@
 import Stats from '../components/Stats';
-import { useGetAllIngresos } from '../services/ingresos.service';
+import { useGetAllIngresos } from '../hooks';
 
 export const Ingresos = () => {
 	const { data: ingresos } = useGetAllIngresos();
@@ -16,7 +16,7 @@ export const Ingresos = () => {
 				]}
 			/>
 			<div className="p-5">
-				<h2 className="mb-4 text-xl font-semibold">Compras</h2>
+				<h2 className="mb-4 text-xl font-semibold">Ingresos a caja fuerte</h2>
 			</div>
 			{/* <!-- TODO: hacer un comp de vapslit generico --> */}
 			{/* <!-- <VapList /> --> */}

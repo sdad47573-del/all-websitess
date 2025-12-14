@@ -1,6 +1,26 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../lib/queryClient';
-import { insertSale } from '../services/sales.service';
+import { supabaseBrowserClient } from '../services/init.service';
+
+export async function insertSale(params: {
+	item_id: number;
+	amount: number;
+	price_per_unit: number;
+}) {
+	const { data, error } = await supabaseBrowserClient
+		.from('sales')
+		.insert({
+			...params,
+		} as any)
+		.select()
+		.single();
+
+	if (error) {
+		console.error('Error inserting sell:', error);
+	}
+
+	return { data, error };
+}
 
 export const useMutationInsertSale = () => {
 	const mutation = useMutation({
