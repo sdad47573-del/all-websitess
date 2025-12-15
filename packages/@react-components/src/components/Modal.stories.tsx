@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof Modal>;
 
 export const Default: Story = {
-	render: (args) => {
+	render: (args: any) => {
 		const [isOpen, setIsOpen] = useState(false);
 		return (
 			<div className="p-4">

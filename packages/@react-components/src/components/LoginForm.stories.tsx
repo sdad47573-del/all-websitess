@@ -15,7 +15,7 @@ type Story = StoryObj<typeof LoginForm>;
 
 export const Default: Story = {
 	args: {
-		onSubmit: async (data) => {
+		onSubmit: async (data: any) => {
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 			alert(JSON.stringify(data));
 		},

@@ -12,12 +12,22 @@ import 'toastify-js/src/toastify.css';
 import { AuthProvider } from './contexts/AuthContext';
 import { queryClient } from './lib/queryClient';
 
-createRoot(document.getElementById('root')!).render(
-	<StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<Routes />
-			</AuthProvider>
-		</QueryClientProvider>
-	</StrictMode>,
-);
+async function enableMocking() {
+	if (import.meta.env.MODE !== 'development' && import.meta.env.MODE !== 'staging') {
+		return;
+	}
+	const { worker } = await import('./mocks/browser');
+	return worker.start();
+}
+
+enableMocking().then(() => {
+	createRoot(document.getElementById('root')!).render(
+		<StrictMode>
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<Routes />
+				</AuthProvider>
+			</QueryClientProvider>
+		</StrictMode>,
+	);
+});

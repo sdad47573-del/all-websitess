@@ -25,7 +25,7 @@ export const Default: Story = {
 	args: {
 		items: items,
 		isLoading: false,
-		onItemClick: (item) => alert(`Clicked: ${item.title}`),
+		onItemClick: (item: any) => alert(`Clicked: ${item.title}`),
 	},
 };
 

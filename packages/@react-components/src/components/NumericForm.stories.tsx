@@ -16,6 +16,6 @@ type Story = StoryObj<typeof NumericForm>;
 export const Default: Story = {
 	args: {
 		stock: 100,
-		onSubmit: (data) => alert(JSON.stringify(data)),
+		onSubmit: (data: any) => alert(JSON.stringify(data)),
 	},
 };

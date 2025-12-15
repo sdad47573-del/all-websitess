@@ -20,7 +20,7 @@ export const Default: Story = {
 		src: 'https://via.placeholder.com/150',
 		amount: 5,
 		price: 19.99,
-		onClick: (item) => alert(`Clicked: ${item.title}`),
+		onClick: (item: any) => alert(`Clicked: ${item.title}`),
 	},
 };
 
@@ -31,6 +31,6 @@ export const OutOfStock: Story = {
 		src: 'https://via.placeholder.com/150',
 		amount: 0,
 		price: 19.99,
-		onClick: (item) => alert(`Clicked: ${item.title}`),
+		onClick: (item: any) => alert(`Clicked: ${item.title}`),
 	},
 };

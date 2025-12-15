@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { type User, type Session } from '@supabase/supabase-js';
-import { supabaseBrowserClient } from '../services/init.service';
+import type { Session, User } from '@supabase/supabase-js';
 import Cookies from 'js-cookie';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import type { Database } from 'supabase-sdk';
+import { supabaseBrowserClient } from '../services/init.service';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -16,7 +17,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
 	const [profile, setProfile] = useState<Profile | null>(null);
