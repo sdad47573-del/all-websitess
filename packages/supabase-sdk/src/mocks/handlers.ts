@@ -339,8 +339,8 @@ export const getHandlers = (supabaseUrl: string) => [
 				access_token:
 					'eyJhbGciOiJIUzI1NiIsImtpZCI6IlJmQkJCc0dVaDIwc0FRaUYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2lwcmF3c3Bhd255YXVjYWdnYWd2LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI2OTg4NzI0My1kM2QwLTQxNmUtYTIzZi0xOTE5Y2RiMGQ2MWEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzY1ODAwMDQ1LCJpYXQiOjE3NjU3OTY0NDUsImVtYWlsIjoiam9zaHh5ZXZAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbF92ZXJpZmllZCI6dHJ1ZX0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NjU3OTY0NDV9XSwic2Vzc2lvbl9pZCI6Ijg4M2MxNGUwLWRhYjUtNDFhMi05M2Q2LTc2MTY5NTc5Zjg5MyIsImlzX2Fub255bW91cyI6ZmFsc2V9.o0IuhqStkUVh37cNFaKEwYhiWcTb-qs8CZAdap3HxMk',
 				token_type: 'bearer',
-				expires_in: 3600,
-				expires_at: 1765800045,
+				expires_in: 3600000,
+				expires_at: 4765800045,
 				refresh_token: 'cwcry57s5nn7',
 				user: {
 					id: '69887243-d3d0-416e-a23f-1919cdb0d61a',
@@ -1798,12 +1798,373 @@ export const getHandlers = (supabaseUrl: string) => [
 			},
 		]);
 	}),
-	// Platos
-	http.get(`${supabaseUrl}/rest/v1/platos`, () => {
-		return HttpResponse.json(mockPlatos);
+	// financial_records
+	// https://krpizytigyzitqwtqzsp.supabase.co/rest/v1/financial_records?select=id%2Camount%2Cdate%2Clabel%2Cprofiles%28full_name%29
+	http.get(`${supabaseUrl}/rest/v1/financial_records`, () => {
+		return HttpResponse.json([
+			{
+				id: 1,
+				amount: 160,
+				date: '2025-10-22',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 2,
+				amount: 10,
+				date: '2025-10-23',
+				label: 'ANGEL RU',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 3,
+				amount: 11,
+				date: '2025-10-23',
+				label: 'SHAKIRA JL',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 4,
+				amount: 11,
+				date: '2025-10-24',
+				label: 'DIEGO RM',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 5,
+				amount: 11,
+				date: '2025-10-28',
+				label: 'ALBA CL',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 6,
+				amount: 11,
+				date: '2025-10-28',
+				label: 'CARMEN YANG ME',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 7,
+				amount: 10,
+				date: '2025-10-29',
+				label: 'DANI RS',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 8,
+				amount: 20,
+				date: '2025-10-29',
+				label: 'ISMA AP',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 9,
+				amount: 11,
+				date: '2025-10-31',
+				label: 'JOSE CAR MJ',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 10,
+				amount: 11,
+				date: '2025-10-31',
+				label: 'MARINA CB',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 11,
+				amount: 1132.32,
+				date: '2025-11-01',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 12,
+				amount: 11,
+				date: '2025-11-05',
+				label: 'YASSIR SK',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 13,
+				amount: 10,
+				date: '2025-11-07',
+				label: 'JOSE MIGU AR',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 14,
+				amount: 20,
+				date: '2025-11-09',
+				label: 'ROSA MARIA PA',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 15,
+				amount: 10,
+				date: '2025-11-09',
+				label: 'ANA BP',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 16,
+				amount: 10,
+				date: '2025-11-09',
+				label: 'LUIS O',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 17,
+				amount: 27,
+				date: '2025-11-12',
+				label: 'ADRIAN SR',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 18,
+				amount: 621.3,
+				date: '2025-11-12',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 19,
+				amount: 10,
+				date: '2025-11-13',
+				label: 'LUIS O',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 20,
+				amount: 10,
+				date: '2025-11-14',
+				label: 'JOSE RR',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 21,
+				amount: 36,
+				date: '2025-11-15',
+				label: 'ANTONIO RJ',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 22,
+				amount: 18,
+				date: '2025-11-16',
+				label: 'ANDRES MR',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 23,
+				amount: 8,
+				date: '2025-11-21',
+				label: 'MANU MA',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 24,
+				amount: 9,
+				date: '2025-11-22',
+				label: 'MANU GM',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 25,
+				amount: 8,
+				date: '2025-11-22',
+				label: 'FRANCISCO  JAVIER MP',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 26,
+				amount: 8,
+				date: '2025-11-22',
+				label: 'ANTONIO RJ',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 27,
+				amount: 8,
+				date: '2025-11-22',
+				label: 'PABLO PM',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 28,
+				amount: 8,
+				date: '2025-11-23',
+				label: 'ARIADNA CD',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 29,
+				amount: 695,
+				date: '2025-11-27',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 30,
+				amount: 39.8,
+				date: '2025-11-27',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 31,
+				amount: 10,
+				date: '2025-11-26',
+				label: 'ALBA CL',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 32,
+				amount: 25,
+				date: '2025-11-30',
+				label: 'ISMA AP',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 33,
+				amount: 10,
+				date: '2025-12-01',
+				label: 'JOSE RR',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 34,
+				amount: 10,
+				date: '2025-12-04',
+				label: 'ISMA AP',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 35,
+				amount: 1230,
+				date: '2025-12-09',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 36,
+				amount: 30,
+				date: '2025-12-09',
+				label: 'efectivo',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 37,
+				amount: 10,
+				date: '2025-12-13',
+				label: 'JOSE RR',
+				profiles: {
+					full_name: 'Caja',
+				},
+			},
+			{
+				id: 38,
+				amount: 180,
+				date: '2025-10-17',
+				label: 'Ismael beneficios 1º pedido',
+				profiles: {
+					full_name: 'Ismael',
+				},
+			},
+			{
+				id: 39,
+				amount: 30,
+				date: '2025-12-10',
+				label: 'Ismael beneficios 10 dic',
+				profiles: {
+					full_name: 'Ismael',
+				},
+			},
+			{
+				id: 40,
+				amount: 0,
+				date: '2025-12-10',
+				label: 'Jose',
+				profiles: {
+					full_name: 'Jose',
+				},
+			},
+		]);
 	}),
-	// Platos
-	http.get(`${supabaseUrl}/rest/v1/platos`, () => {
+	http.get(`${supabaseUrl}/rest/v1/xxxx`, () => {
 		return HttpResponse.json(mockPlatos);
 	}),
 ];

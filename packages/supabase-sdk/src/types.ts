@@ -1,6 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-export type UserRole = 'admin' | 'seller';
+export type UserRole = 'admin' | 'seller' | 'superadmin';
 
 export interface Database {
 	public: {
@@ -155,6 +155,35 @@ export interface Database {
 					updated_at?: string;
 				};
 			};
+			financial_records: {
+				Row: {
+					id: number;
+					profile_id: string | null;
+					type: 'income' | 'profit';
+					label: string;
+					amount: number;
+					date: string;
+					created_at: string;
+				};
+				Insert: {
+					id?: number;
+					profile_id?: string | null;
+					type: 'income' | 'profit';
+					label: string;
+					amount: number;
+					date: string;
+					created_at?: string;
+				};
+				Update: {
+					id?: number;
+					profile_id?: string | null;
+					type?: 'income' | 'profit';
+					label?: string;
+					amount?: number;
+					date?: string;
+					created_at?: string;
+				};
+			};
 		};
 		Views: {
 			[_ in never]: never;
@@ -171,6 +200,7 @@ export interface Database {
 		};
 		Enums: {
 			user_role: UserRole;
+			financial_record_type: 'income' | 'profit';
 		};
 	};
 }
@@ -208,3 +238,8 @@ export type SaleUpdate = Database['public']['Tables']['sales']['Update'];
 export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type ProfileInsert = Database['public']['Tables']['profiles']['Insert'];
 export type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+
+// Organized types by domain - Financials
+export type FinancialRecord = Database['public']['Tables']['financial_records']['Row'];
+export type FinancialRecordInsert = Database['public']['Tables']['financial_records']['Insert'];
+export type FinancialRecordUpdate = Database['public']['Tables']['financial_records']['Update'];

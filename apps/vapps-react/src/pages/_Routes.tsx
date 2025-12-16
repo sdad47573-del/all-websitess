@@ -1,13 +1,14 @@
 import { Route, Switch } from 'wouter';
 import Topbar from '../layouts/Topbar';
 import { PrivateRoute } from '../router/PrivateRoute';
-import { Beneficios } from './Beneficios';
 import { Compras } from './Compras';
 import { Estadisticas } from './Estadisticas';
 import { HistorialVentas } from './HistorialVentas';
 import { Home } from './Home';
-import { Ingresos } from './Ingresos';
+import { LibroCuentas } from './LibroCuentas';
 import { Login } from './Login';
+import { Promos } from './Promos';
+import { Promos2 } from './Promos2';
 import { Ventas } from './Ventas';
 
 export const Routes = () => {
@@ -25,18 +26,22 @@ export const Routes = () => {
 
 const AuthedRoutes = () => {
 	return (
-		<>
-			<Topbar />
-			<Switch>
-				<Route path="/" component={Home} />
-				<Route path="/ventas" component={Ventas} />
-				<Route path="/compras" component={Compras} />
-				<Route path="/estadisticas" component={Estadisticas} />
-				<Route path="/ingresos" component={Ingresos} />
-				<Route path="/beneficios" component={Beneficios} />
-				<Route path="/ventas-historial" component={HistorialVentas} />
-				<Route>404: No such page!</Route>
-			</Switch>
-		</>
+		<Switch>
+			<Route path="/promos" component={Promos} />
+			<Route path="/promos2" component={Promos2} />
+
+			<Route>
+				<Topbar />
+				<Switch>
+					<Route path="/" component={Home} />
+					<Route path="/ventas" component={Ventas} />
+					<Route path="/compras" component={Compras} />
+					<Route path="/ventas-historial" component={HistorialVentas} />
+					<Route path="/estadisticas" component={Estadisticas} />
+					<Route path="/libro-cuentas" component={LibroCuentas} />
+					<Route>404: No such page!</Route>
+				</Switch>
+			</Route>
+		</Switch>
 	);
 };

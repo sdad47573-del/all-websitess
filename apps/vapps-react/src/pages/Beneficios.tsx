@@ -5,6 +5,7 @@ import Stats from '../components/Stats';
 import { useGetAllBeneficios } from '../hooks';
 import type { Beneficio } from '../types';
 
+// TODO: sin usar, no existe la tabla ya
 export const Beneficios = () => {
 	const { data, isLoading, error } = useGetAllBeneficios();
 

@@ -2,6 +2,7 @@ export * from './useGetAllBeneficios';
 export * from './useGetAllBuy';
 export * from './useGetAllBuyedItemsPendingSales';
 export * from './useGetAllBuyedItemsTotals';
+export * from './useGetAllFinancialRecords';
 export * from './useGetAllIngresos';
 export * from './useGetAllItems';
 export * from './useGetAllSalesGroupedByDate';

@@ -5,7 +5,9 @@ import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
 
-// TODO: cuando vienes de navegar de otra pagina y entras, los numeros dan Nan
+// TODO: sale vapers en negativo,
+// eso es porque se han puesto en amount mas cantidad de la que se ha comprado, mirar las compras y ver que ha pasado
+// no es tan asi, esto es el historial de ventas antiguo, antes de la app, hay que ir incluyendolo en la app y quitar SELL
 export const HistorialVentas = () => {
 	const { data } = useGetAllBuyedItemsPendingSales();
 

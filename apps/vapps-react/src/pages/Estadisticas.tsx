@@ -1,12 +1,12 @@
 import Stats from '../components/Stats';
 import { BUY, TOTAL_BUY } from '../data/BUY';
 import { SELL } from '../data/SELL';
-import { useGetAllIngresos } from '../hooks';
+import { useGetAllFinancialRecords } from '../hooks';
 
 // TODO: hacer un historial de beneficios para cada socio, ismael tal fecha 180€, ismael tal fecha 30€, jose tal fecha 180€
 export const Estadisticas = () => {
-	const { data: ingresos } = useGetAllIngresos();
-	const ingresosTotal = ingresos?.reduce((total, item: any) => total + item.eur, 0) as number;
+	const { data: ingresos } = useGetAllFinancialRecords();
+	const ingresosTotal = ingresos?.reduce((total, item: any) => total + item.amount, 0) as number;
 	const restante = (ingresosTotal - TOTAL_BUY).toFixed(2);
 	const cubierto = ((ingresosTotal / TOTAL_BUY) * 100).toFixed(2);
 
@@ -51,6 +51,7 @@ export const Estadisticas = () => {
 						color: 'bg-green-500',
 					},
 				]}
+				// TODO poner ismale y yo caja
 			/>
 			<Stats
 				title="Resumen de Ventas"
@@ -71,6 +72,7 @@ export const Estadisticas = () => {
 			/>
 			<Stats
 				title="Beneficios de Socios"
+				// TODO: quitarlo de a mano y poner calculo
 				items={[
 					{
 						label: 'ganacias por socio estimadas',

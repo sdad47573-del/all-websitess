@@ -2,14 +2,14 @@ import { VapListItem } from '@react-components';
 import Stats from '../components/Stats';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
-import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllIngresos } from '../hooks';
+import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllFinancialRecords } from '../hooks';
 
 export const Compras = () => {
 	const { data: buy } = useGetAllBuy();
-	const { data: ingresos } = useGetAllIngresos();
+	// TODO: poner solo los registro de caja, no el total de todos
+	const { data: finatial } = useGetAllFinancialRecords();
 	const { data } = useGetAllBuyedItemsTotals();
-
-	const ingresosTotal = ingresos?.reduce((total, item: any) => total + item.eur, 0) as number;
+	const ingresosTotal = finatial?.reduce((total, item: any) => total + item.amount, 0) as number;
 
 	const buyUdsTotal = buy?.reduce((total, item: any) => total + item.total, 0) as number;
 	const buyEurTotal = buy?.reduce((total, item: any) => total + item.eur, 0) as number;
@@ -19,7 +19,7 @@ export const Compras = () => {
 
 	return (
 		<main className="pb-6">
-			{buy && ingresos && buyUdsTotal && buyEurTotal && ingresosTotal && (
+			{buy && finatial && buyUdsTotal && buyEurTotal && ingresosTotal && (
 				<Stats
 					items={[
 						{

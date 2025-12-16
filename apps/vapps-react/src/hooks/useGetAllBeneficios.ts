@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabaseBrowserClient } from '../services/init.service';
 
+// TODO: sin uso, no existe la tabla ya
 export async function getAllBeneficios() {
 	const { data, error } = await supabaseBrowserClient.from('beneficios').select('*');
 

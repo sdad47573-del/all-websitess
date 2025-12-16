@@ -4,9 +4,10 @@ import Logo from './Logo';
 
 const sections = [
 	{ name: 'Inicio', href: '/' },
+	{ name: 'Promos', href: '/promos' },
+	{ name: 'Promos2', href: '/promos2' },
 	{ name: 'Ventas', href: '/ventas' },
-	{ name: 'Ingresos', href: '/ingresos' },
-	{ name: 'Beneficios', href: '/beneficios' },
+	{ name: 'Libro de cuentas', href: '/libro-cuentas' },
 	{ name: 'Compras', href: '/compras' },
 	{ name: 'Estadísticas', href: '/estadisticas' },
 	{ name: 'Historial de ventas', href: '/ventas-historial' },

@@ -21,9 +21,12 @@ export default function Stats({ title = 'Resumen y Estadísticas', items }: Stat
 				{title}
 			</h2>
 			<div className="grid grid-cols-2 gap-3">
-				{items.map((item, index) => {
+				{items.map((item) => {
 					return (
-						<div key={index} className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+						<div
+							key={item.label}
+							className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm"
+						>
 							<div className="mb-2 flex items-center gap-3">
 								<div
 									className={twJoin(
