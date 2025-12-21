@@ -4,6 +4,7 @@ import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
+import type { ItemsStockRow } from '../hooks/useGetAllBuyedItemsPendingSales';
 
 // TODO: sale vapers en negativo,
 // eso es porque se han puesto en amount mas cantidad de la que se ha comprado, mirar las compras y ver que ha pasado
@@ -34,7 +35,7 @@ export const HistorialVentas = () => {
 				<h2 className="text-xl font-semibold">Pendientes por asignar sus ventas</h2>
 				<h3 className="mb-4 text-lg">Se han vendido pero no hemos registrado su venta</h3>
 				<div className="mb-20 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-					{(data as any)?.map((item: any) => (
+					{data?.map((item: ItemsStockRow) => (
 						<VapListItem
 							key={item.item_id}
 							id={item.item_id}
@@ -50,8 +51,12 @@ export const HistorialVentas = () => {
 			{/* <!-- <VapList /> --> */}
 
 			<ul className="space-y-6">
+				{/* TODO: no es buy */}
 				{SELL.map((buy) => (
-					<li className="rounded-lg bg-white p-4 shadow-md">
+					<li
+						key={`${buy.data}-${buy.price}-${buy.quantity}`}
+						className="rounded-lg bg-white p-4 shadow-md"
+					>
 						<div className="mb-3">
 							<h3 className="text-lg font-bold text-teal-700">Fecha: {buy.data}</h3>
 							<p className="text-gray-600">
@@ -64,7 +69,8 @@ export const HistorialVentas = () => {
 						<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 							{buy.items.map((item, index) => (
 								<VapListItem
-									key={index}
+									key={item.name}
+									// TODO quitar el index, id
 									id={index}
 									title={translateItem(item.name)}
 									src={imageMap[item.name]}

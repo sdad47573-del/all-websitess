@@ -1,4 +1,5 @@
 import * as auth from 'supabase-sdk';
+import type { User } from '@supabase/supabase-js';
 import { supabaseBrowserClient } from './init.service';
 
 /**
@@ -79,7 +80,7 @@ export async function isAdmin() {
 /**
  * Listen to auth state changes
  */
-export function onAuthStateChange(callback: (user: any | null) => void) {
+export function onAuthStateChange(callback: (user: User | null) => void) {
 	return auth.onAuthStateChange(supabaseBrowserClient, callback);
 }
 

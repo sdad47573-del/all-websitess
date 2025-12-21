@@ -14,24 +14,6 @@ export interface Sell {
 
 export const SELL: Sell[] = [
 	{
-		label: 'venta primeros vapers',
-		data: '27/08/2025',
-		price: 1000,
-		received: 1000,
-		quantity: 100,
-		items: [
-			{ name: 'Double Apple', amount: 10 },
-			{ name: 'Peach Mango Pineapple', amount: 10 },
-			{ name: 'Pink Lemonade', amount: 10 },
-			{ name: 'Raspberry Watermelon', amount: 10 },
-			{ name: 'Strawberry Ice', amount: 10 },
-			{ name: 'Strawberry Kiwi', amount: 10 },
-			{ name: 'cool mint', amount: 10 },
-			{ name: 'love 66', amount: 10 },
-			{ name: 'strawberry vanilla cola', amount: 20 },
-		],
-	},
-	{
 		label: 'venta segundos vapers',
 		data: '17/10/2025',
 		price: 1000,
@@ -47,15 +29,7 @@ export const SELL: Sell[] = [
 		],
 	},
 	{
-		label: 'vaper regalo tito rafa',
-		data: '17/10/2025',
-		price: 0,
-		received: 0,
-		quantity: 1,
-		items: [{ name: 'Strawberry Kiwi', amount: 1 }],
-	},
-	{
-		label: 'vaper regalo tito rafa',
+		label: '',
 		data: '17/10/2025',
 		price: 350,
 		received: 350,
@@ -72,20 +46,6 @@ export const SELL: Sell[] = [
 		received: 34,
 		quantity: 4,
 		items: [{ name: 'Watermelon Ice', amount: 4 }],
-	},
-	{
-		label: 'oferta vapers 8€ 22 nov',
-		data: '17/10/2025',
-		price: 440,
-		received: 440,
-		quantity: 55,
-		items: [
-			{ name: 'Strawberry Banana', amount: 20 },
-			{ name: 'Strawberry Ice', amount: 20 },
-			{ name: 'Watermelon Ice', amount: 1 },
-			{ name: 'Strawberry Kiwi', amount: 9 },
-			{ name: 'cool mint', amount: 5 },
-		],
 	},
 	{
 		label: 'venta 2º vapers',
@@ -110,24 +70,11 @@ export const SELL: Sell[] = [
 		],
 	},
 	{
-		label: 'los bohemios',
-		data: '30/10/2025',
-		price: 600,
-		received: 180,
-		quantity: 60,
-		items: [
-			{ name: 'Lemon Lime', amount: 30 },
-			{ name: 'Peach Berry', amount: 10 },
-			{ name: 'Red Bull', amount: 10 },
-			{ name: 'Strawberry Ice', amount: 10 },
-		],
-	},
-	{
 		label: 'autoconsumo ISMAEL',
 		data: '30/10/2025',
 		price: 0,
 		received: 0,
-		quantity: 90,
+		quantity: 6,
 		items: [
 			{ name: 'Blueberry Cherry Cranberry', amount: 5 },
 			{ name: 'Kiwi Passion Fruit Guava', amount: 1 },

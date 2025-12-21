@@ -13,7 +13,7 @@ export const Home = () => {
 	// TODO: mejor invalidar query y hacer fetch con usequery
 	useEffect(() => {
 		if (stock) {
-			setTotal(stock.reduce((acc, item) => acc + (item as any).amount, 0));
+			setTotal(stock.reduce((acc, item) => acc + item.amount, 0));
 		}
 	}, [stock]);
 
@@ -30,7 +30,7 @@ export const Home = () => {
 					},
 					{
 						label: 'Vaper más vendido',
-						value: (mostSold as any)?.data?.es_title,
+						value: mostSold?.data?.es_title ?? '—',
 						// value: mostSold?.data.title,
 						icon: 'ri-medal-line',
 						color: 'bg-yellow-500',
@@ -41,7 +41,7 @@ export const Home = () => {
 				<div className="py-5">
 					<h2 className="text-xl font-semibold">Vapers Disponibles</h2>
 				</div>
-				<VapList items={stock as any} isLoading={isLoading} />
+				<VapList items={stock ?? []} isLoading={isLoading} />
 				<ConnectedModal />
 			</div>
 		</main>

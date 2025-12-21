@@ -15,33 +15,31 @@ export const Routes = () => {
 	return (
 		<Switch>
 			<Route path="/login" component={Login} />
+
 			<Route>
-				<PrivateRoute>
-					<AuthedRoutes />
-				</PrivateRoute>
+				<AuthedLayout />
 			</Route>
 		</Switch>
 	);
 };
 
-const AuthedRoutes = () => {
+const AuthedLayout = () => {
 	return (
-		<Switch>
+		<PrivateRoute>
 			<Route path="/promos" component={Promos} />
 			<Route path="/promos2" component={Promos2} />
 
-			<Route>
-				<Topbar />
-				<Switch>
-					<Route path="/" component={Home} />
-					<Route path="/ventas" component={Ventas} />
-					<Route path="/compras" component={Compras} />
-					<Route path="/ventas-historial" component={HistorialVentas} />
-					<Route path="/estadisticas" component={Estadisticas} />
-					<Route path="/libro-cuentas" component={LibroCuentas} />
-					<Route>404: No such page!</Route>
-				</Switch>
-			</Route>
-		</Switch>
+			<Topbar />
+			<Switch>
+				<Route path="/" component={Home} />
+				<Route path="/ventas" component={Ventas} />
+				<Route path="/compras" component={Compras} />
+				<Route path="/ventas-historial" component={HistorialVentas} />
+				<Route path="/estadisticas" component={Estadisticas} />
+				<Route path="/libro-cuentas" component={LibroCuentas} />
+
+				<Route>404: No such page!</Route>
+			</Switch>
+		</PrivateRoute>
 	);
 };

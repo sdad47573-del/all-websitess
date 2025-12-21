@@ -1,28 +1,21 @@
-import { useLocation } from 'wouter';
+import { Redirect } from 'wouter';
 import { useAuth } from '../contexts/AuthContext';
-import { type ReactNode, useEffect } from 'react';
+import type { JSX } from 'react';
 
 interface PrivateRouteProps {
-	children: ReactNode;
+	children: JSX.Element | JSX.Element[];
 }
 
 export const PrivateRoute = ({ children }: PrivateRouteProps) => {
 	const { user, loading } = useAuth();
-	const [, setLocation] = useLocation();
-
-	useEffect(() => {
-		if (!loading && !user) {
-			setLocation('/login');
-		}
-	}, [user, loading, setLocation]);
 
 	if (loading) {
-		return <div>Loading...</div>; // Or a proper loading spinner
+		return <div aria-busy="true">Loading...</div>;
 	}
 
 	if (!user) {
-		return null;
+		return <Redirect to="/login" />;
 	}
 
-	return <>{children}</>;
+	return children;
 };

@@ -1,5 +1,6 @@
 // import BOLERO from '@assets/VAPS/promos/bolero.jpg';
-import SUPER from '@assets/VAPS/promos/super.jpg';
+// import SUPER from '@assets/VAPS/promos/super.jpg';
+import SUPER from '@assets/VAPS/promos/navidad.png';
 
 import { twJoin } from 'tailwind-merge';
 import { Link } from 'wouter';
@@ -43,9 +44,9 @@ export const Promos = () => {
 				{/* <main className="relative">
 			<img src={SUPER} className="absolute" />
 			<div className="z-10 px-4 text-center relative"> */}
-				{stock?.map((item, idx) => (
+				{stock?.map((item, idx: number) => (
 					//  src, title, price, onClick
-					<div>
+					<div key={item.id}>
 						<p
 							className={twJoin(
 								'text-sm',

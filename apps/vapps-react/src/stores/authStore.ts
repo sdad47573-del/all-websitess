@@ -11,7 +11,7 @@ export const $isLoading = atom<boolean>(true);
 // Computed values
 export const $isAuthenticated = computed($user, (user) => user !== null);
 export const $userRole = computed($profile, (profile) => profile?.role ?? null);
-export const $isAdmin = computed($userRole, (role) => role === 'admin');
+export const $isAdmin = computed($userRole, (role) => role === 'admin' || role === 'superadmin');
 
 /**
  * Initialize auth state
@@ -20,9 +20,14 @@ export async function initAuthStore() {
 	$isLoading.set(true);
 
 	try {
-		const { user, profile } = await getCurrentUserWithProfile();
-		$user.set(user);
-		$profile.set(profile);
+		const { user, profile, error } = await getCurrentUserWithProfile();
+		if (error) {
+			$user.set(null);
+			$profile.set(null);
+		} else {
+			$user.set(user);
+			$profile.set(profile);
+		}
 	} catch (error) {
 		console.error('Error initializing auth store:', error);
 		$user.set(null);
@@ -32,17 +37,25 @@ export async function initAuthStore() {
 	}
 
 	// Listen for auth changes
-	onAuthStateChange(async (user) => {
+	const {
+		data: { subscription },
+	} = onAuthStateChange(async (user) => {
 		$user.set(user);
 
 		if (user) {
 			const { getUserProfile } = await import('../services/auth.service');
-			const { profile } = await getUserProfile(user.id);
-			$profile.set(profile);
+			const { profile, error } = await getUserProfile(user.id);
+			if (error) {
+				$profile.set(null);
+			} else {
+				$profile.set(profile);
+			}
 		} else {
 			$profile.set(null);
 		}
 	});
+
+	return subscription;
 }
 
 /**

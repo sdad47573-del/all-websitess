@@ -4,6 +4,7 @@ import Stats from '../components/Stats';
 import { imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { useGetAllSalesGroupedByDate } from '../hooks';
+import type { SalesByDateRow } from '../hooks/useGetAllSalesGroupedByDate';
 
 // Type definitions
 // type Item = {
@@ -38,13 +39,12 @@ const formatDate = (dateString: string): string => {
 export const Ventas = () => {
 	const { data: sales, isLoading, error } = useGetAllSalesGroupedByDate();
 	const totalCalculated =
-		sales && (sales as any)?.reduce((total: any, sale: any) => total + sale.total_price, 0);
+		sales?.reduce((total: number, sale: SalesByDateRow) => total + sale.total_price, 0) ?? 0;
 	const totalReceived =
-		sales && (sales as any)?.reduce((total: any, sale: any) => total + sale.total_payment, 0);
+		sales?.reduce((total: number, sale: SalesByDateRow) => total + (sale.total_payment ?? 0), 0) ??
+		0;
 
-	const pendingSales = (sales as any)?.filter(
-		(sale: any) => sale.total_payment - sale.total_price < 0,
-	);
+	const pendingSales = sales?.filter((sale) => (sale.total_payment ?? 0) - sale.total_price < 0);
 	return (
 		<main className="">
 			{sales && (
@@ -52,7 +52,7 @@ export const Ventas = () => {
 					items={[
 						{
 							label: 'Ventas totales',
-							value: `${(totalCalculated as any)?.toFixed(2)}€`,
+							value: `${totalCalculated.toFixed(2)}€`,
 							icon: 'ri-shopping-cart-line',
 							color: 'bg-green-500',
 							isTotal: true,
@@ -60,8 +60,8 @@ export const Ventas = () => {
 						{
 							label: 'Pendiente de cobro',
 							value:
-								pendingSales?.length > 0
-									? ((totalCalculated as any) - (totalReceived as any)).toFixed(2) + '€'
+								pendingSales && pendingSales.length > 0
+									? (totalCalculated - totalReceived).toFixed(2) + '€'
 									: '0€',
 							icon: 'ri-money-euro-circle-line',
 							color: 'bg-orange-500',
@@ -90,14 +90,14 @@ export const Ventas = () => {
 			)}
 
 			{/* Empty State */}
-			{!isLoading && !error && (sales as any)?.length === 0 && (
+			{!isLoading && !error && sales && sales.length === 0 && (
 				<div className="mx-5 rounded-lg bg-gray-100 p-8 text-center text-gray-600">
 					No hay ventas registradas
 				</div>
 			)}
-			{pendingSales?.length > 0 && (
+			{pendingSales && pendingSales.length > 0 && (
 				<ul className="space-y-4 px-5 pb-5">
-					{(pendingSales as any)?.map((sale: any) => {
+					{pendingSales.map((sale) => {
 						const total = sale.total_price.toFixed(2);
 						return (
 							<li key={sale.id} className="rounded-lg bg-white p-4 shadow-md">
@@ -145,7 +145,7 @@ export const Ventas = () => {
 									<div className="mb-3">
 										<p className="mb-2 text-xs text-gray-500">Producto</p>
 										<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-											{sale.items.map((item: any) => (
+											{sale.items.map((item) => (
 												<VapListItem
 													key={item.item_id}
 													id={item.item_id}
@@ -168,9 +168,9 @@ export const Ventas = () => {
 				<h2 className="mb-4 text-xl font-semibold">Historial de Ventas</h2>
 			</div>
 			{/* Sales List */}
-			{!isLoading && !error && (sales as any)?.length > 0 && (
+			{!isLoading && !error && sales && sales.length > 0 && (
 				<ul className="space-y-4 px-5 pb-5">
-					{(sales as any)?.map((sale: any) => {
+					{sales.map((sale) => {
 						const total = sale.total_price.toFixed(2);
 						return (
 							<li key={sale.id} className="rounded-lg bg-white p-4 shadow-md">

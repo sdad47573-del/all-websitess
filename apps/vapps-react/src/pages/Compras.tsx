@@ -9,10 +9,15 @@ export const Compras = () => {
 	// TODO: poner solo los registro de caja, no el total de todos
 	const { data: finatial } = useGetAllFinancialRecords();
 	const { data } = useGetAllBuyedItemsTotals();
-	const ingresosTotal = finatial?.reduce((total, item: any) => total + item.amount, 0) as number;
 
-	const buyUdsTotal = buy?.reduce((total, item: any) => total + item.total, 0) as number;
-	const buyEurTotal = buy?.reduce((total, item: any) => total + item.eur, 0) as number;
+	const ingresosTotal =
+		finatial?.reduce(
+			(total: number, item) => total + (item.profiles.full_name === 'Caja' ? item.amount : 0),
+			0,
+		) ?? 0;
+
+	const buyUdsTotal = buy?.reduce((total: number, item) => total + item.total, 0) ?? 0;
+	const buyEurTotal = buy?.reduce((total: number, item) => total + item.eur, 0) ?? 0;
 
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
 	const cubierto = ((ingresosTotal / buyEurTotal) * 100).toFixed(2);
@@ -52,13 +57,13 @@ export const Compras = () => {
 			<h2 className="px-5 pt-6 text-xl font-semibold">Compras totales</h2>
 			<h3 className="mb-4 px-5 text-lg">Cantidad de vapers comprados desde el inicio</h3>
 			<div className="mb-20 grid grid-cols-2 gap-3 px-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-				{(data as any)?.map((item: any) => (
+				{data?.map((item) => (
 					<VapListItem
 						key={item.item_id}
 						id={item.item_id}
 						title={translateItem(item.title)}
 						src={imageMap[item.title]}
-						amount={item.total_quantity}
+						amount={item.total_quantity ?? item.total_buyed ?? 0}
 					/>
 				))}
 			</div>
@@ -68,8 +73,8 @@ export const Compras = () => {
 			{/* <!-- TODO: hacer un comp de vapslit generico --> */}
 			{/* <!-- <VapList /> --> */}
 			<ul className="space-y-">
-				{buy?.map((item: any) => (
-					<li className="p-4 pb-6 shadow">
+				{buy?.map((item) => (
+					<li key={item.fecha} className="p-4 pb-6 shadow">
 						<div className="mb-3 flex justify-between">
 							<h3 className="text-lg font-bold text-teal-700">Fecha: {item.fecha}</h3>
 							<div className="w-28">
@@ -82,10 +87,10 @@ export const Compras = () => {
 							</div>
 						</div>
 						<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-							{(item as any)?.items?.map((item: any, index: number) => (
+							{item.items?.map((item) => (
 								<VapListItem
-									key={index}
-									id={index}
+									key={item.title}
+									id={item.id}
 									title={translateItem(item.title)}
 									src={imageMap[item.title]}
 									amount={item.quantity}

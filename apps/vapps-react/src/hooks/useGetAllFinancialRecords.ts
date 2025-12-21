@@ -1,19 +1,30 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabaseBrowserClient } from '../services/init.service';
 
+export type FinancialRecordWithProfile = {
+	id: number;
+	amount: number;
+	date: string;
+	label: string;
+	profiles: { full_name: string };
+};
+
 export async function getAllFinancialRecords() {
-	const { data, error } = await supabaseBrowserClient.from('financial_records').select(`
+	const { data, error } = await supabaseBrowserClient.from('financial_records').select(
+		`
 		id,
 		amount,
 		date,
 		label,
 		profiles(full_name)
-		`);
+		`,
+	);
+	const typedData = data as FinancialRecordWithProfile[] | null;
 
 	if (error) {
 		console.error('Error getting financial records:', error);
 	}
-	const d = data?.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+	const d = typedData?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 	return { data: d, error };
 }
 

@@ -57,9 +57,9 @@ export const Promos2 = () => {
 				{/* <main className="relative">
 			<img src={SUPER} className="absolute" />
 			<div className="z-10 px-4 text-center relative"> */}
-				{stock?.map((item, idx) => (
+				{stock?.map((item, idx: number) => (
 					//  src, title, price, onClick
-					<div>
+					<div key={item.id}>
 						<p
 							className={twJoin(
 								'text-sm',

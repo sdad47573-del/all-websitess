@@ -1,7 +1,7 @@
 import Stats from '../components/Stats';
 import { useGetAllFinancialRecords } from '../hooks';
 
-const getGroupedFinancialRecords = (data: any) => {
+export const getGroupedFinancialRecords = (data: any) => {
 	const result = data.reduce((acc: any, item: any) => {
 		const name = item.profiles.full_name;
 
@@ -52,7 +52,7 @@ export const LibroCuentas = () => {
 
 					<ul className="space-y-6">
 						{data?.map((item: any) => (
-							<li className="rounded-lg bg-white p-4 shadow-md">
+							<li key={item.id} className="rounded-lg bg-white p-4 shadow-md">
 								<div className="mb-3">
 									<h3 className="text-lg font-bold text-teal-700">Concepto: {item.label}</h3>
 									<p className="text-gray-600">
