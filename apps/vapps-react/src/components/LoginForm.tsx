@@ -6,6 +6,7 @@ import Toastify from 'toastify-js';
 import { z } from 'zod';
 // TODO hacer mutacion
 import { signIn } from '../services/auth.service';
+import { playSound } from '../lib/sound';
 
 const loginSchema = z.object({
 	email: z.string().email('Email inválido'),
@@ -32,6 +33,7 @@ export default function LoginForm() {
 		const { data: dataSignIn, error } = await signIn(data.email, data.password);
 
 		if (error) {
+			playSound('error');
 			Toastify({
 				text: error.message || 'Error al iniciar sesión',
 				duration: 3000,
@@ -41,9 +43,11 @@ export default function LoginForm() {
 					background: 'linear-gradient(to right, #ff5f6d, #ffc371)',
 				},
 			}).showToast();
+			setIsLoading(false);
 			return;
 		}
 
+		playSound('success');
 		Toastify({
 			text: '¡Bienvenido!',
 			duration: 2000,
@@ -61,6 +65,7 @@ export default function LoginForm() {
 		}
 
 		// Redirect to home page
+		await new Promise((r) => setTimeout(r, 300));
 		window.location.href = '/';
 		// } catch (error) {
 		// 	console.error('Login error:', error);

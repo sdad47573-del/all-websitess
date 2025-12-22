@@ -27,6 +27,10 @@ import Skittles from '@assets/VAPS/skittles.png';
 import SummerDream from '@assets/VAPS/sueno-verano.png';
 import TripleCereza from '@assets/VAPS/triple-cereza.png';
 
+import BangBoxS1 from '@assets/VAPS/Bang-Box-S1-15000.png';
+import ZooyKing from '@assets/VAPS/zooy-king-15000.jpg';
+
+// TODO: quitar y usar storage en supabase
 // Mapa de imágenes importadas
 export const imageMap: Record<string, any> = {
 	'Black Ice Drangofruit Strawberry': HieloNegroDragonfruitFresa,
@@ -59,6 +63,10 @@ export const imageMap: Record<string, any> = {
 	Skittles: Skittles,
 };
 
+export const imageBrandMap: Record<string, any> = {
+	'Bang Box': BangBoxS1,
+	Zooy: ZooyKing,
+};
 // import { getVaperImageUrl } from '../../utils/supabase-storage';
 
 // // Mapa de imágenes desde Supabase Storage

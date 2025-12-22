@@ -14,3 +14,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const FullScreen: Story = {
+	args: {
+		fullScreen: true,
+		text: 'Iniciando sistema...',
+	},
+	parameters: {
+		layout: 'fullscreen',
+	},
+};
+

@@ -1,6 +1,6 @@
 import { VapListItem } from '@react-components';
 import Stats from '../components/Stats';
-import { imageMap } from '../data/maps/img';
+import { imageBrandMap, imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
@@ -40,7 +40,7 @@ export const HistorialVentas = () => {
 							key={item.item_id}
 							id={item.item_id}
 							title={translateItem(item.title)}
-							src={imageMap[item.title]}
+							src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
 							amount={item.total_buyed - item.total_sold}
 						/>
 					))}
@@ -74,6 +74,7 @@ export const HistorialVentas = () => {
 									id={index}
 									title={translateItem(item.name)}
 									src={imageMap[item.name]}
+									// src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
 									amount={item.amount}
 								/>
 							))}

@@ -1,6 +1,6 @@
 import { VapListItem } from '@react-components';
 import Stats from '../components/Stats';
-import { imageMap } from '../data/maps/img';
+import { imageBrandMap, imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllFinancialRecords } from '../hooks';
 
@@ -62,7 +62,7 @@ export const Compras = () => {
 						key={item.item_id}
 						id={item.item_id}
 						title={translateItem(item.title)}
-						src={imageMap[item.title]}
+						src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
 						amount={item.total_quantity ?? item.total_buyed ?? 0}
 					/>
 				))}
@@ -92,7 +92,7 @@ export const Compras = () => {
 									key={item.title}
 									id={item.id}
 									title={translateItem(item.title)}
-									src={imageMap[item.title]}
+									src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
 									amount={item.quantity}
 								/>
 							))}

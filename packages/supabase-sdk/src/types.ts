@@ -94,6 +94,7 @@ export interface Database {
 					id: number;
 					created_at: string;
 					title: string;
+					brand: string;
 					amount: number;
 					active: boolean;
 				};
@@ -101,6 +102,7 @@ export interface Database {
 					id?: number;
 					created_at?: string;
 					title: string;
+					brand?: string;
 					amount?: number;
 					active?: boolean;
 				};
@@ -108,6 +110,7 @@ export interface Database {
 					id?: number;
 					created_at?: string;
 					title?: string;
+					brand?: string;
 					amount?: number;
 					active?: boolean;
 				};

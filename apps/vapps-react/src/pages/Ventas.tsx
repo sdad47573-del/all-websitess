@@ -1,10 +1,12 @@
 import { VapListItem } from '@react-components';
 import { twJoin } from 'tailwind-merge';
 import Stats from '../components/Stats';
-import { imageMap } from '../data/maps/img';
+import { imageBrandMap, imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { useGetAllSalesGroupedByDate } from '../hooks';
 import type { SalesByDateRow } from '../hooks/useGetAllSalesGroupedByDate';
+
+// TODO: las keys dan warning
 
 // Type definitions
 // type Item = {
@@ -150,7 +152,7 @@ export const Ventas = () => {
 													key={item.item_id}
 													id={item.item_id}
 													title={translateItem(item.item_title)}
-													src={imageMap[item.item_title]}
+													src={item.brand === 'VAPSOLO' ? imageMap[item.item_title] : imageBrandMap[item.brand]}
 													amount={item.amount}
 													price={item.price_per_unit}
 												/>
@@ -223,7 +225,7 @@ export const Ventas = () => {
 													key={item.item_id}
 													id={item.item_id}
 													title={translateItem(item.item_title)}
-													src={imageMap[item.item_title]}
+													src={item.brand === 'VAPSOLO' ? imageMap[item.item_title] : imageBrandMap[item.brand]}
 													amount={item.amount}
 													price={item.price_per_unit}
 												/>

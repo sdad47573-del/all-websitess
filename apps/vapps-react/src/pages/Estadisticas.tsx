@@ -61,23 +61,25 @@ export const Estadisticas = () => {
 					]}
 				/>
 			)}
-			<Stats
-				title="Resumen de Ingresos"
-				items={[
-					{
-						label: 'Ingresos Totales',
-						value: finatial?.reduce((total, item: any) => total + item.amount, 0) + '€',
-						icon: 'ri-money-euro-circle-line',
-						color: 'bg-green-500',
-					},
-					...getGroupedFinancialRecords(finatial).map((it) => ({
-						label: `${it.full_name} Total`,
-						value: it.totalAmount + '€',
-						icon: 'ri-money-euro-circle-line',
-						color: 'bg-green-500',
-					})),
-				]}
-			/>
+			{finatial &&
+				<Stats
+					title="Resumen de Ingresos"
+					items={[
+						{
+							label: 'Ingresos Totales',
+							value: finatial.reduce((total, item: any) => total + item.amount, 0) + '€',
+							icon: 'ri-money-euro-circle-line',
+							color: 'bg-green-500',
+						},
+						...getGroupedFinancialRecords(finatial).map((it) => ({
+							label: `${it.full_name} Total`,
+							value: it.totalAmount + '€',
+							icon: 'ri-money-euro-circle-line',
+							color: 'bg-green-500',
+						})),
+					]}
+				/>
+			}
 			{sales && (
 				<Stats
 					title="Resumen de Ventas"

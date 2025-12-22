@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { imageMap } from '../data/maps/img';
+import { imageBrandMap, imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { supabaseBrowserClient } from '../services/init.service';
 import type { ItemProduct } from 'supabase-sdk';
@@ -31,7 +31,7 @@ export function useGetAllItems() {
 				?.map((item) => ({
 					id: item.id,
 					title: translateItem(item.title),
-					src: imageMap[item.title],
+					src: item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand],
 					amount: item.amount,
 				}))
 				.sort((a, b) => b.amount - a.amount),

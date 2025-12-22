@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../lib/queryClient';
 import { supabaseBrowserClient } from '../services/init.service';
 import type { VapItemData } from '@react-components';
+import { playSound } from '../lib/sound';
 
 type InsertSaleParams = {
 	item_id: number;
@@ -47,6 +48,7 @@ export const useMutationInsertSale = () => {
 		// 	queryClient.invalidateQueries(['items']);
 		// },
 		onSuccess: (alteredSale) => {
+			playSound('success');
 			// TODO: aqui deberia ir el tipo de items??
 			queryClient.setQueryData(['items'], (oldItems: VapItemData[] | undefined) => {
 				if (!oldItems) return oldItems;

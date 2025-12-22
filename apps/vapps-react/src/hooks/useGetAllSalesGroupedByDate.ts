@@ -4,6 +4,7 @@ import { supabaseBrowserClient } from '../services/init.service';
 export type SaleItemDetail = {
 	item_id: number;
 	item_title: string;
+	brand: string;
 	amount: number;
 	price_per_unit: number;
 };

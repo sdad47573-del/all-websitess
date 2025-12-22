@@ -35,63 +35,63 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
 	};
 
 	return (
-		<div className="card bg-base-100 w-full max-w-md shadow-2xl">
-			<div className="card-body">
-				<h2 className="card-title mb-6 text-center text-3xl font-bold">Iniciar Sesión</h2>
-
-				<form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-					<div className="form-control">
-						<label className="label" htmlFor="email">
-							<span className="label-text font-semibold">Email</span>
-						</label>
-						<input
-							id="email"
-							type="email"
-							placeholder="tu@email.com"
-							className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
-							{...register('email')}
-							disabled={isLoading}
-						/>
-						{errors.email && (
-							<label className="label">
-								<span className="label-text-alt text-error">{errors.email.message}</span>
-							</label>
-						)}
-					</div>
-
-					<div className="form-control">
-						<label className="label" htmlFor="password">
-							<span className="label-text font-semibold">Contraseña</span>
-						</label>
-						<input
-							id="password"
-							type="password"
-							placeholder="••••••••"
-							className={`input input-bordered w-full ${errors.password ? 'input-error' : ''}`}
-							{...register('password')}
-							disabled={isLoading}
-						/>
-						{errors.password && (
-							<label className="label">
-								<span className="label-text-alt text-error">{errors.password.message}</span>
-							</label>
-						)}
-					</div>
-
-					<div className="form-control mt-6">
-						<button type="submit" className="btn btn-primary w-full" disabled={isLoading}>
-							{isLoading ? (
-								<>
-									<span className="loading loading-spinner loading-sm"></span>
-									Iniciando sesión...
-								</>
-							) : (
-								'Iniciar Sesión'
-							)}
-						</button>
-					</div>
-				</form>
+		<form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
+			<div className="form-control space-y-2">
+				<label className="label p-0" htmlFor="email">
+					<span className="label-text font-medium text-base-content/80">Email</span>
+				</label>
+				<input
+					id="email"
+					type="email"
+					placeholder="tu@email.com"
+					className={`input input-bordered w-full bg-base-200/50 backdrop-blur-sm transition-all focus:bg-base-100 focus:ring-2 focus:ring-primary/20 ${errors.email ? 'input-error' : 'border-base-300'
+						}`}
+					{...register('email')}
+					disabled={isLoading}
+				/>
+				{errors.email && (
+					<span className="text-xs text-error mt-1 block font-medium animate-pulse">
+						{errors.email.message}
+					</span>
+				)}
 			</div>
-		</div>
+
+			<div className="form-control space-y-2">
+				<label className="label p-0" htmlFor="password">
+					<span className="label-text font-medium text-base-content/80">Contraseña</span>
+				</label>
+				<input
+					id="password"
+					type="password"
+					placeholder="••••••••"
+					className={`input input-bordered w-full bg-base-200/50 backdrop-blur-sm transition-all focus:bg-base-100 focus:ring-2 focus:ring-primary/20 ${errors.password ? 'input-error' : 'border-base-300'
+						}`}
+					{...register('password')}
+					disabled={isLoading}
+				/>
+				{errors.password && (
+					<span className="text-xs text-error mt-1 block font-medium animate-pulse">
+						{errors.password.message}
+					</span>
+				)}
+			</div>
+
+			<div className="form-control pt-4">
+				<button
+					type="submit"
+					className="btn btn-primary w-full border-none bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/30 transition-all hover:scale-[1.02] hover:shadow-primary/50 active:scale-[0.98]"
+					disabled={isLoading}
+				>
+					{isLoading ? (
+						<>
+							<span className="loading loading-spinner loading-sm"></span>
+							Iniciando sesión...
+						</>
+					) : (
+						'Iniciar Sesión'
+					)}
+				</button>
+			</div>
+		</form>
 	);
 };

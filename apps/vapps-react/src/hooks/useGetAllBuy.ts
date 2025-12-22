@@ -5,10 +5,10 @@ type BuyedItemRow = {
 	buy_id: number;
 	quantity: number;
 	buy: { id: number; eur: number; fecha: string; label: string };
-	items: { id: number; title: string };
+	items: { id: number; title: string; brand: string };
 };
 
-export type GroupedBuyItem = { id: number; title: string; quantity: number };
+export type GroupedBuyItem = { id: number; title: string; brand: string; quantity: number };
 export type GroupedBuyEntry = {
 	id: number;
 	eur: number;
@@ -25,7 +25,7 @@ export async function getAllBuy() {
 		buy_id,
 		quantity,
 		buy (id,eur,fecha,label),
-		items (id,title)
+		items (id,title,brand)
 		`,
 	);
 	const typedData = data as BuyedItemRow[] | null;

@@ -11,6 +11,7 @@ import 'toastify-js/src/toastify.css';
 
 import { AuthProvider } from './contexts/AuthContext';
 import { queryClient } from './lib/queryClient';
+import { ensureAudioUnlocked } from './lib/sound';
 
 async function enableMocking() {
 	if (import.meta.env.MODE !== 'development' && import.meta.env.MODE !== 'staging') {
@@ -21,6 +22,7 @@ async function enableMocking() {
 }
 
 enableMocking().then(() => {
+	ensureAudioUnlocked();
 	createRoot(document.getElementById('root')!).render(
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
