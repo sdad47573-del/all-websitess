@@ -29,10 +29,9 @@ export function useGetAllItems() {
 		select: (data) =>
 			data
 				?.map((item) => ({
-					id: item.id,
+					...item,
 					title: translateItem(item.title),
 					src: item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand],
-					amount: item.amount,
 				}))
 				.sort((a, b) => b.amount - a.amount),
 	});

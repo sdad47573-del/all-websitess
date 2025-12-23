@@ -57,7 +57,7 @@ export const Promos2 = () => {
 				{/* <main className="relative">
 			<img src={SUPER} className="absolute" />
 			<div className="z-10 px-4 text-center relative"> */}
-				{stock?.map((item, idx: number) => (
+				{stock?.filter((item) => item.brand === 'VAPSOLO')?.map((item, idx: number) => (
 					//  src, title, price, onClick
 					<div key={item.id}>
 						<p
