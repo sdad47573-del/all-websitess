@@ -1,23 +1,26 @@
+import { getGroupedFinancialRecords } from '@/utils/getGroupedFinancialRecords';
 import Stats from '../components/Stats';
 import { SELL } from '../data/SELL';
 import { useGetAllBuy, useGetAllFinancialRecords, useGetAllSalesGroupedByDate } from '../hooks';
-import { getGroupedFinancialRecords } from './LibroCuentas';
 
 // TODO: hacer un historial de beneficios para cada socio, ismael tal fecha 180€, ismael tal fecha 30€, jose tal fecha 180€
 export const Estadisticas = () => {
 	const { data: buy } = useGetAllBuy();
 	const { data: finatial } = useGetAllFinancialRecords();
 
-	const ingresosTotal = finatial?.reduce(
-		(total, item: any) => total + (item.profiles.full_name === 'Caja' ? item.amount : 0),
-		0,
-	) as number;
+	const ingresosTotal =
+		finatial?.reduce(
+			(total: number, item) => total + (item.profiles.full_name === 'Caja' ? item.amount : 0),
+			0,
+		) ?? 0;
 
-	const buyUdsTotal = buy?.reduce((total, item: any) => total + item.total, 0) as number;
-	const buyEurTotal = buy?.reduce((total, item: any) => total + item.eur, 0) as number;
+	const buyUdsTotal = buy?.reduce((total: number, item) => total + item.total, 0) ?? 0;
+	const buyEurTotal = buy?.reduce((total: number, item) => total + item.eur, 0) ?? 0;
+
+	const payed = buy?.reduce((total: number, item) => item.payed ? total + item.eur : total, 0) ?? 0;
 
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
-	const cubierto = ((ingresosTotal / buyEurTotal) * 100).toFixed(2);
+	const cubierto = ((ingresosTotal - payed) / (buyEurTotal - payed) * 100).toFixed(2);
 
 	const { data: sales } = useGetAllSalesGroupedByDate();
 	const totalCalculated =
@@ -28,6 +31,7 @@ export const Estadisticas = () => {
 	const pendingSales = (sales as any)?.filter(
 		(sale: any) => sale.total_payment - sale.total_price < 0,
 	);
+
 	return (
 		<main>
 			{buy && finatial && buyUdsTotal && buyEurTotal && ingresosTotal && (

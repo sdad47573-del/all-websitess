@@ -1,45 +1,18 @@
-import { VapListItem } from '@react-components';
-import { twJoin } from 'tailwind-merge';
-import Stats from '../components/Stats';
-import { imageBrandMap, imageMap } from '../data/maps/img';
-import { translateItem } from '../data/maps/spanish';
-import { useGetAllSalesGroupedByDate } from '../hooks';
-import type { SalesByDateRow } from '../hooks/useGetAllSalesGroupedByDate';
-
-// TODO: las keys dan warning
-
-// Type definitions
-// type Item = {
-// 	id: number;
-// 	title: string;
-// };
-
-const formatDate = (dateString: string): string => {
-	if (!dateString) return 'N/A';
-	const date = new Date(dateString);
-	return date.toLocaleDateString('es-ES', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-	});
-};
-
-// type Sale = {
-// 	id: number;
-// 	item_id: number;
-// 	items: Item;
-// 	amount: number;
-// 	price_per_unit: number;
-// 	payment?: number;
-// 	concept?: string;
-// 	created_at: string;
-// };
+import { useGetAllSalesGroupedByDate } from '@/hooks';
+import Stats from '@/components/Stats';
+import { SaleCard } from '@/components/SaleCard';
+import { SectionHeader } from '@/components/SectionHeader';
+import { EmptyState } from '@/components/EmptyState';
+import { Loading } from '@/components/Loading';
+import type { SalesByDateRow } from '@/hooks/useGetAllSalesGroupedByDate';
 
 // TODO: poner un check si los dineros se han pagado y pasado a la caja fuerte(ingresos), y mostrar en stats solo  los dineros aun sin pasar a la caja fuerte pero pagados( poner otra columna en la tabla o hacer una relacion de tablas...)
 // TODO: Poner los vapers que falta aun por vender que esten en la pagina de compras
 // TODO: hacer recuento de los vapers comprados y poner aquellos que faltan de cada sabor por vender
+
 export const Ventas = () => {
 	const { data: sales, isLoading, error } = useGetAllSalesGroupedByDate();
+
 	const totalCalculated =
 		sales?.reduce((total: number, sale: SalesByDateRow) => total + sale.total_price, 0) ?? 0;
 	const totalReceived =
@@ -47,8 +20,23 @@ export const Ventas = () => {
 		0;
 
 	const pendingSales = sales?.filter((sale) => (sale.total_payment ?? 0) - sale.total_price < 0);
+
+	if (isLoading) return <Loading text="Cargando tus ventas..." />;
+
+	if (error) {
+		return (
+			<div className="p-10 text-center">
+				<div className="bg-error/10 text-error p-6 rounded-xl border border-error/20 inline-block">
+					<i className="ri-error-warning-line text-3xl mb-2 block" />
+					<p className="font-bold">Error al cargar las ventas</p>
+					<p className="text-sm opacity-80 mt-1">{String(error)}</p>
+				</div>
+			</div>
+		);
+	}
+
 	return (
-		<main className="">
+		<main className="pb-10">
 			{sales && (
 				<Stats
 					items={[
@@ -72,170 +60,38 @@ export const Ventas = () => {
 				/>
 			)}
 
-			<div className="p-5">
-				<h2 className="mb-4 text-xl font-semibold">Pendiente de cobro</h2>
-			</div>
+			<SectionHeader
+				title="Pendiente de cobro"
+				subtitle="Ventas que han sido registradas pero cuyo pago no se ha completado"
+			/>
 
-			{/* Loading State */}
-			{isLoading && (
-				<div className="mx-5 rounded-lg bg-blue-50 p-8 text-center">
-					<div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent"></div>
-					<p className="mt-4 text-blue-700">Cargando ventas...</p>
+			{!pendingSales || pendingSales.length === 0 ? (
+				<div className="px-5 mb-8">
+					<div className="bg-success/10 text-success p-4 rounded-lg flex items-center gap-3 border border-success/20">
+						<i className="ri-checkbox-circle-line text-xl" />
+						<p className="font-medium text-sm">¡Al día! No hay ventas con pagos pendientes.</p>
+					</div>
 				</div>
-			)}
-
-			{/* Error State */}
-			{error && (
-				<div className="mx-5 rounded-lg bg-red-100 p-4 text-red-700">
-					<p>{`Error al cargar las ventas: ${error}`}</p>
-				</div>
-			)}
-
-			{/* Empty State */}
-			{!isLoading && !error && sales && sales.length === 0 && (
-				<div className="mx-5 rounded-lg bg-gray-100 p-8 text-center text-gray-600">
-					No hay ventas registradas
-				</div>
-			)}
-			{pendingSales && pendingSales.length > 0 && (
+			) : (
 				<ul className="space-y-4 px-5 pb-5">
-					{pendingSales.map((sale) => {
-						const total = sale.total_price.toFixed(2);
-						return (
-							<li key={sale.id} className="rounded-lg bg-white p-4 shadow-md">
-								<div className="flex flex-col gap-2">
-									<div className="flex items-center justify-between border-b border-gray-200 pb-2">
-										<h3 className="text-lg font-bold text-teal-700">
-											{sale.concept ? sale.concept : 'sin concepto'}
-										</h3>
-										<span className="text-sm text-gray-500">{formatDate(sale.day)}</span>
-									</div>
-
-									<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-										<div>
-											<p className="text-xs text-gray-500">Cantidad</p>
-											<p className="font-semibold text-gray-900">{sale.total_amount}</p>
-										</div>
-										<div>
-											<p className="text-xs text-gray-500">Total</p>
-											<p className="font-semibold text-teal-600">{total}€</p>
-										</div>
-									</div>
-
-									{sale.total_payment !== undefined && sale.total_payment !== null && (
-										<div
-											className={twJoin(
-												'mt-2 rounded-md p-2',
-												sale.total_payment - sale.total_price < 0
-													? 'bg-red-50 text-red-700'
-													: 'bg-green-50 text-green-700',
-											)}
-										>
-											<p className="text-xs text-gray-500">Pago Recibido</p>
-											<p
-												className={twJoin(
-													'font-semibold',
-													sale.total_payment - sale.total_price < 0
-														? 'text-red-700'
-														: 'text-green-700',
-												)}
-											>
-												{sale.total_payment}€
-											</p>
-										</div>
-									)}
-									<div className="mb-3">
-										<p className="mb-2 text-xs text-gray-500">Producto</p>
-										<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-											{sale.items.map((item) => (
-												<VapListItem
-													key={item.item_id}
-													id={item.item_id}
-													title={translateItem(item.item_title)}
-													src={item.brand === 'VAPSOLO' ? imageMap[item.item_title] : imageBrandMap[item.brand]}
-													amount={item.amount}
-													price={item.price_per_unit}
-												/>
-											))}
-										</div>
-									</div>
-								</div>
-							</li>
-						);
-					})}
+					{pendingSales.map((sale) => (
+						<SaleCard key={sale.id} {...sale} />
+					))}
 				</ul>
 			)}
 
-			<div className="p-5">
-				<h2 className="mb-4 text-xl font-semibold">Historial de Ventas</h2>
-			</div>
-			{/* Sales List */}
-			{!isLoading && !error && sales && sales.length > 0 && (
+			<SectionHeader
+				title="Historial de Ventas"
+				subtitle="Registro histórico de todas las transacciones realizadas"
+			/>
+
+			{!sales || sales.length === 0 ? (
+				<EmptyState message="No se han encontrado ventas registradas" />
+			) : (
 				<ul className="space-y-4 px-5 pb-5">
-					{sales.map((sale) => {
-						const total = sale.total_price.toFixed(2);
-						return (
-							<li key={sale.id} className="rounded-lg bg-white p-4 shadow-md">
-								<div className="flex flex-col gap-2">
-									<div className="flex items-center justify-between border-b border-gray-200 pb-2">
-										<h3 className="text-lg font-bold text-teal-700">
-											{sale.concept ? sale.concept : 'sin concepto'}
-										</h3>
-										<span className="text-sm text-gray-500">{formatDate(sale.day)}</span>
-									</div>
-
-									<div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-										<div>
-											<p className="text-xs text-gray-500">Cantidad</p>
-											<p className="font-semibold text-gray-900">{sale.total_amount}</p>
-										</div>
-										<div>
-											<p className="text-xs text-gray-500">Total</p>
-											<p className="font-semibold text-teal-600">{total}€</p>
-										</div>
-									</div>
-
-									{sale.total_payment !== undefined && sale.total_payment !== null && (
-										<div
-											className={twJoin(
-												'mt-2 rounded-md p-2',
-												sale.total_payment - sale.total_price < 0
-													? 'bg-red-50 text-red-700'
-													: 'bg-green-50 text-green-700',
-											)}
-										>
-											<p className="text-xs text-gray-500">Pago Recibido</p>
-											<p
-												className={twJoin(
-													'font-semibold',
-													sale.total_payment - sale.total_price < 0
-														? 'text-red-700'
-														: 'text-green-700',
-												)}
-											>
-												{sale.total_payment}€
-											</p>
-										</div>
-									)}
-									<div className="mb-3">
-										<p className="mb-2 text-xs text-gray-500">Producto</p>
-										<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-											{sale.items.map((item: any) => (
-												<VapListItem
-													key={item.item_id}
-													id={item.item_id}
-													title={translateItem(item.item_title)}
-													src={item.brand === 'VAPSOLO' ? imageMap[item.item_title] : imageBrandMap[item.brand]}
-													amount={item.amount}
-													price={item.price_per_unit}
-												/>
-											))}
-										</div>
-									</div>
-								</div>
-							</li>
-						);
-					})}
+					{sales.map((sale) => (
+						<SaleCard key={sale.id} {...sale} />
+					))}
 				</ul>
 			)}
 		</main>

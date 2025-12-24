@@ -4,7 +4,8 @@ import { supabaseBrowserClient } from '../services/init.service';
 type BuyedItemRow = {
 	buy_id: number;
 	quantity: number;
-	buy: { id: number; eur: number; fecha: string; label: string };
+	eur: number;
+	buy: { id: number; eur: number; fecha: string; label: string; payed: boolean };
 	items: { id: number; title: string; brand: string };
 };
 
@@ -14,6 +15,7 @@ export type GroupedBuyEntry = {
 	eur: number;
 	fecha: string;
 	label: string;
+	payed: boolean;
 	items: GroupedBuyItem[];
 	total: number;
 };
@@ -24,7 +26,7 @@ export async function getAllBuy() {
 		`
 		buy_id,
 		quantity,
-		buy (id,eur,fecha,label),
+		buy (*),
 		items (id,title,brand)
 		`,
 	);
@@ -60,6 +62,7 @@ export async function getAllBuy() {
 				(a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
 			)
 		: undefined;
+
 	return { data: result, error };
 }
 

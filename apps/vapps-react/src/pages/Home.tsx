@@ -1,21 +1,14 @@
-import { useEffect, useState } from 'react';
 import ConnectedModal from '../components/ConnectedModal';
 import Stats from '../components/Stats';
 import VapList from '../components/VapList';
 import { useGetAllItems, useGetBestSellingItem } from '../hooks';
+import { SectionHeader } from '../components/SectionHeader';
 
 // TODO: hacer un stat para saber la cantidad de vapers que tienen el niño lolo, el bolero, y cualquiera....
 export const Home = () => {
 	const { data: stock, isLoading } = useGetAllItems();
-	const [total, setTotal] = useState(0);
+	const total = stock ? stock.reduce((acc, item) => acc + item.amount, 0) : 0;
 	const { data: mostSold } = useGetBestSellingItem();
-
-	// TODO: mejor invalidar query y hacer fetch con usequery
-	useEffect(() => {
-		if (stock) {
-			setTotal(stock.reduce((acc, item) => acc + item.amount, 0));
-		}
-	}, [stock]);
 
 	return (
 		<main>
@@ -37,10 +30,13 @@ export const Home = () => {
 					},
 				]}
 			/>
+
+			<SectionHeader
+				title="Vapers Disponibles"
+				subtitle="Inventario actual de productos en stock"
+			/>
+
 			<div className="px-4">
-				<div className="py-5">
-					<h2 className="text-xl font-semibold">Vapers Disponibles</h2>
-				</div>
 				<VapList items={stock ?? []} isLoading={isLoading} />
 				<ConnectedModal />
 			</div>
