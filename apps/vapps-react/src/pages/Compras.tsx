@@ -1,16 +1,13 @@
 import { useMemo } from 'react';
-import { VapListItem } from '@react-components';
 import Stats from '../components/Stats';
-import { imageBrandMap, imageMap } from '../data/maps/img';
-import { translateItem } from '../data/maps/spanish';
 import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllFinancialRecords } from '../hooks';
-import { SectionHeader } from '../components/SectionHeader';
-import { BuyCard } from '../components/BuyCard';
-import { EmptyState } from '../components/EmptyState';
+import { PageLayout } from '../components/PageLayout';
+import { BuyList } from '../components/BuyList';
+import { ProductInventory } from '../components/ProductInventory';
+import { Loading } from '../components/Loading';
 
 export const Compras = () => {
 	const { data: buy, isLoading: isLoadingBuy } = useGetAllBuy();
-	// TODO: poner solo los registro de caja, no el total de todos
 	const { data: finatial } = useGetAllFinancialRecords();
 	const { data: totalsData } = useGetAllBuyedItemsTotals();
 
@@ -66,14 +63,13 @@ export const Compras = () => {
 		0,
 	);
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
-	const cubierto = (pendingTotal * 100 / pendingcostTotal
-	).toFixed(2)
+	const cubierto = (pendingTotal * 100 / pendingcostTotal || 0).toFixed(2);
 
-	if (isLoadingBuy) return null;
+	if (isLoadingBuy) return <Loading text="Cargando historial de compras..." />;
 
 	return (
-		<main className="pb-10">
-			{buy && finatial && buyUdsTotal && buyEurTotal && ingresosTotal && (
+		<PageLayout title="Gestión de Compras">
+			{buy && finatial && (
 				<Stats
 					items={[
 						{
@@ -104,37 +100,18 @@ export const Compras = () => {
 				/>
 			)}
 
-			<SectionHeader
+			<ProductInventory
+				items={totalsData}
 				title={`Compras totales: ${buyUdsTotal} vapers`}
 				subtitle="Cantidad acumulada de vapers adquiridos desde el inicio"
 			/>
 
-			<div className="mb-20 grid grid-cols-2 gap-3 px-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-				{totalsData?.map((item) => (
-					<VapListItem
-						key={item.item_id}
-						id={item.item_id}
-						title={translateItem(item.title)}
-						src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
-						amount={item.total_quantity ?? item.total_buyed ?? 0}
-					/>
-				))}
-			</div>
-
-			<SectionHeader title="Historial de Compras" />
-
-			{!buy || buy.length === 0 ? (
-				<EmptyState message="No se han registrado compras todavía" />
-			) : (
-				<ul className="space-y-6 px-5">
-					{buyWithCoverage.map((item) => (
-						<BuyCard
-							key={item.id}
-							{...item}
-						/>
-					))}
-				</ul>
-			)}
-		</main>
+			<BuyList
+				buys={buyWithCoverage}
+				title="Historial de Compras"
+				emptyMessage="No se han registrado compras todavía"
+			/>
+		</PageLayout>
 	);
 };
+

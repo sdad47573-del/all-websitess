@@ -18,6 +18,7 @@ export const Collapsible = ({ isOpen, children }: CollapsibleProps) => {
 
     return (
         <div
+            aria-hidden={!isOpen}
             style={{
                 ...styles,
                 transition: 'opacity 300ms ease, transform 300ms ease',

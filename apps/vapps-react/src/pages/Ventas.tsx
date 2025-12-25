@@ -1,14 +1,10 @@
 import { useGetAllSalesGroupedByDate } from '@/hooks';
 import Stats from '@/components/Stats';
-import { SaleCard } from '@/components/SaleCard';
-import { SectionHeader } from '@/components/SectionHeader';
-import { EmptyState } from '@/components/EmptyState';
+import { PageLayout } from '@/components/PageLayout';
+import { SaleList } from '@/components/SaleList';
 import { Loading } from '@/components/Loading';
+import { ErrorState } from '@/components/ErrorState';
 import type { SalesByDateRow } from '@/hooks/useGetAllSalesGroupedByDate';
-
-// TODO: poner un check si los dineros se han pagado y pasado a la caja fuerte(ingresos), y mostrar en stats solo  los dineros aun sin pasar a la caja fuerte pero pagados( poner otra columna en la tabla o hacer una relacion de tablas...)
-// TODO: Poner los vapers que falta aun por vender que esten en la pagina de compras
-// TODO: hacer recuento de los vapers comprados y poner aquellos que faltan de cada sabor por vender
 
 export const Ventas = () => {
 	const { data: sales, isLoading, error } = useGetAllSalesGroupedByDate();
@@ -24,19 +20,11 @@ export const Ventas = () => {
 	if (isLoading) return <Loading text="Cargando tus ventas..." />;
 
 	if (error) {
-		return (
-			<div className="p-10 text-center">
-				<div className="bg-error/10 text-error p-6 rounded-xl border border-error/20 inline-block">
-					<i className="ri-error-warning-line text-3xl mb-2 block" />
-					<p className="font-bold">Error al cargar las ventas</p>
-					<p className="text-sm opacity-80 mt-1">{String(error)}</p>
-				</div>
-			</div>
-		);
+		return <ErrorState message="Error al cargar las ventas" details={String(error)} />;
 	}
 
 	return (
-		<main className="pb-10">
+		<PageLayout title="Gestión de Ventas">
 			{sales && (
 				<Stats
 					items={[
@@ -60,40 +48,20 @@ export const Ventas = () => {
 				/>
 			)}
 
-			<SectionHeader
+			<SaleList
+				sales={pendingSales}
 				title="Pendiente de cobro"
 				subtitle="Ventas que han sido registradas pero cuyo pago no se ha completado"
+				emptyMessage="¡Al día! No hay ventas con pagos pendientes."
 			/>
 
-			{!pendingSales || pendingSales.length === 0 ? (
-				<div className="px-5 mb-8">
-					<div className="bg-success/10 text-success p-4 rounded-lg flex items-center gap-3 border border-success/20">
-						<i className="ri-checkbox-circle-line text-xl" />
-						<p className="font-medium text-sm">¡Al día! No hay ventas con pagos pendientes.</p>
-					</div>
-				</div>
-			) : (
-				<ul className="space-y-4 px-5 pb-5">
-					{pendingSales.map((sale) => (
-						<SaleCard key={sale.id} {...sale} />
-					))}
-				</ul>
-			)}
-
-			<SectionHeader
+			<SaleList
+				sales={sales}
 				title="Historial de Ventas"
 				subtitle="Registro histórico de todas las transacciones realizadas"
+				emptyMessage="No se han encontrado ventas registradas"
 			/>
-
-			{!sales || sales.length === 0 ? (
-				<EmptyState message="No se han encontrado ventas registradas" />
-			) : (
-				<ul className="space-y-4 px-5 pb-5">
-					{sales.map((sale) => (
-						<SaleCard key={sale.id} {...sale} />
-					))}
-				</ul>
-			)}
-		</main>
+		</PageLayout>
 	);
 };
+

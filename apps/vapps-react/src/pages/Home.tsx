@@ -3,15 +3,15 @@ import Stats from '../components/Stats';
 import VapList from '../components/VapList';
 import { useGetAllItems, useGetBestSellingItem } from '../hooks';
 import { SectionHeader } from '../components/SectionHeader';
+import { PageLayout } from '../components/PageLayout';
 
-// TODO: hacer un stat para saber la cantidad de vapers que tienen el niño lolo, el bolero, y cualquiera....
 export const Home = () => {
 	const { data: stock, isLoading } = useGetAllItems();
 	const total = stock ? stock.reduce((acc, item) => acc + item.amount, 0) : 0;
 	const { data: mostSold } = useGetBestSellingItem();
 
 	return (
-		<main>
+		<PageLayout title="Inicio">
 			<Stats
 				items={[
 					{
@@ -23,8 +23,7 @@ export const Home = () => {
 					},
 					{
 						label: 'Vaper más vendido',
-						value: mostSold?.data?.es_title ?? '—',
-						// value: mostSold?.data.title,
+						value: mostSold?.es_title ?? '—',
 						icon: 'ri-medal-line',
 						color: 'bg-yellow-500',
 					},
@@ -40,6 +39,7 @@ export const Home = () => {
 				<VapList items={stock ?? []} isLoading={isLoading} />
 				<ConnectedModal />
 			</div>
-		</main>
+		</PageLayout>
 	);
 };
+

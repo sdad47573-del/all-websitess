@@ -1,5 +1,8 @@
 import type { Preview } from '@storybook/react-vite';
 import '../src/styles/index.css';
+import 'remixicon/fonts/remixicon.css';
+import 'animate.css';
+import 'toastify-js/src/toastify.css';
 
 const preview: Preview = {
 	parameters: {
@@ -17,6 +20,13 @@ const preview: Preview = {
 			test: 'todo',
 		},
 	},
+	decorators: [
+		(Story) => {
+			document.documentElement.setAttribute('data-theme', 'scruz');
+			return Story();
+		},
+	],
 };
+
 
 export default preview;

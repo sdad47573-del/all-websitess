@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
 import { supabaseBrowserClient } from '../services/init.service';
+import { useSupabaseQuery } from './useSupabaseQuery';
 
 export type SaleItemDetail = {
 	item_id: number;
@@ -20,22 +20,9 @@ export type SalesByDateRow = {
 };
 
 export async function getAllSalesGroupedByDate() {
-	const { data, error } = await supabaseBrowserClient.rpc('group_by_day_concept_with_items');
-	const typedData = data as SalesByDateRow[] | null;
-
-	if (error) {
-		console.error('Error getting sales grouped by date:', error);
-	}
-	return { data: typedData, error };
+	return await supabaseBrowserClient.rpc('group_by_day_concept_with_items');
 }
 
 export function useGetAllSalesGroupedByDate() {
-	return useQuery({
-		queryKey: ['salesGroupedByDate'],
-		queryFn: async () => {
-			const { data, error } = await getAllSalesGroupedByDate();
-			if (error) throw error;
-			return data;
-		},
-	});
+	return useSupabaseQuery<SalesByDateRow[]>(['salesGroupedByDate'], getAllSalesGroupedByDate);
 }

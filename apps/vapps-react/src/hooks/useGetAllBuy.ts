@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
 import { supabaseBrowserClient } from '../services/init.service';
+import { useSupabaseQuery } from './useSupabaseQuery';
 
 type BuyedItemRow = {
 	buy_id: number;
@@ -30,34 +30,29 @@ export async function getAllBuy() {
 		items (id,title,brand)
 		`,
 	);
+
+	if (error) return { data: undefined, error };
+
 	const typedData = data as BuyedItemRow[] | null;
 
-	if (error) {
-		console.error('Error getting buy:', error);
-	}
-
 	const grouped = typedData?.reduce<Record<number, GroupedBuyEntry>>((acc, curr) => {
-		const buyId = curr.buy.id!;
+		const buyId = curr.buy.id;
 
 		if (!acc[buyId]) {
-			// aplanamos los atributos de buy directamente en el objeto
 			acc[buyId] = { ...curr.buy, items: [], total: 0 };
 		}
 
-		// agregamos quantity junto al item
 		acc[buyId].items.push({
 			...curr.items,
 			quantity: curr.quantity,
 		});
 
-		// sumamos quantity al total
 		acc[buyId].total += curr.quantity;
 
 		return acc;
 	}, {});
 
-	// Convertimos a array si queremos
-	const result: GroupedBuy | undefined = grouped
+	const result = grouped
 		? Object.values(grouped).sort(
 				(a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
 			)
@@ -67,12 +62,5 @@ export async function getAllBuy() {
 }
 
 export function useGetAllBuy() {
-	return useQuery({
-		queryKey: ['buy'],
-		queryFn: async () => {
-			const { data, error } = await getAllBuy();
-			if (error) throw error;
-			return data;
-		},
-	});
+	return useSupabaseQuery<GroupedBuy>(['buy'], getAllBuy);
 }

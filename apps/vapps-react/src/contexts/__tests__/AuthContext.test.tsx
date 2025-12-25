@@ -58,7 +58,7 @@ const TestComponent = () => {
         <div>
             <div data-testid="user-email">{user ? user.email : 'No User'}</div>
             <div data-testid="profile-name">{profile ? profile.full_name : 'No Profile'}</div>
-            <button data-testid="sign-out-btn" onClick={signOut}>Sign Out</button>
+            <button data-testid="sign-out-btn" onClick={() => signOut()}>Sign Out</button>
         </div>
     );
 };

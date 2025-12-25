@@ -11,17 +11,23 @@ const meta = {
 } satisfies Meta<typeof Loading>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Loading>;
 
 export const Default: Story = {};
 
 export const FullScreen: Story = {
 	args: {
 		fullScreen: true,
-		text: 'Iniciando sistema...',
+		text: 'Iniciando sesión...',
 	},
 	parameters: {
 		layout: 'fullscreen',
+	},
+};
+
+export const CustomText: Story = {
+	args: {
+		text: 'Preparando tus estadísticas...',
 	},
 };
 

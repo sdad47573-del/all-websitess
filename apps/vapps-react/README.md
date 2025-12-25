@@ -1,15 +1,30 @@
-# React + TypeScript + Vite
+# VappSolo - Pokemon Battle Arena
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+VappSolo es una aplicación web progresiva (PWA) de gestión y simulación de batallas Pokemon, construida con React, TypeScript y Vite.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📱 **Progressive Web App (PWA)**: Instalable en móviles y desktop
+- 🔌 **Funcionalidad Offline**: Trabaja sin conexión a internet
+- ⚡ **Rendimiento Optimizado**: Carga rápida y experiencia fluida
+- 🎨 **Diseño Moderno**: UI/UX premium con DaisyUI y TailwindCSS
+- 🔐 **Autenticación Segura**: Integración con Supabase
+- 📊 **Gestión de Datos**: React Query para manejo eficiente de estado
 
-## React Compiler
+## 📱 PWA Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Esta aplicación es una **Progressive Web App** completa:
+
+- ✅ Instalable en dispositivos móviles y desktop
+- ✅ Funciona offline con Service Worker
+- ✅ Caché inteligente de recursos
+- ✅ Actualizaciones automáticas
+- ✅ Iconos adaptativos para todas las plataformas
+- ✅ Indicador de estado offline/online
+
+Para más información sobre PWA, consulta [PWA.md](./PWA.md).
+
+## 🚀 Inicio Rápido
 
 ## Expanding the ESLint configuration
 

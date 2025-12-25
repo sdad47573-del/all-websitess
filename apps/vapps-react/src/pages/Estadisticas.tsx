@@ -2,8 +2,8 @@ import { getGroupedFinancialRecords } from '@/utils/getGroupedFinancialRecords';
 import Stats from '../components/Stats';
 import { SELL } from '../data/SELL';
 import { useGetAllBuy, useGetAllFinancialRecords, useGetAllSalesGroupedByDate } from '../hooks';
+import { PageLayout } from '../components/PageLayout';
 
-// TODO: hacer un historial de beneficios para cada socio, ismael tal fecha 180€, ismael tal fecha 30€, jose tal fecha 180€
 export const Estadisticas = () => {
 	const { data: buy } = useGetAllBuy();
 	const { data: finatial } = useGetAllFinancialRecords();
@@ -33,8 +33,8 @@ export const Estadisticas = () => {
 	);
 
 	return (
-		<main>
-			{buy && finatial && buyUdsTotal && buyEurTotal && ingresosTotal && (
+		<PageLayout title="Estadísticas y Análisis">
+			{buy && finatial && (
 				<Stats
 					title="Resumen de Compras"
 					items={[
@@ -109,10 +109,10 @@ export const Estadisticas = () => {
 			)}
 			{/* TODO: terminar de pasar sell a supabase */}
 			<Stats
-				title="Resumen de Ventas pendientes por meter en la app"
+				title="Resumen de Ventas pendientes por cargar"
 				items={[
 					{
-						label: 'Calculo Total',
+						label: 'Cálculo Total',
 						value: SELL.reduce((total, item) => total + item.price, 0) + '€',
 						icon: 'ri-shopping-cart-line',
 						color: 'bg-blue-500',
@@ -127,22 +127,22 @@ export const Estadisticas = () => {
 			/>
 			<Stats
 				title="Beneficios de Socios"
-				// TODO: quitarlo de a mano y poner calculo
 				items={[
 					{
-						label: 'ganacias por socio estimadas',
+						label: 'Ganancias por socio estimadas',
 						value: 1118 + '€',
 						icon: 'ri-shopping-cart-line',
 						color: 'bg-blue-500',
 					},
 					{
-						label: 'ganacias por socio estimadas',
+						label: 'Ganancias por socio estimadas',
 						value: 1118 + '€',
 						icon: 'ri-shopping-cart-line',
 						color: 'bg-blue-500',
 					},
 				]}
 			/>
-		</main>
+		</PageLayout>
 	);
 };
+

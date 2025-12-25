@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { NumericForm, type NumericFormData } from './NumericForm';
 
@@ -17,11 +17,22 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
+	const modalRef = useRef<HTMLDivElement>(null);
+	const [touchStart, setTouchStart] = useState<number | null>(null);
+	const [touchEnd, setTouchEnd] = useState<number | null>(null);
+	const [isDragging, setIsDragging] = useState(false);
+	const [dragOffset, setDragOffset] = useState(0);
+	const [isClosing, setIsClosing] = useState(false);
+
+	// Minimum swipe distance (in px) to trigger close
+	const minSwipeDistance = 50;
+
 	useEffect(() => {
 		if (isOpen) {
 			document.body.classList.add('overflow-hidden');
 		} else {
 			document.body.classList.remove('overflow-hidden');
+			setDragOffset(0);
 		}
 
 		const handleEscape = (e: KeyboardEvent) => {
@@ -37,12 +48,55 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 		};
 	}, [isOpen, onClose]);
 
+	const onTouchStart = (e: React.TouchEvent) => {
+		setTouchEnd(null);
+		setTouchStart(e.targetTouches[0].clientX);
+		setIsDragging(true);
+	};
+
+	const onTouchMove = (e: React.TouchEvent) => {
+		if (touchStart === null) return;
+		const currentTouch = e.targetTouches[0].clientX;
+		const diff = currentTouch - touchStart;
+
+		// Allow dragging left or right
+		setDragOffset(diff);
+		setTouchEnd(currentTouch);
+	};
+
+	const onTouchEnd = () => {
+		if (!touchStart || !touchEnd) {
+			setIsDragging(false);
+			setDragOffset(0);
+			return;
+		}
+
+		const distance = touchEnd - touchStart;
+		const isHorizontalSwipe = Math.abs(distance) > minSwipeDistance;
+
+		if (isHorizontalSwipe) {
+			const direction = distance > 0 ? 1 : -1;
+			setIsClosing(true);
+			setDragOffset(direction * (typeof window !== 'undefined' ? window.innerWidth : 500));
+			setTimeout(() => {
+				onClose();
+				setIsClosing(false);
+				setDragOffset(0);
+			}, 120);
+		}
+
+		setIsDragging(false);
+		setDragOffset(0);
+		setTouchStart(null);
+		setTouchEnd(null);
+	};
+
 	if (!data) return null;
 
 	return (
 		<div
 			className={twJoin(
-				'fixed inset-0 z-50 overflow-y-auto transition-opacity duration-300',
+				'fixed inset-0 z-50 overflow-y-auto transition-opacity duration-100',
 				isOpen ? 'opacity-100' : 'hidden opacity-0',
 			)}
 			aria-hidden={!isOpen}
@@ -58,19 +112,37 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 					onClick={onClose}
 				></div>
 				<div
+					ref={modalRef}
 					className={twJoin(
-						'relative w-full max-w-md transform rounded-t-3xl bg-white transition-all duration-300 sm:rounded-3xl',
+						'relative w-full max-w-md transform rounded-t-3xl bg-white sm:rounded-3xl',
+						isDragging ? 'transition-none' : 'transition-transform',
+						isOpen && !isDragging ? 'duration-100 ease-out' : 'duration-100',
 						isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
 					)}
+					style={{
+						transform:
+							isClosing || isDragging
+								? `translateX(${dragOffset}px)`
+								: undefined,
+					}}
+					onTouchStart={onTouchStart}
+					onTouchMove={onTouchMove}
+					onTouchEnd={onTouchEnd}
 				>
+					{/* Swipe indicator - visible only on mobile */}
+					<div className="flex justify-center pt-3 pb-1 sm:hidden">
+						<div className="h-1.5 w-12 rounded-full bg-gray-300"></div>
+					</div>
+
 					<div className="sticky top-0 flex items-center justify-between rounded-t-3xl border-b border-gray-100 bg-white px-6 py-4">
 						<h2 className="text-xl font-bold text-gray-900">Detalles del Objeto</h2>
 						<button
 							onClick={onClose}
-							className="flex h-8 w-8 cursor-pointer items-center justify-center text-gray-400 transition-colors hover:text-gray-600"
+							className="flex min-h-12 min-w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-all hover:bg-gray-200 hover:text-gray-900 active:scale-95 sm:min-h-8 sm:min-w-8 sm:bg-transparent sm:hover:bg-gray-100"
 							aria-label="Cerrar"
+							type="button"
 						>
-							<i className="ri-close-line text-2xl"></i>
+							<i className="ri-close-line text-3xl sm:text-2xl"></i>
 						</button>
 					</div>
 					<div className="p-6">

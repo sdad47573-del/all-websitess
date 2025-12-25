@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
 import { supabaseBrowserClient } from '../services/init.service';
+import { useSupabaseQuery } from './useSupabaseQuery';
 
 export type ItemsStockRow = {
 	item_id: number;
@@ -9,24 +9,11 @@ export type ItemsStockRow = {
 	total_sold: number;
 };
 
+// TODO: revisar que es correcto el calculo
 export async function getAllBuyedItemsPendingSales() {
-	const { data, error } = await supabaseBrowserClient.rpc('get_items_stock');
-	const typedData = data as ItemsStockRow[] | null;
-
-	if (error) {
-		console.error('Error getting buyed items pending sales:', error);
-	}
-
-	return { data: typedData, error };
+	return await supabaseBrowserClient.rpc('get_items_stock');
 }
 
 export function useGetAllBuyedItemsPendingSales() {
-	return useQuery({
-		queryKey: ['itemsStock'],
-		queryFn: async () => {
-			const { data, error } = await getAllBuyedItemsPendingSales();
-			if (error) throw error;
-			return data;
-		},
-	});
+	return useSupabaseQuery<ItemsStockRow[]>(['itemsStock'], getAllBuyedItemsPendingSales);
 }
