@@ -1,237 +1,281 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AuthProvider, useAuth } from '../AuthContext';
-import { supabaseBrowserClient } from '../../services/init.service';
-import Cookies from 'js-cookie';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import Toastify from 'toastify-js';
-
-// Mock Cookies
-vi.mock('js-cookie', () => ({
-    default: {
-        set: vi.fn(),
-        get: vi.fn(),
-        remove: vi.fn(),
-    }
-}));
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AuthProvider, useAuth } from '../AuthContext';
 
 // Mock Toastify
 vi.mock('toastify-js', () => ({
-    default: vi.fn(() => ({
-        showToast: vi.fn(),
-    }))
+	default: vi.fn(() => ({
+		showToast: vi.fn(),
+	})),
+}));
+
+// Mock auth.service
+vi.mock('../../services/auth.service', () => ({
+	getCurrentUserWithProfile: vi.fn(() =>
+		Promise.resolve({ user: null, profile: null, error: null }),
+	),
+	getSession: vi.fn(() => Promise.resolve({ session: null, error: null })),
+	signOut: vi.fn(() => Promise.resolve({ error: null })),
 }));
 
 // Mock init.service
 vi.mock('../../services/init.service', () => {
-    const mockAuth = {
-        getSession: vi.fn(() => Promise.resolve({ data: { session: null }, error: null })),
-        onAuthStateChange: vi.fn((cb) => {
-            // Save callback to trigger manually in tests
-            (globalThis as any).triggerAuthChange = cb;
-            return {
-                data: { subscription: { unsubscribe: vi.fn() } }
-            };
-        }),
-        signOut: vi.fn(() => Promise.resolve({ error: null }))
-    };
-
-    const mockFrom = vi.fn(() => ({
-        select: vi.fn(() => ({
-            eq: vi.fn(() => ({
-                single: vi.fn(() => Promise.resolve({ data: { full_name: 'Test Profile' }, error: null }))
-            }))
-        }))
-    }));
-
-    return {
-        supabaseBrowserClient: {
-            auth: mockAuth,
-            from: mockFrom
-        }
-    };
+	return {
+		supabaseBrowserClient: {
+			auth: {
+				onAuthStateChange: vi.fn((cb) => {
+					(globalThis as any).triggerAuthChange = cb;
+					return {
+						data: { subscription: { unsubscribe: vi.fn() } },
+					};
+				}),
+				signOut: vi.fn(() => Promise.resolve({ error: null })),
+			},
+		},
+	};
 });
 
+import * as authService from '../../services/auth.service';
+
 const TestComponent = () => {
-    const { user, profile, loading, signOut } = useAuth();
-    if (loading) return <div data-testid="loading">Loading...</div>;
-    return (
-        <div>
-            <div data-testid="user-email">{user ? user.email : 'No User'}</div>
-            <div data-testid="profile-name">{profile ? profile.full_name : 'No Profile'}</div>
-            <button data-testid="sign-out-btn" onClick={() => signOut()}>Sign Out</button>
-        </div>
-    );
+	const { user, profile, loading, signOut } = useAuth();
+	if (loading) return <div data-testid="loading">Loading...</div>;
+	return (
+		<div>
+			<div data-testid="user-email">{user ? user.email : 'No User'}</div>
+			<div data-testid="profile-name">{profile ? profile.full_name : 'No Profile'}</div>
+			<button data-testid="sign-out-btn" onClick={() => signOut()}>
+				Sign Out
+			</button>
+		</div>
+	);
 };
 
+const createTestQueryClient = () =>
+	new QueryClient({
+		defaultOptions: {
+			queries: {
+				retry: false,
+			},
+		},
+	});
+
 describe('AuthContext Full Coverage', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-        (globalThis as any).triggerAuthChange = null;
-    });
+	let queryClient: QueryClient;
 
-    it('shows loading state and resolves "No User"', async () => {
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
-        expect(screen.getByTestId('loading')).toBeDefined();
+	beforeEach(() => {
+		vi.clearAllMocks();
+		(globalThis as any).triggerAuthChange = null;
+		queryClient = createTestQueryClient();
+		vi.mocked(authService.getSession).mockResolvedValue({ session: null, error: null });
+		vi.mocked(authService.getCurrentUserWithProfile).mockResolvedValue({
+			user: null,
+			profile: null,
+			error: null,
+		});
+	});
 
-        await waitFor(() => {
-            expect(screen.queryByTestId('loading')).toBeNull();
-        });
-        expect(screen.getByTestId('user-email').textContent).toBe('No User');
-    });
+	it('shows loading state and resolves "No User"', async () => {
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
+		expect(screen.getByTestId('loading')).toBeDefined();
 
-    it('handles initial session and fetches profile', async () => {
-        const mockSession = {
-            user: { id: '123', email: 'session@test.com' },
-            access_token: 'valid-token',
-            refresh_token: 'refresh-token'
-        };
+		await waitFor(() => {
+			expect(screen.queryByTestId('loading')).toBeNull();
+		});
+		expect(screen.getByTestId('user-email').textContent).toBe('No User');
+	});
 
-        (supabaseBrowserClient.auth.getSession as any).mockResolvedValue({
-            data: { session: mockSession },
-            error: null
-        });
+	it('handles initial session and fetches profile', async () => {
+		const mockSession = {
+			user: { id: '123', email: 'session@test.com' },
+			access_token: 'valid-token',
+			refresh_token: 'refresh-token',
+		};
 
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+		vi.mocked(authService.getSession).mockResolvedValue({
+			session: mockSession as any,
+			error: null,
+		});
+		vi.mocked(authService.getCurrentUserWithProfile).mockResolvedValue({
+			user: mockSession.user as any,
+			profile: { full_name: 'Test Profile' } as any,
+			error: null,
+		});
 
-        await waitFor(() => {
-            expect(screen.getByTestId('user-email').textContent).toBe('session@test.com');
-            expect(screen.getByTestId('profile-name').textContent).toBe('Test Profile');
-        });
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        expect(Cookies.set).toHaveBeenCalledWith('sb-access-token', 'valid-token', expect.any(Object));
-        expect(Cookies.set).toHaveBeenCalledWith('sb-refresh-token', 'refresh-token', expect.any(Object));
-    });
+		await waitFor(() => {
+			expect(screen.getByTestId('user-email').textContent).toBe('session@test.com');
+			expect(screen.getByTestId('profile-name').textContent).toBe('Test Profile');
+		});
+	});
 
-    it('responds to SIGNED_IN event', async () => {
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+	it('responds to SIGNED_IN event', async () => {
+		const mockSession = {
+			user: { id: '456', email: 'event@test.com' },
+			access_token: 'event-token',
+			refresh_token: 'event-refresh',
+		};
 
-        await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        const mockSession = {
-            user: { id: '456', email: 'event@test.com' },
-            access_token: 'event-token',
-            refresh_token: 'event-refresh'
-        };
+		await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
 
-        await act(async () => {
-            (globalThis as any).triggerAuthChange('SIGNED_IN', mockSession);
-        });
+		vi.mocked(authService.getSession).mockResolvedValue({
+			session: mockSession as any,
+			error: null,
+		});
+		vi.mocked(authService.getCurrentUserWithProfile).mockResolvedValue({
+			user: mockSession.user as any,
+			profile: { full_name: 'Test Profile' } as any,
+			error: null,
+		});
 
-        expect(screen.getByTestId('user-email').textContent).toBe('event@test.com');
-        expect(Cookies.set).toHaveBeenCalledWith('sb-access-token', 'event-token', expect.any(Object));
-    });
+		await act(async () => {
+			(globalThis as any).triggerAuthChange('SIGNED_IN', mockSession);
+		});
 
-    it('responds to SIGNED_OUT event and removes cookies', async () => {
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+		await waitFor(() => {
+			expect(screen.getByTestId('user-email').textContent).toBe('event@test.com');
+		});
+	});
 
-        await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
+	it('responds to SIGNED_OUT event and removes cookies', async () => {
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        await act(async () => {
-            (globalThis as any).triggerAuthChange('SIGNED_OUT', null);
-        });
+		await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
 
-        expect(screen.getByTestId('user-email').textContent).toBe('No User');
-        expect(Cookies.remove).toHaveBeenCalledWith('sb-access-token', { path: '/' });
-        expect(Cookies.remove).toHaveBeenCalledWith('sb-refresh-token', { path: '/' });
-    });
+		await act(async () => {
+			(globalThis as any).triggerAuthChange('SIGNED_OUT', null);
+		});
 
-    it('shows Toastify when session expires (SIGNED_OUT not manual)', async () => {
-        // Mocking cookie to simulate transition
-        (Cookies.get as any).mockReturnValue('some-token');
+		expect(screen.getByTestId('user-email').textContent).toBe('No User');
+	});
 
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+	it('shows Toastify when session expires (SIGNED_OUT not manual)', async () => {
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
+		await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
 
-        await act(async () => {
-            (globalThis as any).triggerAuthChange('SIGNED_OUT', null);
-        });
+		await act(async () => {
+			(globalThis as any).triggerAuthChange('SIGNED_OUT', null);
+		});
 
-        expect(Toastify).toHaveBeenCalled();
-    });
+		expect(Toastify).toHaveBeenCalled();
+	});
 
-    it('does NOT show Toastify on manual signOut', async () => {
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+	it('does NOT show Toastify on manual signOut', async () => {
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
+		await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
 
-        const signoutBtn = screen.getByTestId('sign-out-btn');
-        await act(async () => {
-            signoutBtn.click();
-        });
+		const signoutBtn = screen.getByTestId('sign-out-btn');
+		await act(async () => {
+			signoutBtn.click();
+		});
 
-        expect(supabaseBrowserClient.auth.signOut).toHaveBeenCalled();
-        expect(Toastify).not.toHaveBeenCalled();
-    });
+		expect(authService.signOut).toHaveBeenCalled();
+		expect(Toastify).not.toHaveBeenCalled();
+	});
 
-    it('updates cookies on TOKEN_REFRESHED', async () => {
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+	it('responds to TOKEN_REFRESHED', async () => {
+		const mockSession = {
+			user: { id: '456', email: 'refresh@test.com' },
+			access_token: 'new-token',
+			refresh_token: 'new-refresh',
+		};
 
-        await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        const mockSession = {
-            user: { id: '456', email: 'refresh@test.com' },
-            access_token: 'new-token',
-            refresh_token: 'new-refresh'
-        };
+		await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
 
-        await act(async () => {
-            (globalThis as any).triggerAuthChange('TOKEN_REFRESHED', mockSession);
-        });
+		vi.mocked(authService.getSession).mockResolvedValue({
+			session: mockSession as any,
+			error: null,
+		});
+		vi.mocked(authService.getCurrentUserWithProfile).mockResolvedValue({
+			user: mockSession.user as any,
+			profile: { full_name: 'Test Profile' } as any,
+			error: null,
+		});
 
-        expect(Cookies.set).toHaveBeenCalledWith('sb-access-token', 'new-token', expect.any(Object));
-    });
+		await act(async () => {
+			(globalThis as any).triggerAuthChange('TOKEN_REFRESHED', mockSession);
+		});
 
-    it('handles INITIAL_SESSION with no session', async () => {
-        render(
-            <AuthProvider>
-                <TestComponent />
-            </AuthProvider>
-        );
+		await waitFor(() => {
+			expect(screen.getByTestId('user-email').textContent).toBe('refresh@test.com');
+		});
+	});
 
-        await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
+	it('handles INITIAL_SESSION with no session', async () => {
+		render(
+			<QueryClientProvider client={queryClient}>
+				<AuthProvider>
+					<TestComponent />
+				</AuthProvider>
+			</QueryClientProvider>,
+		);
 
-        await act(async () => {
-            (globalThis as any).triggerAuthChange('INITIAL_SESSION', null);
-        });
+		await waitFor(() => expect(screen.queryByTestId('loading')).toBeNull());
 
-        expect(screen.getByTestId('user-email').textContent).toBe('No User');
-    });
+		await act(async () => {
+			(globalThis as any).triggerAuthChange('INITIAL_SESSION', null);
+		});
 
-    it('throws error when useAuth is used outside Provider', () => {
-        // Suppress console.error for this test as it's expected
-        const spy = vi.spyOn(console, 'error').mockImplementation(() => { });
+		expect(screen.getByTestId('user-email').textContent).toBe('No User');
+	});
 
-        expect(() => render(<TestComponent />)).toThrow('useAuth must be used within an AuthProvider');
+	it('throws error when useAuth is used outside Provider', () => {
+		// Suppress console.error for this test as it's expected
+		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-        spy.mockRestore();
-    });
+		expect(() => render(<TestComponent />)).toThrow('useAuth must be used within an AuthProvider');
+
+		spy.mockRestore();
+	});
 });

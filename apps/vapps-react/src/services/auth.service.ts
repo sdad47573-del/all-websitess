@@ -1,5 +1,5 @@
-import * as auth from 'supabase-sdk';
 import type { User } from '@supabase/supabase-js';
+import * as auth from 'supabase-sdk';
 import { supabaseBrowserClient } from './init.service';
 
 /**
@@ -71,11 +71,22 @@ export async function isAdmin() {
 }
 
 /**
+ * Create a new user profile
+ */
+export async function createProfile(
+	userId: string,
+	fullName: string,
+	role: auth.UserRole = 'seller',
+) {
+	return auth.createProfile(supabaseBrowserClient, userId, fullName, role);
+}
+
+/**
  * Update user profile
  */
-// export async function updateProfile(userId: string, updates: Partial<auth.Profile>) {
-// 	return auth.updateProfile(supabaseBrowserClient, userId, updates);
-// }
+export async function updateProfile(userId: string, updates: Partial<auth.Profile>) {
+	return auth.updateProfile(supabaseBrowserClient, userId, updates);
+}
 
 /**
  * Listen to auth state changes
@@ -84,6 +95,6 @@ export function onAuthStateChange(callback: (user: User | null) => void) {
 	return auth.onAuthStateChange(supabaseBrowserClient, callback);
 }
 
-// Re-export types for convenience
-export type { UserRole, Profile } from 'supabase-sdk';
 export type { User } from '@supabase/supabase-js';
+// Re-export types for convenience
+export type { Profile, UserRole } from 'supabase-sdk';

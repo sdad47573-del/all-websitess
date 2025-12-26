@@ -1,11 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import Cookies from 'js-cookie';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Toastify from 'toastify-js';
+import { useLocation } from 'wouter';
 import { z } from 'zod';
-// TODO hacer mutacion
-import { signIn } from '../services/auth.service';
+import { useSignIn } from '../hooks';
 import { playSound } from '../lib/sound';
 
 const loginSchema = z.object({
@@ -16,7 +14,9 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
-	const [isLoading, setIsLoading] = useState(false);
+	const [, setLocation] = useLocation();
+
+	const { mutateAsync: signInMutate, isPending: isMutationLoading } = useSignIn();
 
 	const {
 		register,
@@ -27,15 +27,12 @@ export default function LoginForm() {
 	});
 
 	const onSubmit = async (data: LoginFormData) => {
-		setIsLoading(true);
-
-		// try {
-		const { data: dataSignIn, error } = await signIn(data.email, data.password);
+		const { error } = await signInMutate([data.email, data.password]);
 
 		if (error) {
 			playSound('error');
 			Toastify({
-				text: error.message || 'Error al iniciar sesión',
+				text: (error as { message?: string })?.message || 'Error al iniciar sesión',
 				duration: 3000,
 				gravity: 'top',
 				position: 'right',
@@ -43,7 +40,6 @@ export default function LoginForm() {
 					background: 'linear-gradient(to right, #ff5f6d, #ffc371)',
 				},
 			}).showToast();
-			setIsLoading(false);
 			return;
 		}
 
@@ -58,29 +54,9 @@ export default function LoginForm() {
 			},
 		}).showToast();
 
-		if (dataSignIn.session) {
-			const { access_token, refresh_token } = dataSignIn.session;
-			Cookies.set('sb-access-token', access_token);
-			Cookies.set('sb-refresh-token', refresh_token);
-		}
-
 		// Redirect to home page
 		await new Promise((r) => setTimeout(r, 300));
-		window.location.href = '/';
-		// } catch (error) {
-		// 	console.error('Login error:', error);
-		// 	Toastify({
-		// 		text: 'Error inesperado al iniciar sesión',
-		// 		duration: 3000,
-		// 		gravity: 'top',
-		// 		position: 'right',
-		// 		style: {
-		// 			background: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-		// 		},
-		// 	}).showToast();
-		// } finally {
-		// 	setIsLoading(false);
-		// }
+		setLocation('/');
 	};
 
 	return (
@@ -99,7 +75,7 @@ export default function LoginForm() {
 							placeholder="tu@email.com"
 							className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
 							{...register('email')}
-							disabled={isLoading}
+							disabled={isMutationLoading}
 						/>
 						{errors.email && (
 							<label className="label">
@@ -118,7 +94,7 @@ export default function LoginForm() {
 							placeholder="••••••••"
 							className={`input input-bordered w-full ${errors.password ? 'input-error' : ''}`}
 							{...register('password')}
-							disabled={isLoading}
+							disabled={isMutationLoading}
 						/>
 						{errors.password && (
 							<label className="label">
@@ -128,8 +104,8 @@ export default function LoginForm() {
 					</div>
 
 					<div className="form-control mt-6">
-						<button type="submit" className="btn btn-primary w-full" disabled={isLoading}>
-							{isLoading ? (
+						<button type="submit" className="btn btn-primary w-full" disabled={isMutationLoading}>
+							{isMutationLoading ? (
 								<>
 									<span className="loading loading-spinner loading-sm"></span>
 									Iniciando sesión...

@@ -3,21 +3,19 @@ interface ErrorStateProps {
 	details?: string;
 }
 
-export const ErrorState = ({
-	message = 'Ha ocurrido un error',
-	details,
-}: ErrorStateProps) => {
+export const ErrorState = ({ message = 'Ha ocurrido un error', details }: ErrorStateProps) => {
 	return (
-		<div className="flex flex-col items-center justify-center p-10 text-center animate__animated animate__fadeIn">
-			<div className="bg-error/10 text-error p-8 rounded-2xl border border-error/20 max-w-md shadow-lg backdrop-blur-sm">
-				<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-error/20 mx-auto">
+		<div className="animate__animated animate__fadeIn flex flex-col items-center justify-center p-10 text-center">
+			<div className="bg-error/10 text-error border-error/20 max-w-md rounded-2xl border p-8 shadow-lg backdrop-blur-sm">
+				<div className="bg-error/20 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
 					<i className="ri-error-warning-line text-3xl" />
 				</div>
-				<h3 className="text-xl font-bold mb-2">{message}</h3>
-				{details && <p className="text-sm opacity-70 break-words">{details}</p>}
+				<h3 className="mb-2 text-xl font-bold">{message}</h3>
+				{details && <p className="text-sm break-words opacity-70">{details}</p>}
 				<button
+					// TODO: esto tiene sentido?
 					onClick={() => window.location.reload()}
-					className="mt-6 px-6 py-2 bg-error text-white rounded-lg font-bold hover:bg-error/80 transition-colors shadow-md active:scale-95"
+					className="bg-error hover:bg-error/80 mt-6 rounded-lg px-6 py-2 font-bold text-white shadow-md transition-colors active:scale-95"
 				>
 					Reintentar
 				</button>
@@ -25,4 +23,3 @@ export const ErrorState = ({
 		</div>
 	);
 };
-

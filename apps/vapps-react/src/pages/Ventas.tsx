@@ -1,9 +1,9 @@
-import { useGetAllSalesGroupedByDate } from '@/hooks';
-import Stats from '@/components/Stats';
+import { ErrorState } from '@/components/ErrorState';
+import { Loading } from '@/components/Loading';
 import { PageLayout } from '@/components/PageLayout';
 import { SaleList } from '@/components/SaleList';
-import { Loading } from '@/components/Loading';
-import { ErrorState } from '@/components/ErrorState';
+import Stats from '@/components/Stats';
+import { useGetAllSalesGroupedByDate } from '@/hooks';
 import type { SalesByDateRow } from '@/hooks/useGetAllSalesGroupedByDate';
 
 export const Ventas = () => {
@@ -64,4 +64,3 @@ export const Ventas = () => {
 		</PageLayout>
 	);
 };
-
