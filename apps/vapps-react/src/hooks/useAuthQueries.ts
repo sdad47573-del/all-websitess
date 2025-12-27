@@ -1,6 +1,13 @@
-import type { UserRole } from '../services/auth.service';
+import type { Session, User } from '@supabase/supabase-js';
+import type { Profile, UserRole } from '../services/auth.service';
 import * as authService from '../services/auth.service';
 import { useSupabaseQuery } from './useSupabaseQuery';
+
+export interface AuthData {
+	session: Session | null;
+	user: User | null;
+	profile: Profile | null;
+}
 
 /**
  * Hook to get the current user
@@ -75,6 +82,50 @@ export function useHasRole(userId: string | undefined, role: UserRole) {
 		},
 		{ enabled: !!userId },
 	);
+}
+
+/**
+ * Hook to get all auth data (session, user, profile) in a single consolidated query.
+ * This prevents multiple redundant calls at startup and multiple "not logged in" error logs.
+ */
+export function useAuthData() {
+	return useSupabaseQuery<AuthData>(['auth', 'all-data'], async () => {
+		try {
+			// First get the session
+			const { session, error: sessionError } = await authService.getSession();
+			if (sessionError || !session) {
+				return { data: { session: null, user: null, profile: null }, error: null };
+			}
+
+			// Then get the user and profile
+			const {
+				user,
+				profile,
+				error: userProfileError,
+			} = await authService.getCurrentUserWithProfile();
+
+			// Fallback profile creation if user exists but profile doesn't
+			if (user && !profile && !userProfileError) {
+				console.warn('[useAuthData] Profile not found, attempting fallback creation');
+				const { profile: newProfile, error: insertError } = await authService.createProfile(
+					user.id,
+					(user.user_metadata?.full_name as string) || 'Usuario',
+					(user.user_metadata?.role as any) || 'seller',
+				);
+
+				if (!insertError) {
+					console.log('[useAuthData] Fallback profile created');
+					return { data: { session, user, profile: newProfile }, error: null };
+				}
+				console.error('[useAuthData] Error creating fallback profile:', insertError);
+			}
+
+			return { data: { session, user, profile }, error: userProfileError };
+		} catch (error) {
+			console.error('[useAuthData] Unexpected error fetching auth data:', error);
+			return { data: { session: null, user: null, profile: null }, error };
+		}
+	});
 }
 
 /**

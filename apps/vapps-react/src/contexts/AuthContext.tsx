@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef } from 'react';
 import type { Database } from 'supabase-sdk';
 import Toastify from 'toastify-js';
-import { useCurrentUserWithProfile, useSession, useSignOut } from '../hooks';
+import { useAuthData, useSignOut } from '../hooks';
 import { supabaseBrowserClient } from '../services/init.service';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
@@ -23,13 +23,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const queryClient = useQueryClient();
 	const isManualSignOut = useRef(false);
 
-	const { data: authData, isLoading: authLoading } = useCurrentUserWithProfile();
-	const { data: session, isLoading: sessionLoading } = useSession();
+	const { data: authData, isLoading: authLoading } = useAuthData();
 	const signOutMutation = useSignOut();
 
 	const user = authData?.user ?? null;
+	const session = authData?.session ?? null;
 	const profile = authData?.profile ?? null;
-	const loading = authLoading || sessionLoading;
+	const loading = authLoading;
 
 	const signOut = useCallback(
 		async (manual = true) => {

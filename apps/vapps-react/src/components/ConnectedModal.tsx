@@ -38,7 +38,7 @@ export default function ConnectedModal() {
 			amount: form.amount,
 			concept: form.concept,
 			payment: form.payment ? form.price_per_unit * form.amount : 0,
-		} as any);
+		});
 
 		Toastify({
 			text: 'Venta guardada correctamente 🎉',

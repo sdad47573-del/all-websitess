@@ -24,7 +24,7 @@ export const Ventas = () => {
 	}
 
 	return (
-		<PageLayout title="Gestión de Ventas">
+		<PageLayout>
 			{sales && (
 				<Stats
 					items={[
@@ -41,6 +41,12 @@ export const Ventas = () => {
 								pendingSales && pendingSales.length > 0
 									? (totalCalculated - totalReceived).toFixed(2) + '€'
 									: '0€',
+							icon: 'ri-money-euro-circle-line',
+							color: 'bg-orange-500',
+						},
+						{
+							label: 'Vapers Vendidos',
+							value: 'xxx',
 							icon: 'ri-money-euro-circle-line',
 							color: 'bg-orange-500',
 						},

@@ -1,8 +1,8 @@
 import { getGroupedFinancialRecords } from '@/utils/getGroupedFinancialRecords';
+import { PageLayout } from '../components/PageLayout';
 import Stats from '../components/Stats';
 import { SELL } from '../data/SELL';
 import { useGetAllBuy, useGetAllFinancialRecords, useGetAllSalesGroupedByDate } from '../hooks';
-import { PageLayout } from '../components/PageLayout';
 
 export const Estadisticas = () => {
 	const { data: buy } = useGetAllBuy();
@@ -17,10 +17,11 @@ export const Estadisticas = () => {
 	const buyUdsTotal = buy?.reduce((total: number, item) => total + item.total, 0) ?? 0;
 	const buyEurTotal = buy?.reduce((total: number, item) => total + item.eur, 0) ?? 0;
 
-	const payed = buy?.reduce((total: number, item) => item.payed ? total + item.eur : total, 0) ?? 0;
+	const payed =
+		buy?.reduce((total: number, item) => (item.payed ? total + item.eur : total), 0) ?? 0;
 
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
-	const cubierto = ((ingresosTotal - payed) / (buyEurTotal - payed) * 100).toFixed(2);
+	const cubierto = (((ingresosTotal - payed) / (buyEurTotal - payed)) * 100).toFixed(2);
 
 	const { data: sales } = useGetAllSalesGroupedByDate();
 	const totalCalculated =
@@ -33,7 +34,7 @@ export const Estadisticas = () => {
 	);
 
 	return (
-		<PageLayout title="Estadísticas y Análisis">
+		<PageLayout>
 			{buy && finatial && (
 				<Stats
 					title="Resumen de Compras"
@@ -65,7 +66,7 @@ export const Estadisticas = () => {
 					]}
 				/>
 			)}
-			{finatial &&
+			{finatial && (
 				<Stats
 					title="Resumen de Ingresos"
 					items={[
@@ -83,7 +84,7 @@ export const Estadisticas = () => {
 						})),
 					]}
 				/>
-			}
+			)}
 			{sales && (
 				<Stats
 					title="Resumen de Ventas"
@@ -145,4 +146,3 @@ export const Estadisticas = () => {
 		</PageLayout>
 	);
 };
-

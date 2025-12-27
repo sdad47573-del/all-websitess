@@ -1,9 +1,9 @@
+import { Loading } from '../components/Loading';
 import { PageLayout } from '../components/PageLayout';
 import { SectionHeader } from '../components/SectionHeader';
-import { useGetAllBuyedItemsPendingSales } from '../hooks';
-import { Loading } from '../components/Loading';
 import Stats from '../components/Stats';
 import { translateItem } from '../data/maps/spanish';
+import { useGetAllBuyedItemsPendingSales } from '../hooks';
 import { getItemImageUrl } from '../utils/image.utils';
 
 export const PendientesAsignar = () => {
@@ -11,22 +11,22 @@ export const PendientesAsignar = () => {
 
 	if (isLoading) return <Loading text="Cargando pendientes..." />;
 
-	const totalPending = items?.reduce((acc, item) => acc + (item.total_buyed - item.total_sold), 0) ?? 0;
+	const totalPending = items?.reduce((acc, item) => acc + Math.abs(item.stock_final), 0) ?? 0;
 	const totalBuyed = items?.reduce((acc, item) => acc + item.total_buyed, 0) ?? 0;
 	const totalSold = items?.reduce((acc, item) => acc + item.total_sold, 0) ?? 0;
 
 	const pendingItems = items
-		?.map((item) => ({ ...item, pending: item.total_buyed - item.total_sold }))
-		.filter((item) => item.pending > 0)
-		.sort((a, b) => b.pending - a.pending);
+		?.map((item) => ({ ...item }))
+		.filter((item) => item.stock_final > 0)
+		.sort((a, b) => b.stock_final - a.stock_final);
 
 	const upToDateItems = items
-		?.map((item) => ({ ...item, pending: item.total_buyed - item.total_sold }))
-		.filter((item) => item.pending <= 0 && (item.total_buyed > 0 || item.total_sold > 0))
-		.sort((a, b) => b.total_sold - a.total_sold);
+		?.map((item) => ({ ...item }))
+		.filter((item) => item.stock_final <= 0 && (item.total_buyed > 0 || item.total_sold > 0))
+		.sort((a, b) => b.stock_final - a.stock_final);
 
 	return (
-		<PageLayout title="Pendientes por Asignar">
+		<PageLayout>
 			<Stats
 				title="Resumen de Unidades"
 				items={[
@@ -43,7 +43,7 @@ export const PendientesAsignar = () => {
 						color: 'bg-green-500',
 					},
 					{
-						label: 'Pendientes Asignar',
+						label: 'Faltan por Asignar',
 						value: totalPending,
 						icon: 'ri-alert-line',
 						color: 'bg-orange-500',
@@ -81,22 +81,31 @@ interface ItemComparisonListProps {
 	type: 'pending' | 'ok';
 }
 
-const ItemComparisonList = ({ items, title, subtitle, emptyMessage, type }: ItemComparisonListProps) => {
+const ItemComparisonList = ({
+	items,
+	title,
+	subtitle,
+	emptyMessage,
+	type,
+}: ItemComparisonListProps) => {
 	return (
 		<div>
 			<SectionHeader title={title} subtitle={subtitle} />
-			{(!items || items.length === 0) ? (
-				<div className="mx-5 rounded-xl border border-dashed border-base-300 py-10 text-center">
+			{!items || items.length === 0 ? (
+				<div className="border-base-300 mx-5 rounded-xl border border-dashed py-10 text-center">
 					<p className="text-base-content/50">{emptyMessage}</p>
 				</div>
 			) : (
 				<ul className="space-y-4 px-5">
 					{items.map((item) => (
-						<li key={item.item_id} className="rounded-lg bg-base-100 p-4 shadow-md transition-shadow hover:shadow-lg border border-base-200">
+						<li
+							key={item.item_id}
+							className="bg-base-100 border-base-200 rounded-lg border p-4 shadow-md transition-shadow hover:shadow-lg"
+						>
 							<div className="flex flex-col gap-3">
-								<div className="flex items-center justify-between border-b border-base-200 pb-2">
+								<div className="border-base-200 flex items-center justify-between border-b pb-2">
 									<div className="flex items-center gap-3">
-										<div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-base-200 border border-base-300">
+										<div className="bg-base-200 border-base-300 h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border">
 											<img
 												src={getItemImageUrl(item.title, item.brand)}
 												alt={item.title}
@@ -104,32 +113,40 @@ const ItemComparisonList = ({ items, title, subtitle, emptyMessage, type }: Item
 											/>
 										</div>
 										<div>
-											<h3 className="text-lg font-bold text-teal-700 leading-tight">
+											<h3 className="text-lg leading-tight font-bold text-teal-700">
 												{translateItem(item.title)}
 											</h3>
-											<p className="text-[10px] font-medium uppercase text-base-content/40 tracking-widest">
+											<p className="text-base-content/40 text-[10px] font-medium tracking-widest uppercase">
 												{item.brand}
 											</p>
 										</div>
 									</div>
-									<div className={`rounded-md px-3 py-1 flex flex-col items-end ${type === 'pending' ? 'bg-orange-500/10 text-orange-600' : 'bg-green-500/10 text-green-600'}`}>
+									<div
+										className={`flex flex-col items-end rounded-md px-3 py-1 ${type === 'pending' ? 'bg-orange-500/10 text-orange-600' : 'bg-green-500/10 text-green-600'}`}
+									>
 										<span className="text-[10px] font-bold uppercase opacity-70">
 											{type === 'pending' ? 'Faltan' : 'Al día'}
 										</span>
-										<span className="text-xl font-black">
-											{item.pending}
-										</span>
+										<span className="text-xl font-black">{item.stock_final}</span>
 									</div>
 								</div>
 
 								<div className="grid grid-cols-2 gap-4">
 									<div className="flex flex-col">
-										<p className="text-xs font-medium uppercase text-base-content/50">Total Comprados</p>
-										<p className="text-lg font-semibold text-base-content">{item.total_buyed}</p>
+										<p className="text-base-content/50 text-xs font-medium uppercase">
+											Total Comprados
+										</p>
+										<p className="text-base-content text-lg font-semibold">{item.total_buyed}</p>
 									</div>
 									<div className="flex flex-col">
-										<p className="text-xs font-medium uppercase text-base-content/50">Total Vendidos</p>
-										<p className="text-lg font-semibold text-base-content">{item.total_sold}</p>
+										<p className="text-base-content/50 text-xs font-medium uppercase">
+											Total Vendidos
+										</p>
+										<p className="text-base-content text-lg font-semibold">{item.total_sold}</p>
+									</div>
+									<div className="flex flex-col">
+										<p className="text-base-content/50 text-xs font-medium uppercase">En venta</p>
+										<p className="text-base-content text-lg font-semibold">{item.amount}</p>
 									</div>
 								</div>
 							</div>

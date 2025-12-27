@@ -1,121 +1,148 @@
-import { useState } from 'react';
-import { twJoin } from 'tailwind-merge';
 import { VapListItem } from '@react-components';
-import { Collapsible } from '../Collapsible';
+import { useState } from 'react';
+import { twJoin, twMerge } from 'tailwind-merge';
 import { translateItem } from '@/data/maps/spanish';
 import { formatDate } from '@/utils/formatDate';
 import { getItemImageUrl } from '@/utils/image.utils';
+import { Collapsible } from '../Collapsible';
 
 export interface TransactionItem {
-    id: number | string;
-    title: string;
-    brand: string;
-    amount: number;
-    price?: number;
+	id: number | string;
+	title: string;
+	brand: string;
+	amount: number;
+	price?: number;
 }
 
 export interface ExpandableTransactionCardProps {
-    title: string;
-    date: string;
-    stats: {
-        label: string;
-        value: string | number;
-    }[];
-    status?: {
-        label: string;
-        value: string | number;
-        isPending: boolean;
-    };
-    items?: TransactionItem[];
-    isInitiallyExpanded?: boolean;
+	title: string;
+	date: string;
+	stats: {
+		label: string;
+		value: string | number;
+	}[];
+	status?: {
+		label: string;
+		value: string | number;
+		isPending: boolean;
+	};
+	items?: TransactionItem[];
+	isInitiallyExpanded?: boolean;
 }
 
 export const ExpandableTransactionCard = ({
-    title,
-    date,
-    stats,
-    status,
-    items = [],
-    isInitiallyExpanded = false,
+	title,
+	date,
+	stats,
+	status,
+	items = [],
+	isInitiallyExpanded = false,
 }: ExpandableTransactionCardProps) => {
-    const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
+	const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
 
-    return (
-        <li className="rounded-lg bg-base-100 p-4 shadow-md transition-shadow hover:shadow-lg">
-            <div className="flex flex-col gap-2">
-                <div
-                    className="flex items-center justify-between border-b border-base-200 pb-2"
-                >
-                    <h3 className="text-lg font-bold text-teal-700">{title}</h3>
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm text-base-content/60">{formatDate(date)}</span>
-                        <button
-                            type="button"
-                            aria-expanded={isExpanded}
-                            onClick={() => setIsExpanded(!isExpanded)}
-                            className="flex items-center justify-center rounded-md p-1 hover:bg-base-200"
-                        >
-                            <i
-                                aria-hidden="true"
-                                className={twJoin(
-                                    'ri-arrow-down-s-line text-xl transition-transform',
-                                    isExpanded && 'rotate-180',
-                                )}
-                            />
-                        </button>
-                    </div>
-                </div>
+	return (
+		<li className="border-base-200 hover:border-primary/20 list-none overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+			<div className="flex flex-col">
+				{/* Header Section */}
+				<div
+					onClick={() => setIsExpanded(!isExpanded)}
+					className="from-base-50 hover:bg-base-100/50 flex cursor-pointer items-center justify-between bg-linear-to-r to-white px-5 py-4 transition-colors"
+				>
+					<div className="flex items-center gap-3">
+						<div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl">
+							<i className="ri-receipt-line text-primary text-xl" />
+						</div>
+						<div>
+							<h3 className="text-base-content text-base leading-tight font-bold">{title}</h3>
+							<p className="text-base-content/50 text-xs font-medium lowercase">
+								{formatDate(date)}
+							</p>
+						</div>
+					</div>
 
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                    {stats.map((stat, idx) => (
-                        <div key={idx}>
-                            <p className="text-xs font-medium uppercase text-base-content/60">{stat.label}</p>
-                            <p className="font-semibold text-base-content">{stat.value}</p>
-                        </div>
-                    ))}
+					<div className="flex items-center gap-3">
+						<div
+							className={twJoin(
+								'ri-arrow-down-s-line text-xl transition-transform duration-300',
+								isExpanded && 'rotate-180',
+							)}
+						/>
+					</div>
+				</div>
 
-                    {status && (
-                        <div
-                            className={twJoin(
-                                'rounded-md p-2 transition-colors',
-                                status.isPending ? 'bg-error/10 text-error' : 'bg-success/10 text-success',
-                            )}
-                        >
-                            <p className="text-xs font-medium opacity-80">{status.label}</p>
-                            <p className="font-bold">{status.value}</p>
-                        </div>
-                    )}
-                </div>
+				{/* Summary Stats Section */}
+				<div className="divide-base-200 border-base-100 grid grid-cols-2 divide-x border-t bg-white md:grid-cols-3">
+					{stats.map((stat, idx) => (
+						<div key={idx} className="flex flex-col px-5 py-3">
+							<p className="text-base-content/40 mb-1.5 text-[10px] leading-none font-black tracking-widest uppercase">
+								{stat.label}
+							</p>
+							<p className="text-base-content text-sm font-bold">{stat.value}</p>
+						</div>
+					))}
 
-                <Collapsible isOpen={isExpanded}>
-                    <div className="mt-4 mb-2">
-                        <p className="mb-3 text-xs font-bold uppercase tracking-wider text-base-content/70">
-                            Productos
-                        </p>
-                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-                            {items.map((item, index) => (
-                                <div
-                                    key={item.id}
-                                    style={{
-                                        transition: 'opacity 300ms ease, transform 300ms ease',
-                                        transitionDelay: `${index * 50}ms`,
-                                        opacity: isExpanded ? 1 : 0,
-                                        transform: isExpanded ? 'translateY(0)' : 'translateY(4px)',
-                                    }}
-                                >
-                                    <VapListItem
-                                        id={Number(item.id)}
-                                        title={translateItem(item.title)}
-                                        src={getItemImageUrl(item.title, item.brand)}
-                                        amount={item.amount}
-                                        price={item.price}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Collapsible>
-            </div>
-        </li>
-    );
+					{status && (
+						<div
+							className={twMerge(
+								'flex flex-col px-5 py-3',
+								status.isPending ? 'bg-error/5' : 'bg-success/5',
+							)}
+						>
+							<p
+								className={twMerge(
+									'mb-1.5 text-[10px] leading-none font-black tracking-widest uppercase',
+									status.isPending ? 'text-error/60' : 'text-success/60',
+								)}
+							>
+								{status.label}
+							</p>
+							<p
+								className={twMerge(
+									'text-sm font-black',
+									status.isPending ? 'text-error' : 'text-success',
+								)}
+							>
+								{status.value}
+							</p>
+						</div>
+					)}
+				</div>
+
+				{/* Expanded Items Section */}
+				<Collapsible isOpen={isExpanded}>
+					<div className="border-base-200 bg-base-50/50 border-t px-5 pt-4 pb-6">
+						<div className="mb-4 flex items-center gap-2">
+							<span className="bg-base-200 h-px flex-1" />
+							<p className="text-base-content/30 text-[10px] font-bold tracking-widest whitespace-nowrap uppercase">
+								Detalles del Pedido
+							</p>
+							<span className="bg-base-200 h-px flex-1" />
+						</div>
+
+						<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+							{items.map((item, index) => (
+								<div
+									key={item.id}
+									className="transition-all duration-300"
+									style={{
+										transitionDelay: `${index * 50}ms`,
+										opacity: isExpanded ? 1 : 0,
+										transform: isExpanded ? 'translateY(0)' : 'translateY(8px)',
+									}}
+								>
+									<VapListItem
+										id={Number(item.id)}
+										title={translateItem(item.title)}
+										src={getItemImageUrl(item.title, item.brand)}
+										amount={item.amount}
+										price={item.price}
+									/>
+								</div>
+							))}
+						</div>
+					</div>
+				</Collapsible>
+			</div>
+		</li>
+	);
 };

@@ -119,20 +119,35 @@ export interface Database {
 				Row: {
 					id: number;
 					created_at: string;
-					quantity: number;
-					price: number;
+					item_id: number;
+					seller_id: string;
+					concept: string;
+					price_per_unit: number;
+					payment: number | null;
+					amount: number;
+					active: boolean;
 				};
 				Insert: {
 					id?: number;
 					created_at?: string;
-					quantity: number;
-					price: number;
+					item_id: number;
+					seller_id: string;
+					concept: string;
+					price_per_unit: number;
+					payment?: number | null;
+					amount: number;
+					active?: boolean;
 				};
 				Update: {
 					id?: number;
 					created_at?: string;
-					quantity?: number;
-					price?: number;
+					item_id?: number;
+					seller_id?: string;
+					concept?: string;
+					price_per_unit?: number;
+					payment?: number | null;
+					amount?: number;
+					active?: boolean;
 				};
 			};
 			profiles: {

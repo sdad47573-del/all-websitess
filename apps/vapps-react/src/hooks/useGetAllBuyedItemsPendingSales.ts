@@ -4,12 +4,16 @@ import { useSupabaseQuery } from './useSupabaseQuery';
 export type ItemsStockRow = {
 	item_id: number;
 	title: string;
+	es_title: string;
+	image_url: string | null;
 	brand: string;
+	amount: number;
+	active: boolean;
 	total_buyed: number;
 	total_sold: number;
+	stock_final: number;
 };
 
-// TODO: revisar que es correcto el calculo
 export async function getAllBuyedItemsPendingSales() {
 	return await supabaseBrowserClient.rpc('get_items_stock');
 }

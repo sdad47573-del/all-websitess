@@ -1,9 +1,9 @@
 import ConnectedModal from '../components/ConnectedModal';
+import { PageLayout } from '../components/PageLayout';
+import { SectionHeader } from '../components/SectionHeader';
 import Stats from '../components/Stats';
 import VapList from '../components/VapList';
 import { useGetAllItems, useGetBestSellingItem } from '../hooks';
-import { SectionHeader } from '../components/SectionHeader';
-import { PageLayout } from '../components/PageLayout';
 
 export const Home = () => {
 	const { data: stock, isLoading } = useGetAllItems();
@@ -11,7 +11,7 @@ export const Home = () => {
 	const { data: mostSold } = useGetBestSellingItem();
 
 	return (
-		<PageLayout title="Inicio">
+		<PageLayout>
 			<Stats
 				items={[
 					{
@@ -42,4 +42,3 @@ export const Home = () => {
 		</PageLayout>
 	);
 };
-

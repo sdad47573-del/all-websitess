@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
+import { BuyList } from '../components/BuyList';
+import { Loading } from '../components/Loading';
+import { PageLayout } from '../components/PageLayout';
+import { ProductInventory } from '../components/ProductInventory';
 import Stats from '../components/Stats';
 import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllFinancialRecords } from '../hooks';
-import { PageLayout } from '../components/PageLayout';
-import { BuyList } from '../components/BuyList';
-import { ProductInventory } from '../components/ProductInventory';
-import { Loading } from '../components/Loading';
 
 export const Compras = () => {
 	const { data: buy, isLoading: isLoadingBuy } = useGetAllBuy();
@@ -63,12 +63,12 @@ export const Compras = () => {
 		0,
 	);
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
-	const cubierto = (pendingTotal * 100 / pendingcostTotal || 0).toFixed(2);
+	const cubierto = ((pendingTotal * 100) / pendingcostTotal || 0).toFixed(2);
 
 	if (isLoadingBuy) return <Loading text="Cargando historial de compras..." />;
 
 	return (
-		<PageLayout title="Gestión de Compras">
+		<PageLayout>
 			{buy && finatial && (
 				<Stats
 					items={[
@@ -114,4 +114,3 @@ export const Compras = () => {
 		</PageLayout>
 	);
 };
-

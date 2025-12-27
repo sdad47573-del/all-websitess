@@ -1,3 +1,6 @@
+CREATE INDEX IF NOT EXISTS idx_buyeditems_itemid ON public.buyedItems(item_id);
+CREATE INDEX IF NOT EXISTS idx_sales_itemid_active ON public.sales(item_id, active);
+
 DROP FUNCTION get_items_stock();
 
 CREATE OR REPLACE FUNCTION public.get_items_stock()
@@ -15,17 +18,6 @@ RETURNS TABLE (
 )
 LANGUAGE sql
 AS $$
-WITH buyed AS (
-    SELECT item_id, SUM(quantity) AS total_buyed
-    FROM public.buyedItems
-    GROUP BY item_id
-),
-sold AS (
-    SELECT item_id, SUM(amount) AS total_sold
-    FROM public.sales
-    WHERE active = true
-    GROUP BY item_id
-)
 SELECT 
     i.id AS item_id,
     i.title,
@@ -36,17 +28,19 @@ SELECT
     i.amount,
     COALESCE(b.total_buyed, 0) AS total_buyed,
     COALESCE(s.total_sold, 0) AS total_sold,
-
-    -- 🟦 STOCK FINAL
-    (
-        COALESCE(b.total_buyed, 0)
-        - COALESCE(s.total_sold, 0)
-        - i.amount
-    ) AS stock_final
-
+    (COALESCE(b.total_buyed, 0) - COALESCE(s.total_sold, 0) - i.amount) AS stock_final
 FROM public.items i
-LEFT JOIN buyed b ON b.item_id = i.id
-LEFT JOIN sold s ON s.item_id = i.id
+LEFT JOIN (
+    SELECT item_id, SUM(quantity) AS total_buyed
+    FROM public.buyedItems
+    GROUP BY item_id
+) b ON b.item_id = i.id
+LEFT JOIN (
+    SELECT item_id, SUM(amount) AS total_sold
+    FROM public.sales
+    WHERE active = true
+    GROUP BY item_id
+) s ON s.item_id = i.id
 ORDER BY stock_final DESC;
 $$;
 
