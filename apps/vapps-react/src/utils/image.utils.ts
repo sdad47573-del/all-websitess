@@ -5,7 +5,8 @@ import { imageBrandMap, imageMap } from '../data/maps/img';
  * If the brand is VAPSOLO, it uses the title-based map.
  * Otherwise, it uses the brand-based map.
  */
-export const getItemImageUrl = (title: string, brand: string) => {
-	const url = brand === 'VAPSOLO' ? imageMap[title] : imageBrandMap[brand];
+// TODO: remover y hacer que las imagenes vengan de supabasee
+export const getItemImageUrl = (title: string, brand?: string | null) => {
+	const url = brand === 'VAPSOLO' ? imageMap[title] : imageBrandMap[brand ?? ''];
 	return url ?? 'https://via.placeholder.com/150';
 };

@@ -4,11 +4,12 @@ import { useEffect } from 'react';
 import Toastify from 'toastify-js';
 import { useLocation } from 'wouter';
 import { useAuth } from '../contexts/AuthContext';
-import { signIn } from '../services/auth.service';
+import { useSignIn } from '@/hooks';
 
 export const Login = () => {
 	const { user } = useAuth();
 	const [, setLocation] = useLocation();
+	const signInMutation = useSignIn();
 
 	useEffect(() => {
 		if (user) {
@@ -17,7 +18,7 @@ export const Login = () => {
 	}, [user, setLocation]);
 
 	const handleLogin = async (data: LoginFormData) => {
-		const { error } = await signIn(data.email, data.password);
+		const { error } = await signInMutation.mutateAsync([data.email, data.password]);
 
 		if (error) {
 			Toastify({
@@ -56,7 +57,7 @@ export const Login = () => {
 					content="Inicia sesión en Vapps para gestionar tu inventario de vapers"
 				/>
 			</Helmet> */}
-			
+
 			<div
 				className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-base-200"
 				data-theme="scruz"
@@ -68,7 +69,7 @@ export const Login = () => {
 
 				{/* Glass Card */}
 				<div className="animate__animated animate__fadeInUp relative z-10 mx-4 w-full max-w-sm overflow-hidden rounded-3xl border border-white/20 bg-base-100/60 p-8 shadow-2xl backdrop-blur-xl sm:px-10">
-					
+
 					{/* Header */}
 					<div className="mb-8 text-center">
 						<div className="mb-6 flex justify-center">

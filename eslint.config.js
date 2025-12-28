@@ -39,7 +39,7 @@ export default [
 		languageOptions: {
 			parser: typescriptParser,
 			parserOptions: {
-				project: ['./packages/*/tsconfig.json', './tsconfig.eslint.json'],
+				project: ['./packages/*/tsconfig.json', './apps/*/tsconfig.json', './tsconfig.eslint.json'],
 				tsconfigRootDir: __dirname,
 			},
 		},

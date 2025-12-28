@@ -4,9 +4,9 @@ import { useSupabaseQuery } from './useSupabaseQuery';
 type BuyedItemRow = {
 	buy_id: number;
 	quantity: number;
-	eur: number;
+	// eur: number; // da error
 	buy: { id: number; eur: number; fecha: string; label: string; payed: boolean };
-	items: { id: number; title: string; brand: string };
+	items: { id: number; title: string; brand: string | null };
 };
 
 export type GroupedBuyItem = { id: number; title: string; brand: string; quantity: number };
@@ -44,6 +44,7 @@ export async function getAllBuy() {
 
 		acc[buyId].items.push({
 			...curr.items,
+			brand: curr.items.brand ?? '',
 			quantity: curr.quantity,
 		});
 

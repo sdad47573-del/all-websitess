@@ -1,3 +1,5 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from 'supabase-sdk';
 import { getClient } from 'supabase-sdk';
 
 /**
@@ -16,10 +18,10 @@ import { getClient } from 'supabase-sdk';
 // 		console.log('⚡ MSW Server corriendo en staging');
 // 	}
 // }
-export const supabaseBrowserClient = (() => {
+export const supabaseBrowserClient: SupabaseClient<Database> = (() => {
 	return getClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 })();
 
-export const supabaseServerClient = (() => {
+export const supabaseServerClient: SupabaseClient<Database> = (() => {
 	return getClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_SECRET_KEY);
 })();

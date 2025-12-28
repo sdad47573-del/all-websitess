@@ -1,12 +1,13 @@
 import type { User } from '@supabase/supabase-js';
 import * as auth from 'supabase-sdk';
 import { supabaseBrowserClient } from './init.service';
+import { sanitizeDeep } from '../utils/sanitize';
 
 /**
  * Sign in with email and password
  */
 export async function signIn(email: string, password: string) {
-	return auth.signIn(supabaseBrowserClient, email, password);
+	return auth.signIn(supabaseBrowserClient, sanitizeDeep(email), sanitizeDeep(password));
 }
 
 /**
@@ -25,7 +26,13 @@ export async function signUp(
 	fullName: string,
 	role?: auth.UserRole,
 ) {
-	return auth.signUp(supabaseBrowserClient, email, password, fullName, role);
+	return auth.signUp(
+		supabaseBrowserClient,
+		sanitizeDeep(email),
+		sanitizeDeep(password),
+		sanitizeDeep(fullName),
+		role,
+	);
 }
 
 /**
@@ -78,14 +85,14 @@ export async function createProfile(
 	fullName: string,
 	role: auth.UserRole = 'seller',
 ) {
-	return auth.createProfile(supabaseBrowserClient, userId, fullName, role);
+	return auth.createProfile(supabaseBrowserClient, userId, sanitizeDeep(fullName), role);
 }
 
 /**
  * Update user profile
  */
 export async function updateProfile(userId: string, updates: Partial<auth.Profile>) {
-	return auth.updateProfile(supabaseBrowserClient, userId, updates);
+	return auth.updateProfile(supabaseBrowserClient, userId, sanitizeDeep(updates));
 }
 
 /**

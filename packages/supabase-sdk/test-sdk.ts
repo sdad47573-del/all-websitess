@@ -1,10 +1,10 @@
-import { type Category, getClient, type Menu, type Plato } from './src/index.js';
+import { type Category, type Menu, type Plato } from './src/index.js';
 
 // Mock environment variables for testing types
-const SUPABASE_URL = 'https://example.supabase.co';
-const SUPABASE_KEY = 'example-key';
+// const SUPABASE_URL = 'https://example.supabase.co';
+// const SUPABASE_KEY = 'example-key';
 
-const client = getClient(SUPABASE_URL, SUPABASE_KEY);
+// const _client = getClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function testTypes() {
 	// Test Plato type

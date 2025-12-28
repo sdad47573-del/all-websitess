@@ -1,246 +1,63 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+import type { Database } from './supabase.js';
+import type { Json } from './supabase.js';
 
-export type UserRole = 'admin' | 'seller' | 'superadmin';
+export type UserRole = Database['public']['Enums']['user_role'];
 
-export interface Database {
-	public: {
-		Tables: {
-			categories: {
-				Row: {
-					id: number;
-					created_at: string;
-					name: string;
-					slug: string;
-					active: boolean;
-				};
-				Insert: {
-					id?: number;
-					created_at?: string;
-					name: string;
-					slug: string;
-					active?: boolean;
-				};
-				Update: {
-					id?: number;
-					created_at?: string;
-					name?: string;
-					slug?: string;
-					active?: boolean;
-				};
-			};
-			menu: {
-				Row: {
-					id: number;
-					created_at: string;
-					name: string;
-					active: boolean;
-					start_date: string | null;
-					end_date: string | null;
-				};
-				Insert: {
-					id?: number;
-					created_at?: string;
-					name: string;
-					active?: boolean;
-					start_date?: string | null;
-					end_date?: string | null;
-				};
-				Update: {
-					id?: number;
-					created_at?: string;
-					name?: string;
-					active?: boolean;
-					start_date?: string | null;
-					end_date?: string | null;
-				};
-			};
-			platos: {
-				Row: {
-					id: number;
-					created_at: string;
-					name: string;
-					description: string | null;
-					price: number;
-					image_url: string | null;
-					category_id: number | null;
-					active: boolean;
-					allergens: Json | null;
-				};
-				Insert: {
-					id?: number;
-					created_at?: string;
-					name: string;
-					description?: string | null;
-					price: number;
-					image_url?: string | null;
-					category_id?: number | null;
-					active?: boolean;
-					allergens?: Json | null;
-				};
-				Update: {
-					id?: number;
-					created_at?: string;
-					name?: string;
-					description?: string | null;
-					price?: number;
-					image_url?: string | null;
-					category_id?: number | null;
-					active?: boolean;
-					allergens?: Json | null;
-				};
-			};
-			items: {
-				Row: {
-					id: number;
-					created_at: string;
-					title: string;
-					brand: string;
-					amount: number;
-					active: boolean;
-				};
-				Insert: {
-					id?: number;
-					created_at?: string;
-					title: string;
-					brand?: string;
-					amount?: number;
-					active?: boolean;
-				};
-				Update: {
-					id?: number;
-					created_at?: string;
-					title?: string;
-					brand?: string;
-					amount?: number;
-					active?: boolean;
-				};
-			};
-			sales: {
-				Row: {
-					id: number;
-					created_at: string;
-					item_id: number;
-					seller_id: string;
-					concept: string;
-					price_per_unit: number;
-					payment: number | null;
-					amount: number;
-					active: boolean;
-				};
-				Insert: {
-					id?: number;
-					created_at?: string;
-					item_id: number;
-					seller_id: string;
-					concept: string;
-					price_per_unit: number;
-					payment?: number | null;
-					amount: number;
-					active?: boolean;
-				};
-				Update: {
-					id?: number;
-					created_at?: string;
-					item_id?: number;
-					seller_id?: string;
-					concept?: string;
-					price_per_unit?: number;
-					payment?: number | null;
-					amount?: number;
-					active?: boolean;
-				};
-			};
-			profiles: {
-				Row: {
-					id: string;
-					role: UserRole;
-					full_name: string;
-					created_at: string;
-					updated_at: string;
-				};
-				Insert: {
-					id: string;
-					role?: UserRole;
-					full_name: string;
-					created_at?: string;
-					updated_at?: string;
-				};
-				Update: {
-					id?: string;
-					role?: UserRole;
-					full_name?: string;
-					created_at?: string;
-					updated_at?: string;
-				};
-			};
-			financial_records: {
-				Row: {
-					id: number;
-					profile_id: string | null;
-					type: 'income' | 'profit';
-					label: string;
-					amount: number;
-					date: string;
-					created_at: string;
-				};
-				Insert: {
-					id?: number;
-					profile_id?: string | null;
-					type: 'income' | 'profit';
-					label: string;
-					amount: number;
-					date: string;
-					created_at?: string;
-				};
-				Update: {
-					id?: number;
-					profile_id?: string | null;
-					type?: 'income' | 'profit';
-					label?: string;
-					amount?: number;
-					date?: string;
-					created_at?: string;
-				};
-			};
-		};
-		Views: {
-			[_ in never]: never;
-		};
-		Functions: {
-			get_user_role: {
-				Args: Record<string, never>;
-				Returns: UserRole;
-			};
-			has_role: {
-				Args: { required_role: UserRole };
-				Returns: boolean;
-			};
-		};
-		Enums: {
-			user_role: UserRole;
-			financial_record_type: 'income' | 'profit';
-		};
-	};
+// Tipos legacy (Restaurant) – interfaces independientes
+export interface Category {
+	id: number;
+	created_at: string;
+	name: string;
+	slug: string;
+	active: boolean;
 }
 
-// Legacy exports for backward compatibility
-export type Category = Database['public']['Tables']['categories']['Row'];
-export type Menu = Database['public']['Tables']['menu']['Row'];
-export type Plato = Database['public']['Tables']['platos']['Row'];
+export interface Menu {
+	id: number;
+	created_at: string;
+	name: string;
+	active: boolean;
+	start_date: string | null;
+	end_date: string | null;
+}
+
+export interface Plato {
+	id: number;
+	created_at: string;
+	name: string;
+	description: string | null;
+	price: number;
+	image_url: string | null;
+	category_id: number | null;
+	active: boolean;
+	allergens: Json | null;
+}
+
 export type Item = Database['public']['Tables']['items']['Row'];
 
 // Organized types by domain - Restaurant
-export type RestaurantCategory = Database['public']['Tables']['categories']['Row'];
-export type RestaurantCategoryInsert = Database['public']['Tables']['categories']['Insert'];
-export type RestaurantCategoryUpdate = Database['public']['Tables']['categories']['Update'];
+export type RestaurantCategory = Category;
+export type RestaurantCategoryInsert = Omit<Category, 'id' | 'created_at'> & {
+	id?: number;
+	created_at?: string;
+};
+export type RestaurantCategoryUpdate = Partial<Category>;
 
-export type RestaurantMenu = Database['public']['Tables']['menu']['Row'];
-export type RestaurantMenuInsert = Database['public']['Tables']['menu']['Insert'];
-export type RestaurantMenuUpdate = Database['public']['Tables']['menu']['Update'];
+export type RestaurantMenu = Menu;
+export type RestaurantMenuInsert = Omit<Menu, 'id' | 'created_at' | 'active'> & {
+	id?: number;
+	created_at?: string;
+	active?: boolean;
+};
+export type RestaurantMenuUpdate = Partial<Menu>;
 
-export type RestaurantPlato = Database['public']['Tables']['platos']['Row'];
-export type RestaurantPlatoInsert = Database['public']['Tables']['platos']['Insert'];
-export type RestaurantPlatoUpdate = Database['public']['Tables']['platos']['Update'];
+export type RestaurantPlato = Plato;
+export type RestaurantPlatoInsert = Omit<Plato, 'id' | 'created_at' | 'active'> & {
+	id?: number;
+	created_at?: string;
+	active?: boolean;
+};
+export type RestaurantPlatoUpdate = Partial<Plato>;
 
 // Organized types by domain - Item Shop
 export type ItemProduct = Database['public']['Tables']['items']['Row'];

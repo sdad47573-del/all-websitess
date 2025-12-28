@@ -1,12 +1,12 @@
 export * from './useAuthMutations';
 export * from './useAuthQueries';
-export * from './useGetAllBeneficios';
 export * from './useGetAllBuy';
 export * from './useGetAllBuyedItemsPendingSales';
 export * from './useGetAllBuyedItemsTotals';
 export * from './useGetAllFinancialRecords';
-export * from './useGetAllIngresos';
 export * from './useGetAllItems';
 export * from './useGetAllSalesGroupedByDate';
 export * from './useGetBestSellingItem';
 export * from './useMutationInsertSale';
+// export * from './useGetAllBeneficios';
+// export * from './useGetAllIngresos';

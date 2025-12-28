@@ -10,7 +10,7 @@ document.addEventListener('click', (e) => {
 		try {
 			const srcObj = JSON.parse(src);
 			parsedSrc = srcObj.src || srcObj;
-		} catch (_) {
+		} catch {
 			parsedSrc = src;
 		}
 		modalData.set({

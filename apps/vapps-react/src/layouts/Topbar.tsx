@@ -6,22 +6,30 @@ import { useAuth } from '../contexts/AuthContext';
 import { isModalOpen } from '../stores/modal.store';
 import Logo from './Logo';
 
-const sections = [
+const baseSections = [
 	{ name: 'Inicio', href: '/' },
 	{ name: 'Promos', href: '/promos' },
 	{ name: 'Promos2', href: '/promos2' },
 	{ name: 'Ventas', href: '/ventas' },
 	{ name: 'Libro de cuentas', href: '/libro-cuentas' },
 	{ name: 'Compras', href: '/compras' },
-	{ name: 'Estadísticas', href: '/estadisticas' },
-	{ name: 'Historial de ventas', href: '/ventas-historial' },
-	{ name: 'Pendientes', href: '/pendientes-asignar' },
 ];
 
 export default function Topbar() {
 	const [currentPath] = useLocation();
 	const { profile, signOut } = useAuth();
 	const $isModalOpen = useStore(isModalOpen);
+
+	const adminSections =
+		profile?.role === 'superadmin'
+			? [
+				{ name: 'Estadísticas', href: '/estadisticas' },
+				{ name: 'Historial de ventas', href: '/ventas-historial' },
+				{ name: 'Pendientes', href: '/pendientes-asignar' },
+			]
+			: [];
+
+	const sections = [...baseSections, ...adminSections];
 
 	return (
 		<div
@@ -72,11 +80,12 @@ export default function Topbar() {
 						<li key={link.href}>
 							<Link
 								href={link.href}
-								className={`rounded-lg transition-all ${
+								className={twJoin(
+									'rounded-lg transition-all',
 									currentPath === link.href
 										? 'bg-primary text-primary-content hover:bg-primary/90 shadow-md'
 										: 'hover:bg-base-200'
-								}`}
+								)}
 							>
 								{link.name}
 							</Link>

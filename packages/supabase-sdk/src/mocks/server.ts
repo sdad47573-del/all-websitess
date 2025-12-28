@@ -1,4 +1,7 @@
-import { setupServer } from 'msw/node';
-import { handlers } from './handlers.js';
+let server: any = null;
 
-export const server = setupServer(...handlers);
+const { setupServer } = await import('msw/node');
+const { handlers } = await import('./handlers.js');
+server = setupServer(...handlers);
+
+export { server };
