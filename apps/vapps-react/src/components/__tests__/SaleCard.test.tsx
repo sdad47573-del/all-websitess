@@ -25,6 +25,7 @@ describe('SaleCard', () => {
 				amount: 3,
 				price_per_unit: 20,
 				brand: 'VAPSOLO',
+				image_url: null,
 			},
 			{
 				sale_id: 2,
@@ -33,6 +34,7 @@ describe('SaleCard', () => {
 				amount: 2,
 				price_per_unit: 20,
 				brand: 'OTHER',
+				image_url: null,
 			},
 		],
 	};

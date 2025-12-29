@@ -10,6 +10,7 @@ export interface TransactionItem {
 	id: number | string;
 	title: string;
 	brand: string;
+	image_url: string | null;
 	amount: number;
 	price?: number;
 }
@@ -104,7 +105,7 @@ export const ExpandableTransactionCard = ({
 									<VapListItem
 										id={Number(item.id)}
 										title={translateItem(item.title)}
-										src={getItemImageUrl(item.title, item.brand)}
+										src={getItemImageUrl(item.image_url)}
 										amount={item.amount}
 										price={item.price}
 									/>

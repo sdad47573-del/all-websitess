@@ -50,20 +50,20 @@ export const Compras = () => {
 		}));
 	}, [buy, ingresosTotal]);
 
-	const pendingTotal = buyWithCoverage.reduce(
-		(total, item) => (!item.payed ? total + item.pending : total),
-		0,
-	);
-	const pendingcostTotal = buyWithCoverage.reduce(
-		(total, item) => (!item.payed ? total + item.eur : total),
-		0,
-	);
+	// const pendingTotal = buyWithCoverage.reduce(
+	// 	(total, item) => (!item.payed ? total + item.pending : total),
+	// 	0,
+	// );
+	// const pendingcostTotal = buyWithCoverage.reduce(
+	// 	(total, item) => (!item.payed ? total + item.eur : total),
+	// 	0,
+	// );
 	const pedidospendientes = buyWithCoverage.reduce(
 		(total, item) => (!item.payed ? total + 1 : total),
 		0,
 	);
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
-	const cubierto = ((pendingTotal * 100) / pendingcostTotal || 0).toFixed(2);
+	// const cubierto = ((pendingTotal * 100) / pendingcostTotal || 0).toFixed(2);
 
 	if (isLoadingBuy) return <Loading text="Cargando historial de compras..." />;
 
@@ -84,12 +84,12 @@ export const Compras = () => {
 							icon: 'ri-shopping-cart-line',
 							color: 'bg-blue-500',
 						},
-						{
-							label: 'Cubierto %',
-							value: cubierto + '%',
-							icon: 'ri-bar-chart-line',
-							color: Number(cubierto) >= 100 ? 'bg-green-500' : 'bg-red-500',
-						},
+						// {
+						// 	label: 'Cubierto %',
+						// 	value: cubierto + '%',
+						// 	icon: 'ri-bar-chart-line',
+						// 	color: Number(cubierto) >= 100 ? 'bg-green-500' : 'bg-red-500',
+						// },
 						{
 							label: Number(restante) > 0 ? 'Ganancias' : 'Pendiente',
 							value: restante + '€',

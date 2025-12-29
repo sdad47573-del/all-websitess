@@ -5,6 +5,7 @@ import Toastify from 'toastify-js';
 import { useLocation } from 'wouter';
 import { useAuth } from '../contexts/AuthContext';
 import { useSignIn } from '@/hooks';
+import Logo from '../layouts/Logo';
 
 export const Login = () => {
 	const { user } = useAuth();
@@ -72,15 +73,9 @@ export const Login = () => {
 
 					{/* Header */}
 					<div className="mb-8 text-center">
-						<div className="mb-6 flex justify-center">
-							{/* Replaced generic placeholder with a styled icon container */}
-							<div className="rounded-xl bg-gradient-to-tr from-primary to-secondary p-3 text-white shadow-lg shadow-primary/30">
-								<i className="ri-box-3-line text-3xl"></i>
-							</div>
+						<div className="flex justify-center">
+							<Logo className="w-24 drop-shadow-xl" />
 						</div>
-						<h1 className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-3xl font-bold tracking-tight text-transparent">
-							Vapps
-						</h1>
 						<p className="mt-2 text-sm font-medium text-base-content/60">
 							Gestión Inteligente de Inventario
 						</p>

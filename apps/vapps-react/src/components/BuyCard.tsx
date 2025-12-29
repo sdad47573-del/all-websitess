@@ -4,6 +4,7 @@ interface BuyItem {
     id: string | number;
     title: string;
     brand: string;
+    image_url: string | null;
     quantity: number;
 }
 
@@ -44,6 +45,7 @@ export const BuyCard = ({
         id: item.id,
         title: item.title,
         brand: item.brand,
+        image_url: item.image_url,
         amount: item.quantity,
     }));
 

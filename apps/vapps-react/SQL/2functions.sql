@@ -135,7 +135,7 @@ BEGIN
 END;
 $$;
 
-DROP FUNCTION group_by_day_concept_with_items();
+DROP FUNCTION IF EXISTS group_by_day_concept_with_items();
 
 CREATE OR REPLACE FUNCTION public.group_by_day_concept_with_items()
 RETURNS TABLE (
@@ -162,6 +162,7 @@ SELECT
             'item_id', i.id,
             'item_title', i.title,
             'brand', i.brand,
+            'image_url', i.image_url,
             'seller_id', s.seller_id,
             'amount', s.amount,
             'payment', s.payment,

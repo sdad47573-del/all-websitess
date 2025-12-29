@@ -107,7 +107,7 @@ const ItemComparisonList = ({
 									<div className="flex items-center gap-3">
 										<div className="bg-base-200 border-base-300 h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border">
 											<img
-												src={getItemImageUrl(item.title, item.brand)}
+												src={getItemImageUrl(item.image_url)}
 												alt={item.title}
 												className="h-full w-full object-cover"
 											/>

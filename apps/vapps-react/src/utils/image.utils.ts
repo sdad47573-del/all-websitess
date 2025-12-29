@@ -1,4 +1,4 @@
-import { imageBrandMap, imageMap } from '../data/maps/img';
+import placeholderImage from '@assets/placeholder-600x600.webp';
 
 /**
  * Gets the image URL for an item based on its title and brand.
@@ -6,7 +6,6 @@ import { imageBrandMap, imageMap } from '../data/maps/img';
  * Otherwise, it uses the brand-based map.
  */
 // TODO: remover y hacer que las imagenes vengan de supabasee
-export const getItemImageUrl = (title: string, brand?: string | null) => {
-	const url = brand === 'VAPSOLO' ? imageMap[title] : imageBrandMap[brand ?? ''];
-	return url ?? 'https://via.placeholder.com/150';
+export const getItemImageUrl = (image_url: string | null) => {
+	return image_url || placeholderImage;
 };

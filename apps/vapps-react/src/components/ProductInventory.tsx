@@ -1,6 +1,5 @@
 import { VapListItem } from '@react-components';
 import { SectionHeader } from './SectionHeader';
-import { imageBrandMap, imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 
 interface ProductInventoryProps {
@@ -19,7 +18,7 @@ export const ProductInventory = ({ items, title, subtitle }: ProductInventoryPro
                         key={item.item_id}
                         id={item.item_id}
                         title={translateItem(item.title)}
-                        src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
+                        src={item.image_url}
                         amount={item.total_quantity ?? item.total_buyed ?? 0}
                     />
                 ))}

@@ -1,31 +1,31 @@
-import ArandanoAzulGrosellaNegraHielo from '@assets/VAPS/ArandanoAzulGrosellaNegraHielo.png';
-import ArandanosRojos from '@assets/VAPS/arandano-cereza-arandano-rojo.png';
-import ArandanoAzulCerezaCola from '@assets/VAPS/arandano-cereza-cola.png';
-import ArandanoAzulHielo from '@assets/VAPS/arandano-hielo.png';
-import DobleManzana from '@assets/VAPS/doble-manzana.png';
-import ExplosionDeUva from '@assets/VAPS/explosion-uva.png';
-import FrambuesaAzul from '@assets/VAPS/frambuesa-azul.png';
-import FrambuesaSandia from '@assets/VAPS/frambuesa-sandia.png';
-import FresaBanana from '@assets/VAPS/fresa-banana.png';
-import FresaHielo from '@assets/VAPS/fresa-hielo.png';
-import FresaKiwi from '@assets/VAPS/fresa-kiwi.png';
-import FresaSandia from '@assets/VAPS/fresa-sandia.png';
-import FresaVainillaCola from '@assets/VAPS/fresa-vainilla-cola.png';
-import FrutosMixtos from '@assets/VAPS/frutos-mixtos.png';
-import HieloNegroDragonfruitFresa from '@assets/VAPS/hielo-negro-dragonfruit-fresa.png';
-import KiwiMaracuyaGuayaba from '@assets/VAPS/kiwi-maracuya-guayaba.png';
-import LimonLima from '@assets/VAPS/limon-lima.png';
-import LimonadaRosa from '@assets/VAPS/limonada-rosa.png';
-import Love66 from '@assets/VAPS/love66.png';
-import MelocotonFrutosDelBosque from '@assets/VAPS/melocoton-frutos-bosque.png';
-import MelocotonMangoPina from '@assets/VAPS/melocoton-mango-pina.png';
-import MentaFresca from '@assets/VAPS/menta-fresca.png';
-import HieloMorasArandanoAzul from '@assets/VAPS/mora-arandano-hielo.png';
-import RedBull from '@assets/VAPS/red-bull.png';
-import SandiaHielo from '@assets/VAPS/sandia-hielo.png';
-import Skittles from '@assets/VAPS/skittles.png';
-import SummerDream from '@assets/VAPS/sueno-verano.png';
-import TripleCereza from '@assets/VAPS/triple-cereza.png';
+import ArandanoAzulGrosellaNegraHielo from '@assets/VAPS/vapsolo-ArandanoAzulGrosellaNegraHielo.webp';
+import ArandanosRojos from '@assets/VAPS/vapsolo-arandano-cereza-arandano-rojo.webp';
+import ArandanoAzulCerezaCola from '@assets/VAPS/vapsolo-arandano-cereza-cola.webp';
+import ArandanoAzulHielo from '@assets/VAPS/vapsolo-arandano-hielo.webp';
+import DobleManzana from '@assets/VAPS/vapsolo-doble-manzana.webp';
+import ExplosionDeUva from '@assets/VAPS/vapsolo-explosion-uva.webp';
+import FrambuesaAzul from '@assets/VAPS/vapsolo-frambuesa-azul.webp';
+import FrambuesaSandia from '@assets/VAPS/vapsolo-frambuesa-sandia.webp';
+import FresaBanana from '@assets/VAPS/vapsolo-fresa-banana.webp';
+import FresaHielo from '@assets/VAPS/vapsolo-fresa-hielo.webp';
+import FresaKiwi from '@assets/VAPS/vapsolo-fresa-kiwi.webp';
+import FresaSandia from '@assets/VAPS/vapsolo-fresa-sandia.webp';
+import FresaVainillaCola from '@assets/VAPS/vapsolo-fresa-vainilla-cola.webp';
+import FrutosMixtos from '@assets/VAPS/vapsolo-frutos-mixtos.webp';
+import HieloNegroDragonfruitFresa from '@assets/VAPS/vapsolo-hielo-negro-dragonfruit-fresa.webp';
+import KiwiMaracuyaGuayaba from '@assets/VAPS/vapsolo-kiwi-maracuya-guayaba.webp';
+import LimonLima from '@assets/VAPS/vapsolo-limon-lima.webp';
+import LimonadaRosa from '@assets/VAPS/vapsolo-limonada-rosa.webp';
+import Love66 from '@assets/VAPS/vapsolo-love66.webp';
+import MelocotonFrutosDelBosque from '@assets/VAPS/vapsolo-melocoton-frutos-bosque.webp';
+import MelocotonMangoPina from '@assets/VAPS/vapsolo-melocoton-mango-pina.webp';
+import MentaFresca from '@assets/VAPS/vapsolo-menta-fresca.webp';
+import HieloMorasArandanoAzul from '@assets/VAPS/vapsolo-mora-arandano-hielo.webp';
+import RedBull from '@assets/VAPS/vapsolo-red-bull.webp';
+import SandiaHielo from '@assets/VAPS/vapsolo-sandia-hielo.webp';
+import Skittles from '@assets/VAPS/vapsolo-skittles.webp';
+import SummerDream from '@assets/VAPS/vapsolo-sueno-verano.webp';
+import TripleCereza from '@assets/VAPS/vapsolo-triple-cereza.webp';
 
 import BangBoxS1 from '@assets/VAPS/Bang-Box-S1-15000.png';
 import ZooyKing from '@assets/VAPS/zooy-king-15000.jpg';
@@ -67,38 +67,3 @@ export const imageBrandMap: Record<string, any> = {
 	'Bang Box': BangBoxS1,
 	Zooy: ZooyKing,
 };
-// import { getVaperImageUrl } from '../../utils/supabase-storage';
-
-// // Mapa de imágenes desde Supabase Storage
-// // Bucket: vaper-images
-// // Estructura: VAPS/<nombre-archivo>.png
-// export const imageMap: Record<string, string> = {
-// 	'Black Ice Drangofruit Strawberry': getVaperImageUrl('hielo-negro-dragonfruit-fresa.png'),
-// 	'Blue Razz': getVaperImageUrl('frambuesa-azul.png'),
-// 	'Blueberry Blackcurrant Ice': getVaperImageUrl('ArandanoAzulGrosellaNegraHielo.png'),
-// 	'Blueberry Cherry Cola': getVaperImageUrl('arandano-cereza-cola.png'),
-// 	'Blueberry Cherry Cranberry': getVaperImageUrl('arandano-cereza-arandano-rojo.png'),
-// 	'Blueberry Ice': getVaperImageUrl('arandano-hielo.png'),
-// 	'Double Apple': getVaperImageUrl('doble-manzana.png'),
-// 	'Kiwi Passion Fruit Guava': getVaperImageUrl('kiwi-maracuya-guayaba.png'),
-// 	'Lemon Lime': getVaperImageUrl('limon-lima.png'),
-// 	'Mixed Berry': getVaperImageUrl('frutos-mixtos.png'),
-// 	'Peach Berry': getVaperImageUrl('melocoton-frutos-bosque.png'),
-// 	'Peach Mango Pineapple': getVaperImageUrl('melocoton-mango-pina.png'),
-// 	'Pink Lemonade': getVaperImageUrl('limonada-rosa.png'),
-// 	'Raspberry Watermelon': getVaperImageUrl('frambuesa-sandia.png'),
-// 	'Red Bull': getVaperImageUrl('red-bull.png'),
-// 	'Strawberry Banana': getVaperImageUrl('fresa-banana.png'),
-// 	'Strawberry Ice': getVaperImageUrl('fresa-hielo.png'),
-// 	'Strawberry Kiwi': getVaperImageUrl('fresa-kiwi.png'),
-// 	'Strawberry Watermelon': getVaperImageUrl('fresa-sandia.png'),
-// 	'Summer Dream': getVaperImageUrl('sueno-verano.png'),
-// 	'Watermelon Ice': getVaperImageUrl('sandia-hielo.png'),
-// 	'blackberry blueberry ice': getVaperImageUrl('mora-arandano-hielo.png'),
-// 	'cool mint': getVaperImageUrl('menta-fresca.png'),
-// 	'grape burst': getVaperImageUrl('explosion-uva.png'),
-// 	'love 66': getVaperImageUrl('love66.png'),
-// 	'strawberry vanilla cola': getVaperImageUrl('fresa-vainilla-cola.png'),
-// 	'triple cherry': getVaperImageUrl('triple-cereza.png'),
-// 	Skittles: getVaperImageUrl('skittles.png'),
-// };

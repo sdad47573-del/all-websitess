@@ -19,8 +19,8 @@ export const Default: Story = {
         total: 30,
         label: 'Pedido Navidad',
         items: [
-            { id: 1, title: 'VAPSOLO 12000 Kiwi', brand: 'VAPSOLO', quantity: 15 },
-            { id: 2, title: 'VAPSOLO 12000 Mango', brand: 'VAPSOLO', quantity: 15 },
+            { id: 1, title: 'VAPSOLO 12000 Kiwi', brand: 'VAPSOLO', quantity: 15, image_url: null },
+            { id: 2, title: 'VAPSOLO 12000 Mango', brand: 'VAPSOLO', quantity: 15, image_url: null },
         ],
     },
 };
@@ -33,7 +33,7 @@ export const PendingPayment: Story = {
         payed: false,
         pending: 50.00,
         items: [
-            { id: 1, title: 'VAPSOLO 12000 Strawberry', brand: 'VAPSOLO', quantity: 40 },
+            { id: 1, title: 'VAPSOLO 12000 Strawberry', brand: 'VAPSOLO', quantity: 40, image_url: null },
         ],
     },
 };
@@ -45,8 +45,8 @@ export const FullyPayed: Story = {
         total: 100,
         payed: true,
         items: [
-            { id: 1, title: 'VAPSOLO 12000 Watermelon', brand: 'VAPSOLO', quantity: 50 },
-            { id: 2, title: 'VAPSOLO 12000 Blueberry', brand: 'VAPSOLO', quantity: 50 },
+            { id: 1, title: 'VAPSOLO 12000 Watermelon', brand: 'VAPSOLO', quantity: 50, image_url: null },
+            { id: 2, title: 'VAPSOLO 12000 Blueberry', brand: 'VAPSOLO', quantity: 50, image_url: null },
         ],
     },
 };

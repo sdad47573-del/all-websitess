@@ -17,11 +17,11 @@ export const Estadisticas = () => {
 	const buyUdsTotal = buy?.reduce((total: number, item) => total + item.total, 0) ?? 0;
 	const buyEurTotal = buy?.reduce((total: number, item) => total + item.eur, 0) ?? 0;
 
-	const payed =
-		buy?.reduce((total: number, item) => (item.payed ? total + item.eur : total), 0) ?? 0;
+	// const payed =
+	// 	buy?.reduce((total: number, item) => (item.payed ? total + item.eur : total), 0) ?? 0;
 
 	const restante = (ingresosTotal - buyEurTotal).toFixed(2);
-	const cubierto = (((ingresosTotal - payed) / (buyEurTotal - payed)) * 100).toFixed(2);
+	// const cubierto = (((ingresosTotal - payed) / (buyEurTotal - payed)) * 100).toFixed(2);
 
 	const { data: sales } = useGetAllSalesGroupedByDate();
 	const totalCalculated =
@@ -51,12 +51,12 @@ export const Estadisticas = () => {
 							icon: 'ri-money-euro-circle-line',
 							color: 'bg-purple-500',
 						},
-						{
-							label: 'Cubierto %',
-							value: cubierto + '%',
-							icon: 'ri-bar-chart-line',
-							color: Number(cubierto) >= 100 ? 'bg-green-500' : 'bg-red-500',
-						},
+						// {
+						// 	label: 'Cubierto %',
+						// 	value: cubierto + '%',
+						// 	icon: 'ri-bar-chart-line',
+						// 	color: Number(cubierto) >= 100 ? 'bg-green-500' : 'bg-red-500',
+						// },
 						{
 							label: Number(restante) > 0 ? 'Ganancias' : 'Pendiente',
 							value: restante + '€',

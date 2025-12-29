@@ -5,6 +5,7 @@ export type SaleItemDetail = {
 	sale_id: number;
 	item_id: number;
 	item_title: string;
+	image_url: string | null;
 	brand: string;
 	amount: number;
 	price_per_unit: number;

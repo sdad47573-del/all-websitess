@@ -12,8 +12,8 @@ describe('BuyCard', () => {
         eur: 200,
         total: 50,
         items: [
-            { id: 1, title: 'Product 1', brand: 'VAPSOLO', quantity: 25 },
-            { id: 2, title: 'Product 2', brand: 'OTHER', quantity: 25 }
+            { id: 1, title: 'Product 1', brand: 'VAPSOLO', quantity: 25, image_url: null },
+            { id: 2, title: 'Product 2', brand: 'OTHER', quantity: 25, image_url: null }
         ],
         label: 'Custom Buy'
     };

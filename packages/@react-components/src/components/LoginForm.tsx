@@ -2,6 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Input } from './Input';
+import { Checkbox } from './Checkbox';
+import { InputPassword } from './InputPassword';
 
 const loginSchema = z.object({
 	email: z.string().email('Email inválido'),
@@ -36,44 +39,34 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
 
 	return (
 		<form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-5">
-			<div className="form-control space-y-2">
-				<label className="label p-0" htmlFor="email">
-					<span className="label-text font-medium text-base-content/80">Email</span>
-				</label>
-				<input
-					id="email"
-					type="email"
-					placeholder="tu@email.com"
-					className={`input input-bordered w-full bg-base-200/50 backdrop-blur-sm transition-all focus:bg-base-100 focus:ring-2 focus:ring-primary/20 ${errors.email ? 'input-error' : 'border-base-300'
-						}`}
-					{...register('email')}
-					disabled={isLoading}
-				/>
-				{errors.email && (
-					<span className="text-xs text-error mt-1 block font-medium animate-pulse">
-						{errors.email.message}
-					</span>
-				)}
-			</div>
+			<Input
+				id="email"
+				type="email"
+				autoComplete="email"
+				placeholder="tu@email.com"
+				label="Email"
+				leftIconClass="ri-mail-line"
+				error={errors.email?.message}
+				disabled={isLoading}
+				{...register('email')}
+			/>
 
-			<div className="form-control space-y-2">
-				<label className="label p-0" htmlFor="password">
-					<span className="label-text font-medium text-base-content/80">Contraseña</span>
-				</label>
-				<input
-					id="password"
-					type="password"
-					placeholder="••••••••"
-					className={`input input-bordered w-full bg-base-200/50 backdrop-blur-sm transition-all focus:bg-base-100 focus:ring-2 focus:ring-primary/20 ${errors.password ? 'input-error' : 'border-base-300'
-						}`}
-					{...register('password')}
-					disabled={isLoading}
-				/>
-				{errors.password && (
-					<span className="text-xs text-error mt-1 block font-medium animate-pulse">
-						{errors.password.message}
-					</span>
-				)}
+			<InputPassword
+				id="password"
+				autoComplete="current-password"
+				placeholder="••••••••"
+				label="Contraseña"
+				leftIconClass="ri-lock-2-line"
+				error={errors.password?.message}
+				disabled={isLoading}
+				{...register('password')}
+			/>
+
+			<div className="flex items-center justify-between">
+				<Checkbox label="Recordarme" {...register('remember' as any)} disabled={isLoading} aria-label="Recordarme" />
+				<a href="/recuperar" className="link link-primary text-sm">
+					¿Olvidaste tu contraseña?
+				</a>
 			</div>
 
 			<div className="form-control pt-4">

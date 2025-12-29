@@ -17,7 +17,7 @@ export function useGetAllItems() {
 				?.map((item) => ({
 					...item,
 					title: translateItem(item.title),
-					src: getItemImageUrl(item.title, item.brand),
+					src: getItemImageUrl(item.image_url),
 				}))
 				.sort((a, b) => b.amount - a.amount) ?? [],
 	});

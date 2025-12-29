@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v4';
+import { Input } from './Input';
+import { Checkbox } from './Checkbox';
 
 export interface NumericFormData {
 	concept: string;
@@ -45,47 +47,29 @@ export const NumericForm = ({
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-			<fieldset className="fieldset">
-				<legend className="fieldset-legend">Concepto</legend>
-				<input
-					type="text"
-					placeholder="Pon el concepto aquí"
-					className="input w-full"
-					{...register('concept')}
-				/>
-				{errors.concept && <p className="label text-red-600">{errors.concept.message}</p>}
-			</fieldset>
-			<fieldset className="fieldset">
-				<legend className="fieldset-legend">Precio por unidad</legend>
-				<input
-					type="text"
-					className="input w-full"
-					placeholder="Type here"
-					{...register('price_per_unit', {
-						valueAsNumber: true,
-					})}
-				/>
-				{errors.price_per_unit && (
-					<p className="label text-red-600">{errors.price_per_unit.message}</p>
-				)}
-			</fieldset>
-			<fieldset className="fieldset">
-				<legend className="fieldset-legend">Unidades</legend>
-				<input
-					type="text"
-					className="input w-full"
-					placeholder="Type here"
-					{...register('amount', {
-						valueAsNumber: true,
-					})}
-				/>
-				{errors.amount && <p className="label text-red-600">{errors.amount.message}</p>}
-			</fieldset>
+			<Input
+				label="Concepto"
+				type="text"
+				placeholder="Pon el concepto aquí"
+				error={errors.concept?.message as string | undefined}
+				{...register('concept')}
+			/>
+			<Input
+				label="Precio por unidad"
+				type="number"
+				placeholder="0"
+				error={errors.price_per_unit?.message as string | undefined}
+				{...register('price_per_unit', { valueAsNumber: true })}
+			/>
+			<Input
+				label="Unidades"
+				type="number"
+				placeholder="0"
+				error={errors.amount?.message as string | undefined}
+				{...register('amount', { valueAsNumber: true })}
+			/>
 
-			<label className="label">
-				<input type="checkbox" {...register('payment')} className="checkbox" />
-				Pagado
-			</label>
+			<Checkbox label="Pagado" {...register('payment')} className="checkbox" />
 
 			<button
 				type="submit"

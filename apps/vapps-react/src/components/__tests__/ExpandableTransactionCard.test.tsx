@@ -23,8 +23,8 @@ describe('ExpandableTransactionCard', () => {
 
     it('renders header and stats', () => {
         render(<ExpandableTransactionCard {...baseProps} items={[
-            { id: 1, title: 'Producto A', brand: 'VAPSOLO', amount: 1, price: 20 },
-            { id: 2, title: 'Producto B', brand: 'OTHER', amount: 1, price: 20 },
+            { id: 1, title: 'Producto A', brand: 'VAPSOLO', amount: 1, price: 20, image_url: null },
+            { id: 2, title: 'Producto B', brand: 'OTHER', amount: 1, price: 20, image_url: null },
         ]} />);
         expect(screen.getByText('Transacción')).toBeDefined();
         expect(screen.getByText('Cantidad')).toBeDefined();
@@ -39,7 +39,7 @@ describe('ExpandableTransactionCard', () => {
 
     it('toggles expansion with the button', () => {
         render(<ExpandableTransactionCard {...baseProps} items={[
-            { id: 1, title: 'Producto A', brand: 'VAPSOLO', amount: 1 },
+            { id: 1, title: 'Producto A', brand: 'VAPSOLO', amount: 1, image_url: null },
         ]} />);
         const toggle = screen.getByRole('button', { name: '' });
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
