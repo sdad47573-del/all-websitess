@@ -64,6 +64,7 @@ export const NumericForm = ({
 			<Input
 				label="Unidades"
 				type="number"
+				step={1}
 				placeholder="0"
 				error={errors.amount?.message as string | undefined}
 				{...register('amount', { valueAsNumber: true })}

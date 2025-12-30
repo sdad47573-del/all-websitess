@@ -16,6 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === 'password';
+    const isNumber = type === 'number';
 
     const inputClasses = twJoin(
         'input input-bordered w-full bg-base-200/50 backdrop-blur-sm transition-all focus:bg-base-100 focus:ring-2 focus:ring-primary/20',
@@ -41,6 +42,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
                     id={id}
                     ref={ref}
                     type={isPassword ? (showPassword ? 'text' : 'password') : type}
+                    step={isNumber ? (props.step ?? 'any') : undefined}
+                    inputMode={isNumber ? 'decimal' : undefined}
                     disabled={disabled}
                     className={inputClasses}
                 />

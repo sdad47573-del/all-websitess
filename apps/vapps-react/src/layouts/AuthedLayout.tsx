@@ -22,6 +22,15 @@ const PendientesAsignar = lazy(() =>
 	import('../pages/PendientesAsignar').then((m) => ({ default: m.PendientesAsignar })),
 );
 const NotFound = lazy(() => import('../pages/NotFound').then((m) => ({ default: m.NotFound })));
+const ItemsNuevo = lazy(() =>
+	import('../pages/ItemsNuevo').then((m) => ({ default: m.ItemsNuevo })),
+);
+const ComprasNueva = lazy(() =>
+	import('../pages/ComprasNueva').then((m) => ({ default: m.ComprasNueva })),
+);
+const MarcasModelosNuevo = lazy(() =>
+	import('../pages/MarcasModelosNuevo').then((m) => ({ default: m.MarcasModelosNuevo })),
+);
 
 export const AuthedLayout = () => {
 	return (
@@ -38,6 +47,10 @@ export const AuthedLayout = () => {
 					<Route path="/estadisticas" component={Estadisticas} />
 					<Route path="/libro-cuentas" component={LibroCuentas} />
 					<Route path="/pendientes-asignar" component={PendientesAsignar} />
+					{/* Rutas Superadmin */}
+					<Route path="/compras-nueva" component={ComprasNueva} />
+					<Route path="/items-nuevo" component={ItemsNuevo} />
+					<Route path="/marcas-modelos-nuevo" component={MarcasModelosNuevo} />
 
 					<Route component={NotFound} />
 				</Switch>

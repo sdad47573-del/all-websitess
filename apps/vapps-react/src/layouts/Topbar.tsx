@@ -23,10 +23,13 @@ export default function Topbar() {
 	const adminSections =
 		profile?.role === 'superadmin'
 			? [
-				{ name: 'Estadísticas', href: '/estadisticas' },
-				{ name: 'Historial de ventas', href: '/ventas-historial' },
-				{ name: 'Pendientes', href: '/pendientes-asignar' },
-			]
+					{ name: 'Estadísticas', href: '/estadisticas' },
+					{ name: 'Historial de ventas', href: '/ventas-historial' },
+					{ name: 'Pendientes', href: '/pendientes-asignar' },
+					{ name: 'Añadir compra', href: '/compras-nueva' },
+					{ name: 'Añadir producto', href: '/items-nuevo' },
+					{ name: 'Añadir modelo', href: '/marcas-modelos-nuevo' },
+				]
 			: [];
 
 	const sections = [...baseSections, ...adminSections];
@@ -84,7 +87,7 @@ export default function Topbar() {
 									'rounded-lg transition-all',
 									currentPath === link.href
 										? 'bg-primary text-primary-content hover:bg-primary/90 shadow-md'
-										: 'hover:bg-base-200'
+										: 'hover:bg-base-200',
 								)}
 							>
 								{link.name}
