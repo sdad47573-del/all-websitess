@@ -12,8 +12,7 @@ describe('formatDate', () => {
         expect(formatDate('')).toBe('N/A');
     });
 
-    it('should return "Invalid Date" for invalid date strings (native Date behavior)', () => {
-        // new Date('invalid').toLocaleDateString('es-ES') usually returns "Invalid Date"
-        expect(formatDate('not-a-date')).toBe('Invalid Date');
+    it('should return "N/A" for invalid date strings', () => {
+        expect(formatDate('not-a-date')).toBe('N/A');
     });
 });

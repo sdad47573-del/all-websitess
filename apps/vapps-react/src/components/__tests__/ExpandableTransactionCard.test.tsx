@@ -37,13 +37,14 @@ describe('ExpandableTransactionCard', () => {
         expect(screen.getByText('Transacción')).toBeDefined();
     });
 
-    it('toggles expansion with the button', () => {
-        render(<ExpandableTransactionCard {...baseProps} items={[
+    it('toggles expansion when header is clicked', () => {
+        const { container } = render(<ExpandableTransactionCard {...baseProps} items={[
             { id: 1, title: 'Producto A', brand: 'VAPSOLO', amount: 1, image_url: null },
         ]} />);
-        const toggle = screen.getByRole('button', { name: '' });
-        expect(toggle).toHaveAttribute('aria-expanded', 'false');
-        fireEvent.click(toggle);
-        expect(toggle).toHaveAttribute('aria-expanded', 'true');
+        const header = screen.getByText('Transacción');
+        const arrow = container.querySelector('.ri-arrow-down-s-line') as HTMLElement;
+        expect(arrow.className).not.toContain('rotate-180');
+        fireEvent.click(header);
+        expect(arrow.className).toContain('rotate-180');
     });
 });

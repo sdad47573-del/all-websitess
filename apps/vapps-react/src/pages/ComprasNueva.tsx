@@ -1,13 +1,29 @@
-import { Input, Checkbox, VapListItem } from '@react-components';
-import { useGetAllItems, useCreateBuyWithItems } from '@/hooks';
+import { Input, Checkbox } from '@react-components';
+import { useGetAllItemsAll, useCreateBuyWithItems, useGetAllBrands } from '@/hooks';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Toastify from 'toastify-js';
 import { PageLayout } from '@/components/PageLayout';
 import { SectionHeader } from '@/components/SectionHeader';
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useLocation } from 'wouter';
+import { Loading } from '@/components/Loading';
+
+const SearchFilters = lazy(() =>
+	import('../components/ComprasNueva/SearchFilters').then((m) => ({ default: m.SearchFilters })),
+);
+const ProductGrid = lazy(() =>
+	import('../components/ComprasNueva/ProductGrid').then((m) => ({ default: m.ProductGrid })),
+);
+const AddItems = lazy(() =>
+	import('../components/ComprasNueva/AddItems').then((m) => ({ default: m.AddItems })),
+);
+const SelectedItemsList = lazy(() =>
+	import('../components/ComprasNueva/SelectedItemsList').then((m) => ({
+		default: m.SelectedItemsList,
+	})),
+);
 
 const schema = z.object({
 	label: z.string().min(2),
@@ -21,7 +37,8 @@ type FormData = z.input<typeof schema>;
 type SelectedItem = { item_id: number; title: string; quantity: number };
 
 export const ComprasNueva = () => {
-	const { data: items = [] } = useGetAllItems();
+	const { data: items = [] } = useGetAllItemsAll();
+	const { data: brands = [] } = useGetAllBrands();
 	const createBuy = useCreateBuyWithItems();
 	const [, setLocation] = useLocation();
 	const { register, handleSubmit, formState } = useForm<FormData>({
@@ -32,6 +49,17 @@ export const ComprasNueva = () => {
 	const [selected, setSelected] = useState<SelectedItem[]>([]);
 	const [currentItemId, setCurrentItemId] = useState<number | ''>('');
 	const [currentQty, setCurrentQty] = useState<number>(1);
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [selectedBrand, setSelectedBrand] = useState<string>('');
+
+	const filteredItems = items.filter((item) => {
+		const matchesBrand = selectedBrand ? item.brand === selectedBrand : true;
+		const matchesText =
+			searchTerm.trim().length === 0
+				? true
+				: item.title.toLowerCase().includes(searchTerm.toLowerCase());
+		return matchesBrand && matchesText;
+	});
 
 	const addItem = () => {
 		if (!currentItemId || currentQty <= 0) return;
@@ -136,76 +164,39 @@ export const ComprasNueva = () => {
 						<Checkbox label="Pagado" {...register('payed')} />
 					</div>
 
-					<div className="border-base-300 rounded-xl border p-4">
-						<h3 className="mb-3 text-lg font-bold">Añadir items</h3>
-						<div className="flex flex-col gap-3 sm:flex-row">
-							<select
-								className="select select-bordered w-full sm:max-w-xs"
-								value={currentItemId}
-								onChange={(e) => setCurrentItemId(Number(e.target.value) || '')}
-							>
-								<option value="">Selecciona un item</option>
-								{items.map((item) => (
-									<option key={item.id} value={item.id}>
-										{item.title}
-									</option>
-								))}
-							</select>
-							<input
-								type="number"
-								className="input input-bordered w-full sm:max-w-[140px]"
-								placeholder="Cantidad"
-								min={1}
-								value={currentQty}
-								onChange={(e) => setCurrentQty(Number(e.target.value) || 1)}
-							/>
-							<button type="button" className="btn btn-primary" onClick={addItem}>
-								Añadir
-							</button>
-						</div>
+					<Suspense fallback={<Loading />}>
+						<SearchFilters
+							searchTerm={searchTerm}
+							onSearchChange={setSearchTerm}
+							brands={brands ?? []}
+							selectedBrand={selectedBrand}
+							onBrandChange={setSelectedBrand}
+						/>
+					</Suspense>
 
-						{selected.length > 0 && (
-							<div className="mt-4">
-								<ul className="divide-base-300 border-base-300 divide-y rounded-lg border">
-									{selected.map((s) => (
-										<li key={s.item_id} className="flex items-center justify-between p-3">
-											<div>
-												<p className="font-medium">{s.title}</p>
-												<p className="text-base-content/60 text-sm">Cantidad: {s.quantity}</p>
-											</div>
-											<button
-												type="button"
-												className="btn btn-ghost btn-sm text-error"
-												onClick={() => removeItem(s.item_id)}
-											>
-												<i className="ri-delete-bin-6-line"></i>
-												Quitar
-											</button>
-										</li>
-									))}
-								</ul>
-							</div>
-						)}
-					</div>
+					<Suspense fallback={<Loading />}>
+						<AddItems
+							items={filteredItems.map((i) => ({ id: i.id, title: i.title }))}
+							currentItemId={currentItemId}
+							onItemIdChange={setCurrentItemId}
+							currentQty={currentQty}
+							onQtyChange={setCurrentQty}
+							onAdd={addItem}
+						/>
+						<SelectedItemsList selected={selected} onRemove={removeItem} />
+					</Suspense>
 
-					<div className="mt-6">
-						<h4 className="text-md mb-3 font-bold">Productos actuales</h4>
-						<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-							{items.map((item) => (
-								<div key={item.id} className="cursor-pointer" onClick={() => addItemById(item.id)}>
-									<VapListItem
-										id={item.id}
-										title={item.title}
-										src={item.src}
-										amount={item.amount}
-									/>
-								</div>
-							))}
-						</div>
-						<p className="text-base-content/60 mt-2 text-xs">
-							Pulsa un producto para añadirlo con la cantidad indicada.
-						</p>
-					</div>
+					<Suspense fallback={<Loading />}>
+						<ProductGrid
+							items={filteredItems.map((item) => ({
+								id: item.id,
+								title: item.title,
+								src: item.src,
+								amount: item.amount,
+							}))}
+							onItemClick={addItemById}
+						/>
+					</Suspense>
 
 					<div className="flex justify-end">
 						<button

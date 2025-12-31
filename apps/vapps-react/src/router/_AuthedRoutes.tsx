@@ -1,8 +1,9 @@
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'wouter';
 import { Loading } from '../components/Loading';
-import { PrivateRoute } from '../router/PrivateRoute';
-import Topbar from './Topbar';
+import { PrivateRoute } from './PrivateRoute';
+import { SuperAdminRoute } from './SuperAdminRoute';
+import Topbar from '../layouts/Topbar';
 
 const Home = lazy(() => import('../pages/Home').then((m) => ({ default: m.Home })));
 const Ventas = lazy(() => import('../pages/Ventas').then((m) => ({ default: m.Ventas })));
@@ -48,7 +49,14 @@ export const AuthedLayout = () => {
 					<Route path="/libro-cuentas" component={LibroCuentas} />
 					<Route path="/pendientes-asignar" component={PendientesAsignar} />
 					{/* Rutas Superadmin */}
-					<Route path="/compras-nueva" component={ComprasNueva} />
+					<Route
+						path="/compras-nueva"
+						component={() => (
+							<SuperAdminRoute>
+								<ComprasNueva />
+							</SuperAdminRoute>
+						)}
+					/>
 					<Route path="/items-nuevo" component={ItemsNuevo} />
 					<Route path="/marcas-modelos-nuevo" component={MarcasModelosNuevo} />
 

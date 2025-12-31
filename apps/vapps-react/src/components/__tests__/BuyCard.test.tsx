@@ -27,6 +27,7 @@ describe('BuyCard', () => {
 
     it('shows "Compra de Productos" as default label', () => {
         const { label, ...otherProps } = defaultProps;
+        void label;
         render(<BuyCard {...otherProps} />);
         expect(screen.getByText('Compra de Productos')).toBeDefined();
     });

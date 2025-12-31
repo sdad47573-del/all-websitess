@@ -2,7 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { Routes } from './pages/_Routes';
+import { Routes } from './router/_Routes';
 
 import './styles/index.css';
 import 'remixicon/fonts/remixicon.css';
