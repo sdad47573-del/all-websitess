@@ -1,10 +1,13 @@
-import { VapListItem } from '@react-components';
+import VapList from '@/components/VapList';
+import { PageLayout } from '@/components/PageLayout';
+import { SectionHeader } from '@/components/SectionHeader';
 import Stats from '../components/Stats';
-import { imageBrandMap, imageMap } from '../data/maps/img';
 import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
 import type { ItemsStockRow } from '../hooks/useGetAllBuyedItemsPendingSales';
+import { getItemImageUrl } from '@/utils/image.utils';
+import { imageMap } from '@/data/maps/img';
 
 // TODO: sale vapers en negativo,
 // eso es porque se han puesto en amount mas cantidad de la que se ha comprado, mirar las compras y ver que ha pasado
@@ -12,8 +15,28 @@ import type { ItemsStockRow } from '../hooks/useGetAllBuyedItemsPendingSales';
 export const HistorialVentas = () => {
 	const { data } = useGetAllBuyedItemsPendingSales();
 
+	const pendientesItems =
+		data?.map((item: ItemsStockRow) => ({
+			id: item.item_id,
+			title: translateItem(item.title),
+			src: getItemImageUrl(item.image_url),
+			amount: item.total_buyed - item.total_sold,
+		})) ?? [];
+
+	const ventasHistoricas = SELL.map((buy) => ({
+		fecha: buy.data,
+		precio: buy.price,
+		cantidad: buy.quantity,
+		items: buy.items.map((item, index) => ({
+			id: index,
+			title: translateItem(item.name),
+			src: imageMap[item.name],
+			amount: item.amount,
+		})),
+	}));
+
 	return (
-		<main>
+		<PageLayout>
 			<Stats
 				items={[
 					{
@@ -31,57 +54,32 @@ export const HistorialVentas = () => {
 				]}
 			/>
 
-			<div className="p-5">
-				<h2 className="text-xl font-semibold">Pendientes por asignar sus ventas</h2>
-				<h3 className="mb-4 text-lg">Se han vendido pero no hemos registrado su venta</h3>
-				<div className="mb-20 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-					{data?.map((item: ItemsStockRow) => (
-						<VapListItem
-							key={item.item_id}
-							id={item.item_id}
-							title={translateItem(item.title)}
-							src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
-							amount={item.total_buyed - item.total_sold}
-						/>
-					))}
-				</div>
-				<h2 className="mb-4 text-xl font-semibold">Ventas</h2>
-			</div>
-			{/* <!-- TODO: hacer un comp de vapslit generico --> */}
-			{/* <!-- <VapList /> --> */}
+			<SectionHeader
+				title="Pendientes por asignar sus ventas"
+				subtitle="Se han vendido pero no hemos registrado su venta"
+			/>
+			<VapList items={pendientesItems} isLoading={false} />
 
-			<ul className="space-y-6">
-				{/* TODO: no es buy */}
-				{SELL.map((buy) => (
-					<li
-						key={`${buy.data}-${buy.price}-${buy.quantity}`}
+			<SectionHeader title="Ventas" />
+			<div className="space-y-6 p-5">
+				{ventasHistoricas.map((buy) => (
+					<div
+						key={`${buy.fecha}-${buy.precio}-${buy.cantidad}`}
 						className="rounded-lg bg-white p-4 shadow-md"
 					>
 						<div className="mb-3">
-							<h3 className="text-lg font-bold text-teal-700">Fecha: {buy.data}</h3>
+							<h3 className="text-lg font-bold text-teal-700">Fecha: {buy.fecha}</h3>
 							<p className="text-gray-600">
-								Precio: <span className="font-semibold">{buy.price} €</span>
+								Precio: <span className="font-semibold">{buy.precio} €</span>
 							</p>
 							<p className="text-gray-600">
-								Cantidad: <span className="font-semibold">{buy.quantity}</span>
+								Cantidad: <span className="font-semibold">{buy.cantidad}</span>
 							</p>
 						</div>
-						<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-							{buy.items.map((item, index) => (
-								<VapListItem
-									key={item.name}
-									// TODO quitar el index, id
-									id={index}
-									title={translateItem(item.name)}
-									src={imageMap[item.name]}
-									// src={item.brand === 'VAPSOLO' ? imageMap[item.title] : imageBrandMap[item.brand]}
-									amount={item.amount}
-								/>
-							))}
-						</div>
-					</li>
+						<VapList items={buy.items} isLoading={false} />
+					</div>
 				))}
-			</ul>
-		</main>
+			</div>
+		</PageLayout>
 	);
 };

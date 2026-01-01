@@ -6,6 +6,6 @@ import placeholderImage from '@assets/placeholder-600x600.webp';
  * Otherwise, it uses the brand-based map.
  */
 // TODO: remover y hacer que las imagenes vengan de supabasee
-export const getItemImageUrl = (image_url: string | null) => {
+export const getItemImageUrl = (image_url: string | null | undefined) => {
 	return image_url || placeholderImage;
 };

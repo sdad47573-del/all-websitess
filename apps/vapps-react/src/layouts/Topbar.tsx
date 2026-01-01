@@ -5,6 +5,7 @@ import { PWAInstallButton } from '../components/PWAInstallButton';
 import { useAuth } from '../contexts/AuthContext';
 import { isModalOpen } from '../stores/modal.store';
 import Logo from './Logo';
+import { getItemImageUrl } from '@/utils/image.utils';
 
 const baseSections = [
 	{ name: 'Inicio', href: '/' },
@@ -107,8 +108,9 @@ export default function Topbar() {
 					>
 						<div className="w-10 rounded-full">
 							<img
-								alt="User Avatar"
-								src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+								alt={profile?.full_name || 'User Avatar'}
+								src={getItemImageUrl(profile?.image_url)}
+								className="object-cover"
 							/>
 						</div>
 					</div>

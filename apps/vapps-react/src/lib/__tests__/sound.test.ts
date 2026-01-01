@@ -76,6 +76,8 @@ describe('sound library', () => {
         const addSpy = vi.spyOn(window, 'addEventListener');
         ensureAudioUnlocked();
         expect(addSpy).toHaveBeenCalledWith('pointerdown', expect.any(Function), { once: true });
+        expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function), { once: true });
+        expect(addSpy).toHaveBeenCalledWith('touchstart', expect.any(Function), { once: true });
         addSpy.mockRestore();
     });
 });

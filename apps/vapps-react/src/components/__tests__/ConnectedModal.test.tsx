@@ -76,4 +76,12 @@ describe('ConnectedModal', () => {
         // Modal should close after submit
         expect(isModalOpen.get()).toBe(false);
     });
+
+    it('opens modal when openModal event is dispatched', () => {
+        render(<ConnectedModal />);
+        const detail = { id: 10, title: 'Item X', src: 'img', amount: 99 };
+        window.dispatchEvent(new CustomEvent('openModal', { detail }));
+        expect(isModalOpen.get()).toBe(true);
+        expect(modalData.get()).toEqual(detail);
+    });
 });
