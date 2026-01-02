@@ -1,6 +1,6 @@
 import type { SaleItemDetail } from '@/hooks/useGetAllSalesGroupedByDate';
 import { ExpandableTransactionCard } from './common/ExpandableTransactionCard';
-import { getItemImageUrl } from '@/utils/image.utils';
+import { getImageUrl } from '@/utils/image.utils';
 
 interface SaleCardProps {
 	day: string;
@@ -30,15 +30,15 @@ export const SaleCard = ({
 	const status =
 		total_payment !== undefined && total_payment !== null
 			? {
-				label: isPending ? 'Pendiente de pago' : 'Pago Recibido',
-				value: `${(isPending ? -pendingPayment : total_payment).toFixed(0)}€`,
-				isPending,
-			}
+					label: isPending ? 'Pendiente de pago' : 'Pago Recibido',
+					value: `${(isPending ? -pendingPayment : total_payment).toFixed(0)}€`,
+					isPending,
+				}
 			: undefined;
 
 	const transactionItems = items.map((item) => ({
 		id: item.sale_id,
-		image_url: getItemImageUrl(item.image_url),
+		image_url: getImageUrl(item.image_url),
 		title: item.item_title,
 		brand: item.brand,
 		amount: item.amount,

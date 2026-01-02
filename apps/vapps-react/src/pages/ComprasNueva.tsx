@@ -16,9 +16,6 @@ const SearchFilters = lazy(() =>
 const ProductGrid = lazy(() =>
 	import('../components/ComprasNueva/ProductGrid').then((m) => ({ default: m.ProductGrid })),
 );
-const AddItems = lazy(() =>
-	import('../components/ComprasNueva/AddItems').then((m) => ({ default: m.AddItems })),
-);
 const SelectedItemsList = lazy(() =>
 	import('../components/ComprasNueva/SelectedItemsList').then((m) => ({
 		default: m.SelectedItemsList,
@@ -36,61 +33,83 @@ type FormData = z.input<typeof schema>;
 
 type SelectedItem = { item_id: number; title: string; quantity: number };
 
+const showToast = (text: string, kind: 'success' | 'error') => {
+	Toastify({
+		text,
+		duration: kind === 'success' ? 2500 : 3000,
+		gravity: 'top',
+		position: 'right',
+		style: {
+			background:
+				kind === 'success'
+					? 'linear-gradient(to right, #10b981, #34d399)'
+					: 'linear-gradient(to right, #ef4444, #f87171)',
+		},
+		className: 'rounded-lg shadow-lg font-medium',
+	}).showToast();
+};
+
 export const ComprasNueva = () => {
 	const { data: items = [] } = useGetAllItemsAll();
 	const { data: brands = [] } = useGetAllBrands();
 	const createBuy = useCreateBuyWithItems();
 	const [, setLocation] = useLocation();
-	const { register, handleSubmit, formState } = useForm<FormData>({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<FormData>({
 		defaultValues: { fecha: new Date().toISOString().slice(0, 10), payed: false },
 		resolver: zodResolver(schema),
 	});
-	const { errors } = formState;
 	const [selected, setSelected] = useState<SelectedItem[]>([]);
 	const [currentItemId, setCurrentItemId] = useState<number | ''>('');
 	const [currentQty, setCurrentQty] = useState<number>(1);
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [selectedBrand, setSelectedBrand] = useState<string>('');
+	const brandsList = (brands ?? []) as any[];
+	const totalSelectedQty = selected.reduce((sum, s) => sum + s.quantity, 0);
+	const brandOptions =
+		brandsList.length > 0
+			? brandsList
+			: Array.from(new Set(items.map((i) => i.brand).filter(Boolean))).map((name, idx) => ({
+					id: idx,
+					name: name as string,
+				}));
 
 	const filteredItems = items.filter((item) => {
-		const matchesBrand = selectedBrand ? item.brand === selectedBrand : true;
+		const matchesBrand = !selectedBrand || item.brand === selectedBrand;
 		const matchesText =
-			searchTerm.trim().length === 0
-				? true
-				: item.title.toLowerCase().includes(searchTerm.toLowerCase());
+			!searchTerm.trim() || item.title.toLowerCase().includes(searchTerm.toLowerCase());
 		return matchesBrand && matchesText;
 	});
 
-	const addItem = () => {
-		if (!currentItemId || currentQty <= 0) return;
-		const item = items.find((i) => i.id === currentItemId);
-		if (!item) return;
+	const upsertSelected = (itemId: number, title: string, qty: number) => {
 		setSelected((prev) => {
-			const exists = prev.find((p) => p.item_id === currentItemId);
+			const exists = prev.find((p) => p.item_id === itemId);
 			if (exists) {
-				return prev.map((p) =>
-					p.item_id === currentItemId ? { ...p, quantity: p.quantity + currentQty } : p,
-				);
+				return prev.map((p) => (p.item_id === itemId ? { ...p, quantity: p.quantity + qty } : p));
 			}
-			return [...prev, { item_id: currentItemId, title: item.title, quantity: currentQty }];
+			return [...prev, { item_id: itemId, title, quantity: qty }];
 		});
+	};
+
+	const addByIdWithQty = (itemId: number, qty: number) => {
+		if (!itemId || qty <= 0) return;
+		const item = items.find((i) => i.id === itemId);
+		if (!item) return;
+		upsertSelected(itemId, item.title, qty);
+	};
+
+	const addItem = () => {
+		if (!currentItemId) return;
+		addByIdWithQty(currentItemId as number, currentQty);
 		setCurrentItemId('');
 		setCurrentQty(1);
 	};
 
 	const addItemById = (itemId: number) => {
-		if (currentQty <= 0) return;
-		const item = items.find((i) => i.id === itemId);
-		if (!item) return;
-		setSelected((prev) => {
-			const exists = prev.find((p) => p.item_id === itemId);
-			if (exists) {
-				return prev.map((p) =>
-					p.item_id === itemId ? { ...p, quantity: p.quantity + currentQty } : p,
-				);
-			}
-			return [...prev, { item_id: itemId, title: item.title, quantity: currentQty }];
-		});
+		addByIdWithQty(itemId, currentQty);
 	};
 
 	const removeItem = (id: number) => {
@@ -104,25 +123,11 @@ export const ComprasNueva = () => {
 		]);
 
 		if (error) {
-			Toastify({
-				text: error.message || 'Error al registrar la compra',
-				duration: 3000,
-				gravity: 'top',
-				position: 'right',
-				style: { background: 'linear-gradient(to right, #ef4444, #f87171)' },
-				className: 'rounded-lg shadow-lg font-medium',
-			}).showToast();
+			showToast(error.message || 'Error al registrar la compra', 'error');
 			return;
 		}
 
-		Toastify({
-			text: 'Compra registrada correctamente',
-			duration: 2500,
-			gravity: 'top',
-			position: 'right',
-			style: { background: 'linear-gradient(to right, #10b981, #34d399)' },
-			className: 'rounded-lg shadow-lg font-medium',
-		}).showToast();
+		showToast('Compra registrada correctamente', 'success');
 		setLocation('/compras');
 	};
 
@@ -155,7 +160,7 @@ export const ComprasNueva = () => {
 							type="number"
 							placeholder="0.00"
 							leftIconClass="ri-money-euro-circle-line"
-							error={errors.eur?.message as any}
+							error={errors.eur?.message}
 							{...register('eur', { valueAsNumber: true })}
 						/>
 					</div>
@@ -168,25 +173,19 @@ export const ComprasNueva = () => {
 						<SearchFilters
 							searchTerm={searchTerm}
 							onSearchChange={setSearchTerm}
-							brands={brands ?? []}
+							brands={brandOptions as any}
 							selectedBrand={selectedBrand}
 							onBrandChange={setSelectedBrand}
 						/>
-					</Suspense>
-
-					<Suspense fallback={<Loading />}>
-						<AddItems
-							items={filteredItems.map((i) => ({ id: i.id, title: i.title }))}
-							currentItemId={currentItemId}
-							onItemIdChange={setCurrentItemId}
-							currentQty={currentQty}
-							onQtyChange={setCurrentQty}
-							onAdd={addItem}
-						/>
 						<SelectedItemsList selected={selected} onRemove={removeItem} />
-					</Suspense>
-
-					<Suspense fallback={<Loading />}>
+						{selected.length > 0 && (
+							<div className="mt-2 flex justify-end">
+								<div className="badge badge-info gap-2 px-3 py-2">
+									<span className="text-[10px] font-bold uppercase opacity-70">Total añadidos</span>
+									<span className="text-sm font-black">{totalSelectedQty}</span>
+								</div>
+							</div>
+						)}
 						<ProductGrid
 							items={filteredItems.map((item) => ({
 								id: item.id,

@@ -12,7 +12,13 @@ export const ProductGrid = ({ items, onItemClick }: ProductGridProps) => {
 			<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 				{items.map((item) => (
 					<div key={item.id} className="cursor-pointer" onClick={() => onItemClick(item.id)}>
-						<VapListItem id={item.id} title={item.title} src={item.src} amount={item.amount} />
+						<VapListItem
+							id={item.id}
+							title={item.title}
+							src={item.src}
+							amount={item.amount}
+							disableOutOfStockStyles
+						/>
 					</div>
 				))}
 			</div>

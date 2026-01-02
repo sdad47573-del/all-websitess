@@ -6,7 +6,7 @@ import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
 import type { ItemsStockRow } from '../hooks/useGetAllBuyedItemsPendingSales';
-import { getItemImageUrl } from '@/utils/image.utils';
+import { getImageUrl } from '@/utils/image.utils';
 import { imageMap } from '@/data/maps/img';
 
 // TODO: sale vapers en negativo,
@@ -19,7 +19,7 @@ export const HistorialVentas = () => {
 		data?.map((item: ItemsStockRow) => ({
 			id: item.item_id,
 			title: translateItem(item.title),
-			src: getItemImageUrl(item.image_url),
+			src: getImageUrl(item.image_url),
 			amount: item.total_buyed - item.total_sold,
 		})) ?? [];
 

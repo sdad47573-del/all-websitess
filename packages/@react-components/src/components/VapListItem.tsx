@@ -8,15 +8,25 @@ export interface VapItemData {
 
 type VapListItemProps = VapItemData & {
 	onClick?: (item: VapItemData) => void;
+	disableOutOfStockStyles?: boolean;
 };
 
-export const VapListItem = ({ id, amount, src, title, price, onClick }: VapListItemProps) => {
+export const VapListItem = ({
+	id,
+	amount,
+	src,
+	title,
+	price,
+	onClick,
+	disableOutOfStockStyles = false,
+}: VapListItemProps) => {
 	const isOutOfStock = amount === 0;
+	const applyDisabledStyles = isOutOfStock && !disableOutOfStockStyles;
 
 	return (
 		<div
 			className={`vap-item overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-transform ${
-				isOutOfStock ? 'cursor-not-allowed opacity-50 grayscale' : 'cursor-pointer active:scale-95'
+				applyDisabledStyles ? 'cursor-not-allowed opacity-50 grayscale' : 'cursor-pointer active:scale-95'
 			}`}
 			onClick={() => onClick?.({ id, amount, src, title })}
 		>

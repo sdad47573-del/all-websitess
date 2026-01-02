@@ -1,7 +1,7 @@
 import { supabaseBrowserClient } from '../services/init.service';
 import type { ItemProduct } from 'supabase-sdk';
 import { translateItem } from '../data/maps/spanish';
-import { getItemImageUrl } from '../utils/image.utils';
+import { getImageUrl } from '../utils/image.utils';
 import { useSupabaseQuery } from './useSupabaseQuery';
 
 export async function getAllItemsAll() {
@@ -17,7 +17,7 @@ export function useGetAllItemsAll() {
 				?.map((item) => ({
 					...item,
 					title: translateItem(item.title),
-					src: getItemImageUrl(item.image_url),
+					src: getImageUrl(item.image_url),
 				}))
 				.sort((a, b) => b.amount - a.amount) ?? [],
 	});

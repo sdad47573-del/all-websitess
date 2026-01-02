@@ -5,7 +5,14 @@ type BuyedItemRow = {
 	buy_id: number;
 	quantity: number;
 	// eur: number; // da error
-	buy: { id: number; eur: number; fecha: string; label: string; payed: boolean };
+	buy: {
+		id: number;
+		eur: number;
+		fecha: string;
+		label: string;
+		payed: boolean;
+		facture_url?: string | null;
+	};
 	items: { id: number; title: string; brand: string | null; image_url: string | null };
 };
 
@@ -22,6 +29,7 @@ export type GroupedBuyEntry = {
 	fecha: string;
 	label: string;
 	payed: boolean;
+	facture_url?: string | null;
 	items: GroupedBuyItem[];
 	total: number;
 };
@@ -42,16 +50,21 @@ export async function getAllBuy() {
 	const typedData = data as BuyedItemRow[] | null;
 
 	const grouped = typedData?.reduce<Record<number, GroupedBuyEntry>>((acc, curr) => {
-		const buyId = curr.buy.id;
+		const buyRow = curr.buy as any;
+		const itemRow = curr.items as any;
+		if (!buyRow || !itemRow) {
+			return acc;
+		}
+		const buyId = buyRow.id;
 
 		if (!acc[buyId]) {
-			acc[buyId] = { ...curr.buy, items: [], total: 0 };
+			acc[buyId] = { ...buyRow, items: [], total: 0 };
 		}
 
 		acc[buyId].items.push({
-			...curr.items,
-			brand: curr.items.brand ?? '',
-			image_url: curr.items.image_url,
+			...itemRow,
+			brand: itemRow.brand ?? '',
+			image_url: itemRow.image_url,
 			quantity: curr.quantity,
 		});
 

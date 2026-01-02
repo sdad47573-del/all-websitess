@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { translateItem } from '@/data/maps/spanish';
 import { formatDate } from '@/utils/formatDate';
-import { getItemImageUrl } from '@/utils/image.utils';
+import { getImageUrl } from '@/utils/image.utils';
 import { Collapsible } from '../Collapsible';
 
 export interface TransactionItem {
@@ -105,7 +105,7 @@ export const ExpandableTransactionCard = ({
 									<VapListItem
 										id={Number(item.id)}
 										title={translateItem(item.title)}
-										src={getItemImageUrl(item.image_url)}
+										src={getImageUrl(item.image_url)}
 										amount={item.amount}
 										price={item.price}
 									/>

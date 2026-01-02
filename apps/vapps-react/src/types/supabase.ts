@@ -36,6 +36,7 @@ export type Database = {
         Row: {
           created_at: string
           eur: number
+          facture_url: string | null
           fecha: string
           id: number
           label: string
@@ -44,6 +45,7 @@ export type Database = {
         Insert: {
           created_at?: string
           eur: number
+          facture_url?: string | null
           fecha: string
           id?: number
           label: string
@@ -52,6 +54,7 @@ export type Database = {
         Update: {
           created_at?: string
           eur?: number
+          facture_url?: string | null
           fecha?: string
           id?: number
           label?: string

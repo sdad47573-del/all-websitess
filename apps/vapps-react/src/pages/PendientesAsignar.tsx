@@ -4,7 +4,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import Stats from '../components/Stats';
 import { translateItem } from '../data/maps/spanish';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
-import { getItemImageUrl } from '../utils/image.utils';
+import { getImageUrl } from '../utils/image.utils';
 
 export const PendientesAsignar = () => {
 	const { data: items, isLoading } = useGetAllBuyedItemsPendingSales();
@@ -107,7 +107,7 @@ const ItemComparisonList = ({
 									<div className="flex items-center gap-3">
 										<div className="bg-base-200 border-base-300 h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border">
 											<img
-												src={getItemImageUrl(item.image_url)}
+												src={getImageUrl(item.image_url)}
 												alt={item.title}
 												className="h-full w-full object-cover"
 											/>

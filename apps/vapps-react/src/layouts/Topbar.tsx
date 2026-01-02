@@ -5,7 +5,7 @@ import { PWAInstallButton } from '../components/PWAInstallButton';
 import { useAuth } from '../contexts/AuthContext';
 import { isModalOpen } from '../stores/modal.store';
 import Logo from './Logo';
-import { getItemImageUrl } from '@/utils/image.utils';
+import { getImageUrl } from '@/utils/image.utils';
 
 const baseSections = [
 	{ name: 'Inicio', href: '/' },
@@ -109,7 +109,7 @@ export default function Topbar() {
 						<div className="w-10 rounded-full">
 							<img
 								alt={profile?.full_name || 'User Avatar'}
-								src={getItemImageUrl(profile?.image_url)}
+								src={getImageUrl(profile?.image_url)}
 								className="object-cover"
 							/>
 						</div>

@@ -7,6 +7,7 @@ export interface VapItemData {
 }
 type VapListItemProps = VapItemData & {
     onClick?: (item: VapItemData) => void;
+    disableOutOfStockStyles?: boolean;
 };
-export declare const VapListItem: ({ id, amount, src, title, price, onClick }: VapListItemProps) => import("react/jsx-runtime").JSX.Element;
+export declare const VapListItem: ({ id, amount, src, title, price, onClick, disableOutOfStockStyles, }: VapListItemProps) => import("react/jsx-runtime").JSX.Element;
 export {};

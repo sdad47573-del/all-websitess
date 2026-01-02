@@ -1,9 +1,10 @@
 import { VapListItem } from '@react-components';
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { twJoin, twMerge } from 'tailwind-merge';
 import { translateItem } from '@/data/maps/spanish';
 import { formatDate } from '@/utils/formatDate';
-import { getItemImageUrl } from '@/utils/image.utils';
+import { getImageUrl } from '@/utils/image.utils';
 import { Collapsible } from '../Collapsible';
 
 export interface TransactionItem {
@@ -29,6 +30,7 @@ export interface ExpandableTransactionCardProps {
 	};
 	items?: TransactionItem[];
 	isInitiallyExpanded?: boolean;
+	actions?: ReactNode;
 }
 
 export const ExpandableTransactionCard = ({
@@ -38,6 +40,7 @@ export const ExpandableTransactionCard = ({
 	status,
 	items = [],
 	isInitiallyExpanded = false,
+	actions,
 }: ExpandableTransactionCardProps) => {
 	const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
 
@@ -62,6 +65,7 @@ export const ExpandableTransactionCard = ({
 					</div>
 
 					<div className="flex items-center gap-3">
+						{actions}
 						<div
 							className={twJoin(
 								'ri-arrow-down-s-line text-xl transition-transform duration-300',
@@ -134,7 +138,7 @@ export const ExpandableTransactionCard = ({
 									<VapListItem
 										id={Number(item.id)}
 										title={translateItem(item.title)}
-										src={getItemImageUrl(item.image_url)}
+										src={getImageUrl(item.image_url)}
 										amount={item.amount}
 										price={item.price}
 									/>
