@@ -20,6 +20,7 @@ export const queryClient = new QueryClient({
 		queries: {
 			staleTime: 1000 * 60 * 5, // 5 minutes
 			gcTime: 1000 * 60 * 60 * 24, // 24 hours
+			refetchOnWindowFocus: false,
 			retry: (failureCount, error: any) => {
 				if (error?.message === 'JWT expired' || error?.code === 'PGRST303') {
 					return false;

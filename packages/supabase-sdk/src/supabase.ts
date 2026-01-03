@@ -28,6 +28,7 @@ export type Database = {
 			};
 			buy: {
 				Row: {
+					available: boolean;
 					created_at: string;
 					eur: number;
 					facture_url: string | null;
@@ -37,6 +38,7 @@ export type Database = {
 					payed: boolean;
 				};
 				Insert: {
+					available?: boolean;
 					created_at?: string;
 					eur: number;
 					facture_url?: string | null;
@@ -46,6 +48,7 @@ export type Database = {
 					payed?: boolean;
 				};
 				Update: {
+					available?: boolean;
 					created_at?: string;
 					eur?: number;
 					facture_url?: string | null;

@@ -63,8 +63,7 @@ export const ComprasNueva = () => {
 		resolver: zodResolver(schema),
 	});
 	const [selected, setSelected] = useState<SelectedItem[]>([]);
-	const [currentItemId, setCurrentItemId] = useState<number | ''>('');
-	const [currentQty, setCurrentQty] = useState<number>(1);
+	const [currentQty] = useState<number>(1);
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [selectedBrand, setSelectedBrand] = useState<string>('');
 	const brandsList = (brands ?? []) as any[];
@@ -99,13 +98,6 @@ export const ComprasNueva = () => {
 		const item = items.find((i) => i.id === itemId);
 		if (!item) return;
 		upsertSelected(itemId, item.title, qty);
-	};
-
-	const addItem = () => {
-		if (!currentItemId) return;
-		addByIdWithQty(currentItemId as number, currentQty);
-		setCurrentItemId('');
-		setCurrentQty(1);
 	};
 
 	const addItemById = (itemId: number) => {

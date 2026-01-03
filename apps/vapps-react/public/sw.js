@@ -1,5 +1,5 @@
-const CACHE_NAME = 'vappsolo-v1.2';
-const RUNTIME_CACHE = 'vappsolo-runtime-v1.2';
+const CACHE_NAME = 'chopper-v1.2';
+const RUNTIME_CACHE = 'chopper-runtime-v1.2';
 
 // Assets to cache on install
 const PRECACHE_ASSETS = [

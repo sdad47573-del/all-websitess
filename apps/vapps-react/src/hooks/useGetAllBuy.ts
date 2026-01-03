@@ -4,6 +4,7 @@ import { useSupabaseQuery } from './useSupabaseQuery';
 type BuyedItemRow = {
 	buy_id: number;
 	quantity: number;
+	item_id?: number;
 	// eur: number; // da error
 	buy: {
 		id: number;
@@ -40,6 +41,7 @@ export async function getAllBuy() {
 		`
 		buy_id,
 		quantity,
+		item_id,
 		buy (*),
 		items (id,title,brand,image_url)
 		`,
@@ -63,8 +65,6 @@ export async function getAllBuy() {
 
 		acc[buyId].items.push({
 			...itemRow,
-			brand: itemRow.brand ?? '',
-			image_url: itemRow.image_url,
 			quantity: curr.quantity,
 		});
 
