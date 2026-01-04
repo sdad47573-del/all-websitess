@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { isModalOpen } from '../stores/modal.store';
 import Logo from './Logo';
 import { getImageUrl } from '@/utils/image.utils';
+import { theme, toggleTheme } from '../stores/theme.store';
 
 const baseSections = [
 	{ name: 'Inicio', href: '/' },
@@ -30,6 +31,7 @@ export default function Topbar() {
 					{ name: 'Añadir compra', href: '/compras-nueva' },
 					{ name: 'Añadir producto', href: '/items-nuevo' },
 					{ name: 'Añadir modelo', href: '/marcas-modelos-nuevo' },
+					{ name: 'Ranking', href: '/ranking-clientes' },
 				]
 			: [];
 
@@ -100,6 +102,17 @@ export default function Topbar() {
 
 			<div className="navbar-end gap-2">
 				<PWAInstallButton />
+				<button
+					onClick={toggleTheme}
+					className="btn btn-ghost btn-circle"
+					aria-label="Alternar tema"
+				>
+					{useStore(theme) === 'scruz-dark' ? (
+						<i className="ri-sun-line text-xl"></i>
+					) : (
+						<i className="ri-moon-line text-xl"></i>
+					)}
+				</button>
 				<div className="dropdown dropdown-end">
 					<div
 						tabIndex={0}

@@ -32,6 +32,9 @@ const ComprasNueva = lazy(() =>
 const MarcasModelosNuevo = lazy(() =>
 	import('../pages/MarcasModelosNuevo').then((m) => ({ default: m.MarcasModelosNuevo })),
 );
+const RankingClientes = lazy(() =>
+	import('../pages/RankingClientes').then((m) => ({ default: m.RankingClientes })),
+);
 
 export const AuthedLayout = () => {
 	return (
@@ -48,6 +51,7 @@ export const AuthedLayout = () => {
 					<Route path="/estadisticas" component={Estadisticas} />
 					<Route path="/libro-cuentas" component={LibroCuentas} />
 					<Route path="/pendientes-asignar" component={PendientesAsignar} />
+					<Route path="/ranking-clientes" component={RankingClientes} />
 					{/* Rutas Superadmin */}
 					<Route
 						path="/compras-nueva"

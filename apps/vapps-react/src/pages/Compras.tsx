@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { useStore } from '@nanostores/react';
 import { BuyList } from '../components/BuyList';
 import { Loading } from '../components/Loading';
 import { PageLayout } from '../components/PageLayout';
@@ -6,10 +7,13 @@ import { ProductInventory } from '../components/ProductInventory';
 import Stats from '../components/Stats';
 import { ErrorState } from '../components/ErrorState';
 import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllFinancialRecords } from '../hooks';
+import { InvoiceModal } from '../components/InvoiceModal';
+import { $invoiceUrl, $isInvoiceOpen, closeInvoice } from '../stores/invoice.store';
+import { openInvoice } from '../stores/invoice.store';
 
 export const Compras = () => {
-	const [invoiceUrl, setInvoiceUrl] = useState<string | null>(null);
-	const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+	const invoiceUrl = useStore($invoiceUrl);
+	const isInvoiceOpen = useStore($isInvoiceOpen);
 	const { data: buy, isLoading: isLoadingBuy, error: errorBuy } = useGetAllBuy();
 	const { data: finatial } = useGetAllFinancialRecords();
 	const { data: totalsData } = useGetAllBuyedItemsTotals();
@@ -69,7 +73,17 @@ export const Compras = () => {
 	// const cubierto = ((pendingTotal * 100) / pendingcostTotal || 0).toFixed(2);
 
 	if (isLoadingBuy) return <Loading text="Cargando historial de compras..." />;
-	if (errorBuy) return <ErrorState message="No se pudieron cargar las compras" details={String((errorBuy as any)?.message ?? errorBuy)} />;
+	if (errorBuy)
+		return (
+			<ErrorState
+				message="No se pudieron cargar las compras"
+				details={String((errorBuy as any)?.message ?? errorBuy)}
+			/>
+		);
+
+	const handleOpenInvoice = (url: string) => {
+		openInvoice(url);
+	};
 
 	return (
 		<PageLayout>
@@ -114,38 +128,10 @@ export const Compras = () => {
 				buys={buyWithCoverage}
 				title="Historial de Compras"
 				emptyMessage="No se han registrado compras todavía"
-				onOpenInvoice={(url) => {
-					setInvoiceUrl(url);
-					setIsInvoiceOpen(true);
-				}}
+				onOpenInvoice={handleOpenInvoice}
 			/>
 			{isInvoiceOpen && invoiceUrl && (
-				<div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 p-4">
-					<div className="bg-white w-full max-w-4xl h-[80vh] rounded-xl shadow-lg overflow-hidden">
-						<div className="border-b flex items-center justify-between p-2">
-							<h4 className="text-base font-bold">Factura</h4>
-							<div className="flex items-center gap-2">
-								<a
-									href={invoiceUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="hover:bg-base-200 rounded-md px-3 py-1 text-xs font-bold"
-								>
-									Abrir en nueva pestaña
-								</a>
-								<button
-									type="button"
-									onClick={() => setIsInvoiceOpen(false)}
-									className="hover:bg-base-200 rounded-md p-1"
-									aria-label="Cerrar visor de factura"
-								>
-									<i className="ri-close-line text-xl" />
-								</button>
-							</div>
-						</div>
-						<iframe src={invoiceUrl} className="w-full h-full" title="Factura PDF" />
-					</div>
-				</div>
+				<InvoiceModal isOpen={true} url={invoiceUrl} onClose={() => closeInvoice()} />
 			)}
 		</PageLayout>
 	);

@@ -114,7 +114,7 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 				<div
 					ref={modalRef}
 					className={twJoin(
-						'relative w-full max-w-md transform rounded-t-3xl bg-white sm:rounded-3xl',
+						'relative w-full max-w-md transform rounded-t-3xl bg-base-100 sm:rounded-3xl',
 						isDragging ? 'transition-none' : 'transition-transform',
 						isOpen && !isDragging ? 'duration-100 ease-out' : 'duration-100',
 						isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
@@ -134,11 +134,11 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 						<div className="h-1.5 w-12 rounded-full bg-gray-300"></div>
 					</div>
 
-					<div className="sticky top-0 flex items-center justify-between rounded-t-3xl border-b border-gray-100 bg-white px-6 py-4">
-						<h2 className="text-xl font-bold text-gray-900">Detalles del Objeto</h2>
+					<div className="sticky top-0 flex items-center justify-between rounded-t-3xl border-b border-base-200 bg-base-100 px-6 py-4">
+						<h2 className="text-xl font-bold text-base-content">Detalles del Objeto</h2>
 						<button
 							onClick={onClose}
-							className="flex min-h-12 min-w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-all hover:bg-gray-200 hover:text-gray-900 active:scale-95 sm:min-h-8 sm:min-w-8 sm:bg-transparent sm:hover:bg-gray-100"
+							className="flex min-h-12 min-w-12 cursor-pointer items-center justify-center rounded-full bg-base-200 text-base-content/60 transition-all hover:bg-base-300 hover:text-base-content active:scale-95 sm:min-h-8 sm:min-w-8 sm:bg-transparent sm:hover:bg-base-200"
 							aria-label="Cerrar"
 							type="button"
 						>
@@ -146,7 +146,7 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 						</button>
 					</div>
 					<div className="p-6">
-						<div className="mb-6 aspect-square overflow-hidden rounded-2xl bg-gray-50">
+						<div className="mb-6 aspect-square overflow-hidden rounded-2xl bg-base-200">
 							<img
 								alt={data.title}
 								className="h-full w-full object-cover object-top"
@@ -155,14 +155,14 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 						</div>
 						<div className="mb-6 space-y-4">
 							<div>
-								<h3 className="mb-2 text-2xl font-bold text-gray-900">{data.title}</h3>
+								<h3 className="mb-2 text-2xl font-bold text-base-content">{data.title}</h3>
 							</div>
 						</div>
 
-						<div className="border-t border-gray-100 pt-6">
-							<h4 className="mb-4 flex items-baseline justify-between gap-2 font-semibold text-gray-900">
+						<div className="border-t border-base-200 pt-6">
+							<h4 className="mb-4 flex items-baseline justify-between gap-2 font-semibold text-base-content">
 								<p></p>
-								<p className="text-2xl font-bold text-teal-600">{data.amount}</p>
+								<p className="text-2xl font-bold text-primary">{data.amount}</p>
 							</h4>
 
 							<NumericForm onSubmit={onSubmit} stock={data.amount} />

@@ -45,12 +45,13 @@ export const ExpandableTransactionCard = ({
 	const [isExpanded, setIsExpanded] = useState(isInitiallyExpanded);
 
 	return (
-		<li className="border-base-200 hover:border-primary/20 list-none overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 hover:shadow-md">
+		<li className="border-base-200 hover:border-primary/20 bg-base-100 list-none overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:shadow-md">
 			<div className="flex flex-col">
 				{/* Header Section */}
 				<div
 					onClick={() => setIsExpanded(!isExpanded)}
-					className="from-base-50 hover:bg-base-100/50 flex cursor-pointer items-center justify-between bg-linear-to-r to-white px-5 py-4 transition-colors"
+					// className="from-base-50 hover:bg-base-100/50 flex cursor-pointer items-center justify-between bg-linear-to-r to-white px-5 py-4 transition-colors"
+					className="hover:bg-base-100/50 bg-base-100 flex cursor-pointer items-center justify-between px-5 py-4 transition-colors"
 				>
 					<div className="flex items-center gap-3">
 						<div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl">
@@ -76,7 +77,7 @@ export const ExpandableTransactionCard = ({
 				</div>
 
 				{/* Summary Stats Section */}
-				<div className="divide-base-200 border-base-100 grid grid-cols-2 divide-x border-t bg-white md:grid-cols-3">
+				<div className="divide-base-200 border-base-100 bg-base-100 grid grid-cols-2 divide-x border-t md:grid-cols-3">
 					{stats.map((stat, idx) => (
 						<div key={idx} className="flex flex-col px-5 py-3">
 							<p className="text-base-content/40 mb-1.5 text-[10px] leading-none font-black tracking-widest uppercase">
@@ -115,7 +116,7 @@ export const ExpandableTransactionCard = ({
 
 				{/* Expanded Items Section */}
 				<Collapsible isOpen={isExpanded}>
-					<div className="border-base-200 bg-base-50/50 border-t px-5 pt-4 pb-6">
+					<div className="border-base-200 bg-base-100 border-t px-5 pt-4 pb-6">
 						<div className="mb-4 flex items-center gap-2">
 							<span className="bg-base-200 h-px flex-1" />
 							<p className="text-base-content/30 text-[10px] font-bold tracking-widest whitespace-nowrap uppercase">

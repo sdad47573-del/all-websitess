@@ -25,12 +25,14 @@ export const VapListItem = ({
 
 	return (
 		<div
-			className={`vap-item overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-transform ${
-				applyDisabledStyles ? 'cursor-not-allowed opacity-50 grayscale' : 'cursor-pointer active:scale-95'
+			className={`vap-item border-base-300 bg-base-100 overflow-hidden rounded-xl border shadow-md transition-transform ${
+				applyDisabledStyles
+					? 'cursor-not-allowed opacity-50 grayscale'
+					: 'cursor-pointer active:scale-95'
 			}`}
 			onClick={() => onClick?.({ id, amount, src, title })}
 		>
-			<div className="relative aspect-square overflow-hidden bg-gray-50">
+			<div className="bg-base-200 relative aspect-square overflow-hidden">
 				<img
 					src={src}
 					alt={title}
@@ -40,15 +42,15 @@ export const VapListItem = ({
 				/>
 			</div>
 			<div className="p-3">
-				<h3 className="mb-1 truncate text-sm font-semibold text-gray-900">{title}</h3>
+				<h3 className="text-base-content mb-1 truncate text-sm font-semibold">{title}</h3>
 				<div className="flex items-center justify-between">
-					<span className="text-xs text-gray-500">Cantidad:</span>
-					<span className="text-sm font-bold text-teal-600">{amount}</span>
+					<span className="text-base-content/60 text-xs">Cantidad:</span>
+					<span className="text-primary text-sm font-bold">{amount}</span>
 				</div>
 				{price && (
 					<div className="flex items-center justify-between">
-						<span className="text-xs text-gray-500">Precio:</span>
-						<span className="text-sm font-bold text-teal-600">{price}€</span>
+						<span className="text-base-content/60 text-xs">Precio:</span>
+						<span className="text-primary text-sm font-bold">{price}€</span>
 					</div>
 				)}
 			</div>

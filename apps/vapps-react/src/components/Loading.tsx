@@ -11,7 +11,6 @@ export const Loading = ({ fullScreen = false, text = 'Cargando...', children }: 
 		return (
 			<div
 				className="animate__animated animate__fadeIn fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-base-100/80 backdrop-blur-sm"
-				data-theme="scruz"
 			>
 				{/* Background Blobs - matching Login aesthetic */}
 				<div className="absolute top-0 left-0 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl filter animate-pulse"></div>

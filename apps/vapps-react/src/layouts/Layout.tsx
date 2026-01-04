@@ -22,7 +22,7 @@ export default function Layout({
 				<meta name="description" content={description} />
 				<meta name="theme-color" content="#1e293b" />
 			</Helmet> */}
-			<div className="bg-base-100 min-h-screen" data-theme="scruz">
+			<div className="bg-base-100 min-h-screen">
 				<Topbar />
 				{children}
 			</div>

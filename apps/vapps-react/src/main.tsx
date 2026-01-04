@@ -14,6 +14,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { registerServiceWorker } from './lib/pwa';
 import { queryClient } from './lib/queryClient';
 import { ensureAudioUnlocked } from './lib/sound';
+import { theme } from './stores/theme.store';
 
 // async function enableMocking() {
 // 	if (import.meta.env.MODE !== 'development' && import.meta.env.MODE !== 'staging') {
@@ -25,6 +26,7 @@ import { ensureAudioUnlocked } from './lib/sound';
 
 // enableMocking().then(() => {
 ensureAudioUnlocked();
+document.documentElement.setAttribute('data-theme', theme.get());
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
