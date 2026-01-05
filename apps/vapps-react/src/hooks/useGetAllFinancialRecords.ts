@@ -1,21 +1,15 @@
 import { supabaseBrowserClient } from '../services/init.service';
 import { useSupabaseQuery } from './useSupabaseQuery';
+import type { Tables } from 'supabase-sdk';
 
-export type FinancialRecordWithProfile = {
-	id: number;
-	amount: number;
-	date: string;
-	label: string;
-	profiles: { full_name: string };
+export type FinancialRecordWithProfile = Tables<'financial_records'> & {
+	profiles: Pick<Tables<'profiles'>, 'full_name'> | null;
 };
 
 export async function getAllFinancialRecords() {
 	return await supabaseBrowserClient.from('financial_records').select(
 		`
-		id,
-		amount,
-		date,
-		label,
+		*,
 		profiles(full_name)
 		`,
 	);

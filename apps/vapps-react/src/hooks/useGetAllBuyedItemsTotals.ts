@@ -1,19 +1,14 @@
 import { supabaseBrowserClient } from '../services/init.service';
 import { useSupabaseQuery } from './useSupabaseQuery';
-
-export type ItemsTotalsRow = {
-	item_id: number;
-	title: string;
-	brand: string;
-	total_quantity?: number;
-	total_buyed?: number;
-	total_sold?: number;
-};
+import type { Database } from 'supabase-sdk';
 
 export async function getAllBuyedItemsTotals() {
 	return await supabaseBrowserClient.rpc('get_items_totals');
 }
 
 export function useGetAllBuyedItemsTotals() {
-	return useSupabaseQuery<ItemsTotalsRow[]>(['itemsTotals'], getAllBuyedItemsTotals);
+	return useSupabaseQuery<Database['public']['Functions']['get_items_totals']['Returns']>(
+		['itemsTotals'],
+		getAllBuyedItemsTotals,
+	);
 }

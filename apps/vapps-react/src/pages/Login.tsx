@@ -1,7 +1,7 @@
 import { LoginForm, type LoginFormData } from '@react-components';
 import { useEffect } from 'react';
 // import { Helmet } from 'react-helmet-async';
-import Toastify from 'toastify-js';
+import { showToast } from '@/utils/toast';
 import { useLocation } from 'wouter';
 import { useAuth } from '../contexts/AuthContext';
 import { useSignIn } from '@/hooks';
@@ -25,30 +25,11 @@ export const Login = () => {
 		const { error } = await signInMutation.mutateAsync([data.email, data.password]);
 
 		if (error) {
-			Toastify({
-				text: error.message || 'Error al iniciar sesión',
-				duration: 3000,
-				gravity: 'top',
-				position: 'right',
-				style: {
-					background: 'linear-gradient(to right, #ef4444, #f87171)',
-				},
-				className: 'rounded-lg shadow-lg font-medium',
-			}).showToast();
+			showToast(error.message || 'Error al iniciar sesión', 'error');
 			return;
 		}
 
-		Toastify({
-			text: '¡Bienvenido de vuelta!',
-			duration: 2000,
-			gravity: 'top',
-			position: 'right',
-			style: {
-				background: 'linear-gradient(to right, #10b981, #34d399)',
-			},
-			className: 'rounded-lg shadow-lg font-medium',
-		}).showToast();
-
+		showToast('¡Bienvenido de vuelta!', 'success');
 		setLocation('/');
 	};
 

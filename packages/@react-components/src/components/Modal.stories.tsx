@@ -6,7 +6,7 @@ const meta: Meta<typeof Modal> = {
 	title: 'Packages/ReactComponents/Modal',
 	component: Modal,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'centered',
 	},
 	tags: ['autodocs'],
 };

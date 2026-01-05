@@ -25,10 +25,10 @@ export const VapListItem = ({
 
 	return (
 		<div
-			className={`vap-item border-base-300 bg-base-100 overflow-hidden rounded-xl border shadow-md transition-transform ${
+			className={`vap-item border-base-300 bg-base-100 overflow-hidden rounded-xl border shadow-md transition-all duration-200 dark:border-base-content/10 dark:shadow-none ${
 				applyDisabledStyles
 					? 'cursor-not-allowed opacity-50 grayscale'
-					: 'cursor-pointer active:scale-95'
+					: 'cursor-pointer hover:shadow-lg hover:border-primary/30 dark:hover:border-primary/50 active:scale-95'
 			}`}
 			onClick={() => onClick?.({ id, amount, src, title })}
 		>

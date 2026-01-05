@@ -5,7 +5,7 @@ const meta: Meta<typeof VapList> = {
 	title: 'Packages/ReactComponents/VapList',
 	component: VapList,
 	parameters: {
-		layout: 'padded',
+		layout: 'centered',
 	},
 	tags: ['autodocs'],
 };

@@ -21,7 +21,7 @@ export const FullScreen: Story = {
 		text: 'Iniciando sesión...',
 	},
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'centered',
 	},
 };
 

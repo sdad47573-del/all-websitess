@@ -9,10 +9,10 @@ interface FinanceCardProps {
 
 export const FinanceCard = ({ label, amount, date, fullName }: FinanceCardProps) => {
 	return (
-		<li className="bg-base-100 rounded-lg p-4 shadow-md transition-shadow hover:shadow-lg">
+		<li className="bg-base-100 rounded-xl p-4 shadow-md transition-all hover:shadow-lg border border-transparent dark:border-base-content/10">
 			<div className="flex flex-col gap-2">
 				<div className="border-base-200 flex items-center justify-between border-b pb-2">
-					<h3 className="text-lg font-bold text-teal-700">{label}</h3>
+					<h3 className="text-lg font-bold text-primary">{label}</h3>
 					<span className="text-base-content/60 text-sm">{formatDate(date)}</span>
 				</div>
 

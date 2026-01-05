@@ -25,9 +25,9 @@ export const CustomIcon: Story = {
     },
 };
 
-export const NoVentas: Story = {
-    args: {
-        message: 'Aún no has registrado ninguna venta hoy',
-        icon: 'ri-shopping-bag-line',
-    },
+export const NoSales: Story = {
+	args: {
+		message: 'Todavía no has realizado ninguna venta',
+		icon: 'ri-shopping-cart-line',
+	},
 };

@@ -15,7 +15,8 @@ interface StatsProps {
 
 export default function Stats({ title = 'Resumen y Estadísticas', items }: StatsProps) {
 	return (
-		<div className="bg-base-100/60 relative overflow-hidden p-6 backdrop-blur-md">
+		// sacar el borde de color fuera
+		<div className="bg-base-100/60 dark:bg-base-100/80 relative overflow-hidden p-6 backdrop-blur-md rounded-3xl border border-transparent dark:border-base-content/5">
 			{/* <div className=" bg-white/30"> */}
 			<div className="from-primary/50 via-secondary/50 to-primary/50 absolute top-0 left-0 h-1 w-full bg-linear-to-r" />
 
@@ -32,7 +33,7 @@ export default function Stats({ title = 'Resumen y Estadísticas', items }: Stat
 						<div
 							key={item.label}
 							// className="border border-white/50 bg-white/80 p-5 shadow-sm hover:bg-white hover:shadow-xl"
-							className="group border-base-200 bg-base-100 hover:bg-base-100 relative flex flex-col overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+							className="group border-base-200 bg-base-100 hover:bg-base-100 relative flex flex-col overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-base-content/10"
 						>
 							<div className="flex items-center justify-between">
 								<div className="flex flex-col gap-1">

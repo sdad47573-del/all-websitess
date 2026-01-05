@@ -15,9 +15,9 @@ interface StatsProps {
 
 export default function Stats({ title = 'Resumen y Estadísticas', items }: StatsProps) {
 	return (
-		<div className="bg-gradient-to-br from-gray-50 to-gray-100 p-5 shadow-sm">
+		<div className="bg-base-200/50 p-5 shadow-sm rounded-2xl border border-base-300 dark:border-base-content/5">
 			<h2 className="text-base-content mb-4 flex items-center gap-2 text-lg font-bold">
-				<i className="ri-dashboard-line text-teal-600"></i>
+				<i className="ri-dashboard-line text-primary"></i>
 				{title}
 			</h2>
 			<div className="grid grid-cols-2 gap-3">
@@ -25,7 +25,7 @@ export default function Stats({ title = 'Resumen y Estadísticas', items }: Stat
 					return (
 						<div
 							key={item.label}
-							className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm"
+							className="rounded-xl border border-base-200 bg-base-100 p-4 shadow-sm dark:border-base-content/10"
 						>
 							<div className="mb-2 flex items-center gap-3">
 								<div

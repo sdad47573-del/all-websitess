@@ -5,7 +5,7 @@ const meta: Meta<typeof SaleCard> = {
 	title: 'Components/SaleCard',
 	component: SaleCard,
 	parameters: {
-		layout: 'padded',
+		layout: 'centered',
 	},
 };
 

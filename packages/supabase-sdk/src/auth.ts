@@ -1,6 +1,8 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js';
-import type { Profile, UserRole } from './types.js';
-import type { Database } from './supabase.js';
+import type { Database, Tables, Enums } from './supabase.js';
+
+export type Profile = Tables<'profiles'>;
+export type UserRole = Enums<'user_role'>;
 
 export type AuthClient = SupabaseClient<Database>;
 
@@ -135,13 +137,14 @@ export async function isAdmin(client: AuthClient): Promise<boolean> {
  * Update user profile
  */
 export async function updateProfile(client: AuthClient, userId: string, updates: Partial<Profile>) {
-	const { data, error } = await (client.from('profiles') as any)
+	const { data, error } = await client
+		.from('profiles')
 		.update(updates)
 		.eq('id', userId)
 		.select()
 		.single();
 
-	return { profile: data as Profile | null, error };
+	return { profile: data, error };
 }
 
 /**
@@ -153,7 +156,8 @@ export async function createProfile(
 	fullName: string,
 	role: UserRole = 'seller',
 ) {
-	const { data, error } = await (client.from('profiles') as any)
+	const { data, error } = await client
+		.from('profiles')
 		.insert({
 			id: userId,
 			full_name: fullName,
@@ -162,7 +166,7 @@ export async function createProfile(
 		.select()
 		.single();
 
-	return { profile: data as Profile | null, error };
+	return { profile: data, error };
 }
 
 /**

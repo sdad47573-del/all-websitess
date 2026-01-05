@@ -126,10 +126,10 @@ export const Topbar = ({
 										<LinkComponent
 											key={name}
 											className={twJoin(
-												'cursor-pointer rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+												'cursor-pointer rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-200',
 												isActive
-													? 'bg-primary text-primary-content'
-													: 'hover:text-primary text-gray-700 hover:bg-blue-50',
+													? 'bg-primary text-primary-content shadow-md'
+													: 'text-base-content/70 hover:bg-base-200 hover:text-primary dark:text-base-content/80 dark:hover:bg-base-300/50',
 											)}
 											href={href}
 										>
@@ -142,7 +142,7 @@ export const Topbar = ({
 						{phone && (
 							<div className="hidden whitespace-nowrap md:block">
 								<a
-									className="btn btn-primary btn-sm px-4 py-0 text-sm font-medium transition-colors"
+									className="btn btn-primary btn-sm px-4 py-0 text-sm font-medium transition-all hover:scale-105 active:scale-95"
 									href={`tel:${phone}`}
 								>
 									Consulta Gratuita
@@ -154,7 +154,7 @@ export const Topbar = ({
 								ref={buttonRef}
 								onClick={toggleMenu}
 								id="menu-toggle"
-								className="hover:text-primary inline-flex cursor-pointer items-center justify-center rounded-md p-2 text-gray-700 hover:bg-blue-50"
+								className="inline-flex cursor-pointer items-center justify-center rounded-md p-2 text-base-content/70 transition-colors hover:bg-base-200 hover:text-primary dark:hover:bg-base-300/50"
 							>
 								<div className="flex h-6 w-6 items-center justify-center">
 									<i className="ri-menu-line text-xl"></i>
@@ -167,23 +167,23 @@ export const Topbar = ({
 					ref={menuRef}
 					id="mobile-menu"
 					className={twJoin(
-						'border-base-300 bg-base-100 absolute z-40 w-full border-t p-4 shadow-lg transition-all duration-300 ease-in-out md:hidden',
+						'border-base-300 bg-base-100/95 absolute z-40 w-full border-t p-4 shadow-xl backdrop-blur-md transition-all duration-300 ease-in-out md:hidden',
 						isMenuOpen
 							? 'translate-y-0 opacity-100'
 							: 'pointer-events-none -translate-y-4 opacity-0',
 					)}
 				>
-					<div className="flex flex-col items-baseline">
+					<div className="flex flex-col space-y-1">
 						{links.map(({ name, href }) => {
 							const isActive = currentPath === href;
 							return (
 								<LinkComponent
 									key={name}
 									className={twJoin(
-										'cursor-pointer rounded-md px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
+										'cursor-pointer rounded-md px-4 py-3 text-base font-medium transition-all duration-200',
 										isActive
-											? 'bg-primary text-primary-content'
-											: 'hover:text-primary text-gray-700 hover:bg-blue-50',
+											? 'bg-primary text-primary-content shadow-sm'
+											: 'text-base-content/70 hover:bg-base-200 hover:text-primary dark:text-base-content/80 dark:hover:bg-base-300/50',
 									)}
 									href={href}
 									onClick={() => setIsMenuOpen(false)}

@@ -1,14 +1,14 @@
 import type { VapItemData } from '@react-components';
 import { useMutation } from '@tanstack/react-query';
-import type { Sale, SaleInsert } from 'supabase-sdk';
+import type { TablesInsert } from 'supabase-sdk';
 import { queryClient } from '../lib/queryClient';
 import { playSound } from '../lib/sound';
 import { supabaseBrowserClient } from '../services/init.service';
 import { sanitizeDeep } from '../utils/sanitize';
 
-export async function insertSale(params: SaleInsert) {
+export async function insertSale(params: TablesInsert<'sales'>) {
 	const sanitized = sanitizeDeep(params);
-	const { data, error } = await (supabaseBrowserClient as any)
+	const { data, error } = await supabaseBrowserClient
 		.from('sales')
 		.insert(sanitized)
 		.select()
@@ -18,7 +18,7 @@ export async function insertSale(params: SaleInsert) {
 		console.error('Error inserting sell:', error);
 	}
 
-	return { data: data as Sale | null, error };
+	return { data, error };
 }
 
 export const useMutationInsertSale = () => {

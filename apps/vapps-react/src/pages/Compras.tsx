@@ -20,7 +20,7 @@ export const Compras = () => {
 
 	const ingresosTotal =
 		finatial?.reduce(
-			(total: number, item) => total + (item.profiles.full_name === 'Caja' ? item.amount : 0),
+			(total: number, item) => total + (item.profiles?.full_name === 'Caja' ? item.amount : 0),
 			0,
 		) ?? 0;
 

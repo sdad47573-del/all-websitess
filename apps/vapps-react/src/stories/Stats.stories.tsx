@@ -5,7 +5,7 @@ const meta: Meta<typeof Stats> = {
     title: 'Components/Stats',
     component: Stats,
     parameters: {
-        layout: 'fullscreen',
+		layout: 'centered',
     },
 };
 

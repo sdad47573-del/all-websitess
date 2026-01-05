@@ -3,7 +3,7 @@ import { useGetAllItemsAll, useCreateBuyWithItems, useGetAllBrands } from '@/hoo
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import Toastify from 'toastify-js';
+import { showToast } from '@/utils/toast';
 import { PageLayout } from '@/components/PageLayout';
 import { SectionHeader } from '@/components/SectionHeader';
 import { lazy, Suspense, useState } from 'react';
@@ -32,22 +32,6 @@ const schema = z.object({
 type FormData = z.input<typeof schema>;
 
 type SelectedItem = { item_id: number; title: string; quantity: number };
-
-const showToast = (text: string, kind: 'success' | 'error') => {
-	Toastify({
-		text,
-		duration: kind === 'success' ? 2500 : 3000,
-		gravity: 'top',
-		position: 'right',
-		style: {
-			background:
-				kind === 'success'
-					? 'linear-gradient(to right, #10b981, #34d399)'
-					: 'linear-gradient(to right, #ef4444, #f87171)',
-		},
-		className: 'rounded-lg shadow-lg font-medium',
-	}).showToast();
-};
 
 export const ComprasNueva = () => {
 	const { data: items = [] } = useGetAllItemsAll();

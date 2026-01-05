@@ -1,0 +1,68 @@
+import { DataType, TYPES } from "../utils";
+import { NAMES } from "../names";
+export const ALPHABET: DataType[] = [
+  {
+    date: "22/08/2024",
+    type: TYPES.compra,
+    id: "b6bf94d5913446fb9d7a2419548d7512",
+    name: NAMES.ALPHABET,
+    amount: 30,
+    price: 4489.0,
+  },
+  {
+    date: "22/08/2024",
+    type: TYPES.venta,
+    name: NAMES.ALPHABET,
+    id: "32300d36c1cc4a2c9c0ec9ec8684940e",
+    amount: 30,
+    price: 4497.2,
+  },
+  {
+    date: "28/08/2024",
+    type: TYPES.compra,
+    name: NAMES.ALPHABET,
+    id: "d7414659fc6841c9a9a0ed2c8e248b94",
+    amount: 40,
+    price: 5932.2,
+  },
+  {
+    date: "29/08/2024",
+    type: TYPES.venta,
+    name: NAMES.ALPHABET,
+    id: "7e1c2bef39cf40bba50e418332324deb",
+    amount: 40,
+    price: 5939.8,
+  },
+  {
+    date: "02/09/2024",
+    id: "5d3b541f44d04ed1bf13a40c5e98a87e",
+    type: TYPES.compra,
+    name: NAMES.ALPHABET,
+    amount: 45,
+    price: 6636.7,
+  },
+  {
+    date: "02/09/2024",
+    id: "5e020812f3bd47c2add84d1c0376b471",
+    type: TYPES.venta,
+    name: NAMES.ALPHABET,
+    amount: 45,
+    price: 6641.0,
+  },
+  {
+    date: "02/09/2024",
+    type: TYPES.compra,
+    id: "414e2eb15c9e4382ad8cff997ab8cf2d",
+    name: NAMES.ALPHABET,
+    amount: 45,
+    price: 6627.7,
+  },
+  {
+    date: "02/09/2024",
+    id: "a98ef2fc06884b50b0ce129a9bc93b00",
+    type: TYPES.venta,
+    name: NAMES.ALPHABET,
+    amount: 45,
+    price: 6632.9,
+  },
+];

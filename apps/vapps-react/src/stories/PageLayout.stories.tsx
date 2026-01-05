@@ -5,7 +5,7 @@ const meta: Meta<typeof PageLayout> = {
 	title: 'Components/PageLayout',
 	component: PageLayout,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'centered',
 	},
 };
 

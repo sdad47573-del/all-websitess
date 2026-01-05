@@ -5,7 +5,7 @@ const meta: Meta<typeof VapList> = {
     title: 'Components/VapList',
     component: VapList,
     parameters: {
-        layout: 'padded',
+		layout: 'centered',
     },
 };
 

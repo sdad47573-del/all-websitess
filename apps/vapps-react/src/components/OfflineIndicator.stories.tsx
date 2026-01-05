@@ -6,7 +6,7 @@ const meta = {
     title: 'Components/OfflineIndicator',
     component: OfflineIndicator,
     parameters: {
-        layout: 'fullscreen',
+		layout: 'centered',
     },
     tags: ['autodocs'],
 } satisfies Meta<typeof OfflineIndicator>;

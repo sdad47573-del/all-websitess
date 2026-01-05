@@ -1,0 +1,68 @@
+import { DataType, TYPES } from "../utils";
+import { NAMES } from "../names";
+export const TESLA: DataType[] = [
+  {
+    date: "18/09/2024",
+    id: "9164247438d9489aa6cbc3de44679bce",
+    type: TYPES.compra,
+    name: NAMES.TESLA,
+    amount: 25,
+    price: 5118.5,
+  },
+  {
+    date: "18/09/2024",
+    id: "cce9425f4df84f709bcb44490347739c",
+    type: TYPES.venta,
+    name: NAMES.TESLA,
+    amount: 25,
+    price: 5119.0,
+  },
+  {
+    date: "25/09/2024",
+    id: "77829248c3c243d9862c7b2a9601a35c",
+    type: TYPES.compra,
+    name: NAMES.TESLA,
+    amount: 30,
+    price: 6725.5,
+  },
+  {
+    date: "25/09/2024",
+    type: TYPES.venta,
+    name: NAMES.TESLA,
+    id: "9119a4063ae24f87afd736920e57fe54",
+    amount: 30,
+    price: 6728.0,
+  },
+  {
+    date: "26/09/2024",
+    id: "e9f8990745a545b2a3e84a37bdf26f90",
+    type: TYPES.compra,
+    name: NAMES.TESLA,
+    amount: 25,
+    price: 5838.5,
+  },
+  {
+    id: "360d04781c11401f9dc6a7c506691b2f",
+    date: "26/09/2024",
+    type: TYPES.venta,
+    name: NAMES.TESLA,
+    amount: 25,
+    price: 5850.25,
+  },
+  {
+    date: "11/11/2024",
+    type: TYPES.compra,
+    id: "88e4745094294995bc9600d4d8aeff07",
+    name: NAMES.TESLA,
+    amount: 10,
+    price: 3212.5,
+  },
+  {
+    date: "11/11/2024",
+    id: "cdf2a52992f64ad298b98e7809d51dce",
+    type: TYPES.venta,
+    name: NAMES.TESLA,
+    amount: 10,
+    price: 3218.5,
+  },
+];

@@ -1,5 +1,5 @@
 import { supabaseBrowserClient } from '../services/init.service';
-import type { ItemProduct } from 'supabase-sdk';
+import type { Tables } from 'supabase-sdk';
 import { translateItem } from '../data/maps/spanish';
 import { getImageUrl } from '../utils/image.utils';
 import { useSupabaseQuery } from './useSupabaseQuery';
@@ -8,10 +8,10 @@ export async function getAllItems() {
 	return await supabaseBrowserClient.from('items').select('*').eq('active', true);
 }
 
-type TransformedItem = ItemProduct & { src: string; title: string };
+type TransformedItem = Tables<'items'> & { src: string; title: string };
 
 export function useGetAllItems() {
-	return useSupabaseQuery<ItemProduct[], TransformedItem[]>(['items'], getAllItems, {
+	return useSupabaseQuery<Tables<'items'>[], TransformedItem[]>(['items'], getAllItems, {
 		select: (data) =>
 			data
 				?.map((item) => ({

@@ -5,7 +5,7 @@ const meta: Meta<typeof Topbar> = {
 	title: 'Packages/ReactComponents/Topbar',
 	component: Topbar,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'centered',
 	},
 	tags: ['autodocs'],
 };

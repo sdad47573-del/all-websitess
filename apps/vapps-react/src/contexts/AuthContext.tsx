@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef } from 'react';
 import type { Database } from 'supabase-sdk';
-import Toastify from 'toastify-js';
+import { showToast } from '@/utils/toast';
 import { useAuthData, useSignOut } from '../hooks';
 import { supabaseBrowserClient } from '../services/init.service';
 
@@ -59,14 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			console.log('[AuthContext] Auth state change:', event);
 
 			if (event === 'SIGNED_OUT' && !session && !isManualSignOut.current) {
-				Toastify({
-					text: 'Tu sesión ha caducado. Por favor, vuelve a entrar.',
-					duration: 5000,
-					gravity: 'top',
-					position: 'right',
-					style: { background: 'linear-gradient(to right, #f59e0b, #d97706)' },
-					className: 'rounded-lg shadow-lg font-medium',
-				}).showToast();
+				showToast('Tu sesión ha caducado. Por favor, vuelve a entrar.', 'warning');
 			}
 
 			if (

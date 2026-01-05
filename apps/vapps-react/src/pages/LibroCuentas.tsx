@@ -47,7 +47,7 @@ export const LibroCuentas = () => {
 									label={item.label}
 									amount={item.amount}
 									date={item.date}
-									fullName={item.profiles.full_name}
+									fullName={item.profiles?.full_name ?? 'Desconocido'}
 								/>
 							))}
 						</ul>

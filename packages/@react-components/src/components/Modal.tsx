@@ -131,14 +131,14 @@ export const Modal = ({ isOpen, onClose, data, onSubmit }: ModalProps) => {
 				>
 					{/* Swipe indicator - visible only on mobile */}
 					<div className="flex justify-center pt-3 pb-1 sm:hidden">
-						<div className="h-1.5 w-12 rounded-full bg-gray-300"></div>
+						<div className="h-1.5 w-12 rounded-full bg-base-content/20"></div>
 					</div>
 
 					<div className="sticky top-0 flex items-center justify-between rounded-t-3xl border-b border-base-200 bg-base-100 px-6 py-4">
 						<h2 className="text-xl font-bold text-base-content">Detalles del Objeto</h2>
 						<button
 							onClick={onClose}
-							className="flex min-h-12 min-w-12 cursor-pointer items-center justify-center rounded-full bg-base-200 text-base-content/60 transition-all hover:bg-base-300 hover:text-base-content active:scale-95 sm:min-h-8 sm:min-w-8 sm:bg-transparent sm:hover:bg-base-200"
+							className="flex min-h-12 min-w-12 cursor-pointer items-center justify-center rounded-full bg-base-200 text-base-content/60 transition-all hover:bg-base-300 hover:text-base-content dark:bg-base-300/50 dark:hover:bg-base-300 active:scale-95 sm:min-h-8 sm:min-w-8 sm:bg-transparent sm:hover:bg-base-200"
 							aria-label="Cerrar"
 							type="button"
 						>

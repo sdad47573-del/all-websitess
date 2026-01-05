@@ -55,7 +55,7 @@ export function useCurrentUserWithProfile() {
 			const { profile: newProfile, error: insertError } = await authService.createProfile(
 				user.id,
 				(user.user_metadata?.full_name as string) || 'Usuario',
-				(user.user_metadata?.role as any) || 'seller',
+				(user.user_metadata?.role as UserRole) || 'seller',
 			);
 
 			if (insertError) {
@@ -110,7 +110,7 @@ export function useAuthData() {
 				const { profile: newProfile, error: insertError } = await authService.createProfile(
 					user.id,
 					(user.user_metadata?.full_name as string) || 'Usuario',
-					(user.user_metadata?.role as any) || 'seller',
+					(user.user_metadata?.role as UserRole) || 'seller',
 				);
 
 				if (!insertError) {

@@ -5,7 +5,7 @@ const meta: Meta<typeof ProductInventory> = {
     title: 'Components/ProductInventory',
     component: ProductInventory,
     parameters: {
-        layout: 'fullscreen',
+		layout: 'centered',
     },
 };
 

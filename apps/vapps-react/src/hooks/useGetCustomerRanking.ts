@@ -1,11 +1,9 @@
 import { supabaseBrowserClient } from '../services/init.service';
 import { useSupabaseQuery } from './useSupabaseQuery';
+import type { Tables } from 'supabase-sdk';
 
-type SalesBasicRow = {
-	customer_id: number | null;
-	amount: number;
-	payment: number | null;
-	customers: { name: string } | null;
+type SalesBasicRow = Pick<Tables<'sales'>, 'customer_id' | 'amount' | 'payment'> & {
+	customers: Pick<Tables<'customers'>, 'name'> | null;
 };
 
 export type CustomerRankingRow = {

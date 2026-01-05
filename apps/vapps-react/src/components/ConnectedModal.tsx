@@ -1,7 +1,7 @@
 import { useStore } from '@nanostores/react';
 import { Modal, type ModalData, type NumericFormData } from '@react-components';
 import { useEffect } from 'react';
-import Toastify from 'toastify-js';
+import { showToast } from '@/utils/toast';
 import { useMutationInsertSale } from '../hooks';
 import { isModalOpen, modalData } from '../stores/modal.store';
 
@@ -40,12 +40,7 @@ export default function ConnectedModal() {
 			payment: form.payment ? form.price_per_unit * form.amount : 0,
 		});
 
-		Toastify({
-			text: 'Venta guardada correctamente 🎉',
-			duration: 3000,
-			gravity: 'bottom',
-			position: 'right',
-		}).showToast();
+		showToast('Venta guardada correctamente 🎉');
 
 		handleClose();
 	};

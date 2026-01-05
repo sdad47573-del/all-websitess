@@ -1,25 +1,22 @@
 import { useMutation } from '@tanstack/react-query';
-import type { Database } from 'supabase-sdk';
+import type { TablesInsert } from 'supabase-sdk';
 import { supabaseBrowserClient } from '../services/init.service';
 import { sanitizeDeep } from '../utils/sanitize';
 import { queryClient } from '../lib/queryClient';
 
-type BrandInsert = Database['public']['Tables']['brands']['Insert'];
-type BrandRow = Database['public']['Tables']['brands']['Row'];
-
-export async function insertBrand(params: BrandInsert) {
+export async function insertBrand(params: TablesInsert<'brands'>) {
 	const sanitized = sanitizeDeep(params);
-	const { data, error } = await (supabaseBrowserClient as any)
+	const { data, error } = await supabaseBrowserClient
 		.from('brands')
 		.insert(sanitized)
 		.select()
 		.single();
-	return { data: data as BrandRow | null, error };
+	return { data, error };
 }
 
 export function useInsertBrand() {
 	return useMutation({
-		mutationFn: (params: BrandInsert) => insertBrand(params),
+		mutationFn: (params: TablesInsert<'brands'>) => insertBrand(params),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['brands'] });
 		},

@@ -11,7 +11,7 @@ export const FinanceCard = ({ label, amount, date, fullName }: FinanceCardProps)
 	const isNegative = amount < 0;
 
 	return (
-		<li className="border-base-200 to-base-100 hover:border-primary/20 list-none overflow-hidden rounded-2xl border bg-linear-to-br from-white p-5 shadow-sm transition-all duration-300 hover:shadow-md">
+		<li className="border-base-200 hover:border-primary/20 bg-base-100 list-none overflow-hidden rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md dark:border-base-content/10">
 			<div className="flex items-center gap-4">
 				<div
 					className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-inner ${isNegative ? 'bg-error/10 text-error' : 'bg-success/10 text-success'}`}

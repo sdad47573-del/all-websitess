@@ -5,9 +5,11 @@ import Stats from '../components/Stats';
 import { translateItem } from '../data/maps/spanish';
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
-import type { ItemsStockRow } from '../hooks/useGetAllBuyedItemsPendingSales';
+import type { Database } from 'supabase-sdk';
 import { getImageUrl } from '@/utils/image.utils';
 import { imageMap } from '@/data/maps/img';
+
+type ItemStock = Database['public']['Functions']['get_items_stock']['Returns'][number];
 
 // TODO: sale vapers en negativo,
 // eso es porque se han puesto en amount mas cantidad de la que se ha comprado, mirar las compras y ver que ha pasado
@@ -16,7 +18,7 @@ export const HistorialVentas = () => {
 	const { data } = useGetAllBuyedItemsPendingSales();
 
 	const pendientesItems =
-		data?.map((item: ItemsStockRow) => ({
+		data?.map((item: ItemStock) => ({
 			id: item.item_id,
 			title: translateItem(item.title),
 			src: getImageUrl(item.image_url),

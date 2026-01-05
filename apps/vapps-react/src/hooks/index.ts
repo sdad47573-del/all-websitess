@@ -15,5 +15,6 @@ export * from './useMutationCreateBuy';
 export * from './useMutationInsertBrand';
 export * from './useMutationInsertModel';
 export * from './useGetCustomerRanking';
+export * from './useCustomerRankingItems';
 // export * from './useGetAllBeneficios';
 // export * from './useGetAllIngresos';

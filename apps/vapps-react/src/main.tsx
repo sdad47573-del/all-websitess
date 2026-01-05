@@ -9,7 +9,7 @@ import 'remixicon/fonts/remixicon.css';
 import 'animate.css';
 import 'toastify-js/src/toastify.css';
 
-import Toastify from 'toastify-js';
+import { showToast } from './utils/toast';
 import { AuthProvider } from './contexts/AuthContext';
 import { registerServiceWorker } from './lib/pwa';
 import { queryClient } from './lib/queryClient';
@@ -44,18 +44,13 @@ if (import.meta.env.PROD) {
 			console.log('[PWA] Content cached for offline use');
 		},
 		onUpdate: () => {
-			Toastify({
-				text: '🔄 Nueva versión disponible. Recarga la página para actualizar.',
+			showToast('🔄 Nueva versión disponible. Recarga la página para actualizar.', 'warning', {
 				duration: 10000,
-				gravity: 'top',
 				position: 'center',
-				style: {
-					background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-				},
 				onClick: () => {
 					window.location.reload();
 				},
-			}).showToast();
+			});
 		},
 		onError: (error) => {
 			console.error('[PWA] Service Worker registration failed:', error);

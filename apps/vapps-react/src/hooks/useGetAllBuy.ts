@@ -1,26 +1,16 @@
 import { supabaseBrowserClient } from '../services/init.service';
 import { useSupabaseQuery } from './useSupabaseQuery';
+import type { Tables } from 'supabase-sdk';
 
-type BuyedItemRow = {
-	buy_id: number;
-	quantity: number;
-	item_id?: number;
-	// eur: number; // da error
-	buy: {
-		id: number;
-		eur: number;
-		fecha: string;
-		label: string;
-		payed: boolean;
-		facture_url?: string | null;
-	};
-	items: { id: number; title: string; brand: string | null; image_url: string | null };
+type BuyedItemRow = Pick<Tables<'buyeditems'>, 'buy_id' | 'quantity' | 'item_id'> & {
+	buy: Tables<'buy'> | null;
+	items: Pick<Tables<'items'>, 'id' | 'title' | 'brand' | 'image_url'> | null;
 };
 
 export type GroupedBuyItem = {
 	id: number;
 	title: string;
-	brand: string;
+	brand: string | null;
 	image_url: string | null;
 	quantity: number;
 };
@@ -52,15 +42,24 @@ export async function getAllBuy() {
 	const typedData = data as BuyedItemRow[] | null;
 
 	const grouped = typedData?.reduce<Record<number, GroupedBuyEntry>>((acc, curr) => {
-		const buyRow = curr.buy as any;
-		const itemRow = curr.items as any;
+		const buyRow = curr.buy;
+		const itemRow = curr.items;
 		if (!buyRow || !itemRow) {
 			return acc;
 		}
 		const buyId = buyRow.id;
 
 		if (!acc[buyId]) {
-			acc[buyId] = { ...buyRow, items: [], total: 0 };
+			acc[buyId] = {
+				id: buyRow.id,
+				eur: buyRow.eur,
+				fecha: buyRow.fecha,
+				label: buyRow.label,
+				payed: buyRow.payed,
+				facture_url: buyRow.facture_url,
+				items: [],
+				total: 0,
+			};
 		}
 
 		acc[buyId].items.push({
