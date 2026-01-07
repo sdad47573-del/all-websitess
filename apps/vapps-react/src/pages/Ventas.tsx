@@ -1,10 +1,7 @@
-import { ErrorState } from '@/components/ErrorState';
-import { Loading } from '@/components/Loading';
-import { PageLayout } from '@/components/PageLayout';
 import { SaleList } from '@/components/SaleList';
-import Stats from '@/components/Stats';
-import { useGetAllSalesGroupedByDate } from '@/hooks';
-import type { SalesByDateRow } from '@/hooks/useGetAllSalesGroupedByDate';
+import { Stats, PageLayout, Loading, ErrorState } from '@react-components';
+
+import { useGetAllSalesGroupedByDate, type SalesByDateRow } from '@/hooks';
 
 export const Ventas = () => {
 	const { data: sales, isLoading, error } = useGetAllSalesGroupedByDate();

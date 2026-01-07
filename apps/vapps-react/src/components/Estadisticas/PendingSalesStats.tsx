@@ -1,4 +1,5 @@
-import Stats from '../Stats';
+import { Stats } from '@react-components';
+
 import { SELL } from '@/data/SELL';
 
 export const PendingSalesStats = () => (

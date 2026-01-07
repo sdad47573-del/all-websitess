@@ -1,4 +1,5 @@
-import Stats from '../Stats';
+import { Stats } from '@react-components';
+
 
 interface UnidadesStatsProps {
 	totalBuyed: number;

@@ -1,6 +1,6 @@
 import { BuyCard } from './BuyCard';
-import { EmptyState } from './EmptyState';
-import { SectionHeader } from './SectionHeader';
+import { EmptyState, SectionHeader } from '@react-components';
+
 
 interface BuyListProps {
 	buys?: any[] | null;

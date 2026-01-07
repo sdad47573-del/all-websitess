@@ -1,9 +1,6 @@
-import Stats from '../components/Stats';
+import { Stats, FinanceCard, SectionHeader, EmptyState } from '@react-components';
 import { useGetAllFinancialRecords } from '../hooks/useGetAllFinancialRecords';
 import { getGroupedFinancialRecords } from '../utils/getGroupedFinancialRecords';
-import { SectionHeader } from '../components/SectionHeader';
-import { FinanceCard } from '../components/FinanceCard';
-import { EmptyState } from '../components/EmptyState';
 
 // TODO: separar ganancias en las listas e imprimir una lista por socio
 export const LibroCuentas = () => {
@@ -19,7 +16,7 @@ export const LibroCuentas = () => {
 						items={[
 							{
 								label: 'Ingresos Totales',
-								value: data.reduce((total, item) => total + item.amount, 0) + '€',
+								value: data.reduce((total, item) => total + item.amount, 0).toFixed(2) + '€',
 								icon: 'ri-money-euro-circle-line',
 								color: 'bg-success',
 							},

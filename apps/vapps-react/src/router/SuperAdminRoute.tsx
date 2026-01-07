@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { Redirect } from 'wouter';
-import { Loading } from '../components/Loading';
+import { Loading } from '@react-components';
 import { useAuth } from '../contexts/AuthContext';
 
 interface SuperAdminRouteProps {

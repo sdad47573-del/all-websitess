@@ -1,7 +1,8 @@
 import { useStore } from '@nanostores/react';
 import { twJoin } from 'tailwind-merge';
 import { Link, useLocation } from 'wouter';
-import { PWAInstallButton } from '../components/PWAInstallButton';
+import { PWAInstallButton } from '@react-components';
+
 import { useAuth } from '../contexts/AuthContext';
 import { isModalOpen } from '../stores/modal.store';
 import Logo from './Logo';
@@ -11,10 +12,11 @@ import { theme, toggleTheme } from '../stores/theme.store';
 const baseSections = [
 	{ name: 'Inicio', href: '/' },
 	{ name: 'Promos', href: '/promos' },
-	{ name: 'Promos2', href: '/promos2' },
+	// { name: 'Promos2', href: '/promos2' },
 	{ name: 'Ventas', href: '/ventas' },
 	{ name: 'Libro de cuentas', href: '/libro-cuentas' },
 	{ name: 'Compras', href: '/compras' },
+	{ name: 'Ranking', href: '/ranking-clientes' },
 ];
 
 export default function Topbar() {
@@ -31,7 +33,6 @@ export default function Topbar() {
 					{ name: 'Añadir compra', href: '/compras-nueva' },
 					{ name: 'Añadir producto', href: '/items-nuevo' },
 					{ name: 'Añadir modelo', href: '/marcas-modelos-nuevo' },
-					{ name: 'Ranking', href: '/ranking-clientes' },
 				]
 			: [];
 

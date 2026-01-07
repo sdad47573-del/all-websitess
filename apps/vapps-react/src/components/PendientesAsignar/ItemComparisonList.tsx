@@ -1,5 +1,6 @@
-import { SectionHeader } from '../SectionHeader';
+import { SectionHeader } from '@react-components';
 import { translateItem } from '@/data/maps/spanish';
+
 import { getImageUrl } from '@/utils/image.utils';
 
 interface ItemComparisonListProps {

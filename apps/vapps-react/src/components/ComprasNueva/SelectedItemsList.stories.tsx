@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SelectedItemsList } from './SelectedItemsList';
+import { SelectedItemsList } from '@react-components';
 
 const meta = {
 	title: 'Components/ComprasNueva/SelectedItemsList',

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PageLayout } from '../components/PageLayout';
+import { PageLayout } from '@react-components';
 
 const meta: Meta<typeof PageLayout> = {
 	title: 'Components/PageLayout',

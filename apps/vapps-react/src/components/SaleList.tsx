@@ -1,7 +1,6 @@
 import type { SalesByDateRow } from '@/hooks/useGetAllSalesGroupedByDate';
-import { EmptyState } from './EmptyState';
+import { EmptyState, SectionHeader } from '@react-components';
 import { SaleCard } from './SaleCard';
-import { SectionHeader } from './SectionHeader';
 
 interface SaleListProps {
 	sales?: SalesByDateRow[] | null;

@@ -1,4 +1,4 @@
-import { ExpandableTransactionCard } from '../common/ExpandableTransactionCard';
+import { ExpandableTransactionCard } from '@react-components';
 import { getImageUrl } from '@/utils/image.utils';
 import type { CustomerItems } from '@/hooks/useCustomerRankingItems';
 
@@ -24,6 +24,7 @@ export const CustomerRankingList = ({ ranking, customerItems }: CustomerRankingL
 						title: i.title,
 						brand: '',
 						image_url: getImageUrl(i.image_url),
+						src: getImageUrl(i.image_url),
 						amount: i.amount,
 					}),
 				)}

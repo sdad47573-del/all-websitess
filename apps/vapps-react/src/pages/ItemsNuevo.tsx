@@ -1,5 +1,4 @@
-import { PageLayout } from '../components/PageLayout';
-import { SectionHeader } from '../components/SectionHeader';
+import { PageLayout, SectionHeader } from '@react-components';
 import { ItemForm } from '../components/ItemsNuevo/ItemForm';
 
 export const ItemsNuevo = () => {
@@ -12,4 +11,3 @@ export const ItemsNuevo = () => {
 		</PageLayout>
 	);
 };
-

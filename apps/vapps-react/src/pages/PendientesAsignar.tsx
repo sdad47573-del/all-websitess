@@ -1,5 +1,4 @@
-import { Loading } from '../components/Loading';
-import { PageLayout } from '../components/PageLayout';
+import { PageLayout, Loading } from '@react-components';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
 import { UnidadesStats } from '../components/PendientesAsignar/UnidadesStats';
 import { ItemComparisonList } from '../components/PendientesAsignar/ItemComparisonList';

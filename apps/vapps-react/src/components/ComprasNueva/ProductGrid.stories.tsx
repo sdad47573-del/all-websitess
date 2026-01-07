@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ProductGrid } from './ProductGrid';
+import { ProductGrid } from '@react-components';
 
 const meta = {
 	title: 'Components/ComprasNueva/ProductGrid',

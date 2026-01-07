@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'wouter';
-import { Loading } from '../components/Loading';
+import { Loading } from '@react-components';
 import { PrivateRoute } from './PrivateRoute';
 import { SuperAdminRoute } from './SuperAdminRoute';
 import Topbar from '../layouts/Topbar';

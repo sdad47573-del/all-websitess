@@ -1,6 +1,6 @@
-import { PageLayout } from '../components/PageLayout';
-import { SectionHeader } from '../components/SectionHeader';
+import { PageLayout, SectionHeader } from '@react-components';
 import { BrandForm } from '../components/MarcasModelos/BrandForm';
+
 import { ModelForm } from '../components/MarcasModelos/ModelForm';
 
 export const MarcasModelosNuevo = () => {
@@ -20,4 +20,3 @@ export const MarcasModelosNuevo = () => {
 		</PageLayout>
 	);
 };
-

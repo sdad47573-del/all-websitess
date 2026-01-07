@@ -1,13 +1,9 @@
 import { useMemo } from 'react';
 import { useStore } from '@nanostores/react';
 import { BuyList } from '../components/BuyList';
-import { Loading } from '../components/Loading';
-import { PageLayout } from '../components/PageLayout';
 import { ProductInventory } from '../components/ProductInventory';
-import Stats from '../components/Stats';
-import { ErrorState } from '../components/ErrorState';
 import { useGetAllBuy, useGetAllBuyedItemsTotals, useGetAllFinancialRecords } from '../hooks';
-import { InvoiceModal } from '../components/InvoiceModal';
+import { PageLayout, Loading, Stats, ErrorState, InvoiceModal } from '@react-components';
 import { $invoiceUrl, $isInvoiceOpen, closeInvoice } from '../stores/invoice.store';
 import { openInvoice } from '../stores/invoice.store';
 

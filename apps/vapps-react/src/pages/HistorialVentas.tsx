@@ -1,8 +1,7 @@
 import VapList from '@/components/VapList';
-import { PageLayout } from '@/components/PageLayout';
-import { SectionHeader } from '@/components/SectionHeader';
-import Stats from '../components/Stats';
+import { PageLayout, Stats, SectionHeader } from '@react-components';
 import { translateItem } from '../data/maps/spanish';
+
 import { SELL } from '../data/SELL';
 import { useGetAllBuyedItemsPendingSales } from '../hooks';
 import type { Database } from 'supabase-sdk';

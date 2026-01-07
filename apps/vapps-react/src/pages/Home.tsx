@@ -1,7 +1,6 @@
 import ConnectedModal from '../components/ConnectedModal';
-import { PageLayout } from '../components/PageLayout';
-import { SectionHeader } from '../components/SectionHeader';
-import Stats from '../components/Stats';
+import { PageLayout, SectionHeader, Stats } from '@react-components';
+
 import VapList from '../components/VapList';
 import { useGetAllItems, useGetBestSellingItem } from '../hooks';
 

@@ -1,7 +1,4 @@
-import { PageLayout } from '../components/PageLayout';
-import { Loading } from '../components/Loading';
-import { ErrorState } from '../components/ErrorState';
-import { SectionHeader } from '../components/SectionHeader';
+import { PageLayout, SectionHeader, Loading, ErrorState } from '@react-components';
 import { useGetCustomerRanking, useCustomerRankingItems } from '../hooks';
 import { RankingStats } from '../components/RankingClientes/RankingStats';
 import { CustomerRankingList } from '../components/RankingClientes/CustomerRankingList';
@@ -30,4 +27,3 @@ export const RankingClientes = () => {
 		</PageLayout>
 	);
 };
-

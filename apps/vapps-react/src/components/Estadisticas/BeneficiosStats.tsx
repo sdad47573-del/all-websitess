@@ -1,4 +1,5 @@
-import Stats from '../Stats';
+import { Stats } from '@react-components';
+
 
 export const BeneficiosStats = () => (
 	<Stats

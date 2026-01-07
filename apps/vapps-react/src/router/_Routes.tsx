@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'wouter';
-import { Loading } from '../components/Loading';
-import { OfflineIndicator } from '../components/OfflineIndicator';
+import { Loading, OfflineIndicator } from '@react-components';
+
 import { AuthedLayout } from './_AuthedRoutes';
 
 const Login = lazy(() => import('../pages/Login').then((m) => ({ default: m.Login })));

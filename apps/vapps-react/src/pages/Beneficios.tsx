@@ -1,8 +1,7 @@
 // import { BeneficioItem } from '../components/Beneficios/BeneficioItem';
-// import { ErrorState } from '../components/ErrorState';
-// import { Loading } from '../components/Loading';
-// import { PageLayout } from '../components/PageLayout';
-// import Stats from '../components/Stats';
+// import { PageLayout, Loading, ErrorState } from '@react-components';
+// import { Stats } from '@react-components';
+
 // import { useGetAllBeneficios } from '../hooks';
 // import type { Beneficio } from '../types';
 

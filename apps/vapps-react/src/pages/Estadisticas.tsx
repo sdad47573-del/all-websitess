@@ -1,10 +1,10 @@
-import { PageLayout } from '../components/PageLayout';
 import { useGetAllBuy, useGetAllFinancialRecords, useGetAllSalesGroupedByDate } from '../hooks';
 import { ComprasStats } from '../components/Estadisticas/ComprasStats';
 import { IngresosStats } from '../components/Estadisticas/IngresosStats';
 import { VentasStats } from '../components/Estadisticas/VentasStats';
 import { PendingSalesStats } from '../components/Estadisticas/PendingSalesStats';
 import { BeneficiosStats } from '../components/Estadisticas/BeneficiosStats';
+import { PageLayout } from '@react-components';
 
 export const Estadisticas = () => {
 	const { data: buy } = useGetAllBuy();
@@ -23,19 +23,14 @@ export const Estadisticas = () => {
 
 	const { data: sales } = useGetAllSalesGroupedByDate();
 	const totalCalculated = sales?.reduce((total, sale) => total + sale.total_price, 0) ?? 0;
-	const totalReceived =
-		sales?.reduce((total, sale) => total + (sale.total_payment ?? 0), 0) ?? 0;
+	const totalReceived = sales?.reduce((total, sale) => total + (sale.total_payment ?? 0), 0) ?? 0;
 
 	const pendingSales = sales?.filter((sale) => (sale.total_payment ?? 0) - sale.total_price < 0);
 
 	return (
 		<PageLayout>
 			{buy && finatial && (
-				<ComprasStats
-					buyUdsTotal={buyUdsTotal}
-					buyEurTotal={buyEurTotal}
-					restante={restante}
-				/>
+				<ComprasStats buyUdsTotal={buyUdsTotal} buyEurTotal={buyEurTotal} restante={restante} />
 			)}
 			{finatial && <IngresosStats finatial={finatial} />}
 			{sales && (
@@ -50,4 +45,3 @@ export const Estadisticas = () => {
 		</PageLayout>
 	);
 };
-

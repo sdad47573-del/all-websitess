@@ -1,4 +1,5 @@
-import Stats from '../Stats';
+import { Stats } from '@react-components';
+
 import { getGroupedFinancialRecords } from '@/utils/getGroupedFinancialRecords';
 
 import type { FinancialRecordWithProfile } from '@/hooks';
@@ -13,7 +14,7 @@ export const IngresosStats = ({ finatial }: IngresosStatsProps) => (
 		items={[
 			{
 				label: 'Ingresos Totales',
-				value: finatial.reduce((total, item: any) => total + item.amount, 0) + '€',
+				value: finatial.reduce((total, item: any) => total + item.amount, 0).toFixed(2) + '€',
 				icon: 'ri-money-euro-circle-line',
 				color: 'bg-green-500',
 			},

@@ -1,5 +1,6 @@
 import type { SaleItemDetail } from '@/hooks/useGetAllSalesGroupedByDate';
-import { ExpandableTransactionCard } from './common/ExpandableTransactionCard';
+import { ExpandableTransactionCard } from '@react-components';
+import { translateItem } from '@/data/maps/spanish';
 import { getImageUrl } from '@/utils/image.utils';
 
 interface SaleCardProps {
@@ -38,8 +39,9 @@ export const SaleCard = ({
 
 	const transactionItems = items.map((item) => ({
 		id: item.sale_id,
-		image_url: getImageUrl(item.image_url),
-		title: item.item_title,
+		src: getImageUrl(item.image_url),
+		image_url: null,
+		title: translateItem(item.item_title),
 		brand: item.brand,
 		amount: item.amount,
 		price: item.price_per_unit,

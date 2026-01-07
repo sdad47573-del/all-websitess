@@ -1,26 +1,20 @@
-import { Input, Checkbox } from '@react-components';
+import {
+	Input,
+	Checkbox,
+	PageLayout,
+	SectionHeader,
+	Loading,
+	ProductGrid,
+	SelectedItemsList,
+	SearchFilter,
+} from '@react-components';
 import { useGetAllItemsAll, useCreateBuyWithItems, useGetAllBrands } from '@/hooks';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { showToast } from '@/utils/toast';
-import { PageLayout } from '@/components/PageLayout';
-import { SectionHeader } from '@/components/SectionHeader';
-import { lazy, Suspense, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useLocation } from 'wouter';
-import { Loading } from '@/components/Loading';
-
-const SearchFilters = lazy(() =>
-	import('../components/ComprasNueva/SearchFilters').then((m) => ({ default: m.SearchFilters })),
-);
-const ProductGrid = lazy(() =>
-	import('../components/ComprasNueva/ProductGrid').then((m) => ({ default: m.ProductGrid })),
-);
-const SelectedItemsList = lazy(() =>
-	import('../components/ComprasNueva/SelectedItemsList').then((m) => ({
-		default: m.SelectedItemsList,
-	})),
-);
 
 const schema = z.object({
 	label: z.string().min(2),
@@ -54,10 +48,10 @@ export const ComprasNueva = () => {
 	const totalSelectedQty = selected.reduce((sum, s) => sum + s.quantity, 0);
 	const brandOptions =
 		brandsList.length > 0
-			? brandsList
-			: Array.from(new Set(items.map((i) => i.brand).filter(Boolean))).map((name, idx) => ({
-					id: idx,
-					name: name as string,
+			? brandsList.map((b: any) => ({ label: b.name, value: b.name }))
+			: Array.from(new Set(items.map((i) => i.brand).filter(Boolean))).map((name) => ({
+					label: name as string,
+					value: name as string,
 				}));
 
 	const filteredItems = items.filter((item) => {
@@ -146,12 +140,12 @@ export const ComprasNueva = () => {
 					</div>
 
 					<Suspense fallback={<Loading />}>
-						<SearchFilters
+						<SearchFilter
 							searchTerm={searchTerm}
 							onSearchChange={setSearchTerm}
-							brands={brandOptions as any}
-							selectedBrand={selectedBrand}
-							onBrandChange={setSelectedBrand}
+							options={brandOptions}
+							selectedOption={selectedBrand}
+							onOptionChange={(val) => setSelectedBrand(val as string)}
 						/>
 						<SelectedItemsList selected={selected} onRemove={removeItem} />
 						{selected.length > 0 && (

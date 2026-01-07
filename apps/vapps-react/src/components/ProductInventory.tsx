@@ -1,6 +1,6 @@
-import { VapListItem } from '@react-components';
-import { SectionHeader } from './SectionHeader';
+import { VapListItem, SectionHeader } from '@react-components';
 import { translateItem } from '../data/maps/spanish';
+
 
 interface ProductInventoryProps {
     items?: any[] | null;

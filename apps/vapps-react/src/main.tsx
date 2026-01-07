@@ -11,7 +11,7 @@ import 'toastify-js/src/toastify.css';
 
 import { showToast } from './utils/toast';
 import { AuthProvider } from './contexts/AuthContext';
-import { registerServiceWorker } from './lib/pwa';
+import { registerServiceWorker } from '@react-components';
 import { queryClient } from './lib/queryClient';
 import { ensureAudioUnlocked } from './lib/sound';
 import { theme } from './stores/theme.store';

@@ -1,4 +1,6 @@
-import { ExpandableTransactionCard } from './common/ExpandableTransactionCard';
+import { ExpandableTransactionCard } from '@react-components';
+import { translateItem } from '@/data/maps/spanish';
+import { getImageUrl } from '@/utils/image.utils';
 
 interface BuyItem {
 	id: string | number;
@@ -47,9 +49,10 @@ export const BuyCard = ({
 
 	const transactionItems = items?.map((item) => ({
 		id: item.id,
-		title: item.title,
+		title: translateItem(item.title),
 		brand: item.brand,
-		image_url: item.image_url,
+		src: getImageUrl(item.image_url),
+		image_url: null, // Legacy to satisfy old interface temporarily if needed, but I'll remove it from interface soon
 		amount: item.quantity,
 	}));
 
