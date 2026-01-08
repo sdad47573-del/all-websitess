@@ -63,7 +63,7 @@ function addUnitPrice(data: DataType[]) {
 }
 
 export function addGlobalUnitPrice(objeto: { [x: string]: DataType[] }) {
-  const resultado = {};
+  const resultado: Record<string, DataType[]> = {};
 
   for (const clave in objeto) {
     resultado[clave] = addUnitPrice(objeto[clave]);
@@ -74,9 +74,9 @@ export function addGlobalUnitPrice(objeto: { [x: string]: DataType[] }) {
 
 /////////////////////
 
-export const getTotalFromData = (data: any) => {
-  const flatArray = Object.entries(data).flatMap(([key, records]: any) =>
-    records.map((record: any) => ({
+export const getTotalFromData = (data: Record<string, DataType[]>) => {
+  const flatArray = Object.entries(data).flatMap(([key, records]) =>
+    records.map((record) => ({
       ...record,
       company: key,
     }))

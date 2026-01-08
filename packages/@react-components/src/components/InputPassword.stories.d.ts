@@ -1,7 +1,7 @@
 import type { StoryObj } from '@storybook/react';
 declare const meta: {
     title: string;
-    component: (props: Omit<import("./Input").InputProps, "type" | "rightAddon">) => import("react/jsx-runtime").JSX.Element;
+    component: import("react").ForwardRefExoticComponent<Omit<import("./Input").InputProps, "type" | "rightAddon"> & import("react").RefAttributes<HTMLInputElement>>;
     parameters: {
         layout: string;
     };

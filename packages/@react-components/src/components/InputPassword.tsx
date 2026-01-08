@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Input, type InputProps } from './Input';
 import { twJoin } from 'tailwind-merge';
 
 
-export const InputPassword = (
-    props: Omit<InputProps, 'type' | 'rightAddon'>
-) => {
+export const InputPassword = forwardRef<HTMLInputElement, Omit<InputProps, 'type' | 'rightAddon'>>(
+    (props, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
         <Input
             {...props}
+            ref={ref}
             type={showPassword ? 'text' : 'password'}
             rightAddon={<button
                 type="button"
@@ -23,4 +23,4 @@ export const InputPassword = (
         />
 
     );
-}
+})

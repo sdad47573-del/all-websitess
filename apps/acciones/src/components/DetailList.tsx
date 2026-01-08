@@ -1,41 +1,41 @@
-import { twMerge } from "tailwind-merge";
-import { DataType, TYPES } from "../data/utils";
+// tailwind-merge retained for future merges in this component
+import { DataType, TYPES } from '../data/utils';
+import placeholder from '@assets/placeholder-600x600.webp';
+import { VapListItem } from '@react-components';
 
 type DetailListprops = {
-  items: DataType[];
+	items: DataType[];
 };
 
 export const DetailList = ({ items }: DetailListprops) => {
-  return (
-    <ul className="list bg-base-100 rounded-box shadow-md">
-      <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
-        Most played songs this week
-      </li>
-      {items
-        .sort((a, b) =>
-          typeof a.unitPrice === "number" && typeof b.unitPrice === "number"
-            ? a.unitPrice - b.unitPrice
-            : 1
-        )
-        .sort((a, b) => (a.type === "Compra" ? -1 : 1))
-        .map(({ id, amount, price, unitPrice, type }) => (
-          <li
-            key={id}
-            className={twMerge(
-              "list-row  text-success",
-              type === TYPES.compra && "text-error"
-            )}
-          >
-            <div>{amount}</div>
-            <div>
-              <div>{price}</div>
-              <div className="text-xs uppercase font-semibold opacity-60">
-                {type}
-              </div>
-            </div>
-            <div>precio unitario: {unitPrice}</div>
-          </li>
-        ))}
-    </ul>
-  );
+	return (
+		<div className="bg-base-100/60 dark:border-base-content/5 relative overflow-hidden rounded-2xl border border-transparent p-4 backdrop-blur-md">
+			<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+				{items
+					.sort((a, b) =>
+						typeof a.unitPrice === 'number' && typeof b.unitPrice === 'number'
+							? a.unitPrice - b.unitPrice
+							: 1,
+					)
+					.sort((a, b) => {
+						const aIsCompra = a.type === TYPES.compra;
+						const bIsCompra = b.type === TYPES.compra;
+						if (aIsCompra && !bIsCompra) return -1;
+						if (!aIsCompra && bIsCompra) return 1;
+						return 0;
+					})
+					.map((item, index) => (
+						<VapListItem
+							key={item.id}
+							id={index}
+							title={item.type}
+							src={placeholder}
+							amount={item.amount ?? 0}
+							price={item.unitPrice ?? item.price}
+							disableOutOfStockStyles
+						/>
+					))}
+			</div>
+		</div>
+	);
 };

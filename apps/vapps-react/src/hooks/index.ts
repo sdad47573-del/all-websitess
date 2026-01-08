@@ -18,3 +18,6 @@ export * from './useGetCustomerRanking';
 export * from './useCustomerRankingItems';
 // export * from './useGetAllBeneficios';
 // export * from './useGetAllIngresos';
+export * from './useGetAllCustomers';
+export * from './useMutationUpdateSalesCustomer';
+export * from './useGetSalesCustomersByIds';

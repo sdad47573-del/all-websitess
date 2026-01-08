@@ -1,6 +1,6 @@
 // import BOLERO from '@assets/VAPS/promos/bolero.jpg';
-// import SUPER from '@assets/VAPS/promos/super.jpg';
-import SUPER from '@assets/VAPS/promos/navidad.png';
+import SUPER from '@assets/VAPS/promos/super.jpg';
+// import SUPER from '@assets/VAPS/promos/navidad.png';
 
 import { twJoin } from 'tailwind-merge';
 import { Link } from 'wouter';

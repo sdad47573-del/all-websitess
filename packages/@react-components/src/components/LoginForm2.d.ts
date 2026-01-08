@@ -9,9 +9,9 @@ declare const loginSchema: z.ZodObject<{
     email: string;
     password: string;
 }>;
-export type LoginFormData = z.infer<typeof loginSchema>;
-export interface LoginFormProps {
-    onSubmit: (data: LoginFormData) => Promise<void>;
+export type LoginForm2Data = z.infer<typeof loginSchema>;
+export interface LoginForm2Props {
+    onSubmit: (data: LoginForm2Data) => Promise<void>;
 }
-export declare const LoginForm: ({ onSubmit }: LoginFormProps) => import("react/jsx-runtime").JSX.Element;
+export declare const LoginForm2: ({ onSubmit }: LoginForm2Props) => import("react/jsx-runtime").JSX.Element;
 export {};

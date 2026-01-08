@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { Input } from './Input';
 import { Checkbox } from './Checkbox';
 
@@ -15,12 +15,12 @@ const genSchema = (stock: number) =>
 	z.object({
 		concept: z.string(),
 		amount: z
-			.number({ error: 'Debe ser un número' })
-			.positive({ error: 'Debe ser positivo' })
-			.max(stock, { error: `Debe ser menor o igual a ${stock}` }),
+			.number({ invalid_type_error: 'Debe ser un número' })
+			.positive({ message: 'Debe ser positivo' })
+			.refine((val) => val <= stock, { message: `Debe ser menor o igual a ${stock}` }),
 		price_per_unit: z
-			.number({ error: 'Debe ser un número' })
-			.positive({ error: 'Debe ser positivo' }),
+			.number({ invalid_type_error: 'Debe ser un número' })
+			.positive({ message: 'Debe ser positivo' }),
 		payment: z.boolean(),
 	});
 
@@ -38,9 +38,9 @@ export const NumericForm = ({
 	} = useForm<NumericFormData>({
 		resolver: zodResolver(genSchema(stock)),
 		defaultValues: {
+			concept: '',
 			amount: 1,
 			price_per_unit: 10,
-			concept: '',
 			payment: false,
 		},
 	});
@@ -48,6 +48,7 @@ export const NumericForm = ({
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 			<Input
+				id="concept"
 				label="Concepto"
 				type="text"
 				placeholder="Pon el concepto aquí"
@@ -55,6 +56,7 @@ export const NumericForm = ({
 				{...register('concept')}
 			/>
 			<Input
+				id="price_per_unit"
 				label="Precio por unidad"
 				type="number"
 				placeholder="0"
@@ -62,6 +64,7 @@ export const NumericForm = ({
 				{...register('price_per_unit', { valueAsNumber: true })}
 			/>
 			<Input
+				id="amount"
 				label="Unidades"
 				type="number"
 				step={1}

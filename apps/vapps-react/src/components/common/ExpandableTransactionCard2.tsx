@@ -1,10 +1,8 @@
-import { VapListItem } from '@react-components';
+import { Collapsible, VapListItem,formatDate } from '@react-components';
 import { useState } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { translateItem } from '@/data/maps/spanish';
-import { formatDate } from '@/utils/formatDate';
 import { getImageUrl } from '@/utils/image.utils';
-import { Collapsible } from '../Collapsible';
 
 export interface TransactionItem {
 	id: number | string;

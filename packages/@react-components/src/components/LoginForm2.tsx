@@ -8,24 +8,24 @@ const loginSchema = z.object({
 	password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
 });
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+export type LoginForm2Data = z.infer<typeof loginSchema>;
 
-export interface LoginFormProps {
-	onSubmit: (data: LoginFormData) => Promise<void>;
+export interface LoginForm2Props {
+	onSubmit: (data: LoginForm2Data) => Promise<void>;
 }
 
-export const LoginForm = ({ onSubmit }: LoginFormProps) => {
+export const LoginForm2 = ({ onSubmit }: LoginForm2Props) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginFormData>({
+	} = useForm<LoginForm2Data>({
 		resolver: zodResolver(loginSchema),
 	});
 
-	const handleFormSubmit = async (data: LoginFormData) => {
+	const handleFormSubmit = async (data: LoginForm2Data) => {
 		setIsLoading(true);
 		try {
 			await onSubmit(data);

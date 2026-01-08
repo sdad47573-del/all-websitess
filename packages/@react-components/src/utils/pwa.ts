@@ -71,6 +71,8 @@ export function unregisterServiceWorker() {
  * Check if app is running as PWA
  */
 export function isPWA(): boolean {
+  if (typeof window === 'undefined') return false;
+  
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
     (window.navigator as any).standalone === true ||
@@ -79,29 +81,52 @@ export function isPWA(): boolean {
 }
 
 /**
- * Prompt user to install PWA
+ * Check if device is iOS
  */
-export function setupPWAInstallPrompt() {
-  let deferredPrompt: any;
+export function isIOS(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  );
+}
 
+/**
+ * Singleton to store the deferred prompt
+ */
+let deferredPrompt: any = null;
+
+/**
+ * Initialize PWA listeners
+ * This should be called as early as possible
+ */
+if (typeof window !== 'undefined') {
   window.addEventListener('beforeinstallprompt', (e) => {
     // Prevent the mini-infobar from appearing on mobile
     e.preventDefault();
     // Stash the event so it can be triggered later
     deferredPrompt = e;
-    console.log('[PWA] Install prompt available');
+    console.log('[PWA] beforeinstallprompt event fired and captured');
 
     // Dispatch custom event that components can listen to
     window.dispatchEvent(new CustomEvent('pwa-install-available'));
   });
 
   window.addEventListener('appinstalled', () => {
-    console.log('[PWA] App installed');
+    console.log('[PWA] App installed successfully');
     deferredPrompt = null;
+    window.dispatchEvent(new CustomEvent('pwa-installed'));
   });
+}
 
+/**
+ * Prompt user to install PWA
+ */
+export function getPWAInstallPrompt() {
   return {
     showInstallPrompt: async () => {
+      console.log('[PWA] Attempting to show install prompt. Prompt available:', !!deferredPrompt);
       if (!deferredPrompt) {
         return false;
       }
@@ -110,9 +135,16 @@ export function setupPWAInstallPrompt() {
       const { outcome } = await deferredPrompt.userChoice;
       console.log(`[PWA] User response to the install prompt: ${outcome}`);
       
-      deferredPrompt = null;
-      return outcome === 'accepted';
+      if (outcome === 'accepted') {
+        deferredPrompt = null;
+        return true;
+      }
+      return false;
     },
-    isInstallable: () => !!deferredPrompt
+    isInstallable: () => {
+      const installable = !!deferredPrompt;
+      console.log('[PWA] Checking installability:', installable);
+      return installable;
+    }
   };
 }

@@ -1,6 +1,4 @@
-import type { InputHTMLAttributes } from 'react';
-type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
+import { type InputHTMLAttributes } from 'react';
+export declare const Checkbox: import("react").ForwardRefExoticComponent<InputHTMLAttributes<HTMLInputElement> & {
     label?: string;
-};
-export declare const Checkbox: ({ label, className, ...props }: CheckboxProps) => import("react/jsx-runtime").JSX.Element;
-export {};
+} & import("react").RefAttributes<HTMLInputElement>>;

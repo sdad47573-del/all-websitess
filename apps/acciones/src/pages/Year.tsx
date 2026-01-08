@@ -3,6 +3,7 @@ import { List } from "../components/List";
 import { DATA_2024, GLOBALS_2024 } from "../data/2024/data";
 import { DATA_2025, GLOBALS_2025 } from "../data/2025/data";
 import { twJoin } from "tailwind-merge";
+import { PageLayout, SectionHeader } from "@react-components";
 function Year() {
   const { location } = useRouterState();
 
@@ -14,28 +15,26 @@ function Year() {
   const globals = is2024 ? GLOBALS_2024 : GLOBALS_2025;
 
   return (
-    <div className="container mx-auto">
-      <div className="hero bg-base-200">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold">ACCIONES</h1>
-            <Link to="/2024">
-              <button className={twJoin("btn", is2024 && "btn-primary")}>
-                2024
-              </button>
-            </Link>
-            <Link to="/2025">
-              <button className={twJoin("btn", !is2024 && "btn-primary")}>
-                2025
-              </button>
-            </Link>
-          </div>
+    <PageLayout className="container mx-auto">
+      <SectionHeader title="ACCIONES" className="flex items-center justify-between">
+        <div className="join">
+          <Link to="/2024">
+            <button className={twJoin("btn join-item", is2024 && "btn-primary")}>
+              2024
+            </button>
+          </Link>
+          <Link to="/2025">
+            <button className={twJoin("btn join-item", !is2024 && "btn-primary")}>
+              2025
+            </button>
+          </Link>
         </div>
+      </SectionHeader>
+      <div className="p-5">
+        <h2 className="text-xl font-semibold text-base-content mb-4">{globals}</h2>
+        <List items={Object.keys(data)} />
       </div>
-      <h1 className="text-3xl font-bold">{globals}</h1>
-
-      <List items={Object.keys(data)} />
-    </div>
+    </PageLayout>
   );
 }
 

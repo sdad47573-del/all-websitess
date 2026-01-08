@@ -33,6 +33,7 @@ export const SearchFilter = ({
 			{title && <h3 className="mb-3 text-lg font-bold">{title}</h3>}
 			<div className="flex flex-col gap-3 sm:flex-row">
 				<Input
+					id="search-filter-input"
 					label={searchLabel}
 					placeholder={searchPlaceholder}
 					leftIconClass="ri-search-line"

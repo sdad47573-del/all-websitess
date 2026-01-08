@@ -7,12 +7,13 @@ import {
 } from "@tanstack/react-router";
 import Detail from "./pages/Detail";
 import Year from "./pages/Year";
+import Layout from "./layouts/Layout";
 
 const rootRoute = createRootRoute({
   component: () => (
-    <div>
+    <Layout>
       <Outlet />
-    </div>
+    </Layout>
   ),
 });
 

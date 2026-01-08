@@ -37,7 +37,7 @@ createRoot(document.getElementById('root')!).render(
 	</StrictMode>,
 );
 
-if (import.meta.env.PROD) {
+if (import.meta.env.MODE !== 'test') {
 	// Register Service Worker for PWA
 	registerServiceWorker({
 		onSuccess: () => {
