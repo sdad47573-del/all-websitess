@@ -4,5 +4,5 @@ type VapListProps = {
     isLoading: boolean;
     onItemClick: (item: VapItemData) => void;
 };
-export declare const VapList: ({ items, isLoading, onItemClick }: VapListProps) => import("react/jsx-runtime").JSX.Element;
+export declare const VapList: ({ items, isLoading, onItemClick }: VapListProps) => import("react").JSX.Element;
 export {};

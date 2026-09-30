@@ -23,4 +23,4 @@ export interface ExpandableTransactionCardProps {
     isInitiallyExpanded?: boolean;
     actions?: ReactNode;
 }
-export declare const ExpandableTransactionCard: ({ title, date, stats, status, items, isInitiallyExpanded, actions, }: ExpandableTransactionCardProps) => import("react/jsx-runtime").JSX.Element;
+export declare const ExpandableTransactionCard: ({ title, date, stats, status, items, isInitiallyExpanded, actions, }: ExpandableTransactionCardProps) => import("react").JSX.Element;

@@ -1,0 +1,105 @@
+---
+export interface HoursRow {
+	day: string;
+	value: string;
+	closed?: boolean;
+}
+
+export interface Props {
+	eyebrow: string;
+	title: string;
+	addressLines: string[];
+	hoursCaption?: string;
+	hours: HoursRow[];
+	hoursNote: string;
+	mapTitle: string;
+	mapEmbedUrl: string;
+	mapLabel: string;
+	mapHref: string;
+	links: { label: string; href: string; external?: boolean; variant?: 'primary' | 'ghost' }[];
+	phoneLink: string;
+	reserveNote: string;
+}
+
+const {
+	eyebrow,
+	title,
+	addressLines,
+	hoursCaption = 'Horario',
+	hours,
+	hoursNote,
+	mapTitle,
+	mapEmbedUrl,
+	mapLabel,
+	mapHref,
+	links,
+	phoneLink,
+	reserveNote,
+} = Astro.props;
+---
+
+<section class="visit section-pad" id="visitanos">
+	<div class="wrap visit-grid">
+		<div class="visit-copy">
+			<p class="eyebrow"><span aria-hidden="true"></span> {eyebrow}</p>
+			<h2 set:html={title} />
+			<p class="address">
+				{
+					addressLines.map((line, index) => (
+						<Fragment>
+							{line}
+							{index < addressLines.length - 1 && <br />}
+						</Fragment>
+					))
+				}
+			</p>
+
+			<table class="hours">
+				<caption>{hoursCaption}</caption>
+				<tbody>
+					{
+						hours.map((row) => (
+							<tr class={row.closed ? 'closed' : undefined}>
+								<th scope="row">{row.day}</th>
+								<td>{row.value}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+			<p class="hours-note">{hoursNote}</p>
+
+			<div class="visit-links">
+				{
+					links.map((link) => (
+						<a
+							class:list={[
+								'button',
+								link.variant === 'primary' ? 'button-primary' : 'button-ghost',
+							]}
+							href={link.href}
+							target={link.external ? '_blank' : undefined}
+							rel={link.external ? 'noreferrer' : undefined}
+						>
+							{link.label} {link.external && <span aria-hidden="true">↗</span>}
+						</a>
+					))
+				}
+			</div>
+			<a class="phone-link" href={phoneLink}>{phoneLink}</a>
+			<p class="reserve-note">{reserveNote}</p>
+		</div>
+
+		<div class="map-frame">
+			<iframe
+				title={mapTitle}
+				src={mapEmbedUrl}
+				loading="lazy"
+				referrerpolicy="no-referrer-when-downgrade"
+				allowfullscreen></iframe>
+			<a class="map-label" href={mapHref} target="_blank" rel="noreferrer">
+				<span aria-hidden="true">⌖</span> {mapLabel}
+			</a>
+		</div>
+	</div>
+</section>

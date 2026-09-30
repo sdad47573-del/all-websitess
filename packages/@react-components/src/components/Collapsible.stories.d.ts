@@ -1,7 +1,7 @@
 import type { StoryObj } from '@storybook/react';
 declare const meta: {
     title: string;
-    component: ({ isOpen, children }: import("./Collapsible").CollapsibleProps) => import("react/jsx-runtime").JSX.Element;
+    component: ({ isOpen, children }: import("./Collapsible").CollapsibleProps) => import("react").JSX.Element;
     parameters: {
         layout: string;
     };

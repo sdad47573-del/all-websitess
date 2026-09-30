@@ -14,9 +14,13 @@ export declare function unregisterServiceWorker(): void;
  */
 export declare function isPWA(): boolean;
 /**
+ * Check if device is iOS
+ */
+export declare function isIOS(): boolean;
+/**
  * Prompt user to install PWA
  */
-export declare function setupPWAInstallPrompt(): {
+export declare function getPWAInstallPrompt(): {
     showInstallPrompt: () => Promise<boolean>;
     isInstallable: () => boolean;
 };

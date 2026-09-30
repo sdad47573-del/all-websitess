@@ -4,5 +4,5 @@ interface LoadingProps {
     text?: string;
     children?: ReactNode;
 }
-export declare const Loading: ({ fullScreen, text, children }: LoadingProps) => import("react/jsx-runtime").JSX.Element;
+export declare const Loading: ({ fullScreen, text, children }: LoadingProps) => import("react").JSX.Element;
 export {};

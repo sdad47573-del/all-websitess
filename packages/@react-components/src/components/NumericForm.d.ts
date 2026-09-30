@@ -7,4 +7,4 @@ export interface NumericFormData {
 export declare const NumericForm: ({ onSubmit, stock, }: {
     onSubmit: (data: NumericFormData) => void;
     stock: number;
-}) => import("react/jsx-runtime").JSX.Element;
+}) => import("react").JSX.Element;

@@ -20,5 +20,5 @@ interface TopbarProps extends SocialLinks {
         onClick?: () => void;
     }>;
 }
-export declare const Topbar: ({ phone, facebook, instagram, linkedin, logo, links, currentPath, LinkComponent, }: TopbarProps) => import("react/jsx-runtime").JSX.Element;
+export declare const Topbar: ({ phone, facebook, instagram, linkedin, logo, links, currentPath, LinkComponent, }: TopbarProps) => import("react").JSX.Element;
 export {};

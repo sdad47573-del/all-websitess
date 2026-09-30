@@ -13,5 +13,5 @@ export type LoginForm2Data = z.infer<typeof loginSchema>;
 export interface LoginForm2Props {
     onSubmit: (data: LoginForm2Data) => Promise<void>;
 }
-export declare const LoginForm2: ({ onSubmit }: LoginForm2Props) => import("react/jsx-runtime").JSX.Element;
+export declare const LoginForm2: ({ onSubmit }: LoginForm2Props) => import("react").JSX.Element;
 export {};

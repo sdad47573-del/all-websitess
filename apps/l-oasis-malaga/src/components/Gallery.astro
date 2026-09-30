@@ -1,0 +1,72 @@
+---
+import { GALLERY } from '../data/site';
+---
+
+<section id="galeria" class="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+	<header class="max-w-2xl">
+		<p class="mb-3 text-sm font-semibold tracking-widest uppercase text-primary">Galería</p>
+		<h2 class="font-display text-3xl font-semibold sm:text-4xl">Así se ve el local</h2>
+		<p class="mt-4 leading-relaxed opacity-80">
+			Imágenes de la ficha pública de L'Oasis en Google Maps y de la fachada en Street
+			View.
+		</p>
+	</header>
+
+	<div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+		{
+			GALLERY.map((photo, index) => (
+				<button
+					type="button"
+					class:list={[
+						'group relative overflow-hidden rounded-box',
+						index === 0 && 'col-span-2 row-span-2',
+					]}
+					data-lightbox-open
+					aria-label={`Ampliar: ${photo.alt}`}
+				>
+					<img
+						src={photo.src.src}
+						alt={photo.alt}
+						class:list={[
+							'h-full w-full object-cover transition-transform duration-500 group-hover:scale-105',
+							index === 0 ? 'aspect-square' : 'aspect-[4/3]',
+						]}
+						loading="lazy"
+					/>
+					<span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-neutral/80 to-transparent p-3 pt-8 text-left text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+						{photo.credit}
+					</span>
+				</button>
+			))
+		}
+	</div>
+</section>
+
+<dialog id="galeria-lightbox" class="modal bg-neutral/95 backdrop-blur-sm">
+	<div class="modal-box max-w-5xl bg-transparent p-0">
+		<figure>
+			<img data-lightbox-img src="" alt="" class="max-h-[80vh] w-full rounded-box object-contain" />
+			<figcaption data-lightbox-caption class="mt-4 text-center text-sm text-white/70"></figcaption>
+		</figure>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button aria-label="Cerrar">cerrar</button>
+	</form>
+</dialog>
+
+<script>
+	const dialog = document.querySelector<HTMLDialogElement>('#galeria-lightbox');
+	const image = dialog?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+	const caption = dialog?.querySelector<HTMLElement>('[data-lightbox-caption]');
+
+	for (const trigger of document.querySelectorAll<HTMLButtonElement>('[data-lightbox-open]')) {
+		trigger.addEventListener('click', () => {
+			const source = trigger.querySelector('img');
+			if (!source || !image || !caption || !dialog) return;
+			image.src = source.currentSrc || source.src;
+			image.alt = source.alt;
+			caption.textContent = trigger.querySelector('span')?.textContent ?? '';
+			dialog.showModal();
+		});
+	}
+</script>

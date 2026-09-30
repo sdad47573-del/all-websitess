@@ -3,5 +3,5 @@ type BeneficioItemProps = {
     eur: number;
     label: string;
 };
-export declare const BeneficioItem: ({ label, fecha, eur }: BeneficioItemProps) => import("react/jsx-runtime").JSX.Element;
+export declare const BeneficioItem: ({ label, fecha, eur }: BeneficioItemProps) => import("react").JSX.Element;
 export {};

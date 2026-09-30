@@ -3,5 +3,5 @@ interface PageLayoutProps {
     children: ReactNode;
     className?: string;
 }
-export declare const PageLayout: ({ children, className }: PageLayoutProps) => import("react/jsx-runtime").JSX.Element;
+export declare const PageLayout: ({ children, className }: PageLayoutProps) => import("react").JSX.Element;
 export {};

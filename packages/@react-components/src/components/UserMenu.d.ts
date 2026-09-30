@@ -10,5 +10,5 @@ interface UserMenuProps {
     profile: UserProfile | null;
     onLogout: () => void;
 }
-export declare const UserMenu: ({ user, profile, onLogout }: UserMenuProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const UserMenu: ({ user, profile, onLogout }: UserMenuProps) => import("react").JSX.Element | null;
 export {};

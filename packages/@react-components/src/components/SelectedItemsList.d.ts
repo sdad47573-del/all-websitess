@@ -9,4 +9,4 @@ export interface SelectedItemsListProps {
     quantityLabel?: string;
     removeLabel?: string;
 }
-export declare const SelectedItemsList: ({ selected, onRemove, quantityLabel, removeLabel, }: SelectedItemsListProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const SelectedItemsList: ({ selected, onRemove, quantityLabel, removeLabel, }: SelectedItemsListProps) => import("react").JSX.Element | null;

@@ -1,0 +1,36 @@
+---
+export interface Props {
+	label: string;
+	title: string;
+	paragraphs: string[];
+	note?: string;
+	links: { label: string; href: string; external?: boolean }[];
+}
+
+const { label, title, paragraphs, note, links } = Astro.props;
+---
+
+<section class="about section-pad wrap" id="casa">
+	<p class="section-label"><span aria-hidden="true"></span> {label}</p>
+	<div class="about-grid">
+		<h2 set:html={title} />
+		<div class="about-copy">
+			{paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+			{note && <p class="about-note">{note}</p>}
+			<div class="about-links">
+				{
+					links.map((link) => (
+						<a
+							class="simple-link"
+							href={link.href}
+							target={link.external ? '_blank' : undefined}
+							rel={link.external ? 'noreferrer' : undefined}
+						>
+							{link.label} {link.external && <span aria-hidden="true">↗</span>}
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

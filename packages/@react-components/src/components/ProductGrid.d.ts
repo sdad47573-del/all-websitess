@@ -10,4 +10,4 @@ export interface ProductGridProps {
     title?: string;
     helperText?: string;
 }
-export declare const ProductGrid: ({ items, onItemClick, title, helperText, }: ProductGridProps) => import("react/jsx-runtime").JSX.Element;
+export declare const ProductGrid: ({ items, onItemClick, title, helperText, }: ProductGridProps) => import("react").JSX.Element;

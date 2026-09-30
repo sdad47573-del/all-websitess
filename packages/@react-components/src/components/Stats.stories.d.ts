@@ -1,7 +1,7 @@
 import type { StoryObj } from '@storybook/react';
 declare const meta: {
     title: string;
-    component: ({ title, items }: import("./Stats").StatsProps) => import("react/jsx-runtime").JSX.Element;
+    component: ({ title, items }: import("./Stats").StatsProps) => import("react").JSX.Element;
     parameters: {
         layout: string;
     };

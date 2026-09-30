@@ -13,4 +13,4 @@ export interface SearchFilterProps {
     searchPlaceholder?: string;
     optionPlaceholder?: string;
 }
-export declare const SearchFilter: ({ searchTerm, onSearchChange, options, selectedOption, onOptionChange, title, searchLabel, searchPlaceholder, optionPlaceholder, }: SearchFilterProps) => import("react/jsx-runtime").JSX.Element;
+export declare const SearchFilter: ({ searchTerm, onSearchChange, options, selectedOption, onOptionChange, title, searchLabel, searchPlaceholder, optionPlaceholder, }: SearchFilterProps) => import("react").JSX.Element;

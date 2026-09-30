@@ -11,5 +11,5 @@ interface ModalProps {
     data: ModalData | null;
     onSubmit: (data: NumericFormData) => void;
 }
-export declare const Modal: ({ isOpen, onClose, data, onSubmit }: ModalProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const Modal: ({ isOpen, onClose, data, onSubmit }: ModalProps) => import("react").JSX.Element | null;
 export {};

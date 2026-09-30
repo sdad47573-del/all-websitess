@@ -9,4 +9,4 @@ export interface StatsProps {
     title?: string;
     items: StatsItem[];
 }
-export declare const Stats: ({ title, items }: StatsProps) => import("react/jsx-runtime").JSX.Element;
+export declare const Stats: ({ title, items }: StatsProps) => import("react").JSX.Element;
