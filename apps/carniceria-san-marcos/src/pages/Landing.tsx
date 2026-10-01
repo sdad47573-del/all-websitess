@@ -1038,7 +1038,11 @@ export default function Landing() {
             </ul>
           </div>
         </div>
-      </footer>
+      
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;">
+				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+			</p>
+</footer>
 
       {/* ── Barra de pedido fija (móvil) ────────────────────── */}
       {itemCount > 0 && (

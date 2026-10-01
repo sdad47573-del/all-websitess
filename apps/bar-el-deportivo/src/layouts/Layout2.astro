@@ -5,82 +5,80 @@ import 'animate.css';
 import '../styles/index.css';
 
 const { title, description } = Astro.props;
+
+const SITE = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const canonical = SITE ? `${SITE}/` : '/';
+const ogImage = SITE ? `${SITE}/og.png` : '/og.png';
+
+// Solo datos verificados del propio negocio. El teléfono no se publica
+// hasta confirmarlo con el cliente: no se inventa.
+const business = {
+	name: 'Bar Deportivo',
+	locality: 'Cabra',
+	region: 'Córdoba',
+	postalCode: '14940',
+	country: 'ES',
+	description:
+		'Bar Deportivo en Cabra (Córdoba): comida casera de calidad a precios asequibles, en el centro de Cabra.',
+};
 ---
 
 <!doctype html>
-<html lang="es" data-theme="scruz">
+<html lang="es" data-theme="bar-deportivo">
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta
 			name="keywords"
-			content="abogado Lucena, abogados Córdoba, despacho jurídico, asesoría legal, defensa legal, representación legal, derecho civil, derecho penal, derecho laboral, derecho familiar, derecho mercantil, derecho corporativo, contratos, litigios, servicios legales, consultoría jurídica"
+			content="bar deportivo Cabra, bar Cabra, restaurante Cabra, comida Casera Córdoba, barra de tapas Cabra, bar centro Cabra"
 		/>
-		<meta name="author" content="Jose Aguilar" />
-		<link rel="canonical" href="https://scruzabogados.vercel.app/" />
+		<meta name="author" content={business.name} />
+		<link rel="canonical" href={canonical} />
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Scruz Abogados | Despacho Jurídico en Lucena y Córdoba" />
-		<meta
-			property="og:description"
-			content="Especialistas en Derecho Civil, Penal, Laboral y de Familia. Más de 20 años defendiendo tus derechos en Lucena y Córdoba."
-		/>
-		<meta property="og:url" content="https://scruzabogados.vercel.app/" />
-		<meta
-			property="og:image"
-			content="https://scruzabogados.vercel.app/_astro/Recurso-2@0.5x.DmAfa87E_2wstaX.webp"
-		/>
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content={`${business.name} en ${business.locality}`} />
 		<meta property="og:locale" content="es_ES" />
 		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="Scruz Abogados | Despacho Jurídico en Lucena y Córdoba" />
-		<meta
-			name="twitter:description"
-			content="Abogados en Lucena y Córdoba con experiencia en Derecho Civil, Penal y Laboral."
-		/>
-		<meta
-			name="twitter:image"
-			content="https://scruzabogados.vercel.app/_astro/Recurso-2@0.5x.DmAfa87E_2wstaX.webp"
-		/>
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
 
-		<!-- Datos estructurados JSON-LD (SEO local / negocio jurídico) -->
-		<script type="application/ld+json">
-			{
-				"@context": "https://schema.org",
-				"@type": "LegalService",
-				"name": "Jose Aguilar",
-				"image": "https://scruzabogados.vercel.app/_astro/Recurso-2@0.5x.DmAfa87E_2wstaX.webp",
-				"@id": "https://scruzabogados.vercel.app/",
-				"url": "https://scruzabogados.vercel.app/",
-				"telephone": "+34 600 000 000",
-				"address": {
-					"@type": "PostalAddress",
-					"streetAddress": "Calle Principal 123",
-					"addressLocality": "Lucena",
-					"addressRegion": "Córdoba",
-					"postalCode": "14900",
-					"addressCountry": "ES"
-				},
-				"openingHours": "Mo-Fr 09:00-18:00",
-				"areaServed": ["Lucena", "Córdoba"],
-				"sameAs": [
-					"https://www.facebook.com/scruzabogados",
-					"https://www.linkedin.com/company/scruzabogados"
-				]
-			}
-		</script>
+		<!-- SEO local -->
+		<meta name="geo.placename" content={`${business.name}, ${business.locality}, ${business.region}`} />
+		<meta name="geo.region" content="ES-CO" />
+		<meta name="ICBM" content="37.4719, -4.4397" />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
 
-		<!-- Fuente y estilos (si aplica) -->
-		<!-- hacer esto con mis propias fuentes -->
-		<!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> -->
+		<!-- Datos estructurados JSON-LD: solo datos verificados del negocio -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BarOrPub',
+			name: business.name,
+			description: description,
+			url: canonical || undefined,
+			image: ogImage,
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: business.locality,
+				addressRegion: business.region,
+				postalCode: business.postalCode,
+				addressCountry: business.country,
+			},
+			areaServed: [business.locality, business.region],
+			priceRange: '€€',
+			servesCuisine: ['Comida casera', 'Bar de tapas'],
+		})} />
 
-		<!-- SEO técnico extra -->
-		<meta name="robots" content="index, follow" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="theme-color" content="#1e293b" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -89,4 +87,4 @@ const { title, description } = Astro.props;
 	<body>
 		<slot />
 	</body>
-</html>
+</html>

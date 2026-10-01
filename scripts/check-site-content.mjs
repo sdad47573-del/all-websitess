@@ -508,8 +508,8 @@ function checkAccessibility(file, source, findings) {
 		findings.push({ file, line: toLine(index), level, rule, message });
 
 	for (const match of source.matchAll(/<html\b([^>]*)>/g)) {
-		if (!/\blang="/.test(match[1]))
-			add(match.index, 'error', 'html-no-lang', 'el documento no declara el idioma con lang="es"');
+		if (!/\blang\s*=/.test(match[1]))
+			add(match.index, 'error', 'html-no-lang', 'el documento no declara el idioma con el atributo lang');
 	}
 
 	for (const { attrs, index } of openTags(source, 'img')) {

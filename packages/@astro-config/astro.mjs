@@ -30,6 +30,8 @@ export function createAstroConfig({ site, integrations = [], vite = {}, ...rest 
 			},
 		},
 		output: 'static',
+		// Minifica el HTML generado: menos peso y mejor tiempo de carga en móvil.
+		compressHTML: true,
 		security: { checkOrigin: true },
 		resolve: {
 			alias: {

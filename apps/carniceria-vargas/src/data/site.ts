@@ -97,7 +97,10 @@ export const NAV = [
 	{ label: 'Contacto', href: '#contacto' },
 ];
 
-export const PAGE_NAV = [{ label: 'Aviso legal y privacidad', href: '/aviso-legal' }];
+export const PAGE_NAV = [
+	{ label: 'Productos y servicios', href: '/servicios' },
+	{ label: 'Aviso legal y privacidad', href: '/aviso-legal' },
+];
 
 export const HIGHLIGHTS = [
 	{
