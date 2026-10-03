@@ -11,14 +11,14 @@
  * Fotografías reales del local, publicadas por el propio negocio en su web de reservas.
  * Los nombres de archivo son descriptivos porque Google Imágenes los indexa.
  */
-import portada from '@assets/TABERNA-LA-NEW/taberna-la-new-portada.jpg';
-import esencia from '@assets/TABERNA-LA-NEW/taberna-la-new-esencia.jpg';
-import foto1 from '@assets/TABERNA-LA-NEW/taberna-la-new-malaga-1.jpg';
-import foto2 from '@assets/TABERNA-LA-NEW/taberna-la-new-malaga-2.jpg';
-import foto3 from '@assets/TABERNA-LA-NEW/taberna-la-new-malaga-3.jpg';
-import foto4 from '@assets/TABERNA-LA-NEW/taberna-la-new-malaga-4.jpg';
-import foto5 from '@assets/TABERNA-LA-NEW/taberna-la-new-malaga-5.jpg';
-import foto6 from '@assets/TABERNA-LA-NEW/taberna-la-new-malaga-6.jpg';
+import portada from '../assets/fotos/taberna-la-new-portada.jpg';
+import esencia from '../assets/fotos/taberna-la-new-esencia.jpg';
+import foto1 from '../assets/fotos/taberna-la-new-malaga-1.jpg';
+import foto2 from '../assets/fotos/taberna-la-new-malaga-2.jpg';
+import foto3 from '../assets/fotos/taberna-la-new-malaga-3.jpg';
+import foto4 from '../assets/fotos/taberna-la-new-malaga-4.jpg';
+import foto5 from '../assets/fotos/taberna-la-new-malaga-5.jpg';
+import foto6 from '../assets/fotos/taberna-la-new-malaga-6.jpg';
 
 export const IMAGES = {
 	portada,

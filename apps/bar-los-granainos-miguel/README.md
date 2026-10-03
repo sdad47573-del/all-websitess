@@ -20,4 +20,6 @@ bun run --filter bar-los-granainos-miguel build
 
 ## Fotografías
 
-La ficha de Google Maps no proporcionó archivos de imagen directos. Los enlaces abren la galería original y las ilustraciones del hero/tarjeta social son SVG propios, no fotos del local.
+- Se usan siete fotos de Bar Los Granaínos de Miguel encontradas mediante Google en la ficha de Málaga Directory y guardadas localmente en `public/images/`.
+- El hero, la sección de cocina, la galería y las tarjetas sociales muestran estas fotos; la galería enlaza la fuente. Los derechos siguen perteneciendo a sus autores.
+- Google Maps no expuso archivos de imagen directos; el botón de la galería mantiene el enlace a la ficha de Maps.

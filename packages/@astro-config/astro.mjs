@@ -7,7 +7,6 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const assetsDir = path.resolve(__dirname, '../@assets');
 const rootDir = path.resolve(__dirname, '../../');
 
 export function createAstroConfig({ site, integrations = [], vite = {}, ...rest }) {
@@ -17,15 +16,10 @@ export function createAstroConfig({ site, integrations = [], vite = {}, ...rest 
 		vite: {
 			...vite,
 			plugins: [tailwindcss()],
-			resolve: {
-				alias: {
-					'@assets': assetsDir,
-				},
-			},
 			server: {
 				fs: {
 					strict: false,
-					allow: [rootDir, assetsDir],
+					allow: [rootDir],
 				},
 			},
 		},

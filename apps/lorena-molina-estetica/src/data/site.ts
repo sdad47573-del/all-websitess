@@ -17,9 +17,9 @@
  * más una vista de la calle). Los nombres de archivo son descriptivos a propósito (Google
  * Imágenes los indexa con el nombre del archivo).
  */
-import fotoCabina from '@assets/LORENA-MOLINA/lorena-molina-cabina-estetica-malaga.jpg';
-import fotoTratamiento from '@assets/LORENA-MOLINA/lorena-molina-tratamiento-facial-malaga.jpg';
-import fotoCalle from '@assets/LORENA-MOLINA/lorena-molina-avenida-carlos-haya-malaga.jpg';
+import fotoCabina from '../assets/fotos/lorena-molina-cabina-estetica-malaga.jpg';
+import fotoTratamiento from '../assets/fotos/lorena-molina-tratamiento-facial-malaga.jpg';
+import fotoCalle from '../assets/fotos/lorena-molina-avenida-carlos-haya-malaga.jpg';
 
 export const IMAGES = {
 	fotoCabina,

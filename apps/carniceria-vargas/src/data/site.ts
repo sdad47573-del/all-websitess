@@ -18,8 +18,8 @@
  * Google Maps. Los nombres de archivo son descriptivos a propósito (Google
  * Imágenes los indexa con el nombre del archivo).
  */
-import foto1 from '@assets/CARNICERIA-VARGAS/carniceria-vargas-carnes-y-elaborados-malaga.jpg';
-import foto2 from '@assets/CARNICERIA-VARGAS/carniceria-vargas-mostrador-malaga.jpg';
+import foto1 from '../assets/fotos/carniceria-vargas-carnes-y-elaborados-malaga.jpg';
+import foto2 from '../assets/fotos/carniceria-vargas-mostrador-malaga.jpg';
 
 export const IMAGES = {
 	foto1,

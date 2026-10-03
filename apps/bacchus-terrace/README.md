@@ -20,4 +20,6 @@ bun run --filter bacchus-terrace build
 
 ## Fotografías
 
-La ficha de Google Maps no expuso una URL directa de los archivos de foto. Por eso, los enlaces abren la galería original y el hero/tarjeta social usan arte vectorial propio, no fotografías atribuidas al restaurante. Si se obtienen los archivos autorizados, pueden incorporarse en `src/assets/`.
+- Cinco fotos de Bacchus Terrace, publicadas por visitantes en Find Me Gluten Free, se guardan localmente en `public/images/` y se usan en el hero, la sección de cocina, la galería y las tarjetas sociales.
+- La galería enlaza la ficha original como fuente; los derechos de las fotos siguen perteneciendo a sus autores.
+- Google Maps no expuso enlaces directos a archivos de imagen. El CTA de galería sigue llevando a la ficha de Google Maps.

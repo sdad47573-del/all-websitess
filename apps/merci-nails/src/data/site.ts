@@ -18,9 +18,9 @@
  * ficha y vista de la calle). Los nombres de archivo son descriptivos a propósito
  * (Google Imágenes los indexa con el nombre del archivo).
  */
-import fotoSalon from '@assets/MERCI-NAILS/merci-nails-salon-malaga.jpg';
-import fotoManicura from '@assets/MERCI-NAILS/merci-nails-manicura-malaga.jpg';
-import fotoCalle from '@assets/MERCI-NAILS/merci-nails-plaza-del-teatro-malaga.jpg';
+import fotoSalon from '../assets/fotos/merci-nails-salon-malaga.jpg';
+import fotoManicura from '../assets/fotos/merci-nails-manicura-malaga.jpg';
+import fotoCalle from '../assets/fotos/merci-nails-plaza-del-teatro-malaga.jpg';
 
 export const IMAGES = {
 	fotoSalon,

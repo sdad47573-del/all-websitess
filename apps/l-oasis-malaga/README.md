@@ -25,7 +25,7 @@ Todos estos valores viven en `src/data/site.ts`. Cámbialos ahí, no en los comp
 
 ## Imágenes
 
-Las fotografías de `packages/@assets/OASIS/` proceden de Google:
+Las fotografías de `src/assets/fotos/` proceden de Google:
 
 - `maps-portada.jpg`: foto de perfil de la ficha de Google Maps.
 - `streetview-*.jpg`: seis ángulos de Street View de la fachada (yaw 30/90/133/180/240/300).
@@ -37,25 +37,25 @@ interior y de los platos, sustitúyelas y actualiza `GALLERY` en `src/data/site.
 
 ```
 src/
-├── components/   # Topbar, Hero, Desayunos, Halal, Menu, Faq, Gallery, Contact…
-├── data/site.ts  # Datos del negocio + todo el JSON-LD
-├── layouts/      # Layout.astro: metadatos SEO, Open Graph y datos estructurados
-├── pages/        # index, carta, aviso-legal
-└── styles/       # Tema daisyUI propio (paleta ocre/verde oasis)
+├── components/ # Topbar, Hero, Desayunos, Halal, Menu, Faq, Gallery, Contact…
+├── data/site.ts # Datos del negocio + todo el JSON-LD
+├── layouts/ # Layout.astro: metadatos SEO, Open Graph y datos estructurados
+├── pages/ # index, carta, aviso-legal
+└── styles/ # Tema daisyUI propio (paleta ocre/verde oasis)
 ```
 
 ## SEO
 
 - **Un solo `@graph` JSON-LD por página** (`buildSchemaGraph()` en `src/data/site.ts`)
-  con `WebPage`, `BreadcrumbList`, `Restaurant`, `WebSite` y `FAQPage`, enlazados por
-  `@id`. Así Google relaciona las páginas con el negocio en vez de leer islands sueltos.
+ con `WebPage`, `BreadcrumbList`, `Restaurant`, `WebSite` y `FAQPage`, enlazados por
+ `@id`. Así Google relaciona las páginas con el negocio en vez de leer islands sueltos.
 - **`Restaurant` completo**: `ContactPoint`, `potentialAction` (`ReserveAction` al
-  teléfono), `hasMenu` como entidad `Menu`, `aggregateRating`, `review`, `geo`, `logo`,
-  `sameAs` y `paymentAccepted`.
+ teléfono), `hasMenu` como entidad `Menu`, `aggregateRating`, `review`, `geo`, `logo`,
+ `sameAs` y `paymentAccepted`.
 - **SEO local**: `geo.region`, `geo.placename`, `geo.position` e `ICBM`, además de las
-  coordenadas en Open Graph.
+ coordenadas en Open Graph.
 - **Open Graph y Twitter completos**, con `og:image:width/height/alt` y
-  `twitter:image:alt`.
+ `twitter:image:alt`.
 - **Migas de pan** visibles (`Breadcrumbs.astro`) y en schema.
 - **FAQ** con `FAQPage`, que habilita resultados enriquecidos.
 - **Títulos y descripciones** ajustados al límite de snippet de Google.
@@ -75,17 +75,17 @@ bun run scripts/generate-og.mjs
 ## Comandos
 
 ```bash
-bun run dev        # servidor de desarrollo
-bun run devh       # desarrollo accesible desde la red local
-bun run build      # build estático a dist/
-bun run preview    # sirve el build
-bun run astro      # CLI de Astro (check, info…)
+bun run dev # servidor de desarrollo
+bun run devh # desarrollo accesible desde la red local
+bun run build # build estático a dist/
+bun run preview # sirve el build
+bun run astro # CLI de Astro (check, info…)
 ```
 
 ## Pendiente antes de publicar
 
 1. **Datos legales** (`LEGAL` en `src/data/site.ts`): razón social, NIF y correo de
-   contacto. Mientras estén como `[pendiente de completar]`, `/aviso-legal` muestra un
-   aviso al titular; al rellenarlos desaparece solo.
+ contacto. Mientras estén como `[pendiente de completar]`, `/aviso-legal` muestra un
+ aviso al titular; al rellenarlos desaparece solo.
 2. **Dominio**: `astro.config.mjs` usa `https://loasismalaga.vercel.app`. Cámbialo si el
-   dominio real es otro y actualiza también `BUSINESS.mapUrl` y `public/robots.txt`.
+ dominio real es otro y actualiza también `BUSINESS.mapUrl` y `public/robots.txt`.

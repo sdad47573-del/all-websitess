@@ -16,7 +16,7 @@
  *
  * Los nombres de archivo son descriptivos porque Google Imágenes los indexa como URL.
  */
-import googleMaps from '@assets/COMESTIBLES-PEPE/comestibles-pepe-google-maps.jpg';
+import googleMaps from '../assets/fotos/comestibles-pepe-google-maps.jpg';
 
 export const IMAGES = {
 	googleMaps,

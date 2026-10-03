@@ -4,7 +4,7 @@ Web Astro para **La Tienda de la Abuela**, comercio de alimentación en Avenida 
 
 - Astro 5 + Tailwind CSS 4 + daisyUI; configuración compartida del monorepo.
 - Datos, contenidos y metadatos locales centralizados en `src/data/site.ts`.
-- La fotografía usada procede de la ficha pública de Google Maps y está en `packages/@assets/TIENDA-ABUELA/`.
+- La fotografía usada procede de la ficha pública de Google Maps y está en `src/assets/fotos/`.
 - SEO local: canonical, Open Graph, metadatos de geolocalización, sitemap, `GroceryStore`, `ContactPage`, `BreadcrumbList` y FAQ estructurada que coincide con el texto visible.
 
 ## Páginas

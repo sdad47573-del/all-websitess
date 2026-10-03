@@ -80,9 +80,10 @@ export const content = {
 		],
 		facebookLabel: 'Facebook',
 		footerNote: 'Tapas caseras · Cócteles · Benalmádena Costa',
-		photoCaption: 'Fotos de la ficha de Google Maps',
+		photoCaption: 'Bacchus Terrace · Benalmádena',
 		photoDisclaimer:
-			'Las fotografías se consultan en Google Maps y pertenecen a sus respectivos autores. Abre la ficha original para ver la galería.',
+			'Fotos de Bacchus Terrace publicadas por visitantes; los derechos pertenecen a sus respectivos autores.',
+		photoSource: 'Ver fotos en Find Me Gluten Free.',
 	},
 	en: {
 		lang: 'en',
@@ -165,8 +166,9 @@ export const content = {
 		],
 		facebookLabel: 'Facebook',
 		footerNote: 'Homemade tapas · Cocktails · Benalmádena Costa',
-		photoCaption: 'Photos on the Google Maps listing',
+		photoCaption: 'Bacchus Terrace · Benalmádena',
 		photoDisclaimer:
-			'Photos can be viewed on Google Maps and remain the property of their respective authors. Open the original listing to browse the gallery.',
+			'Photos of Bacchus Terrace shared by visitors; all rights remain with their respective authors.',
+		photoSource: 'View photos on Find Me Gluten Free.',
 	},
 } as const;

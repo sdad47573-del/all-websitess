@@ -7,7 +7,7 @@
  */
 
 /** Fotografía real del comercio, obtenida de la imagen de ficha de Google Maps. */
-import googleMaps from '@assets/TIENDA-ABUELA/tienda-abuela-google-maps.jpg';
+import googleMaps from '../assets/fotos/tienda-abuela-google-maps.jpg';
 
 export const IMAGES = { googleMaps };
 

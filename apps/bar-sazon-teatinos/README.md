@@ -5,8 +5,8 @@ Web de **Sazón Teatinos**, taberna de tapas, raciones y parrilla en Teatinos-Un
 - Astro 5 + Tailwind CSS 4 + daisyUI (tema `sazon` definido en `src/styles/index.css`).
 - Datos del negocio, selección de la carta, servicios y fotos en `src/data/site.ts`.
 - Carta completa (15 secciones y 69 platos, con precios reales) en `src/data/carta.ts`, generada a partir del menú digital público del establecimiento (NordQR).
-- Fotos reales del local en `packages/@assets/SAZON/`, consumidas vía el alias `@assets`. Los nombres de archivo son descriptivos (`sazon-teatinos-barra-tapas-malaga.jpg`…) porque Google Imágenes los indexa.
-  `logo-sazon.jpg` es el logotipo (texto blanco sobre fondo negro) y **no** se usa como fotografía de galería.
+- Fotos reales del local en `src/assets/fotos/`. Los nombres de archivo son descriptivos (`sazon-teatinos-barra-tapas-malaga.jpg`…) porque Google Imágenes los indexa.
+ `logo-sazon.jpg` es el logotipo (texto blanco sobre fondo negro) y **no** se usa como fotografía de galería.
 - La portada (`/`) usa la foto de la barra como fondo del hero, otras dos en «La taberna» y las cuatro en la galería. Las fotos se sirven con `srcset`/`sizes` (640–1500 px) para no enviar más píxeles de los necesarios.
 - La galería abre un **lightbox** (`<dialog>` nativo, sin dependencias): teclas `←`/`→` y `Esc`, botones de anterior/siguiente, cierre al pulsar fuera y bloqueo del scroll de fondo. Las versiones grandes (1600 px) se generan en el build con `getImage()`. Sin JavaScript, cada foto enlaza a su versión a tamaño completo.
 
@@ -14,43 +14,43 @@ Web de **Sazón Teatinos**, taberna de tapas, raciones y parrilla en Teatinos-Un
 
 ```bash
 bun install
-bun run dev      # servidor de desarrollo
-bun run build    # build estático
-bun run check    # astro check
+bun run dev # servidor de desarrollo
+bun run build # build estático
+bun run check # astro check
 bun run typecheck
 ```
 
 ## Páginas
 
-| Ruta           | Contenido                                                                                                              |
+| Ruta | Contenido |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `/`            | Portada: presentación, cocina casera, especialidades, galería (con lightbox), reseñas, contacto y preguntas frecuentes |
-| `/carta`       | Carta completa por secciones, con precios y tramos (tapa, media y ración)                                              |
-| `/aviso-legal` | Aviso legal + política de privacidad y cookies                                                                         |
+| `/` | Portada: presentación, cocina casera, especialidades, galería (con lightbox), reseñas, contacto y preguntas frecuentes |
+| `/carta` | Carta completa por secciones, con precios y tramos (tapa, media y ración) |
+| `/aviso-legal` | Aviso legal + política de privacidad y cookies |
 
 ## SEO
 
 - **Metadatos**: `title` y `description` propios por página (con intención local: «tapas en Teatinos,
-  Málaga»), `keywords`, `canonical`, `robots` con `max-image-preview:large` y `max-snippet:-1`.
+ Málaga»), `keywords`, `canonical`, `robots` con `max-image-preview:large` y `max-snippet:-1`.
 - **Open Graph y Twitter**: tipo `restaurant.restaurant`, imagen 1500×844 con `width`/`height`/`alt`,
-  teléfono, dirección, código postal y coordenadas (útiles para las tarjetas de Facebook y WhatsApp).
+ teléfono, dirección, código postal y coordenadas (útiles para las tarjetas de Facebook y WhatsApp).
 - **Datos estructurados** (JSON-LD, un bloque por entidad):
-  - `Restaurant` (en todas las páginas): dirección, geo, horario, valoración, `sameAs`, `hasMenu`,
-    `currenciesAccepted`, `areaServed` y `amenityFeature` con los servicios reales del local.
-  - `Menu` y `BreadcrumbList` en `/carta` (secciones y precios que se ven en pantalla).
-  - `BreadcrumbList` en `/aviso-legal`.
-  - `FAQPage` en la portada, generado a partir de las mismas preguntas que se muestran.
+ - `Restaurant` (en todas las páginas): dirección, geo, horario, valoración, `sameAs`, `hasMenu`,
+ `currenciesAccepted`, `areaServed` y `amenityFeature` con los servicios reales del local.
+ - `Menu` y `BreadcrumbList` en `/carta` (secciones y precios que se ven en pantalla).
+ - `BreadcrumbList` en `/aviso-legal`.
+ - `FAQPage` en la portada, generado a partir de las mismas preguntas que se muestran.
 - **Imágenes**: nombres de archivo descriptivos, `alt` con localidad y `srcset`/`sizes` para el LCP.
 - Para modificar el SEO global (título por defecto, descripción, palabras clave, Open Graph) está
-  todo en `src/layouts/Layout.astro`; los datos del negocio se leen de `src/data/site.ts`.
+ todo en `src/layouts/Layout.astro`; los datos del negocio se leen de `src/data/site.ts`.
 
 ### Comprobar el SEO en el build
 
 ```bash
 bun run build
-grep -o 'application/ld+json' dist/carta/index.html | wc -l   # bloques de datos estructurados
-grep -o 'srcset' dist/index.html | wc -l                      # versiones responsive de las fotos
-cat dist/sitemap-0.xml                                        # URLs indexables
+grep -o 'application/ld+json' dist/carta/index.html | wc -l # bloques de datos estructurados
+grep -o 'srcset' dist/index.html | wc -l # versiones responsive de las fotos
+cat dist/sitemap-0.xml # URLs indexables
 ```
 
 ## Contenido
@@ -80,13 +80,13 @@ precio, platos) a `src/data/site.ts` y ampliar `src/components/CocinaCasera.astr
 > ⚠️ **Antes de publicar**:
 >
 > 1. Completa el NIF/CIF, la razón social y el correo de contacto en el objeto `LEGAL` de
->    `src/data/site.ts`. Mientras falte alguno, `/aviso-legal` muestra un aviso amarillo y los
->    campos salen como «[pendiente de completar]»; al rellenarlos, el aviso desaparece solo y el
->    correo se convierte en un enlace `mailto:`.
+> `src/data/site.ts`. Mientras falte alguno, `/aviso-legal` muestra un aviso amarillo y los
+> campos salen como «[pendiente de completar]»; al rellenarlos, el aviso desaparece solo y el
+> correo se convierte en un enlace `mailto:`.
 > 2. Confirma los precios de la carta y el horario: los precios salen del menú digital público y el
->    horario (12:30–00:00) de la ficha de Google.
+> horario (12:30–00:00) de la ficha de Google.
 > 3. Despliega y comprueba el dominio final. La URL canónica está en `BUSINESS.siteUrl`
->    (`src/data/site.ts`) y repetida en `astro.config.mjs` → `site`, `public/robots.txt` y
->    `public/og.jpg`; si el dominio cambia, hay que actualizar los cuatro. Después, revisa en
->    Search Console que las URLs del sitemap (`/carta/`, con barra final) y los `canonical` (sin
->    barra) resuelven sin redirección; si el hosting redirige, unifica ambos formatos.
+> (`src/data/site.ts`) y repetida en `astro.config.mjs` → `site`, `public/robots.txt` y
+> `public/og.jpg`; si el dominio cambia, hay que actualizar los cuatro. Después, revisa en
+> Search Console que las URLs del sitemap (`/carta/`, con barra final) y los `canonical` (sin
+> barra) resuelven sin redirección; si el hosting redirige, unifica ambos formatos.

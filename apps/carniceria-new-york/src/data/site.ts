@@ -17,9 +17,9 @@
  * ficha y vista de la calle). Los nombres de archivo son descriptivos a propósito
  * (Google Imágenes los indexa con el nombre del archivo).
  */
-import fotoFicha from '@assets/CARNICERIA-NEW-YORK/carniceria-new-york-malaga.jpg';
-import fotoCarnes from '@assets/CARNICERIA-NEW-YORK/carniceria-new-york-carnes-y-preparados-malaga.jpg';
-import fotoCalle from '@assets/CARNICERIA-NEW-YORK/carniceria-new-york-calle-corregidor-francisco-de-molina-malaga.jpg';
+import fotoFicha from '../assets/fotos/carniceria-new-york-malaga.jpg';
+import fotoCarnes from '../assets/fotos/carniceria-new-york-carnes-y-preparados-malaga.jpg';
+import fotoCalle from '../assets/fotos/carniceria-new-york-calle-corregidor-francisco-de-molina-malaga.jpg';
 
 export const IMAGES = {
 	fotoFicha,

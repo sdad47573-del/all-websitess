@@ -2,16 +2,16 @@
  * Fotografías reales del local (todas de 1500 px de ancho largo).
  *
  * Los archivos llevan nombres descriptivos a propósito (Google Imágenes los indexa con
- * el nombre de archivo). Nota: en `packages/@assets/SAZON` también vive `logo-sazon.jpg`,
+ * el nombre de archivo). Nota: en `src/assets/fotos` también vive `logo-sazon.jpg`,
  * que es el logotipo de la taberna (texto blanco sobre negro), no una fotografía: por eso
  * no entra ni en la galería ni en las secciones con foto.
  */
 import type { CartaItem } from './carta';
 
-import foto1 from '@assets/SAZON/sazon-teatinos-barra-tapas-malaga.jpg';
-import foto2 from '@assets/SAZON/tapas-y-raciones-sazon-teatinos-malaga.jpg';
-import foto3 from '@assets/SAZON/platos-de-la-casa-sazon-teatinos-malaga.jpg';
-import foto4 from '@assets/SAZON/mesa-sazon-teatinos-malaga.jpg';
+import foto1 from '../assets/fotos/sazon-teatinos-barra-tapas-malaga.jpg';
+import foto2 from '../assets/fotos/tapas-y-raciones-sazon-teatinos-malaga.jpg';
+import foto3 from '../assets/fotos/platos-de-la-casa-sazon-teatinos-malaga.jpg';
+import foto4 from '../assets/fotos/mesa-sazon-teatinos-malaga.jpg';
 
 export const IMAGES = {
 	foto1,

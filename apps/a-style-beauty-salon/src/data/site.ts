@@ -22,9 +22,9 @@
  * tratamiento de cejas) más una vista de la calle. Los nombres de archivo son descriptivos a
  * propósito (Google Imágenes los indexa con el nombre del archivo).
  */
-import fotoFachada from '@assets/A-STYLE-BEAUTY-SALON/a-style-beauty-salon-fachada-malaga.jpg';
-import fotoCejas from '@assets/A-STYLE-BEAUTY-SALON/a-style-beauty-salon-cejas-malaga.jpg';
-import fotoCalle from '@assets/A-STYLE-BEAUTY-SALON/a-style-beauty-salon-calle-carlos-haya-malaga.jpg';
+import fotoFachada from '../assets/fotos/a-style-beauty-salon-fachada-malaga.jpg';
+import fotoCejas from '../assets/fotos/a-style-beauty-salon-cejas-malaga.jpg';
+import fotoCalle from '../assets/fotos/a-style-beauty-salon-calle-carlos-haya-malaga.jpg';
 
 export const IMAGES = {
 	fotoFachada,

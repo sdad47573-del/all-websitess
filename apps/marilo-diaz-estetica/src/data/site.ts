@@ -20,9 +20,9 @@
  * más una vista de la calle. Los nombres de archivo son descriptivos a propósito (Google
  * Imágenes los indexa con el nombre del archivo).
  */
-import fotoFachada from '@assets/MARILO-DIAZ-ESTETICA/marilo-diaz-estetica-fachada-malaga.jpg';
-import fotoManicura from '@assets/MARILO-DIAZ-ESTETICA/marilo-diaz-estetica-manicura-malaga.jpg';
-import fotoCalle from '@assets/MARILO-DIAZ-ESTETICA/marilo-diaz-estetica-calle-malaga.jpg';
+import fotoFachada from '../assets/fotos/marilo-diaz-estetica-fachada-malaga.jpg';
+import fotoManicura from '../assets/fotos/marilo-diaz-estetica-manicura-malaga.jpg';
+import fotoCalle from '../assets/fotos/marilo-diaz-estetica-calle-malaga.jpg';
 
 export const IMAGES = {
 	fotoFachada,

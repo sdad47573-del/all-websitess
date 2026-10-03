@@ -20,4 +20,6 @@ bun run --filter autana-restaurant build
 
 ## Fotografías
 
-La ficha de Google Maps no expuso una URL directa de los archivos fotográficos. Los enlaces de la web llevan a la galería oficial; el hero y la tarjeta social usan ilustraciones vectoriales originales y no son fotos del restaurante. Si se obtienen archivos autorizados, pueden incorporarse en `src/assets/`.
+- Se usan fotos de Autana Restaurant publicadas en su ficha de TheFork, localizadas mediante la búsqueda de Google y guardadas en `public/images/` para que la web no dependa del servidor externo.
+- El hero, la galería de seis imágenes y las tarjetas sociales usan estos archivos locales. La nota de la galería atribuye las fotos a la ficha y enlaza a la fuente; los derechos siguen perteneciendo a sus autores.
+- Google Maps no ofreció enlaces directos a sus archivos fotográficos; el CTA de la galería abre la ficha del restaurante en Maps.

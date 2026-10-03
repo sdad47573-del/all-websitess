@@ -45,11 +45,12 @@ export const content = {
 		photosEyebrow: 'Conoce el restaurante',
 		photosTitle: 'Descubre Autana en imágenes.',
 		photosText:
-			'Consulta la ficha y la galería oficial de Google Maps para ver las fotografías disponibles de Autana Restaurant y obtener la información más reciente del establecimiento.',
-		photosCta: 'Ver fotos en Google Maps',
-		photoCaption: 'Galería oficial de Google Maps',
+			'Un vistazo a Autana Restaurant y a su propuesta gastronómica en Mijas Costa. Consulta la ficha para ver más imágenes e información actualizada.',
+		photosCta: 'Ver ficha en Google Maps',
+		photoCaption: 'Autana Restaurant · Mijas Costa',
 		photoDisclaimer:
-			'La ficha consultada no facilita archivos de imagen directos para incrustar aquí. Las fotos se abren en Google Maps y pertenecen a sus respectivos autores.',
+			'Fotografías publicadas en la ficha de Autana Restaurant; se mantienen los derechos de sus respectivos autores.',
+		photoSource: 'Ver ficha en TheFork.',
 		visitEyebrow: 'Mijas Costa · Málaga',
 		visitTitle: 'Encuentra Autana en El Chaparral.',
 		addressLabel: 'Dirección',
@@ -132,11 +133,12 @@ export const content = {
 		photosEyebrow: 'Discover the restaurant',
 		photosTitle: 'See Autana in pictures.',
 		photosText:
-			'Visit the official Google Maps listing and gallery to see available photos of Autana Restaurant and check the latest business information.',
-		photosCta: 'View photos on Google Maps',
-		photoCaption: 'Official Google Maps gallery',
+			'Take a look at Autana Restaurant and its food in Mijas Costa. Visit the listing for more photos and up-to-date information.',
+		photosCta: 'View Google Maps listing',
+		photoCaption: 'Autana Restaurant · Mijas Costa',
 		photoDisclaimer:
-			'The listing does not provide direct image files to embed here. Photos open on Google Maps and remain the property of their respective authors.',
+			'Photos published on the Autana Restaurant listing; all rights remain with their respective authors.',
+		photoSource: 'View the listing on TheFork.',
 		visitEyebrow: 'Mijas Costa · Málaga',
 		visitTitle: 'Find Autana in El Chaparral.',
 		addressLabel: 'Address',

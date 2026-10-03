@@ -18,8 +18,8 @@
  * la ficha y una vista de la calle Martínez de la Rosa. Los nombres de archivo son
  * descriptivos a propósito (Google Imágenes los indexa con el nombre del archivo).
  */
-import fotoFicha from '@assets/CARNICERIA-JOSE-LUIS/carniceria-jose-luis-malaga.jpg';
-import fotoCalle from '@assets/CARNICERIA-JOSE-LUIS/carniceria-jose-luis-calle-martinez-de-la-rosa-malaga.jpg';
+import fotoFicha from '../assets/fotos/carniceria-jose-luis-malaga.jpg';
+import fotoCalle from '../assets/fotos/carniceria-jose-luis-calle-martinez-de-la-rosa-malaga.jpg';
 
 export const IMAGES = {
 	fotoFicha,

@@ -9,7 +9,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const assets = path.resolve(here, '../../../packages/@assets/OASIS/maps-portada.jpg');
+const assets = path.resolve(here, '../src/assets/fotos/maps-portada.jpg');
 const output = path.resolve(here, '../public/og.jpg');
 
 const WIDTH = 1200;

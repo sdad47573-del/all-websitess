@@ -20,10 +20,10 @@
  * una vista de la calle). Los nombres de archivo son descriptivos a propósito (Google Imágenes
  * los indexa con el nombre del archivo).
  */
-import fotoRecepcion from '@assets/SOFIA-GARCIA-TOTAL-BEAUTY/sofia-garcia-total-beauty-recepcion-malaga.jpg';
-import fotoManicura from '@assets/SOFIA-GARCIA-TOTAL-BEAUTY/sofia-garcia-total-beauty-manicura-malaga.jpg';
-import fotoEsmaltes from '@assets/SOFIA-GARCIA-TOTAL-BEAUTY/sofia-garcia-total-beauty-esmaltes-malaga.jpg';
-import fotoCalle from '@assets/SOFIA-GARCIA-TOTAL-BEAUTY/sofia-garcia-total-beauty-calle-mesonero-romanos-malaga.jpg';
+import fotoRecepcion from '../assets/fotos/sofia-garcia-total-beauty-recepcion-malaga.jpg';
+import fotoManicura from '../assets/fotos/sofia-garcia-total-beauty-manicura-malaga.jpg';
+import fotoEsmaltes from '../assets/fotos/sofia-garcia-total-beauty-esmaltes-malaga.jpg';
+import fotoCalle from '../assets/fotos/sofia-garcia-total-beauty-calle-mesonero-romanos-malaga.jpg';
 
 export const IMAGES = {
 	fotoRecepcion,

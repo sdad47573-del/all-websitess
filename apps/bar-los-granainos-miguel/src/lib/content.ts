@@ -47,7 +47,8 @@ export const content = {
 		photosCta: 'Ver fotos en Google Maps',
 		photoCaption: 'Galería de la ficha oficial',
 		photoDisclaimer:
-			'Google Maps no expuso archivos de imagen directos para incorporar a la web. Los enlaces abren la galería original; las ilustraciones son vectoriales propias, no fotografías del bar.',
+			'Fotos del bar y sus platos publicadas en Málaga Directory; los derechos pertenecen a sus respectivos autores.',
+		photoSource: 'Ver ficha y fotos en Málaga Directory.',
 		visitEyebrow: 'Avenida Andalucía · La Cala de Mijas',
 		visitTitle: 'Ven a vernos al centro de La Cala.',
 		addressLabel: 'Dirección',
@@ -137,7 +138,8 @@ export const content = {
 		photosCta: 'View photos on Google Maps',
 		photoCaption: 'Official listing gallery',
 		photoDisclaimer:
-			'Google Maps did not expose direct image files to embed on the site. Links open the original gallery; illustrations are original vector artwork, not photos of the bar.',
+			'Photos of the bar and its dishes published on Málaga Directory; all rights remain with their respective authors.',
+		photoSource: 'View the listing and photos on Málaga Directory.',
 		visitEyebrow: 'Avenida Andalucía · La Cala de Mijas',
 		visitTitle: 'Come and find us in the heart of La Cala.',
 		addressLabel: 'Address',

@@ -1,0 +1,407 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import heroImage from '../assets/fotos/encuentro-fachada-local.jpg';
+import cartaDesayunos from '../assets/fotos/encuentro-carta-desayunos.jpg';
+import cartaCenas from '../assets/fotos/encuentro-carta-cenas.jpg';
+import bocadilloBebida from '../assets/fotos/encuentro-bocadillo-bebida.jpg';
+import bocadilloPapas from '../assets/fotos/encuentro-bocadillo-papas.jpg';
+import bocadilloMano from '../assets/fotos/encuentro-bocadillo-mano.jpg';
+import bocadilloAluminio from '../assets/fotos/encuentro-bocadillo-aluminio.jpg';
+import croquetas from '../assets/fotos/encuentro-croquetas.jpg';
+import cafe from '../assets/fotos/encuentro-cafe-con-leche.jpg';
+
+const business = {
+	name: 'Encuentro Cafe-Bar',
+	tagline: 'Desayunos, bocadillos y cena en Teatinos',
+	street: 'C. Margarita Xirgu, 2',
+	district: 'Teatinos-Universidad',
+	city: 'Málaga',
+	postalCode: '29010',
+	phone: '',
+	latitude: 36.7217894,
+	longitude: -4.4731106,
+	rating: 5.0,
+	reviewsCount: 21,
+	site: 'https://encuentro-cafe-bar.vercel.app',
+};
+
+// Identificadores públicos de la ficha de Google Maps del local.
+const cid = '0xd72f700396de10d:0x4945af0a6b5dd116';
+const cidDecimal = '5279818597447618838';
+const placeId = 'ChIJDeFtOQD3cg0RFtFdawqvRUk';
+
+const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${placeId}&hl=es`;
+const cidUrl = `https://www.google.com/maps?cid=${cidDecimal}`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&hl=es&output=embed`;
+
+const description =
+	'Encuentro Cafe-Bar en C. Margarita Xirgu, 2 (Teatinos, Málaga). Desayunos desde las 8:00, bocadillos en pitufo, mollete o sándwich y menú de cena con hamburguesas y campero. 5,0 en Google.';
+
+const servicios = [
+	'Desayunos desde las 8:00',
+	'Bocadillos en pitufo',
+	'Mollete y sándwich',
+	'Viena',
+	'Hamburguesas',
+	'Campero clásico',
+	'Menú para cenar',
+	'Tapas y patatas',
+	'Café con leche',
+	'Comer en el local',
+	'Para llevar',
+	'Terraza en la calle',
+	'Precio 1–10 €',
+	'Barrio de Teatinos',
+];
+
+// Carta transcrita de las fotos de la carta del propio local publicadas en Google Maps.
+const grupos = [
+	{
+		title: 'Desayunos: pitufo, mollete o sándwich',
+		items: [
+			{ name: 'Aceite o aceite y tomate', note: '1,50 € en pitufo y 2,20 € en mollete o sándwich' },
+			{ name: 'Mantequilla o mantequilla y mermelada', note: '1,50 € y 1,80 € en pitufo; 2,20 € y 2,80 € en mollete' },
+			{ name: 'Lomo en manteca casero', note: '2,50 € en pitufo y 3,50 € en mollete' },
+			{ name: 'Atún con tomate y lechuga', note: '2,70 € en pitufo y 3,70 € en mollete' },
+			{ name: 'Manchego y tortilla francesa', note: '3,20 € y 2,80 € en pitufo; 3,60 € y 3,80 € en mollete' },
+		],
+	},
+	{
+		title: 'Más rellenos',
+		items: [
+			{ name: 'Pavo, jamón cocido o salchichón', note: '2,20 € en pitufo y 3,20 € en mollete o sándwich' },
+			{ name: 'Paté, sobrasada o zurrapa', note: '2,00 € en pitufo y 3,00 € en mollete' },
+			{ name: 'Cinta de lomo o mixto', note: '2,80 € y 2,50 € en pitufo; 3,80 € y 3,50 € en mollete' },
+			{ name: 'Bacon con queso o catalana', note: '2,60 € en pitufo y 3,60 € en mollete, con jamón cocido, pavo o serrano' },
+			{ name: 'Filete de pollo con lechuga y tomate', note: '3,50 € en pitufo y 4,50 € en mollete, el más caro' },
+		],
+	},
+	{
+		title: 'Para cenar (de 20:00 a 23:00)',
+		items: [
+			{ name: 'Campero clásico con papas y refresco', note: '8,00 €, con tomate, lechuga, cebolla, queso y jamón' },
+			{ name: 'Campero de lomo con papas y refresco', note: '9,50 €, con cinta de lomo' },
+			{ name: 'Campero de pollo con papas y refresco', note: '10,50 €, con filete de pollo' },
+			{ name: 'Hamburguesa normal con papas y refresco', note: '10,50 €, con tomate, lechuga, queso y mayonesa' },
+			{ name: 'Hamburguesa especial con papas y refresco', note: '12,50 €, con bacon, jamón y huevo' },
+		],
+	},
+];
+
+// El componente da doble altura a la 1.ª y a la 5.ª foto, así que las cartas,
+// recortadas a 4/5 para que su texto no se recorte, van en celdas normales.
+const galeria = [
+	{ src: bocadilloBebida, alt: 'Bocadillo de jamón y queso con bebida en Encuentro Cafe-Bar, Teatinos, Málaga' },
+	{ src: cartaDesayunos, alt: 'Carta de desayunos de Encuentro Cafe-Bar: pitufo, mollete, sándwich o viena, en Teatinos, Málaga' },
+	{ src: cartaCenas, alt: 'Carta de cenas de Encuentro Cafe-Bar, hamburguesas y camperos con papas, en Teatinos' },
+	{ src: bocadilloPapas, alt: 'Bocadillo con papas en Encuentro Cafe-Bar, cafetería en Teatinos, Málaga' },
+	{ src: bocadilloMano, alt: 'Bocadillo cortado de Encuentro Cafe-Bar, bar en Teatinos, Málaga' },
+	{ src: croquetas, alt: 'Croquetas crujientes con limón en Encuentro Cafe-Bar, Teatinos, Málaga' },
+	{ src: bocadilloAluminio, alt: 'Bocadillo de pitufo envuelto en papel de plata en Encuentro Cafe-Bar, Málaga' },
+	{ src: cafe, alt: 'Café con leche servido en Encuentro Cafe-Bar, cafetería en Teatinos, Málaga' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está Encuentro Cafe-Bar?',
+		a: 'En la calle Margarita Xirgu, 2, en el barrio de Teatinos-Universidad (29010 Málaga), a pocos metros de la Universidad. Tiene terraza en la acera, con mesas a la sombra.',
+	},
+	{
+		q: '¿Cuál es el horario de Encuentro?',
+		a: 'El local funciona a doble servicio. Por la mañana, de martes a sábado abre de 8:00 a medianoche; el domingo de 8:00 a 16:00 y el lunes está cerrado. Por la noche, la carta de cenas se sirve de 20:00 a 23:00.',
+	},
+	{
+		q: '¿Qué se desayuna en Encuentro?',
+		a: 'Pitus, molletes y sándwiches con rellenos muy variados: aceite, mantequilla y mermelada, paté, sobrasada, pavo, jamón cocido, salchichón, cinta de lomo, lomo en manteca casero, atún, bacon con queso, catalana, manchego o tortilla francesa. También hay un desayuno de la casa con tortilla, queso fresco, bacon y tostada por 4,50 €.',
+	},
+	{
+		q: '¿Cuánto cuesta el desayuno?',
+		a: 'El pitufo va de 1,50 € a 3,50 € y el mollete o el sándwich, de 2,20 € a 4,50 €. El extra cuesta 0,50 €. En la práctica, un desayuno completo se queda entre los 3 y los 6 €.',
+	},
+	{
+		q: '¿Se cena en Encuentro?',
+		a: 'Sí. De 20:00 a 23:00 hay menú de cenas: hamburguesas y camperos con papas y refresco, desde el campero clásico de 8,00 € hasta la hamburguesa especial de 12,50 €, que lleva bacon, jamón y huevo.',
+	},
+	{
+		q: '¿Tiene teléfono?',
+		a: 'No. La ficha de Google Maps del local no publica ningún número. La vía de contacto más fiable es la ficha de Google Maps, desde donde se puede escribir, pedir información o consultar si hay mesas libres.',
+	},
+	{
+		q: '¿Sirve comida para llevar?',
+		a: 'Sí. La ficha indica servicio «para llevar», además de comer en el local. Los bocadillos y los platos de la carta de cenas se pueden pedir para recoger.',
+	},
+	{
+		q: '¿Qué nota tiene en Google?',
+		a: 'La nota media es de 5,0 sobre 21 reseñas, la más alta de los locales de este encargo. Con pocas reseñas, la muestra es pequeña, así que conviene leerlas para formarse una idea. La ficha también destaca los platos «Café helado» y «bocadillo de jamón y queso».',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'No hay sistema de reservas: es un local de terraza y barra por orden de llegada. Como cierra tarde de martes a sábado, en fin de semana puede haber bastante gente por la noche.',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['CafeOrCoffeeShop', 'Bar', 'Restaurant'],
+	'@id': `${business.site}/#negocio`,
+	name: business.name,
+	alternateName: ['Encuentro', 'Encuentro Café Bar', 'Encuentro Teatinos', 'Encuentro Margarita Xirgu'],
+	slogan: 'Encuentros desde las ocho de la mañana',
+	description,
+	url: `${business.site}/`,
+	priceRange: '1–10 €',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cafetería', 'Desayunos', 'Bocadillos', 'Hamburguesas', 'Tapas'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Teatinos-Universidad' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	image: `${business.site}/og.jpg`,
+	sameAs: [mapsUrl],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: cid },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '00:00',
+			closes: '00:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '24:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '20:00',
+			closes: '23:00',
+			description: 'Menú de cenas',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '08:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza en la calle', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Desayunos desde las 8:00', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Bocadillos en pitufo y mollete', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Menú de cenas de 20:00 a 23:00', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Comida para llevar', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Comer en el local', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: business.rating,
+		reviewCount: business.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'Carta', href: '#carta' },
+	{ label: 'Galería', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>Encuentro Cafe-Bar · Desayunos y bocadillos en Teatinos</title>
+		<meta name="theme-color" content="#7a2e2e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={business.name}
+			description={description}
+			keywords="Encuentro Cafe-Bar Málaga, desayuno Teatinos, bocadillos Teatinos, pitufo Málaga, cafetería 29010 Málaga, hamburguesas Teatinos, café Margarita Xirgu, bar Teatinos, cafetería Universidad Málaga, bocadillo jamón queso Teatinos, tortilla francesa Teatinos, comida para llevar Teatinos, cafetería C. Margarita Xirgu 2"
+			canonical={`${business.site}/`}
+			site={business.site}
+			ogTitle="Encuentro Cafe-Bar · Desayunos y bocadillos en Teatinos, Málaga"
+			ogDescription="Pitus, molletes y sándwiches desde las 8:00 y menú de cenas con hamburguesas hasta las 23:00, en C. Margarita Xirgu, 2, Teatinos. 5,0 en Google."
+			ogImage={`${business.site}/og.jpg`}
+			ogImageAlt="Fachada y terraza de Encuentro Cafe-Bar en la calle Margarita Xirgu, Teatinos, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={business.name}
+			themeColor="#7a2e2e"
+			street={business.street}
+			city={business.city}
+			region="Andalucía"
+			postalCode={business.postalCode}
+			phone=""
+			latitude={business.latitude}
+			longitude={business.longitude}
+			placeName="Teatinos-Universidad, Málaga"
+			preload={[heroImage]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark="E"
+			name="Encuentro"
+			subtitle="Cafe-Bar"
+			phone="Google Maps"
+			phoneHref={mapsUrl}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Teatinos · Málaga"
+				title="Pitus desde las ocho,<br /><em>y cena hasta las once.</em>"
+				lede="Encuentro Cafe-Bar está en la calle Margarita Xirgu, 2, a pasos de la Universidad. Abre de martes a sábado a las ocho de la mañana y no cierra hasta medianoche: por la mañana pitufos y molletes de todo tipo, y por la noche el menú de hamburguesas y camperos, de ocho a once. 5,0 en Google."
+				image={heroImage}
+				imageAlt="Fachada y terraza de Encuentro Cafe-Bar en la calle Margarita Xirgu, Teatinos, Málaga"
+				primaryCta={{ label: 'Ver la ficha en Google Maps', href: mapsUrl }}
+				secondaryCta={{ label: 'Cómo llegar', href: directionsUrl }}
+				facts={[
+					{ label: 'Nota', html: '<b>5,0</b> en Google (21 reseñas)' },
+					{ label: 'Horario', html: 'Martes a sábado, <b>8:00–24:00</b>' },
+					{ label: 'Domingo y lunes', html: 'Domingo 8:00–16:00, lunes cerrado' },
+					{ label: 'Precios', html: 'Pitufo desde <b>1,50 €</b> y campero 8,00 €' },
+				]}
+				galleryHref={mapsUrl}
+			/>
+
+			<LocalChips label="Qué ofrece Encuentro" items={servicios} />
+
+			<LocalAbout
+				label="Cafe-bar"
+				title="Dos servicios<br /><em>en el mismo local.</em>"
+				paragraphs={[
+					'Encuentro Cafe-Bar ocupa el número 2 de la calle Margarita Xirgu, en pleno Teatinos-Universidad, a muy poca distancia de la Universidad. El horario explica el proyecto: el local abre de martes a sábado a las ocho de la mañana y cierra a medianoche, y el domingo por la mañana.',
+					'Por la mañana funciona como cafetería de desayuno. La carta está centrada en el pitufo, el mollete y el sándwich, con más de una docena de rellenos: aceite, mantequilla y mermelada, paté, sobrasada, pavo, jamón cocido, salchichón, cinta de lomo, lomo en manteca casero, atún, bacon con queso, catalana, manchego o tortilla francesa. Hay además un desayuno de la casa con tortilla, queso fresco, bacon y tostada.',
+					'Por la noche, de 20:00 a 23:00, la carta cambia a menú de cenas: hamburguesas y camperos con papas y refresco, desde el campero clásico hasta la hamburguesa especial con bacon, jamón y huevo. De ahí el nombre del local: un punto de encuentro entre el desayuno y la cena.',
+					'El espacio es pequeño y está en la calle, con mesas en la acera bajo el toldo. Se puede comer en el local o pedir para llevar. La nota media en Google es de 5,0, aunque con solo 21 reseñas la muestra es pequeña.',
+				]}
+				note="La nota media en Google es de 5,0 sobre 21 reseñas. La ficha destaca como platos más recomendados el café helado y el bocadillo de jamón y queso. Con pocas reseñas, la valoración es alta pero conviene leerlas para formarse una idea completa."
+				links={[{ label: 'Ficha y reseñas en Google', href: cidUrl, external: true }]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="De la mantequilla<br /><em>a la hamburguesa.</em>"
+				description="Carta transcrita de las fotos de la carta del propio local publicadas en su ficha de Google Maps, con los precios que aparecen en ellas. La carta y los precios pueden cambiar, así que confírmalos en el local."
+				cta={{ label: 'Ver la carta en Google Maps', href: mapsUrl }}
+				groups={grupos}
+				note="Los precios indicados son los de la foto de la carta y pueden haber cambiado. El extra de cualquier bocadillo cuesta 0,50 €. Para confirmar precios al día, consulta la ficha de Google Maps del local."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Las dos cartas,<br /><em>los bocadillos y el café.</em>"
+				description="Estas fotografías proceden del perfil de Encuentro Cafe-Bar en Google Maps: la carta de desayunos, la carta de cenas, los bocadillos, las croquetas con limón y el café con leche. En la ficha están todas las fotos y las reseñas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: mapsUrl }}
+				note="Imágenes alojadas en esta web procedentes del perfil del local en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="C. Margarita Xirgu, 2 · 29010 Málaga"
+				title="Nos vemos<br /><em>en Teatinos.</em>"
+				addressLines={[
+					business.street,
+					business.district,
+					`${business.postalCode} ${business.city}, España`,
+				]}
+				hours={[
+					{ day: 'Lunes', value: 'Cerrado', closed: true },
+					{ day: 'Martes', value: '8:00–24:00' },
+					{ day: 'Miércoles', value: '8:00–24:00' },
+					{ day: 'Jueves', value: '8:00–24:00' },
+					{ day: 'Viernes', value: '8:00–24:00' },
+					{ day: 'Sábado', value: '8:00–24:00' },
+					{ day: 'Domingo', value: '8:00–16:00' },
+				]}
+				hoursNote="Horario publicado en la ficha de Google: de martes a sábado de 8:00 a 24:00, domingo de 8:00 a 16:00 y lunes cerrado. El menú de cenas se sirve de 20:00 a 23:00. Puede variar en festivos."
+				mapTitle="Mapa de Encuentro Cafe-Bar en la calle Margarita Xirgu, 2, Teatinos-Universidad, Málaga"
+				mapEmbedUrl={mapEmbedUrl}
+				mapLabel="Encuentro · Teatinos"
+				mapHref={cidUrl}
+				links={[{ label: 'Cómo llegar', href: directionsUrl, external: true, variant: 'primary' }]}
+				contactLink={{ label: 'Ficha en Google Maps', href: cidUrl, external: true }}
+				reserveNote="No hay teléfono publicado ni sistema de reservas: es un local de terraza y barra por orden de llegada. Para información o pedidos, usa el mensaje de la ficha de Google Maps."
+			/>
+
+			<LocalFaq items={faqs} />
+		</main>
+
+		<LocalFooter
+			mark="E"
+			name={business.name}
+			address={`${business.street} · ${business.postalCode} ${business.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: mapsUrl, external: true },
+				{ label: 'Ficha y fotos ↗', href: cidUrl, external: true },
+			]}
+			phone=""
+			phoneHref={mapsUrl}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Abrir en Google Maps"
+		/>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

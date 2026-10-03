@@ -14,7 +14,6 @@ const config: StorybookConfig = {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
-      '@assets': path.resolve(__dirname, '../../packages/@assets'),
       '@': path.resolve(__dirname, '../src'),
     };
     config.plugins = [...(config.plugins || []), tailwindcss()];

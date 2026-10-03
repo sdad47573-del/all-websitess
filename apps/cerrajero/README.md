@@ -13,7 +13,7 @@ Inside of your Astro project, you'll see the following folders and files:
 ```text
 /
 ├── public/
-│   └── favicon.svg
+│ └── favicon.svg
 ├── src
 │   ├── assets
 │   │   └── astro.svg
@@ -22,7 +22,7 @@ Inside of your Astro project, you'll see the following folders and files:
 │   ├── layouts
 │   │   └── Layout.astro
 │   └── pages
-│       └── index.astro
+│   └── index.astro
 └── package.json
 ```
 
@@ -32,14 +32,14 @@ To learn more about the folder structure of an Astro project, refer to [our guid
 
 All commands are run from the root of the project, from a terminal:
 
-| Command               | Action                                           |
+| Command | Action |
 | :-------------------- | :----------------------------------------------- |
-| `bun install`         | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
+| `bun install` | Installs dependencies |
+| `bun dev` | Starts local dev server at `localhost:4321` |
+| `bun build` | Build your production site to `./dist/` |
+| `bun preview` | Preview your build locally, before deploying |
+| `bun astro ...` | Run CLI commands like `astro add`, `astro check` |
+| `bun astro -- --help` | Get help using the Astro CLI |
 
 ## 👀 Want to learn more?
 

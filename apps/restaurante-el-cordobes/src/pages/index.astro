@@ -1,0 +1,184 @@
+---
+const business = {
+	name: 'Restaurante El Cordobés',
+	street: 'Calle Arte, 7',
+	city: 'Marbella',
+	region: 'Málaga',
+	postalCode: '29601',
+	country: 'ES',
+	phone: '+34 952 82 98 10',
+	latitude: 36.5103396,
+	longitude: -4.8827553,
+	site: 'https://restaurante-el-cordobes.vercel.app',
+};
+
+const mapsUrl = 'https://www.google.com/maps/place/Restaurante+El+Cordob%C3%A9s/@36.5103396,-4.8827553,17z/data=!4m6!3m5!1s0xd72d80805eb6bff:0xc766688aece07a28!8m2!3d36.5103396!4d-4.8827553!16s%2Fg%2F11bx561sw_?hl=es';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(`${business.name}, ${business.city}`)}&ll=${business.latitude}%2C${business.longitude}&z=17&hl=es&output=embed`;
+const phoneHref = 'tel:+34952829810';
+const siteUrl = `${business.site}/`;
+const description = 'Restaurante El Cordobés en Marbella: cocina española, tapas y platos para compartir en la calle Arte, 7. Consulta las fotos de Google Maps, llama y encuentra cómo llegar.';
+
+const faqs = [
+	{
+		question: '¿Dónde está el Restaurante El Cordobés?',
+		answer: 'El restaurante está en la calle Arte, 7, 29601 Marbella (Málaga). Consulta el mapa de Google Maps para ver su ubicación y obtener indicaciones.',
+	},
+	{
+		question: '¿Cuál es el teléfono del Restaurante El Cordobés?',
+		answer: 'El teléfono publicado para el restaurante es el +34 952 82 98 10. Puedes llamar para consultar el horario, la carta o hacer una reserva.',
+	},
+	{
+		question: '¿Qué tipo de cocina ofrece?',
+		answer: 'Las fuentes públicas describen una propuesta de cocina española y platos tradicionales. Consulta la ficha del restaurante o llama para conocer la carta vigente y las especialidades del día.',
+	},
+	{
+		question: '¿Cuál es el horario de apertura?',
+		answer: 'No hemos podido confirmar un horario fiable y actualizado en fuentes públicas. Antes de desplazarte, consulta la ficha del restaurante en Google Maps o llama por teléfono.',
+	},
+	{
+		question: '¿Dónde puedo ver fotos del restaurante?',
+		answer: 'Abre la ficha oficial del Restaurante El Cordobés en Google Maps desde esta página para consultar las fotos y reseñas publicadas allí.',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${siteUrl}#restaurant`,
+	name: business.name,
+	description,
+	url: siteUrl,
+	telephone: business.phone,
+	servesCuisine: ['Española', 'Mediterránea'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: business.region,
+		postalCode: business.postalCode,
+		addressCountry: business.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	sameAs: [mapsUrl],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#38271f" />
+		<link rel="canonical" href={siteUrl} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+		<title>Restaurante El Cordobés en Marbella | Cocina española y tapas</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Restaurante El Cordobés · Marbella" />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={siteUrl} />
+		<meta property="og:image" content={`${business.site}/og.svg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Restaurante El Cordobés, cocina tradicional española en Marbella" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Restaurante El Cordobés, inicio">
+				<span class="brand-mark" aria-hidden="true">C</span>
+				<span>El Cordobés <small>Restaurante · Marbella</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#cocina">La cocina</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#visitanos">Visítanos</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="header-call" href={phoneHref}>Llamar · 952 82 98 10</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span>Marbella · Málaga</span><i aria-hidden="true"></i> Cocina con carácter</p>
+					<h1 id="hero-title">Sabor de siempre,<br />en el corazón <em>de Marbella.</em></h1>
+					<p class="lede">Descubre el Restaurante El Cordobés, en la calle Arte, 7. Un lugar para disfrutar de cocina española y una buena mesa en Marbella. Consulta la ficha, mira las fotos y llámanos antes de venir.</p>
+					<div class="actions">
+						<a class="button button-gold" href={phoneHref}>Llamar al restaurante <span aria-hidden="true">↗</span></a>
+						<a class="button button-outline" href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a>
+					</div>
+					<div class="hero-details"><span>⌖ Calle Arte, 7 · Marbella</span><span>✦ Cocina española</span></div>
+				</div>
+				<div class="hero-art" role="img" aria-label="Ilustración decorativa de una mesa con platos de cocina mediterránea y luz cálida">
+					<div class="window"><span class="window-sun"></span><span class="window-hill"></span></div>
+					<div class="table"></div><div class="plate plate-main"><span class="dish-main"></span><i class="garnish garnish-one"></i><i class="garnish garnish-two"></i><i class="garnish garnish-three"></i></div>
+					<div class="plate plate-side"><span></span></div><div class="glass"><i></i></div><div class="napkin"></div>
+					<div class="art-note">Una mesa<br /><b>para disfrutar</b></div>
+				</div>
+			</section>
+
+			<div class="ticker" aria-label="Una buena mesa en Marbella"><span>Cocina española</span><b>✳</b><span>Marbella centro</span><b>✳</b><span>Buen producto</span><b>✳</b><span>Comer y compartir</span></div>
+
+			<section class="intro section-wrap" id="cocina">
+				<div><p class="eyebrow eyebrow-dark">Una dirección para recordar</p><h2>En Marbella,<br /><em>siéntate a la mesa.</em></h2></div>
+				<div class="intro-copy"><p>El Cordobés es un restaurante situado en la calle Arte, en Marbella. Encuentra aquí la información práctica para organizar tu visita y consulta directamente con el local los detalles de su cocina, horarios y disponibilidad.</p><a class="text-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver opiniones, datos y ficha en Google Maps ↗</a></div>
+			</section>
+
+			<section class="specialties section-wrap" aria-labelledby="specialties-title">
+				<div class="section-heading"><p class="eyebrow eyebrow-dark">Cocina española en Marbella</p><h2 id="specialties-title">Lo importante<br /><em>es compartir.</em></h2><p>Un plan sencillo: buena compañía y una mesa en Marbella. Consulta la carta actual y las sugerencias directamente con el restaurante.</p></div>
+				<div class="special-grid">
+					<article class="special-card special-tapas"><span class="special-icon" aria-hidden="true">✦</span><span class="card-kicker">PARA EMPEZAR</span><h3>Tapas y entrantes</h3><p>Pregunta por las opciones de la carta para abrir el apetito y compartir.</p></article>
+					<article class="special-card special-kitchen"><span class="special-icon" aria-hidden="true">♨</span><span class="card-kicker">COCINA ESPAÑOLA</span><h3>Platos tradicionales</h3><p>Sabores conocidos y cocina de inspiración española en un ambiente cercano.</p></article>
+					<article class="special-card special-table"><span class="special-icon" aria-hidden="true">◉</span><span class="card-kicker">BUENA COMPAÑÍA</span><h3>Una mesa para todos</h3><p>Un punto de encuentro para disfrutar de una comida o una cena en Marbella.</p></article>
+				</div>
+				<p class="menu-note">La carta, los precios y la disponibilidad pueden cambiar. Llama al restaurante para consultar la oferta actual.</p>
+			</section>
+
+			<section class="photo-section" id="fotos">
+				<div class="photo-copy"><p class="eyebrow">Fotos del Restaurante El Cordobés</p><h2>Asómate a la ficha<br />antes de <em>venir.</em></h2><p>Consulta las imágenes, reseñas y datos del Restaurante El Cordobés publicados en su ficha de Google Maps. Abre el enlace para ver las fotos disponibles del local y la comida.</p><a class="button button-gold" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver fotos en Google Maps <span aria-hidden="true">↗</span></a></div>
+				<div class="map-photo"><iframe title="Google Maps: ubicación del Restaurante El Cordobés en Marbella" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><a class="map-caption" href={mapsUrl} target="_blank" rel="noopener noreferrer"><span>⌖</span><span><b>Restaurante El Cordobés</b><small>Ubicación, fotos y ficha en Google Maps ↗</small></span></a></div>
+			</section>
+
+			<section class="visit section-wrap" id="visitanos">
+				<div class="visit-copy"><p class="eyebrow eyebrow-dark">Estamos en Marbella</p><h2>Nos encontramos<br /><em>en la calle Arte.</em></h2><p>Ven al Restaurante El Cordobés. Consulta cómo llegar desde Google Maps o llama para confirmar que estamos abiertos.</p><address>{business.street}<br />{business.postalCode} {business.city}, {business.region}</address><div class="actions"><a class="button button-dark" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir indicaciones ↗</a><a class="text-link" href={phoneHref}>Llamar · 952 82 98 10</a></div></div>
+				<div class="hours-card"><div class="hours-title"><span class="clock" aria-hidden="true">◷</span><div><p class="eyebrow eyebrow-dark">Antes de salir</p><h3>Confirma el horario</h3></div></div><p class="hours-copy">No encontramos un horario público suficientemente fiable para mostrarlo aquí. La ficha de Google Maps o una llamada te ayudarán a confirmar el horario de hoy.</p><a class="hours-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">Consultar horario en Google Maps ↗</a><a class="phone-card-link" href={phoneHref}>Llamar al +34 952 82 98 10</a></div>
+			</section>
+
+			<section class="faq-section section-wrap" id="preguntas"><p class="eyebrow eyebrow-dark">Información útil</p><h2>Antes de <em>venir.</em></h2><div class="faq-list">{faqs.map(({ question, answer }) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div></section>
+		</main>
+
+		<footer class="footer"><div class="footer-top"><a class="brand footer-brand" href="#inicio"><span class="brand-mark" aria-hidden="true">C</span><span>El Cordobés <small>Restaurante · Marbella</small></span></a><p>Cocina española<br />en Marbella.</p><nav aria-label="Enlaces del restaurante"><a href={mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href={phoneHref}>952 82 98 10</a></nav></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Restaurante El Cordobés · Marbella</span><a href="/aviso-legal/">Aviso legal y privacidad</a><span>Confirma horario y carta directamente con el establecimiento.</span></div></footer>
+		<a class="mobile-call" href={phoneHref}>Llamar <span>952 82 98 10</span></a>
+	</body>
+</html>
+
+<style is:global>
+	:root{font-family:'DM Sans',sans-serif;color:#342e2a;background:#f8f3e9;font-synthesis:none;text-rendering:optimizeLegibility;--brown:#38271f;--brown2:#54372a;--gold:#d9ae5e;--cream:#f8f3e9;--ink:#342e2a;--muted:#786d62;--display:'Playfair Display',Georgia,serif}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;min-width:320px}a{color:inherit;text-decoration:none}a:focus-visible,summary:focus-visible{outline:3px solid #d9ae5e;outline-offset:4px}.skip-link{position:absolute;z-index:99;top:-60px;left:16px;padding:12px 16px;background:var(--gold);color:var(--brown)}.skip-link:focus{top:12px}.topbar{height:78px;padding:0 6vw;display:flex;align-items:center;justify-content:space-between;gap:22px;background:var(--brown);color:#fbf6ed}.brand{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:700}.brand small{display:block;margin-top:4px;color:#d8cbb7;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase}.brand-mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid #d9ae5e;border-radius:50%;color:#e2bf78;font:700 23px var(--display)}.topbar nav{display:flex;gap:clamp(14px,2.5vw,32px);color:#eee5d8;font-size:12px}.topbar nav a:hover,.footer a:hover{color:#e2bf78}.header-call{padding:11px 17px;border:1px solid #ffffff50;border-radius:99px;font-size:11px;font-weight:700}.hero{display:grid;grid-template-columns:1.05fr .95fr;min-height:560px;background:var(--brown);color:#fbf6ed;overflow:hidden}.hero-copy{padding:73px 4vw 64px 9vw;align-self:center}.eyebrow{margin:0 0 19px;color:#d7c396;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase}.eyebrow i{display:inline-block;width:22px;height:1px;margin:0 8px 3px;background:currentColor}.hero h1,.intro h2,.section-heading h2,.photo-copy h2,.visit h2,.faq-section h2{margin:0;font:600 clamp(39px,4.7vw,64px)/1.08 var(--display);letter-spacing:-1.2px}.hero h1 em,.intro h2 em,.section-heading h2 em,.photo-copy h2 em,.visit h2 em,.faq-section h2 em{color:var(--gold);font-style:italic}.lede{max-width:475px;margin:24px 0 0;color:#e2d8cb;font-size:15px;line-height:1.8}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:27px}.button{display:inline-flex;min-height:47px;align-items:center;justify-content:center;gap:14px;padding:0 20px;border-radius:99px;font-size:12px;font-weight:700;transition:transform .18s ease}.button:hover{transform:translateY(-2px)}.button-gold{background:var(--gold);color:var(--brown)}.button-outline{border:1px solid #ffffff65;color:#fbf6ed}.hero-details{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:27px;padding-top:20px;border-top:1px solid #ffffff2a;color:#e0d5c8;font-size:11px}.hero-details span:first-child{color:#edcf91}.hero-art{position:relative;min-height:560px;overflow:hidden;background:linear-gradient(150deg,#6c4a39,#bc8057 56%,#e0ae74)}.window{position:absolute;top:8%;right:13%;width:47%;height:36%;overflow:hidden;border:9px solid #f0dfc1;background:#e8ba7f;box-shadow:0 14px 25px #39241e35}.window:before,.window:after{position:absolute;z-index:2;content:'';background:#f0dfc1}.window:before{top:0;bottom:0;left:49%;width:8px}.window:after{top:48%;right:0;left:0;height:8px}.window-sun{position:absolute;top:16%;right:18%;width:49px;height:49px;border-radius:50%;background:#f6d17c}.window-hill{position:absolute;right:-10%;bottom:-7%;left:-10%;height:53%;border-radius:50% 50% 0 0;background:#788158}.table{position:absolute;right:-10%;bottom:-10%;left:-10%;height:45%;border-radius:50% 50% 0 0;background:#754935;box-shadow:0 -8px 20px #35231c44}.plate{position:absolute;z-index:2;display:grid;place-items:center;border:12px solid #fff9ec;border-radius:50%;background:#e9dfc9;box-shadow:0 18px 30px #30211d55}.plate-main{left:37%;top:41%;width:min(260px,54%);aspect-ratio:1}.dish-main{width:68%;height:62%;border-radius:48% 52% 49% 51%;background:radial-gradient(ellipse at 50% 43%,#c47a48 0 28%,#804833 30% 38%,#d2a360 40% 48%,#6f4a32 50% 55%,transparent 58%);transform:rotate(-17deg)}.garnish{position:absolute;width:12px;height:30px;border-radius:90% 0 90% 0;background:#647a49}.garnish-one{top:27%;left:30%;transform:rotate(27deg)}.garnish-two{right:23%;bottom:30%;transform:rotate(76deg)}.garnish-three{top:43%;right:27%;width:10px;height:23px;transform:rotate(9deg)}.plate-side{left:10%;bottom:12%;width:107px;aspect-ratio:1;border-width:8px}.plate-side span{width:66%;height:58%;border-radius:50%;background:radial-gradient(circle,#f2e4c0 0 14%,#9a593d 16% 31%,#cf9c5e 34% 46%,#ebd3a2 48%)}.glass{position:absolute;z-index:2;right:13%;bottom:17%;width:45px;height:91px;border:3px solid #f0dfc1;border-top:0;border-radius:4px 4px 17px 17px;background:#d9b37735;transform:rotate(5deg)}.glass:before{position:absolute;top:0;left:-6px;width:50px;height:6px;border:2px solid #f0dfc1;border-radius:50%;content:''}.glass i{position:absolute;right:2px;bottom:4px;left:2px;height:47%;border-radius:0 0 12px 12px;background:#9e4739aa}.napkin{position:absolute;z-index:1;right:21%;bottom:10%;width:56px;height:109px;background:#e9d3ab;transform:rotate(25deg);clip-path:polygon(50% 0,100% 15%,83% 100%,0 85%)}.art-note{position:absolute;z-index:4;top:14%;left:9%;padding:13px 16px;background:#f8f0dc;color:#4b3829;font:13px/1.4 var(--display);transform:rotate(-5deg)}.art-note b{font-size:16px}.ticker{display:flex;min-height:54px;align-items:center;justify-content:center;gap:clamp(12px,4vw,52px);padding:10px 5vw;background:#d9ae5e;color:#38271f;font:600 13px var(--display)}.ticker b{font-size:12px}.section-wrap{padding:88px 9vw}.intro{display:grid;grid-template-columns:1fr .85fr;gap:9%;align-items:center;background:var(--cream)}.eyebrow-dark{margin-bottom:16px;color:#96713e}.intro h2,.section-heading h2,.visit h2,.faq-section h2{font-size:clamp(34px,4vw,50px);color:#38271f}.intro h2 em,.section-heading h2 em,.visit h2 em,.faq-section h2 em{color:#a26d3e}.intro-copy p,.section-heading>p,.visit-copy>p:not(.eyebrow){color:#70645a;font-size:14px;line-height:1.85}.intro-copy p{margin:0 0 17px}.text-link{display:inline-block;padding-bottom:4px;border-bottom:1px solid #a26d3e;color:#49372a;font-size:12px;font-weight:700}.specialties{background:#eee6d7}.section-heading{max-width:700px;margin:0 auto 34px;text-align:center}.section-heading h2{margin-bottom:12px}.section-heading>p{max-width:560px;margin:0 auto}.special-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.special-card{min-height:250px;padding:23px 21px;border:1px solid #ded2bd;border-radius:12px;background:#faf6eb}.special-card:nth-child(2){background:#e6e4d8}.special-card:nth-child(3){background:#f1e1c7}.special-icon{display:grid;width:57px;height:57px;place-items:center;margin-bottom:18px;border-radius:50%;background:#54372a;color:#e4c37e;font:27px var(--display)}.special-card:nth-child(2) .special-icon{background:#6f7354;color:#f0e7cc}.special-card:nth-child(3) .special-icon{background:#bd8952;color:#fff0d3}.card-kicker{display:block;margin-bottom:8px;color:#8f754f;font-size:8px;font-weight:700;letter-spacing:1.5px}.special-card h3{margin:0 0 10px;color:#38271f;font:600 20px var(--display)}.special-card p{margin:0;color:#70645a;font-size:12px;line-height:1.7}.menu-note{margin:19px 0 0;color:#777067;font-size:11px;line-height:1.7;text-align:center}.photo-section{display:grid;grid-template-columns:.83fr 1.17fr;min-height:440px;background:#38271f;color:#fbf6ed}.photo-copy{align-self:center;padding:60px 5vw 60px 10.8vw}.photo-copy h2{margin:0 0 18px;font-size:clamp(37px,4vw,52px)}.photo-copy h2 em{color:#d9ae5e}.photo-copy>p:not(.eyebrow){max-width:420px;margin:0 0 24px;color:#e2d8cb;font-size:13px;line-height:1.8}.map-photo{position:relative;min-height:440px;background:#d5d2c6}.map-photo iframe{display:block;width:100%;height:100%;min-height:440px;border:0}.map-caption{position:absolute;bottom:17px;left:17px;display:flex;align-items:center;gap:11px;padding:13px 16px;border-radius:9px;background:#fffdf6;color:#38271f;box-shadow:0 4px 20px #1f201c50}.map-caption>span:first-child{font-size:20px;color:#a16e31}.map-caption b,.map-caption small{display:block}.map-caption b{font-size:11px}.map-caption small{margin-top:3px;color:#70645a;font-size:9px}.visit{display:grid;grid-template-columns:1fr .9fr;gap:9%;align-items:center;background:var(--cream)}.visit-copy h2{margin:0 0 16px}.visit-copy>p:not(.eyebrow){max-width:440px}.visit address{margin:23px 0 0;color:#49372a;font-size:13px;font-style:normal;line-height:1.8}.button-dark{background:#38271f;color:#fbf6ed}.hours-card{padding:29px;border:1px solid #ddd3c3;border-radius:14px;background:#fffdf7;box-shadow:0 14px 38px #38362b0d}.hours-title{display:flex;align-items:center;gap:15px}.clock{display:grid;width:48px;height:48px;place-items:center;border-radius:50%;background:#efe5cf;color:#977443;font-size:29px}.hours-title .eyebrow{margin:0 0 4px}.hours-title h3{margin:0;color:#38271f;font:600 23px var(--display)}.hours-copy{margin:19px 0 0;color:#70645a;font-size:13px;line-height:1.8}.hours-link,.phone-card-link{display:block;width:max-content;max-width:100%;margin-top:15px;padding-bottom:4px;border-bottom:1px solid #a26d3e;color:#49372a;font-size:12px;font-weight:700}.phone-card-link{margin-top:12px}.faq-section{padding-top:12px;background:var(--cream)}.faq-section h2{margin-bottom:25px}.faq-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.faq-list details{padding:17px 19px;border:1px solid #e1d9cc;border-radius:9px;background:#fffdf7}.faq-list summary{cursor:pointer;color:#38271f;font-size:13px;font-weight:700}.faq-list summary::marker{color:#a26d3e}.faq-list details p{margin:12px 0 0;color:#70645a;font-size:12px;line-height:1.75}.footer{padding:35px 8vw 20px;background:#2d201a;color:#f8f3e9}.footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:25px}.footer-brand{flex:none}.footer-top>p{margin:0;color:#e2d8cb;font:500 14px/1.6 var(--display)}.footer nav{display:flex;flex-wrap:wrap;gap:15px;font-size:11px}.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-top:15px;border-top:1px solid #ffffff28;color:#cfc3b4;font-size:9px}.mobile-call{display:none}@media(max-width:1000px){.hero-copy{padding-left:7vw}.special-grid{grid-template-columns:repeat(3,1fr)}.section-wrap{padding-right:7vw;padding-left:7vw}.photo-copy{padding-left:7vw}.footer-top{flex-wrap:wrap}.footer-top>p{margin-right:auto}}@media(max-width:720px){html{scroll-padding-top:16px}.topbar{height:auto;min-height:70px;padding:12px 20px}.topbar nav{display:none}.header-call{font-size:10px}.hero{grid-template-columns:1fr}.hero-copy{padding:57px 24px 49px}.hero h1{font-size:clamp(39px,10.5vw,57px)}.hero-art{min-height:390px}.plate-main{width:min(230px,54%)}.window{height:40%}.section-wrap{padding:62px 23px}.intro,.visit{grid-template-columns:1fr;gap:22px}.intro h2,.section-heading h2,.visit h2,.faq-section h2{font-size:38px}.section-heading{text-align:left}.section-heading>p{margin-left:0}.special-grid{grid-template-columns:1fr;gap:10px}.special-card{min-height:190px;padding:19px}.special-card h3{font-size:19px}.photo-section{grid-template-columns:1fr}.photo-copy{padding:55px 24px 35px}.map-photo,.map-photo iframe{min-height:350px;height:350px}.hours-card{padding:23px 19px}.faq-list{grid-template-columns:1fr}.faq-section{padding-top:0}.footer{padding:28px 22px 86px}.footer-top{align-items:flex-start;flex-direction:column}.footer-top>p{margin:0}.footer-bottom{flex-direction:column}.mobile-call{position:fixed;z-index:10;right:12px;bottom:10px;left:12px;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:99px;background:#d9ae5e;color:#38271f;box-shadow:0 5px 22px #17120f50;font-size:12px;font-weight:700}.mobile-call span{font-size:12px}}@media(max-width:390px){.header-call{padding:10px;font-size:9px}.hero-details{font-size:10px}.plate-side{width:85px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important}}
+</style>

@@ -8,13 +8,13 @@
  */
 
 /** Imágenes de Google Maps (perfil) y Street View de la fachada. */
-import mapsPortada from '@assets/OASIS/maps-portada.jpg';
-import streetview133 from '@assets/OASIS/streetview-133.jpg';
-import streetview90 from '@assets/OASIS/streetview-90.jpg';
-import streetview30 from '@assets/OASIS/streetview-30.jpg';
-import streetview180 from '@assets/OASIS/streetview-180.jpg';
-import streetview240 from '@assets/OASIS/streetview-240.jpg';
-import streetview300 from '@assets/OASIS/streetview-300.jpg';
+import mapsPortada from '../assets/fotos/maps-portada.jpg';
+import streetview133 from '../assets/fotos/streetview-133.jpg';
+import streetview90 from '../assets/fotos/streetview-90.jpg';
+import streetview30 from '../assets/fotos/streetview-30.jpg';
+import streetview180 from '../assets/fotos/streetview-180.jpg';
+import streetview240 from '../assets/fotos/streetview-240.jpg';
+import streetview300 from '../assets/fotos/streetview-300.jpg';
 
 export const IMAGES = {
 	mapsPortada,

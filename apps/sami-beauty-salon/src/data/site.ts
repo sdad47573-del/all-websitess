@@ -20,9 +20,9 @@
  * una manicura) más una vista de la calle Carlos Haya desde Street View. Los nombres de archivo son
  * descriptivos a propósito: Google Imágenes los indexa con el nombre del archivo.
  */
-import fotoFachada from '@assets/SAMI-BEAUTY-SALON/sami-beauty-salon-fachada-malaga.jpg';
-import fotoManicura from '@assets/SAMI-BEAUTY-SALON/sami-beauty-salon-manicura.jpg';
-import fotoCalle from '@assets/SAMI-BEAUTY-SALON/sami-beauty-salon-calle-carlos-haya.jpg';
+import fotoFachada from '../assets/fotos/sami-beauty-salon-fachada-malaga.jpg';
+import fotoManicura from '../assets/fotos/sami-beauty-salon-manicura.jpg';
+import fotoCalle from '../assets/fotos/sami-beauty-salon-calle-carlos-haya.jpg';
 
 export const IMAGES = {
 	fotoFachada,

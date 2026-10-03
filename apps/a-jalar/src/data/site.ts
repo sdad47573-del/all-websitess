@@ -13,28 +13,40 @@
 /**
  * Fotografías reales del negocio.
  *
- * - `a-jalar-portada.jpg`: fotografía de cabecera de su ficha de reparto (Uber Eats), donde
- *   el negocio sube su propia imagen.
+ * - `a-jalar-entrada.jpg` / `a-jalar-local.jpg`: foto de la fachada y del interior del local.
  * - `*-facebook-*.jpg`: fotos publicadas por el propio local en su página de Facebook.
  * - El resto: fotos de producto de la carta (rollos, media lunas, bandejas, campers…).
  *
  * Los nombres de archivo son descriptivos porque Google Imágenes los indexa como URL.
  */
-import portada from '@assets/A-JALAR/a-jalar-portada.jpg';
-import facebook1 from '@assets/A-JALAR/a-jalar-facebook-1.jpg';
-import facebook2 from '@assets/A-JALAR/a-jalar-facebook-2.jpg';
-import facebook3 from '@assets/A-JALAR/a-jalar-facebook-3.jpg';
-import rolloPollo from '@assets/A-JALAR/a-jalar-rollo-pollo.jpg';
-import mediaLunaPollo from '@assets/A-JALAR/a-jalar-media-luna-pollo.jpg';
-import bandejaPollo from '@assets/A-JALAR/a-jalar-bandeja-pollo.jpg';
-import camperoPollo from '@assets/A-JALAR/a-jalar-campero-pollo.jpg';
-import baguettePollo from '@assets/A-JALAR/a-jalar-baguette-pollo.jpg';
-import chickenFingers from '@assets/A-JALAR/a-jalar-chicken-fingers.jpg';
-import hamburguesaTernera from '@assets/A-JALAR/a-jalar-hamburguesa-ternera.jpg';
-import patatasFritas from '@assets/A-JALAR/a-jalar-patatas-fritas.jpg';
+import logo from '../assets/fotos/a-jalar-logo.png';
+import logoOscuro from '../assets/fotos/a-jalar-logo-oscuro.png';
+import entrada from '../assets/fotos/a-jalar-entrada.jpg';
+import local from '../assets/fotos/a-jalar-local.jpg';
+import facebook1 from '../assets/fotos/a-jalar-facebook-1.jpg';
+import facebook2 from '../assets/fotos/a-jalar-facebook-2.jpg';
+import facebook3 from '../assets/fotos/a-jalar-facebook-3.jpg';
+import rolloPollo from '../assets/fotos/a-jalar-rollo-pollo.jpg';
+import mediaLunaPollo from '../assets/fotos/a-jalar-media-luna-pollo.jpg';
+import bandejaPollo from '../assets/fotos/a-jalar-bandeja-pollo.jpg';
+import camperoPollo from '../assets/fotos/a-jalar-campero-pollo.jpg';
+import baguettePollo from '../assets/fotos/a-jalar-baguette-pollo.jpg';
+import chickenFingers from '../assets/fotos/a-jalar-chicken-fingers.jpg';
+import hamburguesaTernera from '../assets/fotos/a-jalar-hamburguesa-ternera.jpg';
+import patatasFritas from '../assets/fotos/a-jalar-patatas-fritas.jpg';
 
 export const IMAGES = {
-	portada,
+	/**
+	 * Logotipo oficial (monograma AJ + wordmark "A JALAR · KEBAB ARTESANAL") sobre fondo
+	 * transparente. El wordmark de marca es blanco, así que la versión para fondos claros
+	 * (`logoOscuro`) recolorea solo el texto y deja intacto el "AJ" blanco del Badge naranja.
+	 */
+	logo,
+	logoOscuro,
+	/** Foto de la entrada al local, usada como fondo del hero de la portada. */
+	entrada,
+	/** Foto del interior del local, en la tarjeta junto al titular del hero. */
+	local,
 	facebook1,
 	facebook2,
 	facebook3,
@@ -279,9 +291,7 @@ export const PLATO_IMAGES = [
 
 /** Fotos del local y de sus redes para la galería. */
 export const LOCAL_GALLERY = [
-	{ src: IMAGES.portada, alt: 'Fachada del local A JALAR en la Av. de Lope de Vega 23, Málaga' },
 	{ src: IMAGES.facebook1, alt: 'A JALAR, kebab artesanal en Teatinos-Universidad (Málaga)' },
-	{ src: IMAGES.facebook2, alt: 'Kebab de A Jalar en la Avenida de Lope de Vega, Málaga' },
 	{ src: IMAGES.facebook3, alt: 'Platos de A JALAR, kebab artesanal en Málaga' },
 ];
 
