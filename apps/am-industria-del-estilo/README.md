@@ -17,4 +17,4 @@ Landing local para AM Industria del Estilo, peluquería en Teatinos (Avenida de 
 - Teléfono: +34 744 61 08 81.
 - Email: industriadelestiloam@gmail.com.
 
-La foto de portada usa el recurso concreto enlazado en la ficha de Google Maps facilitada. Confirma que siga disponible y que su reutilización sea adecuada antes de publicar. La URL canónica (`https://am-industria-del-estilo-malaga.vercel.app`) es provisional: cámbiala si el sitio se despliega en otro dominio, y actualiza también `public/robots.txt` y `astro.config.mjs`.
+La foto de portada usa el recurso concreto enlazado en la ficha de Google Maps facilitada. Tres fotografías de la ficha de Google Maps se descargan localmente en `public/images/` (`am-01.jpg`, `am-02.jpg`, `am-03.jpg`) y se muestran en la galería; los enlaces llevan a la ficha original como fuente y los derechos de las fotos siguen perteneciendo a sus autores. Confirma que sigan disponibles y que su reutilización sea adecuada antes de publicar. La URL canónica (`https://am-industria-del-estilo-malaga.vercel.app`) es provisional: cámbiala si el sitio se despliega en otro dominio, y actualiza también `public/robots.txt` y `astro.config.mjs`.

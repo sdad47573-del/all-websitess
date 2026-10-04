@@ -1,7 +1,8 @@
 import type { StoryObj } from '@storybook/react';
+import { LoginForm2 } from './LoginForm2';
 declare const meta: {
     title: string;
-    component: ({ onSubmit }: import("./LoginForm2").LoginForm2Props) => import("react").JSX.Element;
+    component: typeof LoginForm2;
     parameters: {
         layout: string;
     };

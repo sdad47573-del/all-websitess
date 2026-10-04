@@ -1039,7 +1039,7 @@ export default function Landing() {
           </div>
         </div>
       
-			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;">
+			<p style={{ fontSize: "0.75rem", opacity: 0.7, margin: "0.5rem 0 0" }}>
 				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
 			</p>
 </footer>

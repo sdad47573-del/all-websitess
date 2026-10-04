@@ -11,8 +11,15 @@ export const business = {
 	site: 'https://taberna-la-charata-malaga.vercel.app',
 } as const;
 
-// La URL de Google Maps facilitada es solo la ficha del lugar: no incluía ninguna
-// foto (!6shttps://lh3.googleusercontent.com/...), así que el sitio no hotlinkea imagen.
+// Fotos descargadas de Google Maps y de publicaciones públicas de la taberna en Facebook.
+export const galleryPhotos = Array.from({ length: 8 }, (_, index) => {
+	const photoNumber = String(index + 1).padStart(2, '0');
+	return {
+		src: `/fotos/charata-${photoNumber}.jpg`,
+		alt: `Foto ${index + 1} de Taberna La Charata`,
+	};
+});
+
 // Tampoco hay teléfono público verificado (los directorios lo ocultan), así que se omite.
 export const mapsUrl =
 	'https://www.google.com/maps/place/Taberna+La+Charata/@36.7155529,-4.2850114,17z/data=!3m1!4b1!4m6!3m5!1s0xd725b55eea3a345:0xb1da2e444feceb2e!8m2!3d36.7155529!4d-4.2850114!16s%2Fg%2F11h_6x7wsr?authuser=0&hl=es&entry=ttu';

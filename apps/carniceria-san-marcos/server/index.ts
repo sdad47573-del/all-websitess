@@ -78,7 +78,7 @@ const confirmBody = z.object({
 });
 
 /** Normalises validation failures to the same `{ error }` shape as everything else. */
-function validationMessage(error: z.ZodError): string {
+function validationMessage(error: z.core.$ZodError): string {
 	return error.issues
 		.map((issue) => {
 			const field = issue.path.join('.');

@@ -18,8 +18,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Instagram,
-  Facebook,
   Check,
   Loader2,
   Menu,
@@ -1195,14 +1193,14 @@ export default function Landing() {
                     aria-label="Instagram"
                     className="flex size-10 items-center justify-center rounded-xl bg-primary/15 text-primary transition-transform hover:scale-110"
                   >
-                    <Instagram className="size-5" />
+                    <InstagramIcon className="size-5" />
                   </a>
                   <a
                     href="#"
                     aria-label="Facebook"
                     className="flex size-10 items-center justify-center rounded-xl bg-primary/15 text-primary transition-transform hover:scale-110"
                   >
-                    <Facebook className="size-5" />
+                    <FacebookIcon className="size-5" />
                   </a>
                 </div>
               </div>
@@ -1276,12 +1274,49 @@ export default function Landing() {
           </div>
         </div>
       
-			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;">
+			<p style={{ fontSize: "0.75rem", opacity: 0.7, margin: "0.5rem 0 0" }}>
 				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
 			</p>
 </footer>
 
       <FloatingCTA />
     </motion.div>
+  );
+}
+
+// lucide-react v1 removed brand icons, so Instagram and Facebook are inlined here.
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
   );
 }

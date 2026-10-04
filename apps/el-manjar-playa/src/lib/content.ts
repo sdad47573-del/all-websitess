@@ -43,8 +43,8 @@ export const content = {
 		photosEyebrow: 'Así se ve El Manjar Playa',
 		photosTitle: 'Descubre el restaurante en imágenes.',
 		photosText:
-			'Abre la galería original de Google Maps para ver fotografías del local y de sus platos publicadas en la ficha del restaurante.',
-		photosCta: 'Ver fotos en Google Maps',
+			'Una selección de fotografías compartidas en el perfil público de Instagram de El Manjar Playa, con platos y momentos del restaurante.',
+		photosCta: 'Ver publicaciones en Instagram',
 		visitEyebrow: 'Estamos en La Carihuela',
 		visitTitle: 'Nos vemos en Torremolinos.',
 		addressLabel: 'Dirección',
@@ -80,9 +80,9 @@ export const content = {
 		],
 		instagramLabel: 'Instagram',
 		footerNote: 'Pescados · Mariscos · Arroces · Torremolinos',
-		photoCaption: 'Fotografías publicadas en la ficha de Google Maps',
+		photoCaption: 'Fotografías publicadas en Instagram',
 		photoDisclaimer:
-			'Las fotografías se consultan en Google Maps y pertenecen a sus respectivos autores. Abre la ficha original para ver la galería.',
+			'Fotografías del perfil público de Instagram de El Manjar Playa. Las imágenes pertenecen a sus autores.',
 	},
 	en: {
 		lang: 'en',
@@ -128,8 +128,8 @@ export const content = {
 		photosEyebrow: 'A look inside El Manjar Playa',
 		photosTitle: 'Explore the restaurant in pictures.',
 		photosText:
-			'Open the original Google Maps gallery to browse photos of the restaurant and its dishes shared on the listing.',
-		photosCta: 'View photos on Google Maps',
+			'A selection of photos shared on El Manjar Playa’s public Instagram profile, featuring dishes and moments from the restaurant.',
+		photosCta: 'View Instagram posts',
 		visitEyebrow: 'Find us in La Carihuela',
 		visitTitle: 'See you in Torremolinos.',
 		addressLabel: 'Address',
@@ -165,8 +165,8 @@ export const content = {
 		],
 		instagramLabel: 'Instagram',
 		footerNote: 'Fish · Seafood · Rice · Torremolinos',
-		photoCaption: 'Photos shared on the Google Maps listing',
+		photoCaption: 'Photos shared on Instagram',
 		photoDisclaimer:
-			'Photos can be viewed on Google Maps and remain the property of their respective authors. Visit the original listing to browse the gallery.',
+			'Photos from El Manjar Playa’s public Instagram profile. Images remain the property of their authors.',
 	},
 } as const;

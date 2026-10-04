@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { business, directionsUrl, mapEmbedUrl, mapsUrl, instagramUrl, structuredData } from '../src/lib/business';
+import { readFileSync } from 'node:fs';
+import { business, directionsUrl, galleryPhotos, mapEmbedUrl, mapsUrl, instagramUrl, structuredData } from '../src/lib/business';
 
 describe('datos locales de Taberna La Charata', () => {
 	test('incluye la dirección oficial de la taberna', () => {
@@ -21,6 +22,15 @@ describe('datos locales de Taberna La Charata', () => {
 		expect(structuredData.geo.longitude).toBe(-4.2850114);
 		expect(structuredData).not.toHaveProperty('openingHours');
 		expect(structuredData).not.toHaveProperty('aggregateRating');
+	});
+
+	test('incluye las ocho fotos JPEG descargadas para la galería local', () => {
+		expect(galleryPhotos).toHaveLength(8);
+		for (const photo of galleryPhotos) {
+			const image = readFileSync(new URL(`../public${photo.src}`, import.meta.url));
+			expect(image.subarray(0, 3)).toEqual(Buffer.from([0xff, 0xd8, 0xff]));
+			expect(image.byteLength).toBeGreaterThan(10_000);
+		}
 	});
 
 	test('omite el teléfono al no haber un número público verificado', () => {

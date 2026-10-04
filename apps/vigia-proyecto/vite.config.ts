@@ -23,42 +23,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Manual chunk splitting for better caching and lazy loading
-        manualChunks: {
-          // Vendor chunks for large libraries
-          'react-vendor': ['react', 'react-dom', 'react-router'],
-          'convex-vendor': ['convex'],
-          // Large UI library chunks
-          'radix-ui': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-collapsible',
-            '@radix-ui/react-context-menu',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-hover-card',
-            '@radix-ui/react-label',
-            '@radix-ui/react-menubar',
-            '@radix-ui/react-navigation-menu',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-progress',
-            '@radix-ui/react-radio-group',
-            '@radix-ui/react-scroll-area',
-            '@radix-ui/react-select',
-            '@radix-ui/react-separator',
-            '@radix-ui/react-slider',
-            '@radix-ui/react-switch',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-toggle',
-            '@radix-ui/react-toggle-group',
-            '@radix-ui/react-tooltip',
-          ],
-          // Heavy optional libraries - separate chunks for better lazy loading
-          'framer-motion': ['framer-motion'],
-          'charts': ['recharts'],
-          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-        },
+        manualChunks(id) {
+      if (!id.includes('node_modules')) return undefined;
+      if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router/')) return 'react-vendor';
+      if (id.includes('node_modules/convex/')) return 'convex-vendor';
+      if (id.includes('node_modules/@radix-ui/react-accordion/') || id.includes('node_modules/@radix-ui/react-alert-dialog/') || id.includes('node_modules/@radix-ui/react-avatar/') || id.includes('node_modules/@radix-ui/react-checkbox/') || id.includes('node_modules/@radix-ui/react-collapsible/') || id.includes('node_modules/@radix-ui/react-context-menu/') || id.includes('node_modules/@radix-ui/react-dialog/') || id.includes('node_modules/@radix-ui/react-dropdown-menu/') || id.includes('node_modules/@radix-ui/react-hover-card/') || id.includes('node_modules/@radix-ui/react-label/') || id.includes('node_modules/@radix-ui/react-menubar/') || id.includes('node_modules/@radix-ui/react-navigation-menu/') || id.includes('node_modules/@radix-ui/react-popover/') || id.includes('node_modules/@radix-ui/react-progress/') || id.includes('node_modules/@radix-ui/react-radio-group/') || id.includes('node_modules/@radix-ui/react-scroll-area/') || id.includes('node_modules/@radix-ui/react-select/') || id.includes('node_modules/@radix-ui/react-separator/') || id.includes('node_modules/@radix-ui/react-slider/') || id.includes('node_modules/@radix-ui/react-switch/') || id.includes('node_modules/@radix-ui/react-tabs/') || id.includes('node_modules/@radix-ui/react-toggle/') || id.includes('node_modules/@radix-ui/react-toggle-group/') || id.includes('node_modules/@radix-ui/react-tooltip/')) return 'radix-ui';
+      if (id.includes('node_modules/framer-motion/')) return 'framer-motion';
+      if (id.includes('node_modules/recharts/')) return 'charts';
+      if (id.includes('node_modules/react-hook-form/') || id.includes('node_modules/@hookform/resolvers/') || id.includes('node_modules/zod/')) return 'forms';
+      return undefined;
+    },
         // Optimize chunk size
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',

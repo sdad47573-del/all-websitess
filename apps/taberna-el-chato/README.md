@@ -20,7 +20,7 @@ Comprobaciones: `bun --filter taberna-el-chato check`, `typecheck` y `build`.
 - Instagram oficial: https://www.instagram.com/taberna_elchato/
 - Facebook oficial: https://www.facebook.com/p/Taberna-El-Chato-100057382122315/
 
-El enlace de Maps facilitado identifica la ficha, pero no contiene URLs directas a las fotos. Por eso la página enlaza las galerías reales de Maps y de los perfiles oficiales; la ilustración de portada y los SVG son gráficos originales, no fotografías del local.
+Google Maps identifica la ficha, pero no ofrece URLs directas de descarga para las fotos del establecimiento. La galería local de `public/images/` contiene cinco fotografías descargadas de la galería del sitio oficial (https://taberna-el-chato.eatbu.com/?lang=es), con atribución visible en la página. El enlace de Google Maps se conserva para abrir su ficha y consultar allí más fotos. La ilustración de portada y los SVG son gráficos originales, no fotografías del local.
 
 Hay discrepancias de dirección: Maps y varios directorios indican Avenida de la Pedanía, 206; la web oficial muestra Av. Concordia, 1. El horario mostrado es una referencia histórica publicada por ABC en mayo de 2022 y puede haber cambiado. La página recomienda confirmar dirección, horario, carta y disponibilidad llamando al **957 41 98 79**.
 

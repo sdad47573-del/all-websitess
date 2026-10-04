@@ -38,10 +38,18 @@
  * 17. `iframe-no-title`  `iframe` sin `title`.
  * 18. `input-no-label`   Campo de formulario sin `label` ni `aria-label`.
  *
+ * Rutas y ficheros (revisión del conjunto de ficheros de cada web):
+ *
+ * 19. `duplicate-page`   Dos rutas de la misma web con el mismo título y la misma descripción.
+ *                        Google tiene que elegir una y con contenido duplicado no elige ninguna.
+ * 20. `draft-file`       Fichero con nombre de copia o borrador (`algo copy.astro`, `test.astro`).
+ *                        Los que están en `src/pages` se deployan como rutas públicas.
+ *
  * Las reglas de texto se saltan en los README, donde es legítimo citar identificadores como
  * `className` o `TypeScript`. También se descartaron dos reglas que daban demasiados falsos
  * positivos: `prose-slash` («anterior/siguiente» es español correcto) y `empty-string`
- * (`label: ''` es un valor por defecto legítimo). Un linter que avisa de más acaba ignorándose. *
+ * (`label: ''` es un valor por defecto legítimo). Un linter que avisa de más acaba ignorándose.
+ *
  * Uso:
  *   node scripts/check-site-content.mjs                      # todas las webs
  *   node scripts/check-site-content.mjs merci-nails a-style  # solo algunas
@@ -51,10 +59,14 @@
  */
 
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// Por defecto el repositorio es el que contiene este script, pero `CHECK_SITES_ROOT` permite
+// apuntar a otro sitio: es lo que usan los tests para montar webs de mentira en un temporal.
+const ROOT = process.env.CHECK_SITES_ROOT
+	? resolve(process.env.CHECK_SITES_ROOT)
+	: resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const APPS_DIR = join(ROOT, 'apps');
 
 /** Paquetes de componentes compartidos: su marcado acaba en muchas webs a la vez. */
@@ -63,7 +75,26 @@ const SHARED_PACKAGES = [
 	join(ROOT, 'packages', '@astro-icons', 'src'),
 ];
 
-const SCAN_EXTENSIONS = new Set(['.astro', '.ts', '.tsx', '.mjs', '.js', '.md']);
+// Las imágenes se recorren aunque no se analice su contenido: lo que interesa de ellas es
+// el nombre del fichero, que es lo que aparece en los imports y en el repositorio.
+const SCAN_EXTENSIONS = new Set([
+	'.astro',
+	'.ts',
+	'.tsx',
+	'.mjs',
+	'.js',
+	'.md',
+	'.jpg',
+	'.jpeg',
+	'.png',
+	'.webp',
+	'.avif',
+	'.gif',
+	'.svg',
+]);
+
+/** De lo que se recorre, lo que se puede leer como texto. */
+const TEXT_EXTENSIONS = new Set(['.astro', '.ts', '.tsx', '.mjs', '.js', '.md']);
 const SKIP_DIRECTORIES = new Set(['node_modules', 'dist', '.astro', '.turbo', '.git']);
 
 /** Alfabetos que no deberían aparecer nunca en el texto de estas webs. */
@@ -332,6 +363,9 @@ function checkIcons(app, dir, findings) {
 	const styles = readFileSync(css, 'utf8');
 	const used = new Set();
 	for (const file of walk(join(dir, 'src'))) {
+		// Solo el código declara clases de icono: leer una imagen como texto produce bytes que
+		// casan con `ri-w` e inventan un icono que nadie ha usado nunca.
+		if (!TEXT_EXTENSIONS.has(extname(file))) continue;
 		for (const match of readFileSync(file, 'utf8').matchAll(/\bri-[a-z0-9-]+/g)) used.add(match[0]);
 	}
 	for (const icon of [...used].sort()) {
@@ -371,6 +405,113 @@ function checkLegal(app, dir, findings) {
 			rule: 'legal-pending',
 			message: 'los datos legales (LEGAL) siguen como «[pendiente de completar]»',
 		});
+}
+
+/* ------------------------------------------------------------------ *
+ * Rutas y ficheros sobrantes
+ * ------------------------------------------------------------------ */
+
+/**
+ * El título y la descripción que Google lee de una ruta. Casi todas las webs los escriben
+ * como etiquetas `<title>` y `<meta description>`; otras se los pasan como props al componente
+ * `Layout`, que es donde acaban. Se busca en los dos sitios, saltando espacios y saltos de línea
+ * entre el nombre del atributo y su valor, porque en las props multilínea hay un salto de línea.
+ */
+function attrValue(source, name) {
+	const match = new RegExp(`\\b${name}\\s*=\\s*["'\`]([\\s\\S]*?)["'\`]`).exec(source);
+	return match ? match[1].replace(/\\s+/g, ' ').trim() : null;
+}
+
+function seoOf(source) {
+	const title = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(source)?.[1] ?? attrValue(source, 'title');
+	const description =
+		/<meta\s+name="description"\s+content="([^"]*)"/i.exec(source)?.[1] ??
+		attrValue(source, 'description');
+	const clean = (value) => (value ? value.replace(/\s+/g, ' ').trim() : null);
+	return { title: clean(title), description: clean(description) };
+}
+
+/**
+ * `duplicate-page`: dos rutas de la misma web que se presentan igual. Google tiene que
+ * elegir cuál de las dos mostrar, y con contenido duplicado suele no elegir ninguna.
+ */
+function checkDuplicatePages(app, dir, findings) {
+	const pages = walk(join(dir, 'src', 'pages')).filter((file) => file.endsWith('.astro'));
+	const bySeo = new Map();
+	for (const file of pages) {
+		const { title, description } = seoOf(readFileSync(file, 'utf8'));
+		// Sin las dos cosas a la vez no se puede afirmar que dos rutas sean la misma: un
+		// panel de administracion no declara metadatos propios y su `title="Editar"` de
+		// un boton no es el titulo de la pagina.
+		if (!title || !description) continue;
+		const key = `${title} ${description}`;
+		bySeo.set(key, [...(bySeo.get(key) ?? []), file]);
+	}
+	for (const group of bySeo.values()) {
+		if (group.length < 2) continue;
+		// La ruta se nombra respecto a `src/pages` para que el aviso se lea como en el
+		// parte de rutas de Astro: `index2.astro` es la ruta `/index2/`.
+		const names = group.map((file) =>
+			relative(join(dir, 'src', 'pages'), file).replaceAll(sep, '/'),
+		);
+		for (const [position] of group.entries()) {
+			const others = names.filter((_, other) => other !== position);
+			findings.push({
+				file: `${app}/src/pages/${names[position]}`,
+				level: 'warn',
+				rule: 'duplicate-page',
+				message: `contenido idéntico al de ${others.join(', ')}: las compiten entre sí y Google no posiciona ninguna. Deja una sola ruta`,
+			});
+		}
+	}
+}
+
+/**
+ * `draft-file`: ficheros que se quedaron por el camino con nombre de copia o de borrador.
+ * Los que están en `src/pages` son peor, porque Astro los convierte en rutas públicas
+ * (`/test/`, `/copia/`) que se deployan junto a la web.
+ */
+const DRAFT_NAME = /\b(?:copy|copia|duplicado|borrador|draft|old|aux|prueba|test|temp|tmp)\b|\s-\s|\s\(\d+\)/i;
+
+/**
+ * Nombres que no dicen nada del contenido que guardan: `unnamed (4).jpg`, `imagen.png`,
+ * `img_1.jpg`. Mira el nombre entero con su extensión para no marcar de más un
+ * `a-fuego-braseria-cordoba-foto-01.jpg`, que sí explica de dónde sale la foto.
+ */
+const MEANINGLESS_ASSET =
+	/^(?:unnamed|imagen|image|img|foto|photo|picture|sin[-_ ]?nombre|captura|screenshot)[\s_-]*(?:\(\d+\)|\d+)?\.\w+$/i;
+
+/** Imágenes: se recorren por su nombre, no por su contenido. */
+const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif', '.svg']);
+
+function checkDraftFiles(app, dir, findings) {
+	for (const file of walk(join(dir, 'src'))) {
+		const name = file.split(sep).pop();
+		const isRoute = file.includes(`${sep}pages${sep}`) && name.endsWith('.astro');
+		const isImage = IMAGE_EXTENSIONS.has(extname(file).toLowerCase());
+		const report = (message) =>
+			findings.push({
+				file: relative(ROOT, file).replaceAll('\\', '/'),
+				level: 'warn',
+				rule: 'draft-file',
+				message,
+			});
+		if (MEANINGLESS_ASSET.test(name)) {
+			report(
+				`«${name}» no dice qué contiene: renómbralo según lo que se ve en la foto, como el resto de assets de la web`,
+			);
+			continue;
+		}
+		// En un asset el nombre describe su contenido, no su origen: `duplicado.jpg` es la foto
+		// de duplicar llaves de la cerrajería, no un fichero duplicado.
+		if (isImage) continue;
+		if (!DRAFT_NAME.test(name)) continue;
+		report(
+			isRoute
+				? `«${name}» está en src/pages, así que Astro publica una ruta más con este contenido: bórralo o muévelo fuera de pages`
+				: `«${name}» parece un resto de una versión anterior: bórralo si ya no se usa`,
+		);
+	}
 }
 
 /* ------------------------------------------------------------------ *
@@ -582,22 +723,26 @@ for (const dir of apps) {
 	if (existsSync(join(dir, 'README.md'))) sources.push(join(dir, 'README.md'));
 	for (const file of sources) {
 		const relativeFile = relative(ROOT, file).replaceAll('\\', '/');
-		const source = readFileSync(file, 'utf8');
-		checkProse(relativeFile, source, findings);
-		// Las reglas de metadatos y accesibilidad se limitan a las plantillas Astro de las webs
-		// de negocios. En los productos de React los campos de formulario y los botones con
-		// icono reciben su nombre accesible por props, que desde aquí no se puede comprobar.
-		if (file.endsWith('.astro')) {
-			checkHead(relativeFile, source, findings);
-			checkAccessibility(relativeFile, source, findings);
+		// El binario de una imagen no es texto que se pueda revisar, aunque su nombre sí importa.
+		if (TEXT_EXTENSIONS.has(extname(file))) {
+			const source = readFileSync(file, 'utf8');
+			checkProse(relativeFile, source, findings);
+			// Las reglas de metadatos y accesibilidad se limitan a las plantillas Astro de las
+			// webs de negocios. En los productos de React los campos de formulario y los botones
+			// con icono reciben su nombre accesible por props, que desde aquí no se puede comprobar.
+			if (file.endsWith('.astro')) {
+				checkHead(relativeFile, source, findings);
+				checkAccessibility(relativeFile, source, findings);
+			}
 		}
 	}
-
 	checkSiteUrl(app, dir, findings);
-		checkIcons(app, dir, findings);
-		checkAssets(app, dir, findings);
-		checkLegal(app, dir, findings);
-	}
+	checkIcons(app, dir, findings);
+	checkAssets(app, dir, findings);
+	checkLegal(app, dir, findings);
+	checkDuplicatePages(app, dir, findings);
+	checkDraftFiles(app, dir, findings);
+}
 
 	// Los componentes compartidos los usan muchas webs a la vez: un fallo de accesibilidad
 	// aquí se multiplica por todas ellas, así que también se revisan.

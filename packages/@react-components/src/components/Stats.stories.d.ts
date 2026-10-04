@@ -1,7 +1,8 @@
 import type { StoryObj } from '@storybook/react';
+import { Stats } from './Stats';
 declare const meta: {
     title: string;
-    component: ({ title, items }: import("./Stats").StatsProps) => import("react").JSX.Element;
+    component: typeof Stats;
     parameters: {
         layout: string;
     };

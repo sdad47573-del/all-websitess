@@ -1,6 +1,6 @@
 # A Fuego Brasería · Córdoba
 
-Landing page Astro con diseño adaptable, SEO local, datos estructurados, carta orientativa, mapa y reservas telefónicas.
+Landing page Astro con diseño adaptable, SEO local, datos estructurados, carta orientativa, galería de fotos del local, mapa y reservas telefónicas.
 
 ## Desarrollo
 
@@ -21,7 +21,7 @@ Validación: `bun --filter a-fuego-braseria check`, `typecheck` y `build`.
 - Tripadvisor: https://www.tripadvisor.es/Restaurant_Review-g187430-d21037346-Reviews-A_fuego_braseria-Cordoba_Province_of_Cordoba_Andalucia.html
 - Cobertura cultural local: https://www.cordobahoy.es/articulo/cultura/arte-que-nace-cordoba-comparte-fuego-braseria/20260321194615193616.html
 
-El enlace de Maps identifica el negocio y las coordenadas, pero no proporciona una URL directa de archivo fotográfico. La web enlaza las galerías del perfil de Maps, Instagram y Facebook; los SVG y fondos son gráficos originales, no fotografías del establecimiento.
+Las fotografías de `src/assets/fotos` (nueve, del perfil público del negocio) se sirven desde la web con `astro:assets`: la primera aparece en el hero y las nueve, en la galería. Astro las convierte a WebP y genera `srcset`, por lo que la app necesita `sharp` como dependencia. La sección de fotos enlaza además las galerías de Maps, Instagram y Facebook. El resto de gráficos (favicon, og) son originales.
 
 La dirección se referencia como Av. Al-Nasir, esquina con C/ Martín Gaite (14006 Córdoba); algunas fuentes la enumeran como Av. Al-Nasir, 11 o C/ Martín Gaite, 2. Teléfono publicado en Instagram y directorios: +34 957 84 71 36. Los horarios varían entre fuentes y no se fijan en la web; se recomienda confirmar llamando. La selección de platos es orientativa, no una carta oficial.
 

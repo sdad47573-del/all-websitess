@@ -20,4 +20,4 @@ bun run --filter el-manjar-playa build
 
 ## Imágenes
 
-La galería y el arte del hero enlazan a Google Maps; no se extrajo de la ficha una URL directa a los archivos fotográficos. La tarjeta social es un SVG original y no pretende ser una fotografía del restaurante. Si se descargan fotos autorizadas, se pueden integrar en `src/assets/`.
+La galería muestra ocho fotos JPEG descargadas del perfil público de Instagram `@el_manjar_playa`, cuya bio indica Avenida Salvador Allende, 40, Torremolinos. Están en `public/fotos/` y enlazan al perfil para consultar las publicaciones originales. El arte del hero y la tarjeta social son gráficos originales, no fotografías.

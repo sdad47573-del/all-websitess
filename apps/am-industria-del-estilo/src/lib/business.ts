@@ -19,6 +19,27 @@ export const mapsUrl =
 export const photoUrl =
 	'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S-QF19-I-YYKHobO8jh3oPBUBgMiJV2XQxw67rME89-QFqWJpUwQFGUKiJJe2n2Q2MDXYVUSSBmOWctgnAKQ7LXogirKLxJV_txoPwZUU-3DKg4TRYhSbbTE4OeSkxgNBvgBQ6Cg=w1200-h624-k-no';
 
+export const galleryPhotos = [
+	{
+		src: '/images/am-01.jpg',
+		width: 1600,
+		height: 1600,
+		alt: 'Fotografía de AM Industria del Estilo publicada en Google Maps',
+	},
+	{
+		src: '/images/am-02.jpg',
+		width: 1600,
+		height: 1200,
+		alt: 'Fotografía del salón AM Industria del Estilo en Teatinos, Málaga',
+	},
+	{
+		src: '/images/am-03.jpg',
+		width: 1200,
+		height: 1600,
+		alt: 'Detalle del trabajo de peluquería de AM Industria del Estilo',
+	},
+] as const;
+
 export const phoneHrefs = ['tel:+34744610881'] as const;
 export const emailHref = `mailto:${business.email}`;
 export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;

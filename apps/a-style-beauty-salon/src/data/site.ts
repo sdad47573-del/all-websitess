@@ -18,18 +18,23 @@
  */
 
 /**
- * Fotografías obtenidas de la ficha pública del comercio en Google Maps (fachada del local y un
- * tratamiento de cejas) más una vista de la calle. Los nombres de archivo son descriptivos a
- * propósito (Google Imágenes los indexa con el nombre del archivo).
+ * Fotografías obtenidas de la ficha pública del comercio en Google Maps (fachada e interior del
+ * local) más un tratamiento de cejas y una vista de la calle. Los nombres de archivo son
+ * descriptivos a propósito (Google Imágenes los indexa con el nombre del archivo).
  */
 import fotoFachada from '../assets/fotos/a-style-beauty-salon-fachada-malaga.jpg';
+import fotoInterior from '../assets/fotos/a-style-beauty-salon-interior-salon-malaga.jpg';
 import fotoCejas from '../assets/fotos/a-style-beauty-salon-cejas-malaga.jpg';
 import fotoCalle from '../assets/fotos/a-style-beauty-salon-calle-carlos-haya-malaga.jpg';
+import logo from '../assets/fotos/a-style-beauty-salon-logo.png';
 
 export const IMAGES = {
 	fotoFachada,
+	fotoInterior,
 	fotoCejas,
 	fotoCalle,
+	/** Logotipo del salón: la «A» con el perfil de mujer. */
+	logo,
 };
 
 export const BUSINESS = {
@@ -199,7 +204,7 @@ export const VENTAJAS = [
 	},
 	{
 		icon: 'ri-women-line',
-		title: 'Negoio de mujeres',
+		title: 'Negocio de mujeres',
 		text: 'Google lo identifica como «women-owned», un negocio fundado y gestionado por mujeres.',
 	},
 	{
@@ -261,13 +266,17 @@ export const FEATURES = [
 	{ icon: 'ri-phone-line', label: 'Cita por teléfono' },
 	{ icon: 'ri-quill-pen-line', label: 'Diseño de cejas' },
 	{ icon: 'ri-rainbow-line', label: 'LGBTQ+ friendly' },
-	{ icon: 'ri-women-line', label: 'Negoio de mujeres' },
+	{ icon: 'ri-women-line', label: 'Negocio de mujeres' },
 ];
 
 export const GALLERY = [
 	{
 		src: IMAGES.fotoFachada,
 		alt: 'Fachada del salón A-Style Beauty en la Avenida de Carlos Haya (Málaga)',
+	},
+	{
+		src: IMAGES.fotoInterior,
+		alt: 'Interior del salón A-Style Beauty: espejos, sillones y la tira de luz que recorre el techo',
 	},
 	{
 		src: IMAGES.fotoCejas,

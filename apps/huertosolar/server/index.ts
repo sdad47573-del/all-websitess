@@ -38,7 +38,7 @@ const createEntry = z.object({
  * error response, so the client has one thing to read. The default would
  * otherwise be a raw `ZodError` with a different body shape.
  */
-function validationMessage(error: z.ZodError): string {
+function validationMessage(error: z.core.$ZodError): string {
   return error.issues
     .map((issue) => {
       const field = issue.path.join(".");

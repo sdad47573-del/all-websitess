@@ -1,5 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import '../styles/global.css';
+import foto01 from '../assets/fotos/a-fuego-braseria-cordoba-foto-01.jpg';
+import foto02 from '../assets/fotos/a-fuego-braseria-cordoba-foto-02.jpg';
+import foto03 from '../assets/fotos/a-fuego-braseria-cordoba-foto-03.jpg';
+import foto04 from '../assets/fotos/a-fuego-braseria-cordoba-foto-04.jpg';
+import foto05 from '../assets/fotos/a-fuego-braseria-cordoba-foto-05.jpg';
+import foto06 from '../assets/fotos/a-fuego-braseria-cordoba-foto-06.jpg';
+import foto07 from '../assets/fotos/a-fuego-braseria-cordoba-foto-07.jpg';
+import foto08 from '../assets/fotos/a-fuego-braseria-cordoba-foto-08.jpg';
+import foto09 from '../assets/fotos/a-fuego-braseria-cordoba-foto-09.jpg';
 import {
 	business,
 	directionsUrl,
@@ -21,6 +31,21 @@ const description =
 	'A Fuego Brasería, en Avenida Al-Nasir, Córdoba: carnes, pescados y verduras a la parrilla de carbón de encina. Consulta y reserva: 957 84 71 36.';
 const keywords =
 	'A Fuego Brasería Córdoba, brasería Córdoba, carne a la brasa Córdoba, parrilla de encina, pescados a la brasa Córdoba, Avenida Al Nasir, reservar A Fuego Brasería';
+
+/** Fotografías del local y de la carta, servidas desde `src/assets` y optimizadas por Astro. */
+const fotos = [
+	{ src: foto01, alt: 'Fachada de A Fuego Brasería en Avenida Al-Nasir, Córdoba, con el rótulo iluminado y la entrada de cristal' },
+	{ src: foto02, alt: 'Patatas asadas con queso fundido y salsa, servidas en A Fuego Brasería' },
+	{ src: foto03, alt: 'Solomillo de vacuno a la brasa servido en plato en A Fuego Brasería' },
+	{ src: foto04, alt: 'Postres de la casa: tarta de queso con frutos rojos y crema con wafer' },
+	{ src: foto05, alt: 'Hamburguesa de la carta con croquetas y patatas fritas en A Fuego Brasería' },
+	{ src: foto06, alt: 'Croquetas crujientes con guarnición de hojas y alioli' },
+	{ src: foto07, alt: 'Postre de chocolate con crema, helado y salsa en A Fuego Brasería' },
+	{ src: foto08, alt: 'Carrillera de ternera a la brasa con patatas cocidas y verduras' },
+	{ src: foto09, alt: 'Tarta de queso al horno de A Fuego Brasería, caramelizada y terminada con sal' },
+];
+
+const [heroFoto] = fotos;
 ---
 
 <!doctype html>
@@ -96,10 +121,20 @@ const keywords =
 						<div><small>Reservas</small><a href={phoneHref}>{business.phone}</a></div>
 					</div>
 				</div>
-				<div class="hero-art" role="img" aria-label="Ilustración vectorial original de un corte a la brasa, no es una fotografía del restaurante">
-					<span class="plate-dot" aria-hidden="true"></span><div class="plate" aria-hidden="true"><div class="steak"></div></div>
-					<div class="art-caption"><strong>Brasa de encina</strong>Carne · mar · huerta</div>
-				</div>
+				<figure class="hero-art">
+					<Image
+						src={heroFoto.src}
+						alt={heroFoto.alt}
+						format="webp"
+						quality={80}
+						widths={[480, 720, 960]}
+						sizes="(min-width: 961px) 49vw, 100vw"
+						loading="eager"
+						fetchpriority="high"
+						class="hero-photo"
+					/>
+					<figcaption class="art-caption"><strong>Brasa de encina</strong>Carne · mar · huerta</figcaption>
+				</figure>
 			</section>
 
 			<div class="promise" aria-label="Especialidades de A Fuego Brasería">
@@ -141,19 +176,28 @@ const keywords =
 			<section class="section gallery" id="fotos" aria-labelledby="gallery-title">
 				<p class="section-label"><span aria-hidden="true"></span> A Fuego en imágenes</p>
 				<h2 id="gallery-title">Mira la brasa<br /><em>de cerca.</em></h2>
-				<p class="gallery-copy">La URL de Google Maps identifica la ficha pero no contiene enlaces directos a archivos de foto. Abre las galerías del negocio para ver imágenes reales de la parrilla, los platos y el local.</p>
+				<p class="gallery-copy">Nueve fotografías del restaurante, servidas desde esta web y optimizadas para cargar rápido. En los perfiles del negocio hay más imágenes y publicaciones del día a día.</p>
 				<div class="gallery-grid">
-					<a class="gallery-card" href={mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver ficha y fotos de A Fuego Brasería en Google Maps">
-						<span class="gallery-tag">Fotos de la ficha</span><span class="gallery-title">Google Maps <span aria-hidden="true">↗</span></span>
-					</a>
-					<a class="gallery-card" href={instagramUrl} target="_blank" rel="noreferrer" aria-label="Ver fotos y publicaciones del Instagram oficial de A Fuego Brasería">
-						<span class="gallery-tag">Perfil oficial</span><span class="gallery-title">Instagram <span aria-hidden="true">↗</span></span>
-					</a>
-					<a class="gallery-card" href={facebookPhotosUrl} target="_blank" rel="noreferrer" aria-label="Ver fotos de A Fuego Brasería en Facebook">
-						<span class="gallery-tag">Página del negocio</span><span class="gallery-title">Facebook <span aria-hidden="true">↗</span></span>
-					</a>
+					{fotos.map((foto) => (
+						<figure class="gallery-photo">
+							<Image
+								src={foto.src}
+								alt={foto.alt}
+								format="webp"
+								quality={78}
+								widths={[320, 480, 640]}
+								sizes="(min-width: 701px) 30vw, 100vw"
+								loading="lazy"
+							/>
+						</figure>
+					))}
 				</div>
-				<p class="gallery-note">La ilustración de portada y los fondos de las tarjetas son gráficos vectoriales originales, no fotografías del establecimiento. Las fotos auténticas se abren en las galerías externas.</p>
+				<div class="gallery-links">
+					<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps <span aria-hidden="true">↗</span></a>
+					<a href={instagramUrl} target="_blank" rel="noreferrer">Instagram <span aria-hidden="true">↗</span></a>
+					<a href={facebookPhotosUrl} target="_blank" rel="noreferrer">Facebook <span aria-hidden="true">↗</span></a>
+				</div>
+				<p class="gallery-note">Imágenes alojadas en esta web a partir de fotografías públicas del negocio. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos.</p>
 			</section>
 
 			<section class="section visit" id="visitanos" aria-labelledby="visit-title">
@@ -202,14 +246,16 @@ const keywords =
 				<a href={facebookUrl} target="_blank" rel="noreferrer">Facebook ↗</a>
 				<a href={tripadvisorUrl} target="_blank" rel="noreferrer">Tripadvisor ↗</a>
 				<a href={phoneHref}>{business.phone}</a>
-			</nav>
-			<small>© {new Date().getFullYear()} A Fuego Brasería · Córdoba. Consulta carta y horarios con el restaurante.</small>
-		</footer>
-		<a class="mobile-call" href={phoneHref}>Llamar y reservar <span>957 84 71 36</span></a>
-	<nav class="legal-links" aria-label="Información legal">
+			</nav><div class="footer-bottom">
+				<small class="copyright">© {new Date().getFullYear()} A Fuego Brasería · Córdoba. Consulta carta y horarios con el restaurante.</small>
+				<nav class="legal-links" aria-label="Información legal">
 					<a href="/aviso-legal">Aviso legal</a>
 					<a href="/aviso-legal#privacidad">Privacidad</a>
 					<a href="/aviso-legal#cookies">Cookies</a>
 				</nav>
-						</body>
+				<small class="credit">Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+			</div>
+		</footer>
+		<a class="mobile-call" href={phoneHref}>Llamar y reservar <span>957 84 71 36</span></a>
+	</body>
 </html>

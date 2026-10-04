@@ -90,3 +90,5 @@ precio, platos) a `src/data/site.ts` y ampliar `src/components/CocinaCasera.astr
 > `public/og.jpg`; si el dominio cambia, hay que actualizar los cuatro. Después, revisa en
 > Search Console que las URLs del sitemap (`/carta/`, con barra final) y los `canonical` (sin
 > barra) resuelven sin redirección; si el hosting redirige, unifica ambos formatos.
+
+<!-- prueba del Ignored Build Step -->

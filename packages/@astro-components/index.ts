@@ -2,7 +2,6 @@ export { default as getImage } from './src/getImage';
 export { default as Image } from './src/Image.astro';
 export { default as Layout } from './src/Layout.astro';
 export { default as QR } from './src/QR.astro';
-export { default as Topbar } from './src/Topbar/Topbar1.astro';
 
 // Componentes compartidos por las webs de negocios locales (apps/*).
 // Todos reciben la información por props: el contenido y los textos siguen

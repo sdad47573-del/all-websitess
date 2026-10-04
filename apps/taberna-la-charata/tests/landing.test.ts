@@ -14,9 +14,12 @@ describe('landing de Taberna La Charata', () => {
 		expect(page).toContain('href={mapsUrl}');
 	});
 
-	test('no inventa una foto de Maps: la URL facilitada no incluía ninguna', () => {
-		expect(page).not.toContain('googleusercontent');
-		expect(page).not.toContain('photoUrl');
+	test('muestra las fotos locales y enlaza con la ficha de Maps', () => {
+		expect(page).toContain('galleryPhotos.map((photo, index)');
+		expect(page).toContain('src={photo.src}');
+		expect(page).toContain('alt={photo.alt}');
+		expect(page).toContain('Ver todas las fotos en Google Maps');
+		expect(page).toContain('href={mapsUrl}');
 	});
 
 	test('no inventa un teléfono: no hay número público verificado', () => {

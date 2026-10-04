@@ -1,0 +1,233 @@
+/**
+ * Tests del Ignored Build Step.
+ *
+ * El escenario que motivó este fichero es real y costó 145 builds: Vercel clona el repo con poco
+ * historial, así que el commit del despliegue anterior (`VERCEL_GIT_PREVIOUS_SHA`) llega como
+ * variable de entorno pero **no está en el clon**. El script lo descartaba y comparaba contra la
+ * ventana de commits, que incluía el commit que creó los 144 `vercel.json`; como cada
+ * `vercel.json` vive dentro de su app, cada proyecto se veía "modificado" y construía.
+ *
+ * Estos tests reconstruyen un repo git de verdad y clonan en profundidad limitada, que es lo
+ * único que reproduce el fallo: con el clon completo del repo local todo pasa y el filtro parece
+ * correcto mientras en Vercel construye las 144.
+ */
+
+import { execFileSync, spawnSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { afterAll, beforeAll, describe, expect, test } from 'bun:test';
+import { shouldBuild } from '../vercel-ignore-build.mjs';
+
+/** Contenido del script real del monorepo: los tests lo ejecutan tal cual se despliega en Vercel. */
+const SCRIPT_SOURCE = readFileSync(
+	path.resolve(import.meta.dirname, '../vercel-ignore-build.mjs'),
+	'utf8',
+);
+
+const git = (args: string[], cwd: string) =>
+	execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+
+/** ¿Tiene el clon este commit? Es la comprobación que en Vercel falla con `--depth=1`. */
+const hasCommit = (repo: string, sha: string) => {
+	if (!sha) return false;
+	try {
+		execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], { cwd: repo, stdio: 'ignore' });
+		return true;
+	} catch {
+		return false;
+	}
+};
+
+let workspace: string;
+let origin: string;
+/** SHA del commit que estaba desplegado antes del push actual: el `VERCEL_GIT_PREVIOUS_SHA`. */
+let deployed = '';
+
+const commit = (files: Record<string, string>) => {
+	for (const [relative, contents] of Object.entries(files)) {
+		const target = path.join(origin, relative);
+		mkdirSync(path.dirname(target), { recursive: true });
+		writeFileSync(target, contents);
+	}
+	git(['add', '-A'], origin);
+	git(['commit', '--quiet', '-m', 'cambio'], origin);
+	return git(['rev-parse', 'HEAD'], origin).trim();
+};
+
+beforeAll(() => {
+	workspace = mkdtempSync(path.join(tmpdir(), 'vercel-ignore-'));
+	origin = path.join(workspace, 'origin');
+	mkdirSync(origin, { recursive: true });
+	mkdirSync(path.join(origin, 'apps', 'app-a'), { recursive: true });
+	mkdirSync(path.join(origin, 'apps', 'app-b'), { recursive: true });
+	mkdirSync(path.join(origin, 'packages', '@astro-config'), { recursive: true });
+
+	git(['init', '--quiet', '--initial-branch=main'], origin);
+	git(['config', 'user.email', 'tests@example.com'], origin);
+	git(['config', 'user.name', 'tests'], origin);
+
+	writeFileSync(path.join(origin, 'package.json'), JSON.stringify({ name: 'root', private: true }));
+	writeFileSync(path.join(origin, 'packages', '@astro-config', 'package.json'), '{ "name": "@astro-config" }');
+
+	// 1. El commit que creó los `vercel.json` de todas las apps a la vez.
+	const vercelJson = '{ "ignoreCommand": "node ../../scripts/x.mjs" }\n';
+	const base: Record<string, string> = {
+		'apps/app-a/vercel.json': vercelJson,
+		'apps/app-b/vercel.json': vercelJson,
+	};
+	for (const app of ['app-a', 'app-b']) {
+		base[`apps/${app}/package.json`] = JSON.stringify({
+			name: app,
+			type: 'module',
+			dependencies: { '@astro-config': 'workspace:*' },
+		});
+	}
+	commit(base);
+
+	// 2. Un push ya desplegado, y 3. el push nuevo que solo toca app-b.
+	deployed = commit({ 'apps/app-a/src.txt': 'a1\n' });
+	commit({ 'apps/app-b/src.txt': 'b1\n' });
+});
+
+afterAll(() => {
+	if (workspace) rmSync(workspace, { recursive: true, force: true });
+});
+
+/** Clona como Vercel: `--depth=1`, sin el commit del despliegue anterior. */
+const cloneLikeVercel = () => {
+	const dir = path.join(workspace, `clone-${Math.random().toString(36).slice(2)}`);
+	execFileSync('git', ['clone', '--quiet', '--depth=1', '--no-local', `file://${origin}`, dir], {
+		stdio: ['ignore', 'pipe', 'pipe'],
+	});
+	mkdirSync(path.join(dir, 'scripts'), { recursive: true });
+	writeFileSync(path.join(dir, 'scripts', 'vercel-ignore-build.mjs'), SCRIPT_SOURCE);
+	return dir;
+};
+
+/**
+ * Añade un commit al remoto, como un push nuevo, y devuelve el SHA que estaba desplegado justo
+ * antes: el `VERCEL_GIT_PREVIOUS_SHA` que verá Vercel.
+ *
+ * El previous se toma del HEAD actual del remoto, que es de donde parte cualquier push. Usar el
+ * `deployed` inicial arrastraría en el diff los commits intermedios y el test mediría otra cosa.
+ */
+const push = (files: Record<string, string>) => {
+	const previous = git(['rev-parse', 'HEAD'], origin).trim();
+	commit(files);
+	return previous;
+};
+
+/** El entorno que Vercel inyecta en el Ignored Build Step. */
+const vercelEnv = (previousSha: string) => ({
+	VERCEL_GIT_PREVIOUS_SHA: previousSha,
+	VERCEL_GIT_COMMIT_REF: 'main',
+});
+
+/** Ejecuta el script como lo haría Vercel: `0` salta el build, `1` lo construye. */
+const runAsVercel = (repoRoot: string, app: string, env: NodeJS.ProcessEnv) => {
+	const result = spawnSync('node', ['../../scripts/vercel-ignore-build.mjs'], {
+		cwd: path.join(repoRoot, 'apps', app),
+		env: { ...process.env, ...env },
+		encoding: 'utf8',
+	});
+	if (result.status === null || result.status === undefined) {
+		throw new Error(`el script no llegó a ejecutarse: ${result.stderr}`);
+	}
+	if (result.stderr) throw new Error(`el script falló: ${result.stderr}`);
+	return result.status;
+};
+
+describe('el Ignored Build Step filtra los proyectos que no han cambiado', () => {
+	test('el clon de Vercel no trae el commit del despliegue anterior', () => {
+		const repo = cloneLikeVercel();
+		expect(hasCommit(repo, deployed)).toBe(false);
+	});
+
+	test('solo construye la app que cambió en el push actual', () => {
+		const previous = push({ 'apps/app-b/src.txt': 'b2\n' });
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-b', env)).toBe(1); // app-b es la que toca el commit
+		expect(runAsVercel(repo, 'app-a', env)).toBe(0); // app-a no ha cambiado
+	});
+
+	test('sin SHA de Vercel se usa la ventana de commits y se construye (nunca deja sin publicar)', () => {
+		const repo = cloneLikeVercel();
+		expect(runAsVercel(repo, 'app-a', vercelEnv(''))).toBe(1);
+	});
+
+	test('cambiar el vercel.json de UNA app no dispara las demás', () => {
+		const previous = push({
+			'apps/app-a/vercel.json': '{ "ignoreCommand": "node ../../scripts/x.mjs", "framework": "astro" }\n',
+		});
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(0);
+	});
+
+	test('cambiar un paquete del workspace reconstruye la app que lo consume', () => {
+		const previous = push({ 'packages/@astro-config/index.mjs': 'export const x = 1;\n' });
+		const repo = cloneLikeVercel();
+		expect(runAsVercel(repo, 'app-a', vercelEnv(previous))).toBe(1);
+	});
+
+	test('cambiar el lockfile de la raíz reconstruye todas las apps', () => {
+		const previous = push({ 'bun.lock': `{}\n` });
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(1);
+	});
+
+	test('un cambio en otra parte del repo no reconstruye ninguna app', () => {
+		const previous = push({ 'docs/deploy.md': `# Documentación\n\n${'texto '.repeat(50)}\n` });
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(0);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(0);
+	});
+});
+
+describe('shouldBuild explica siempre contra qué base comparó', () => {
+	const withPreviousSha = <T>(sha: string, run: () => T): T => {
+		const previous = process.env.VERCEL_GIT_PREVIOUS_SHA;
+		process.env.VERCEL_GIT_PREVIOUS_SHA = sha;
+		try {
+			return run();
+		} finally {
+			if (previous === undefined) delete process.env.VERCEL_GIT_PREVIOUS_SHA;
+			else process.env.VERCEL_GIT_PREVIOUS_SHA = previous;
+		}
+	};
+
+	test('informa del SHA usado y de que vino de VERCEL_GIT_PREVIOUS_SHA', () => {
+		// Push que no toca ninguna app: el único cambio es un fichero de docs.
+		const previous = push({ 'docs/otro.md': '# Otro\n' });
+		const repo = cloneLikeVercel();
+		const verdict = withPreviousSha(previous, () =>
+			shouldBuild({ repoRoot: repo, appDir: path.join(repo, 'apps', 'app-a') }),
+		);
+
+		expect(verdict.build).toBe(false);
+		expect(verdict.base?.rev).toBe(previous);
+		expect(verdict.base?.source).toContain('VERCEL_GIT_PREVIOUS_SHA');
+	});
+
+	test('informa del fallback cuando no hay SHA de Vercel', () => {
+		const repo = cloneLikeVercel();
+		const previous = process.env.VERCEL_GIT_PREVIOUS_SHA;
+		delete process.env.VERCEL_GIT_PREVIOUS_SHA;
+		try {
+			const verdict = shouldBuild({ repoRoot: repo, appDir: path.join(repo, 'apps', 'app-a') });
+			expect(verdict.base?.source).toContain('ventana de commits');
+		} finally {
+			if (previous !== undefined) process.env.VERCEL_GIT_PREVIOUS_SHA = previous;
+		}
+	});
+});

@@ -1,7 +1,7 @@
 import type { StoryObj } from '@storybook/react';
 declare const meta: {
     title: string;
-    component: import("react").ForwardRefExoticComponent<Omit<import("./Input").InputProps, "type" | "rightAddon"> & import("react").RefAttributes<HTMLInputElement>>;
+    component: import("react").ForwardRefExoticComponent<Omit<import("./Input").InputProps, "rightAddon" | "type"> & import("react").RefAttributes<HTMLInputElement>>;
     parameters: {
         layout: string;
     };

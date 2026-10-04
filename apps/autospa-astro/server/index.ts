@@ -167,7 +167,7 @@ const bookingInput = z.object({
 });
 
 /** Normalises validation failures to the same `{ error }` shape as everything else. */
-function validationMessage(error: z.ZodError): string {
+function validationMessage(error: z.core.$ZodError): string {
   return error.issues
     .map((issue) => {
       const field = issue.path.join(".");
@@ -850,7 +850,7 @@ const app = new Hono()
       z.object({
         bookingId: z.string().min(1),
         rating: z
-          .number({ invalid_type_error: "Valoración entre 1 y 5." })
+          .number({ error: "Valoración entre 1 y 5." })
           .int("Valoración entre 1 y 5.")
           .min(1, "Valoración entre 1 y 5.")
           .max(5, "Valoración entre 1 y 5."),

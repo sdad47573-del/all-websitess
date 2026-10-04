@@ -6,10 +6,13 @@ Web de **A-Style Beauty Salón**, salón de belleza en la Avenida de Carlos Haya
 - Astro 5 + Tailwind CSS 4 + daisyUI (tema `astyle` definido en `src/styles/index.css`, con
  negro, marfil y dorado inspired en el rótulo del local).
 - Datos del negocio, servicios y fotos en `src/data/site.ts`.
-- Fotos obtenidas de Google Maps en `src/assets/fotos/`. Los nombres de archivo son descriptivos porque Google Imágenes los indexa.
+- Fotos obtenidas de Google Maps en `src/assets/fotos/`: fachada, interior del salón, tratamiento de
+ cejas y vista de la calle, más el logotipo del negocio. Los nombres de archivo son descriptivos
+ porque Google Imágenes los indexa.
 - La portada usa la fachada como fondo del hero y el tratamiento de cejas como imagen destacada;
- `Galeria.astro` muestra las tres fotos de la ficha. Las imágenes se sirven con `srcset`/`sizes`
- para no enviar más píxeles de los necesarios.
+ `Galeria.astro` muestra las cuatro fotos. La cabecera y el pie usan el logo real del salón en lugar
+ de una inicial de texto. Las imágenes se sirven con `srcset`/`sizes` para no enviar más píxeles de
+ los necesarios.
 
 ## Scripts
 
@@ -80,9 +83,9 @@ La información procede de la **ficha pública del local en Google Maps** (CID
 > hay que confirmar por teléfono. Si el negocio te pasa su carta real, sustituye ese array.
 > 3. Revisa el **horario** y confírmalo con el salón. Si cambia, ajusta el array `hours` **y** el
 > `openingHoursSpecification` del schema.
-> 4. Revisa las imágenes y su texto alternativo. Los `alt` describen la fachada, el tratamiento
-> de cejas y la avenida; ajústalos si el contenido real es otro. La ficha solo tiene estas
-> tres, pero puedes sumar fotos copiándolas a `src/assets/fotos/` y
+> 4. Revisa las imágenes y su texto alternativo. Los `alt` describen la fachada, el interior, el
+> tratamiento de cejas y la avenida; ajústalos si el contenido real es otro. La ficha de Google
+> solo publica estas fotos, pero puedes sumar más copiándolas a `src/assets/fotos/` y
 > añadiéndolas a `GALLERY`/`IMAGES`.
 > 5. La web no publica precios porque el salón no difunde una tarifa; mantén esa decisión o
 > actualízala si empiezan a publicarla.
