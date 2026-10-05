@@ -69,6 +69,29 @@ La web acredita la procedencia en la propia galería y en el pie. Antes de publi
    sustituirlas.
 3. Optimizar más los archivos si se quiere mejorar el LCP.
 
+### Datos estructurados
+
+El JSON-LD `Restaurant` se corrigió en dos puntos que afectan de verdad al posicionamiento local:
+
+- **La localidad es la ciudad, no el barrio.** Antes `addressLocality` valía «La Carihuela» y
+  `addressRegion` «Málaga, Andalucía», de modo que Google podía situar el restaurante en un
+  municipio inexistente. Ahora `addressLocality` es Torremolinos, el barrio va en
+  `addressNeighborhood` y la provincia en `addressRegion`.
+- **`sameAs` vuelve a contener solo perfiles externos** (Instagram y Facebook). En una ronda
+  anterior se habían metido ahí las URL de las páginas legales, lo que es incorrecto: `sameAs`
+  declara identidades equivalentes del mismo negocio, no sus subpáginas. Para eso están ahora los
+  `BreadcrumbList` de cada página.
+
+Además: `hasMenu` apunta a la ficha de Google Maps, donde está la carta viva, `areaServed`
+declara barrio, ciudad y provincia, y las páginas legales llevan su propio `WebSite` + `WebPage` +
+`BreadcrumbList` enlazados al nodo del restaurante mediante `about` e `isPartOf`.
+
+**Pendiente de confirmar:** el identificador numérico de la página de Facebook
+(`...Restaurante-Juan-Carmona-100063679291768`). La ficha de Maps no publica redes sociales y
+Facebook no deja comprobar el enlace sin iniciar sesión, así que el número viene de una fuente
+pública y no se ha podido verificar dígito a dígito. Conviene revisarlo antes de publicar, porque
+un `sameAs` equivocado es peor que no declararlo.
+
 ## Páginas legales
 
 Tres páginas en español (la LOPDGDD no admite versión inglesa): `/aviso-legal/`, `/privacidad/` y

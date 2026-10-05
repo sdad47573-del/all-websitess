@@ -127,3 +127,97 @@ y lo deja intacto.
 - Si una web depende de algo que no está en la lista global y no es un paquete del workspace, no se
   detectará el cambio. Al añadir un paquete compartido hay que añadirlo a `GLOBAL_PATHS` en
   `scripts/vercel-ignore-build.mjs`.
+# Despliegue en Netlify
+
+Las mismas 145 apps se publican también en Netlify, con los sitios de Vercel intactos. El
+repo no cambia de plataforma: cada app es un proyecto de Netlify independiente conectado al
+mismo repositorio, igual que en Vercel.
+
+## Cómo conectar un sitio
+
+Netlify detecta solo que el repo es un monorepo y, al elegir la carpeta en **Add new site →
+Import an existing project**, configura el sitio con la layout que recomienda para monorepos:
+
+- **Base directory**: la raíz del repositorio (déjala sin tocar; es el valor por defecto).
+  Es donde Netlify instala las dependencias.
+- **Package directory**: `apps/<nombre-de-la-app>`. Netlify lee el `netlify.toml` de ahí (busca
+  el config primero en el package directory, luego en el base y por último en la raíz).
+- **Build command** y **Publish directory**: no hay que tocarlos, salen del `netlify.toml`.
+
+No pongas la Base directory en `apps/<app>`: entonces el comando corre dentro de la app,
+`cd ../..` sale del repositorio y el build falla con `Bun could not find a package.json
+file to install from`. Ese es el error que dejó el despliegue a medias.
+
+Cada app tiene su `netlify.toml` generado:
+
+```toml
+[build]
+	command = "bun install --frozen-lockfile && bunx turbo run build --filter=<nombre>"
+	publish = "apps/<nombre>/dist"
+
+[build.environment]
+	NODE_VERSION = "22"
+```
+
+El comando corre en la raíz (Base directory) e instala el `bun install` del workspace entero
+porque casi todas las apps dependen de paquetes del workspace (`@astro-config`,
+`@astro-components`) declarados como `workspace:*`, que solo se resuelven desde la raíz del
+monorepo. El build pasa por turbo y no por `astro build` directo porque turbo es quien
+respeta el `dependsOn: ["^build"]` de `turbo.json` y construye los paquetes compartidos antes
+que la app. El `publish` es relativo a la raíz, de ahí `apps/<nombre>/dist` y no `dist` a
+secas.
+
+Para regenerar los ficheros, o añadir el de una app nueva:
+
+```sh
+node scripts/add-netlify-config.mjs --dry   # ver qué haría
+node scripts/add-netlify-config.mjs         # aplicarlo
+```
+
+El generador **no sobrescribe** un `netlify.toml` que no haya creado él (cabecera distinta),
+porque puede tener `headers`, `redirects` o funciones propias: el panel de Netlify manda
+sobre lo que no aparece en el fichero, pero pisar lo que hay rompería ese sitio. Lo avisa y
+lo deja intacto. Los que sí llevan su cabecera se regeneran, para que un cambio de comando
+(como este) llegue a todas las apps.
+
+## El dominio: `SITE_URL`
+
+`site` en `astro.config.mjs` es lo que alimenta el sitemap y las URLs canónicas y `og:url`.
+Cada app declara su `.vercel.app`, que es correcto mientras la web se sirva desde Vercel, pero
+si la misma build se publica en Netlify saldría con el sitemap y el canonical apuntando al
+dominio de Vercel: SEO roto desde el primer día.
+
+Por eso `createAstroConfig` (`packages/@astro-config/astro.mjs`) da prioridad a la variable de
+entorno `SITE_URL`:
+
+```js
+site: process.env.SITE_URL || site,
+```
+
+Se resuelve en el paquete compartido y no en cada app porque es el único punto por el que
+pasan las 139 apps Astro: tocarlas sería 139 ficheros que se desincronizan en cuanto un
+dominio cambie.
+
+**Hay que fijar `SITE_URL` en el panel de Netlify de cada sitio** con su dominio real
+(`https://<nombre-del-sitio>.netlify.app`, o el dominio propio si lo tiene). Sin esa variable
+el sitio se publica, pero con las URLs canónicas de Vercel.
+
+Ojo con el nombre del sitio en Netlify: no siempre coincide con el nombre de la carpeta.
+Por ejemplo la carpeta `bar-el-anzuelo` está en `elanzuelo.vercel.app`, y
+`a-fuego-braseria` en `a-fuego-braseria-cordoba.vercel.app`.
+
+## Qué NO cubre
+
+Estas 7 apps **no** se despliegan en Netlify con lo que hay aquí:
+
+- **`bar-el-deportivo` y `cuadra-proyecto`**: carpetas sin `package.json` ni `src/`. No hay
+  nada que publicar.
+- **`autospa-astro`, `brillanteza`, `carniceria-san-marcos`, `huertosolar` y
+  `patitas-peluqueria-canina`**: no son Astro. Son front (Vite + React) más una API propia en
+  `server/`, que corre con `bun server/index.ts` y tiene rutas, cron y base de datos.
+  Publicar solo el `dist` dejaría la API sin publicar. Portarla a Netlify Functions es un
+  trabajo de código, no de configuración: hay que reescribir `server/` contra el runtime de
+  Netlify.
+
+`scripts/add-netlify-config.mjs` deja esas 7 fuera y las lista al final de cada ejecución, en
+lugar de esconderlas.

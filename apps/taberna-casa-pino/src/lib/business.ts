@@ -1,3 +1,11 @@
+import galleryPhoto1 from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas-foto-1.jpg';
+import galleryPhoto2 from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas-foto-2.jpg';
+import galleryPhoto3 from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas-foto-3.jpg';
+import galleryPhoto4 from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas-foto-4.jpg';
+import galleryPhoto5 from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas-foto-5.jpg';
+import galleryPhoto6 from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas-foto-6.jpg';
+import heroPhoto from '../assets/fotos/taberna-casa-pino-la-cala-de-mijas.jpg';
+
 /**
  * Datos del negocio contrastados con la ficha pública de Google Maps de Taberna Casa Pino
  * (La Cala de Mijas) y con su perfil de Instagram (@casapinolacala).
@@ -67,24 +75,15 @@ export const legal = {
 
 /**
  * Fotografías descargadas de la ficha de Google Maps del propio establecimiento
- * (galería del perfil del negocio). Se sirven desde `public/fotos/` tal cual, sin
- * recompresión, con `width`/`height` para evitar saltos de maquetación.
+ * (galería del perfil del negocio). Se importan como assets locales para que
+ * `astro:assets` las sirva optimizadas (AVIF + srcset + `sizes`) en vez de
+ * entregar el JPEG original desde `public/fotos/`. Los `width`/`height` salen
+ * de la propia imagen importada, así que no hay que declararlos a mano.
  */
 export const photos = {
-	hero: {
-		src: '/fotos/taberna-casa-pino-la-cala-de-mijas.jpg',
-		width: 1200,
-		height: 1600,
-	},
-	gallery: [
-		{ src: '/fotos/taberna-casa-pino-la-cala-de-mijas-foto-1.jpg', width: 900, height: 1200 },
-		{ src: '/fotos/taberna-casa-pino-la-cala-de-mijas-foto-2.jpg', width: 900, height: 1200 },
-		{ src: '/fotos/taberna-casa-pino-la-cala-de-mijas-foto-3.jpg', width: 900, height: 900 },
-		{ src: '/fotos/taberna-casa-pino-la-cala-de-mijas-foto-4.jpg', width: 900, height: 1200 },
-		{ src: '/fotos/taberna-casa-pino-la-cala-de-mijas-foto-5.jpg', width: 900, height: 1200 },
-		{ src: '/fotos/taberna-casa-pino-la-cala-de-mijas-foto-6.jpg', width: 900, height: 900 },
-	],
-} as const;
+	hero: heroPhoto,
+	gallery: [galleryPhoto1, galleryPhoto2, galleryPhoto3, galleryPhoto4, galleryPhoto5, galleryPhoto6],
+};
 
 /** Horario publicado por el propio local: de miércoles a domingo, de 12:00 a 23:30. */
 export const openingHours = [
@@ -97,8 +96,15 @@ export const openingHours = [
 ];
 
 /** Crea el JSON-LD `Restaurant` con la descripción del idioma que corresponda. */
-/** Perfiles públicos del negocio, en el orden en que aparecen en la web. */
+/**
+ * Perfiles públicos del negocio en otras plataformas. `sameAs` es exactamente para esto:
+ * enlazar las páginas legales de la propia web aquí sería incorrecto, porque schema.org
+ * espera identidades equivalentes del mismo negocio, no sus subpáginas.
+ */
 const sameAsLinks = [instagramUrl].filter(Boolean);
+
+/** Zonas que cubre el negocio, para el mapa y los datos locales. */
+export const areaServed = [business.neighborhood, business.city, 'Málaga'];
 
 /** Crea el JSON-LD `Restaurant` con la descripción del idioma que corresponda. */
 export function createRestaurantSchema(description: string) {
@@ -119,8 +125,11 @@ export function createRestaurantSchema(description: string) {
 		address: {
 			'@type': 'PostalAddress',
 			streetAddress: business.streetAddress,
-			addressLocality: business.neighborhood,
-			addressRegion: business.region,
+			// La localidad es la ciudad; el barrio va en su propio campo. Poner «La Cala de
+			// Mijas» como localidad hacía que Google situeras el negocio fuera de Mijas.
+			addressLocality: business.city,
+			addressNeighborhood: business.neighborhood,
+			addressRegion: 'Málaga',
 			postalCode: business.postalCode,
 			addressCountry: business.country,
 		},
@@ -130,12 +139,11 @@ export function createRestaurantSchema(description: string) {
 			longitude: business.longitude,
 		},
 		hasMap: mapsUrl,
-		sameAs: [
-			...sameAsLinks,
-			`${base}/aviso-legal/`,
-			`${base}/privacidad/`,
-			`${base}/cookies/`,
-		],
+		// La carta viva de la taberna está en su ficha de Google Maps: es el destino útil
+		// para quien busca «carta de Casa Pino».
+		hasMenu: mapsUrl,
+		areaServed,
+		sameAs: sameAsLinks,
 		acceptsReservations: 'True',
 		image: [
 			`${base}${photos.hero.src}`,

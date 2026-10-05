@@ -1,3 +1,11 @@
+import galleryPhoto1 from '../assets/fotos/restaurante-juan-carmona-torremolinos-foto-1.jpg';
+import galleryPhoto2 from '../assets/fotos/restaurante-juan-carmona-torremolinos-foto-2.jpg';
+import galleryPhoto3 from '../assets/fotos/restaurante-juan-carmona-torremolinos-foto-3.jpg';
+import galleryPhoto4 from '../assets/fotos/restaurante-juan-carmona-torremolinos-foto-4.jpg';
+import galleryPhoto5 from '../assets/fotos/restaurante-juan-carmona-torremolinos-foto-5.jpg';
+import galleryPhoto6 from '../assets/fotos/restaurante-juan-carmona-torremolinos-foto-6.jpg';
+import heroPhoto from '../assets/fotos/restaurante-juan-carmona-torremolinos.jpg';
+
 /**
  * Datos del negocio contrastados con la ficha pública de Google Maps de Restaurante Juan Carmona
  * (La Carihuela, Torremolinos) y con sus perfiles públicos de Instagram y Facebook.
@@ -68,24 +76,13 @@ export const legal = {
 
 /**
  * Fotografías descargadas de la ficha de Google Maps del propio establecimiento
- * (galería del perfil del negocio). Se sirven desde `public/fotos/` con `width`/`height`
- * para evitar saltos de maquetación.
+ * (galería del perfil del negocio). Viven en `src/assets/fotos/` y las resuelve
+ * `astro:assets`, que genera AVIF y `srcset` por tamaño para servirlas optimizadas.
  */
 export const photos = {
-	hero: {
-		src: '/fotos/restaurante-juan-carmona-torremolinos.jpg',
-		width: 1600,
-		height: 1111,
-	},
-	gallery: [
-		{ src: '/fotos/restaurante-juan-carmona-torremolinos-foto-1.jpg', width: 600, height: 800 },
-		{ src: '/fotos/restaurante-juan-carmona-torremolinos-foto-2.jpg', width: 1200, height: 900 },
-		{ src: '/fotos/restaurante-juan-carmona-torremolinos-foto-3.jpg', width: 1200, height: 900 },
-		{ src: '/fotos/restaurante-juan-carmona-torremolinos-foto-4.jpg', width: 1200, height: 678 },
-		{ src: '/fotos/restaurante-juan-carmona-torremolinos-foto-5.jpg', width: 1200, height: 1600 },
-		{ src: '/fotos/restaurante-juan-carmona-torremolinos-foto-6.jpg', width: 1200, height: 1200 },
-	],
-} as const;
+	hero: heroPhoto,
+	gallery: [galleryPhoto1, galleryPhoto2, galleryPhoto3, galleryPhoto4, galleryPhoto5, galleryPhoto6],
+};
 
 /**
  * Horario publicado por el propio establecimiento en su ficha de Google Maps:
@@ -113,8 +110,15 @@ export const openingHours = [
 	},
 ];
 
-/** Perfiles públicos del negocio, en el orden en que aparecen en la web. */
+/**
+ * Perfiles públicos del negocio en otras plataformas. `sameAs` es exactamente para esto:
+ * enlazar las páginas legales de la propia web aquí sería incorrecto, porque schema.org
+ * espera identidades equivalentes del mismo negocio, no sus subpáginas.
+ */
 const sameAsLinks = [instagramUrl, facebookUrl].filter(Boolean);
+
+/** Zonas que cubre el negocio, para el mapa y los datos locales. */
+export const areaServed = [business.neighborhood, business.city, 'Málaga'];
 
 /** Crea el JSON-LD `Restaurant` con la descripción del idioma que corresponda. */
 export function createRestaurantSchema(description: string) {
@@ -135,8 +139,11 @@ export function createRestaurantSchema(description: string) {
 		address: {
 			'@type': 'PostalAddress',
 			streetAddress: business.streetAddress,
-			addressLocality: business.neighborhood,
-			addressRegion: business.region,
+			// La localidad es la ciudad; el barrio va en su propio campo. Poner «La Carihuela»
+			// como localidad hacía que Google situeras el negocio en un municipio inexistente.
+			addressLocality: business.city,
+			addressNeighborhood: business.neighborhood,
+			addressRegion: 'Málaga',
 			postalCode: business.postalCode,
 			addressCountry: business.country,
 		},
@@ -146,12 +153,11 @@ export function createRestaurantSchema(description: string) {
 			longitude: business.longitude,
 		},
 		hasMap: mapsUrl,
-		sameAs: [
-			...sameAsLinks,
-			`${base}/aviso-legal/`,
-			`${base}/privacidad/`,
-			`${base}/cookies/`,
-		],
+		// La carta viva del restaurante está en su ficha de Google Maps: es el destino útil
+		// para quien busca «carta de Juan Carmona».
+		hasMenu: mapsUrl,
+		areaServed,
+		sameAs: sameAsLinks,
 		acceptsReservations: 'True',
 		image: [
 			`${base}${photos.hero.src}`,

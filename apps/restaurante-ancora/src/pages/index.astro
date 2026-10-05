@@ -1,5 +1,13 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import '../styles/global.css';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
 const business = {
 	name: 'Restaurante Áncora',
@@ -22,62 +30,62 @@ const phoneHref = 'tel:+34666187855';
 const instagramUrl = 'https://www.instagram.com/ancora_2014/';
 
 const photos = {
-	principal: '/fotos/restaurante-ancora-marbella.jpg',
-	ambiente: '/fotos/salon-interior-ancora-2.jpg',
+	principal: foto('restaurante-ancora-marbella.jpg'),
+	ambiente: foto('salon-interior-ancora-2.jpg'),
 };
 
 const galeria = [
 	{
-		src: '/fotos/paella-restaurante-ancora.jpg',
+		src: foto('paella-restaurante-ancora.jpg'),
 		w: 484,
 		h: 645,
 		alt: 'Paella de marisco del Restaurante Áncora en Marbella',
 		caption: 'Paella de marisco',
 	},
 	{
-		src: '/fotos/paella-marisco-ancora.jpg',
+		src: foto('paella-marisco-ancora.jpg'),
 		w: 671,
 		h: 645,
 		alt: 'Arroz con marisco recién hecho en el Restaurante Áncora',
 		caption: 'Arroz con marisco',
 	},
 	{
-		src: '/fotos/terraza-exterior-ancora-marbella.jpg',
+		src: foto('terraza-exterior-ancora-marbella.jpg'),
 		w: 687,
 		h: 645,
 		alt: 'Terraza del Restaurante Áncora frente al paseo marítimo de Marbella',
 		caption: 'Terraza frente al mar',
 	},
 	{
-		src: '/fotos/salon-interior-ancora-marbella.jpg',
+		src: foto('salon-interior-ancora-marbella.jpg'),
 		w: 671,
 		h: 645,
 		alt: 'Salón interior del Restaurante Áncora en el centro de Marbella',
 		caption: 'Salón interior',
 	},
 	{
-		src: '/fotos/lubina-ancora-marbella.jpg',
+		src: foto('lubina-ancora-marbella.jpg'),
 		w: 524,
 		h: 645,
 		alt: 'Lubina de la bahía servida en el Restaurante Áncora',
 		caption: 'Pescado fresco',
 	},
 	{
-		src: '/fotos/salmon-ancora-marbella.jpg',
+		src: foto('salmon-ancora-marbella.jpg'),
 		w: 685,
 		h: 645,
 		alt: 'Salmón a la parrilla del Restaurante Áncora en Marbella',
 		caption: 'Salmón a la parrilla',
 	},
 	{
-		src: '/fotos/ensalada-ancora-marbella.jpg',
+		src: foto('ensalada-ancora-marbella.jpg'),
 		w: 728,
 		h: 645,
 		alt: 'Ensalada de remolacha y queso de cabra del Restaurante Áncora',
 		caption: 'Ensaladas y verduras',
 	},
 	{
-		src: '/fotos/decoracion-ancora.jpg',
+		src: foto('decoracion-ancora.jpg'),
 		w: 483,
 		h: 645,
 		alt: 'Detalle de la decoración marinera del Restaurante Áncora',
@@ -177,7 +185,7 @@ const restaurantSchema = {
 	description,
 	url: `${business.site}/`,
 	telephone: '+34 666 18 78 55',
-	image: [`${business.site}${photos.principal}`, `${business.site}${photos.ambiente}`],
+	image: [`${business.site}${photos.principal.src}`, `${business.site}${photos.ambiente.src}`],
 	priceRange: '10 € – 40 €',
 	currenciesAccepted: 'EUR',
 	paymentAccepted: 'Efectivo, Tarjeta',
@@ -266,7 +274,7 @@ const faqSchema = {
 			content="Paella de marisco, pescado fresco y menú del día junto al Hotel El Fuerte, en el centro de Marbella."
 		/>
 		<meta property="og:url" content={`${business.site}/`} />
-		<meta property="og:image" content={`${business.site}${photos.principal}`} />
+		<meta property="og:image" content={`${business.site}${photos.principal.src}`} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="1600" />
 		<meta property="og:image:alt" content="Restaurante Áncora, restaurante mediterráneo en el centro de Marbella" />
@@ -284,7 +292,7 @@ const faqSchema = {
 			name="twitter:description"
 			content="Pescado fresco, paella y menú del día frente al paseo marítimo, en la calle El Fuerte de Marbella."
 		/>
-		<meta name="twitter:image" content={`${business.site}${photos.principal}`} />
+		<meta name="twitter:image" content={`${business.site}${photos.principal.src}`} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
@@ -338,10 +346,12 @@ const faqSchema = {
 				</div>
 
 				<figure class="hero-photo">
-					<img
+					<Image
 						src={photos.principal}
-						width="1200"
-						height="1600"
+						widths={[480, 720, 960, 1200]}
+						sizes="(max-width: 980px) 92vw, 46vw"
+						format="avif"
+						quality={70}
 						alt="Fotografía del salón del Restaurante Áncora publicada en su ficha de Google Maps"
 						fetchpriority="high"
 						decoding="async"
@@ -435,7 +445,16 @@ const faqSchema = {
 					{
 						galeria.map((foto) => (
 							<figure>
-								<img src={foto.src} width={foto.w} height={foto.h} alt={foto.alt} loading="lazy" decoding="async" />
+								<Image
+									src={foto.src}
+									alt={foto.alt}
+									widths={[320, 480, 640]}
+									sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+									format="avif"
+									quality={65}
+									loading="lazy"
+									decoding="async"
+								/>
 								<figcaption>{foto.caption}</figcaption>
 							</figure>
 						))
@@ -468,10 +487,12 @@ const faqSchema = {
 						</p>
 					</div>
 					<figure class="ambiente-photo">
-						<img
+						<Image
 							src={photos.ambiente}
-							width="611"
-							height="645"
+							widths={[480, 720, 960, 1200]}
+							sizes="(max-width: 980px) 92vw, 46vw"
+							format="avif"
+							quality={70}
 							alt="Mesas del salón del Restaurante Áncora preparadas para el servicio"
 							loading="lazy"
 							decoding="async"

@@ -1,3 +1,10 @@
+import type { ImageMetadata } from 'astro';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}', {
+	eager: true,
+});
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
 export const business = {
 	name: 'AM Industria del Estilo',
 	streetAddress: 'Avenida de Gregorio Prieto, 3, Portal 5, Local 11',
@@ -21,19 +28,19 @@ export const photoUrl =
 
 export const galleryPhotos = [
 	{
-		src: '/images/am-01.jpg',
+		src: foto('am-01.jpg'),
 		width: 1600,
 		height: 1600,
 		alt: 'Fotografía de AM Industria del Estilo publicada en Google Maps',
 	},
 	{
-		src: '/images/am-02.jpg',
+		src: foto('am-02.jpg'),
 		width: 1600,
 		height: 1200,
 		alt: 'Fotografía del salón AM Industria del Estilo en Teatinos, Málaga',
 	},
 	{
-		src: '/images/am-03.jpg',
+		src: foto('am-03.jpg'),
 		width: 1200,
 		height: 1600,
 		alt: 'Detalle del trabajo de peluquería de AM Industria del Estilo',

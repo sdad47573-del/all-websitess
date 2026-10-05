@@ -66,6 +66,22 @@ La web acredita la procedencia en la propia galería y en el pie. Antes de publi
    sustituirlas.
 3. Optimizar más los archivos si se quiere mejorar el LCP; el hero pesa 674 KB.
 
+### Datos estructurados
+
+El JSON-LD `Restaurant` se corrigió en dos puntos que afectan de verdad al posicionamiento local:
+
+- **La localidad es la ciudad, no el barrio.** Antes `addressLocality` valía «La Cala de Mijas»,
+  de modo que Google podía situar la taberna fuera de Mijas. Ahora `addressLocality` es Mijas, el
+  barrio va en `addressNeighborhood` y la provincia en `addressRegion`.
+- **`sameAs` vuelve a contener solo perfiles externos** (Instagram). En una ronda anterior se
+  habían metido ahí las URL de las páginas legales, lo que es incorrecto: `sameAs` declara
+  identidades equivalentes del mismo negocio, no sus subpáginas. Para eso están ahora los
+  `BreadcrumbList` de cada página.
+
+Además: `hasMenu` apunta a la ficha de Google Maps, donde está la carta viva, `areaServed`
+declara barrio, ciudad y provincia, y las páginas legales llevan su propio `WebSite` + `WebPage` +
+`BreadcrumbList` enlazados al nodo del negocio mediante `about` e `isPartOf`.
+
 ## Páginas legales
 
 Tres páginas en español (la LOPDGDD no admite versión inglesa): `/aviso-legal/`, `/privacidad/` y

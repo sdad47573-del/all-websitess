@@ -21,7 +21,11 @@
 //   node scripts/fetch-maps-photos.mjs --all               todas
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { createRequire } from 'node:module';
+import { join, resolve } from 'node:path';
+
+// sharp se carga desde una app del monorepo: es la unica que lo trae en sus deps.
+const require = createRequire(resolve('apps/bar-el-anzuelo/package.json'));
 
 const argv = process.argv.slice(2);
 const dry = argv.includes('--dry');
@@ -86,6 +90,19 @@ function parsePhotos(text) {
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// La CDN de Maps no siempre entrega JPEG aunque el fichero se llame .jpg: para
+// algunas fotos contesta con PNG. Fijar el formato en la URL ("-fjpg") no sirve,
+// Google responde 400 a esa variante. Como el nombre lo decide este script, se
+// normaliza la imagen a JPEG antes de escribirla, que además pesa bastante menos.
+const isJpeg = (buffer) => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+
+/** Devuelve el buffer tal cual si ya es JPEG, o reconvertido si viene en otro formato. */
+async function asJpeg(buffer) {
+	if (isJpeg(buffer)) return buffer;
+	const sharp = require('sharp');
+	return sharp(buffer).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+}
 
 /** Reintenta hasta que Google devuelva la ficha con su bloque de fotos. */
 async function fetchPhotos(fid, attempts = 6) {
@@ -200,7 +217,7 @@ for (const app of apps) {
 			console.log(`  ${app}: HTTP ${res.status} al descargar ${name}`);
 			continue;
 		}
-		const buffer = Buffer.from(await res.arrayBuffer());
+		const buffer = await asJpeg(Buffer.from(await res.arrayBuffer()));
 		writeFileSync(target, buffer);
 		manifest[photo.id] = {
 			file: name,

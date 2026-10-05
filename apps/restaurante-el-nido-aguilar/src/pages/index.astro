@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import WhatsappFab from '../components/WhatsappFab.astro';
+import * as datos from '../lib/business';
 import '../styles/global.css';
 import {
 	business,
@@ -14,6 +18,12 @@ import {
 	specialties,
 	tripadvisorUrl,
 } from '../lib/business';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
 const title = 'Restaurante El Nido | Carnes a la brasa en Aguilar de la Frontera';
 const description =
@@ -34,7 +44,7 @@ const instagramPhotoPosts = [
 const galleryPhotos = instagramPhotoPosts.map((postId, index) => {
 	const photoNumber = String(index + 1).padStart(2, '0');
 	return {
-		src: `/fotos/el-nido-${photoNumber}.jpg`,
+		src: foto(`el-nido-${photoNumber}.jpg`),
 		href: `https://www.instagram.com/p/${postId}/`,
 		alt: `Foto ${index + 1} de Restaurante El Nido, Aguilar de la Frontera`,
 	};
@@ -163,7 +173,7 @@ const galleryPhotos = instagramPhotoPosts.map((postId, index) => {
 				<div class="gallery-grid">
 					{galleryPhotos.map((photo, index) => (
 						<a class="gallery-photo" href={photo.href} target="_blank" rel="noreferrer" aria-label={`${photo.alt} · Instagram`}>
-							<img src={photo.src} alt={photo.alt} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
+							<Image src={photo.src} alt={photo.alt} widths={[320, 480, 640]} sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw" format="avif" quality={65} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
 						</a>
 					))}
 				</div>
@@ -225,5 +235,6 @@ const galleryPhotos = instagramPhotoPosts.map((postId, index) => {
 					<a href="/aviso-legal#privacidad">Privacidad</a>
 					<a href="/aviso-legal#cookies">Cookies</a>
 				</nav>
+						<WhatsappFab phone={datos.phoneHref} name={datos.business?.name} />
 						</body>
 </html>

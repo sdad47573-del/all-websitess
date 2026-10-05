@@ -37,10 +37,13 @@ bun run build
 
 ## Imágenes
 
-- `public/fotos/parque-chas-marbella.jpg`: foto de la ficha de Google Maps (1200×800).
-- `public/fotos/carne-parrilla-parque-chas.jpg` y `public/fotos/plato-parque-chas-marbella.jpg`:
+- `src/assets/fotos/parque-chas-marbella.jpg`: foto de la ficha de Google Maps (1200×800).
+- `src/assets/fotos/carne-parrilla-parque-chas.jpg` y `src/assets/fotos/plato-parque-chas-marbella.jpg`:
   fotografías del restaurante y sus platos publicadas en la ficha de Google Maps, descargadas a
   través del agregador Restaurant Guru.
+
+Las fotos viven en `src/assets/fotos/` y se sirven con `astro:assets`, que genera AVIF en varios
+tamaños. No se copian a `public/`: allí no pasarían por el optimizador y se duplicarían.
 
 La ficha es nueva y de momento solo tiene tres fotos propias. Cuando la ficha acumule más imágenes,
 ampliar la galería siguiendo el patrón de otras webs del monorepo. Antes de publicar conviene

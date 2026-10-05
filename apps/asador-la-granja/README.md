@@ -53,8 +53,9 @@ canonical/OG cuando haya dominio definitivo.**
 
 ## Fotografías
 
-Las siete imágenes de `public/fotos/` se descargaron de la **galería de la ficha de Google Maps
-de Asador La Granja** (la que el propio negocio publica en su perfil):
+Las siete imágenes de `src/assets/fotos/` se descargaron de la **galería de la ficha de Google Maps
+de Asador La Granja** (la que el propio negocio publica en su perfil). Las sirve `astro:assets`
+como AVIF y en varios tamaños, así que la web no publica estos JPEG originales:
 
 - `asador-la-granja-las-lagunas-de-mijas.jpg` (1200×676, 270 KB) para la portada y el `og:image`.
 - `asador-la-granja-las-lagunas-de-mijas-foto-1.jpg` a `-foto-6.jpg` (900×507 a 900×1600,
@@ -67,6 +68,23 @@ La web acredita la procedencia en la propia galería y en el pie. Antes de publi
 2. Confirmar que el titular autoriza el uso de esas fotografías en la web y, si pide retirarlas,
    sustituirlas.
 3. Optimizar más los archivos si se quiere mejorar el LCP.
+
+### Datos estructurados
+
+El JSON-LD `Restaurant` se corrigió en dos puntos que afectan de verdad al posicionamiento local:
+
+- **La localidad es la ciudad, no el barrio.** Antes `addressLocality` valía «Las Lagunas de
+  Mijas», de modo que Google podía situar el asador fuera de Mijas. Ahora `addressLocality` es
+  Mijas, el barrio va en `addressNeighborhood` y la provincia en `addressRegion`.
+- **`sameAs` vuelve a estar vacío.** En una ronda anterior se habían metido ahí las URL de las
+  páginas legales, lo que es incorrecto: `sameAs` declara identidades equivalentes del mismo
+  negocio, no sus subpáginas. Como la ficha de Maps no publica redes sociales del asador, la lista
+  queda vacía antes que enlazar algo que no sea el mismo establecimiento. Para la jerarquía están
+  los `BreadcrumbList` de cada página.
+
+Además: `hasMenu` apunta a la ficha de Google Maps, donde está la carta viva, `areaServed`
+declara barrio, ciudad, Fuengirola y provincia, y las páginas legales llevan su propio `WebSite` +
+`WebPage` + `BreadcrumbList` enlazados al nodo del negocio mediante `about` e `isPartOf`.
 
 ## Páginas legales
 

@@ -1,3 +1,12 @@
+import type { ImageMetadata } from 'astro';
+
+// Las fotos viven en src/assets/fotos y se importan con Vite para que Astro las optimice.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
 export const business = {
 	name: 'Taberna La Charata',
 	streetAddress: 'Calle Córdoba, Local 2',
@@ -15,7 +24,7 @@ export const business = {
 export const galleryPhotos = Array.from({ length: 8 }, (_, index) => {
 	const photoNumber = String(index + 1).padStart(2, '0');
 	return {
-		src: `/fotos/charata-${photoNumber}.jpg`,
+		src: foto(`charata-${photoNumber}.jpg`),
 		alt: `Foto ${index + 1} de Taberna La Charata`,
 	};
 });

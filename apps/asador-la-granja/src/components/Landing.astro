@@ -1,4 +1,5 @@
 ---
+import { getImage, Image } from 'astro:assets';
 import '../styles/global.css';
 import {
 	business,
@@ -20,6 +21,8 @@ interface Props {
 const { locale } = Astro.props;
 const page = content[locale];
 const canonical = `${business.site}${page.path}`;
+// El hero se sirve en AVIF, asi que se precarga esa variante y no el JPEG original.
+const heroPreload = await getImage({ src: photos.hero, width: 1200, format: 'avif', quality: 70 });
 const sectionIds =
 	locale === 'es'
 		? { story: 'parrilla', food: 'carta', gallery: 'fotos', zone: 'zona', visit: 'visita' }
@@ -47,6 +50,17 @@ const galleryAlts =
 			];
 
 const restaurantSchema = createRestaurantSchema(page.description);
+// Nodo `WebSite` del grafo: las páginas legales apuntan a él con `isPartOf`, así que tiene
+// que estar definido también en la portada.
+const websiteSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	'@id': `${business.site}/#website`,
+	url: `${business.site}/`,
+	name: business.name,
+	inLanguage: page.lang,
+	publisher: { '@id': `${business.site}/#restaurante` },
+};
 const faqSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'FAQPage',
@@ -85,7 +99,7 @@ const breadcrumbSchema = {
 		<link rel="alternate" hreflang="en" href={`${business.site}/en/`} />
 		<link rel="alternate" hreflang="x-default" href={`${business.site}/`} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="preload" as="image" href={photos.hero.src} fetchpriority="high" />
+		<link rel="preload" as="image" href={heroPreload.src} type="image/avif" fetchpriority="high" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -95,6 +109,7 @@ const breadcrumbSchema = {
 		<title>{page.title}</title>
 		<meta property="og:type" content="restaurant.restaurant" />
 		<meta property="og:locale" content={page.locale} />
+		<meta property="og:locale:alternate" content={locale === 'es' ? 'en_GB' : 'es_ES'} />
 		<meta property="og:site_name" content={business.name} />
 		<meta property="og:title" content={page.title} />
 		<meta property="og:description" content={page.description} />
@@ -117,6 +132,7 @@ const breadcrumbSchema = {
 		<meta name="twitter:description" content={page.description} />
 		<meta name="twitter:image" content={`${business.site}${photos.hero.src}`} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 	</head>
@@ -163,11 +179,13 @@ const breadcrumbSchema = {
 					</ul>
 				</div>
 				<figure class="hero-photo">
-					<img
-						src={photos.hero.src}
-						width={photos.hero.width}
-						height={photos.hero.height}
+					<Image
+						src={photos.hero}
 						alt={galleryAlts[0]}
+						widths={[480, 720, 960, 1200]}
+						sizes="(max-width: 980px) 92vw, 46vw"
+						format="avif"
+						quality={70}
 						fetchpriority="high"
 						decoding="async"
 					/>
@@ -236,11 +254,13 @@ const breadcrumbSchema = {
 				<div class="gallery-grid">
 					{photos.gallery.map((photo, index) => (
 						<figure class="shot">
-							<img
-								src={photo.src}
-								width={photo.width}
-								height={photo.height}
+							<Image
+								src={photo}
 								alt={galleryAlts[index + 1]}
+								widths={[320, 480, 640]}
+								sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+								format="avif"
+								quality={65}
 								loading="lazy"
 								decoding="async"
 							/>
@@ -368,15 +388,27 @@ const breadcrumbSchema = {
 
 		<nav class="float-actions" aria-label={page.actionsLabel}>
 			{whatsappUrl && (
-				<a class="float-btn float-btn-whatsapp" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-					<span aria-hidden="true">✆</span>{page.whatsappCta}
+				<a
+					class="float-btn float-btn-whatsapp"
+					href={whatsappUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={page.whatsappCta}
+				>
+					<span class="float-icon" aria-hidden="true">✆</span><span class="float-text">{page.whatsappCta}</span>
 				</a>
 			)}
-			<a class="float-btn float-btn-review" href={reviewUrl} target="_blank" rel="noopener noreferrer">
-				<span aria-hidden="true">★</span>{page.reviewCta}
+			<a
+				class="float-btn float-btn-review"
+				href={reviewUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label={page.reviewCta}
+			>
+				<span class="float-icon" aria-hidden="true">★</span><span class="float-text">{page.reviewCta}</span>
 			</a>
-			<a class="float-btn float-btn-primary" href={phoneHref}>
-				<span aria-hidden="true">☎</span>{page.callCta}
+			<a class="float-btn float-btn-primary" href={phoneHref} aria-label={page.callCta}>
+				<span class="float-icon" aria-hidden="true">☎</span><span class="float-text">{page.callCta}</span>
 			</a>
 		</nav>
 

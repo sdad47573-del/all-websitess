@@ -1,3 +1,8 @@
+import type { ImageMetadata } from 'astro';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}', { eager: true });
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
 export const business = {
 	name: 'Gym Krono',
 	brand: 'Krono',
@@ -28,25 +33,25 @@ export const facebookUrl = 'https://www.facebook.com/p/Gym-Krono-100063526751564
 
 export const galleryPhotos = [
 	{
-		src: '/images/krono-01.jpg',
+		src: foto('krono-01.jpg'),
 		width: 1600,
 		height: 1200,
 		alt: 'Fotografía de Gym Krono publicada en Google Maps',
 	},
 	{
-		src: '/images/krono-02.jpg',
+		src: foto('krono-02.jpg'),
 		width: 900,
 		height: 1600,
 		alt: 'Zona de entrenamiento de Gym Krono en Teatinos, Málaga',
 	},
 	{
-		src: '/images/krono-03.jpg',
+		src: foto('krono-03.jpg'),
 		width: 900,
 		height: 1600,
 		alt: 'Instalaciones de Gym Krono publicadas en Google Maps',
 	},
 	{
-		src: '/images/krono-04.jpg',
+		src: foto('krono-04.jpg'),
 		width: 1600,
 		height: 1200,
 		alt: 'Sala del gimnasio Gym Krono en Calle Juan Margarit, Málaga',

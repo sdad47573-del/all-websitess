@@ -1,7 +1,15 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import '../styles/global.css';
 import { business, directionsUrl, mapEmbedUrl, mapsUrl, phoneHref, restaurantSchema } from '../lib/business';
 import { content } from '../lib/content';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
 const instagramPhotoPosts = [
 	'DJ_GCIhIDGx',
@@ -16,7 +24,7 @@ const instagramPhotoPosts = [
 const galleryPhotos = instagramPhotoPosts.map((postId, index) => {
 	const photoNumber = String(index + 1).padStart(2, '0');
 	return {
-		src: `/fotos/manjar-playa-${photoNumber}.jpg`,
+		src: foto(`manjar-playa-${photoNumber}.jpg`),
 		href: `https://www.instagram.com/p/${postId}/`,
 		alt: `Foto ${index + 1} de El Manjar Playa, Torremolinos`,
 	};
@@ -150,7 +158,16 @@ const faqSchema = {
 				<div class="gallery-grid">
 					{galleryPhotos.map((photo, index) => (
 						<a class="gallery-photo" href={photo.href} target="_blank" rel="noopener noreferrer" aria-label={`${photo.alt} · Instagram`}>
-							<img src={photo.src} alt={photo.alt} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
+							<Image
+								src={photo.src}
+								alt={photo.alt}
+								widths={[320, 480, 640]}
+								sizes="(max-width: 980px) 46vw, 23vw"
+								format="avif"
+								quality={65}
+								loading={index < 2 ? 'eager' : 'lazy'}
+								decoding="async"
+							/>
 						</a>
 					))}
 				</div>

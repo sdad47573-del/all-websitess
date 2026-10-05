@@ -1,3 +1,11 @@
+import heroPhoto from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas.jpg';
+import galleryPhoto1 from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas-foto-1.jpg';
+import galleryPhoto2 from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas-foto-2.jpg';
+import galleryPhoto3 from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas-foto-3.jpg';
+import galleryPhoto4 from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas-foto-4.jpg';
+import galleryPhoto5 from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas-foto-5.jpg';
+import galleryPhoto6 from '../assets/fotos/asador-la-granja-las-lagunas-de-mijas-foto-6.jpg';
+
 /**
  * Datos del negocio contrastados con la ficha pública de Google Maps de Asador La Granja
  * (Las Lagunas de Mijas) y con directorios gastronómicos públicos.
@@ -66,23 +74,14 @@ export const legal = {
 
 /**
  * Fotografías descargadas de la ficha de Google Maps del propio establecimiento
- * (galería del perfil del negocio). Se sirven desde `public/fotos/` con `width`/`height`
- * para evitar saltos de maquetación.
+ * (galería del perfil del negocio). Viven en `src/assets/fotos/` y las sirve
+ * `astro:assets`, que en el build genera AVIF y varios tamaños por foto. Cada
+ * entrada es un `ImageMetadata` de Astro, así que conserva `src`, `width` y
+ * `height` para los metadatos sociales y el JSON-LD.
  */
 export const photos = {
-	hero: {
-		src: '/fotos/asador-la-granja-las-lagunas-de-mijas.jpg',
-		width: 1200,
-		height: 676,
-	},
-	gallery: [
-		{ src: '/fotos/asador-la-granja-las-lagunas-de-mijas-foto-1.jpg', width: 900, height: 507 },
-		{ src: '/fotos/asador-la-granja-las-lagunas-de-mijas-foto-2.jpg', width: 900, height: 974 },
-		{ src: '/fotos/asador-la-granja-las-lagunas-de-mijas-foto-3.jpg', width: 900, height: 1200 },
-		{ src: '/fotos/asador-la-granja-las-lagunas-de-mijas-foto-4.jpg', width: 900, height: 507 },
-		{ src: '/fotos/asador-la-granja-las-lagunas-de-mijas-foto-5.jpg', width: 900, height: 1200 },
-		{ src: '/fotos/asador-la-granja-las-lagunas-de-mijas-foto-6.jpg', width: 900, height: 1600 },
-	],
+	hero: heroPhoto,
+	gallery: [galleryPhoto1, galleryPhoto2, galleryPhoto3, galleryPhoto4, galleryPhoto5, galleryPhoto6],
 } as const;
 
 /** Horario publicado por el propio local: todos los días, de 13:00 a 23:00. */
@@ -94,6 +93,10 @@ export const openingHours = [
 		closes: '23:00',
 	},
 ];
+
+/** Crea el JSON-LD `Restaurant` con la descripción del idioma que corresponda. */
+/** Zonas que cubre el negocio, para el mapa y los datos locales. */
+export const areaServed = [business.neighborhood, business.city, 'Fuengirola', 'Málaga'];
 
 /** Crea el JSON-LD `Restaurant` con la descripción del idioma que corresponda. */
 export function createRestaurantSchema(description: string) {
@@ -114,8 +117,11 @@ export function createRestaurantSchema(description: string) {
 		address: {
 			'@type': 'PostalAddress',
 			streetAddress: business.streetAddress,
-			addressLocality: business.neighborhood,
-			addressRegion: business.region,
+			// La localidad es la ciudad; el barrio va en su propio campo. Poner «Las Lagunas
+			// de Mijas» como localidad hacía que Google situeras el negocio fuera de Mijas.
+			addressLocality: business.city,
+			addressNeighborhood: business.neighborhood,
+			addressRegion: 'Málaga',
 			postalCode: business.postalCode,
 			addressCountry: business.country,
 		},
@@ -125,9 +131,12 @@ export function createRestaurantSchema(description: string) {
 			longitude: business.longitude,
 		},
 		hasMap: mapsUrl,
-		// La ficha no publica redes sociales del negocio, así que `sameAs` solo recoge las
-		// páginas legales de esta misma web.
-		sameAs: [`${base}/aviso-legal/`, `${base}/privacidad/`, `${base}/cookies/`],
+		// La carta viva del asador está en su ficha de Google Maps: es el destino útil para
+		// quien busca «carta de La Granja». La ficha no publica redes sociales, así que
+		// `sameAs` se queda vacío antes que enlazar algo que no sea el mismo negocio.
+		hasMenu: mapsUrl,
+		areaServed,
+		sameAs: [],
 		acceptsReservations: 'True',
 		image: [
 			`${base}${photos.hero.src}`,

@@ -1,5 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import '../styles/global.css';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}', { eager: true });
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
 const business = {
 	name: 'IKIGAI IZAKAYA',
@@ -25,62 +30,62 @@ const instagramUrl = 'https://www.instagram.com/ikigaiizakaya/';
 const facebookUrl = 'https://www.facebook.com/Ikigai.Izakaya/';
 
 const photos = {
-	principal: '/fotos/ikigai-izakaya-marbella.jpg',
-	ambiente: '/fotos/salon-ikigai-izakaya.jpg',
+	principal: foto('ikigai-izakaya-marbella.jpg'),
+	ambiente: foto('salon-ikigai-izakaya.jpg'),
 };
 
 const galeria = [
 	{
-		src: '/fotos/ramen-ikigai-izakaya.jpg',
+		src: foto('ramen-ikigai-izakaya.jpg'),
 		w: 817,
 		h: 645,
 		alt: 'Ramen del IKIGAI IZAKAYA en Marbella',
 		caption: 'Ramen de la casa',
 	},
 	{
-		src: '/fotos/plato-ikigai-1.jpg',
+		src: foto('plato-ikigai-1.jpg'),
 		w: 802,
 		h: 645,
 		alt: 'Plato japonés de la carta del IKIGAI IZAKAYA en Marbella',
 		caption: 'Cocina japonesa de temporada',
 	},
 	{
-		src: '/fotos/plato-ikigai-3.jpg',
+		src: foto('plato-ikigai-3.jpg'),
 		w: 552,
 		h: 645,
 		alt: 'Yakitori a la brasa del IKIGAI IZAKAYA',
 		caption: 'Brochetas a la robata',
 	},
 	{
-		src: '/fotos/plato-ikigai-4.jpg',
+		src: foto('plato-ikigai-4.jpg'),
 		w: 645,
 		h: 645,
 		alt: 'Plato para compartir del IKIGAI IZAKAYA en Marbella',
 		caption: 'Platos para compartir',
 	},
 	{
-		src: '/fotos/tarta-queso-matcha.jpg',
+		src: foto('tarta-queso-matcha.jpg'),
 		w: 520,
 		h: 645,
 		alt: 'Tarta de queso de té matcha del IKIGAI IZAKAYA',
 		caption: 'Tarta de queso matcha',
 	},
 	{
-		src: '/fotos/salon-ikigai-2.jpg',
+		src: foto('salon-ikigai-2.jpg'),
 		w: 483,
 		h: 645,
 		alt: 'Interior del IKIGAI IZAKAYA con su decoración de taberna japonesa',
 		caption: 'El salón',
 	},
 	{
-		src: '/fotos/comida-ikigai-8.jpg',
+		src: foto('comida-ikigai-8.jpg'),
 		w: 491,
 		h: 645,
 		alt: 'Guiso japonés servido en el IKIGAI IZAKAYA de Marbella',
 		caption: 'Guisos japoneses',
 	},
 	{
-		src: '/fotos/platos-ikigai-7.jpg',
+		src: foto('platos-ikigai-7.jpg'),
 		w: 483,
 		h: 645,
 		alt: 'Detalle de los platos del IKIGAI IZAKAYA publicados en Google Maps',
@@ -187,7 +192,7 @@ const restaurantSchema = {
 	url: `${business.site}/`,
 	telephone: '+34 952 75 73 73',
 	email,
-	image: [`${business.site}${photos.principal}`, `${business.site}${photos.ambiente}`],
+	image: [`${business.site}${photos.principal.src}`, `${business.site}${photos.ambiente.src}`],
 	priceRange: '30 € – 50 €',
 	currenciesAccepted: 'EUR',
 	paymentAccepted: 'Efectivo, Tarjeta',
@@ -275,7 +280,7 @@ const faqSchema = {
 			content="Yakitori, curris y guisos japoneses a la brasa, sin sushi, en un izakaya pequeño del centro de Marbella."
 		/>
 		<meta property="og:url" content={`${business.site}/`} />
-		<meta property="og:image" content={`${business.site}${photos.principal}`} />
+		<meta property="og:image" content={`${business.site}${photos.principal.src}`} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="1600" />
 		<meta property="og:image:alt" content="IKIGAI IZAKAYA, restaurante japonés de robata en el centro de Marbella" />
@@ -293,7 +298,7 @@ const faqSchema = {
 			name="twitter:description"
 			content="Yakitori, curris y guisos a la brasa en el único japonés de Marbella sin sushi."
 		/>
-		<meta name="twitter:image" content={`${business.site}${photos.principal}`} />
+		<meta name="twitter:image" content={`${business.site}${photos.principal.src}`} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
@@ -347,11 +352,13 @@ const faqSchema = {
 				</div>
 
 				<figure class="hero-photo">
-					<img
+					<Image
 						src={photos.principal}
-						width="1200"
-						height="1600"
 						alt="Fotografía del interior del IKIGAI IZAKAYA publicada en su ficha de Google Maps"
+						widths={[480, 720, 960, 1200]}
+						sizes="(max-width: 980px) 92vw, 46vw"
+						format="avif"
+						quality={70}
 						fetchpriority="high"
 						decoding="async"
 					/>
@@ -445,7 +452,7 @@ const faqSchema = {
 					{
 						galeria.map((foto) => (
 							<figure>
-								<img src={foto.src} width={foto.w} height={foto.h} alt={foto.alt} loading="lazy" decoding="async" />
+								<Image src={foto.src} alt={foto.alt} widths={[320, 480, 640]} sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw" format="avif" quality={65} loading="lazy" decoding="async" />
 								<figcaption>{foto.caption}</figcaption>
 							</figure>
 						))
@@ -478,11 +485,13 @@ const faqSchema = {
 						</p>
 					</div>
 					<figure class="ambiente-photo">
-						<img
+						<Image
 							src={photos.ambiente}
-							width="418"
-							height="645"
 							alt="Mesas del IKIGAI IZAKAYA preparadas para el servicio de cena"
+							widths={[320, 480, 640]}
+							sizes="(max-width: 980px) 92vw, 40vw"
+							format="avif"
+							quality={65}
 							loading="lazy"
 							decoding="async"
 						/>
