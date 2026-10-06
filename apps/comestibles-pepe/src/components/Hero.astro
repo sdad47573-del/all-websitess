@@ -2,19 +2,34 @@
 import { Image } from '@astro-components';
 import { BUSINESS, HOURS, IMAGES } from '../data/site';
 
-// Días de apertura completa (los que tienen al menos un tramo).
+// Días con al menos un tramo de apertura y días que quedan cerrados del todo.
 const diasAbiertos = HOURS.filter((dia) => dia.morning || dia.evening);
+const diasCerrados = HOURS.filter((dia) => !dia.morning && !dia.evening);
+
+/**
+ * «Todos los días» solo es cierto cuando no queda ningún día cerrado. El código anterior contaba
+ * los tramos con apertura (`length === 2`) y, como el negocio abre de lunes a viernes y el sábado,
+ * anunciaba «abierto todos los días» aunque el domingo está cerrado y así se ve unas líneas más
+ * arriba y en los datos estructurados.
+ */
+const resumenApertura =
+	diasCerrados.length === 0
+		? 'todos los días'
+		: diasCerrados.every((dia) => dia.schemaDays.every((d) => d === 'Sunday'))
+			? 'de lunes a sábado'
+			: `los ${diasAbiertos.map((dia) => dia.days.toLowerCase()).join(' y ')}`;
 ---
 
 <section id="inicio" class="hero-pepe relative overflow-hidden text-white">
 	<div class="absolute inset-0">
 		<Image
-			src={IMAGES.googleMaps}
-			alt="Comestibles Pepe, charcutería en la Plaza Pío XII 5 del Cruz de Humilladero (Málaga)"
+			src={IMAGES.heroFondo}
+			alt="Comestibles Pepe, charcutería y tienda de alimentación en la Plaza Pío XII, Málaga"
 			widths={[800, 1200, 1600]}
 			sizes="100vw"
 			quality={72}
 			loading="eager"
+			fetchpriority="high"
 			format="webp"
 			class="h-full w-full object-cover opacity-30"
 		/>
@@ -79,10 +94,7 @@ const diasAbiertos = HOURS.filter((dia) => dia.morning || dia.evening);
 					</div>
 				</dl>
 
-				<p class="mt-8 text-sm text-white/55">
-					Abierto {diasAbiertos.length === 2 ? 'todos los días' : 'de lunes a sábado'}:{' '}
-					{diasAbiertos.map((dia) => dia.days).join(' · ')}.
-				</p>
+				<p class="mt-8 text-sm text-white/55">Abierto {resumenApertura}.</p>
 			</div>
 
 			<figure class="relative hidden lg:block">

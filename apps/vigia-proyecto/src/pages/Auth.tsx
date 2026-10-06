@@ -127,7 +127,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       width={64}
                       height={64}
                       className="rounded-lg mb-4 mt-4 cursor-pointer"
-                      onClick={() => navigate("/")}
+                      onClick={() = decoding="async" loading="lazy"> navigate("/")}
                     />
                   </div>
                 <CardTitle className="text-xl">Get Started</CardTitle>

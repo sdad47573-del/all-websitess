@@ -24,6 +24,7 @@ export const content = {
 		primaryCta: 'Llamar para reservar',
 		secondaryCta: 'Cómo llegar',
 		heroNote: 'Pescados · Arroces · Cocina mediterránea',
+		heroAlt: 'Fotografía de El Manjar Playa en La Carihuela, Torremolinos',
 		restaurantLabel: 'El restaurante',
 		restaurantTitle: 'Una mesa en La Carihuela. El mar, servido a tu manera.',
 		restaurantText:
@@ -109,6 +110,7 @@ export const content = {
 		primaryCta: 'Call to book',
 		secondaryCta: 'Get directions',
 		heroNote: 'Fish · Rice · Mediterranean cooking',
+		heroAlt: 'Photo of El Manjar Playa in La Carihuela, Torremolinos',
 		restaurantLabel: 'The restaurant',
 		restaurantTitle: 'A table in La Carihuela. The sea, served your way.',
 		restaurantText:

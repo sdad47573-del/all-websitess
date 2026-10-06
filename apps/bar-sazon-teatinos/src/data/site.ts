@@ -1,24 +1,52 @@
 /**
  * Fotografías reales del local (todas de 1500 px de ancho largo).
  *
- * Los archivos llevan nombres descriptivos a propósito (Google Imágenes los indexa con
- * el nombre de archivo). Nota: en `src/assets/fotos` también vive `logo-sazon.jpg`,
- * que es el logotipo de la taberna (texto blanco sobre negro), no una fotografía: por eso
- * no entra ni en la galería ni en las secciones con foto.
+ * Convención de nombres y texto alternativo:
+ *
+ * - Las fotos con nombre descriptivo (`tapas-y-raciones-sazon-teatinos-malaga.jpg`) las revisó el
+ *   local antes de publicarlas. De las cuatro que hay en `assets/fotos`, solo se sirven dos: la de
+ *   la terraza con clientes y la de los platos con una persona al fondo se retiraron.
+ * - Las demás se descargan de la ficha de Google Maps con `scripts/fetch-maps-photos.mjs`. De su
+ *   contenido solo se conoce la orientación y el tamaño, así que llevan el nombre que les da el
+ *   script (`bar-sazon-teatinos-vertical-05.jpg`) y un `alt` genérico (`ALT_FOTO_LOCAL`): no se
+ *   describe nada que no se haya comprobado. Antes de publicar fotos nuevas conviene mirarlas y
+ *   cambiar ese `alt` por uno real.
  */
 import type { CartaItem } from './carta';
 
-import foto1 from '../assets/fotos/sazon-teatinos-barra-tapas-malaga.jpg';
-import foto2 from '../assets/fotos/tapas-y-raciones-sazon-teatinos-malaga.jpg';
-import foto3 from '../assets/fotos/platos-de-la-casa-sazon-teatinos-malaga.jpg';
-import foto4 from '../assets/fotos/mesa-sazon-teatinos-malaga.jpg';
+import costillas from '../assets/fotos/tapas-y-raciones-sazon-teatinos-malaga.jpg';
+import parrilla from '../assets/fotos/mesa-sazon-teatinos-malaga.jpg';
+import apaisada02 from '../assets/fotos/bar-sazon-teatinos-apaisada-02.jpg';
+import apaisada08 from '../assets/fotos/bar-sazon-teatinos-apaisada-08.jpg';
+import apaisada09 from '../assets/fotos/bar-sazon-teatinos-apaisada-09.jpg';
+import panoramica03 from '../assets/fotos/bar-sazon-teatinos-panoramica-03.jpg';
+import vertical04 from '../assets/fotos/bar-sazon-teatinos-vertical-04.jpg';
+import vertical05 from '../assets/fotos/bar-sazon-teatinos-vertical-05.jpg';
+import vertical06 from '../assets/fotos/bar-sazon-teatinos-vertical-06.jpg';
+import vertical07 from '../assets/fotos/bar-sazon-teatinos-vertical-07.jpg';
+import vertical10 from '../assets/fotos/bar-sazon-teatinos-vertical-10.jpg';
 
 export const IMAGES = {
-	foto1,
-	foto2,
-	foto3,
-	foto4,
+	costillas,
+	parrilla,
+	apaisada02,
+	apaisada08,
+	apaisada09,
+	panoramica03,
+	vertical04,
+	vertical05,
+	vertical06,
+	vertical07,
+	vertical10,
 };
+
+/**
+ * Texto alternativo de las fotos descargadas de Maps cuya imagen todavía no se ha descrito.
+ *
+ * Dice solo lo que es cierto de todas ellas —que son fotos del local— para no inventar contenido
+ * que no se ha comprobado. Al describir una foto, se le pone su propio `alt` en `GALLERY`.
+ */
+const ALT_FOTO_LOCAL = 'Fotografía del local Sazón Teatinos, en Teatinos (Málaga)';
 
 export const BUSINESS = {
 	name: 'Sazón Teatinos',
@@ -390,18 +418,24 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.foto1,
-		alt: 'Barra y sala de Sazón Teatinos, taberna de tapas en Teatinos (Málaga)',
+		src: IMAGES.costillas,
+		alt: 'Costillas con patatas y pimientos del padrón en Sazón Teatinos (Málaga)',
 	},
 	{
-		src: IMAGES.foto2,
-		alt: 'Tapas y raciones para compartir en Sazón Teatinos (Málaga)',
+		src: IMAGES.parrilla,
+		alt: 'Carne a la plancha con patatas en Sazón Teatinos, parrilla de Teatinos (Málaga)',
 	},
-	{
-		src: IMAGES.foto3,
-		alt: 'Platos de la casa de Sazón Teatinos, cocina casera y parrilla en Málaga',
-	},
-	{ src: IMAGES.foto4, alt: 'Mesa con raciones en Sazón Teatinos, bar de tapas en Teatinos' },
+	// Fotos de la ficha de Google Maps, en el orden del script de descarga. El `alt` es genérico
+	// hasta que se revise lo que muestra cada una.
+	{ src: IMAGES.apaisada02, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.panoramica03, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.vertical04, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.vertical05, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.vertical06, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.vertical07, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.apaisada08, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.apaisada09, alt: ALT_FOTO_LOCAL },
+	{ src: IMAGES.vertical10, alt: ALT_FOTO_LOCAL },
 ];
 
 export const SCHEMA = {

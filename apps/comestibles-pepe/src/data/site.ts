@@ -10,16 +10,19 @@
  */
 
 /**
- * Fotografía real del local, la única imagen pública del negocio: la foto de cabecera de su
- * ficha de Google Maps (2000 × 1500). Se pidió a Google a máxima resolución a partir del
- * identificador de la foto (`AF1Qip…`), que los directorios replican.
+ * Fotografías reales del local, todas de su ficha pública de Google Maps: la de cabecera
+ * (2000 × 1500) y las que descarga `scripts/fetch-maps-photos.mjs` en `src/assets/fotos`.
+ * El resto de la galería las resuelve `Galeria.astro` con `import.meta.glob`.
  *
  * Los nombres de archivo son descriptivos porque Google Imágenes los indexa como URL.
  */
 import googleMaps from '../assets/fotos/comestibles-pepe-google-maps.jpg';
+import heroFondo from '../assets/fotos/comestibles-pepe-apaisada-03.jpg';
 
 export const IMAGES = {
 	googleMaps,
+	/** Foto de fondo del hero: otra de las publicadas en la ficha de Maps. */
+	heroFondo,
 };
 
 export const BUSINESS = {
@@ -80,6 +83,7 @@ export const LEGAL = {
 
 export const NAV = [
 	{ label: 'La tienda', href: '#tienda' },
+	{ label: 'Fotos', href: '#fotos' },
 	{ label: 'Productos', href: '#productos' },
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Contacto', href: '#contacto' },

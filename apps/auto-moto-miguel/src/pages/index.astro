@@ -1,8 +1,20 @@
 ---
 import '../styles/global.css';
 import { business, directionsUrl, mapEmbedUrl, mapsUrl, openingHours, phoneHref, structuredData } from '../lib/business';
-import { galleryPhotos } from '../lib/gallery';
+import { galleryPhotosData } from '../lib/gallery';
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+// Las fotos viven en `src/assets/fotos`: se resuelven aquí a su módulo de imagen para servirlas
+// con `<Image>` (AVIF, srcset y prioridad) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const galleryPhotos = galleryPhotosData.map(({ file, alt }) => ({
+	src: fotos[`../assets/fotos/${file}`].default,
+	alt,
+}));
 
 const galleryHeading = 'El taller, por dentro';
 const galleryDescription = 'Fotos del taller Auto Moto Miguel en Málaga.';
@@ -87,22 +99,28 @@ const description =
 					</div>
 				</div>
 
-				<div class="hero-art" aria-label="Ilustración técnica original de una motocicleta, no es una fotografía del taller">
-					<div class="art-label art-label-top">TALLER DE MOTOS <span>·</span> MÁLAGA</div>
-					<div class="art-label art-label-bottom">AM / SERVICIO LOCAL</div>
-					<div class="orbit orbit-a"></div>
-					<div class="orbit orbit-b"></div>
-					<div class="wheel wheel-back"></div>
-					<div class="wheel wheel-front"></div>
-					<div class="bike-frame"><span></span><i></i><b></b><em></em></div>
-					<div class="bike-tank"></div>
-					<div class="bike-seat"></div>
-					<div class="bike-fork fork-one"></div>
-					<div class="bike-fork fork-two"></div>
-					<div class="bike-handle"></div>
-					<div class="bike-light"></div>
-					<div class="road-line"></div>
-				</div>
+				<figure class="hero-photo">
+					<div class="photo-frame">
+						<span class="photo-label"><i aria-hidden="true"></i> TALLER · MÁLAGA</span>
+						<Image
+							src={galleryPhotos[0].src}
+							alt="Fotografía del taller Auto Moto Miguel en Málaga"
+							widths={[640, 960, 1280]}
+							sizes="(max-width: 700px) 90vw, (max-width: 960px) 43vw, 42vw"
+							format="avif"
+							quality={70}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<span class="photo-corner photo-corner-tl" aria-hidden="true"></span>
+						<span class="photo-corner photo-corner-br" aria-hidden="true"></span>
+					</div>
+					<figcaption>
+						<span>AM / SERVICIO LOCAL</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos en Google Maps ↗</a>
+					</figcaption>
+				</figure>
 			</section>
 
 			<section class="workshop-gallery section-pad" aria-labelledby="gallery-title">

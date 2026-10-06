@@ -28,7 +28,7 @@ export function LogoDropdown() {
             alt="Carnicería San Marcos"
             width={32}
             height={32}
-            className="rounded-lg"
+            className="rounded-lg" decoding="async" loading="lazy"
           />
         </Button>
       </DropdownMenuTrigger>

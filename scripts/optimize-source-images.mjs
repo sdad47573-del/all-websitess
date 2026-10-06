@@ -61,7 +61,9 @@ const files = globSync('apps/*/src/assets/**/*.{jpg,jpeg,JPG,JPEG,png,PNG}', {
 	absolute: true,
 	onlyFiles: true,
 })
-	.filter((f) => !only.length || only.some((app) => f.includes(`${path.sep}${app}${path.sep}`)))
+	// tinyglobby devuelve rutas con "/" aunque se ejecute en Windows, asi que se normaliza antes de
+	// comparar. Con `path.sep` el filtro por app no coincidia nunca en Windows y no revisaba nada.
+	.filter((f) => !only.length || only.some((app) => f.replaceAll('\\', '/').includes(`/${app}/`)))
 	.sort();
 
 const encode = async (file, buffer, metadata) => {

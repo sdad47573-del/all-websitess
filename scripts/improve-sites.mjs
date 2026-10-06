@@ -172,6 +172,9 @@ function ensureLang(info) {
 	const next = info.head.replace(/<html(\s|>)/, '<html lang="es"$1');
 	if (next === info.head) return;
 	write(join(info.root, info.headPath), next);
+	// El <head> vive en memoria durante todo el pase: sin actualizarlo, el siguiente paso
+	// reescribiría el archivo desde la copia vieja y borraría esta inserción.
+	info.head = next;
 	changes.push(`${info.app}: lang="es" en ${info.headPath}`);
 }
 
@@ -184,27 +187,82 @@ function ensureSitemapLink(info) {
 	);
 	if (next === info.head) return;
 	write(join(info.root, info.headPath), next);
+	info.head = next;
 	changes.push(`${info.app}: <link rel="sitemap"> en ${info.headPath}`);
+}
+
+/**
+ * Dimensiones reales de un PNG/JPEG/SVG leyendo su cabecera, sin dependencias. Hace falta
+ * porque `og:image:width`/`height` deben coincidir con el archivo: si no, WhatsApp o Facebook
+ * recortan o deforman la vista previa.
+ */
+function imageSize(file) {
+	const buf = readFileSync(file);
+	if (buf.length > 24 && buf.toString('latin1', 1, 4) === 'PNG')
+		return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+	if (buf[0] === 0xff && buf[1] === 0xd8) {
+		let i = 2;
+		while (i + 9 < buf.length) {
+			if (buf[i] !== 0xff) {
+				i += 1;
+				continue;
+			}
+			const marker = buf[i + 1];
+			// Marcadores SOF (inicio de frame): ahí viven alto y ancho reales.
+			if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker))
+				return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
+			i += 2 + buf.readUInt16BE(i + 2);
+		}
+	}
+	const text = buf.toString('utf8');
+	const viewBox = text.match(/viewBox=["']\s*[-\d.]+\s+[-\d.]+\s+([\d.]+)\s+([\d.]+)/i);
+	if (viewBox) return { width: Math.round(Number(viewBox[1])), height: Math.round(Number(viewBox[2])) };
+	const w = text.match(/\bwidth=["']([\d.]+)/i);
+	const h = text.match(/\bheight=["']([\d.]+)/i);
+	if (w && h) return { width: Math.round(Number(w[1])), height: Math.round(Number(h[1])) };
+	return null;
+}
+
+const OG_MIME = {
+	png: 'image/png',
+	jpg: 'image/jpeg',
+	jpeg: 'image/jpeg',
+	webp: 'image/webp',
+	svg: 'image/svg+xml',
+};
+
+/**
+ * El og real de la app, prefiriendo un raster (Facebook, WhatsApp y X no interpretan SVG).
+ * Si aún no existe ningún asset, devuelve null: no se inventa una URL que daría 404.
+ */
+function findOgAsset(root) {
+	for (const file of ['og.png', 'og.jpg', 'og.jpeg', 'og.webp', 'og.svg']) {
+		const full = join(root, 'public', file);
+		if (!existsSync(full)) continue;
+		const size = imageSize(full) ?? { width: 1200, height: 630 };
+		return { file, type: OG_MIME[file.split('.').pop().toLowerCase()] ?? 'image/png', ...size };
+	}
+	return null;
 }
 
 function ensureOgImage(info) {
 	if (hasOgImage(info.head)) return;
-	const hasAsset =
-		['og.svg', 'og.png', 'og.jpg', 'og.jpeg', 'og.webp'].some((f) => existsSync(join(info.root, 'public', f))) ||
-		// ensureOgAsset se ejecuta justo antes: en dry-run aún no existe en disco.
-		Boolean(info.name);
-	if (!hasAsset) return;
-	const url = siteUrl(info) + '/og.svg';
+	// `ensureOgAsset` puede haber creado og.svg justo antes: en dry-run aún no está en disco.
+	const asset =
+		findOgAsset(info.root) ?? (info.name ? { file: 'og.svg', type: 'image/svg+xml', width: 1200, height: 630 } : null);
+	if (!asset) return;
+	const url = `${siteUrl(info)}/${asset.file}`;
 	const tags = [
 		`<meta property="og:image" content="${url}" />`,
-		`<meta property="og:image:type" content="image/svg+xml" />`,
-		`<meta property="og:image:width" content="1200" />`,
-		`<meta property="og:image:height" content="630" />`,
+		`<meta property="og:image:type" content="${asset.type}" />`,
+		`<meta property="og:image:width" content="${asset.width}" />`,
+		`<meta property="og:image:height" content="${asset.height}" />`,
 	];
 	if (!/name="twitter:card"/.test(info.head)) tags.push(`<meta name="twitter:card" content="summary_large_image" />`);
 	const next = info.head.replace(/<\/head>/, `\t\t${tags.join('\n\t\t')}\n\t</head>`);
 	if (next === info.head) return;
 	write(join(info.root, info.headPath), next);
+	info.head = next;
 	changes.push(`${info.app}: og:image + twitter:card en ${info.headPath}`);
 }
 
@@ -263,6 +321,7 @@ function ensureGeoTags(info) {
 	const next = info.head.replace(/<\/head>/, `\t\t${tags}\n\t</head>`);
 	if (next === info.head) return;
 	write(join(info.root, info.headPath), next);
+	info.head = next;
 	changes.push(`${info.app}: metas geo${code ? '.region' : ''}/geo.position/ICBM en ${info.headPath}`);
 }
 
@@ -564,5 +623,4 @@ console.log(resumen.join('\n'));
 if (!APPLY) {
 	console.log('Ejecuta con --apply para escribir los cambios.\n');
 }
-for (const c of changes.slice(0, 30)) console.log('  ·', c);
-if (changes.length > 30) console.log(`  … y ${changes.length - 30} más`);
+for (const c of changes) console.log('  ·', c);

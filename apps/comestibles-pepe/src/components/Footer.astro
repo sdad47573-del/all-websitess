@@ -1,12 +1,20 @@
 ---
 import { BUSINESS, HOURS, NAV, PAGE_NAV } from '../data/site';
 
+interface Props {
+	/** Prefijo de los enlaces a las anclas de la home (por ejemplo, '/' desde /contacto). */
+	base?: string;
+}
+
+const { base = '' } = Astro.props;
 const year = new Date().getFullYear();
 const diasAbiertos = HOURS.filter((dia) => dia.morning || dia.evening);
 ---
 
 <footer class="bg-neutral text-neutral-content">
-	<div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+	<!-- Por debajo de `lg` hay dos botones fijos abajo a la derecha (llamar y WhatsApp) que llegan
+	     a 9rem del borde: sin ese hueco extra tapaban la última fila, los enlaces legales. -->
+	<div class="mx-auto max-w-7xl px-4 pt-14 pb-36 sm:px-6 lg:px-8 lg:pb-14">
 		<div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
 			<div class="lg:col-span-2">
 				<div class="flex items-center gap-3">
@@ -48,7 +56,7 @@ const diasAbiertos = HOURS.filter((dia) => dia.morning || dia.evening);
 					{
 						NAV.map((item) => (
 							<li>
-								<a href={`/${item.href}`} class="hover:text-secondary transition-colors">
+								<a href={`${base}${item.href}`} class="hover:text-secondary transition-colors">
 									{item.label}
 								</a>
 							</li>
@@ -109,14 +117,27 @@ const diasAbiertos = HOURS.filter((dia) => dia.morning || dia.evening);
 				class="hover:text-secondary">Ver ficha en Google Maps</a
 			>
 		</div>
-	</div>
 
-			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;">
-				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+		<!-- Crédito y enlaces legales dentro del contenedor del pie: fuera de él quedaban pegados al
+		     borde de la ventana, sin el padding lateral del resto de la página. -->
+		<div
+			class="mt-4 flex flex-col items-center justify-between gap-3 text-xs text-white/50 sm:flex-row"
+		>
+			<p>
+				Web creada por <a
+					href="https://sur-digital.vercel.app/"
+					rel="noopener"
+					class="hover:text-secondary">Sur Digital</a
+				>
 			</p>
-<nav class="legal-links" aria-label="Información legal">
-					<a href="/aviso-legal">Aviso legal</a>
-					<a href="/aviso-legal#privacidad">Privacidad</a>
-					<a href="/aviso-legal#cookies">Cookies</a>
-				</nav>
-					</footer>
+			<nav
+				class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+				aria-label="Información legal"
+			>
+				<a href="/aviso-legal" class="hover:text-secondary">Aviso legal</a>
+				<a href="/aviso-legal#privacidad" class="hover:text-secondary">Privacidad</a>
+				<a href="/aviso-legal#cookies" class="hover:text-secondary">Cookies</a>
+			</nav>
+		</div>
+	</div>
+</footer>

@@ -1,0 +1,464 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	piesDeFoto,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Restaurante Cantón · Cocina asiática en Roquetas de Mar';
+const description =
+	'Restaurante asiático y vietnamita en el edificio Bajamar, avenida Mediterráneo, 1E, 04740 Roquetas de Mar. 4,6 sobre 5 con 1266 reseñas; cierra lunes y martes.';
+const keywords =
+	'Restaurante Cantón, restaurante asiático Roquetas de Mar, restaurante vietnamita Roquetas de Mar, edificio Bajamar, avenida Mediterráneo Roquetas, phó Almería, dumplings Almería, Restaurante Cantón teléfono';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * Tres fotos de la ficha traen un pie descriptivo (el resto no trae ninguno, o su pie solo repite
+ * el nombre del negocio): esas tres usan su pie como `alt` real y además lo muestran en un
+ * `<figcaption>`, mientras que las demás llevan un `alt` genérico que avisa solo de dónde salen.
+ * El mapa `piesDeFoto` vive en `src/data/site.ts`.
+ */
+const altGenerico =
+	'Fotografía publicada en la ficha de Google Maps de Restaurante Cantón, en Roquetas de Mar (Almería)';
+const altOg = 'Fotografía de Restaurante Cantón publicada en su ficha de Google Maps';
+const altDe = (name: string) => piesDeFoto[name] ?? altGenerico;
+
+/**
+ * Galería completa: las ocho fotografías publicables de la ficha.
+ *
+ * La portada de la galería trae diez; dos son fotogramas de vídeo (`…-vertical-02.jpg` y
+ * `…-vertical-08.jpg`, los dos con proporción 9:16), así que se quedan en disco y en el manifiesto
+ * pero fuera del código.
+ */
+const galeria = [
+	'restaurante-canton-apaisada-10.jpg',
+	'restaurante-canton-apaisada-01.jpg',
+	'restaurante-canton-apaisada-04.jpg',
+	'restaurante-canton-apaisada-05.jpg',
+	'restaurante-canton-apaisada-06.jpg',
+	'restaurante-canton-vertical-03.jpg',
+	'restaurante-canton-vertical-07.jpg',
+	'restaurante-canton-vertical-09.jpg',
+];
+
+/** Tres fotos de avance en el collage de la portada (también están en la galería). */
+const collage = [
+	{ name: galeria[0], clase: 'collage-item collage-item-a' },
+	{ name: galeria[5], clase: 'collage-item collage-item-b' },
+	{ name: galeria[6], clase: 'collage-item collage-item-c' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#14524a" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-AL" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Nunito+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">
+					RC
+				</span>
+				<span class="brand-text">
+					Restaurante Cantón
+					<small>Roquetas de Mar</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#bar">El restaurante</a>
+				<a href="#cocina">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Roquetas de Mar · Almería</p>
+						<h1 id="hero-title">
+							Cocina asiática
+							<br />
+							<em>y vietnamita.</em>
+						</h1>
+						<p class="hero-lede">
+							El Restaurante Cantón está en el edificio Bajamar, en la avenida Mediterráneo de
+							Roquetas de Mar, y sirve comidas y cenas de miércoles a domingo. Google le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas, y sus reseñas destacan el pato
+							asado, el phó y los raviolis rellenos de solomillo y gambas.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>
+								Llamar al {business.phone}
+							</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-collage">
+						{collage.map((item, index) => (
+							<figure class={item.clase}>
+								<Image
+									src={foto(item.name)}
+									alt={altDe(item.name)}
+									widths={index === 0 ? [640, 900, 1200] : [320, 480, 640]}
+									sizes={
+										index === 0
+											? '(max-width: 1080px) 92vw, 46vw'
+											: '(max-width: 1080px) 45vw, 23vw'
+									}
+									format="avif"
+									quality={68}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : undefined}
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>{hoursSummary}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="bar" aria-labelledby="bar-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">El restaurante</p>
+						<h2 class="title" id="bar-title">
+							Comidas y cenas
+							<br />
+							<em>a la orilla de Roquetas.</em>
+						</h2>
+						<p>
+							El Restaurante Cantón está en el edificio Bajamar, avenida Mediterráneo, 1E, en
+							Roquetas de Mar. Google lo cataloga como restaurante asiático y restaurante
+							vietnamita, y le da {business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas.
+						</p>
+						<p>
+							Sirve dos turnos de miércoles a domingo: comida de 13:00 a 15:30 y cena de 20:00 a
+							22:30. Cierra los lunes y los martes, y el lunes de la semana de la consulta coincidía
+							además con el festivo del 12 de octubre, que la ficha marcaba cerrado con el aviso de
+							que el horario podía ser diferente.
+						</p>
+						<p class="bar-note">
+							La ficha escribe la dirección como «Edifício Bajamar, Av. Mediterráneo, 1E»: aquí se
+							desarrolla la abreviatura a «Avenida» y se respeta el nombre del edificio tal como lo
+							publica Google, con su í. Esta web se ha preparado solo con lo que publica esa ficha,
+							consultada el {site.consultado}: nombre, dirección, teléfono, categorías, horario,
+							valoración, sus reseñas, sus fotografías y los pies que la propia galería pone a tres
+							de ellas. La ficha no publica la carta ni los precios, así que aquí no se reproducen.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+								Ver todas ↗
+							</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>{review.source}</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section cocina" id="cocina" aria-labelledby="cocina-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="cocina-title">
+						Las fotos del <em>propio restaurante.</em>
+					</h2>
+					<p class="lead">
+						Son las fotografías que el Restaurante Cantón publica en su ficha de Google Maps. De las
+						diez que trae la portada de la galería, dos son fotogramas de vídeo y no se publican
+						aquí. Tres llevan un pie escrito por el propio restaurante y se reproduce tal cual; en
+						las demás Google no describe lo que se ve, así que no se inventa un contenido que no
+						consta.
+					</p>
+					<div class="cocina-grid">
+						{galeria.map((name) => (
+							<figure class="cocina-item">
+								<Image
+									src={foto(name)}
+									alt={altDe(name)}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+								{piesDeFoto[name] && <figcaption>{piesDeFoto[name]}</figcaption>}
+							</figure>
+						))}
+					</div>
+					<p class="cocina-note">
+						La ficha no publica la carta ni los precios, así que esta web no los reproduce (el pie
+						de una de las fotos incluye el precio de un plato y se ha dejado fuera). Para saber qué
+						hay hoy, lo más rápido es <a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Edificio Bajamar,
+							<br />
+							<em>avenida Mediterráneo, 1E.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							El lunes 12 de octubre de 2026 la ficha lo marcaba como Fiesta Nacional de España,
+							cerrado, con el aviso de que el horario podía ser diferente. Llama y confirma el día
+							antes de desplazarte.
+						</p>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen
+						></iframe>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>venir.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">
+						RC
+					</span>
+					<span>
+						Restaurante Cantón
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del restaurante">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+						Cómo llegar ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Restaurante Cantón · Roquetas de Mar (Almería). Web
+					informativa elaborada con los datos y las fotografías que el restaurante publica en su
+					ficha de Google Maps, consultada el {site.consultado}. Confirma horario y disponibilidad
+					por teléfono antes de venir.
+				</small>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar al Cantón <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

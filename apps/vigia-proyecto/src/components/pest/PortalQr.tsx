@@ -46,7 +46,7 @@ export function PortalQr({
       alt="Código QR de acceso al portal del cliente"
       width={size}
       height={size}
-      className={`rounded-lg border border-border bg-white p-1 ${className}`}
+      className={`rounded-lg border border-border bg-white p-1 ${className}`} decoding="async" loading="lazy"
     />
   );
 }

@@ -74,9 +74,13 @@ describe('los assets tienen nombre que los explica', () => {
 		const missing: string[] = [];
 		for (const { app } of withAssets) {
 			const pages = new URL(`${app}/src/pages/`, appsDirectory);
+			// Solo se leen ficheros: `src/pages` puede tener subcarpetas (`en/`, `dashboard/`) y
+			// `readFileSync` sobre una de ellas lanzaba EISDIR, que abortaba la prueba entera.
 			let files: string[] = [];
 			try {
-				files = readdirSync(pages);
+				files = readdirSync(pages, { withFileTypes: true })
+					.filter((entry) => entry.isFile())
+					.map((entry) => entry.name);
 			} catch {
 				continue;
 			}

@@ -1,0 +1,90 @@
+---
+import { Image } from '@astro-components';
+import type { ImageMetadata } from 'astro';
+import { BUSINESS } from '../data/site';
+
+// Las fotos las baja `scripts/fetch-maps-photos.mjs`, que las nombra
+// `<app>-<forma>-NN.jpg`. Aquí se resuelven todas las que hay en `assets/fotos`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+
+/** La forma (para el alt) sale del nombre: `comestibles-pepe-apaisada-03.jpg`. */
+const FORMA: Record<string, string> = {
+	panoramica: 'panorámica',
+	apaisada: 'horizontal',
+	vertical: 'vertical',
+	cuadrada: 'cuadrada',
+};
+
+/** La foto de cabecera ya se ve en el hero y en «La tienda»: no se repite aquí. */
+const YA_EN_PORTADA = 'comestibles-pepe-google-maps.jpg';
+
+const galeria = Object.keys(fotos)
+	.sort((a, b) => a.localeCompare(b))
+	.map((ruta) => ({ archivo: ruta.split('/').pop() ?? '', src: fotos[ruta].default }))
+	.filter((foto) => foto.archivo !== YA_EN_PORTADA)
+	.map((foto) => {
+		// El nombre del negocio lleva guion, así que la forma se busca como parte del nombre.
+		const clave = Object.keys(FORMA).find((forma) => foto.archivo.includes(`-${forma}`));
+		const forma = clave ? FORMA[clave] : 'general';
+		return {
+			src: foto.src,
+			alt: `Fotografía ${forma} de ${BUSINESS.name}, publicada en su ficha de Google Maps`,
+		};
+	});
+---
+
+{
+	galeria.length > 0 && (
+		<section id="fotos" class="bg-neutral text-neutral-content py-20 sm:py-24">
+			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div class="mx-auto max-w-2xl text-center">
+					<span class="text-secondary text-xs font-semibold tracking-[0.2em] uppercase">
+						Google Maps · {galeria.length} fotos
+					</span>
+					<h2 class="font-display mt-3 text-3xl font-bold sm:text-4xl">
+						La tienda, en imágenes
+					</h2>
+					<div class="pepe-divider mx-auto mt-5 h-px w-32" />
+					<p class="mt-6 leading-relaxed text-white/70">
+						Fotografías que el propio negocio publica en su ficha de Google Maps: el mostrador, el
+						género y la plaza. La ficha completa reúne muchas más.
+					</p>
+				</div>
+
+				<ul class="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+					{galeria.map((foto) => (
+						<li class="overflow-hidden rounded-2xl ring-1 ring-white/10">
+							<Image
+								src={foto.src}
+								alt={foto.alt}
+								widths={[400, 640, 900]}
+								sizes="(max-width: 640px) 92vw, (max-width: 1024px) 45vw, 30vw"
+								format="avif"
+								quality={65}
+								loading="lazy"
+								decoding="async"
+								class="aspect-4/3 w-full object-cover transition-transform duration-500 hover:scale-[1.04]"
+							/>
+						</li>
+					))}
+				</ul>
+
+				<p class="mt-8 text-center text-xs leading-relaxed text-white/55">
+					<a
+						href={BUSINESS.googleMaps}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="hover:text-secondary mb-2 block font-semibold underline"
+					>
+						Ver la ficha completa en Google Maps
+					</a>
+					Fotografías de la ficha pública de Google Maps, alojadas aquí para servirlas optimizadas
+					(AVIF y varios tamaños).
+				</p>
+			</div>
+		</section>
+	)
+}
