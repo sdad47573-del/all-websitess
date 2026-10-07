@@ -1,0 +1,165 @@
+---
+// Banner promocional de lanzamiento con cuenta atrás.
+// ⚠️ Ajusta la fecha de fin aquí (Europe/Madrid). Al expirar, el banner se
+// oculta solo y queda descartado en el navegador del visitante.
+//
+// Orden de las piezas (importa para el CLS):
+//  1. Script inline ANTES del banner → decide si se muestra (cierra el paso a
+//     quien ya lo descartó antes de que exista el elemento).
+//  2. El banner. Su display lo resuelve global.css con .banner-off en <html>.
+//  3. Script inline DESPUÉS del banner → mide su alto real y lo publica en
+//     --banner-h, del que cuelgan la topbar fija y el hueco superior de cada
+//     página. Como ocurre antes de que se parsee ese contenido, la reserva ya
+//     está en el primer paint: no hay CLS.
+const END = new Date("2026-10-05T23:59:59+02:00");
+const END_ISO = END.toISOString();
+
+const fechaLegible = END.toLocaleDateString("es-ES", {
+  day: "numeric",
+  month: "long",
+});
+---
+
+<script is:inline>
+  (function () {
+    var KEY = "launch-banner-dismissed";
+    // El cierre se recuerda 7 días (mismo valor que en el script de abajo)
+    var DISMISS_DAYS = 7;
+    try {
+      var raw = localStorage.getItem(KEY);
+      var off = raw === "expired";
+      if (!off && raw) {
+        var at = Number(raw);
+        off =
+          isFinite(at) && Date.now() - at < DISMISS_DAYS * 24 * 60 * 60 * 1000;
+      }
+      if (off) document.documentElement.classList.add("banner-off");
+    } catch (e) {
+      /* localStorage bloqueado: se muestra siempre */
+    }
+  })();
+</script>
+
+<div
+  id="launch-banner"
+  class="fixed inset-x-0 top-0 z-[55] bg-gradient-to-r from-secondary via-[#f9b25f] to-secondary text-secondary-content shadow-md"
+>
+  <div class="container mx-auto px-6 py-2 flex items-center justify-center gap-3 text-sm relative">
+    <p class="font-bold text-center">
+      🔥 <span class="hidden sm:inline">Oferta de lanzamiento: </span>
+      landing gratis hasta el {fechaLegible} —
+      <span
+        id="launch-countdown"
+        data-end={END_ISO}
+        class="font-black tabular-nums"
+        aria-live="off"
+      >
+        <!-- Arranca en 00 y no en -- para que la anchura no cambie con el
+             primer tick y siga valiendo el alto medido antes del paint. -->
+        <span data-cd="d">00</span>d
+        <span data-cd="h">00</span>h
+        <span data-cd="m">00</span>m
+        <span data-cd="s">00</span>s
+      </span>
+    </p>
+    <a
+      href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer"
+      class="hidden sm:inline-flex btn btn-xs btn-neutral rounded-sm font-bold"
+      >Reclamar</a
+    >
+    <button
+      id="launch-close"
+      class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-ghost btn-xs"
+      aria-label="Cerrar banner de lanzamiento"
+    >
+      ✕
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var el = document.getElementById("launch-banner");
+    var root = document.documentElement;
+    if (!el || root.classList.contains("banner-off")) return;
+
+    function measure() {
+      var h = el.offsetHeight + "px";
+      // Solo escribimos si cambia: evita re-layouts y transiciones inútiles
+      if (root.style.getPropertyValue("--banner-h") !== h) {
+        root.style.setProperty("--banner-h", h);
+      }
+    }
+
+    measure();
+    // El banner puede cambiar de alto (rotación, zoom, reflow del texto). Va
+    // en rAF porque en móvil la barra de direcciones dispara resize al hacer
+    // scroll y leer offsetHeight ahí forzaría un layout por evento.
+    var scheduled = false;
+    function onResize() {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(function () {
+        scheduled = false;
+        measure();
+      });
+    }
+
+    window.addEventListener("resize", onResize);
+    window.addEventListener("load", measure);
+  })();
+</script>
+
+<script>
+  // Cerrar el banner y cuenta atrás. La visibilidad la decide el CSS con la
+  // clase .banner-off en <html>, así que aquí no hay que mostrar nada.
+  const STORAGE_KEY = "launch-banner-dismissed";
+  const root = document.documentElement;
+  const countdown = document.getElementById("launch-countdown");
+  const closeBtn = document.getElementById("launch-close");
+
+  let timer: number | undefined;
+
+  // Recuerda la decisión y devuelve el hueco de arriba.
+  function hide(stored = String(Date.now())) {
+    try {
+      localStorage.setItem(STORAGE_KEY, stored);
+    } catch {
+      /* sin persistencia: se oculta solo en esta pestaña */
+    }
+    root.classList.add("banner-off");
+    root.style.setProperty("--banner-h", "0px");
+    if (timer) window.clearInterval(timer);
+  }
+
+  function tick() {
+    if (!countdown) return;
+    const end = new Date(countdown.dataset.end ?? "").getTime();
+    if (!Number.isFinite(end)) return;
+
+    const diff = end - Date.now();
+    if (diff <= 0) {
+      hide("expired"); // la oferta terminó: no vuelve a mostrarse
+      return;
+    }
+
+    const s = Math.floor(diff / 1000);
+    const set = (unit: string, value: number) => {
+      const el = countdown.querySelector<HTMLElement>(`[data-cd="${unit}"]`);
+      if (el) el.textContent = String(value).padStart(2, "0");
+    };
+    set("d", Math.floor(s / 86400));
+    set("h", Math.floor((s % 86400) / 3600));
+    set("m", Math.floor((s % 3600) / 60));
+    set("s", s % 60);
+  }
+
+  closeBtn?.addEventListener("click", () => hide());
+
+  // Si el visitante ya lo descartó, el CSS lo mantiene oculto: no gastamos
+  // un intervalo contando algo que nadie ve.
+  if (!root.classList.contains("banner-off")) {
+    tick();
+    timer = window.setInterval(tick, 1000);
+  }
+</script>

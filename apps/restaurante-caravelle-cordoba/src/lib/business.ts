@@ -94,11 +94,6 @@ export const faqs = [
 			'Cierra los lunes. De martes a domingo sirve comidas de 12:00 a 16:00 y cenas de 20:00 a 01:00. Puede variar en festivos: llama antes de desplazarte para confirmarlo.',
 	},
 	{
-		question: '¿Cuál es el precio medio?',
-		answer:
-			'Cuenta con una relación calidad-precio muy valorada: las raciones son generosas y los precios se sitúan en un nivel moderado. Como referencia, se han citado raciones de calamares en torno a 8 € y platos de pluma ibérica sobre 12 €.',
-	},
-	{
 		question: '¿Tiene terraza, para llevar y es accesible?',
 		answer:
 			'Sí. Cuenta con salón interior y terraza, ofrece comida para llevar, admite reservas y dispone de entrada accesible para personas con movilidad reducida. Un lugar pensado tanto para familias como para grupos de amigos.',

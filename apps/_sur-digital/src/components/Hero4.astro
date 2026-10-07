@@ -1,0 +1,119 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { CONTACT } from "../data/contact";
+import LinkedInIcon from "../icons/LinkedInIcon.astro";
+
+interface Project {
+  title: string;
+  sector: string;
+  url: string;
+  preview: ImageMetadata;
+}
+
+interface Props {
+  featured: Project;
+  projectCount: number;
+}
+
+const { featured, projectCount } = Astro.props;
+---
+
+<!-- Sin data-reveal a propósito: el hero está siempre por encima del fold,
+     así que la animación de entrada no aporta nada y sí retrasa el LCP. Con
+     opacity:0 los elementos no cuentan como candidatos a LCP, de modo que
+     hasta que el IntersectionObserver no lo revelaba, el elemento visible más
+     grande era el banner de cookies. -->
+<section
+  class="relative overflow-hidden bg-gradient-to-br from-base-200 via-base-100 to-base-100 pt-32 pb-16 md:pt-40 md:pb-24"
+>
+  <div class="container mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+    <div class="relative z-10 text-center lg:text-left">
+      <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-primary shadow-sm">
+        <span class="size-2 rounded-full bg-secondary" aria-hidden="true"></span>
+        Diseño web para negocios de Málaga
+      </p>
+
+      <h1 class="mb-6 text-4xl font-black leading-[1.08] tracking-tight text-base-content sm:text-5xl lg:text-6xl">
+        Tu negocio merece una web que <span class="text-wave">traiga clientes.</span>
+      </h1>
+
+      <p class="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-base-content/70 lg:mx-0">
+        Diseñamos webs rápidas y a medida para negocios locales. Tu primera landing gratis y online en <strong class="text-base-content">menos de 7 días</strong>, sin permanencia.
+      </p>
+
+      <div class="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start">
+        <a
+          href={CONTACT.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-lg shadow-lg shadow-primary/15"
+        >
+          <LinkedInIcon class="size-5" />
+          Solicita tu landing gratis
+        </a>
+        <a href="#portafolio" class="btn btn-ghost btn-lg">
+          Ver proyectos reales
+          <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <ul class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-base-content/70 lg:justify-start">
+        <li class="flex items-center gap-2">
+          <span class="font-black text-success" aria-hidden="true">✓</span>
+          Precio cerrado
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="font-black text-success" aria-hidden="true">✓</span>
+          Dominio a tu nombre
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="font-black text-success" aria-hidden="true">✓</span>
+          Sin permanencia
+        </li>
+      </ul>
+    </div>
+
+    <div class="relative mx-auto w-full max-w-2xl lg:mx-0">
+      <div class="absolute -inset-4 -z-10 rounded-[2rem] bg-primary/10 blur-2xl" aria-hidden="true"></div>
+      <a
+        href={featured.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group relative block overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-2xl shadow-base-content/10 transition-transform duration-300 hover:-translate-y-1"
+      >
+        <div class="flex h-10 items-center gap-1.5 border-b border-base-300 bg-base-200/80 px-4">
+          <span class="size-2.5 rounded-full bg-error/70" aria-hidden="true"></span>
+          <span class="size-2.5 rounded-full bg-warning/80" aria-hidden="true"></span>
+          <span class="size-2.5 rounded-full bg-success/80" aria-hidden="true"></span>
+          <span class="ml-2 truncate rounded bg-base-100 px-2 py-1 text-xs text-base-content/55">{new URL(featured.url).hostname}</span>
+        </div>
+        <div class="relative aspect-video overflow-hidden bg-base-200">
+          <Image
+            src={featured.preview}
+            alt={`Vista previa de la web de ${featured.title}`}
+            widths={[480, 768, 1024]}
+            sizes="(max-width: 639px) 92vw, (max-width: 1023px) 60vw, 520px"
+            loading="eager"
+            fetchpriority="high"
+            class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+          <span class="absolute left-4 top-4 rounded-full bg-base-100/95 px-3 py-1.5 text-xs font-bold text-base-content shadow-md">
+            Proyecto real
+          </span>
+        </div>
+        <div class="flex items-center justify-between gap-4 p-4 sm:p-5">
+          <div class="min-w-0 text-left">
+            <p class="truncate font-bold text-base-content">{featured.title}</p>
+            <p class="text-sm text-base-content/60">{featured.sector}</p>
+          </div>
+          <span class="shrink-0 text-sm font-bold text-primary group-hover:underline">Visitar web <span aria-hidden="true">↗</span></span>
+          <span class="sr-only">de {featured.title} (abre en una pestaña nueva)</span>
+        </div>
+      </a>
+      <p class="mt-4 text-center text-sm text-base-content/60 lg:text-left">
+        Este es uno de nuestros <strong class="text-base-content">{projectCount} proyectos publicados</strong> para negocios reales.
+      </p>
+    </div>
+  </div>
+</section>

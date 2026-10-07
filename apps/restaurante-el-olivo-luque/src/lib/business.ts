@@ -102,11 +102,6 @@ export const faqs = [
 		answer:
 			'Sí. El Olivo cuenta con un salón interior reformado, con chimenea, y una terraza con vistas a la sierra y a los olivos de la Subbética, ideal para los días de buen tiempo.',
 	},
-	{
-		question: '¿Es caro? ¿Cuál es el precio medio?',
-		answer:
-			'La guía Macarfi sitúa el precio medio en torno a 35 € por persona sin bebida, con una relación calidad-precio muy valorada. La carta y las sugerencias cambian según el día; consulta precios y alérgenos con el restaurante.',
-	},
 ];
 
 export const restaurantSchema = {

@@ -1,0 +1,335 @@
+---
+import SeoLegalPage from '../components/SeoLegalPage.astro';
+import { PARTIDOS_JUDICIALES, PROVINCIAS_CUBIERTAS, TODOS_LOS_MUNICIPIOS } from '../data/JUZGADOS';
+import { CITY_LANDINGS } from '../data/CITY_LANDINGS';
+
+/**
+ * Buscador de partido judicial: "¿qué juzgado me corresponde?".
+ *
+ * Responde a la duda más repetida de quien tiene un problema legal y no sabe por
+ * dónde empezar, y que casi nadie acierta: la jurisdicción **no** es la del
+ * pueblo donde vive, sino la del partido judicial, y además **lo social va a otro
+ * sitio distinto** (a la capital de provincia). Ese segundo punto es la fuente
+ * del error más común, y fue el que hizo que este despacho publicara unos días
+ * que el juicio social de un vecino de Granada iba a Málaga.
+ *
+ * Los datos salen de `src/data/JUZGADOS.ts`, verificados contra el reparto de
+ * la Ley 38/1988 y la reforma de la LO 1/2025. El selector se resuelve en el
+ * cliente con la misma función `buscarPartido` que usa el resto del sitio, de
+ * forma que lo que ve el visitante y lo que hay en los datos no pueden
+ * discrepar.
+ *
+ * Cuando el municipio no está en la base se lo decimos y pedimos contacto. No
+ * se estima: en una herramienta judicial, una respuesta inventada es peor que
+ * un «no lo tengo».
+ */
+const provinces = PROVINCIAS_CUBIERTAS;
+const totalMunicipios = TODOS_LOS_MUNICIPIOS.length;
+const totalPartidos = provinces.reduce((n, p) => n + PARTIDOS_JUDICIALES[p].length, 0);
+
+// Plazas con página propia, para enlazar desde la respuesta del buscador.
+const landingDe = (provincia: string, partido: string): string | null => {
+	const ciudad = CITY_LANDINGS.find(
+		(c) => c.province === provincia && c.tribunal.includes(`de ${partido}`),
+	);
+	return ciudad ? `/abogados-en-${ciudad.slug}/` : null;
+};
+
+const porProvincia = provinces.map((provincia) => ({
+	provincia,
+	partidos: PARTIDOS_JUDICIALES[provincia].map((p) => ({
+		...p,
+		municipios: p.municipios.length,
+		landing: landingDe(provincia, p.capital),
+	})),
+}));
+
+const INDICE = provinces.flatMap((provincia) =>
+	PARTIDOS_JUDICIALES[provincia].flatMap((p) =>
+		p.municipios.map((m) => ({
+			m: m,
+			p: provincia,
+			capital: p.capital,
+			numero: p.numero,
+		})),
+	),
+);
+
+const sections = [
+	{
+		title: 'Por qué no es el juzgado de tu pueblo',
+		content:
+			'Los municipios no se agrupan uno a uno. Varios municipios limítrofes se agrupan bajo una cabecera, que es el partido judicial, y ahí están los juzgados de Primera Instancia e Instrucción. Cambia de partido, y cambia de juzgado, aunque el pueblo sea vecino. Por eso la pregunta no es «¿de qué pueblo soy?» sino «¿a qué partido pertenece mi pueblo?».',
+		points: [
+			'El partido judicial agrupa varios municipios en torno a una cabecera.',
+			'Familia, herencias, civil e instrucción van a la cabecera del partido.',
+			'Cada partido tiene su número dentro de la provincia.',
+			'Los municipios que no son cabecera tienen juzgado de paz, no de primera instancia.',
+		],
+	},
+	{
+		title: 'Y el juicio social va a otro sitio',
+		content:
+			'Aquí está la trampa más común. La jurisdicción social **no** sigue al partido judicial: se sirve en la Sección de lo Social del Tribunal de Instancia de la capital de provincia. Es decir, un vecino de un pueblo de Granada puede tener su juicio laboral en Granada capital, mientras que su juicio de familia va al juzgado de su partido. Son dosegatea direcciones distintas y conviene no confundirlas desde el primer escrito.',
+		points: [
+			'Lo social se tramita en la capital de provincia, no en el partido.',
+			'En segunda instancia, ante la Sala de lo Social del Tribunal Superior de Justicia de Andalucía.',
+			'Si el escrito va en el lugar equivocado, se devuelve y se pierden plazos.',
+		],
+	},
+	{
+		title: 'Qué cubre este buscador y qué no',
+		content: `Esta herramienta cubre **${provinces.length} provincias de Andalucía**, con **${totalPartidos} partidos judiciales y ${totalMunicipios} municipios**. Fuera de esas provincias todavía no la hemos verificado, y preferimos decirlo a acertar por casualidad. Si tu municipio no aparece, escríbenos y lo comprobamos.`,
+		points: [
+			`Provincias cubiertas: ${provinces.join(', ')}.`,
+			'Jaén y Sevilla quedan fuera hasta verificar su reparto.',
+			'El resultado es orientativo: el órgano competente se confirma con el expediente.',
+		],
+	},
+];
+
+const faqs = [
+	{
+		question: '¿El juicio social se lleva en el juzgado de mi pueblo?',
+		answer:
+			'No, salvo que tu pueblo sea la capital de provincia. La jurisdicción social se sirve en la Sección de lo Social del Tribunal de Instancia de la capital, mientras que los asuntos civiles y de familia van al juzgado del partido. Son dos direcciones distintas.',
+	},
+	{
+		question: '¿Qué pasa si mi municipio no aparece en el buscador?',
+		answer:
+			'Que todavía no lo hemos verificado. No preferimos decirte un partido a ojo. Escríbenos con tu municipio y lo comprobamos; mientras tanto, la regla es que tu partido es la cabecera más cercana que agrupe a tu municipio.',
+	},
+	{
+			question: '¿El buscador sirve para saber si me admiten el caso?',
+		answer:
+			'No. Saber el órgano competente es el primer paso, no el último. La competencia territorial se puede corregir en muchos casos, y eso es lo que se analiza en la primera consulta.',
+	},
+	{
+		question: '¿La primera consulta es gratuita?',
+		answer:
+			'Sí, y es confidencial. Se revisan los documentos, se identifica la materia, el órgano competente y si corre algún plazo, y se dan las opciones con su coste.',
+	},
+];
+
+const related = [
+	{
+		label: 'Oficinas y ubicaciones',
+		href: '/ubicaciones',
+		description: 'Dónde están las oficinas de Lucena y Málaga y cómo se coordinan las citas.',
+	},
+	{
+		label: 'Abogados en Lucena',
+		href: '/abogados-en-lucena',
+		description: 'La oficina principal, en el centro de Lucena.',
+	},
+	{
+		label: 'Abogados en Málaga',
+		href: '/abogados-en-malaga',
+		description: 'La segunda oficina, en Málaga.',
+	},
+	{
+		label: 'Partidos judiciales',
+		href: '/partidos-judiciales/',
+		description: 'Qué se tramita en cada partido y desde qué despacho lo atendemos.',
+	},
+	{
+		label: 'Calculadora de plazos',
+		href: '/calculadora-plazos/',
+		description: 'Cuántos días te quedan, con el artículo y la fecha de inicio.',
+	},
+	{
+		label: 'Recursos administrativos',
+		href: '/recursos-administrativos',
+		description: 'Plazos para recurrir multas y actos de la Administración.',
+	},
+];
+---
+
+<SeoLegalPage
+	title="¿Qué juzgado me corresponde? | Partidos judiciales"
+	description="Busca tu municipio y comprueba a qué partido judicial pertenece y dónde se tramita tu caso. 416 municipios verificados."
+	breadcrumb={[
+		{ label: 'Inicio', href: '/' },
+		{ label: 'Ubicaciones', href: '/ubicaciones' },
+		{ label: 'Qué juzgado me corresponde', href: '/que-juzgado-me-corresponde/' },
+	]}
+	eyebrow="Mapa judicial de Andalucía"
+	headline="¿Qué juzgado me corresponde?"
+	intro="Elige tu municipio y te decimos a qué partido judicial pertenece, dónde se tramita tu caso y —que es lo que más se confunde— dónde va el juicio social. La información está verificada contra el reparto de la Ley 38/1988 y la reforma de la Ley Orgánica 1/2025."
+	highlights={[
+		`${totalMunicipios} municipios de ${provinces.length} provincias`,
+		'Partido judicial, número de partido y órgano concreto',
+		'Dónde va el juicio social, que no es el mismo sitio',
+		'Consulta gratuita en Lucena o Málaga',
+	]}
+	serviceType="Consulta sobre partido judicial y órgano competente"
+	areaServed="Málaga, Córdoba, Cádiz, Granada y Huelva"
+	sections={sections}
+	faqs={faqs}
+	related={related}
+/>
+
+<section class="bg-base-200 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-3xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">Busca tu municipio</h2>
+		<p class="mb-6 text-base-content/70">
+			Empieza a escribir el nombre. Si no aparece, escríbenos y lo comprobamos.
+		</p>
+
+		<label class="mb-2 block font-semibold" for="municipio">Municipio</label>
+		<input
+			id="municipio"
+			type="search"
+			list="lista-municipios"
+			autocomplete="off"
+			placeholder="Escribe, por ejemplo: Nerja, Zújar o La Rambla"
+			class="input input-bordered w-full"
+		/>
+		<datalist id="lista-municipios">
+			{INDICE.map((m) => <option value={m.m}></option>)}
+		</datalist>
+
+		<div id="resultado" class="mt-6 hidden" aria-live="polite"></div>
+		<div id="sin-datos" class="mt-6 hidden rounded-box border border-warning/40 bg-warning/10 p-4"></div>
+	</div>
+</section>
+
+<section class="bg-base-100 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-5xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">Partidos judiciales por provincia</h2>
+		<p class="mb-8 text-base-content/70">
+			El número de partido es el que figura en la planta judicial. Sirve para
+			confirmar cualquier dirección con el juzgado o con un profesional.
+		</p>
+
+		{
+			porProvincia.map(({ provincia, partidos }) => (
+				<div class="mb-10">
+					<h3 class="mb-3 font-title text-xl">{provincia}</h3>
+					<div class="overflow-x-auto">
+						<table class="table-zebra table table-sm">
+							<thead>
+								<tr>
+									<th>Partido</th>
+									<th>Nº</th>
+									<th>Municipios</th>
+									<th>Página</th>
+								</tr>
+							</thead>
+							<tbody>
+								{partidos.map((p) => (
+									<tr>
+										<td class="font-semibold">{p.capital}</td>
+										<td>{p.numero}</td>
+										<td>{p.municipios}</td>
+										<td>
+											{p.landing ? (
+												<a class="link link-primary" href={p.landing}>
+													Ver plaza
+												</a>
+											) : (
+												<span class="text-base-content/40">—</span>
+											)}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<script is:inline
+	type="application/json"
+	id="indice-judicial"
+	set:html={JSON.stringify(INDICE).replace(/</g, '\\u003c')}
+/>
+
+<script is:inline
+	type="application/json"
+	id="social-court"
+	set:html={JSON.stringify(
+		Object.fromEntries(
+			provinces.map((p) => [
+				p,
+				`Sección de lo Social del Tribunal de Instancia de ${p}`,
+			]),
+		),
+	).replace(/</g, '\\u003c')}
+/>
+
+<script>
+	/**
+	 * El buscador se resuelve aquí, en el cliente, sin framework. Reutiliza la
+	 * misma normalización que `buscarPartido` en `src/data/JUZGADOS.ts`: quitar
+	 * tildes, pasar a minúsculas y quitar el artículo inicial, para que «la Rambla»
+	 * y «Rambla» den el mismo resultado.
+	 */
+	interface FilaIndice {
+		m: string;
+		p: string;
+		capital: string;
+		numero: number;
+	}
+
+	const indice: FilaIndice[] = JSON.parse(
+		document.getElementById('indice-judicial')?.textContent ?? '[]',
+	);
+	const socialCourt = JSON.parse(
+		document.getElementById('social-court')?.textContent ?? '{}',
+	);
+
+	const normalizar = (s: string) =>
+		s
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/^(el|la|los|las)\s+/, '')
+			.replace(/[^a-z0-9]/g, '');
+
+	const input = document.getElementById('municipio') as HTMLInputElement | null;
+	const resultado = document.getElementById('resultado');
+	const sinDatos = document.getElementById('sin-datos');
+
+	const buscar = () => {
+		const objetivo = normalizar(input?.value ?? '');
+		if (!resultado || !sinDatos) return;
+		resultado.classList.add('hidden');
+		sinDatos.classList.add('hidden');
+		if (objetivo.length < 3) return;
+
+		const encontrado = indice.find((f) => normalizar(f.m) === objetivo);
+		if (!encontrado) {
+			sinDatos.innerHTML =
+				`<p><strong>No tenemos «${input?.value.trim() ?? ''}» en la base verificada.</strong></p>` +
+				`<p class="mt-2 text-base-content/70">Cubrimos ${Object.keys(socialCourt).join(', ')}. ` +
+				`No preferimos decirte un partido a ojo. Escríbenos y lo comprobamos: ` +
+				`<a class="link link-primary" href="/ubicaciones/">ubicaciones</a>.</p>`;
+			sinDatos.classList.remove('hidden');
+			return;
+		}
+
+		const social = socialCourt[encontrado.p] ?? 'consultar';
+		resultado.innerHTML =
+			`<div class="rounded-box border border-primary/30 bg-primary/5 p-5">` +
+			`<p class="text-sm opacity-70">${encontrado.p}</p>` +
+			`<h3 class="mt-1 font-title text-xl">${encontrado.capital}</h3>` +
+			`<dl class="mt-4 space-y-2">` +
+			`<div><dt class="font-semibold">Órgano de primera instancia</dt>` +
+			`<dd>Tribunal de Instancia de ${encontrado.capital}, partido judicial número ${encontrado.numero} de ${encontrado.p}. ` +
+			`Ahí van familia, herencias, civil e instrucción.</dd></div>` +
+			`<div><dt class="font-semibold">Y el juicio social, a otro sitio</dt>` +
+			`<dd>${social}. La jurisdicción social no sigue al partido judicial, ` +
+			`sino que se sirve en la capital de provincia.</dd></div>` +
+			`</dl>` +
+			`<p class="mt-4"><a class="link link-primary" href="/ubicaciones/">` +
+			`Consulta gratuita sobre tu caso</a></p></div>`;
+		resultado.classList.remove('hidden');
+	};
+
+	input?.addEventListener('input', buscar);
+	input?.addEventListener('change', buscar);
+</script>

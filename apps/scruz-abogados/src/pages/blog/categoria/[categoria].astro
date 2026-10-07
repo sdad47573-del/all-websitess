@@ -1,0 +1,140 @@
+---
+import { ArrowRight, Clock, FileText } from '@lucide/astro';
+import CustomLayout from '../../../layouts/CustomLayout.astro';
+import { SITE_URL } from '../../../data/site';
+import { BLOG_CATEGORY_HUBS } from '../../../data/BLOG_CATEGORIES';
+
+/**
+ * Hub de categoría del blog. Las rutas se generan desde BLOG_CATEGORIES, que a
+ * su vez sale de BLOG_POSTS: añadir un artículo en una categoría con 3+ guías la
+ * mantiene actualizada sin tocar esta página.
+ */
+export function getStaticPaths() {
+	return BLOG_CATEGORY_HUBS.map((hub) => ({
+		params: { categoria: hub.slug },
+		props: { hub },
+	}));
+}
+
+const { hub } = Astro.props;
+const url = `${SITE_URL}${hub.href}`;
+const otras = BLOG_CATEGORY_HUBS.filter((other) => other.href !== hub.href);
+
+// CollectionPage + ItemList: declara que esta URL es un índice de artículos del
+// mismo blog (el Blog completo ya está en /blog/) y cuáles son.
+const collectionSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	'@id': `${url}#collection`,
+	url,
+	name: hub.title,
+	description: hub.description,
+	inLanguage: 'es-ES',
+	isPartOf: { '@id': `${SITE_URL}/blog/#blog` },
+	mainEntity: {
+		'@type': 'ItemList',
+		numberOfItems: hub.posts.length,
+		itemListElement: hub.posts.map((post, idx) => ({
+			'@type': 'ListItem',
+			position: idx + 1,
+			item: {
+				'@type': 'BlogPosting',
+				'@id': `${SITE_URL}${post.href}#article`,
+				headline: post.title,
+				url: `${SITE_URL}${post.href}`,
+				datePublished: post.date,
+				inLanguage: 'es-ES',
+			},
+		})),
+	},
+};
+---
+
+<CustomLayout
+	title={hub.title}
+	description={hub.description}
+	breadcrumb={[
+		{ name: 'Inicio', url: '/' },
+		{ name: 'Blog', url: '/blog/' },
+		{ name: hub.name, url: hub.href },
+	]}
+	additionalSchemas={[collectionSchema]}
+>
+	<section class="bg-gray-50 py-16 md:py-24">
+		<div class="mx-auto max-w-7xl px-6 md:px-16">
+			<div class="reveal-pop mb-12 max-w-3xl">
+				<p class="eyebrow">Blog jurídico · {hub.name}</p>
+				<h1 class="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
+					{hub.name}: guías y artículos
+				</h1>
+				<p class="text-xl text-gray-600">{hub.intro}</p>
+				<p class="mt-6 text-sm text-gray-500">
+					{hub.posts.length} guías publicadas · contenido orientativo: cada caso concreto requiere
+					asesoramiento personalizado.
+				</p>
+			</div>
+
+			<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+				{
+					hub.posts.map((post) => (
+						<a
+							href={post.href}
+							class="card-surface reveal-pop hover:-translate-y-1 flex flex-col rounded-xl p-8"
+							data-discover="true"
+						>
+							<div class="mb-6 flex items-center justify-between">
+								<span class="text-primary inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold">
+									<FileText class="size-4" /> {post.category}
+								</span>
+							</div>
+							<h2 class="mb-3 flex-1 text-xl font-bold text-gray-900">{post.title}</h2>
+							<p class="mb-6 text-gray-600">{post.description}</p>
+							<div class="mt-auto flex items-center justify-between border-t border-gray-100 pt-4 text-sm text-gray-500">
+								<span class="inline-flex items-center gap-1">
+									<Clock class="size-4" /> {post.readTime} lectura
+								</span>
+								<span class="inline-flex items-center gap-1">
+									Leer guía <ArrowRight class="size-4" />
+								</span>
+							</div>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!--
+		Enlazado entre hubs: cada categoría reparte autoridad a las demás y ofrece
+		una salida a quien no encuentra lo que buscaba (además de dar a cada hub
+		enlaces entrantes desde el contenido, no solo desde el índice del blog).
+	-->
+	<section class="bg-white py-16 md:py-20">
+		<div class="mx-auto max-w-7xl px-6 md:px-16">
+			<div class="reveal-pop mb-6 flex flex-wrap items-end justify-between gap-4">
+				<h2 class="text-2xl font-bold text-gray-900 md:text-3xl">Otras áreas del blog</h2>
+				<a
+					href="/blog/"
+					class="text-primary inline-flex items-center gap-2 font-semibold transition-colors hover:text-primary/80"
+					data-discover="true"
+				>
+					Ver todas las guías <ArrowRight class="size-4" />
+				</a>
+			</div>
+			<div class="flex flex-wrap gap-3">
+				{
+					otras.map((other) => (
+						<a
+							href={other.href}
+							class="text-primary inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold transition-colors hover:bg-blue-100"
+							data-discover="true"
+						>
+							{other.name}
+							<span class="text-gray-500">{other.posts.length}</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</CustomLayout>

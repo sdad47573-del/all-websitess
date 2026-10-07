@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+import { twJoin } from "tailwind-merge";
+
+import { DATA } from "../data/data.astro";
+
+import Logo from "../assets/logoreverse-optimized.png";
+---
+
+<footer class="brand-surface p-6 pb-24 md:p-10">
+  <div class="container mx-auto flex flex-col gap-12">
+    <div
+      class="flex flex-col md:flex-row flex-wrap gap-12 md:gap-6 justify-center w-full"
+    >
+      <Image
+          src={Logo}
+          alt="Sur Digital"
+          widths={[128, 256, 384]}
+          sizes="128px"
+          class="w-32 h-auto object-contain"
+        />
+      {
+        DATA.footer.map(({ title, items }) => (
+          <div class="flex flex-col">
+            <p class="text-xl font-bold pb-2 md:pb-5">{title}</p>
+            <ul class="max-w-80 flex flex-col gap-1">
+              {items.map((item) => {
+                const Icon = "icon" in item ? item.icon : null;
+                const href = "href" in item ? item.href : undefined;
+                const external =
+                  "external" in item && item.external ? true : undefined;
+                const classes = twJoin("flex gap-1 items-center", href && "link link-hover");
+                return (
+                  <li>
+                    {href ? (
+                      <a
+                        href={href}
+                        class={classes}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                      >
+                        {Icon && <Icon class="min-w-6 max-w-6" />}
+                        <span set:html={item.label} />
+                      </a>
+                    ) : (
+                      <p class={classes}>
+                        {Icon && <Icon class="min-w-6 max-w-6" />}
+                        <span set:html={item.label} />
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="text-center flex flex-col sm:flex-row justify-center gap-1 sm:gap-4">
+      <p>© {new Date().getFullYear()} Sur Digital - Todos los derechos reservados.</p>
+      <p class="flex justify-center gap-4">
+        <a href="/aviso-legal" class="link link-hover">Aviso legal</a>
+        <a href="/politica-privacidad" class="link link-hover">Privacidad</a>
+      </p>
+    </div>
+  </div>
+</footer>

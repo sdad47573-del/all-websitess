@@ -1,0 +1,335 @@
+---
+import SeoLegalPage from '../components/SeoLegalPage.astro';
+
+/**
+* Cuándo hay que declarar el ITPF de una herencia y cuánto se bonifica por hacerlo pronto.
+ * pronto.
+ *
+ * **Por qué esta página no trae la escala del impuesto:** el ITPF es un tributo
+ * estadual con tarifa propia de cada comunidad autónoma, y Andalucía cambió la
+ * suya con la Ley 5/2021, de 20 de octubre, de Tributos Cedidos. Meter aquí una
+ * tabla de porcentajes que cambia por provincia y por año es justo el tipo de
+ * dato que se queda viejo y un día da un número falso. Lo que sí es igual en
+ * todo el país, y es lo caro de perder, va aquí: el plazo, las bonificaciones
+ * por presentar pronto y las reducciones que se aplican antes de calcular nada.
+ *
+ * Verificado en el texto consolidado del BOE: LGT (arts. 48 y 49) y Ley 5/2021
+ * de Tributos Cedidos de Andalucía.
+ */
+
+const REDUCCIONES_ANDALUCIA = [
+	{
+		titulo: 'Vivienda habitual del causante',
+		texto: '99 % de reducción de la base imponible, con independencia del valor del inmueble',
+		nota: 'Se sustituyó a la escala del 95-100 % que había antes. Hay que mantener la adquisición 3 años.',
+	},
+	{
+		titulo: 'Herederos de los grupos I y II',
+		texto: 'Hasta 1.000.000 € de reducción de la base imponible',
+		nota: 'Descendientes, ascendientes, cónyuges y adoptantes. En Andalucía ya no se discrimina por el patrimonio preexistente del heredero.',
+	},
+	{
+		titulo: 'Colaterales de segundo y tercer grado',
+		texto: '10.000 € de reducción de la base imponible',
+		nota: 'Andalucía elevó la reducción estatal de 7.993,46 € a 10.000 €.',
+	},
+	{
+		titulo: 'Persona con discapacidad',
+		texto: '250.000 €, o 500.000 € si el grado es igual o superior al 65 %',
+		nota: 'Aplicable con independencia del parentesco. Es acumulable con la reducción por parentesco.',
+	},
+	{
+		titulo: 'Empresa individual, negocio o participaciones',
+		texto: '99 % de reducción de la base imponible, con mantenimiento de 3 años',
+		nota: 'Andalucía eliminó el requisito de que la actividad fuera la principal fuente de renta y amplía el grupo de beneficiarios hasta el sexto grado colateral.'
+	},
+	{
+		titulo: 'Pareja de hecho inscrita en el Registro Andaluz',
+		texto: 'Equiparada al cónyuge a todos los efectos',
+		nota: 'Sin inscripción en el registro, la reducción por parentesco no es la misma. Es un detalle que cuesta dinero.',
+	},
+];
+
+const sections = [
+	{
+		title: 'El plazo son seis meses, y corren desde el día del fallecimiento',
+		content:
+			'El artículo 48 de la Ley General Tributaria da seis meses desde la fecha del fallecimiento para presentar la autoliquidación del impuesto sobre Sucesiones y Donaciones. Son seis meses naturales, y el día inicial no se cuenta. Antes de ese plazo se puede pedir una prórroga de otros seis meses, y esa solicitud tiene su propio plazo: si se concede, se aplaza el ingreso, no la obligación de declarar. Lo que no tiene remedio es dejar pasar el plazo: pasado este, la Administración puede liquidar de oficio y exigir el interés de demora.',
+		points: [
+			'Plazo: seis meses desde el fallecimiento (art. 48 LGT).',
+			'La prórroga se pide dentro del primer plazo y se concede si no hay causa bastante.',
+			'Pasado el plazo sin declarar, la Administración puede liquidar de oficio.',
+			'El impuesto se devenga el día del fallecimiento, no el de la herencia ni el del reparto.',
+		],
+	},
+	{
+		title: 'Presentar antes ahorra dinero, y bastante',
+		content:
+			'El artículo 49 de la Ley General Tributaria bonifica la cuota con un 20 % si la autoliquidación se presenta dentro de los cinco meses siguientes al fallecimiento, y con un 5 % si se presenta dentro de los seis meses. Es un descuento sobre la cuota íntegra, no sobre la base. En una herencia de 200.000 euros de base liquidable, un 20 % son miles de euros, y lo único que cuesta es tener los bienes valorados a tiempo.',
+		points: [
+			'20 % de bonificación en la cuota si se declara dentro de los 5 meses.',
+			'5 % de bonificación en la cuota si se declara dentro de los 6 meses.',
+			'El descuento es sobre la cuota, no sobre el porcentaje aplicable.',
+			'Declara pronto aunque la cuota salga a cero: la bonificación tampoco se pierde.',
+		],
+	},
+	{
+		title: 'Antes de calcular nada, hay que reducir',
+		content:
+			'La cuota íntegra sale de la base liquidable, y la base liquidable sale de la base imponible menos las reducciones. En Andalucía hay reducciones muy importantes y casi nadie las aplica: la del 99 % de la vivienda habitual del causante, la de hasta un millón de euros para hijos, cónyuges y padres, y la de 10.000 € para colaterales de segundo y tercer grado. El orden importa: primero reducciones, después tarifa, después bonificación por presentar pronto. Calcular al revés da un número mayor que el real y asusta a quien hereda.',
+		points: [
+			'Primero reducciones, después tarifa, después bonificaciones.',
+			'La vivienda habitual del causante tiene un 99 % de reducción en Andalucía.',
+			'Hijo, cónyuge o padre: hasta 1.000.000 € de reducción.',
+			'Los seguros de vida con beneficiario familiar tienen su propio tratamiento.',
+		],
+	},
+	{
+		title: 'Lo que no se declara aquí, y por qué',
+		content:
+			'El impuesto es estatal en su configuración, pero la tarifa es comunitaria. Un vecino de Lucena paga con la escala andaluza y uno de Valencia con la valenciana, y no son la misma. También quedan fuera de esta página los bienes con reglas propias: una empresa, una vivienda habitual, un seguro de vida. Esta herramienta da el plazo, las bonificaciones y las reducciones, que son iguales en toda España, y remite a la sede electrónica de la agencia tributaria que corresponda para el cálculo. Es más útil que una tabla que al año que viene está equivocada.',
+		points: [
+			'La tarifa es de cada comunidad autónoma, no estatal.',
+			'El valor de los bienes es el real y efectivo, no el catastral ni el escriturado.',
+			'Hay bienes con reglas propias: empresa, vivienda habitual, disappointmentNEL, seguros.',
+			'La autoliquidación se presenta con el modelo 700 y se paga con el 210.',
+		],
+	},
+];
+
+const faqs = [
+	{
+		question: '¿Cuánto tiempo tengo para declarar el ITPF?',
+		answer:
+			'S|Seis meses desde la fecha del fallecimiento (art. 48 de la Ley General Tributaria). Se pueden pedir otros seis meses de prórroga, y la solicitud se hace dentro del primer plazo. Lo que no hay es una segunda prórroga automática.',
+	},
+	{
+		question: '¿Presentar antes de tiempo ahorra?',
+		answer:
+			'Sí, y es lo primero que hay que mirar. Hay un 20 % de bonificación en la cuota si la autoliquidación se presenta dentro de los cinco meses siguientes al fallecimiento, y un 5 % si se presenta dentro de los seis. Se aplica sobre la cuota, así que el ahorro es mayor cuanto más alta es la base liquidable.',
+	},
+	{
+		question: '¿Por qué no me decís cuánto tengo que pagar?',
+		answer:
+			'Porque el ITPF tiene una tarifa distinta en cada comunidad autónoma y cambia por años. Andalucía la fijó en la Ley 5/2021, de Tributos Cedidos. En vez de una tabla que se queda vieja, damos el plazo, las bonificaciones y las reducciones, que son las tres cosas que se pierden por no mirar y valen dinero. El importe lo calcula la sede electrónica con los valores reales de cada bien.',
+	},
+	{
+		question: '¿La vivienda del fallecido paga impuesto?',
+		answer:
+			'En Andalucía tiene una reducción del 99 % de la base imponible, con independencia de su valor, y hay que mantener la adquisición durante tres años. Eso no significa que esté exenta, sino que la parte que tributa es mínima. Es la reducción más grande de la lista y la primera que hay que mirar.',
+	},
+	{
+		question: '¿Y si soy heredero y no me quiero hacer cargo?',
+		answer:
+			'Se puede aceptar o rechazar la herencia, y el plazo son quince días desde que se tuvo conocimiento del fallecimiento. Si no se dice nada, se acepta a beneficio de inventario. El impuesto se calcula sobre el valor de lo que recibe cada heredero, no sobre el de toda la herencia.'
+	},
+];
+
+const related = [
+	{
+		label: 'Herencias y testamentos',
+		href: '/herencias-testamentos/',
+		description: 'Aceptación, renuncia, legítima y partición.',
+	},
+	{
+		label: 'Calculadora de plazos',
+		href: '/calculadora-plazos/',
+		description: 'Los quince días para aceptar o rechazar, y el resto de plazos.',
+	},
+	{
+		label: 'Liquidación de gananciales',
+		href: '/liquidacion-gananciales/',
+		description: 'Primero se liquida la sociedad conyugal; después se hereda.',
+	},
+	{
+		label: 'Oficinas y ubicaciones',
+		href: '/ubicaciones/',
+		description: 'Consulta gratuita en Lucena o Málaga.',
+	},
+];
+---
+
+<SeoLegalPage
+	title="ITPF de una herencia: plazo y bonificación | Scruz"
+	description="Cuándo declarar el impuesto de sucesiones (seis meses), qué bonificación se pierde por presentar tarde y qué reducciones hay en Andalucía."
+	breadcrumb={[
+		{ label: 'Inicio', href: '/' },
+		{ label: 'Herencias y testamentos', href: '/herencias-testamentos/' },
+		{ label: 'Impuesto de sucesiones', href: '/impuestos-herencia/' },
+	]}
+	eyebrow="Herramientas"
+	headline="El impuesto de la herencia: cuándo y con qué bonificación"
+	intro="El ITPF se declara en los seis meses siguientes al fallecimiento, y presenting pronto bonifica un 20 % de la cuota. Estos son los plazos, las bonificaciones y las reducciones de Andalucía, que es donde se domicilia este despacho."
+	highlights={[
+		'Plazo de seis meses desde el fallecimiento',
+		'Bonificación del 20 % por declarar en los primeros 5 meses',
+		'Reducciones antes de la tarifa: 99 % de la vivienda habitual',
+		'Sin inventar la escala, que es de cada comunidad autónoma',
+	]}
+	serviceType="Cálculo de plazos y bonificaciones del ITPF en herencias"
+	areaServed="Andalucía y toda España"
+	sections={sections}
+	faqs={faqs}
+	related={related}
+/>
+
+<section class="bg-base-200 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-3xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">Tu fecha y tu bonificación</h2>
+		<p class="mb-6 text-base-content/70">
+			Fecha del fallecimiento y, si ya sabes cuánto te ha salido la cuota, el
+			importe con la bonificación aplicada.
+		</p>
+
+		<label class="mb-2 block font-semibold" for="fallecimiento">
+			Fecha del fallecimiento
+		</label>
+		<input id="fallecimiento" type="date" class="input input-bordered mb-4 w-full" />
+
+		<label class="mb-2 block font-semibold" for="cuota">
+			Cuota íntegra del impuesto (opcional)
+		</label>
+		<div class="join w-full">
+			<input
+				id="cuota"
+				type="number"
+				min="0"
+				step="0.01"
+				placeholder="0,00"
+				class="input input-bordered join-item w-full"
+			/>
+			<span class="btn btn-disabled join-item">€</span>
+		</div>
+		<p class="mt-2 text-sm text-base-content/60">
+			La cuota íntegra es la que sale tras aplicar reducciones y tarifa. Con eso
+			calculamos lo que te ahorra presentar pronto.
+		</p>
+
+		<div id="resultado" class="mt-6 hidden" aria-live="polite"></div>
+	</div>
+</section>
+
+<section class="bg-base-100 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-5xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">
+			Reducciones antes de calcular, en Andalucía
+		</h2>
+		<p class="mb-8 max-w-3xl text-base-content/70">
+			Las reducciones se aplican a la base imponible, antes de la tarifa. Son las
+			que hacen que la cuota salga más baja, y las que más se dejan sin mirar.
+		</p>
+		<div class="overflow-x-auto">
+			<table class="table-zebra table table-sm">
+				<thead>
+					<tr>
+						<th>Concepto</th>
+						<th>Reducción</th>
+						<th>Condiciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						REDUCCIONES_ANDALUCIA.map((r) => (
+							<tr>
+								<td class="font-semibold">{r.titulo}</td>
+								<td>{r.texto}</td>
+								<td class="text-sm">{r.nota}</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+		<p class="mt-4 max-w-3xl text-sm text-base-content/60">
+			Fuente: Ley 5/2021, de 20 de octubre, de Tributos Cedidos de la
+			Comunidad Autónoma de Andalucía, y normativa estatal del Impuesto sobre
+			Sucesiones y Donaciones. Cada herencia es un caso: lo que se aplica y en
+			qué orden se aplica es lo que se revisa en la consulta.
+		</p>
+	</div>
+</section>
+
+<script>
+	/**
+	 * Fecha límite de seis meses (art. 48 LGT) y ventanas de bonificación del
+	 * 20 % y del 5 % del art. 49.1. La aritmética es de calendario: meses
+	 * naturales, sin contar el día del fallecimiento como primer día.
+	 */
+	const inputFecha = document.getElementById('fallecimiento') as HTMLInputElement | null;
+	const inputCuota = document.getElementById('cuota') as HTMLInputElement | null;
+	const resultado = document.getElementById('resultado');
+
+	const sumarMeses = (fecha: Date, meses: number) => {
+		const d = new Date(fecha);
+		const dia = d.getDate();
+		d.setDate(1);
+		d.setMonth(d.getMonth() + meses);
+		const ultimo = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+		d.setDate(Math.min(dia, ultimo));
+		return d;
+	};
+
+	const largo = (d: Date) =>
+		d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+	const euros = (n: number) =>
+		n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+
+	const calcular = () => {
+		if (!resultado || !inputFecha) return;
+		if (!inputFecha.value) {
+			resultado.classList.add('hidden');
+			return;
+		}
+
+		const muerte = new Date(`${inputFecha.value}T12:00:00`);
+		const limite = sumarMeses(muerte, 6);
+		const bono20 = sumarMeses(muerte, 5);
+		const hoy = new Date();
+		const dias = Math.round((bono20.getTime() - hoy.getTime()) / 86_400_000);
+		const pasado = hoy.getTime() > limite.getTime();
+
+		let bonif = 0;
+		let textoBonif = 'Sin bonificación por presentar pronto.';
+		const cuota = Number(inputCuota?.value ?? 0);
+		if (cuota > 0) {
+			if (hoy.getTime() <= bono20.getTime()) {
+				bonif = cuota * 0.2;
+				textoBonif = `Bonificación del 20 %: te ahorras ${euros(bonif)}.`;
+			} else if (hoy.getTime() <= limite.getTime()) {
+				bonif = cuota * 0.05;
+				textoBonif = `Bonificación del 5 %: te ahorras ${euros(bonif)}.`;
+			}
+		}
+
+		let aviso = '';
+		if (pasado) {
+			aviso =
+				'<p class="mt-2"><strong class="text-error">El plazo de seis meses ha vencido.</strong> ' +
+				'Aún así se puede presentar: lo que se añade es el interés de demora y la ' +
+				'posibilidad de que la Administración liquide de oficio. Se presenta igualmente, ' +
+				'y se regulariza.</p>';
+		} else if (dias >= 0) {
+			aviso = `<p class="mt-2"><strong>${dias} días</strong> para entrar en la bonificación del 20 %.</p>`;
+		}
+
+		resultado.innerHTML =
+			'<div class="rounded-box border border-primary/30 bg-primary/5 p-5">' +
+			'<dl class="space-y-3">' +
+			`<div><dt class="font-semibold">Plazo para declarar y pagar</dt><dd>Hasta el ${largo(limite)} (seis meses, art. 48 LGT).</dd></div>` +
+			`<div><dt class="font-semibold">Bonificación del 20 %</dt><dd>Presentando hasta el ${largo(bono20)}.</dd></div>` +
+			`<div><dt class="font-semibold">Bonificación del 5 %</dt><dd>Presentando hasta el ${largo(limite)}.</dd></div>` +
+			`</dl>` +
+			aviso +
+			(cuota > 0
+				? `<p class="mt-3"><strong>${textoBonif}</strong> El impuesto a ingresar sería ${euros(cuota - bonif)}.</p>`
+				: '') +
+			'<p class="mt-4"><a class="link link-primary" href="/ubicaciones/">Revisar mi herencia, gratis</a></p>' +
+			'</div>';
+		resultado.classList.remove('hidden');
+	};
+
+	inputFecha?.addEventListener('change', calcular);
+	inputFecha?.addEventListener('input', calcular);
+	inputCuota?.addEventListener('input', calcular);
+</script>

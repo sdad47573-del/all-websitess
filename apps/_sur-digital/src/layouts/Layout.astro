@@ -1,0 +1,201 @@
+---
+import "../styles/global.css";
+import "../styles/reveal.css";
+import { CONTACT } from "../data/contact";
+import type { Crumb } from "../data/breadcrumbs";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  path?: string;
+  noindex?: boolean;
+  article?: boolean;
+  breadcrumbs?: Crumb[];
+}
+
+const {
+  title,
+  description,
+  // URL absoluta de la imagen para redes sociales (og:image / twitter:image)
+  image = "/og/default.png",
+  // Ruta relativa de la página, para canonical y og:url
+  path = "/",
+  // Desactiva indexación (para la 404 y páginas internas)
+  noindex = false,
+  // og:type article para páginas de contenido (posts del blog)
+  article = false,
+  // Miga de pan para el JSON-LD de las páginas internas (no la home).
+  breadcrumbs = [],
+} = Astro.props satisfies Props;
+
+// El dominio sale de astro.config.mjs (site), no de una URL escrita a mano.
+const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
+const absoluteUrl = new URL(path, site).href;
+// Las OG siempre absolutas: sin URL completa no las previsualizan WhatsApp, etc.
+const ogImage = new URL(image, site).href;
+const ogAlt = `${title} — Sur Digital`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <script is:inline>
+      // Gate: marca que hay JS antes del primer paint para poder ocultar
+      // elementos a animar sin FOUC ni contenido invisible sin JS.
+      document.documentElement.classList.add("js");
+
+      // Tema antes del primer paint (anti-FOUC): elección guardada del
+      // visitante > preferencia del SO. Sin JS, el CSS cae en el tema claro
+      // por defecto (data-theme se define en :root de global.css).
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var dark =
+            saved === "malaga-dark" ||
+            (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.dataset.theme = dark
+            ? "malaga-dark"
+            : "malaga-light";
+        } catch (e) {
+          document.documentElement.dataset.theme = "malaga-light";
+        }
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- El color de la barra de direcciones en móvil. Cambia con el tema para
+         que no quede una franja blanca sobre la web oscura. -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1d232a" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Blog de Sur Digital"
+      href="/rss.xml"
+    />
+    <meta name="author" content={CONTACT.name} />
+    <meta name="geo.region" content="ES-MA" />
+    <meta name="geo.placename" content="Málaga" />
+    <!-- SEO / indexación -->
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    {
+      // Verificación de Google Search Console vía meta tag (opcional):
+      // define PUBLIC_GOOGLE_SITE_VERIFICATION con el valor que da Google
+      import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION && (
+        <meta
+          name="google-site-verification"
+          content={import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION}
+        />
+      )
+    }
+    <link rel="canonical" href={absoluteUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={article ? "article" : "website"} />
+    <meta property="og:site_name" content="Sur Digital" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={absoluteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+    <!-- Slot para inyecciones de head (p. ej. JSON-LD de Schema.org) -->
+    <slot name="head" />
+    {
+      // Miga de pan: solo en páginas internas, donde aporta contexto real.
+      breadcrumbs.length > 1 && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: breadcrumbs.map((crumb, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: crumb.label,
+              ...(i === breadcrumbs.length - 1 && crumb.href
+                ? {}
+                : { item: new URL(crumb.href ?? "/", site).href }),
+            })),
+          })}
+        />
+      )
+    }
+  </head>
+  <body>
+    <!-- Enlace de salto: primer elemento tabulable de la página, para no
+         obligar a recorrer la navegación con el teclado en cada visita.
+         Va en el body y no en el head a propósito: Astro saca del head todo
+         lo que no sea metadato y arrastraría detrás el title y la meta
+         description. Solo se ve al recibir el foco. -->
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-btn focus:bg-primary focus:px-4 focus:py-2 focus:font-bold focus:text-primary-content"
+      >Saltar al contenido</a
+    >
+
+    <slot />
+
+    <script>
+      // Aparición al hacer scroll con IntersectionObserver (cero dependencias).
+      // - [data-reveal]: el elemento aparece entero.
+      // - [data-reveal-group]: sus hijos directos aparecen escalonados.
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      const groups = document.querySelectorAll<HTMLElement>("[data-reveal-group]");
+
+      function init() {
+        if (prefersReducedMotion) return; // CSS ya fuerza estado visible
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              (entry.target as HTMLElement).classList.add("is-revealed");
+              observer.unobserve(entry.target);
+            }
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+        );
+
+        reveals.forEach((el) => observer.observe(el));
+
+        groups.forEach((group) => {
+          const children = Array.from(group.children) as HTMLElement[];
+          children.forEach((child, i) => {
+            child.style.setProperty("--reveal-delay", `${Math.min(i * 90, 450)}ms`);
+            observer.observe(child);
+          });
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init, { once: true });
+      } else {
+        init();
+      }
+    </script>
+  </body>
+</html>

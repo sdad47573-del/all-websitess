@@ -1,0 +1,136 @@
+---
+// Datos estructurados Schema.org para rich snippets en Google:
+// 1. LocalBusiness
+// 2. FAQPage (de DATA.faq — misma fuente que la sección visible)
+//
+// ⚠️ No se publica aggregateRating/review: Google penaliza el marcado de
+// reseñas no verificables. Cuando tengas reseñas reales (con permiso del
+// cliente) puedes volver a añadirlo.
+//
+// Verificación recomendada: https://search.google.com/test/rich-results
+import { DATA } from "../data/data.astro";
+import { CONTACT } from "../data/contact";
+
+const site = (
+  Astro.site?.toString() ?? "https://sur-digital.vercel.app"
+).replace(/\/$/, "");
+
+// Limpia el HTML de los textos (los datos llevan <span> para la web,
+// pero el JSON-LD debe ser texto plano)
+const stripHtml = (s: string) =>
+  s.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+
+const business = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${site}/#business`,
+  name: "Sur Digital",
+  description:
+    "Diseño y desarrollo web en Málaga para negocios locales. Landing pages gratis, webs corporativas y tiendas online rápidas, adaptadas a móvil y optimizadas para buscadores.",
+  url: site,
+  sameAs: [CONTACT.linkedin],
+  image: `${site}/logo-512.png`,
+  logo: `${site}/logo-512.png`,
+  priceRange: "€",
+  areaServed: "Málaga y provincia",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Servicios de diseño web",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        name: "Landing page",
+        price: "0",
+        priceCurrency: "EUR",
+        description: "Página de una sola página, responsive y optimizada.",
+      },
+      {
+        "@type": "Offer",
+        name: "Web completa",
+        price: "99",
+        priceCurrency: "EUR",
+        description:
+          "Hasta 5 páginas, dominio propio, hosting 1 año y SEO básico.",
+      },
+      {
+        "@type": "Offer",
+        name: "Pro + Tienda online",
+        price: "299",
+        priceCurrency: "EUR",
+        description:
+          "Tienda online con pasarela de pago y SEO local en Google Maps.",
+      },
+    ],
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "C. Marqués de Larios, 11",
+    addressLocality: "Málaga",
+    postalCode: "29005",
+    addressRegion: "Málaga",
+    addressCountry: "ES",
+  },
+  hasMap: "https://maps.app.goo.gl/qEpSpZeGCBY3UpwE6",
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+      opens: "10:00",
+      closes: "20:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Friday"],
+      opens: "10:00",
+      closes: "15:00",
+    },
+  ],
+};
+
+const website = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site}/#website`,
+  url: site,
+  name: "Sur Digital",
+  inLanguage: "es-ES",
+  publisher: { "@id": `${site}/#business` },
+  // La búsqueda interna del blog la ofrece Pagefind, así que la acción va
+  // contra el buscador del propio sitio y no contra uno de Google.
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${site}/blog/?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const faqPage = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${site}/#faq`,
+  mainEntity: DATA.faq.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: stripHtml(a) },
+  })),
+};
+---
+
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(business)}
+/>
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(website)}
+/>
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(faqPage)}
+/>

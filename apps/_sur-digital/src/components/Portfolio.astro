@@ -1,0 +1,412 @@
+---
+// Proyectos reales publicados. Datos y capturas en data/portfolio.
+import { Image } from "astro:assets";
+import { PORTFOLIO } from "../data/portfolio";
+
+// Categorías en el orden en que se pintan los filtros. Se cuentan sobre los
+// propios datos para que un proyecto nuevo no obligue a tocar esta lista.
+const CATEGORIES = [
+  "Restaurantes y bares",
+  "Peluquería y belleza",
+  "Comercio",
+  "Taller y motor",
+  "Servicios profesionales",
+].filter((c) => PORTFOLIO.some((p) => p.category === c));
+
+// Dos tags como máximo en la card normal: con tres, los que se repiten entre
+// proyectos (Tapas, Teatinos, Peluquería…) se amontonan y la fila se ensucia.
+const MAX_TAGS = 2;
+
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-");
+---
+
+<section
+  id="portafolio"
+  class="pt-14 pb-20 bg-gradient-to-b from-base-100 to-base-200 flex flex-col items-center"
+>
+  <div class="container mx-auto px-6 flex flex-col items-center">
+    <div data-reveal class="flex flex-col items-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-base-content text-center">
+        Proyectos <span class="text-wave">reales</span>
+      </h2>
+      <p class="text-base-content/70 text-center max-w-2xl mt-3">
+        Webs publicadas para negocios reales. Explora cada proyecto y descubre
+        cómo presentamos su marca, sus productos y sus servicios.
+      </p>
+    </div>
+
+    <!-- Filtros por categoría. Sin JS todos los proyectos quedan visibles. -->
+    <div data-reveal-group
+      class="flex flex-wrap justify-center gap-2 mt-8"
+      role="group"
+      aria-label="Filtrar proyectos por categoría"
+    >
+      <button
+        type="button"
+        class="btn btn-sm"
+        data-filter="todos"
+        aria-pressed="true"
+      >
+        Todos
+        <span class="badge badge-sm badge-ghost">{PORTFOLIO.length}</span>
+      </button>
+      {
+        CATEGORIES.map((category) => (
+          <button
+            type="button"
+            class="btn btn-sm btn-ghost"
+            data-filter={slugify(category)}
+            data-label={category}
+            aria-pressed="false"
+          >
+            {category}
+            <span class="badge badge-sm badge-ghost">
+              {PORTFOLIO.filter((p) => p.category === category).length}
+            </span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p data-portfolio-count class="sr-only" role="status" aria-live="polite">
+      Mostrando {PORTFOLIO.length} proyectos
+    </p>
+
+    <ul
+      id="portafolio-grid"
+      data-reveal-group
+      data-portfolio-grid
+      class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 max-w-6xl w-full mt-8 grid-flow-row-dense"
+    >
+      {
+        PORTFOLIO.map(
+          ({ title, sector, category, description, tags, accent, url, preview, destacado }) => (
+          <li
+            data-category={slugify(category)}
+            data-portfolio-card
+            data-destacado={destacado ? "" : undefined}
+            class={[
+              "card relative flex w-full flex-col overflow-hidden border border-base-300 bg-base-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:transform-none motion-reduce:transition-none",
+              // La destacada ocupa 2×2 celdas del mosaico. Al ser grid item
+              // estirado (stretch), mide exactamente lo que sus vecinas: filas
+              // alineadas y cero huecos, sin JS de por medio.
+              destacado ? "sm:col-span-2 sm:row-span-2 sm:min-h-[30rem]" : "",
+            ].join(" ")}
+          >
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex flex-1 flex-col focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              <div
+                class={[
+                  "relative overflow-hidden bg-base-200 aspect-[1254/564]",
+                  // En la destacada (2×2) la imagen crece hasta llenar el
+                  // hueco que sobre en la card; object-cover recorta el
+                  // screenshot por el centro sin deformarlo.
+                  destacado ? "sm:aspect-auto sm:min-h-0 sm:flex-1" : "",
+                ].join(" ")}
+              >
+                <Image
+                  src={preview}
+                  alt={`Captura de la web de ${title}`}
+                  widths={destacado ? [480, 640, 800, 1200] : [320, 480, 640, 800]}
+                  sizes={
+                    destacado
+                      ? "(max-width: 639px) 100vw, (max-width: 1023px) 100vw, 60vw"
+                      : "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                  }
+                  loading="lazy"
+                  class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
+                />
+              </div>
+
+              <div
+                class={[
+                  "p-5 flex flex-col gap-1.5",
+                  // La destacada incluye descripción y más aire; la imagen de
+                  // arriba absorbe el resto con flex-1 para que la altura total
+                  // la marquen las cards normales del mosaico.
+                  destacado ? "sm:p-6 sm:gap-2" : "",
+                ].join(" ")}
+              >
+                <p
+                  class={`truncate text-xs font-bold uppercase tracking-wide ${accent.split(" ")[1]}`}
+                >
+                  {sector}
+                </p>
+                <h3
+                  class={`font-bold text-base-content leading-snug ${
+                    // Altura fija de 2 líneas en la card normal: todos los
+                    // títulos miden lo mismo y las filas del mosaico cuadran.
+                    destacado
+                      ? "text-2xl line-clamp-2 sm:text-3xl"
+                      : "text-lg line-clamp-2 min-h-[3.25rem]"
+                  }`}
+                >
+                  {title}
+                </h3>
+
+                {/* La descripción es el bloque más repetido del listado: solo
+                    aparece en las destacadas. */}
+                {destacado && (
+                  <p class="text-sm text-base-content/70 leading-relaxed max-w-prose">
+                    {description}
+                  </p>
+                )}
+
+                {/* Zona de tags de altura fija (2 filas como máximo): un tag
+                    que salte de línea no puede descolocar la fila del mosaico. */}
+                <div class="flex h-[52px] flex-wrap content-start gap-1.5 overflow-hidden pt-1.5">
+                  {tags.slice(0, destacado ? tags.length : MAX_TAGS).map((tag) => (
+                    <span class="badge badge-sm badge-outline">{tag}</span>
+                  ))}
+                </div>
+
+                <p
+                  class="mt-auto pt-2 text-xs font-bold text-primary inline-flex items-center gap-1"
+                >
+                  Visitar web
+                  <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </p>
+              </div>
+              <span class="sr-only">de {title} (abre en una pestaña nueva)</span>
+            </a>
+            <button
+              type="button"
+              class="portfolio-quick-view-button btn btn-sm btn-circle absolute top-3 right-3 z-10 border-base-300 bg-base-100/90 text-base-content shadow-md transition-transform duration-200 hover:-translate-y-0.5 hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
+              data-quick-view
+              data-title={title}
+              data-sector={sector}
+              data-description={description}
+              data-url={url}
+              data-tags={tags.join("|")}
+              aria-haspopup="dialog"
+              aria-controls="portfolio-quick-view"
+              aria-label={`Vista rápida de ${title}`}
+            >
+              <svg aria-hidden="true" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 12s3.3-6 9.5-6 9.5 6 9.5 6-3.3 6-9.5 6-9.5-6-9.5-6Z" />
+                <circle cx="12" cy="12" r="2.5" />
+              </svg>
+              <span class="sr-only">Vista rápida</span>
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+
+    <dialog
+      id="portfolio-quick-view"
+      data-portfolio-dialog
+      class="modal"
+      aria-labelledby="portfolio-dialog-title"
+      aria-describedby="portfolio-dialog-description"
+    >
+      <div class="portfolio-dialog-box modal-box relative w-11/12 max-w-3xl p-0 overflow-hidden">
+        <button
+          type="button"
+          class="btn btn-sm btn-circle btn-ghost absolute top-3 right-3 z-10 bg-base-100/90"
+          data-dialog-close
+          aria-label="Cerrar vista rápida"
+        >
+          <svg aria-hidden="true" class="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+            <path d="m4 4 8 8M12 4l-8 8" />
+          </svg>
+        </button>
+        <img data-dialog-image class="aspect-[1254/564] w-full bg-base-200 object-cover" alt="" />
+        <div class="flex flex-col gap-3 p-6 sm:p-8">
+          <p data-dialog-sector class="text-xs font-bold uppercase tracking-wide text-primary"></p>
+          <h2 id="portfolio-dialog-title" data-dialog-title class="text-2xl font-bold text-base-content sm:text-3xl"></h2>
+          <p id="portfolio-dialog-description" data-dialog-description class="text-base-content/75 leading-relaxed"></p>
+          <ul data-dialog-tags class="flex flex-wrap gap-2" aria-label="Etiquetas del proyecto"></ul>
+          <a data-dialog-link class="btn btn-primary mt-2 self-start" target="_blank" rel="noopener noreferrer">
+            Visitar web <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button aria-label="Cerrar vista rápida">Cerrar</button>
+      </form>
+    </dialog>
+
+    <p data-portfolio-empty hidden class="text-base-content/70 mt-10 text-center">
+      No hay proyectos en esta categoría todavía.
+    </p>
+  </div>
+</section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    [data-portfolio-card].portfolio-card-enter {
+      animation: portfolio-card-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: var(--portfolio-stagger, 0ms);
+    }
+
+    @keyframes portfolio-card-enter {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    dialog[data-portfolio-dialog][open] .portfolio-dialog-box {
+      animation: portfolio-dialog-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes portfolio-dialog-enter {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    dialog[data-portfolio-dialog][open]::backdrop {
+      animation: portfolio-backdrop-enter 200ms ease-out both;
+    }
+
+    @keyframes portfolio-backdrop-enter {
+      from { background-color: rgb(0 0 0 / 0); }
+      to { background-color: rgb(0 0 0 / 0.35); }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-portfolio-card].portfolio-card-enter,
+    dialog[data-portfolio-dialog][open] .portfolio-dialog-box,
+    dialog[data-portfolio-dialog][open]::backdrop {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Filtro del portfolio por categoría. Botones con aria-pressed, region
+  // "status" para anunciar el resultado y estado por defecto "todo visible",
+  // de modo que la sección funciona igual sin JavaScript.
+  const grid = document.querySelector<HTMLElement>("[data-portfolio-grid]");
+  const buttons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-filter]")
+  );
+  const status = document.querySelector<HTMLElement>("[data-portfolio-count]");
+  const empty = document.querySelector<HTMLElement>("[data-portfolio-empty]");
+  const portfolioDialog = document.querySelector<HTMLDialogElement>("[data-portfolio-dialog]");
+  const quickViewButtons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-quick-view]")
+  );
+
+  if (portfolioDialog) {
+    const dialogImage = portfolioDialog.querySelector<HTMLImageElement>("[data-dialog-image]");
+    const dialogSector = portfolioDialog.querySelector<HTMLElement>("[data-dialog-sector]");
+    const dialogTitle = portfolioDialog.querySelector<HTMLElement>("[data-dialog-title]");
+    const dialogDescription = portfolioDialog.querySelector<HTMLElement>("[data-dialog-description]");
+    const dialogTags = portfolioDialog.querySelector<HTMLUListElement>("[data-dialog-tags]");
+    const dialogLink = portfolioDialog.querySelector<HTMLAnchorElement>("[data-dialog-link]");
+
+    for (const button of quickViewButtons) {
+      button.addEventListener("click", () => {
+        if (!dialogImage || !dialogSector || !dialogTitle || !dialogDescription || !dialogTags || !dialogLink) return;
+
+        const title = button.dataset.title ?? "Proyecto";
+        const cardImage = button.closest<HTMLElement>("[data-category]")
+          ?.querySelector<HTMLImageElement>("img");
+        dialogImage.src = cardImage?.currentSrc ?? cardImage?.src ?? "";
+        dialogImage.alt = `Captura de la web de ${title}`;
+        dialogSector.textContent = button.dataset.sector ?? "";
+        dialogTitle.textContent = title;
+        dialogDescription.textContent = button.dataset.description ?? "";
+        dialogLink.href = button.dataset.url ?? "#";
+        dialogTags.replaceChildren(
+          ...(button.dataset.tags ?? "").split("|").filter(Boolean).map((tag) => {
+            const item = document.createElement("li");
+            item.className = "badge badge-outline";
+            item.textContent = tag;
+            return item;
+          })
+        );
+        portfolioDialog.showModal();
+      });
+    }
+
+    portfolioDialog.querySelector("[data-dialog-close]")?.addEventListener("click", () => {
+      portfolioDialog.close();
+    });
+    portfolioDialog.addEventListener("click", (event) => {
+      if (event.target === portfolioDialog) portfolioDialog.close();
+    });
+  }
+
+  if (grid instanceof HTMLElement && buttons.length > 0) {
+    const portfolioGrid = grid;
+    // El mosaico lo resuelve el CSS (grid + grid-flow-row-dense + estirado de
+    // las destacadas a 2×2): no hay que medir alturas ni recolocar nada al
+    // redimensionar, y sin JavaScript la rejilla también se ve bien.
+    const cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-category]"));
+
+    function apply(filter: string) {
+      const filtering = filter !== "todos";
+      let visible = 0;
+
+      const visibleCards: HTMLElement[] = [];
+      for (const card of cards) {
+        const match = !filtering || card.dataset.category === filter;
+        card.hidden = !match;
+        card.classList.remove("portfolio-card-enter");
+        if (match) {
+          visible += 1;
+          visibleCards.push(card);
+        }
+      }
+      requestAnimationFrame(() => {
+        visibleCards.forEach((card, index) => {
+          card.style.setProperty("--portfolio-stagger", `${Math.min(index, 8) * 45}ms`);
+          card.classList.add("portfolio-card-enter");
+        });
+      });
+
+      for (const button of buttons) {
+        const active = button.dataset.filter === filter;
+        button.setAttribute("aria-pressed", String(active));
+        // El botón activo mantiene el aspecto primario del CTA.
+        button.classList.toggle("btn-primary", active);
+        button.classList.toggle("btn-ghost", !active);
+      }
+
+      if (status) {
+        // data-label y no el texto del botón: el botón incluye el contador
+        // de proyectos y ese número no debe colarse en el anuncio.
+        const label = buttons.find((b) => b.dataset.filter === filter)?.dataset
+          .label;
+        status.textContent = `Mostrando ${visible} ${
+          visible === 1 ? "proyecto" : "proyectos"
+        }${label ? ` en ${label}` : ""}`;
+      }
+      if (empty) empty.hidden = visible > 0;
+    }
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => apply(button.dataset.filter ?? "todos"));
+    }
+
+    // aria-controls apunta a la lista filtrada, no a la sección completa.
+    for (const button of buttons) {
+      button.setAttribute("aria-controls", portfolioGrid.id);
+    }
+  }
+</script>

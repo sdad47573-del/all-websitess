@@ -1,0 +1,236 @@
+---
+// Calculadora de presupuesto: estimación orientativa, en el navegador y sin
+// backend. No inventa precios: suma los planes de DATA.plans y los extras de
+// DATA.extras, que son los mismos que se publican en /precios/. Si un extra
+// cambia de nombre, el build falla en vez de calcular mal.
+import { CONTACT } from "../data/contact";
+import { DATA } from "../data/data.astro";
+
+// Busca el importe numérico de un extra por su nombre (única fuente de precios)
+const extra = (name: string) => {
+  const found = DATA.extras.find((item) => item.name === name);
+  if (!found) throw new Error(`Calculadora: no existe el extra "${name}"`);
+  return found.amount;
+};
+
+const paginaExtra = extra("Página adicional");
+const idiomaExtra = extra("Idioma adicional");
+const logoExtra = extra("Logo e identidad básica");
+const mantenimientoExtra = extra("Mantenimiento mensual");
+---
+
+<section
+  id="calculadora"
+  class="pt-14 pb-20 bg-gradient-to-b from-base-200 to-base-100 flex flex-col items-center"
+>
+  <div class="container mx-auto px-6 max-w-3xl">
+    <div data-reveal class="text-center mb-10">
+      <h2 class="text-4xl md:text-5xl font-bold text-base-content">
+        Calcula tu <span class="text-wave">presupuesto</span>
+      </h2>
+      <p class="text-base-content/70 max-w-2xl mx-auto mt-3">
+        Marca lo que necesitas y verás una estimación al momento, con las
+        tarifas que ya tenemos publicadas. El precio definitivo se cierra por
+        escrito antes de empezar.
+      </p>
+    </div>
+
+    <!-- Es un div y no un <form> a propósito: sin botón de envío, evitamos
+         que pulsar Enter en el campo de páginas recargue la página. -->
+    <div
+      id="calc"
+      data-page-price={paginaExtra}
+      role="group"
+      aria-label="Calculadora de presupuesto"
+      class="card bg-base-100 shadow-md border border-base-300"
+    >
+      <div class="card-body gap-6">
+        <fieldset>
+          <legend class="font-bold text-lg mb-3">1. ¿Qué necesitas?</legend>
+          <div class="flex flex-col gap-2">
+            {
+              DATA.plans.map((plan, i) => (
+                <label class="flex items-start gap-3 cursor-pointer rounded-box border border-base-300 p-3 hover:border-secondary transition-colors">
+                  <input
+                    type="radio"
+                    name="plan"
+                    value={plan.name}
+                    data-amount={plan.price}
+                    data-pages={plan.price > 0 ? "true" : "false"}
+                    checked={i === 1}
+                    class="radio radio-secondary radio-sm mt-1 shrink-0"
+                  />
+                  <span>
+                    <span class="font-bold">{plan.name}</span>
+                    <span class="badge badge-sm badge-ghost ml-2 font-bold">
+                      {plan.price}€
+                    </span>
+                    <span class="block text-sm text-base-content/60">
+                      {plan.tagline}
+                    </span>
+                  </span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <div id="calc-pages-field" class="flex items-center justify-between gap-4 flex-wrap">
+          <label for="calc-pages" class="font-bold text-lg">
+            2. ¿Cuántas páginas extra?
+            <span class="block text-sm font-normal text-base-content/60">
+              {paginaExtra}€ por página adicional (a partir del plan Web Completa)
+            </span>
+          </label>
+          <input
+            id="calc-pages"
+            type="number"
+            min="0"
+            max="10"
+            step="1"
+            value="0"
+            inputmode="numeric"
+            aria-label="Número de páginas extra"
+            class="input input-bordered w-24 text-center"
+          />
+        </div>
+
+        <fieldset>
+          <legend class="font-bold text-lg mb-3">3. ¿Algo más?</legend>
+          <div class="flex flex-col gap-3">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="addon"
+                data-amount={idiomaExtra}
+                class="checkbox checkbox-secondary checkbox-sm mt-1 shrink-0"
+              />
+              <span>
+                <span class="font-bold">Segundo idioma</span>
+                <span class="block text-sm text-base-content/60">
+                  +{idiomaExtra}€ · estructura y SEO del segundo idioma
+                  (traducción aparte)
+                </span>
+              </span>
+            </label>
+
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="addon"
+                data-amount={logoExtra}
+                class="checkbox checkbox-secondary checkbox-sm mt-1 shrink-0"
+              />
+              <span>
+                <span class="font-bold">Logo e identidad básica</span>
+                <span class="block text-sm text-base-content/60">
+                  +{logoExtra}€ · logo en todos los formatos, paleta y
+                  tipografías
+                </span>
+              </span>
+            </label>
+
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="addon"
+                data-amount={mantenimientoExtra}
+                data-monthly="true"
+                class="checkbox checkbox-secondary checkbox-sm mt-1 shrink-0"
+              />
+              <span>
+                <span class="font-bold">Mantenimiento mensual</span>
+                <span class="block text-sm text-base-content/60">
+                  +{mantenimientoExtra}€/mes · actualizaciones, copias y cambios
+                  de contenido (sin permanencia)
+                </span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="divider my-0"></div>
+
+        <div class="text-center" aria-live="polite">
+          <p class="text-sm text-base-content/60">Estimación orientativa</p>
+          <p id="calc-total" class="text-4xl md:text-5xl font-black">
+            {DATA.plans[1].price}€
+          </p>
+          <p id="calc-monthly" class="h-5 text-sm font-bold text-secondary"></p>
+        </div>
+
+        <a
+          href={CONTACT.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-lg w-full"
+        >
+          Confírmalo por LinkedIn
+        </a>
+
+        <p class="text-center text-xs text-base-content/60">
+          Cálculo hecho con nuestras tarifas publicadas, sin IVA y sin
+          permanencia. El importe final se cierra por escrito antes de tocar
+          nada.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const calc = document.getElementById("calc");
+
+  if (calc) {
+    // Alias ya no nulo: dentro de update() el compilador pierde el
+    // estrechamiento del if, porque la función puede llamarse más tarde.
+    const root: HTMLElement = calc;
+    const pagePrice = Number(calc.dataset.pagePrice ?? 0);
+    const plans = calc.querySelectorAll<HTMLInputElement>('input[name="plan"]');
+    const pages = calc.querySelector<HTMLInputElement>("#calc-pages");
+    const pagesField = calc.querySelector<HTMLElement>("#calc-pages-field");
+    const addons = calc.querySelectorAll<HTMLInputElement>(
+      'input[name="addon"]'
+    );
+    const totalEl = calc.querySelector<HTMLElement>("#calc-total");
+    const monthlyEl = calc.querySelector<HTMLElement>("#calc-monthly");
+
+    function update() {
+      const plan = root.querySelector<HTMLInputElement>(
+        'input[name="plan"]:checked'
+      );
+      let total = Number(plan?.dataset.amount ?? 0);
+      let monthly = 0;
+
+      // Las páginas extra solo tienen sentido a partir del plan de pago
+      const pagesAllowed = plan?.dataset.pages === "true";
+      if (pages) {
+        pages.disabled = !pagesAllowed;
+        if (!pagesAllowed) pages.value = "0";
+        total += Number(pages.value) * pagePrice;
+      }
+      if (pagesField) {
+        pagesField.classList.toggle("opacity-40", !pagesAllowed);
+      }
+
+      for (const addon of addons) {
+        if (!addon.checked) continue;
+        const amount = Number(addon.dataset.amount ?? 0);
+        if (addon.dataset.monthly === "true") monthly += amount;
+        else total += amount;
+      }
+
+      if (totalEl) totalEl.textContent = `${total}€`;
+      if (monthlyEl) {
+        monthlyEl.textContent =
+          monthly > 0 ? `+ ${monthly}€/mes de mantenimiento` : "";
+      }
+    }
+
+    for (const input of [...plans, ...addons, pages]) {
+      input?.addEventListener("input", update);
+      input?.addEventListener("change", update);
+    }
+    update();
+  }
+</script>

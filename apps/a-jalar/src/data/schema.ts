@@ -38,14 +38,6 @@ export const menuSchema = {
 			'@type': 'MenuItem',
 			name: item.name,
 			description: item.description,
-			offers: {
-				'@type': 'Offer',
-				priceCurrency: 'EUR',
-				// 'a consultar' no es un importe válido para el esquema: ahí se omite la oferta.
-				...(item.price !== 'a consultar' && {
-					price: item.price.replace(' €', '').replace(',', '.'),
-				}),
-			},
 		})),
 	})),
 };

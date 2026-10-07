@@ -1,0 +1,355 @@
+---
+import SeoLegalPage from '../components/SeoLegalPage.astro';
+import {
+	BONIFICACION_TELEMATICA,
+	DEVOLUCION_ACUERDO,
+	ORDENES_SIN_TASA,
+	PROCESOS_TASA,
+} from '../data/TASA_JUDICIAL';
+
+/**
+ * Calculadora de la tasa judicial.
+ *
+ * El 90 % del valor de esta página está en una frase que casi nadie dice: las
+ * personas físicas están exentas de la tasa judicial desde 2015. Todo lo demás
+ * —la cuota fija por tipo de proceso, la bonificación del 10 % por
+ * presentación telemática, qué conceptos anularon— viene de
+ * `src/data/TASA_JUDICIAL.ts`, con la Ley 10/2012 y la nota de la AEAT sobre la
+ * STC 140/2016 al lado de cada cifra.
+ *
+ * No se pide la cuantía a propósito. Se podría, para que la página parezca más
+ * potente, pero la cuota variable está anulada desde 2016: el importe no depende
+ * de cuánto se reclame, así que preguntar la cuantía sería una forma de
+*engañar al visitante. Se explica por qué no se pregunta.
+ */
+
+const porOrden = (['civil', 'contencioso', 'social'] as const).map((orden) => ({
+	orden,
+	procesos: PROCESOS_TASA.filter((p) => p.orden === orden),
+}));
+
+const anuladas = PROCESOS_TASA.filter((p) => p.anulada).length;
+
+const sections = [
+	{
+		title: 'Si eres persona física, no pagas',
+		content:
+			'El artículo 4.2.a de la Ley 10/2012 exime a las personas físicas, y así sigue después de la reforma de 2015. No hay umbral de renta ni condición: o se está exento o se está sujeto. Es la primera pregunta de cualquier presupuesto, porque hay despachos que siguen pasando la tasa al cliente particular y quien no lo comprueba la paga dos veces. Cuando la otra parte es una empresa, la tributa quien promueve el procedimiento y, si pierde, la acaba pagando en las costas.',
+		points: [
+			'Persona física: 0 euros, en todos los órdenes.',
+			'Persona jurídica: cuota fija según el tipo de proceso.',
+			'No hay umbral de facturación por debajo del cual la empresa esté exenta.',
+			'En el orden penal no hay tasa en ningún caso.',
+		],
+	},
+	{
+		title: 'Por qué no te pido la cuantía del litigio',
+		content:
+			'Porque ya no importa. El artículo 7.2, que aplicaba un 0,5 % sobre la cuantía, fue declarado inconstitucional y nulo por la sentencia del Tribunal Constitucional 140/2016, de 21 de julio. Antes, reclamar 100.000 euros o 1.000 costaba una cantidad distinta; hoy el importe solo depende del tipo de procedimiento. Es la parte de la reforma que más beneficia a los litigantes y la que menos se ha explicado.',
+		points: [
+			'Cuantías indeterminadas: la base se valoraba en 18.000 euros, y ya no importa porque la parte variable está anulada.',
+			'Si la cuantía del proceso sube durante el procedimiento, ya no hay que presentar una liquidación complementaria por la tasa.',
+			'Ojo con la letra pequeña de muchas webs, que siguen hablando de medio por ciento de la cuantía como si fuera el criterio.',
+		],
+	},
+	{
+		title: 'Lo que sí se puede ahorrar',
+		content:
+			'La bonificación del 10 % por presentar los escritos por vía telemática (art. 10) es automática en la práctica: se hace todo por la sede. Además, si el proceso termina con acuerdo o el demandado se allana, se devuelve el 60 % de la cuota (art. 8.5), y un 20 % si se acumulan procesos (art. 8.6). Y si las costas se imponen a la otra parte, la tasa va con ellas (art. 241.1.7ª de la Ley de Enjuiciamiento Civil): con una sentencia adversa, la acaba pagando quien pierde.',
+		points: [
+			'Bonificación del 10 % por presentación telemática.',
+			'Devolución del 60 % si hay acuerdo o allanamiento total.',
+			'Devolución del 20 % por acumulación de procesos.',
+			'Las costas incluyen la tasa: quien pierde la paga.',
+		],
+	},
+	{
+		title: 'Qué pasa si no se paga o se paga mal',
+		content:
+			'El justificante tiene que acompañar al escrito que genera el hecho imponible. Si no, el secretario judicial da diez días para aportarlo o corregir la liquidación, y no da curso al escrito hasta que se subsana. Pasado ese plazo, se precluye el acto procesal y el procedimiento continúa o se acaba. Es decir: una tasa mal liquidada no se pierde en el juzgado, pero puede hacer que se pierda el recurso.',
+		points: [
+			'Plazo de subsanación: diez días desde el requerimiento.',
+			'La consecuencia de no subsanar es la preclusión del acto procesal.',
+			'La autoliquidación se hace con el modelo 696 de la Agencia Tributaria, no con un ingreso en el juzgado.',
+			'Los depósitos y consignaciones son otra cosa: fianzas, recursos y depósitos de principal.',
+		],
+	},
+];
+
+const faqs = [
+	{
+		question: '¿Las personas físicas pagan tasa judicial?',
+		answer:
+			'No. Están exentas desde la reforma de 2015, sin límite de importe ni de renta. Si un despacho te pasa una tasa judicial por unparticular, no la pagues sin preguntar: el artículo 4.2.a de la Ley 10/2012 lo dice con esas palabras.',
+	},
+	{
+		question: '¿La tasa depende de cuánto reclamo?',
+		answer:
+			'No. La parte variable sobre la cuantía (0,5 %) fue anulada por la sentencia del Tribunal Constitucional 140/2016, de 21 de julio de 2016. El importe depende solo del tipo de proceso.',
+	},
+	{
+		question: '¿Quién paga la tasa, el que demanda o el que pierde?',
+		answer:
+			'El que la paga es el que promueve el acto procesal: demandante en la demanda, recurrido en la oposición a la ejecución y en los recursos. Y si la sentencia incluye la tasa en las costas, acaba pagándola quien pierde. En la oposición a la ejecución de títulos judiciales la cuota es de 200 euros.',
+	},
+	{
+		question: '¿Cuánto se devuelve si hay acuerdo?',
+		answer:
+			'El 60 % de la cuota si el procedimiento termina por acuerdo extrajudicial o por el allanamiento total del demandado, y también si la Administración reconoce totalmente las pretensiones. El derecho se tiene desde la firmeza de la resolución. La devolución del 20 % por acumulación de procesos es aparte.',
+	},
+	{
+		question: '¿Me posso exento por una de esas cuotas anuladas?',
+		answer:
+			'La sentencia anuló todas las cuotas del orden contencioso-administrativo y social, y en el civil la de apelación y casación. La nota de la Agencia Tributaria de 7 de septiembre de 2016 dice que desde el 15 de agosto de ese año no hay obligación de presentar el modelo 696 por esos conceptos. Aun así, en la práctica la apelación civil a una empresa se viene liquidando, así que la calculadora enseña el importe de la ley y la salvedad a la vez, en vez de darte un cero tranquilizador.',
+	},
+	{
+		question: '¿La primera consulta es gratuita?',
+		answer:
+			'Sí, y es confidencial. La tasa judicial es una parte pequeña del coste de un procedimiento: lo que de verdad se decide es eleginer vía, si la demanda se sostiene y qué se pide. Eso es lo que se revisa en la primera consulta.',
+	},
+];
+
+const related = [
+	{
+		label: 'Cobro de deudas e impagos',
+		href: '/cobro-deudas-impagos/',
+		description: 'Cuándo va por monitorio, que es la vía más barata.',
+	},
+	{
+		label: 'Derecho civil',
+		href: '/derecho-civil/',
+		description: 'Reclamaciones contractuales y de cantidad.',
+	},
+	{
+		label: 'Recursos administrativos',
+		href: '/recursos-administrativos/',
+		description: 'La tasa no se paga si el recurso va a la vía administrativa.',
+	},
+	{
+		label: 'Oficinas y ubicaciones',
+		href: '/ubicaciones/',
+		description: 'Consulta gratuita en Lucena o Málaga.',
+	},
+];
+---
+
+<SeoLegalPage
+	title="Calculadora de tasa judicial | Scruz"
+	description="Cuánto se paga de tasa judicial según el tipo de proceso. Las personas físicas están exentas desde 2015 y la cuota variable también se anuló."
+	breadcrumb={[
+		{ label: 'Inicio', href: '/' },
+		{ label: 'Servicios', href: '/servicios/' },
+		{ label: 'Calculadora de tasa judicial', href: '/calculadora-tasa-judicial/' },
+	]}
+	eyebrow="Herramientas"
+	headline="Calculadora de tasa judicial"
+	intro="La respuesta corta: si vas como persona física, no pagas nada. Y si vas como empresa, el importe depende del tipo de proceso, no de cuánto reclames. Esta calculadora sale de la Ley 10/2012 y de la sentencia del Tribunal Constitucional que cambió la mitad de los importes."
+	highlights={[
+		'Personas físicas exentas, sin límite de renta',
+		'Cuota fija por tipo de proceso, con la anulada marcada',
+		'Bonificación del 10 % por vía telemática',
+		'Devoluciones del 60 % y del 20 %',
+	]}
+	serviceType="Cálculo de la tasa judicial y presupuesto de costas"
+	areaServed="Málaga, Córdoba, Cádiz, Granada, Huelva y toda España"
+	sections={sections}
+	faqs={faqs}
+	related={related}
+/>
+
+<section class="bg-base-200 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-3xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">Calcula tu cuota</h2>
+		<p class="mb-6 text-base-content/70">
+			Elige quién promote el procedimiento y qué clase de proceso es. No te
+			pido la cuantía porque ya no cambia el importe.
+		</p>
+
+		<label class="mb-2 block font-semibold" for="sujeto">Quién promueve</label>
+		<select id="sujeto" class="select select-bordered mb-4 w-full">
+			<option value="fisica">Persona física (particular)</option>
+			<option value="juridica">Persona jurídica (empresa o entidad)</option>
+		</select>
+
+		<label class="mb-2 block font-semibold" for="proceso">Tipo de proceso</label>
+		<select id="proceso" class="select select-bordered mb-4 w-full"></select>
+
+		<label class="mb-6 flex items-center gap-3">
+			<input id="tele" type="checkbox" class="checkbox" checked />
+			<span>El procedimiento se presenta por vía telemática (bonificación del 10 %)</span>
+		</label>
+
+		<div id="resultado" class="hidden" aria-live="polite"></div>
+	</div>
+</section>
+
+<section class="bg-base-100 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-5xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">Cuotas fijas del artículo 7.1</h2>
+		<p class="mb-8 max-w-3xl text-base-content/70">
+			{anuladas} de estos conceptos quedaron anulados por la sentencia del
+			Tribunal Constitucional 140/2016. Aparecen marcados, con la salvedad al
+			lado, porque ocultar la discusión sería tan poco útil como darla por
+			resuelta.
+		</p>
+
+		{
+			porOrden.map(({ orden, procesos }) => (
+				<div class="mb-8">
+					<h3 class="mb-3 font-title text-xl capitalize">{orden}</h3>
+					<div class="overflow-x-auto">
+						<table class="table-zebra table table-sm">
+							<thead>
+								<tr>
+									<th>Proceso</th>
+									<th>Cuota fija</th>
+									<th>Con bonificación del 10 %</th>
+									<th>Estado</th>
+								</tr>
+							</thead>
+							<tbody>
+								{procesos.map((p) => (
+									<tr>
+										<td class="font-semibold">{p.nombre}</td>
+										<td>{p.fija.toLocaleString('es-ES')} €</td>
+										<td>
+											{(
+												p.fija * (1 - BONIFICACION_TELEMATICA)
+											).toLocaleString('es-ES', { maximumFractionDigits: 2 })}{' '}
+											€
+										</td>
+										<td class="text-sm">
+											{p.anulada ? (
+												<span class="badge badge-warning">Anulada (STC 140/2016)</span>
+											) : (
+												<span class="badge badge-ghost">Vigente</span>
+											)}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+					{orden === 'contencioso' && (
+						<p class="mt-3 text-sm text-base-content/70">
+							Las cuatro cuotas de este orden están anuladas. En la práctica, el
+							contencioso se sostiene sin tasa: lo que cuesta un recurso contencioso
+							es el lawyer, no el impuesto.
+						</p>
+					)}
+				</div>
+			))
+		}
+
+		<div class="rounded-box border border-info/40 bg-info/10 p-5">
+			<h3 class="mb-2 font-title text-lg">Órdenes sin tasa</h3>
+			<ul class="list-inside list-disc">
+				{ORDENES_SIN_TASA.map((t) => (
+					<li>{t}</li>
+				))}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<script is:inline
+	type="application/json"
+	id="datos-tasa"
+	set:html={JSON.stringify({
+		procesos: PROCESOS_TASA,
+		bonificacion: BONIFICACION_TELEMATICA,
+		devolucion: DEVOLUCION_ACUERDO,
+	}).replace(/</g, '\\u003c')}
+/>
+
+<script>
+	interface Proceso {
+		id: string;
+		orden: string;
+		nombre: string;
+		fija: number;
+		anulada: boolean;
+		nota?: string;
+	}
+	const datos = JSON.parse(
+		document.getElementById('datos-tasa')?.textContent ?? '{"procesos":[]}',
+	) as { procesos: Proceso[]; bonificacion: number; devolucion: number };
+
+	const selSujeto = document.getElementById('sujeto') as HTMLSelectElement | null;
+	const selProceso = document.getElementById('proceso') as HTMLSelectElement | null;
+	const tele = document.getElementById('tele') as HTMLInputElement | null;
+	const resultado = document.getElementById('resultado');
+
+	const euros = (n: number) =>
+		n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+
+	const pintar = () => {
+		if (!selProceso || !selSujeto) return;
+		const lista = datos.procesos.filter((p) => p.orden === 'civil' || p.orden === 'contencioso');
+		selProceso.innerHTML = lista
+			.map(
+				(p) =>
+					`<option value="${p.id}">${p.nombre} — ${p.fija} €${p.anulada ? ' (anulada)' : ''}</option>`,
+			)
+			.join('');
+		calcular();
+	};
+
+	const calcular = () => {
+		if (!resultado || !selSujeto || !selProceso) return;
+		const proceso = datos.procesos.find((p) => p.id === selProceso.value);
+		if (!proceso) return;
+
+		// Persona física: exenta de tasa, sea cual sea el proceso (art. 4.2.a).
+		if (selSujeto.value === 'fisica') {
+			resultado.innerHTML =
+				'<div class="rounded-box border border-success/40 bg-success/10 p-5">' +
+				'<h3 class="font-title text-xl">No pagas nada</h3>' +
+				'<p class="mt-2">Las personas físicas están exentas de la tasa judicial ' +
+				'(art. 4.2.a de la Ley 10/2012), sin límite de importe ni de renta, también en ' +
+				`este proceso: <strong>${proceso.nombre}</strong>.</p>` +
+				'<p class="mt-2 text-sm">El único gasto del procedimiento serán los honorarios ' +
+				'y las pruebas. Si un despacho te pasa una tasa judicial por ir como particular, ' +
+				'pregunta antes de pagar.</p></div>';
+			resultado.classList.remove('hidden');
+			return;
+		}
+
+		const conTele = tele?.checked ?? false;
+		const base = proceso.anulada ? 0 : proceso.fija;
+		const bonificacion = conTele ? base * datos.bonificacion : 0;
+		const total = base - bonificacion;
+		const devolucion = total * datos.devolucion;
+
+		let aviso = '';
+		if (proceso.anulada) {
+			aviso =
+				`<p class="mt-3 text-sm"><strong>Salvedad.</strong> ${proceso.nota ?? ''}</p>`;
+		} else if (proceso.nota) {
+			aviso = `<p class="mt-3 text-sm">${proceso.nota}</p>`;
+		}
+
+		resultado.innerHTML =
+			'<div class="rounded-box border border-primary/30 bg-primary/5 p-5">' +
+			`<h3 class="font-title text-xl">${euros(total)}</h3>` +
+			'<p class="mt-1 text-sm opacity-70">' +
+			`Cuota fija ${euros(proceso.fija)}` +
+			(conTele ? ` − bonificación del 10 % (${euros(bonificacion)})` : '') +
+			'</p>' +
+			(proceso.anulada ? '<p class="mt-2"><strong>No hay que autoliquidar.</strong></p>' : '') +
+			aviso +
+			(proceso.anulada
+				? ''
+				: `<p class="mt-3 text-sm">Si el procedimiento acaba con acuerdo o el demandado ` +
+					`se allana, se devuelve el 60 %: ${euros(devolucion)}. Y si se imponen las ` +
+					`costas a la otra parte, la tasa va con ellas.</p>`) +
+			'<p class="mt-4"><a class="link link-primary" href="/ubicaciones/">Revisar mi caso, gratis</a></p>' +
+			'</div>';
+		resultado.classList.remove('hidden');
+	};
+
+	selSujeto?.addEventListener('change', calcular);
+	selProceso?.addEventListener('change', calcular);
+	tele?.addEventListener('change', calcular);
+	if (selSujeto) pintar();
+</script>

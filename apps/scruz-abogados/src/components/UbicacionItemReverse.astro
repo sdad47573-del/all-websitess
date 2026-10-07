@@ -1,0 +1,65 @@
+---
+import { RiIcon } from '@astro-icons';
+import { twJoin } from 'tailwind-merge';
+
+// `id` (opcional) = ancla estable de la oficina (#lucena, #malaga), la misma que
+// usa el schema ItemList de la página para apuntar a cada sede.
+const { id, city, isMain, province, description, address, zip, map } = Astro.props;
+---
+
+<!--
+	Variante espejo de UbicacionItem: mismos breakpoints (dos columnas ya desde
+	`md`, mapa a la altura de la tarjeta) y el orden invertido se mantiene solo
+	a partir de `md`, donde tiene sentido el `grid-flow-col-dense`.
+-->
+<div
+	id={id}
+	class="grid grid-cols-1 items-stretch gap-8 md:grid-flow-col-dense md:grid-cols-2 md:gap-10"
+	data-reveal-stagger
+>
+	<div class="reveal md:col-start-2">
+		<div
+			class={twJoin('card-surface h-full rounded-2xl p-6 md:p-8', isMain && 'ring-primary ring-2')}
+		>
+			<h3 class="font-title mb-2 flex flex-wrap items-center gap-3 text-2xl font-bold">
+				{city}
+				{
+					isMain && (
+						<div class="bg-primary text-primary-content inline-block rounded-full px-3 py-1 text-sm font-semibold">
+							Oficina Principal
+						</div>
+					)
+				}
+			</h3>
+			<p class="mb-6 text-base-content/70">{province}</p>
+			<p class="mb-6 text-base-content/80">{description}</p>
+			<div class="mb-6 space-y-4">
+				<div class="flex items-start space-x-3">
+					<div class="mt-0.5 flex h-5 w-5 items-center justify-center">
+						<RiIcon name="mapPin" class="text-primary size-4" />
+					</div>
+					<div>
+						<p class="font-medium">{address}</p>
+						<p class="text-base-content/70">{zip}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="reveal md:col-start-1 md:row-start-1">
+		<div
+			class="aspect-[4/3] overflow-hidden rounded-2xl bg-base-200 ring-1 ring-base-300 md:aspect-auto md:h-full md:min-h-[22rem]"
+		>
+			<iframe
+				src={map}
+				width="100%"
+				height="100%"
+				class="h-full w-full"
+				allowfullscreen=""
+				loading="lazy"
+				referrerpolicy="no-referrer-when-downgrade"
+				title={`Mapa de la oficina de Scruz Abogados en ${city}`}
+				style="border: 0px;"></iframe>
+		</div>
+	</div>
+</div>

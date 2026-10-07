@@ -100,11 +100,6 @@ export const faqs = [
 		answer:
 			'Sí. Cuenta con una terraza amplia que en los meses fríos se disfruta con braseros debajo de las mesas, además de salones cálidos y un patio interior delicado. La decoración combina elementos rústicos con detalles marineros, como redes de pesca.',
 	},
-	{
-		question: '¿Cuánto cuesta una comida?',
-		answer:
-			'El precio medio se sitúa en torno a 30 euros por persona. Los precios de la carta son algo más elevados que en otros establecimientos de Cabra, pero la clientela coincide en que la calidad del producto justifica la diferencia. También ofrece menú del día con buena relación calidad-precio.',
-	},
 ];
 
 export const restaurantSchema = {

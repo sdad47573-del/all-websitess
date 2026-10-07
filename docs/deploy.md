@@ -29,11 +29,37 @@ El script **construye** cuando cambia cualquiera de estos sitios:
 
 - `apps/<esta app>/`: su propio código.
 - Los paquetes del workspace de los que depende (`workspace:*` en su `package.json`), sobre todo
-  `packages/@astro-config` y `packages/@astro-components`, que usa casi todas las apps.
-- Ficheros globales de resolución y configuración: `package.json`, `bun.lock`, `turbo.json`,
-  `tsconfig.base.json` y `.npmrc`.
+  `packages/@astro-config` y `packages/@astro-components`, que usa casi todas las apps. Se
+  resuelven por nombre a su carpeta real (`@app-server` → `packages/app-server`), porque comparar
+  contra el nombre del paquete no encuentra sus ficheros.
+- Configuración global del repo: `package.json`, `turbo.json`, `tsconfig.base.json` y `.npmrc`.
+- El lockfile, pero solo si cambia algo que esta app use de verdad (ver abajo).
 
 Y **se salta** el resto: `README`, `docs/`, `scripts/`, u otra app que no sea esta.
+
+### El lockfile no es un fichero global
+
+`bun.lock` está en la raíz y lo comparten las apps, así que tratarlo como "cambio global"
+disparaba todas las builds cada vez que se tocaba. Y se toca constantemente: añadir una
+dependencia a una app reescribe el fichero entero, y en ese reescrito hay cientos de entradas que
+cambian de versión por *hoisting* (`strip-ansi`, `wrap-ansi` y compañía se mueven entre el nivel
+raíz y el anidado) sin que ninguna app cambie de código.
+
+Cuando el diff toca `bun.lock`, el script compara el lockfile publicado con el nuevo y solo
+construye si cambia algo que esta app usa:
+
+- El bloque de dependencias declaradas de esta app dentro del lockfile.
+- La entrada resuelta de alguna dependencia **declarada** por la app, o por los paquetes del
+  workspace que la app importa. Se miran las declaradas y no todo el árbol: una transitiva que se
+  reordena no cambia el código que la app compila, y es justo el ruido que disparaba las builds.
+- `overrides` del lockfile (las `resolutions` de la raíz), que fuerzan versiones en todo el grafo.
+
+Medición del caso real que motivó esto: un `bun install` de una sola app reescribió 485 líneas del
+lockfile y reconstruyó todos los proyectos de Vercel. Con esta regla no construye ninguno.
+
+Un cambio real de dependencias pasa siempre por el `package.json` de la app, y eso ya reconstruye
+por la vía de arriba. Si el lockfile no se puede leer o comparar, se construye: un fallo del
+filtro nunca debe dejar una web sin publicar.
 
 ### Los códigos de salida están invertidos
 
@@ -126,7 +152,11 @@ y lo deja intacto.
   no cuesta.
 - Si una web depende de algo que no está en la lista global y no es un paquete del workspace, no se
   detectará el cambio. Al añadir un paquete compartido hay que añadirlo a `GLOBAL_PATHS` en
-  `scripts/vercel-ignore-build.mjs`.
+  `scripts/vercel-ignore-build.mjs`. Esto no aplica al lockfile: una subida de versión de una
+  dependencia declarada ya reconstruye a las apps que la declaran.
+- Una dependencia transitiva que cambia de versión sin que ninguna app cambie su `package.json`
+  no reconstruye nada. Es deliberado: el artefacto publicado sigue siendo coherente con el código
+  de la app. Para forzar una republicación, cualquier cambio en la app la vuelve a construir.
 # Despliegue en Netlify
 
 Las mismas 145 apps se publican también en Netlify, con los sitios de Vercel intactos. El

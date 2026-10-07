@@ -1,0 +1,100 @@
+---
+// Planes de precios. Con `compact` oculta la cabecera (para usarlo dentro de
+// /precios/ con su propio H1); sin ella, muestra su cabecera completa (home).
+// El contacto del sitio es único: el perfil de LinkedIn (ver src/data/contact.ts).
+// Los planes salen de DATA.plans: única fuente de verdad para los precios.
+import DoneIcon from "../icons/DoneIcon.astro";
+import { CONTACT } from "../data/contact";
+import { DATA } from "../data/data.astro";
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<section
+  id="precios"
+  class="pt-14 pb-20 bg-transparent flex flex-col items-center"
+>
+  {
+    !compact && (
+      <div data-reveal class="container mx-auto px-6 text-center mb-10">
+        <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-2">
+          Precios claros, <span class="text-wave">sin sorpresas</span>
+        </h2>
+        <p class="text-base-content/70 max-w-2xl mx-auto">
+          Otras agencias cobran <span class="font-bold">600–900€</span> por una
+          web básica. Nosotros empezamos desde{" "}
+          <span class="font-bold text-secondary">0€</span>.
+        </p>
+      </div>
+    )
+  }
+
+  <div class="container mx-auto px-6 text-center">
+    <ul
+      data-reveal-group
+      class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center items-stretch max-w-5xl mx-auto"
+    >
+      {
+        DATA.plans.map((plan) => (
+          <li
+            class:list={[
+              "card bg-base-100 w-full",
+              plan.popular
+                ? "shadow-lg border-2 border-secondary relative"
+                : "shadow-sm border-2 border-transparent hover:border-secondary transition-all",
+            ]}
+          >
+            {plan.popular && (
+              <span class="absolute -top-3 left-1/2 -translate-x-1/2 badge badge-secondary badge-sm font-bold">
+                Más popular
+              </span>
+            )}
+            <div class="card-body items-center text-center">
+              <p class="font-bold text-lg text-base-content/70">{plan.name}</p>
+              <p class="text-4xl font-black">
+                {plan.price}€<span
+                  class="text-sm font-normal text-base-content/60"
+                  >/única vez</span
+                >
+              </p>
+              <ul class="text-start text-sm flex flex-col gap-2 mt-2">
+                {plan.features.map((feature) => (
+                  <li>
+                    <DoneIcon />{feature}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={CONTACT.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  "btn w-full mt-4",
+                  plan.popular ? "btn-primary" : "btn-outline btn-primary",
+                ]}
+              >
+                {plan.price === 0 ? "Solicitar plan gratis" : "Quiero este plan"}
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      !compact && (
+        <p class="text-sm text-base-content/60 mt-8 max-w-xl mx-auto">
+          💡 Precio final cerrado antes de empezar. Sin cuotas ocultas, sin
+          permanencia y con todo a tu nombre (dominio, hosting y web). Ver{" "}
+          <a href="/precios/" class="link link-hover font-bold text-secondary">
+            detalles y extras
+          </a>.
+        </p>
+      )
+    }
+  </div>
+</section>

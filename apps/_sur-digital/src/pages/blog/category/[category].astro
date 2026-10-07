@@ -1,0 +1,139 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import Topbar from "../../../components/Topbar.astro";
+import Footer from "../../../components/Footer.astro";
+import { pageTitle, slugifyCategory } from "../../../lib/blog";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const categories = [...new Set(posts.map((p) => p.data.category))];
+
+  return categories.map((category) => ({
+    params: { category: slugifyCategory(category) },
+    props: {
+      category,
+      posts: posts
+        .filter((p) => p.data.category === category)
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+
+// Title orientado a la búsqueda (no "Artículos de…"): en Google la categoría
+// compite por la keyword de cabeza (p. ej. "seo local", 82 impresiones), y un
+// title que empieza por la keyword rinde mejor en CTR.
+const categoryTitles: Record<string, string> = {
+  "SEO local": "SEO local en Málaga: guía y artículos",
+  Precios: "Precios de una web en Málaga: guías y casos",
+  Guías: "Guías de webs y SEO para negocios de Málaga",
+  Sectores: "Webs por sector para negocios de Málaga",
+  Anuncios: "Anuncios y novedades",
+};
+
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const categoryUrl = `${site}/blog/category/${slugifyCategory(category)}/`;
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: `${site}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Blog",
+      item: `${site}/blog/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: category,
+      item: categoryUrl,
+    },
+  ],
+};
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<Layout
+  title={pageTitle(
+    categoryTitles[category] ?? `${category} para negocios de Málaga`
+  )}
+  description={`${posts.length} artículos sobre ${category.toLowerCase()} para negocios de Málaga: qué hacer, cuánto cuesta y los errores que cuestan clientes. Sin humo.`}
+  path={`/blog/category/${slugifyCategory(category)}/`}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <nav
+        aria-label="Migas de pan"
+        class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-2 flex items-center gap-2"
+      >
+        <a href="/blog/" class="link link-hover">Blog</a>
+        <span aria-hidden="true">·</span>
+        <span>{category}</span>
+      </nav>
+      <h1 data-reveal class="text-4xl md:text-5xl font-bold text-base-content mb-3">{category}</h1>
+      <p class="text-base-content/70 mb-12">
+        {posts.length}
+        {posts.length === 1 ? "artículo" : "artículos"} en esta categoría.
+      </p>
+
+      <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {
+          posts.map((post) => (
+            <li class="card bg-base-100 shadow-md border border-base-300 transition-all hover:shadow-lg hover:-translate-y-1">
+              <a href={`/blog/${post.id}/`} class="card-body p-6 gap-2">
+                <div class="flex items-center justify-between gap-2">
+                  <time
+                    class="text-xs text-base-content/60 font-bold uppercase tracking-wide"
+                    datetime={post.data.pubDate.toISOString()}
+                  >
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                  <span class="badge badge-sm badge-secondary badge-outline font-bold">
+                    {post.data.category}
+                  </span>
+                </div>
+                <h2 class="card-title text-lg leading-snug">
+                  {post.data.title}
+                </h2>
+                <p class="text-sm text-base-content/70 leading-relaxed">
+                  {post.data.description}
+                </p>
+                <span class="link link-primary text-sm font-bold pt-1">
+                  Leer artículo →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-12">
+        <a href="/blog/" class="link link-primary font-bold"
+          >← Ver todos los artículos</a
+        >
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

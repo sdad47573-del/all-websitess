@@ -148,7 +148,7 @@ export const PAGE_NAV = [
 
 /**
  * Bebidas. El local no publica su carta de bebidas (solo fotos en el menú digital), así que
- * aquí no hay precios: solo categorías, con el precio opcional por si algún día se confirma.
+ * aquí no hay precios: solo categorías y descripciones.
  */
 export const BEBIDAS: CartaItem[] = [
 	{
@@ -396,7 +396,7 @@ export const REVIEWS = [
 		source: 'Reseña en Google',
 	},
 	{
-		text: 'Se come muy bien por unos 30 € por persona con bebida. Relación calidad-precio inmejorable.',
+		text: 'Se come muy bien, con bebida incluida. Relación calidad-precio inmejorable.',
 		source: 'Reseña en Google',
 	},
 ];

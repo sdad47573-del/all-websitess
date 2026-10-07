@@ -1,0 +1,1134 @@
+@import 'tailwindcss';
+
+@plugin 'daisyui' {
+	/* daisyUI escribe en @layer el CSS de TODOS sus componentes, no solo de los
+	 * usados, y el CSS es render-blocking (ahora va inline en cada página).
+	 * Aquí se excluyen los que no usa ninguna plantilla, verificados sobre el
+	 * HTML construido de las 72 páginas y no leyendo las fuentes: hay clases
+	 * que llegan vía twJoin/twMerge y no aparecen como literal.
+	 *
+	 * Componentes SÍ usados (no tocar): accordion*, badge, button (btn), card,
+	 * fab, input, link, list, timeline, glass*.
+	 * (`hero` se excluye porque el hero propio lo sustituyó por completo: ya no
+	 * queda ninguna plantilla con .hero/.hero-content/.hero-overlay.)
+	 * (*`accordion` y `.glass` son propios de index.css, no de daisyUI; los de
+	 * daisyUI son `collapse` y la utilidad `glass`, ninguna de las dos usada.)
+	 *
+	 * Se usa `exclude` (y no `include`) para que cualquier componente nuevo
+	 * siga funcionando por defecto. El matcher de daisyUI compara el nombre
+	 * exacto (`!exclude.includes(name)` en su index.js), así que `fileinput` no
+	 * desactiva `input`: son claves distintas y `input` sí se usa (buscador). */
+	exclude:
+		alert, avatar, breadcrumbs, calendar, carousel, chat, checkbox, collapse, countdown, diff,
+		divider, dock, drawer, dropdown, fieldset, fileinput, filter, footer, glass, hero, hover3d,
+		hovergallery, indicator, join, kbd, label, loading, mask, menu, mockup, modal, navbar,
+		pagination, progress, radialprogress, radio, range, rating, select, skeleton, stack, stat,
+		status, steps, swap, tab, table, textarea, textrotate, toast, toggle, tooltip, validator;
+}
+
+html {
+	scroll-behavior: smooth;
+	/* Safeguardo anti-overflow horizontal en mobile.
+	   `clip` evita crear un nuevo containing block, así que no rompe
+	   sticky/fixed positioning que pueda aparecer en Topbar, FAB, modal, etc. */
+	overflow-x: clip;
+}
+
+@import './fonts/Merriweather.css';
+@import './fonts/Lato.css';
+
+/* Variante `dark:` ligada al atributo del tema (no a prefers-color-scheme):
+ * el tema se decide en el script del layout (localStorage o sistema) y se
+ * escribe en <html data-theme>, así que las utilidades dark: deben seguir ese
+ * atributo y no la media query, que ignora la elección manual del usuario. */
+@custom-variant dark (&:where([data-theme='theme-dark'], [data-theme='theme-dark'] *));
+
+@plugin "daisyui/theme" {
+	name: 'theme';
+	default: true;
+	prefersdark: false;
+	color-scheme: 'light';
+	--color-base-100: #ffffff;
+	--color-base-200: #e7e8ee;
+	--color-base-300: #d0d1d8;
+	--color-base-content: #2e3035;
+	--color-primary: #4b6e9f;
+	--color-primary-content: #ffffff;
+	--color-secondary: #155dfc;
+	--color-secondary-content: oklch(100% 0 0);
+	/* Teal oscurecido (antes oklch(60% …)): el accent original solo alcanzaba
+	 * 3.7:1 con texto blanco, por debajo de WCAG AA. Ahora ~5.3:1, que cubre
+	 * la barra superior y los `btn-accent` sin cambiar la identidad de color. */
+	--color-accent: oklch(51% 0.096 186.391);
+	--color-accent-content: oklch(100% 0 0);
+	--color-neutral: #2c3747;
+	--color-neutral-content: oklch(100% 0 0);
+	--color-info: oklch(60% 0.126 221.723);
+	--color-info-content: oklch(100% 0 0);
+	--color-success: oklch(62% 0.194 149.214);
+	--color-success-content: oklch(100% 0 0);
+	--color-warning: oklch(85% 0.199 91.936);
+	--color-warning-content: oklch(0% 0 0);
+	--color-error: oklch(70% 0.191 22.216);
+	--color-error-content: oklch(0% 0 0);
+	--radius-selector: 0.5rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
+}
+
+/* ==== Tema oscuro "tinta nocturna" ====
+ * Mismo lenguaje visual que el claro (azul tinta + gold editorial) sobre
+ * superficies azul marino muy oscuras. Se activa con `data-theme="theme-dark"`
+ * desde el script del layout; el modo claro sigue siendo el valor por defecto
+ * del HTML servido, así que sin JS la web se ve como antes.
+ *
+ * Criterio de la paleta:
+ *   base-100 → superficies "blancas" del tema claro (tarjetas, header, fondo)
+ *   base-200 → bandas alternas (lo que en claro es bg-gray-50 → base-200)
+ *   base-300 → bordes, un tono POR ENCIMA de las superficies (en claro van por
+ *              debajo) para que sigan siendo visibles
+ *   primary  → azul profundo, para usarlo como FONDO (bandas, tarjetas CTA,
+ *              btn-primary) con primary-content blanco. Como TINTA (enlaces,
+ *              iconos, eyebrows) se usa --scruz-primary-ink, más abajo.
+ *   warning  → gold claro: los héroes oscuros y los eyebrows sobre primary
+ *              necesitan el metal en su versión luminosa. */
+@plugin "daisyui/theme" {
+	name: 'theme-dark';
+	default: false;
+	prefersdark: false;
+	color-scheme: 'dark';
+	--color-base-100: #141d29;
+	--color-base-200: #0e1620;
+	--color-base-300: #2b3948;
+	--color-base-content: #e8edf4;
+	--color-primary: #32527b;
+	--color-primary-content: #ffffff;
+	--color-secondary: #7fa8f5;
+	--color-secondary-content: #08111f;
+	--color-accent: oklch(70% 0.105 186.391);
+	--color-accent-content: #04201d;
+	--color-neutral: #1c2733;
+	--color-neutral-content: #e8edf4;
+	--color-info: oklch(72% 0.12 221.723);
+	--color-info-content: #06181f;
+	--color-success: oklch(72% 0.16 149.214);
+	--color-success-content: #04150c;
+	--color-warning: oklch(90% 0.155 92);
+	--color-warning-content: #1a1200;
+	--color-error: oklch(72% 0.17 22.216);
+	--color-error-content: #1c0605;
+	--radius-selector: 0.5rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
+}
+
+/* `primary` cumple dos papeles a la vez: fondo de bloques/CTA (con texto blanco
+ * encima) y tinta de enlaces, iconos, eyebrows y drop-caps. Ningún azul puede
+ * cumplir los dos en oscuro —cualquier tono legible sobre las superficies
+ * oscuras deja de aguantar texto blanco encima—, así que el fondo sigue siendo
+ * primary (profundo, con primary-content blanco) y la tinta consume este token:
+ * en claro es el azul de marca de siempre (#4b6e9f, igual al primary del tema
+ * claro) y en oscuro un azul aclarado legible sobre base-100/base-200. Así los
+ * cientos de usos de `text-primary` no necesitan una variante dark: por
+ * componente. */
+:root {
+	--scruz-primary-ink: #4b6e9f;
+}
+
+[data-theme='theme-dark'] {
+	--scruz-primary-ink: #a8c8ec;
+}
+
+/* ==== Tipografía global (identidad editorial del despacho) ====
+ * Cabeceras en serif (Merriweather) + cuerpo Lato: aplica a todas las
+ * páginas sin depender de clases utilitarias por sección. */
+
+body {
+	font-family: 'Lato', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-title,
+.card-title {
+	font-family: 'Merriweather', serif;
+}
+
+/* Tipografía de headings: equilibra las líneas para evitar viudas en títulos
+ * largos (especialmente en móvil, donde los títulos de los artículos parten). */
+h1,
+h2,
+h3,
+h4 {
+	text-wrap: balance;
+}
+
+/* Texto de párrafo: evita líneas huérfanas en párrafos largos. */
+p {
+	text-wrap: pretty;
+}
+
+/* Elimina el retardo del doble toque en enlaces y botones táctiles (móvil).
+ * Inocuo en escritorio y con impacto directo en el 60 % de tráfico del sitio. */
+a,
+button,
+[role='button'] {
+	touch-action: manipulation;
+}
+
+/* Acentos por defecto de párrafo sobre superficies claras. */
+main {
+	line-height: 1.65;
+}
+
+/* Selección de texto: marca gold institucional. */
+::selection {
+	background: color-mix(in oklab, var(--color-warning) 55%, white);
+	color: var(--color-neutral);
+}
+
+/* Foco visible consistente (WCAG 2.4.7 / 2.4.11). */
+:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+a {
+	transition: color 0.18s ease;
+}
+
+/* Enlaces inline dentro de párrafos: subrayado tenue que se intensifica. */
+main a:not([class]) {
+	text-underline-offset: 3px;
+	text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+	text-decoration-thickness: 1px;
+}
+
+/* Gradientes personalizados */
+.gradient-primary {
+	background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+}
+
+.gradient-accent {
+	background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+}
+
+.gradient-overlay {
+	background: linear-gradient(
+		135deg,
+		rgba(37, 99, 235, 0.95) 0%,
+		rgba(124, 58, 237, 0.95) 100%
+	);
+}
+
+/* Glassmorphism */
+.glass {
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+	background: rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Animaciones personalizadas */
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(22px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.animate-float {
+	animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+	animation: fadeInUp 0.5s ease-out;
+	/* backwards: durante el delay inicial el elemento mantiene el estado "from"
+	 * (oculto) en lugar de mostrarse y luego saltar al inicio de la animación. */
+	animation-fill-mode: backwards;
+}
+
+/* Entrada de página: esta animación (y `scale-in`) corre en todas las cargas,
+ * también al navegar entre páginas con el ClientRouter, para que llegar desde un
+ * enlace se vea igual que llegar con F5. Con `prefers-reduced-motion` la anula la
+ * regla global de más abajo. */
+
+.animate-scale-in {
+	animation: scaleIn 0.5s ease-out;
+}
+
+/* Los iconos del hero (Hero1) llevaron aquí un balanceo continuo
+ * (`.animate-float-soft`, 5 s en bucle). Se retiró: los cuatro se movían al
+ * unísono justo al lado del texto de cada servicio y distraían de la lectura.
+ * Los iconos ya entran con el fundido de su tarjeta, así que no necesitan
+ * animación propia; si algún día se quiere recuperar el gesto, conviene que sea
+ * un movimiento corto y desfasado entre iconos, no un bucle permanente. */
+
+/* Entrada discreta de la cabecera: baja 10 px mientras se funde. `backwards`
+ * mantiene el estado "from" durante el arranque para evitar el flash. */
+@keyframes headerIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-header-in {
+	animation: headerIn 0.5s ease-out backwards;
+}
+
+/* Elevación de iconos sociales al hover (topbar y footer). Incluye `color`
+ * en la transición para no pisar el hover de color ya existente. */
+.hover-lift-icon {
+	transition:
+		color 0.18s ease,
+		transform 0.25s ease;
+}
+
+.hover-lift-icon:hover {
+	transform: translateY(-2px);
+}
+
+/* ==== Reveal on scroll (scroll-driven, sin JS para pintar el estado final) ====
+ * Los elementos con .reveal (o .reveal-pop) parten con un fundido corto desde
+ * 14 px más abajo y se normalizan al entrar en viewport (IntersectionObserver
+ * en CustomLayout, threshold 0). Sin JS la página nunca se queda vacía: el
+ * <noscript> del layout sube el opacity, y el observer marca todo como visible
+ * si no puede montarse.
+ *
+ * Antes esto era un barrido `clip-path` —el bloque se "destapaba" de arriba
+ * abajo— y, en .reveal-pop, además una escala de 0.97 a 1. Sobre TEXTO queda
+ * antinatural: la frase no se mueve, se descubre un rectángulo, así que mientras
+ * dura la animación hay letras cortadas por el borde del recorte; y la escala
+ * deja el texto ligeramente borroso (remuestreo) hasta que encaja. Para una
+ * entrada de texto lo natural es opacidad + un desplazamiento pequeño: el bloque
+ * aparece entero, sin cortes.
+ *
+ * .reveal-pop mantiene el nombre por compatibilidad con las plantillas, pero ya
+ * no escala: mismo gesto para tarjetas y textos.
+ *
+ * Se usa `transform` y NO `translate`: Tailwind v4 compone sus utilidades
+ * hover:-translate-y-* con la propiedad `translate`, y estas reglas (sin @layer)
+ * pisarían ese hover en las tarjetas que llevan las dos cosas; `transform`
+ * convive con él. El transform no rompe nada del layout: no hay ningún sticky ni
+ * fixed dentro de un .reveal (el header sticky vive fuera de <main>). */
+.reveal,
+.reveal-pop {
+	opacity: 0;
+	transform: translateY(14px);
+	transition:
+		opacity 0.55s ease-out,
+		transform 0.55s ease-out;
+}
+
+.reveal.is-visible,
+.reveal-pop.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* ==== Micro-animaciones de interacción ====
+ * Detalles que dan respuesta táctil/visual sin estorbar: apertura del FAQ,
+ * presión de botones y pulso del FAB de WhatsApp. Todas quedan neutralizadas
+ * por la regla global de prefers-reduced-motion de más abajo. */
+
+/* FAQ: el contenido se despliega con un fade+slide corto al abrir el <details>. */
+@keyframes accordionSlide {
+	from {
+		opacity: 0;
+		transform: translateY(-6px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+details[open] > .accordion-content {
+	animation: accordionSlide 0.3s ease-out;
+}
+
+/* Botones: presión con feedback (escala leve) manteniendo las transiciones
+ * de color de daisyUI al añadir transform a la lista. */
+.btn {
+	transition:
+		transform 0.12s ease,
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease,
+		box-shadow 0.2s ease,
+		opacity 0.2s ease;
+}
+
+.btn:active {
+	transform: scale(0.97);
+}
+
+/* FAB de WhatsApp: anillo que pulsa desde el borde para llamar la atención
+ * sobre el canal de contacto principal en móvil. Verde del propio icono. */
+@keyframes fabPulse {
+	0% {
+		box-shadow: 0 0 0 0 rgb(64 195 81 / 0.45);
+	}
+	70% {
+		box-shadow: 0 0 0 16px rgb(64 195 81 / 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgb(64 195 81 / 0);
+	}
+}
+
+.fab > a {
+	/* El anillo sigue el contorno: la caja del enlace es cuadrada (svg dentro).
+	 */
+	border-radius: 9999px;
+	animation: fabPulse 2.6s ease-out infinite;
+}
+
+/* Barra de progreso de scroll (Topbar1): pista fija + relleno escalado por JS. */
+#scroll-progress {
+	transform: scaleX(0);
+	transform-origin: left;
+}
+
+/* ==== Jerarquía de capas (z-index) ====
+ * El header sticky lleva z-50, pero daisyUI fija el FAB en z-index:999 dentro
+ * de @layer daisyui, por lo que el botón de WhatsApp quedaba POR ENCIMA del
+ * topbar al hacer scroll (y el QR compartible empataba con él en z-50). Las
+ * utilities de Tailwind no ganan a la capa de componentes de daisyUI, así que
+ * la jerarquía se fuerza aquí SIN @layer (mismo truco que la unificación de
+ * paleta de más abajo). Resultado, de arriba a abajo:
+ *   100 — skip-link al recibir foco (utilidad focus:z-[100] existente)
+ *    60 — header sticky: siempre por encima de todo el contenido
+ *    55 — botón QR compartible (bajo el header, sobre la página)
+ *   auto — FAB de WhatsApp: por debajo del header y del QR, sin tocar daisyUI */
+.fab {
+	z-index: auto;
+}
+
+.topbar-qr {
+	z-index: 55;
+}
+
+header.sticky {
+	z-index: 60;
+}
+
+/* Topbar compacto al hacer scroll (ver el script de src/components/Topbar1.astro,
+ * que marca `data-scrolled` en el header): la fila pasa de 4rem a 3.5rem y la
+ * sombra se aprieta, de modo que la barra pesa menos cuando ya hay contenido
+ * debajo. Sin @layer para ganar a las utilidades de Tailwind (misma razón que
+ * el z-index de arriba). El contorno del foco ya lo cubre el :focus-visible
+ * global. */
+header.sticky #topbar-row {
+	transition: height 0.3s ease;
+}
+
+header.sticky[data-scrolled='true'] #topbar-row {
+	height: 3.5rem;
+}
+
+header.sticky[data-scrolled='true'] {
+	box-shadow: 0 4px 14px -6px rgb(0 0 0 / 0.3);
+}
+
+/* Navegación SPA (ClientRouter): la animación de entrada del header solo debe
+ * correr en la carga inicial de la página. En cada navegación el Topbar se
+ * re-monta, `headerIn` volvía a empezar desde opacity 0 durante 500 ms y el
+ * snapshot de la transición se tomaba con el header transparente, así que el
+ * topbar aparecía "tapado" (medio invisible) justo al cambiar de página.
+ * ClientRouter marca <html data-astro-transition> mientras dura la navegación;
+ * el script del Topbar quita además la clase para que la animación no se
+ * reanude cuando se retira el atributo. */
+html[data-astro-transition] .animate-header-in {
+	animation: none;
+}
+
+/* Navegación SPA: el morph de geometría del grupo de <main> barría por encima
+ * del topbar. Al navegar desde una posición scrolleada, el snapshot de <main>
+ * se anima desde su caja antigua (que queda muy por encima del viewport) hasta
+ * la nueva, y los grupos con `view-transition-name` se pintan sobre el grupo
+ * root, que es donde vive el header sticky (view-transition-name: none). Sin
+ * animación de geometría el snapshot se coloca directo en su sitio: queda el
+ * fundido astroFadeIn/astroFadeOut (lo que buscábamos con transition:animate)
+ * pero ningún barrido sobre el topbar. Si algún día se añade `transition:name`
+ * para hacer morphs de elementos, habrá que acotar esta regla a esos grupos. */
+::view-transition-group(*) {
+	animation: none;
+}
+
+/* El hero de Hero.astro lleva `transition:name="hero"`, así que queda FUERA del
+ * grupo de <main> y forma el suyo propio. Sin animación declarada el navegador
+ * le aplica su fundido por defecto, de 250 ms: el hero tardaba más en aparecer
+ * que el resto de la página y su hueco se quedaba visible durante ese tramo —
+ * justo la sensación de "la página sigue cargando". Se le da la misma duración
+ * que al fundido de <main> (ver transition:animate en el Layout).
+ * El morph de geometría ya está desactivado arriba, así que el nombre no aporta
+ * nada más aparte de este fundido; mantenerlo no molesta si algún día se acota
+ * esa regla a grupos concretos. */
+::view-transition-old(hero),
+::view-transition-new(hero) {
+	animation-duration: 0.15s;
+}
+
+/* Las reglas gold del eyebrow crecen cuando su sección se revela. */
+.reveal .eyebrow::before,
+.reveal .eyebrow::after,
+.reveal-pop .eyebrow::before,
+.reveal-pop .eyebrow::after {
+	transform: scaleX(0);
+	transition: transform 0.5s ease-out 0.2s;
+}
+
+.reveal.is-visible .eyebrow::before,
+.reveal.is-visible .eyebrow::after,
+	.reveal-pop.is-visible .eyebrow::before,
+.reveal-pop.is-visible .eyebrow::after {
+	transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-float,
+	.animate-fade-in-up,
+	.animate-header-in,
+	.animate-scale-in {
+		animation: none !important;
+	}
+
+	/* Pulso del FAB y despliegue del FAQ: sin movimiento. */
+	.fab > a {
+		animation: none !important;
+	}
+
+	details[open] > .accordion-content {
+		animation: none !important;
+	}
+
+	/* Reveal: estado final inmediato, sin transición. El opacity va incluido a
+	 * propósito: sin él, los elementos partirían de opacity 0 de forma permanente. */
+	.reveal,
+	.reveal-pop {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	/* Reglas gold del eyebrow: sin animación ni estado inicial recortado. */
+	.reveal .eyebrow::before,
+	.reveal .eyebrow::after,
+	.reveal-pop .eyebrow::before,
+	.reveal-pop .eyebrow::after {
+		transform: none;
+		transition: none;
+	}
+
+	/* Progreso de scroll: funcional (no decorativo), sin transición. */
+	#scroll-progress {
+		transition: none;
+	}
+
+	.hover-lift,
+	.hover-lift:hover {
+		transform: none;
+		transition: none;
+	}
+
+	.hover-lift-icon,
+	.hover-lift-icon:hover {
+		transform: none;
+		transition: none;
+	}
+
+	/* Apaga también los scale/rotate animados introducidos por componentes recientes. */
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Efectos hover mejorados */
+.hover-lift {
+	transition:
+		transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+		box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.hover-glow:hover {
+	box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+}
+
+/* Sombras mejoradas */
+.shadow-soft {
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-strong {
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* === details / summary chevron ===
+ * Bloque usado por FAQItem (sin uso en EditorialFAQ — ahí
+ * el icono plus-rotando es un SVG inline). Aplanado para evitar que Tailwind
+ * v4 interprete mal el nivel de anidamiento de CSS. */
+details[open] > summary::after {
+	rotate: -180deg;
+}
+
+details > summary {
+	/* Sobrescribe `display: list-item` por defecto; alinea título + chevron. */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+/* Oculta el marker estándar (Safari incluido). */
+details > summary::marker,
+details > summary::-webkit-details-marker {
+	display: none;
+}
+
+details > summary::after {
+	/* Forma de chevron via clip-path: https://css-shape.com/chevron/ */
+	--shape-chevron-width: 1rem;
+	--s: calc(var(--shape-chevron-width) / 4);
+
+	content: '';
+	aspect-ratio: 7/5;
+	background: currentColor;
+	clip-path: polygon(
+		0 0,
+		0 var(--s),
+		50% 100%,
+		100% var(--s),
+		100% 0,
+		50% calc(100% - var(--s))
+	);
+	flex-shrink: 0;
+	width: var(--shape-chevron-width);
+
+	rotate: 0deg;
+	transition: rotate 0.35s ease;
+}
+
+/* === Editorial utilities ===
+ * Soportan el patrón "eyebrow + título serif + drop-cap" usado en las
+ * páginas de detalle de servicios. Se aplican encima del tema de DaisyUI.
+ */
+
+/* Eyebrow — pequeño label editorial en mayúsculas, con regla gold al inicio. */
+.eyebrow {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+	font-family: 'Lato', sans-serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--scruz-primary-ink);
+}
+
+.eyebrow::before {
+	content: '';
+	display: inline-block;
+	width: 1.75rem;
+	height: 2px;
+	background: var(--color-warning);
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+/* Drop-cap — primera letra del primer párrafo en gran serif. */
+.drop-cap > p:first-of-type::first-letter {
+	font-family: 'Merriweather', serif;
+	float: left;
+	font-size: 4.5rem;
+	line-height: 0.85;
+	font-weight: 900;
+	color: var(--scruz-primary-ink);
+	padding: 0.45rem 0.85rem 0 0;
+	letter-spacing: -0.02em;
+	margin-right: 0.15rem;
+}
+
+/* Editorial rule — divisor horizontal corto, centrado, gold. */
+.editorial-rule {
+	display: block;
+	width: 3.5rem;
+	height: 2px;
+	background: var(--color-warning);
+	border-radius: 2px;
+	margin: 0 auto;
+}
+
+/* Eyebrow centrado — para los encabezados de sección de portada y hubs.
+ * Reutiliza la misma regla gold que el sistema editorial, simétrica. */
+.eyebrow--center {
+	justify-content: center;
+}
+
+.eyebrow--center::after {
+	content: '';
+	display: inline-block;
+	width: 1.75rem;
+	height: 2px;
+	background: var(--color-warning);
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+/* Kicker del hero ("Despacho de abogados en Málaga").
+ * Va sobre la textura clara de hero-bg (RGB ~193-232), donde el azul de marca
+ * (--color-secondary, #155dfc) se queda en 3,8:1 y no alcanza el 4,5:1 que
+ * WCAG AA pide para 18 px sin negrita. Mezclado al 50 % con la tinta de la
+ * casa (#10233f) da #144098: 5,2:1 en el píxel más oscuro del fondo y 6,9:1
+ * de media, así que mantiene el color de marca sin incumplir el contraste. */
+.hero-kicker {
+	color: color-mix(in oklab, var(--color-secondary) 50%, #10233f);
+}
+
+/* En oscuro el kicker va sobre la capa de tinta del hero y no sobre la textura
+ * clara: pasa al gold editorial, el acento de la casa sobre fondos oscuros. */
+[data-theme='theme-dark'] .hero-kicker {
+	color: var(--color-warning);
+}
+
+/* Iconos de las tarjetas de servicios del hero (Hero1) en modo oscuro.
+ *
+ * Son line-art MONOCROMO en azul marino (#002c68), ilustraciones pensadas
+ * para la textura clara del hero: sobre la tinta oscura el trazo quedaba azul
+ * marino sobre azul marino (1,15:1, invisible).
+ *
+ * Como son PNG de un solo color con alfa, se recolorean sin tocar el asset ni
+ * pedir otra imagen: `brightness(0)` los deja en negro conservando la silueta
+ * y `invert(1)` los pasa a blanco. Se quedan al 85 % para acompañar al texto
+ * (base-content #e8edf4) en lugar de brillar por encima de él. */
+[data-theme='theme-dark'] .hero-service-icon {
+	filter: brightness(0) invert(1);
+	opacity: 0.85;
+}
+
+/* Halo del retrato del hero (Hero1) en modo oscuro.
+ *
+ * La foto del abogado es un recorte con alfa apoyado sobre la tinta del hero:
+ * su traje es oscuro y el fondo en oscuro también, así que la figura se leía
+ * en penumbra (medido: sd 0.13 en el cuerpo frente a 0.20 en claro). Este halo
+ * la despega del fondo sin tocar la foto.
+ *
+ * No es un elemento aparte con su propio radial: es un `drop-shadow` sin
+ * desplazamiento, de modo que la luz sigue EXACTAMENTE la silueta y sirve para
+ * los dos recortes (escritorio anclado a la derecha, móvil a sangre) sin
+ * duplicar posiciones ni breakpoints. El halo se pinta detrás del propio
+ * recorte pero por encima de la capa de tinta, ya que viaja con la foto (z-[1]).
+ *
+ * La tinta de marca en oscuro (--scruz-primary-ink) es un azul aclarado: al
+ * 40 % de mezcla ilumina la silueta sin blanquear el fondo, así que el texto
+ * claro de la izquierda conserva su contraste. */
+[data-theme='theme-dark'] .hero-portrait {
+	filter: drop-shadow(
+		0 0 70px color-mix(in oklab, var(--scruz-primary-ink) 40%, transparent)
+	);
+}
+
+/* ==== Superficies y tarjetas ==== */
+
+/* Tarjetas blancas sobre secciones gris/azul muy claro: borde + sombra
+ * suave en lugar de sombra dura, para un aspecto más limpio y actual. */
+.card-surface {
+	background: var(--color-base-100);
+	border: 1px solid color-mix(in oklab, var(--color-neutral) 8%, transparent);
+	box-shadow: 0 1px 2px rgba(23, 30, 42, 0.04), 0 8px 24px -18px rgba(23, 30, 42, 0.28);
+	/* Incluye opacity/transform con los tiempos del reveal: este bloque define
+	 * `transition` en un selector de una sola clase y va DESPUÉS de
+	 * .reveal/.reveal-pop en el archivo, así que su lista es la que gana en las
+	 * tarjetas que llevan las dos clases (card-surface reveal-pop). Sin esto esas
+	 * tarjetas aparecerían de golpe mientras el resto se funde. */
+	transition:
+		opacity 0.55s ease-out,
+		transform 0.55s ease-out,
+		box-shadow 0.3s ease,
+		border-color 0.3s ease;
+}
+
+.card-surface:hover {
+	border-color: color-mix(in oklab, var(--color-primary) 35%, transparent);
+	box-shadow: 0 2px 4px rgba(23, 30, 42, 0.05), 0 18px 40px -20px rgba(23, 30, 42, 0.35);
+}
+
+/* Icon-chip: redondel suave del color corporativo para listas de servicios. */
+.icon-chip {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: color-mix(in oklab, var(--color-primary) 10%, var(--color-base-100));
+	color: var(--scruz-primary-ink);
+}
+
+/* Bandas primarias: más profundidad con leve gradiente vertical. */
+.band-primary {
+	background:
+		radial-gradient(120% 160% at 8% 0%, rgba(255, 255, 255, 0.14) 0%, transparent 45%),
+		linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 88%, #10233f) 0%, var(--color-primary) 100%);
+}
+
+/* ==== Bandas azules: cáscara común ====
+ * Todas las bandas a ancho completo (portada, trayectoria, empresas, fichas de
+ * servicio) comparten estos valores, para que su contenido arranque a la misma
+ * distancia del borde y de los lados en cualquiera de ellas.
+ *
+ * Antes cada una llevaba lo suyo —`pt-12 pb-16 md:pt-16 md:pb-24`, `py-20`,
+ * `py-16 md:py-24` y `pt-16 pb-32`— con aire lateral de 16, 24 y 96 px y anchos
+ * internos de 5xl, 6xl, 7xl y sin límite, así que ninguna coincidía con otra.
+ *
+ * El aire lateral va aquí y no en un contenedor extra: el padding no recorta el
+ * `background`, así que la banda sigue pintando a sangre. El ancho del CONTENIDO
+ * se fija aparte con `mx-auto max-w-6xl`, y los párrafos de texto llevan su
+ * propia medida de lectura con `max-w-3xl`.
+ *
+ * Sin @layer: gana a las utilidades de Tailwind, igual que el resto del archivo. */
+.band {
+	padding-block: 4rem;
+	padding-inline: 1.5rem;
+}
+
+@media (min-width: 48rem) {
+	.band {
+		padding-block: 5rem;
+		padding-inline: 4rem;
+	}
+}
+
+/* ==== Tipografía de artículo (blog / guías) ==== */
+
+.article-content h2 {
+	font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+	letter-spacing: -0.01em;
+}
+
+.article-content h3 {
+	font-size: 1.25rem;
+}
+
+
+
+/* ==== Unificación de la paleta heredada ====
+ * Los componentes antiguos usaban escalas de color de Tailwind (blue/purple/
+ * green…). Los mapeamos a la identidad corporativa (azul tinta + gold) para que
+ * toda la web comparta el mismo lenguaje visual, sin tocar cada componente.
+ * Reglas sin @layer: ganan a las utilities de Tailwind (que viven en @layer).
+ *
+ * Todas las mezclas se hacen contra `var(--color-base-100)` y no contra el
+ * literal `white`, para que el modo oscuro herede la misma escala invertida
+ * (mezclar con la superficie oscurece el texto en vez de aclararlo). En claro
+ * el resultado es idéntico porque base-100 es #ffffff. */
+
+/* Superficies "blancas" heredadas → superficie del tema. Es el remapeo clave
+ * del modo oscuro: 200+ usos de `bg-white` (tarjetas, secciones, cajas) y el
+ * fundido inferior de los héroes pasan al color de superficie oscuro. */
+.bg-white {
+	background-color: var(--color-base-100);
+}
+
+.to-white {
+	--tw-gradient-to: var(--color-base-100);
+}
+
+.from-white {
+	--tw-gradient-from: var(--color-base-100);
+}
+
+.via-white {
+	--tw-gradient-via: var(--color-base-100);
+}
+
+.bg-blue-100,
+.bg-purple-100,
+.bg-orange-100,
+.bg-red-100,
+.bg-green-100,
+.bg-teal-100,
+.bg-sky-100,
+.bg-indigo-100,
+.bg-yellow-100 {
+	background-color: color-mix(in oklab, var(--color-primary) 9%, var(--color-base-100));
+}
+
+.bg-blue-50,
+.bg-sky-50,
+.bg-green-50,
+.bg-yellow-50 {
+	background-color: color-mix(in oklab, var(--color-primary) 5%, var(--color-base-100));
+}
+
+.hover\:bg-blue-50:hover,
+.hover\:bg-blue-100:hover,
+.hover\:bg-sky-50:hover {
+	background-color: color-mix(in oklab, var(--color-primary) 12%, var(--color-base-100));
+}
+
+.text-blue-600,
+.text-blue-700,
+.text-purple-600,
+.text-orange-600,
+.text-red-600,
+.text-green-600,
+.text-green-700,
+.text-yellow-700,
+.text-sky-600,
+.text-indigo-600 {
+	color: var(--scruz-primary-ink);
+}
+
+.bg-blue-600,
+.bg-purple-600,
+.bg-red-600,
+.bg-green-600,
+.bg-sky-600,
+.bg-indigo-600 {
+	background-color: var(--color-primary);
+}
+
+/* Texto azul claro sobre bandas primarias: blanco translúcido para más
+ * contraste y coherencia con el resto de los CTA sobre fondo primary. */
+.text-blue-100,
+.text-blue-200 {
+	color: rgb(255 255 255 / 0.88);
+}
+
+/* El acento heredado (teal) pasa a gold apagado: hover de footer y iconos
+ * de contacto comparten el metal institucional. */
+.hover\:text-accent:hover {
+	color: color-mix(in oklab, var(--color-warning) 85%, white);
+}
+
+.text-accent {
+	color: color-mix(in oklab, var(--color-warning) 75%, white);
+}
+
+/* `text-primary` como TINTA: en oscuro el primary es un azul profundo (fondo de
+ * bandas, tarjetas CTA y btn-primary con texto blanco), así que aquí se sirve el
+ * token aclarado. Cubre las tres variantes que usa la web (base, hover y
+ * group-hover). */
+[data-theme='theme-dark'] .text-primary {
+	color: var(--scruz-primary-ink);
+}
+
+[data-theme='theme-dark'] .hover\:text-primary:hover {
+	color: var(--scruz-primary-ink);
+}
+
+[data-theme='theme-dark'] .group-hover\:text-primary:is(:where(.group):hover *) {
+	color: var(--scruz-primary-ink);
+}
+
+[data-theme='theme-dark'] .hover\:text-primary\/80:hover {
+	color: color-mix(in oklab, var(--scruz-primary-ink) 80%, transparent);
+}
+
+[data-theme='theme-dark'] .link-primary {
+	color: var(--scruz-primary-ink);
+}
+
+/* La barra de progreso de scroll y los botones outline neutral viven en el
+ * header/héroes oscuros: en el tema oscuro el color neutro es una superficie
+ * (casi negro), así que no puede usarse como tinta. */
+[data-theme='theme-dark'] #scroll-progress {
+	background-color: var(--scruz-primary-ink);
+}
+
+[data-theme='theme-dark'] .btn-outline.btn-neutral {
+	color: var(--color-base-content);
+	border-color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+
+/* Grises heredados → tinta de la casa.
+ * Las plantillas antiguas escribían con la escala `gray` de Tailwind (fría,
+ * casi negra) mientras el sistema editorial lo hace sobre `base-content`
+ * (tinta cálida #2e3035). Se mapean solo los tonos que viven sobre
+ * superficies claras: `gray-300` y `gray-400` se dejan intactos porque son
+ * los que usa el footer sobre fondo neutro oscuro. */
+.text-gray-900,
+.text-gray-800 {
+	color: var(--color-base-content);
+}
+
+.text-gray-700 {
+	color: color-mix(in oklab, var(--color-base-content) 88%, var(--color-base-100));
+}
+
+.text-gray-600 {
+	color: color-mix(in oklab, var(--color-base-content) 72%, var(--color-base-100));
+}
+
+.text-gray-500 {
+	color: color-mix(in oklab, var(--color-base-content) 58%, var(--color-base-100));
+}
+
+/* Superficies grises: las bandas alternas heredadas (`bg-gray-50`) pasan al
+ * mismo gris frío `base-200` que alternan las páginas con patrón editorial,
+ * para que el ritmo blanco/gris sea idéntico en toda la web. */
+.bg-gray-50 {
+	background-color: var(--color-base-200);
+}
+
+.bg-gray-100 {
+	background-color: var(--color-base-200);
+}
+
+.border-gray-100,
+.border-gray-200,
+.border-gray-300,
+.border-blue-100 {
+	border-color: var(--color-base-300);
+}
+
+/* Etiqueta de categoría del encabezado de los artículos del blog: adopta el
+ * tratamiento eyebrow (regla gold + tracking) de las páginas de servicio, de
+ * modo que un artículo y una ficha de servicio abran igual. */
+article header > p:first-child {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+	font-family: 'Lato', sans-serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--scruz-primary-ink);
+}
+
+article header > p:first-child::before {
+	content: '';
+	display: inline-block;
+	width: 1.75rem;
+	height: 2px;
+	background: var(--color-warning);
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+/* ==== Compatibilidad de páginas editoriales antiguas ====
+ * Algunas fichas y artículos anteriores a DaisyUI llevan su propia paleta en
+ * estilos locales (#fff, #102039, #f8f9fa…). Esas reglas tienen ámbito de
+ * componente y, al no contener variantes dark:, seguían pintando superficies
+ * claras mientras el resto de la página se oscurecía. Aquí se adaptan solo en
+ * modo oscuro mediante los tokens del tema; el diseño claro original no cambia.
+ * `!important` es necesario en los artículos antiguos: Astro añade el hash de
+ * ámbito a sus selectores y esa hoja se inserta después de index.css.
+ */
+[data-theme='theme-dark'] .legal-page,
+[data-theme='theme-dark'] article.article {
+	color: var(--color-base-content) !important;
+	background: var(--color-base-100) !important;
+}
+
+[data-theme='theme-dark'] .legal-page .benefits,
+[data-theme='theme-dark'] .legal-page .related,
+[data-theme='theme-dark'] .legal-page .disclaimer,
+[data-theme='theme-dark'] article.article .callout,
+[data-theme='theme-dark'] article.article .sidebar {
+	background: var(--color-base-200) !important;
+}
+
+[data-theme='theme-dark'] .legal-page .benefits,
+[data-theme='theme-dark'] .legal-page .content-section + .content-section,
+[data-theme='theme-dark'] .legal-page .related a,
+[data-theme='theme-dark'] article.article .sidebar,
+[data-theme='theme-dark'] article.article .sidebar a {
+	border-color: var(--color-base-300) !important;
+}
+
+[data-theme='theme-dark'] .legal-page h2,
+[data-theme='theme-dark'] .legal-page .faq-section h2,
+[data-theme='theme-dark'] article.article h2,
+[data-theme='theme-dark'] article.article .sidebar h2,
+[data-theme='theme-dark'] .article-content h2 {
+	color: var(--color-base-content) !important;
+}
+
+[data-theme='theme-dark'] .legal-page .related a,
+[data-theme='theme-dark'] article.article .sidebar a,
+[data-theme='theme-dark'] .article-content a {
+	color: var(--scruz-primary-ink) !important;
+}
+
+[data-theme='theme-dark'] .legal-page .related span {
+	color: color-mix(in oklab, var(--color-base-content) 72%, var(--color-base-100));
+}
+
+[data-theme='theme-dark'] article.article .sidebar span {
+	color: color-mix(in oklab, var(--color-base-content) 64%, var(--color-base-100)) !important;
+}
+
+[data-theme='theme-dark'] article.article .callout a {
+	color: var(--color-primary-content) !important;
+	background: var(--color-primary) !important;
+}
+
+[data-theme='theme-dark'] .article-content summary::marker {
+	color: var(--scruz-primary-ink);
+}

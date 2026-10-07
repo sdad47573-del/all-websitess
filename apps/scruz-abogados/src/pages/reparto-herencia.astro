@@ -1,0 +1,438 @@
+---
+import SeoLegalPage from '../components/SeoLegalPage.astro';
+
+/**
+ * Reparto de una herencia: la legítima y el reparto intestado.
+ *
+ * Cubre los tres supuestos que se dan en el 95 % de las consultas: cónyuge con
+ * hijos, cónyuge con padres vivos y cónyuge solo. Cada número sale del artículo
+ * del Código Civil que lo fija, que está en la propia tarjeta de resultado.
+ *
+ * **Lo que no cubre, y está escrito en la página:** nietos y Collateral por
+ * representación, hermanos, herencia troncal, Testamentos de otra comunidad
+ * autónoma, gananciales sin liquidar, Schenker, creditors, legados específicos
+* y la cuarta parte reservada a los menores. Son reglas distintas con sus propias
+ * excepciones, y meterlas en la misma caja da un número falso. Cuando el caso
+ * cae fuera de estos tres supuestos, la herramienta lo dice y remite a la
+ * consulta.
+ *
+ * Sobre el fundamento: legítima de 2/3 con hijos y 1/3 sin ellos (art. 809),
+ * hijos a partes iguales (art. 834.1), cónyuge con un tercio o con la mitad
+ * según con quién concurre (arts. 833.1.a y 834.3), desheredación solo por
+ * causa legal (arts. 675 y 816) yEffects del legado que el testador puede
+ * revocar (art. 806).
+ */
+
+type Escenario = 'conyuge-hijos' | 'conyuge-padres' | 'conyuge-solo' | 'solo-hijos';
+
+interface Escenarios {
+	id: Escenario;
+	nombre: string;
+	ayuda: string;
+	/** Descripción de la regla, con su artículo. */
+	norma: string;
+}
+
+const ESCENARIOS: Escenarios[] = [
+	{
+		id: 'conyuge-hijos',
+		nombre: 'Cónyuge e hijos',
+		ayuda: 'El caso más frecuente.',
+		norma:
+			'El cónyuge superviviente tiene derecho al tercio de la herencia (art. 833.1.a) y los hijos, en su conjunto, a los otros dos tercios (art. 809.1), repartidos a partes iguales (art. 834.1).',
+	},
+	{
+		id: 'conyuge-padres',
+		nombre: 'Cónyuge y padres del causante',
+		ayuda: 'Sin hijos, con los padres vivos.',
+		norma:
+			'Sin hijos, la legítima baja a un tercio (art. 809.1) y el cónyuge lo hereda íntegro; los padres, el otro tercio, por mitades (arts. 833.1.a y 835.1).',
+	},
+	{
+		id: 'conyuge-solo',
+		nombre: 'Cónyuge sin hijos ni padres',
+		ayuda: 'Elraut case más sencillo de todos.',
+		norma:
+			'El cónyuge es el único heredero y hereda la totalidad (art. 834.3, en el supuesto de que no queden parientes de los órdenes anteriores ni colaterales de segundo grado).',
+	},
+	{
+		id: 'solo-hijos',
+		nombre: 'Herederos sin cónyuge',
+		ayuda: 'Hijos u otros herederos legitimarios.',
+		norma:
+			'Los hijos heredan la totalidad por partes iguales (art. 834.1). La legítima sigue siendo dos tercios: el otro tercio es disponible por testamento (art. 809.1).',
+	},
+];
+
+const FECHAS = [
+	{ texto: 'Con hijos o con padres vivos: dos tercios (66,7 %)', valor: 2 / 3 },
+	{ texto: 'Sin hijos y sin padres: un tercio (33,3 %)', valor: 1 / 3 },
+];
+
+const sectionTexto = {
+	title: 'La legítima no es lo mismo que la herencia',
+	content:
+		'La legítima es la parte de los bienes que el testador no puede dejar a otro: el mínimo que los herederos forzosos reciben aunque el testamento no los nombre, o los nombre poco. Lo que queda es la parte disponible, que se puede dejar a quien se quiera, incluidos los que no son herederos. Confundir las dos figuras es lo que hace que alguien se entere a los noventa de que su testamento no le daba a su nieta ni un céntimo, sin que ese testamento sea nulo ni inválido. Cuando la disposición perjudica la legítima de un heredero, no es que el testamento no valga: vale, y el heredero puede pedir que se complete su legítima.',
+	points: [
+		'Con hijos o con padres, la legítima es de dos tercios (art. 809.1).',
+		'Sin hijos ni padres, es de un tercio (art. 809.1).',
+		'La parte disponible es la que se puede repartir libremente (arts. 675 y 808).',
+		'La cuarta parte se reserva a los hijos menores hasta que salen de la Guarda (art. 808).',
+	],
+};
+
+const secciones = [
+	sectionTexto,
+	{
+		title: 'Qué se puede hacer en un testamento y qué no',
+		content:
+			'Un testamento puede dejar la parte disponible a quien quiera: los nietos, los amigos, una fundación. Lo que no puede es desheredar sin causa legal: la desheredación exige una de las causas del artículo 817 y debe expresarse en el testamento. Un testamento que deshereda sin causa no es nulo: el título es válido y lo que corresponde es completar la legítima del heredero. Esa diferencia, entre no mencionar a alguien y mencionarle dejándole menos de lo que le correspondía, es justo lo que se discute en la consulta.',
+		points: [
+			'Desheredar exige causa legal del art. 817 y que conste en el testamento.',
+			'Los nietos heredan por representación la parte de su padre o madre (art. 675).',
+			'Un legado concreto de un bien puede quedar sin efecto (art. 806).',
+			'La cuarta parte de la herencia queda reservada a los hijos menores (art. 808).',
+		],
+	},
+	{
+		title: 'El orden de la cuenta no es el del reparto',
+		content:
+			'En una herencia real no se reparte el patrimonio entero. Primero se disuelve la sociedad de gananciales, si la había, y cada cónyuge se lleva su mitad. Sobre esa mitad de cada uno se calcula el ITPF de la porción que le toca. Después se hace el inventario y la valoración de los bienes. Y solo entonces se reparte. Por eso el ITPF se paga sobre el valor de lo que recibe cada heredero y no sobre el total de la herencia, y por eso una herencia con gananciales no se reparte con la mitad de la huerta. La versión sin gananciales, la de la calculadora, es la más simple: si los había, la cuenta se descuadra en lo que se reparta.',
+		points: [
+			'Primero la liquidación de gananciales, si la había.',
+			'Después inventario y valoración de los bienes a valor real y efectivo.',
+			'El ITPF va sobre el valor de la porción de cada heredero.',
+			'La partición se hace sobre el caudal hereditario, no sobre el patrimonio entero.',
+		],
+	},
+];
+
+const faqs = [
+	{
+		question: '¿Puedo dejarle todo a un nieto?',
+		answer:
+			'De la parte disponible, sí. Con hijos vivos, la legítima de dos tercios se protege incluso a los nietos, por el mecanismo de la representación (art. 675): el nieto hereda la parte de su padre o madre. Así que el nieto no puede recibir más de lo que habría recibido ese padre o madre. Sin hijos, la legítima baja a un tercio y los dos tercios libres sí se pueden dejar a quien se quiera.',
+	},
+	{
+		question: '¿Se puede desheredar a un hijo?',
+		answer:
+			'Solo por una causa legal del artículo 817 y expresándolo en el testamento. Si no hay causa, el testamento sigue siendo válido para todo lo demás y lo que hace falta es completar la legítima del hijo desheredado: no se cae el testamento entero. La cuarta parte, además, está reservada a los hijos menores (art. 808).',
+	},
+	{
+		question: '¿Los hermanos heredan si no hay hijos ni cónyuge?',
+		answer:
+			'Sí, en cuarto y quinto lugar, y por.reference: si el hijo de un hermano ha muerto antes que el causante, es el nieto quien ocupa el lugar de su padre. El simulador no cubre ese caso a propósito, porque las reglas de la sucesión de colaterales tienen excepciones que no caben en una cuenta rápida.',
+	},
+	{
+		question: '¿Hay que pagar el ITPF antes de repartir?',
+		answer:
+			'El impuesto va con el reparto, no antes: se calcula sobre el valor de lo que recibe cada heredero, y se declara en los seis meses siguientes al fallecimiento. Declararlo pronto bonifica un 20 % de la cuota. El reparto de los bienes y el ingreso del impuesto son dos cosas distintas y se pueden hacer en distinto orden, aunque conviene tenerlos calculados a la vez.',
+	},
+	{
+		question: '¿Y si había gananciales?',
+		answer:
+			'Entonces el reparto se hace sobre el caudal hereditario, que es la mitad de cada cónyuge, no sobre el patrimonio entero. El simulador no incluye esa fase porque mete la liquidación de gananciales por delante, que es otro reparto distinto. Si había gananciales, la cuenta se descuadra, y eso mismo es la señal de que hay que hacerlo con el cuaderno delante.'
+	},
+	{
+		question: '¿La primera consulta es gratuita?',
+		answer:
+			'Sí, y es confidencial. En una herencia lo que más cuesta no es el reparto, es la inventario mal hecha: omitir un bien, valorarlo mal o despreciar la legítima de un menor son errores que se pagan durante años.',
+	},
+];
+
+const related = [
+	{
+		label: 'Herencias y testamentos',
+		href: '/herencias-testamentos/',
+		description: 'La materia completa: aceptación, testamento, partición y legítima.',
+	},
+	{
+		label: 'Impuestos de una herencia',
+		href: '/impuestos-herencia/',
+		description: 'El plazo de seis meses y la bonificación del 20 %.',
+	},
+	{
+		label: 'Liquidación de gananciales',
+		href: '/liquidacion-gananciales/',
+		description: 'La fase que va antes del reparto, cuando hay matrimonio.',
+	},
+	{
+		label: 'Calculadora de plazos',
+		href: '/calculadora-plazos/',
+		description: 'Los quince días para aceptar o rechazar, y el resto.',
+	},
+	{
+		label: 'Oficinas y ubicaciones',
+		href: '/ubicaciones/',
+		description: 'Consulta gratuita en Lucena o Málaga.',
+	},
+];
+---
+
+<SeoLegalPage
+	title="Reparto de herencia y legítima: cómo se calcula | Scruz"
+	description="Cuánto es la legítima según haya hijos o no, cómo se reparte entre cónyuge e hijos y qué parte se puede dejar en testamento. Con el artículo del Código Civil."
+	breadcrumb={[
+		{ label: 'Inicio', href: '/' },
+		{ label: 'Herencias y testamentos', href: '/herencias-testamentos/' },
+		{ label: 'Reparto de herencia', href: '/reparto-herencia/' },
+	]}
+	eyebrow="Herramientas"
+	headline="Reparto de herencia y legítima"
+	intro="La legítima es la parte que nadie puede dejar a otro, y la parte disponible es la que se puede dejar a quien quieras. El simulador dice cuánto es cada una en tu caso y qué artículo lo fija. Con herederos forzosos o sin ellos, la respuesta cambia de dos tercios a un tercio, y esa diferencia es la que más caro sale."
+	highlights={[
+		'Legítima de dos tercios o de un tercio, con el artículo al lado',
+		'Reparto entre cónyuge e hijos, y entre cónyuge y padres',
+		'Cuánto es la parte que se puede dejar en testamento',
+		'Las tres cosas que este simulador no cubre',
+	]}
+	serviceType="Cálculo de la legítima y del reparto de una herencia"
+	areaServed="Málaga, Córdoba, Cádiz, Granada, Huelva y toda España"
+	sections={secciones}
+	faqs={faqs}
+	related={related}
+/>
+
+<section class="bg-base-200 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-3xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">Calcula el reparto</h2>
+		<p class="mb-6 text-base-content/70">
+			Valor de la herencia, número de hijos y a quién le toca el tercio. Sin
+			gananciales y sin nietos: son las dos cosas que este simulador no
+			contempla y las dos que cambian el resultado.
+		</p>
+
+		<label class="mb-2 block font-semibold" for="escenario">Supuesto</label>
+		<select id="escenario" class="select select-bordered mb-4 w-full">
+			{ESCENARIOS.map((e) => <option value={e.id}>{e.nombre}</option>)}
+		</select>
+
+		<label class="mb-2 block font-semibold" for="valor">Valor de la herencia (€)</label>
+		<input
+			id="valor"
+			type="number"
+			min="0"
+			step="1000"
+			placeholder="120000"
+			class="input input-bordered w-full"
+		/>
+
+		<div id="hijos-block" class="mt-4 hidden">
+			<label class="mb-2 block font-semibold" for="hijos">Número de hijos</label>
+			<input
+				id="hijos"
+				type="number"
+				min="1"
+				max="12"
+				step="1"
+				value="2"
+				class="input input-bordered w-full"
+			/>
+		</div>
+
+		<div class="mt-6 flex flex-wrap gap-2">
+			<label class="flex items-center gap-2">
+				<input id="testamento" type="checkbox" class="checkbox" />
+				<span>Hay testamento</span>
+			</label>
+			<label class="flex items-center gap-2">
+				<input id="gananciales" type="checkbox" class="checkbox" />
+				<span>Había gananciales sin liquidar</span>
+			</label>
+		</div>
+
+		<div id="resultado" class="mt-6 hidden" aria-live="polite"></div>
+	</div>
+</section>
+
+<section class="bg-base-100 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-5xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">La tabla de la legítima</h2>
+		<p class="mb-8 max-w-3xl text-base-content/70">
+			No hay más mystery que este: la legítima son dos tercios si hay hijos o
+			padres, y un tercio si no hay ninguno de los dos. El resto es la parte
+			disponible.
+		</p>
+		<div class="overflow-x-auto">
+			<table class="table-zebra table table-sm">
+				<thead>
+					<tr>
+						<th>Herederos forzosos</th>
+						<th>Legítima</th>
+						<th>Parte disponible</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						FECHAS.map((f) => (
+							<tr>
+								<td class="font-semibold">{f.texto}</td>
+								<td>{(f.valor * 100).toFixed(1).replace('.', ',')} %</td>
+								<td>{((1 - f.valor) * 100).toFixed(1).replace('.', ',')} %</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+		<p class="mt-4 text-sm text-base-content/60">
+			Artículo 809.1 del Código Civil. La cuarta parte, además, está reservada
+			siguen bajo la guarda legal (art. 808), y eso
+			reduce lo disponible aunque los otros dos tercios estén libres.
+		</p>
+	</div>
+</section>
+
+<script>
+	interface Escenarios {
+		id: string;
+		nombre: string;
+		ayuda: string;
+		norma: string;
+	}
+	const ESCENARIOS: Escenarios[] = [
+		{
+			id: 'conyuge-hijos',
+			nombre: 'Cónyuge e hijos',
+			ayuda: 'El caso más frecuente.',
+			norma:
+				'El cónyuge superviviente tiene derecho al tercio de la herencia (art. 833.1.a) y los hijos, en su conjunto, a los otros dos tercios (art. 809.1), repartidos a partes iguales (art. 834.1).',
+		},
+		{
+			id: 'conyuge-padres',
+			nombre: 'Cónyuge y padres del causante',
+			ayuda: 'Sin hijos, con los padres vivos.',
+			norma:
+				'Sin hijos, la legítima baja a un tercio (art. 809.1) y el cónyuge lo hereda íntegro; los padres, el otro tercio, por mitades (arts. 833.1.a y 835.1).',
+		},
+		{
+			id: 'conyuge-solo',
+			nombre: 'Cónyuge sin hijos ni padres',
+			ayuda: 'El caso más sencillo de todos.',
+			norma:
+				'El cónyuge es el único heredero y hereda la totalidad (art. 834.3).',
+		},
+		{
+			id: 'solo-hijos',
+			nombre: 'Herederos sin cónyuge',
+			ayuda: 'Hijos u otros herederos legitimarios.',
+			norma:
+				'Los hijos heredan la totalidad por partes iguales (art. 834.1). La legítima sigue siendo dos tercios: el otro tercio es disponible por testamento (art. 809.1).',
+		},
+	];
+
+	const selEscenario = document.getElementById('escenario') as HTMLSelectElement | null;
+	const inputValor = document.getElementById('valor') as HTMLInputElement | null;
+	const inputHijos = document.getElementById('hijos') as HTMLInputElement | null;
+	const blockHijos = document.getElementById('hijos-block');
+	const chkTestamento = document.getElementById('testamento') as HTMLInputElement | null;
+	const chkGananciales = document.getElementById('gananciales') as HTMLInputElement | null;
+	const resultado = document.getElementById('resultado');
+
+	const euros = (n: number) =>
+		n.toLocaleString('es-ES', { maximumFractionDigits: 0 }) + ' €';
+
+	const calcular = () => {
+		if (!resultado || !selEscenario || !inputValor) return;
+		const valor = Number(inputValor.value ?? 0);
+		const esc = ESCENARIOS.find((e) => e.id === selEscenario.value);
+		if (!esc || !valor) {
+			resultado.classList.add('hidden');
+			return;
+		}
+		const hijos = Math.max(1, Number(inputHijos?.value ?? 2));
+		const conHijos = esc.id === 'conyuge-hijos' || esc.id === 'solo-hijos';
+		const legitima = valor * (conHijos ? 2 / 3 : 1 / 3);
+		const disponible = valor - legitima;
+
+		const filasHijos: string[] = [];
+		for (let i = 0; i < hijos; i += 1) {
+			const parte = esc.id === 'solo-hijos' ? valor / hijos : (valor * 2) / 3 / hijos;
+			filasHijos.push(
+				`<tr><td>Hijo ${i + 1}</td><td>${euros(parte)}</td><td>art. 834.1</td></tr>`,
+			);
+		}
+
+		let reparto: string;
+		if (esc.id === 'conyuge-hijos') {
+			reparto =
+				'<tr><td>Cónyuge superviviente (1/3)</td><td>' +
+				euros(valor / 3) +
+				'</td><td>art. 833.1.a</td></tr>' +
+				filasHijos.join('');
+		} else if (esc.id === 'conyuge-padres') {
+			reparto =
+				'<tr><td>Cónyuge superviviente (1/3)</td><td>' +
+				euros(valor / 3) +
+				'</td><td>art. 833.1.a</td></tr>' +
+				'<tr><td>Padre y madre, por mitades</td><td>' +
+				euros(valor / 6) +
+				' cada uno</td><td>art. 835.1</td></tr>';
+		} else if (esc.id === 'conyuge-solo') {
+			reparto =
+				'<tr><td>Cónyuge superviviente (todo)</td><td>' +
+				euros(valor) +
+				'</td><td>art. 834.3</td></tr>';
+		} else {
+			reparto = filasHijos.join('');
+		}
+
+		let avisoTestamento = '';
+		if (chkTestamento?.checked) {
+			avisoTestamento =
+				'<p class="mt-3 text-sm"><strong>Con testamento:</strong> el testador puede ' +
+				'disponer de los ' +
+				euros(disponible) +
+				' que no son legítima. No puede desheredar sin causa legal (arts. 675 y 817): ' +
+				'si lo hace sin ella, el testamento sigue valiendo y lo que corresponde es ' +
+				'completar la legítima del heredero. Y la cuarta parte queda reservada a los ' +
+				'hijos menores (art. 808).</p>';
+		}
+
+		let avisoGananciales = '';
+		if (chkGananciales?.checked) {
+			avisoGananciales =
+				'<p class="mt-2 text-sm"><strong class="text-warning">Ojo:</strong> con ' +
+				'gananciales sin liquidar este cálculo no vale. Primero se disuelve la ' +
+				'sociedad conyugal y cada cónyuge se lleva su mitad; el reparto se hace ' +
+				'sobre ese caudal hereditario, no sobre ' +
+				euros(valor) +
+				'.</p>';
+		}
+
+		resultado.innerHTML =
+			'<div class="rounded-box border border-primary/30 bg-primary/5 p-5">' +
+			`<h3 class="font-title text-xl">Legítima: ${euros(legitima)} · Parte disponible: ${euros(disponible)}</h3>` +
+			`<p class="mt-1 text-sm opacity-70">${esc.ayuda}</p>` +
+			'<div class="mt-4 overflow-x-auto"><table class="table table-sm">' +
+			'<thead><tr><th>Quien hereda</th><th>Parte</th><th>Artículo</th></tr></thead>' +
+			'<tbody>' +
+			reparto +
+			'</tbody></table></div>' +
+			`<p class="mt-3 text-sm">${esc.norma}</p>` +
+			avisoTestamento +
+			avisoGananciales +
+			'<p class="mt-3 text-sm">Los nietos heredan por representación la parte de su ' +
+			'padre o madre (art. 675): no pueden recibir más de lo que habría recibido ese ' +
+			'padre o madre.</p>' +
+			'<p class="mt-4"><a class="link link-primary" href="/ubicaciones/">Revisar mi caso, gratis</a></p>' +
+			'</div>';
+		resultado.classList.remove('hidden');
+	};
+
+	const ajustaHijos = () => {
+		const id = selEscenario?.value;
+		if (!blockHijos) return;
+		blockHijos.classList.toggle('hidden', id !== 'conyuge-hijos' && id !== 'solo-hijos');
+	};
+
+	selEscenario?.addEventListener('change', () => {
+		ajustaHijos();
+		calcular();
+	});
+	inputValor?.addEventListener('input', calcular);
+	inputHijos?.addEventListener('input', calcular);
+	chkTestamento?.addEventListener('change', calcular);
+	chkGananciales?.addEventListener('change', calcular);
+	ajustaHijos();
+</script>

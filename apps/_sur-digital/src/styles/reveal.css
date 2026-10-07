@@ -1,0 +1,40 @@
+/* Animaciones de aparición al hacer scroll (IntersectionObserver).
+   - El estado "oculto" solo se aplica si JS añadió .js a <html>: sin JS o con
+     JS deshabilitado, todo el contenido es visible (no hay FOUC ni contenido
+     perdido para crawlers).
+   - Con prefers-reduced-motion no se oculta ni se anima nada. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  html.js [data-reveal-group] > *:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  [data-reveal].is-revealed,
+  [data-reveal-group] > *.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Stagger: los hijos de un grupo aparecen escalonados (via inline
+     transition-delay que pone el script) */
+  [data-reveal-group] > *.is-revealed {
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

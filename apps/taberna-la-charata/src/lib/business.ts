@@ -29,6 +29,10 @@ export const galleryPhotos = Array.from({ length: 8 }, (_, index) => {
 	};
 });
 
+// Foto de fondo del hero: una panorámica del local hecha por la propia taberna. Para usar otra,
+// cambia el nombre del fichero: están todas en `src/assets/fotos`.
+export const heroPhoto = foto('taberna-la-charata-apaisada-01.jpg');
+
 // Tampoco hay teléfono público verificado (los directorios lo ocultan), así que se omite.
 export const mapsUrl =
 	'https://www.google.com/maps/place/Taberna+La+Charata/@36.7155529,-4.2850114,17z/data=!3m1!4b1!4m6!3m5!1s0xd725b55eea3a345:0xb1da2e444feceb2e!8m2!3d36.7155529!4d-4.2850114!16s%2Fg%2F11h_6x7wsr?authuser=0&hl=es&entry=ttu';

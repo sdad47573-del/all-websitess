@@ -1,0 +1,256 @@
+---
+// Página de servicios: detalle de los 6 servicios de DATA.services.
+// En la home solo se ven como tarjetas del hero; aquí cada uno con qué
+// incluye, para quién es y para qué fase del proyecto.
+import { CRUMB_SERVICIOS } from "../data/breadcrumbs";
+import { DATA } from "../data/data.astro";
+import Layout from "../layouts/Layout.astro";
+import Topbar from "../components/Topbar.astro";
+import Footer from "../components/Footer.astro";
+import DoneIcon from "../icons/DoneIcon.astro";
+
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const pageUrl = `${site}/servicios/`;
+
+// Detalle por slug de servicio (la tarjeta i-ésima de DATA.services)
+const DETAILS: Record<
+  string,
+  { includes: string[]; bestFor: string; price: string }
+> = {
+  "Desarrollo Web": {
+    includes: [
+      "Landing o web multi-página con diseño a medida",
+      "Optimización de velocidad (Core Web Vitals en verde)",
+      "Formularios y botones de contacto que llegan a tu móvil",
+      "Alta en Google Search Console y sitemap",
+    ],
+    bestFor:
+      "Negocios que empiezan de cero o con una web vieja que no trabaja para ellos.",
+    price: "Primera landing gratis. Multi-página con precio cerrado.",
+  },
+  "Consultoría Web": {
+    includes: [
+      "Auditoría de tu web actual: diseño, velocidad y SEO",
+      "Plan de mejora priorizado (qué arreglar primero y por qué)",
+      "Análisis de la competencia de tu zona",
+      "Reunión de una hora para tragértelo todo en cristiano",
+    ],
+    bestFor:
+      "Negocios con web pero sin resultados, o que quieren una segunda opinión antes de invertir.",
+    price: "Precio cerrado por proyecto, descontable si lo ejecutamos nosotros.",
+  },
+  "Posicionamiento SEO": {
+    includes: [
+      "Palabras clave por servicio y zona (lo que busca tu cliente)",
+      "Textos optimizados para cada página",
+      "Ficha de Google Business optimizada con reseñas",
+      "Seguimiento mensual de posiciones y tráfico",
+    ],
+    bestFor:
+      "Negocios que ya tienen web y quieren que Google se la enseñe a su cliente.",
+    price: "Desde 100€/mes. Sin permanencia: cancela cuando quieras.",
+  },
+  "Creación Gráfica": {
+    includes: [
+      "Logo en todos los formatos (web, redes, imprenta)",
+      "Paleta de colores y tipografías de tu marca",
+      "Plantillas para Instagram y Google Business",
+      "Tarjetas y elementos básicos de identidad",
+    ],
+    bestFor:
+      "Negocios nuevos sin identidad, o con un logo hecho en 5 minutos que no escala.",
+    price: "Precio cerrado según alcance. Incluido en webs completas.",
+  },
+  "Diseño UX": {
+    includes: [
+      "Recorrido del cliente desde que entra hasta que contacta",
+      "Jerarquía visual: lo importante se ve primero",
+      "Formularios cortos que la gente sí rellena",
+      "Pruebas con usuarios reales antes de lanzar",
+    ],
+    bestFor:
+      "Webs con tráfico que no convierte: gente que entra y se va sin hacer nada.",
+    price: "Incluido en todo diseño web nuestro. Aislado, precio cerrado.",
+  },
+  "Redacción de Contenidos": {
+    includes: [
+      "Textos que venden sin sonar a folleto",
+      "Estructura SEO por página (títulos, encabezados, negritas)",
+      "Textos legales básicos coordinados con tu gestor",
+      "Revisión contigo antes de publicar",
+    ],
+    bestFor:
+      "Quien sabe lo que hace pero no cómo contarlo (casi todo el mundo).",
+    price: "Incluido en el diseño de tu web. Por suelta, precio cerrado.",
+  },
+};
+
+// Soporte post-lanzamiento: lo que pasa después de la entrega
+const soporte = {
+  title: "Después del lanzamiento",
+  items: [
+    "30 días de ajustes gratis: textos, fotos, colores o secciones",
+    "Canal de WhatsApp directo para cambios pequeños",
+    "Mantenimiento opcional 20€/mes (actualizaciones, copias y cambios de contenido)",
+    "Todo a tu nombre: si algún día te vas, te llevas la web sin llorar nada",
+  ],
+};
+
+const serviceDetails = DATA.services.map((s) => ({
+  ...s,
+  ...DETAILS[s.title],
+}));
+
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${site}/` },
+    { "@type": "ListItem", position: 2, name: "Servicios", item: pageUrl },
+  ],
+};
+
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Servicios de diseño web y marketing digital en Málaga",
+  itemListElement: DATA.services.map((s, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Service",
+      name: s.title,
+      description: s.label,
+      provider: {
+        "@type": "ProfessionalService",
+        name: "Sur Digital",
+        url: `${site}/`,
+      },
+      areaServed: "Málaga y provincia",
+    },
+  })),
+};
+---
+
+<Layout
+  title="Servicios de diseño web y SEO en Málaga | Sur Digital"
+  description="Desarrollo web, consultoría, SEO local, identidad gráfica, UX y redacción de contenidos en Málaga. Qué incluye cada servicio y cuál necesitas. Primera landing gratis."
+  image={`${site}/og/servicios.png`}
+  path="/servicios/"
+  breadcrumbs={CRUMB_SERVICIOS}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(servicesSchema)}
+  />
+
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <!-- Hero -->
+    <section class="container mx-auto px-6 max-w-4xl text-center mb-16" data-reveal>
+      <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
+        <a href="/" class="link link-hover">Inicio</a> · Servicios
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        Servicios de <span class="text-wave">diseño web en Málaga</span>
+      </h1>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Todo lo que necesita tu negocio para estar y estar bien en Google.
+        Sin packs inflados: contratas lo que necesitas y sabes lo que cuesta
+        antes de empezar.
+      </p>
+    </section>
+
+    <!-- Servicios en detalle -->
+    <section class="container mx-auto px-6 max-w-5xl mb-16">
+      <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {
+          serviceDetails.map(({ icon: Icon, title, label, includes, bestFor, price }) => (
+            <li class="card bg-base-100 shadow-md border border-base-300">
+              <div class="card-body gap-3">
+                <div class="flex items-center gap-3">
+                  <Icon class="size-10 shrink-0" />
+                  <h2 class="card-title text-xl">{title}</h2>
+                </div>
+                <p class="text-sm text-base-content/70">{label}</p>
+
+                <p class="text-xs font-bold uppercase tracking-wide text-base-content/50 pt-2">
+                  Qué incluye
+                </p>
+                <ul class="flex flex-col gap-2">
+                  {includes.map((item) => (
+                    <li class="flex items-start gap-2 text-sm text-base-content/70">
+                      <DoneIcon class="size-4 shrink-0 mt-0.5" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <p class="text-sm text-base-content/70 pt-2">
+                  <span class="font-bold text-base-content">Para quién:</span>{" "}
+                  {bestFor}
+                </p>
+                <div class="divider my-0" />
+                <p class="text-sm font-bold text-secondary">{price}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Soporte post-lanzamiento -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <div class="card bg-base-100 shadow-md border border-base-300">
+        <div class="card-body gap-4">
+          <h2 class="card-title text-xl">{soporte.title}</h2>
+          <ul class="flex flex-col gap-2">
+            {
+              soporte.items.map((item) => (
+                <li class="flex items-start gap-2 text-sm text-base-content/70">
+                  <DoneIcon class="size-4 shrink-0 mt-0.5" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cómo empezamos -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <div class="card bg-base-100 shadow-md border border-base-300">
+        <div class="card-body gap-4">
+          <h2 class="card-title text-xl justify-center">
+            ¿No sabes cuál necesitas?
+          </h2>
+          <p class="text-sm text-base-content/70 text-center">
+            El 90% de los negocios locales empieza con una landing y su ficha
+            de Google. Cuéntanos tu caso y te decimos honestamente qué es lo
+            que necesitas (a veces es menos de lo que crees, y te lo diremos).
+          </p>
+          <div class="flex justify-center gap-3 mt-2">
+            <a href="/especialidades/" class="btn btn-outline">
+              Ver propuestas por sector
+            </a>
+            <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Cuéntanos tu proyecto
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

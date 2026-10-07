@@ -91,11 +91,6 @@ export const faqs = [
 			'Tapas y cocina española con una carta muy amplia que suma también platos italianos, asiáticos, hamburguesas artesanales y bocadillos. Es una opción ideal para grupos, con alternativas de carne, pescado, vegetarianas y veganas.',
 	},
 	{
-		question: '¿Cuánto cuesta el menú del día?',
-		answer:
-			'El menú del día incluye primero, segundo, bebida y postre y ronda los 12–14 € de lunes a viernes y en torno a 20 € los fines de semana. También tienen una carta extensa de tapas (desde unos 3,50 € la tapa) y opciones para desayunos y brunch.',
-	},
-	{
 		question: '¿Cuál es el horario?',
 		answer:
 			'Abre de 7:00 a 17:00 de martes a domingo, con servicio de desayunos, comidas y brunch, y cierra los lunes. Puede variar en festivos: confirma antes de desplazarte.',

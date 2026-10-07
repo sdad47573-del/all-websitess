@@ -9,7 +9,11 @@
  *
  * Estos tests reconstruyen un repo git de verdad y clonan en profundidad limitada, que es lo
  * único que reproduce el fallo: con el clon completo del repo local todo pasa y el filtro parece
- * correcto mientras en Vercel construye las 144.
+ * correcto mientras en Vercel construye las 191.
+ *
+ * El otro grupo de tests cubre el lockfile, que es el que disparaba todos los builds sin que
+ * ninguna app cambiara: un `bun install` reescribe cientos de entradas por *hoisting* y eso no
+ * puede reconstruir webs cuyo código y cuyas dependencias declaradas siguen igual.
  */
 
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -44,6 +48,61 @@ let origin: string;
 /** SHA del commit que estaba desplegado antes del push actual: el `VERCEL_GIT_PREVIOUS_SHA`. */
 let deployed = '';
 
+/**
+ * Lockfile mínimo con la misma forma que el de bun: `workspaces` (una entrada por proyecto) +
+ * `packages` (la resolución de cada paquete). Es lo que el filtro parsea para decidir si el
+ * lockfile afecta a esta app.
+ */
+const lockfile = ({
+	workspaces = {},
+	packages = {},
+	overrides,
+}: {
+	workspaces?: Record<string, unknown>;
+	packages?: Record<string, unknown>;
+	overrides?: unknown;
+}) =>
+	`${JSON.stringify(
+		{
+			lockfileVersion: 1,
+			configVersion: 1,
+			...(overrides ? { overrides } : {}),
+			workspaces,
+			packages,
+		},
+		null,
+		2,
+	)}\n`;
+
+/**
+ * Estado del lockfile del fixture. Cada test de lockfile parte de aquí para que el diff que ve el
+ * filtro (`VERCEL_GIT_PREVIOUS_SHA` → HEAD) solo contenga la variante de ese test.
+ */
+const baseLockfile = lockfile({
+	workspaces: {
+		'': { name: 'root', devDependencies: { turbo: '2.11.7' } },
+		'apps/app-a': {
+			name: 'app-a',
+			dependencies: { '@astro-config': 'workspace:*', astro: '7.3.5' },
+		},
+		'apps/app-b': { name: 'app-b', dependencies: { '@astro-config': 'workspace:*' } },
+		'packages/@astro-config': { name: '@astro-config', dependencies: { tailwindcss: '4.3.3' } },
+	},
+	packages: {
+		astro: ['astro@7.3.5', '', { dependencies: { 'strip-ansi': '^7.0.1' } }, 'sha512-astro-7.3.5'],
+		'strip-ansi': ['strip-ansi@7.2.0', '', {}, 'sha512-strip-ansi-7.2.0'],
+		tailwindcss: ['tailwindcss@4.3.3', '', {}, 'sha512-tailwindcss-4.3.3'],
+		'@astro-config': [
+			'@astro-config@0.0.1',
+			'workspace:packages/@astro-config',
+			{},
+			'sha512-astro-config',
+		],
+	},
+});
+
+let lockState: string = baseLockfile;
+
 const commit = (files: Record<string, string>) => {
 	for (const [relative, contents] of Object.entries(files)) {
 		const target = path.join(origin, relative);
@@ -68,21 +127,28 @@ beforeAll(() => {
 	git(['config', 'user.name', 'tests'], origin);
 
 	writeFileSync(path.join(origin, 'package.json'), JSON.stringify({ name: 'root', private: true }));
-	writeFileSync(path.join(origin, 'packages', '@astro-config', 'package.json'), '{ "name": "@astro-config" }');
+	writeFileSync(
+		path.join(origin, 'packages', '@astro-config', 'package.json'),
+		JSON.stringify({ name: '@astro-config', dependencies: { tailwindcss: '4.3.3' } }),
+	);
 
 	// 1. El commit que creó los `vercel.json` de todas las apps a la vez.
 	const vercelJson = '{ "ignoreCommand": "node ../../scripts/x.mjs" }\n';
 	const base: Record<string, string> = {
 		'apps/app-a/vercel.json': vercelJson,
 		'apps/app-b/vercel.json': vercelJson,
+		'bun.lock': baseLockfile,
 	};
-	for (const app of ['app-a', 'app-b']) {
-		base[`apps/${app}/package.json`] = JSON.stringify({
-			name: app,
-			type: 'module',
-			dependencies: { '@astro-config': 'workspace:*' },
-		});
-	}
+	base['apps/app-a/package.json'] = JSON.stringify({
+		name: 'app-a',
+		type: 'module',
+		dependencies: { '@astro-config': 'workspace:*', astro: '7.3.5' },
+	});
+	base['apps/app-b/package.json'] = JSON.stringify({
+		name: 'app-b',
+		type: 'module',
+		dependencies: { '@astro-config': 'workspace:*' },
+	});
 	commit(base);
 
 	// 2. Un push ya desplegado, y 3. el push nuevo que solo toca app-b.
@@ -115,6 +181,20 @@ const cloneLikeVercel = () => {
 const push = (files: Record<string, string>) => {
 	const previous = git(['rev-parse', 'HEAD'], origin).trim();
 	commit(files);
+	return previous;
+};
+
+/**
+ * Publica una variante del lockfile y devuelve el SHA contra el que comparará Vercel.
+ *
+ * Antes deja el lockfile en su estado base (en un commit aparte) para que el diff que ve el
+ * filtro sea exactamente `base → variante`, sin arrastrar la variante del test anterior.
+ */
+const pushLockfile = (variant: Parameters<typeof lockfile>[0] | string) => {
+	const next = typeof variant === 'string' ? variant : lockfile(variant);
+	if (lockState !== baseLockfile) push({ 'bun.lock': baseLockfile });
+	const previous = push({ 'bun.lock': next });
+	lockState = next;
 	return previous;
 };
 
@@ -175,15 +255,6 @@ describe('el Ignored Build Step filtra los proyectos que no han cambiado', () =>
 		expect(runAsVercel(repo, 'app-a', vercelEnv(previous))).toBe(1);
 	});
 
-	test('cambiar el lockfile de la raíz reconstruye todas las apps', () => {
-		const previous = push({ 'bun.lock': `{}\n` });
-		const repo = cloneLikeVercel();
-		const env = vercelEnv(previous);
-
-		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
-		expect(runAsVercel(repo, 'app-b', env)).toBe(1);
-	});
-
 	test('un cambio en otra parte del repo no reconstruye ninguna app', () => {
 		const previous = push({ 'docs/deploy.md': `# Documentación\n\n${'texto '.repeat(50)}\n` });
 		const repo = cloneLikeVercel();
@@ -191,6 +262,202 @@ describe('el Ignored Build Step filtra los proyectos que no han cambiado', () =>
 
 		expect(runAsVercel(repo, 'app-a', env)).toBe(0);
 		expect(runAsVercel(repo, 'app-b', env)).toBe(0);
+	});
+});
+
+describe('el lockfile se evalúa por app, no como un cambio global', () => {
+	test('un `bun install` que solo reordena el árbol (hoisting) no reconstruye ninguna app', () => {
+		// El caso real: `strip-ansi` cambia de versión en el nivel raíz porque otra app trajo sus
+		// dependencias, y aparecen paquetes nuevos de esa app. Ninguna de las dos apps declara
+		// `strip-ansi` ni `@astrojs/rss`, así que su build no puede cambiar.
+		const previous = pushLockfile({
+			workspaces: {
+				'': { name: 'root', devDependencies: { turbo: '2.11.7' } },
+				'apps/app-a': {
+					name: 'app-a',
+					dependencies: { '@astro-config': 'workspace:*', astro: '7.3.5' },
+				},
+				'apps/app-b': { name: 'app-b', dependencies: { '@astro-config': 'workspace:*' } },
+				'apps/app-c': { name: 'app-c', dependencies: { '@astrojs/rss': '4.0.19' } },
+				'packages/@astro-config': {
+					name: '@astro-config',
+					dependencies: { tailwindcss: '4.3.3' },
+				},
+			},
+			packages: {
+				// `astro` (declarada por app-a) se queda igual: el ruido de hoisting mueve solo
+				// paquetes transitivos que ninguna app declara.
+				astro: [
+					'astro@7.3.5',
+					'',
+					{ dependencies: { 'strip-ansi': '^7.0.1' } },
+					'sha512-astro-7.3.5',
+				],
+				'strip-ansi': ['strip-ansi@6.0.1', '', {}, 'sha512-strip-ansi-6.0.1'],
+				'@astrojs/rss': ['@astrojs/rss@4.0.19', '', {}, 'sha512-rss'],
+				tailwindcss: ['tailwindcss@4.3.3', '', {}, 'sha512-tailwindcss-4.3.3'],
+				'@astro-config': [
+					'@astro-config@0.0.1',
+					'workspace:packages/@astro-config',
+					{},
+					'sha512-astro-config',
+				],
+			},
+		});
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(0);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(0);
+	});
+
+	test('una dependencia declarada que cambia de versión solo reconstruye la app que la declara', () => {
+		// app-a declara `astro`; app-b no. Las entradas de `workspaces` no se tocan, así que el
+		// único motivo para construir app-a es la resolución de su dependencia declarada.
+		const previous = pushLockfile({
+			workspaces: {
+				'': { name: 'root', devDependencies: { turbo: '2.11.7' } },
+				'apps/app-a': {
+					name: 'app-a',
+					dependencies: { '@astro-config': 'workspace:*', astro: '7.3.5' },
+				},
+				'apps/app-b': { name: 'app-b', dependencies: { '@astro-config': 'workspace:*' } },
+				'packages/@astro-config': {
+					name: '@astro-config',
+					dependencies: { tailwindcss: '4.3.3' },
+				},
+			},
+			packages: {
+				astro: ['astro@7.3.6', '', { dependencies: { 'strip-ansi': '^7.0.1' } }, 'sha512-astro-7.3.6'],
+				'strip-ansi': ['strip-ansi@7.2.0', '', {}, 'sha512-strip-ansi-7.2.0'],
+				tailwindcss: ['tailwindcss@4.3.3', '', {}, 'sha512-tailwindcss-4.3.3'],
+				'@astro-config': [
+					'@astro-config@0.0.1',
+					'workspace:packages/@astro-config',
+					{},
+					'sha512-astro-config',
+				],
+			},
+		});
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(0);
+	});
+
+	test('una dependencia declarada por un paquete del workspace reconstruye a quien lo importa', () => {
+		// Las dos apps importan `@astro-config`, que declara `tailwindcss`: la subida de ese paquete
+		// cambia el build de las dos aunque no lo declaren ellas.
+		const previous = pushLockfile({
+			workspaces: {
+				'': { name: 'root', devDependencies: { turbo: '2.11.7' } },
+				'apps/app-a': {
+					name: 'app-a',
+					dependencies: { '@astro-config': 'workspace:*', astro: '7.3.5' },
+				},
+				'apps/app-b': { name: 'app-b', dependencies: { '@astro-config': 'workspace:*' } },
+				'packages/@astro-config': {
+					name: '@astro-config',
+					dependencies: { tailwindcss: '4.3.3' },
+				},
+			},
+			packages: {
+				astro: ['astro@7.3.5', '', { dependencies: { 'strip-ansi': '^7.0.1' } }, 'sha512-astro-7.3.5'],
+				'strip-ansi': ['strip-ansi@7.2.0', '', {}, 'sha512-strip-ansi-7.2.0'],
+				tailwindcss: ['tailwindcss@4.3.4', '', {}, 'sha512-tailwindcss-4.3.4'],
+				'@astro-config': [
+					'@astro-config@0.0.1',
+					'workspace:packages/@astro-config',
+					{},
+					'sha512-astro-config',
+				],
+			},
+		});
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(1);
+	});
+
+	test('cambiar el bloque de dependencias de una app solo reconstruye esa app', () => {
+		const previous = pushLockfile({
+			workspaces: {
+				'': { name: 'root', devDependencies: { turbo: '2.11.7' } },
+				'apps/app-a': {
+					name: 'app-a',
+					dependencies: { '@astro-config': 'workspace:*' },
+				},
+				'apps/app-b': { name: 'app-b', dependencies: { '@astro-config': 'workspace:*' } },
+				'packages/@astro-config': {
+					name: '@astro-config',
+					dependencies: { tailwindcss: '4.3.3' },
+				},
+			},
+			packages: {
+				astro: ['astro@7.3.5', '', { dependencies: { 'strip-ansi': '^7.0.1' } }, 'sha512-astro-7.3.5'],
+				'strip-ansi': ['strip-ansi@7.2.0', '', {}, 'sha512-strip-ansi-7.2.0'],
+				tailwindcss: ['tailwindcss@4.3.3', '', {}, 'sha512-tailwindcss-4.3.3'],
+				'@astro-config': [
+					'@astro-config@0.0.1',
+					'workspace:packages/@astro-config',
+					{},
+					'sha512-astro-config',
+				],
+			},
+		});
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(0);
+	});
+
+	test('cambiar las overrides del lockfile reconstruye todas las apps', () => {
+		// Las `resolutions` de la raíz fuerzan versiones en todo el grafo: sí afectan a cualquiera.
+		const previous = pushLockfile({
+			overrides: { zod: '^4.6.5' },
+			workspaces: {
+				'': { name: 'root', devDependencies: { turbo: '2.11.7' } },
+				'apps/app-a': {
+					name: 'app-a',
+					dependencies: { '@astro-config': 'workspace:*', astro: '7.3.5' },
+				},
+				'apps/app-b': { name: 'app-b', dependencies: { '@astro-config': 'workspace:*' } },
+				'packages/@astro-config': {
+					name: '@astro-config',
+					dependencies: { tailwindcss: '4.3.3' },
+				},
+			},
+			packages: {
+				astro: ['astro@7.3.5', '', { dependencies: { 'strip-ansi': '^7.0.1' } }, 'sha512-astro-7.3.5'],
+				'strip-ansi': ['strip-ansi@7.2.0', '', {}, 'sha512-strip-ansi-7.2.0'],
+				tailwindcss: ['tailwindcss@4.3.3', '', {}, 'sha512-tailwindcss-4.3.3'],
+				'@astro-config': [
+					'@astro-config@0.0.1',
+					'workspace:packages/@astro-config',
+					{},
+					'sha512-astro-config',
+				],
+			},
+		});
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(1);
+	});
+
+	test('un lockfile que no se puede leer construye (ante la duda, publicar)', () => {
+		// Si el formato del lockfile cambia o el fichero llega roto, no se puede afirmar que no
+		// haya cambios: se construye. Saltarse el build aquí dejaría webs sin publicar en silencio.
+		const previous = pushLockfile('esto no es un lockfile\n');
+		const repo = cloneLikeVercel();
+		const env = vercelEnv(previous);
+
+		expect(runAsVercel(repo, 'app-a', env)).toBe(1);
+		expect(runAsVercel(repo, 'app-b', env)).toBe(1);
 	});
 });
 

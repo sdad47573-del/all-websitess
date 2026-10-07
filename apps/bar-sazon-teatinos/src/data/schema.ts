@@ -3,15 +3,13 @@
  *
  * El `Restaurant` con la dirección, el horario y la valoración vive en `site.ts` y lo
  * emite el layout en todas las páginas. Aquí están las migas de pan y la carta completa
- * como `Menu` (con sus secciones y precios), que solo se usan en `/carta`.
+ * como `Menu` (con sus secciones), que solo se usan en `/carta`.
  */
 import { CARTA } from './carta';
 import { BEBIDAS, BUSINESS } from './site';
 
 const siteUrl = BUSINESS.siteUrl;
 
-/** '17,50 €' -> '17.50' (schema.org espera el número, sin símbolo ni miles). */
-const aNumero = (precio: string) => precio.replace(/[^\d,.]/g, '').replace(',', '.');
 
 /** Migas de pan que coinciden con las que se ven en pantalla. */
 export const breadcrumbs = (items: { name: string; path: string }[]) => ({
@@ -25,7 +23,7 @@ export const breadcrumbs = (items: { name: string; path: string }[]) => ({
 	})),
 });
 
-/** La carta como `Menu`, sección a sección, con los precios que publica el local. */
+/** La carta como `Menu`, sección a sección. */
 export const menuSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Menu',
@@ -42,14 +40,6 @@ export const menuSchema = {
 				'@type': 'MenuItem',
 				name: item.name,
 				...(item.description ? { description: item.description } : {}),
-				offers: (item.priceOptions ?? (item.price ? [{ label: '', price: item.price }] : [])).map(
-					(option) => ({
-						'@type': 'Offer',
-						price: aNumero(option.price),
-						priceCurrency: 'EUR',
-						...(option.label ? { name: option.label } : {}),
-					}),
-				),
 			})),
 		})),
 		{

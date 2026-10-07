@@ -1,0 +1,188 @@
+---
+import { SECTORS } from "../data/sectors";
+import Layout from "../layouts/Layout.astro";
+import Topbar from "../components/Topbar.astro";
+import Footer from "../components/Footer.astro";
+import DoneIcon from "../icons/DoneIcon.astro";
+import { pageTitle } from "../lib/blog";
+
+export function getStaticPaths() {
+  return SECTORS.map((sector) => ({
+    params: { sector: sector.slug },
+    props: { sector },
+  }));
+}
+
+const { sector } = Astro.props;
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const pageUrl = `${site}/web-para-${sector.slug}/`;
+
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${site}/` },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: `Web para ${sector.name.toLowerCase()}`,
+      item: pageUrl,
+    },
+  ],
+};
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: `Diseño web para ${sector.name.toLowerCase()} en Málaga`,
+  description: sector.description,
+  provider: {
+    "@type": "ProfessionalService",
+    name: "Sur Digital",
+    url: `${site}/`,
+  },
+  areaServed: "Málaga y provincia",
+  url: pageUrl,
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: sector.faq.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+---
+
+<Layout
+  title={pageTitle(sector.title.replace(/\s*\|\s*Sur Digital$/, ""))}
+  description={sector.description}
+  image={`${site}/og/web-para-${sector.slug}.png`}
+  path={`/web-para-${sector.slug}/`}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(serviceSchema)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(faqSchema)}
+  />
+
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <!-- Hero del sector -->
+    <section class="container mx-auto px-6 max-w-4xl text-center mb-16" data-reveal>
+      <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
+        <a href="/" class="link link-hover">Inicio</a> · Especialidad
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        {sector.h1Prefix}
+        <span class="text-wave">{sector.h1Accent}</span>
+      </h1>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">{sector.intro}</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-3 mt-8">
+        <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+          Empieza desde 0€
+        </a>
+        <a href="#faq-sector" class="btn btn-outline btn-lg">Resolver dudas</a>
+      </div>
+    </section>
+
+    <!-- Dolores -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-6 text-center">
+        ¿Te suena alguna de estas?
+      </h2>
+      <ul class="flex flex-col gap-3">
+        {
+          sector.pains.map((pain) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <p class="card-body py-4 flex-row items-center gap-3 text-base-content/70">
+                <span class="text-error font-black shrink-0">✗</span>
+                {pain}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Solución -->
+    <section class="container mx-auto px-6 max-w-5xl mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-8 text-center" data-reveal>
+        Lo que te construimos
+      </h2>
+      <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {
+          sector.features.map(({ title, text }) => (
+            <li class="card bg-base-100 shadow-md border border-base-300">
+              <div class="card-body gap-2">
+                <DoneIcon class="size-5 mb-1" />
+                <h3 class="card-title text-lg">{title}</h3>
+                <p class="text-sm text-base-content/70 leading-relaxed">{text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <div class="card brand-surface shadow-lg">
+        <div class="card-body items-center text-center gap-3">
+          <p class="text-xl font-bold">
+            Primera landing gratis para tu {sector.name.toLowerCase() === "gimnasios" ? "gimnasio" : sector.name.toLowerCase().replace(/s$/, "")}
+          </p>
+          <p class="text-sm">
+            Precio cerrado para más páginas. Sin permanencia y todo a tu nombre.
+          </p>
+          <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-1">
+            Solicita tu web gratis
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ del sector -->
+    <section id="faq-sector" class="container mx-auto px-6 max-w-3xl">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-6 text-center" data-reveal>
+        Preguntas frecuentes
+      </h2>
+      <div data-reveal-group class="flex flex-col gap-3">
+        {
+          sector.faq.map(({ q, a }) => (
+            <details class="collapse collapse-arrow bg-base-100 shadow-sm">
+              <summary class="collapse-title font-bold">{q}</summary>
+              <div class="collapse-content text-base-content/70">{a}</div>
+            </details>
+          ))
+        }
+      </div>
+      <p class="text-center mt-8 flex flex-col gap-2">
+        <a href={sector.blogPost} class="link link-primary font-bold">
+          Lee la guía completa para {sector.name.toLowerCase()} →
+        </a>
+        <a href="/blog/" class="link link-hover text-sm text-base-content/60"
+          >Ver todos los artículos del blog</a
+        >
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

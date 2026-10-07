@@ -166,10 +166,6 @@ export const content = {
 				a: 'Sí. La parrillada para compartir es el plato que más se pide cuando viene más de una persona: se sirve con las carnes sobre la brasa y se come en la mesa. Para grupos grandes conviene avisar por teléfono y reservar con antelación, sobre todo los fines de semana.',
 			},
 			{
-				q: '¿Cuánto cuesta un plato?',
-				a: 'La ficha de Google Maps sitúa el asador en un rango de 20 a 30 euros por persona, con platos de 10 a 20 euros. La parrillada completa para dos suele ser la opción más solicitada. Los precios pueden cambiar, así que confírmalos al reservar.',
-			},
-			{
 				q: '¿Se puede ir con perros?',
 				a: 'En la terraza sí se admiten perros, según indica la ficha del negocio. En el interior del local no. Es una ventaja poco habitual en la Costa del Sol en verano.',
 			},
@@ -339,10 +335,6 @@ export const content = {
 			{
 				q: 'Do you do sharing parrilladas for groups?',
 				a: 'Yes. The sharing parrillada is the dish ordered most often when more than one person comes in: the cuts arrive over the charcoal and are eaten at the table. For larger groups it is worth calling ahead and booking, especially at weekends.',
-			},
-			{
-				q: 'How much does a main course cost?',
-				a: 'The Google Maps listing puts the restaurant in the €20 to €30 range per person, with dishes from €10 to €20. A full parrillada for two is the most requested option. Prices may change, so confirm them when you book.',
 			},
 			{
 				q: 'Are dogs allowed?',

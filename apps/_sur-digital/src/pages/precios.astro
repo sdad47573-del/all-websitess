@@ -1,0 +1,255 @@
+---
+// Página de precios dedicada: planes, extras, comparativa con agencias,
+// FAQ de precios y schema OfferCatalog. Reutiliza Pricing (compact) y
+// Comparison; el home usa la versión teaser (PricingLink).
+import { CRUMB_PRECIOS } from "../data/breadcrumbs";
+import { DATA } from "../data/data.astro";
+import Layout from "../layouts/Layout.astro";
+import Topbar from "../components/Topbar.astro";
+import Footer from "../components/Footer.astro";
+import Pricing from "../components/Pricing.astro";
+import Comparison from "../components/Comparison.astro";
+
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const pageUrl = `${site}/precios/`;
+
+const priceFaq = [
+  {
+    q: "¿El 0€ es para siempre o tiene truco?",
+    a: "Sin truco: la primera landing (1 página) es gratis de verdad. Solo pedimos que el dominio y el hosting vayan a tu nombre. Si luego quieres más páginas u otros servicios, ahí ya hay precio (cerrado y por escrito).",
+  },
+  {
+    q: "¿Qué significa \"precio cerrado\"?",
+    a: "Que lo que firmas es lo que pagas: sin horas extra, sin sorpresas con el IVA ni recargos al entregar. Si el alcance cambia porque TÚ quieres más cosas, se re-presupuesta antes de tocar nada.",
+  },
+  {
+    q: "¿El hosting se paga aparte?",
+    a: "El plan Web Completa incluye dominio y hosting el primer año. Del segundo en adelante son unos 60–90€/año según plataforma, a tu nombre y pagados directo al proveedor: sin intermediarios ni recargos nuestros.",
+  },
+  {
+    q: "¿Puedo pagar con el Kit Digital?",
+    a: "No trabajamos con Kit Digital. En el blog contamos por qué (burocracia, IVA fuera y plantillas cerradas), y también cómo elegir bien proveedor si tienes la subvención concedida.",
+  },
+  {
+    q: "¿Cómo se paga y cuándo?",
+    a: "Transferencia o Bizum. En planes de pago: la mitad al empezar y la mitad al entregar. La primera landing no se paga: es gratis.",
+  },
+  {
+    q: "¿Qué pasa si quiero cancelar el mantenimiento?",
+    a: "Se cancela y punto: sin permanencia. Tu web sigue siendo tuya y funcionando; solo dejas de tener las actualizaciones y cambios mensuales.",
+  },
+];
+
+// Lo que NO entra en el precio: decirlo evita malentendidos y refuerza el
+// "precio cerrado" (nada de esto se cobra por sorpresa sin avisar antes).
+const exclusiones = [
+  {
+    name: "Certificados, licencias y tasas oficiales",
+    note: "Si tu actividad necesita permisos o certificados, los tramita tu gestoría.",
+  },
+  {
+    name: "Fotografía y vídeo profesional",
+    note: "Trabajamos con tus fotos o te ponemos en contacto con un fotógrafo de confianza; se presupuesta aparte.",
+  },
+  {
+    name: "Redacción de textos legales",
+    note: "El aviso legal y la política de privacidad los redacta tu gestoría o abogado; nosotros los publicamos.",
+  },
+  {
+    name: "Inversión publicitaria (Google Ads, Meta Ads)",
+    note: "El presupuesto de anuncios se paga directo a la plataforma; la gestión de campañas se presupuesta aparte.",
+  },
+  {
+    name: "Dominio y hosting a partir del segundo año",
+    note: "El primer año va incluido en Web Completa y Pro. Después son unos 60–90€/año, pagados directo al proveedor.",
+  },
+  {
+    name: "Cambios de alcance a mitad de proyecto",
+    note: "El trabajo se cierra por escrito: si el proyecto crece porque quieres más cosas, se re-presupuesta antes de seguir.",
+  },
+];
+
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${site}/` },
+    { "@type": "ListItem", position: 2, name: "Precios", item: pageUrl },
+  ],
+};
+
+const offersSchema = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  name: "Planes y precios de diseño web en Málaga",
+  url: pageUrl,
+  provider: {
+    "@type": "ProfessionalService",
+    name: "Sur Digital",
+    url: `${site}/`,
+  },
+  itemListElement: [
+    {
+      "@type": "Offer",
+      name: "Landing Gratis",
+      price: "0",
+      priceCurrency: "EUR",
+      description:
+        "Landing page de 1 página, moderna y responsive, con botón de contacto. Entrega en menos de 7 días.",
+    },
+    {
+      "@type": "Offer",
+      name: "Web Completa",
+      price: "99",
+      priceCurrency: "EUR",
+      description:
+        "Hasta 5 páginas a medida, dominio propio, hosting 1 año, SEO básico y optimización móvil.",
+    },
+    {
+      "@type": "Offer",
+      name: "Pro + Tienda",
+      price: "299",
+      priceCurrency: "EUR",
+      description:
+        "Tienda online o web corporativa grande con pasarela de pago y SEO local.",
+    },
+    {
+      "@type": "Offer",
+      name: "Mantenimiento mensual",
+      price: "20",
+      priceCurrency: "EUR",
+      description:
+        "Actualizaciones, copias de seguridad y cambios de contenido. Sin permanencia.",
+    },
+  ],
+};
+---
+
+<Layout
+  title="Precios de diseño web en Málaga 2026 | Sur Digital"
+  description="Precios claros de diseño web en Málaga: landing gratis, web completa 99€, tienda online 299€ y mantenimiento 20€/mes. Precio cerrado por escrito, sin permanencia."
+  image={`${site}/og/precios.png`}
+  path="/precios/"
+  breadcrumbs={CRUMB_PRECIOS}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(offersSchema)}
+  />
+
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <!-- Hero -->
+    <section class="container mx-auto px-6 max-w-4xl text-center mb-10" data-reveal>
+      <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
+        <a href="/" class="link link-hover">Inicio</a> · Precios
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        Precios claros, <span class="text-wave">sin sorpresas</span>
+      </h1>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Otras agencias cobran <span class="font-bold">600–900€</span> por una
+        web básica. Aquí tienes lo que cuesta cada cosa, con el IVA y las
+        condiciones por escrito antes de empezar.
+      </p>
+    </section>
+
+    <!-- Planes (reutiliza el componente de la home, sin cabecera) -->
+    <div id="planes">
+      <Pricing compact />
+    </div>
+
+    <!-- Extras -->
+    <section class="container mx-auto px-6 max-w-3xl mt-16 mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-2 text-center" data-reveal>
+        Extras y servicios sueltos
+      </h2>
+      <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-8" data-reveal>
+        Cosas que no entran en los planes pero puedes añadir cuando quieras,
+        con su precio a la vista.
+      </p>
+      <ul data-reveal-group class="flex flex-col gap-3">
+        {
+          DATA.extras.map(({ name, price, note }) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <div class="card-body py-4 flex-row flex-wrap items-center gap-3">
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold">{name}</p>
+                  <p class="text-sm text-base-content/70">{note}</p>
+                </div>
+                <span class="font-black text-lg text-secondary shrink-0">
+                  {price}
+                </span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Qué no incluye: transparencia antes de la comparativa -->
+    <section class="container mx-auto px-6 max-w-3xl mt-16 mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-2 text-center" data-reveal>
+        Qué no incluye
+      </h2>
+      <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-8" data-reveal>
+        Decir lo que no entra es tan importante como decir lo que sí. Nada de
+        esta lista se cobra por sorpresa: si lo necesitas, se presupuesta
+        antes de empezar.
+      </p>
+      <ul data-reveal-group class="flex flex-col gap-3">
+        {
+          exclusiones.map(({ name, note }) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <div class="card-body py-4 flex-row items-start gap-3">
+                <span class="font-black shrink-0 text-base-content/40" aria-hidden="true">
+                  —
+                </span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold">{name}</p>
+                  <p class="text-sm text-base-content/70">{note}</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Comparativa con agencias -->
+    <Comparison />
+
+    <!-- FAQ de precios -->
+    <section class="container mx-auto px-6 max-w-3xl mt-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-6 text-center" data-reveal>
+        Preguntas sobre precios
+      </h2>
+      <div data-reveal-group class="flex flex-col gap-3">
+        {
+          priceFaq.map(({ q, a }) => (
+            <details class="collapse collapse-arrow bg-base-100 shadow-sm">
+              <summary class="collapse-title font-bold">{q}</summary>
+              <div class="collapse-content text-base-content/70">{a}</div>
+            </details>
+          ))
+        }
+      </div>
+      <p class="text-center mt-8" data-reveal>
+        <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+          Pide tu presupuesto por escrito
+        </a>
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

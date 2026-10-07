@@ -1,0 +1,44 @@
+---
+title: "Mantenimiento web por 20€/mes: qué debe incluir (y qué no)"
+description: "Qué debe incluir un mantenimiento web de 20€/mes: las tareas de cada mes, lo que no debería cobrarse y las señales de que te están cobrando de más."
+pubDate: 2026-09-08
+category: "Precios"
+---
+
+# Mantenimiento web por 20€/mes: qué debe incluir (y qué no)
+
+El mantenimiento es el cobro más misterioso del sector. Unos te lo regalan y nunca lo hacen; otros te cobran 90€/mes por "actualizar WordPress". Esta es nuestra versión, con números.
+
+## Qué es el mantenimiento (y qué no es)
+
+Mantener una web **no es** escribirle nuevos textos cada mes ni hacerle campañas: eso es mejora continua y se presupuesta aparte (igual que los [extras de una web](/precios/)). Mantener es que tu web **sigue funcionando como el primer día**: carga rápido, no da errores, no le entra spam y Google sigue entendiéndola.
+
+## Qué incluye un mantenimiento honesto de 20€/mes
+
+- **Actualizaciones técnicas** del sistema y componentes, con copia previa.
+- **Copias de seguridad periódicas** y comprobadas (una copia que nunca se ha restaurado no es una copia, es una esperanza).
+- **Cambios de contenido**: textos, fotos, precios, horarios. Nos lo pides por WhatsApp y está en 24–48h.
+- **Vigilancia de velocidad y disponibilidad**: si la web se cae o se ralentiza, nos enteramos antes que tú.
+- **Pequeños ajustes SEO**: títulos y descripciones cuando cambian tus servicios.
+- **Sin permanencia**: si un día dejas de pagar, tu web debe seguir funcionando y seguir siendo tuya.
+
+## Qué NO debería entrar en ese precio
+
+| Lo intentan colar | Por qué no |
+| --- | --- |
+| Rediseño de la web | Es un proyecto nuevo, se presupuesta |
+| Campañas de Google Ads | Es otro servicio (y otro presupuesto) |
+| "Posicionamiento garantizado" | Quien garantiza posiciones miente |
+| Hosting a precio de oro | El [hosting se contrata aparte](/blog/dominio-hosting-negocios-guia/) y a tu nombre |
+
+## Las señales de que te están cobrando de más
+
+1. **No sabes qué hacen cada mes.** Un buen mantenimiento da un informe mínimo: qué se tocó y cómo está la web.
+2. **Te cobran por cambio.** Si modificar un horario cuesta 25€ extra, eso no es mantenimiento, es facturación por goteo.
+3. **Tu web sigue tardando.** Mídela en [PageSpeed Insights](https://pagespeed.web.dev/). Si pagas mantenimiento y sigue lenta, no lo estás pagando: [esto es lo que te cuesta](/blog/pagespeed-negocios-locales/).
+
+---
+
+¿Pagas un mantenimiento del que no tienes noticias? [Escríbenos](/&#35;contacto) y te decimos gratis si tiene sentido.
+
+Y si todavía estás montando la web, mira antes [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) para no firmar a ciegas.

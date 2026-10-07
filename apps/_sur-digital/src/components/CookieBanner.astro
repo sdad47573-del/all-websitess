@@ -1,0 +1,94 @@
+---
+// Banner de cookies ligero (RGPD / LSSI-CE art. 22.2).
+// Este sitio no usa cookies de rastreo: el banner es informativo y guarda
+// la decisión en localStorage (necesario para no mostrarlo de nuevo).
+// Posicionamiento: encima de la barra CTA en móvil, a la izquierda en
+// desktop para no chocar con el FAB (que está a la derecha).
+---
+
+<div
+  id="cookie-banner"
+  role="region"
+  aria-live="polite"
+  aria-label="Aviso de cookies"
+  class="hidden fixed z-50 left-3 right-3 bottom-24 md:left-5 md:right-auto md:bottom-5 md:max-w-sm
+         card bg-base-100 shadow-2xl border border-base-300 p-5"
+>
+  <div class="flex flex-col gap-3 text-start">
+    <p class="font-bold">🍪 Tu privacidad</p>
+    <p class="text-sm text-base-content/70 leading-relaxed">
+      Usamos solo cookies técnicas imprescindibles (seguridad anti-spam con
+      reCAPTCHA). Sin publicidad ni rastreo. Más detalles en nuestra
+      <a
+        href="/politica-privacidad"
+        class="link link-hover font-bold text-secondary underline"
+        >política de privacidad</a
+      >.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-2">
+      <button id="cookie-accept" type="button" class="btn btn-primary btn-sm flex-1">
+        Aceptar
+      </button>
+      <button id="cookie-reject" type="button" class="btn btn-outline btn-sm flex-1">
+        Solo necesarias
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = "cookie-consent";
+    var banner = document.getElementById("cookie-banner");
+    if (!banner) return;
+
+    var stored = null;
+    try {
+      stored = localStorage.getItem(KEY);
+    } catch (e) {
+      /* localStorage bloqueado: mostramos el banner cada vez, es lo seguro */
+    }
+    if (stored === "accepted" || stored === "necessary") return;
+
+    // Se muestra cuando el navegador queda libre, no al descargar el HTML.
+    // Si el banner apareciera durante el parseo se convertiría en el elemento
+    // LCP de la página (es el bloque visible más grande) y retrasaría la
+    // medición del hero, que es lo que de verdad quiere ver el visitante.
+    // Es un aviso informativo: no hay rastreadores que bloquear ni contenido
+    // que condicionen, así que llegar un instante después no cambia nada.
+    function reveal() {
+      banner.classList.remove("hidden");
+    }
+
+    if (typeof window.requestIdleCallback === "function") {
+      window.requestIdleCallback(reveal, { timeout: 1500 });
+    } else {
+      window.setTimeout(reveal, 1000);
+    }
+
+    function choose(value) {
+      try {
+        localStorage.setItem(KEY, value);
+      } catch (e) {
+        /* sin persistencia, solo cerramos */
+      }
+      banner.classList.add("hidden");
+      // Si el foco estaba dentro del banner ya no debe seguir ahí: el
+      // tabulador se quedaría en un elemento que acaba de desaparecer.
+      if (banner.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }
+
+    document
+      .getElementById("cookie-accept")
+      .addEventListener("click", function () {
+        choose("accepted");
+      });
+    document
+      .getElementById("cookie-reject")
+      .addEventListener("click", function () {
+        choose("necessary");
+      });
+  })();
+</script>

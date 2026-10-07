@@ -41,7 +41,7 @@ export const specialties = [
 		category: 'El clásico de la casa',
 		name: 'Menú del día',
 		description:
-			'El plato fuerte de la casa: menú completo, casero y abundante, en torno a 9–11 € según el día. La opción más valorada por quien trabaja en el polígono.',
+			'El plato fuerte de la casa: menú completo, casero y abundante. La opción más valorada por quien trabaja en el polígono.',
 	},
 	{
 		category: 'De la huerta',
@@ -95,11 +95,6 @@ export const faqs = [
 		question: '¿Cuál es el horario?',
 		answer:
 			'Abre de lunes a sábado desde primera hora de la mañana (los desayunos empiezan sobre las 6:00) y descansa los domingos. El horario publicado varía ligeramente entre fuentes, por lo que se muestra como orientativo: llama antes de desplazarte para confirmarlo.',
-	},
-	{
-		question: '¿Es un sitio económico? ¿Cuánto cuesta el menú?',
-		answer:
-			'Es un restaurante de precio contenido muy conocido en el polígono. El menú del día ronda los 9 a 11 euros según la jornada y las raciones son abundantes, lo que le ha valido una excelente reputación en relación calidad-precio.',
 	},
 	{
 		question: '¿Tiene terraza, wifi y acceso adaptado?',

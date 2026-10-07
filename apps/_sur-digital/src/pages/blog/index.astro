@@ -1,0 +1,128 @@
+---
+import { CRUMB_BLOG } from "../../data/breadcrumbs";
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+import { slugifyCategory } from "../../lib/blog";
+
+const allPosts = (
+  await getCollection("blog", ({ data }) => !data.draft)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = [...new Set(allPosts.map((p) => p.data.category))].map(
+  (category) => ({
+    category,
+    count: allPosts.filter((p) => p.data.category === category).length,
+  })
+);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<Layout
+  title="Blog | Sur Digital — Diseño web y SEO local en Málaga"
+  description={`${allPosts.length} guías sobre diseño web, precios y SEO local para negocios de Málaga. Busca por texto o filtra por categoría. Sin humo.`}
+  image="/og/blog.png"
+  path="/blog/"
+  breadcrumbs={CRUMB_BLOG}
+>
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h1 data-reveal class="text-4xl md:text-5xl font-bold text-base-content mb-3">
+        Blog <span class="text-wave">Sur Digital</span>
+      </h1>
+      <p class="text-base-content/70 max-w-2xl mb-8">
+        Guías prácticas sobre webs, precios y SEO local para negocios de Málaga.
+        Sin humo y en cristiano.
+      </p>
+
+      <!-- Buscador: Pagefind indexa el sitio en build; la búsqueda corre en el cliente -->
+      <div id="search" class="mb-4"></div>
+      <link
+        rel="stylesheet"
+        href="/pagefind/pagefind-ui.css"
+      />
+      <script is:inline src="/pagefind/pagefind-ui.js"></script>
+
+      <!-- Filtro por categorías -->
+      <nav
+        class="flex flex-wrap gap-2 mb-12"
+        aria-label="Filtrar artículos por categoría"
+      >
+        <a href="/blog/" class="badge badge-lg badge-primary font-bold">
+          Todos ({allPosts.length})
+        </a>
+        {
+          categories.map(({ category, count }) => (
+            <a
+              href={`/blog/category/${slugifyCategory(category)}/`}
+              class="badge badge-lg badge-outline font-bold"
+            >
+              {category} ({count})
+            </a>
+          ))
+        }
+      </nav>
+
+      <p class="text-sm text-base-content/60 mb-10">
+        ¿Prefieres los avisos en tu lector?{" "}
+        <a href="/rss.xml" class="link link-hover font-bold text-secondary">
+          Suscríbete al feed RSS
+        </a>.
+      </p>
+
+      <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {
+          allPosts.map((post) => (
+            <li class="card bg-base-100 shadow-md border border-base-300 transition-all hover:shadow-lg hover:-translate-y-1">
+              <a href={`/blog/${post.id}/`} class="card-body p-6 gap-2">
+                <div class="flex items-center justify-between gap-2">
+                  <time
+                    class="text-xs text-base-content/60 font-bold uppercase tracking-wide"
+                    datetime={post.data.pubDate.toISOString()}
+                  >
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                  <span class="badge badge-sm badge-secondary badge-outline font-bold">
+                    {post.data.category}
+                  </span>
+                </div>
+                <h2 class="card-title text-lg leading-snug">
+                  {post.data.title}
+                </h2>
+                <p class="text-sm text-base-content/70 leading-relaxed">
+                  {post.data.description}
+                </p>
+                <span class="link link-primary text-sm font-bold pt-1">
+                  Leer artículo →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+    // Inicializa PagefindUI: resultados dentro de #search, sin "Imagen" duplicada
+    new (window as any).PagefindUI({
+      element: "#search",
+      showImages: false,
+      translations: {
+        placeholder: "Buscar en el blog: precios, SEO, Málaga…",
+        search_label: "Buscar",
+        zero_results: "Sin resultados para “[SEARCH_TERM]”",
+        many_results: "[COUNT] resultados para “[SEARCH_TERM]”",
+        one_result: "[COUNT] resultado para “[SEARCH_TERM]”",
+        searching: "Buscando “[SEARCH_TERM]”…",
+      },
+    });
+  </script>
+</Layout>

@@ -1,0 +1,195 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+import { CONTACT } from "../../data/contact";
+import { pageTitle } from "../../lib/blog";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+
+const related = (await getCollection("blog", ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+
+// Dominio desde astro.config.mjs (site) en vez de una URL escrita a mano
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const postUrl = `${site}/blog/${post.id}/`;
+
+// Migas de pan estructuradas para rich snippets
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: `${site}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Blog",
+      item: `${site}/blog/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: post.data.title,
+      item: postUrl,
+    },
+  ],
+};
+---
+
+<Layout
+  title={pageTitle(post.data.title)}
+  description={post.data.description}
+  image={`/og/blog/${post.id}.png`}
+  path={`/blog/${post.id}/`}
+  article
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <article class="container mx-auto px-6 max-w-3xl">
+      <nav
+        aria-label="Migas de pan"
+        class="text-sm text-base-content/60 mb-4 flex items-center gap-2 flex-wrap"
+      >
+        <a href="/" class="link link-hover">Inicio</a>
+        <span aria-hidden="true">·</span>
+        <a href="/blog/" class="link link-hover">Blog</a>
+        <span aria-hidden="true">·</span>
+      </nav>
+      <time
+        class="text-xs text-base-content/60 font-bold uppercase tracking-wide"
+        datetime={post.data.pubDate.toISOString()}
+      >
+        {formatDate(post.data.pubDate)}
+      </time>
+      <h1 class="text-3xl md:text-5xl font-bold text-base-content mt-3 mb-8">
+        {post.data.title}
+      </h1>
+
+      <div
+        class="prose prose-neutral max-w-none prose-headings:font-bold prose-a:text-primary prose-a:font-bold"
+        data-pagefind-body
+      >
+        <Content />
+      </div>
+
+      <!-- Enlace contextual al hub de especialidades -->
+      <div
+        data-reveal
+        class="mt-10 card bg-base-100 border border-base-300 shadow-sm"
+      >
+        <div class="card-body py-4 flex-row items-center gap-3">
+          <span class="text-2xl shrink-0" aria-hidden="true">🧭</span>
+          <p class="text-sm text-base-content/70">
+            ¿Buscas web para tu negocio? Tenemos una propuesta especializada
+            para cada sector:
+            <a href="/especialidades/" class="link link-primary font-bold">
+              ver todas las especialidades</a
+            >.
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA final -->
+      <aside
+        data-reveal
+        class="mt-6 card brand-surface shadow-lg border-0"
+      >
+        <div class="card-body items-center text-center gap-3">
+          <p class="text-xl font-bold">¿Quieres tu web lista en menos de 7 días?</p>
+          <p class="text-sm">
+            La primera landing page es gratis. Sin permanencia y todo a tu nombre.
+          </p>
+          <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-1">
+            Solicita tu web gratis
+          </a>
+        </div>
+      </aside>
+
+      <!-- Artículos relacionados -->
+      {
+        related.length > 0 && (
+          <section data-reveal class="mt-16">
+            <h2 class="text-2xl font-bold text-base-content mb-6">Sigue leyendo</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {related.map((p) => (
+                <li class="card bg-base-100 shadow-md border border-base-300">
+                  <a href={`/blog/${p.id}/`} class="card-body p-6 gap-2">
+                    <time
+                      class="text-xs text-base-content/60 font-bold uppercase tracking-wide"
+                      datetime={p.data.pubDate.toISOString()}
+                    >
+                      {formatDate(p.data.pubDate)}
+                    </time>
+                    <h3 class="card-title text-base leading-snug">
+                      {p.data.title}
+                    </h3>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </article>
+  </main>
+
+  <Footer />
+
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.data.title,
+      description: post.data.description,
+      datePublished: post.data.pubDate.toISOString(),
+      dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+      inLanguage: "es-ES",
+      url: postUrl,
+      mainEntityOfPage: postUrl,
+      image: `${site}/og/blog/${post.id}.png`,
+      articleSection: post.data.category,
+      author: {
+        "@type": "Person",
+        name: CONTACT.name,
+        url: CONTACT.linkedin,
+        worksFor: { "@type": "Organization", name: "Sur Digital" },
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "Sur Digital",
+        url: site,
+        logo: { "@type": "ImageObject", url: `${site}/logo-512.png` },
+      },
+    })}
+  />
+</Layout>

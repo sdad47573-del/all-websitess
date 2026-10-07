@@ -1,0 +1,63 @@
+---
+// Últimos artículos del blog en la home: contenido fresco + empuje SEO
+// interno hacia el blog. Coge los 3 posts más recientes publicados.
+import { getCollection } from "astro:content";
+
+const latest = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<section
+  class="pt-14 pb-20 bg-gradient-to-b from-base-200 to-base-100 flex flex-col items-center"
+>
+  <div class="container mx-auto px-6 flex flex-col items-center">
+    <div data-reveal class="flex flex-col items-center text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-base-content">
+        Del <span class="text-wave">blog</span>
+      </h2>
+      <p class="text-base-content/70 max-w-2xl mt-3 mb-10">
+        Guías sin humo sobre precios, webs y SEO local para negocios de Málaga.
+      </p>
+    </div>
+
+    <ul
+      data-reveal-group
+      class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center items-stretch max-w-5xl w-full"
+    >
+      {
+        latest.map((post) => (
+          <li class="card bg-base-100 shadow-md border border-base-300 w-full transition-all hover:shadow-lg hover:-translate-y-1">
+            <a href={`/blog/${post.id}/`} class="card-body gap-2">
+              <div class="flex items-center justify-between gap-2">
+                <time
+                  class="text-xs text-base-content/60 font-bold uppercase tracking-wide"
+                  datetime={post.data.pubDate.toISOString()}
+                >
+                  {formatDate(post.data.pubDate)}
+                </time>
+                <span class="badge badge-sm badge-secondary badge-outline font-bold">
+                  {post.data.category}
+                </span>
+              </div>
+              <h3 class="card-title text-lg leading-snug">{post.data.title}</h3>
+              <p class="text-sm text-base-content/70 leading-relaxed">
+                {post.data.description}
+              </p>
+              <span class="link link-primary text-sm font-bold pt-1">
+                Leer artículo →
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a data-reveal href="/blog/" class="btn btn-outline mt-10">
+      Ver todos los artículos
+    </a>
+  </div>
+</section>

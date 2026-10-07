@@ -96,11 +96,6 @@ export const faqs = [
 			'Sirve comidas de 13:00 a 16:00 y cenas de 20:00 a 23:30, con el domingo por la noche cerrado. Puede variar en festivos y en temporada de alta ocupación: llama antes de desplazarte para confirmarlo.',
 	},
 	{
-		question: '¿Qué precio tiene una comida aquí?',
-		answer:
-			'El precio medio por comensal ronda los 16 euros según las guías de restaurantes de Andalucía, una cifra contenido para comer en el centro histórico de Córdoba. La carta puede variar por temporada.',
-	},
-	{
 		question: '¿Tiene terraza, salones para grupos y accesibilidad?',
 		answer:
 			'Sí. El mesón cuenta con terraza, varios salones independientes con capacidad total de alrededor de cien personas, bodega, patio cordobés, acceso para personas con movilidad reducida y aceptación de tarjetas. Acepta reservas y ofrece servicio de mesa.',

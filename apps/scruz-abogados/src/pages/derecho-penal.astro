@@ -1,0 +1,316 @@
+---
+import heroImg from '@assets/ABOGADOS-EN-LUCENA-3-980x654.webp';
+import { SITE_URL } from '../data/site';
+import {
+	Briefcase,
+	FileSearch,
+	FilePenLine,
+	FileText,
+	Gavel,
+	Lock,
+	Scale,
+	ShieldAlert,
+	ShieldCheck,
+	Users,
+} from '@lucide/astro';
+import CustomLayout from '../layouts/CustomLayout.astro';
+import ServiceBlogGuides from '../components/ServiceBlogGuides.astro';
+import {
+	EditorialConcepts,
+	EditorialCtaFinal,
+	EditorialFAQ,
+	EditorialHero,
+	EditorialIntro,
+	EditorialMeasures,
+	EditorialProcess,
+	EditorialWhyUs,
+} from '../components/editorial';
+
+const faqEntries = [
+	{
+		question: '¿Qué debo hacer si me citan a declarar en comisaría o en el juzgado?',
+		answer:
+			'Lo más importante es no declarar sin asistencia letrada. Como sospecho o acusado tienes derecho a un abogado desde el primer momento, y la policía judicial no puede negártelo. Te acompañamos a la comisaría o al juzgado de guardia, te explicamos cada pregunta y revisamos contigo la declaración antes de firmarla. Una declaración bien asesorada evita problemas posteriores.',
+	},
+	{
+		question: '¿Puedo cambiar de abogado en mitad del proceso penal?',
+		answer:
+			'Sí, tienes pleno derecho a elegir y cambiar de letrado en cualquier momento del procedimiento. Si decides confiar en nosotros, nos haremos cargo del caso desde el estado en que se encuentre, solicitando las copias necesarias y revisando todas las actuaciones anteriores para reforzar tu estrategia.',
+	},
+	{
+		question: '¿Cuándo prescribe un delito?',
+		answer:
+			'La prescripción depende del tipo y de la gravedad del delito: los leves prescriben a los 6 meses, los menos graves a los 2 años, los graves a los 5 años y los muy graves a los 10 años. Cuando hay menores de edad o víctimas especialmente vulnerables, los plazos se amplían o se suspenden. Te confirmamos el plazo aplicable a tu caso concreto.',
+	},
+	{
+		question: '¿Qué diferencia hay entre delito leve y delito grave?',
+		answer:
+			'Los delitos leves se sancionan con penas leves (multa, localización permanente) y se juzgan en juicios inmediatos o rápidos; los graves y muy graves pueden conllevar penas de prisión y se tramitan por el procedimiento ordinario. La distinción es clave porque determina el plazo para recurrir, las medidas cautelares posibles y la estrategia de defensa.',
+	},
+	{
+		question: '¿Puedo borrar mis antecedentes penales?',
+		answer:
+			'Sí, en muchos casos se puede solicitar la cancelación de antecedentes una vez cumplidos los plazos legales (de 6 meses a 10 años según la pena) y siempre que no se haya cometido un nuevo delito. Estudiamos tu caso y, si procede, presentamos la solicitud para que vuelvas a partir de cero.',
+	},
+	{
+		question: '¿La asistencia jurídica es gratuita?',
+		answer:
+			'Si tienes recursos económicos insuficientes tienes derecho a asistencia jurídica gratuita y a un abogado de oficio. Te ayudamos a solicitar el reconocimiento ante el Colegio de Abogados. Si no procede la gratuidad, te presentamos por escrito un presupuesto cerrado antes de empezar.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqEntries.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+
+// Hero stats — urgencia, defense, confidencialidad
+const heroStats = [
+	{ Icon: ShieldAlert, label: 'Urgencia', value: '24h · 365 días' },
+	{ Icon: Scale, label: 'Defensa', value: 'Especializada' },
+	{ Icon: Lock, label: 'Privacidad', value: 'Confidencial' },
+];
+
+// Factbox — qué pasa tras una detención/citación
+const plazos = [
+	{
+		Icon: FileText,
+		title: 'Asistencia inmediata',
+		description: 'En comisaría y en el juzgado de guardia, sin necesidad de cita previa.',
+	},
+	{
+		Icon: Gavel,
+		title: 'Defensa técnica',
+		description: 'Abogado especializado con experiencia en juicios orales y recursos.',
+	},
+	{
+		Icon: ShieldCheck,
+		title: 'Confidencialidad',
+		description: 'Todo lo que nos cuentes está protegido por el secreto profesional.',
+	},
+];
+
+// Conceptos — tipos de delito y actuación
+const conceptos = [
+	{
+		Icon: Gavel,
+		title: 'Defensa penal',
+		description:
+			'Defendemos a personas investigadas o acusadas en todo tipo de delitos: contra el patrimonio, contra las personas, contra la salud pública, de tráfico y económicos.',
+	},
+	{
+		Icon: Users,
+		title: 'Acusación particular',
+		description:
+			'Nos personamos en nombre de víctimas y perjudicados para velar por sus intereses en el procedimiento y reclamar la responsabilidad civil.',
+	},
+	{
+		Icon: Briefcase,
+		title: 'Delitos económicos y empresas',
+		description:
+			'Defensa y acusación en alzamientos de bienes, estafas, administración desleal, delitos fiscales y responsabilidad penal de las personas jurídicas.',
+	},
+	{
+		Icon: Lock,
+		title: 'Asistencia en detención',
+		description:
+			'Acudimos a comisaría o al juzgado de guardia en cuanto se solicita la presencia letrada. Te explicamos cada paso y te acompañamos durante la declaración.',
+	},
+	{
+		Icon: ShieldAlert,
+		title: 'Violencia y lesiones',
+		description:
+			'Defensa y acusación en delitos de lesiones, violencia de género, doméstica y de género, con pleno conocimiento de los protocolos y juzgados especializados.',
+	},
+	{
+		Icon: FileSearch,
+		title: 'Recursos y apelación',
+		description:
+			'Interponemos recursos de reforma, apelación y casación ante la Audiencia Provincial y el Tribunal Supremo cuando la resolución no es favorable.',
+	},
+];
+
+// Proceso — fases penales
+const pasos = [
+	{
+		number: '01',
+		title: 'Asistencia inmediata',
+		description:
+			'Si estás detenido o citado, vamos a tu lado desde el primer minuto. En comisaría o en el juzgado de guardia, te asesoramos antes de cualquier declaración.',
+	},
+	{
+		number: '02',
+		title: 'Fase de instrucción',
+		description:
+			'Estudiamos el caso, analizamos las pruebas, solicitamos diligencias y te representamos en todas las declaraciones. Diseñamos la estrategia de defensa.',
+	},
+	{
+		number: '03',
+		title: 'Escrito de defensa',
+		description:
+			'Redactamos los escritos de calificación provisional: argumentos de defensa o acusación, pruebas propuestas y pretensiones civiles si proceden.',
+	},
+	{
+		number: '04',
+		title: 'Juicio oral y sentencia',
+		description:
+			'Te representamos en el juicio oral: interrogatorio, prueba pericial y testifical, conclusiones y, cuando es necesario, recurso ante la Audiencia Provincial.',
+	},
+];
+
+// Por qué elegirnos — reutilizado en EditorialWhyUs y en el bloque final para evitar duplicación
+const whyItems = [
+	{
+		Icon: ShieldAlert,
+		title: 'Disponibilidad 24/7',
+		description:
+			'Los procedimientos penales no avisan. Estamos disponibles todos los días del año para reaccionar ante una detención o una citación urgente.',
+	},
+	{
+		Icon: FilePenLine,
+		title: 'Confidencialidad absoluta',
+		description:
+			'Todo lo que nos confíes está amparado por el secreto profesional. Tu caso no sale del despacho y se trata con la máxima discreción.',
+	},
+	{
+		Icon: Gavel,
+		title: 'Experiencia en juicios',
+		description:
+			'Más de 20 años litigando en Audiencia Provincial y Juzgados de Instrucción de Lucena, Córdoba y Málaga con resultados contrastados.',
+	},
+];
+
+// Medidas — procesos habituales
+const rangos = [
+	{ title: 'Asistencia en comisaría', value: '24 — 48 h', note: 'Tras la detención o citación' },
+	{ title: 'Fase de instrucción', value: '6 — 18 meses', note: 'Promedio en juzgados de instrucción' },
+	{ title: 'Juicio oral', value: '1 — 6 meses', note: 'Tras la calificación provisional' },
+	{ title: 'Recurso de apelación', value: '1 — 3 meses', note: 'Resolución por la Audiencia Provincial' },
+];
+---
+
+<CustomLayout
+	title="Abogado Penalista en Lucena | Urgencias 24 h"
+	description="Detenciones, denuncias falsas y acusación particular. Si es urgente, te atendemos ahora: abogado penalista en Lucena. Teléfono 24 h: 666 329 155."
+	keywords="abogado penalista Lucena, defensa penal Córdoba, abogado penal Málaga, delitos patrimonio, acusación particular, asistencia detenido"
+	ogImage={heroImg.src}
+	breadcrumb={[
+		{ name: 'Inicio', url: '/' },
+		{ name: 'Servicios', url: '/servicios/' },
+		{ name: 'Derecho Penal', url: '/derecho-penal/' },
+	]}
+	additionalSchemas={[
+		{
+			'@context': 'https://schema.org',
+			'@type': 'Service',
+			'@id': `${SITE_URL}/derecho-penal/#service`,
+			serviceType: 'Derecho Penal',
+			name: 'Defensa y acusación penal',
+			description:
+				'Defensa y acusación particular en procesos penales: delitos leves, patrimonio, violencia de género y tráfico.',
+			provider: { '@id': `${SITE_URL}/#organization` },
+			areaServed: ['Lucena', 'Córdoba', 'Málaga', 'Andalucía'],
+		},
+		faqSchema,
+	]}
+>
+	<EditorialHero
+		image={heroImg}
+		imageAlt="Defensa penal especializada en Lucena, Córdoba y Málaga"
+		supertitle="Derecho Penal · Defensa y acusación"
+		description="Defendemos tus derechos o nos personamos como acusación particular en cualquier tipo de procedimiento penal. Atención urgente 24/7."
+		stats={heroStats}
+	>
+		<span slot="title">Abogado penalista en Lucena: <span class="text-primary">tu defensa, en manos de especialistas.</span></span>
+	</EditorialHero>
+
+	<EditorialIntro
+		supertitle="Bufete Scruz Abogados"
+		title={'Defensa estratégica y <span class="text-primary">acompañamiento integral</span> en el proceso penal.'}
+		factboxSupertitle="Atención urgente"
+		factboxTitle="Cómo respondemos"
+		factboxItems={plazos}
+	>
+		<p class="mb-4">
+			Enfrentarse a un proceso penal es una de las situaciones más delicadas que puede vivir
+			una persona, tanto si estás investigado como si eres víctima que busca justicia. En
+			Scruz Abogados te proporcionamos una defensa férrea, técnica y estratégica,
+			analizando al detalle cada prueba y cada actuación del procedimiento.
+		</p>
+		<p class="mb-4">
+			Intervenimos desde el primer momento: asistencia letrada en comisaría y en el
+			juzgado de guardia, personación como acusación particular en defensa de víctimas y
+			perjudicados, recursos ante la Audiencia Provincial y, en última instancia, casación
+			ante el Tribunal Supremo cuando la resolución resulta desfavorable.
+		</p>
+		<p class="mb-4">
+			Y cuando el proceso termina, la defensa sigue: la <strong>ejecución de la
+			condena</strong> tiene su propia estrategia — la multa penal por cuotas diarias se
+			<a href="/blog/multas-penales-suspension-condenas/" class="link link-primary">fracciona y se defiende</a>,
+			la prisión de hasta 2 años cabe <a href="/blog/multas-penales-suspension-condenas/" class="link link-primary">suspenderla</a>
+			pagando el daño civil, y del despacho salen menos penas firmes de las que la sala
+			dicta. Recuerda que <a href="/blog/derechos-del-detenido/" class="link link-primary">los derechos del detenido</a>
+			se ejercen desde la primera comisaría, no desde el juicio.
+		</p>
+		<p>
+			Conocemos el funcionamiento de los juzgados de Lucena, Córdoba y Málaga y los
+			protocolos específicos de violencia de género y doméstica. Te acompañamos en cada
+			comparecencia, mantenemos una comunicación fluida contigo y diseñamos una estrategia
+			a medida de tu caso, sin improvisaciones.
+		</p>
+	</EditorialIntro>
+
+	<EditorialConcepts
+		supertitle="En qué intervenimos"
+		title="Áreas de actuación penal"
+		description="Cubrimos defensa y acusación en un amplio abanico de tipos delictivos, con experiencia contrastada en juicios orales."
+		items={conceptos}
+	/>
+
+	<EditorialMeasures
+		supertitle="Plazos habituales"
+		title="Tiempos del proceso penal"
+		description="Los plazos que maneja cada fase penal. Cada caso es distinto, pero estos rangos son una referencia realista."
+		valueFormat="single-currency"
+		noteLabel="Plazo orientativo."
+		disclaimer="Tiempos aproximados orientativos. La duración real depende de la complejidad del asunto, la carga del juzgado y la cooperación de las partes."
+		items={rangos}
+	/>
+
+	<EditorialProcess
+		supertitle="Metodología"
+		title="El proceso penal, paso a paso"
+		items={pasos}
+	/>
+
+	<EditorialWhyUs
+		supertitle="Por qué elegirnos"
+		title="Tu defensa penal, en manos expertas."
+		items={whyItems}
+	/>
+
+	<EditorialFAQ
+		supertitle="Preguntas frecuentes"
+		title="Resolvemos tus dudas"
+		description="Las preguntas más habituales sobre el proceso penal, asistencia a detenidos y honorarios."
+		items={faqEntries}
+	/>
+
+	<ServiceBlogGuides />
+	<EditorialCtaFinal
+		supertitle="Estamos a tu lado"
+		title={'Hablemos. <span class="text-primary">Sin compromiso.</span>'}
+		description="Primera consulta gratuita y confidencial. Si necesitas un abogado penalista en Lucena, Córdoba o Málaga, llámanos o escríbenos sin compromiso."
+		relatedLinks={[
+			{ label: 'Multa penal y suspensión de condenas: guía', href: '/blog/multas-penales-suspension-condenas/' },
+			{ label: 'Denuncias falsas: guía', href: '/blog/denuncias-falsas/' },
+			{ label: 'Violencia de género', href: '/violencia-genero/' },
+			{ label: 'Indemnizaciones de tráfico', href: '/indemnizaciones-trafico/' },
+		]}
+	/>
+</CustomLayout>

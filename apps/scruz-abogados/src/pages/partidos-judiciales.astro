@@ -1,0 +1,384 @@
+---
+import SeoLegalPage from '../components/SeoLegalPage.astro';
+import {
+	PARTIDOS_JUDICIALES,
+	PROVINCIAS_CUBIERTAS,
+	SOCIAL_COURT,
+	buscarPartido,
+} from '../data/JUZGADOS';
+import { CITY_LANDINGS } from '../data/CITY_LANDINGS';
+
+/**
+ * Guía de partidos judiciales, agrupada por partido y no por municipio.
+ *
+ * La diferencia con `/que-juzgado-me-corresponde/` es de propósito, y conviene
+ * que no se deshaga: allí el visitante entra con un nombre de pueblo y quiere
+ * un dato, una fila de tabla. Aquí entra con una pregunta de fondo —qué se
+qué se tramita en cada uno y desde qué despacho se atiende
+ * y sale con el mapa completo. Si un día las dos páginas dijeran lo mismo,
+ * serían dos URLs compitiendo por lo mismo y habría que borrar una.
+ *
+ * Los datos salen de `src/data/JUZGADOS.ts` (reparto de la Ley 38/1988 y
+ * reforma de la LO 1/2025) y de las fichas de `src/data/cities/`. El agrupado
+ * por partido se calcula con `buscarPartido`, la misma función que usa el
+ * buscador, de forma que si un día cambia el dataset las dos páginas cambian
+ * a la vez y no pueden discrepar.
+ */
+
+const totalPartidos = PROVINCIAS_CUBIERTAS.reduce(
+	(n, p) => n + PARTIDOS_JUDICIALES[p].length,
+	0,
+);
+const totalMunicipios = PROVINCIAS_CUBIERTAS.reduce(
+	(n, p) =>
+		n + PARTIDOS_JUDICIALES[p].reduce((m, partido) => m + partido.municipios.length, 0),
+	0,
+);
+
+/** Una plaza con landing propia, traducida a lo que necesita esta página. */
+interface Plaza {
+	city: string;
+	href: string;
+	sectors: string;
+	matters: string;
+	office: 'malaga' | 'lucena';
+	travel: string;
+}
+
+/** Un partido con al menos una plaza nuestra. */
+interface Grupo {
+	provincia: string;
+	capital: string;
+	numero: number;
+	municipios: string[];
+	social: string | null;
+	plazas: Plaza[];
+	/** Municipios de la ficha cuando no vienen del dataset (Villacarrillo). */
+	municipiosTexto?: string;
+}
+
+const grupos = new Map<string, Grupo>();
+const clave = (provincia: string, capital: string, numero: number) =>
+	`${provincia}|${capital}|${numero}`;
+
+for (const ciudad of CITY_LANDINGS) {
+	const encontrado = buscarPartido(ciudad.city);
+	const plaza: Plaza = {
+		city: ciudad.city,
+		href: `/abogados-en-${ciudad.slug}/`,
+		sectors: ciudad.sectors,
+		matters: ciudad.matters,
+		office: ciudad.office,
+		travel: ciudad.travel,
+	};
+
+	if (encontrado) {
+		const k = clave(encontrado.provincia, encontrado.partido.capital, encontrado.partido.numero);
+		const existente = grupos.get(k);
+		if (existente) {
+			existente.plazas.push(plaza);
+		} else {
+			grupos.set(k, {
+				provincia: encontrado.provincia,
+				capital: encontrado.partido.capital,
+				numero: encontrado.partido.numero,
+				municipios: encontrado.partido.municipios,
+				social: encontrado.social,
+				plazas: [plaza],
+			});
+		}
+	} else {
+		// Plazas fuera del dataset. Solo debería ser Jaén, que se dejó fuera a
+		// propósito porque su reparto no está verificado. Lo que sabemos de su
+		// partido es lo que dice la ficha de la plaza, y es lo mismo que se ha
+		// verificado: no se completa aquí lo que no está comprobado.
+		const numero = Number(ciudad.tribunal.match(/número (\d+)/)?.[1] ?? 0);
+		const k = clave(ciudad.province, ciudad.city, numero);
+		grupos.set(k, {
+			provincia: ciudad.province,
+			capital: ciudad.city,
+			numero,
+			municipios: [],
+			municipiosTexto: ciudad.municipios,
+			social: SOCIAL_COURT[ciudad.province] ?? null,
+			plazas: [plaza],
+		});
+	}
+}
+
+const listaGrupos = [...grupos.values()].sort(
+	(a, b) =>
+		a.provincia.localeCompare(b.provincia, 'es') || a.numero - b.numero,
+);
+
+const OFICINA = {
+	malaga: { nombre: 'Málaga', href: '/abogados-en-malaga/' },
+	lucena: { nombre: 'Lucena', href: '/abogados-en-lucena/' },
+} as const;
+
+/** Los mismos grupos, pero del lado de cada oficina. */
+const porOficina = (['malaga', 'lucena'] as const).map((oficina) => ({
+	oficina,
+	...OFICINA[oficina],
+	grupos: listaGrupos.filter((g) => g.plazas.every((p) => p.office === oficina)),
+}));
+
+// Partidos que están en el dataset pero que no tienen plaza propia. Se listan
+// aparte y en formato corto: son clientes que llegan buscando su partido,
+// y queremos que vean que también los cubrimos.
+const capitalesConPlaza = new Set(listaGrupos.map((g) => clave(g.provincia, g.capital, g.numero)));
+const sinPlaza = PROVINCIAS_CUBIERTAS.map((provincia) => ({
+	provincia,
+	partidos: PARTIDOS_JUDICIALES[provincia]
+		.filter((p) => !capitalesConPlaza.has(clave(provincia, p.capital, p.numero)))
+		.map((p) => ({ capital: p.capital, numero: p.numero, municipios: p.municipios })),
+})).filter((grupo) => grupo.partidos.length > 0);
+
+const totalSinPlaza = sinPlaza.reduce((n, g) => n + g.partidos.length, 0);
+
+const secciones = [
+	{
+		title: 'Qué es un partido judicial y por qué decide tu caso',
+		content:
+			'Un partido judicial no es un pueblo: es un grupo de municipios que comparten los juzgados de una cabecera. La demarcación es legal y está en la Ley 38/1988, con el reparto que resulte de la reforma de la Ley Orgánica 1/2025. Lo que decide tu caso es a qué partido pertenece el municipio donde vive el demandado o donde se produjo el hecho, no la distancia que tengas que hacer. Dos pueblos vecinos pueden caer en partidos distintos y acabar ante jueces distintos.',
+		points: [
+			`Hoy hay ${totalPartidos} partidos en ${PROVINCIAS_CUBIERTAS.length} provincias de Andalucía, con ${totalMunicipios} municipios.`,
+			'Cada partido lleva su número dentro de la provincia, y ese número es el que figura en el encabezamiento de cualquier escrito.',
+			'Los municipios que no son cabecera tienen juzgado de paz, que no es lo mismo que un tribunal de instancia.',
+			'Lo social no sigue al partido: se sirve en la capital de provincia.',
+		],
+	},
+	{
+		title: 'Qué se tramita en cada partido y qué no',
+		content:
+			'En la cabecera del partido se concentran los juzgados de Primera Instancia, de Instrucción y, según el tamaño del partido, las secciones civil y de familia. Ahí va la mayoría de los procedimientos. Lo que queda fuera es otra historia: lo social no está en el partido, y la segunda instancia vive en un tribunal provincial.',
+		points: [
+			'Civil, familia, herencias, monitorio y concursos: Primera Instancia.',
+			'Penal y las diligencias previas: Instrucción.',
+			'Laboral: Sección de lo Social del Tribunal de Instancia de la capital de provincia.',
+			'Recursos: en segunda instancia, ante la Audiencia Provincial o el Tribunal Superior de Justicia.',
+		],
+	},
+	{
+		title: 'Cómo se presenta un escrito y qué pasa si se manda al sitio equivocado',
+		content:
+			'Los escritos se presentan en la Sede Electrónica de la Administración de Justicia o en ventanilla, y deben llevar el órgano concreto: número de partido, sección y juzgado. Un escrito que llega a un partido equivocado no se pierde: el órgano lo remite a quien corresponda. Pero esa remisión consume días que cuentan dentro del plazo, y hay plazos que no se recuperan. Por eso la primera consulta empieza por identificar el órgano, no por escribir.',
+		points: [
+			'El encabezamiento correcto ahorra la remisión y con ella días de plazo.',
+			'El número de partido se comprueba aquí, no de memoria.',
+			'Si ya has presentado en otro sitio, no repitas: pide la remisión y anota la fecha.',
+			'En lo social, mándalo a la capital de provincia aunque tu pueblo tenga su propio juzgado.',
+		],
+	},
+	{
+		title: 'Desde qué despacho se atiende cada partido',
+		content:
+			'Este despacho tiene oficina en Lucena y en Málaga. En ninguno de los dos sitios hay una tercera. Las plazas que se listan más abajo se atienden desde una de esas dos oficinas, y las demás se atienden igual: por videollamada y con cita cerrada. Cada ficha indica cuál de las dos es y cuánto se tarda en llegar. Lo que no hacemos es fingir un despacho abierto donde no lo hay.',
+		points: [
+			'Las fichas de cada plaza dan el tiempo real de desplazamiento.',
+			'La primera consulta es gratuita y se puede hacer por videollamada.',
+			'Si el caso necesita firma presencial o notario, se acuerda la cita por escrito.',
+			`${totalSinPlaza} partidos más de las mismas provincias también se atienden desde estas oficinas, sin plaza propia.`,
+		],
+	},
+];
+
+const faqs = [
+	{
+		question: '¿Cómo sé a qué partido pertenece mi pueblo?',
+		answer:
+			'Con el buscador de municipios, que tiene la lista verificada de las cinco provincias. Si tu pueblo no sale, es que no lo hemos verificado todavía y preferimos decírtelo a acertar a ojo. Aquí cada partido aparece con todos sus municipios.',
+	},
+	{
+		question: '¿Qué diferencia hay entre partido judicial y juzgado de paz?',
+		answer:
+			'El juzgado de paz existe en casi todos los municipios y resuelve asuntos de menor cuantía, deudas de poco importe y algunas medidas urgentes. El partido judicial, con su tribunal de instancia, está solo en las cabeceras y lleva la mayoría de los procedimientos civiles y de familia. Si tu asunto es de poca cuantía, es posible que no llegues ni al partido.',
+	},
+	{
+		question: '¿Lo social va a la cabecera de mi partido?',
+		answer:
+			'No. La jurisdicción social no sigue al partido judicial: se sirve en la Sección de lo Social del Tribunal de Instancia de la capital de provincia. Es el error más común que se comete al buscar por internet, y el que llevó a este despacho a publicar unos días que el juicio social de un vecino de Granada iba a Málaga.',
+	},
+	{
+		question: '¿Atendéis partidos que no tienen plaza propia en la web?',
+		answer:
+		'Sí. La lista de plazas con página es solo la parte que tiene contenido escrito. El resto de partidos de las cinco provincias se atienden desde Lucena o Málaga, con cita cerrada y la primera consulta gratuita. En cada ficha se indica qué se tramita allí y en qué despacho se coordina.',
+	},
+	{
+		question: '¿La primera consulta es gratuita y confidencial?',
+		answer:
+			'Sí, y es confidencial. Se revisan los documentos, se identifica la materia, el órgano competente y si corre algún plazo; y se dan las opciones con su coste. No se factura la primera valoración aunque luego el caso no se tramite con nosotros.',
+	},
+];
+
+const related = [
+	{
+		label: 'Qué juzgado me corresponde',
+		href: '/que-juzgado-me-corresponde/',
+		description: 'Buscador por municipio, con el dato de la sección social.',
+	},
+	{
+		label: 'Oficinas y ubicaciones',
+		href: '/ubicaciones/',
+		description: 'Dónde están Lucena y Málaga y cómo se coordinan las citas.',
+	},
+	{
+		label: 'Abogados en Málaga',
+		href: '/abogados-en-malaga/',
+		description: 'La oficina de la costa: Torremolinos, Fuengirola, Marbella, Estepona.',
+	},
+	{
+		label: 'Abogados en Lucena',
+		href: '/abogados-en-lucena/',
+		description: 'La oficina principal, en el centro de Lucena.',
+	},
+	{
+		label: 'Dónde atendemos',
+		href: '/donde-atendemos/',
+		description: 'Qué materias se consultan en cada plaza y desde qué despacho.',
+	},
+	{
+		label: 'Calculadora de plazos',
+		href: '/calculadora-plazos/',
+		description: 'Cuántos días te quedan, con el artículo y la fecha de inicio.',
+	},
+	{
+		label: 'Recursos administrativos',
+		href: '/recursos-administrativos/',
+		description: 'Plazos para recurrir multas y actos de la Administración.',
+	},
+];
+---
+
+<SeoLegalPage
+	title="Partidos judiciales: qué se tramita en cada uno | Scruz"
+	description="Los 48 partidos judiciales de Málaga, Córdoba, Cádiz, Granada y Huelva con sus municipios: qué materia lleva cada uno y dónde se celebra el juicio social."
+	breadcrumb={[
+		{ label: 'Inicio', href: '/' },
+		{ label: 'Ubicaciones', href: '/ubicaciones' },
+		{ label: 'Partidos judiciales', href: '/partidos-judiciales/' },
+	]}
+	eyebrow="Mapa judicial de Andalucía"
+	headline="Partidos judiciales: qué pasa en cada uno"
+	intro="Un partido judicial agrupa varios municipios bajo una cabecera, y esa cabecera decide dónde se tramita tu caso. Aquí está el mapa completo de los partidos de las cinco provincias donde trabajamos, con los municipios de cada uno, la materia que llevan y el despacho desde el que se atienden las plazas."
+	highlights={[
+		`${totalPartidos} partidos y ${totalMunicipios} municipios verificados`,
+		'Qué materia lleva cada partido y cuál va a otro sitio',
+		'Desde Lucena o Málaga, con el tiempo real de desplazamiento',
+		'Primera consulta gratuita y confidencial',
+	]}
+	serviceType="Consulta sobre partido judicial y órgano competente"
+	areaServed="Málaga, Córdoba, Cádiz, Granada y Huelva"
+	sections={secciones}
+	faqs={faqs}
+	related={related}
+/>
+
+<section class="bg-base-200 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-4xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">
+			Si solo quieres saber el tuyo
+		</h2>
+		<p class="mb-6 text-base-content/70">
+			Esta página es el mapa completo. Para el dato rápido, con el nombre de
+			tu pueblo y un solo campo, está el buscador.
+		</p>
+		<a class="btn btn-primary" href="/que-juzgado-me-corresponde/">
+			Buscar mi municipio
+		</a>
+	</div>
+</section>
+
+{
+	porOficina.map(({ oficina, nombre, href, grupos: lista }) => (
+		<section class="bg-base-100 px-6 py-14 md:px-16">
+			<div class="mx-auto max-w-5xl">
+				<h2 class="mb-2 font-title text-2xl md:text-3xl">
+					Partidos que se atienden desde {nombre}
+				</h2>
+				<p class="mb-8 text-base-content/70">
+					La oficina está en <a class="link link-primary" href={href}>{nombre}</a>.
+					{oficina === 'malaga'
+						? ' En la costa y la Axarquía la cita presencial suele ser corta; en la Serranía y la Comarca del Genal se resuelve por videollamada.'
+						: ' En la Sierra Sur y la Campiña la cita presencial suele ser corta; en Granada y Jaén se resuelve por videollamada.'}
+				</p>
+
+				{lista.map((g) => (
+					<article class="mb-8 rounded-box border border-base-300 bg-base-200/40 p-5">
+						<div class="flex flex-wrap items-baseline justify-between gap-2">
+							<h3 class="font-title text-xl">
+								Tribunal de Instancia de {g.capital}
+							</h3>
+							<span class="badge badge-outline">
+								Partido judicial nº {g.numero} de {g.provincia}
+							</span>
+						</div>
+
+						<p class="mt-3 text-sm">
+							<span class="font-semibold">Municipios:</span>{' '}
+							{g.municipios.length > 0 ? g.municipios.join(', ') : g.municipiosTexto}
+						</p>
+
+						{g.social && (
+							<p class="mt-1 text-sm">
+								<span class="font-semibold">Lo social va aparte:</span> {g.social}.
+							</p>
+						)}
+
+						<ul class="mt-3 flex flex-col gap-1 text-sm text-base-content/80">
+							{g.plazas.map((p) => (
+								<li>
+									<a class="link link-primary" href={p.href}>
+										Abogados en {p.city}
+									</a>{' '}
+									— {p.travel}. Materias más frecuentes: {p.matters}.
+								</li>
+							))}
+						</ul>
+					</article>
+				))}
+			</div>
+		</section>
+	))
+}
+
+<section class="bg-base-200 px-6 py-14 md:px-16">
+	<div class="mx-auto max-w-5xl">
+		<h2 class="mb-2 font-title text-2xl md:text-3xl">
+			Partidos sin plaza propia
+		</h2>
+		<p class="mb-8 max-w-3xl text-base-content/70">
+			Son {totalSinPlaza} partidos de las mismas provincias que no tienen una
+			página escrita, y que se atienden igual desde Lucena o Málaga. Se listan
+			para que nadie conclude por su ausencia que no los cubrimos.
+		</p>
+
+		{
+			sinPlaza.map((grupo) => (
+				<div class="mb-8">
+					<h3 class="mb-3 font-title text-xl">{grupo.provincia}</h3>
+					<div class="overflow-x-auto">
+						<table class="table-zebra table table-sm">
+							<thead>
+								<tr>
+									<th>Partido</th>
+									<th>Nº</th>
+									<th>Municipios</th>
+								</tr>
+							</thead>
+							<tbody>
+								{grupo.partidos.map((p) => (
+									<tr>
+										<td class="font-semibold">{p.capital}</td>
+										<td>{p.numero}</td>
+										<td>{p.municipios.join(', ')}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>

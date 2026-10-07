@@ -27,6 +27,17 @@ describe('landing de Taberna La Charata', () => {
 		expect(page).not.toContain('phoneHrefs');
 	});
 
+	test('el hero abre con una foto de fondo en lugar del fondo azul', () => {
+		expect(page).toContain('class="hero-bg"');
+		expect(page).toContain('src={heroPhoto}');
+		expect(page).toContain('fetchpriority="high"');
+		expect(styles).toContain('.hero-bg {');
+		// El bloque `.hero { … }` ya no pinta el azul de marca: el color lo pone la foto y su velo.
+		const heroRule = /\.hero \{([^}]*)\}/.exec(styles)?.[1] ?? '';
+		expect(heroRule).not.toBe('');
+		expect(heroRule).not.toContain('--cobalt');
+	});
+
 	test('incluye metadatos SEO y una llamada fija en móvil', () => {
 		expect(page).toContain('rel="canonical"');
 		expect(page).toContain('application/ld+json');

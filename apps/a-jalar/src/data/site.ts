@@ -7,7 +7,7 @@
  * reseñas públicas que el local cita en sus redes.
  *
  * No hay cifras inventadas: cada bloque de datos apunta a su fuente. Si algún dato cambia
- * (carta, precios, horario), se edita solo aquí.
+ * (carta, horario), se edita solo aquí.
  */
 
 /**
@@ -177,29 +177,25 @@ export const HIGHLIGHTS = [
 
 /**
  * Carta publicada por el negocio en su canal de reparto (Uber Eats).
- * Los precios son los de ese canal y pueden variar: prevalecen siempre los del local.
  */
 export const MENU_SECTIONS: {
 	title: string;
-	items: { name: string; price: string; description?: string; image?: ImageMetadata }[];
+	items: { name: string; description?: string; image?: ImageMetadata }[];
 }[] = [
 	{
 		title: 'Rollos',
 		items: [
 			{
 				name: 'Rollo de pollo',
-				price: '11,00 €',
 				description: 'Pan artesano enrollado con pollo macerado, ingredientes y salsas a elegir.',
 				image: rolloPollo,
 			},
 			{
 				name: 'Rollo de ternera',
-				price: '12,35 €',
 				description: 'La misma combi con ternera premium del propio local.',
 			},
 			{
 				name: 'Rollo mixto',
-				price: '12,35 €',
 				description: 'La combinación de pollo macerado y ternera premium, el más pedido.',
 			},
 		],
@@ -209,12 +205,11 @@ export const MENU_SECTIONS: {
 		items: [
 			{
 				name: 'Media luna de pollo',
-				price: '7,80 €',
 				description: 'La media luna clásica, recién hecha y con el pollo de toda la casa.',
 				image: mediaLunaPollo,
 			},
-			{ name: 'Media luna mixta', price: '9,75 €' },
-			{ name: 'Media luna de ternera', price: '9,75 €' },
+			{ name: 'Media luna mixta' },
+			{ name: 'Media luna de ternera' },
 		],
 	},
 	{
@@ -222,12 +217,11 @@ export const MENU_SECTIONS: {
 		items: [
 			{
 				name: 'Campero de pollo',
-				price: '9,00 €',
 				description: 'Pan de campero artesanal con pollo macerado y los ingredientes que elijas.',
 				image: camperoPollo,
 			},
-			{ name: 'Campero de ternera', price: '11,00 €' },
-			{ name: 'Campero mixto', price: '11,00 €' },
+			{ name: 'Campero de ternera' },
+			{ name: 'Campero mixto' },
 		],
 	},
 	{
@@ -235,12 +229,11 @@ export const MENU_SECTIONS: {
 		items: [
 			{
 				name: 'Bandeja de pollo',
-				price: '9,75 €',
 				description: 'El rollo-desde abierto y acompañante a elegir para compartir.',
 				image: bandejaPollo,
 			},
-			{ name: 'Bandeja mixta', price: '11,00 €' },
-			{ name: 'Bandeja de ternera', price: '11,00 €' },
+			{ name: 'Bandeja mixta' },
+			{ name: 'Bandeja de ternera' },
 		],
 	},
 	{
@@ -248,13 +241,11 @@ export const MENU_SECTIONS: {
 		items: [
 			{
 				name: 'Baguette de pollo',
-				price: '10,40 €',
 				description: 'El rollo servido en pan baguette, crujiente por fuera.',
 				image: baguettePollo,
 			},
 			{
 				name: 'Hamburguesa de ternera con patatas',
-				price: 'a consultar',
 				description: 'Ternera, queso y patatas fritas. Precio actualizado en el local.',
 				image: hamburguesaTernera,
 			},
@@ -265,13 +256,11 @@ export const MENU_SECTIONS: {
 		items: [
 			{
 				name: 'Chicken fingers',
-				price: '8,40 €',
 				description: 'Tiras de pollo crujientes con salsa de la casa.',
 				image: chickenFingers,
 			},
 			{
 				name: 'Patatas fritas (ración)',
-				price: '3,25 €',
 				description: 'Patatas crujientes, con sal o con las salsas que prefieras.',
 				image: patatasFritas,
 			},
@@ -315,7 +304,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Hacés reparto a domicilio?',
-		a: 'Sí. El reparto se realiza a través de Glovo y también está disponible en Uber Eats. El precio habitual está entre 10 y 15 € por persona.',
+		a: 'Sí. El reparto se realiza a través de Glovo y también está disponible en Uber Eats.',
 	},
 	{
 		q: '¿Cómo contacto con el local?',

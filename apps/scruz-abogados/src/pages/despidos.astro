@@ -1,0 +1,304 @@
+---
+import heroImg from '@assets/ABOGADOS-EN-LUCENA-3-980x654.webp';
+import { SITE_URL } from '../data/site';
+import {
+	Award,
+	Banknote,
+	Briefcase,
+	Calculator,
+	Calendar,
+	Clock,
+	FileText,
+	Gavel,
+	ShieldCheck,
+	Wallet,
+} from '@lucide/astro';
+import CustomLayout from '../layouts/CustomLayout.astro';
+import ServiceBlogGuides from '../components/ServiceBlogGuides.astro';
+import {
+	EditorialConcepts,
+	EditorialCtaFinal,
+	EditorialFAQ,
+	EditorialHero,
+	EditorialIntro,
+	EditorialMeasures,
+	EditorialProcess,
+	EditorialWhyUs,
+} from '../components/editorial';
+
+const faqEntries = [
+	{
+		question: '¿Tengo que firmar la carta de despido?',
+		answer:
+			'Solo si estás de acuerdo con su contenido. Firmar la carta con el recibí "no conforme" deja constancia de que solo recibes la notificación, sin aceptar la versión empresarial. Si firmas sin más, podrías estar aceptando los hechos y perdiendo opciones de impugnación. Te recomendamos no firmar nunca sin asesoramiento previo, ni siquiera el recibí.',
+	},
+	{
+		question: '¿Qué plazo tengo para demandar si me han despedido?',
+		answer:
+			'Tienes un plazo muy estricto: 20 días hábiles desde la notificación del despido para presentar la papeleta de conciliación ante el Centro de Mediación, Arbitraje y Conciliación (CMAC). Si no lo haces en plazo, perderás el derecho a reclamar por despido. Cuanto antes contactes con nosotros, mejor.',
+	},
+	{
+		question: '¿Qué diferencia hay entre despido objetivo y disciplinario?',
+		answer:
+			'El despido disciplinario se basa en un incumplimiento grave y súbito del trabajador; el despido objetivo por causas económicas, técnicas, organizativas o de producción, o por ineptitud sobrevenida, exige una indemnización de 20 días por año de servicio (máximo 12 mensualidades) y un preaviso de 15 días. En ambos casos hay motivos para impugnar cuando la causa no está justificada.',
+	},
+	{
+		question: '¿Tengo derecho a finiquito y salarios de tramitación?',
+		answer:
+			'Sí. El finiquito incluye salario del último mes, pagas extra prorrateadas, vacaciones no disfrutadas y cualquier otro concepto pendiente. Los salarios de tramitación son los dejados de percibir desde el despido hasta la sentencia: si el despido es improcedente o nulo, puedes reclamarlos íntegros. Analizamos tu finiquito para que no dejes de cobrar lo que te corresponde.',
+	},
+	{
+		question: '¿Qué ocurre si el despido es discriminatorio o nulo?',
+		answer:
+			'El despido nulo procede cuando afecta a derechos fundamentales (embarazo, lactancia, sindicalismo, discapacidad) o cuando se incumple gravemente el procedimiento. Conlleva la readmisión obligatoria del trabajador con abono de los salarios de tramitación, pero no right to choose. Si el despido vulnera la libertad sindical o cualquier derecho fundamental, actuamos con la máxima contundencia.',
+	},
+	{
+		question: '¿La asistencia jurídica es gratuita?',
+		answer:
+			'Los trabajadores tienen asistencia jurídica gratuita en la jurisdicción social, así que litigar en tu despido nunca te costará nada en honorarios de procurador ni tasas judiciales. Solo se aplican honorarios de abogado cuando no se accede al beneficio. Te informamos de todos los detalles antes de empezar.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqEntries.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+
+const heroStats = [
+	{ Icon: Clock, label: 'Plazo', value: '20 días hábiles' },
+	{ Icon: Calculator, label: 'Indemnización', value: 'Hasta 720 días' },
+	{ Icon: ShieldCheck, label: 'Coste', value: 'Justicia gratuita' },
+];
+
+const plazos = [
+	{
+		Icon: Clock,
+		title: '20 días hábiles',
+		description: 'Para impugnar el despido mediante papeleta de conciliación ante el CMAC.',
+	},
+	{
+		Icon: Award,
+		title: 'Indemnización legal',
+		description: '33 días por año con tope de 24 mensualidades (improcedente). 45 días (antiguo).',
+	},
+	{
+		Icon: Gavel,
+		title: 'Jurisdicción social',
+		description: 'Procedimiento rápido y gratuito para trabajadores, sin tasas judiciales.',
+	},
+];
+
+const conceptos = [
+	{
+		Icon: FileText,
+		title: 'Despido disciplinario',
+		description:
+			'Alegamos incumplimiento contractual y, en su caso, falta de gravedad o proporcionalidad. Impugnamos el despido cuando la causa no está suficientemente acreditada.',
+	},
+	{
+		Icon: Banknote,
+		title: 'Despido objetivo',
+		description:
+			'Analizamos la concurrencia de causas económicas, técnicas, organizativas o de producción. Si no se cumplen los requisitos, reclamamos la improcedencia.',
+	},
+	{
+		Icon: ShieldCheck,
+		title: 'Despido nulo',
+		description:
+			'Reclamamos la nulidad cuando el despido afecta a derechos fundamentales: embarazo, lactancia, reducción de jornada, discapacidad o actividad sindical.',
+	},
+	{
+		Icon: Wallet,
+		title: 'Finiquito y liquidación',
+		description:
+			'Revisamos el finiquito propuesto: salario pendiente, pagas extras, vacaciones y cualquier otro concepto que pudiera no haberse calculado correctamente.',
+	},
+	{
+		Icon: Calendar,
+		title: 'Salarios de tramitación',
+		description:
+			'Reclamamos los salarios dejados de percibir desde la fecha del despido hasta la sentencia si el despido es declarado improcedente o nulo.',
+	},
+	{
+		Icon: Briefcase,
+		title: 'Reclamaciones laborales',
+		description:
+			'Horas extra no pagadas, categorías profesionales, movilidad geográfica, modificación sustancial de condiciones y cualquier otro derecho vulnerado.',
+	},
+];
+
+const pasos = [
+	{
+		number: '01',
+		title: 'Revisión de la carta',
+		description:
+			'Analizamos la carta de despido, el finiquito propuesto y la documentación de la empresa para identificar motivos de impugnación desde el primer momento.',
+	},
+	{
+		number: '02',
+		title: 'Papeleta de conciliación',
+		description:
+			'Presentamos la papeleta de conciliación ante el CMAC dentro del plazo de 20 días hábiles para agotar la vía administrativa previa.',
+	},
+	{
+		number: '03',
+		title: 'Acto de conciliación',
+		description:
+			'Te representamos en el acto de conciliación intentando un acuerdo. Si la empresa no ofrece una indemnización justa, planteamos la demanda.',
+	},
+	{
+		number: '04',
+		title: 'Juicio y sentencia',
+		description:
+			'Celebramos el juicio en el Juzgado de lo Social, presentamos las pruebas y esperamos sentencia. Si procede, recurrimos en suplicación ante el TSJA.',
+	},
+];
+
+const why = [
+	{
+		Icon: Calculator,
+		title: 'Cálculo riguroso',
+		description:
+			'Analizamos al céntimo la indemnización que te corresponde según tu antigüedad, salario y categoría, sin dejar dinero sobre la mesa.',
+	},
+	{
+		Icon: Clock,
+		title: 'Celeridad procesal',
+		description:
+			'Actuamos con la máxima rapidez para no perder el plazo de 20 días y aprovechar todas las opciones de negociación temprana con la empresa.',
+	},
+	{
+		Icon: ShieldCheck,
+		title: 'Coste cero inicial',
+		description:
+			'La jurisdicción social es gratuita para los trabajadores. Iniciamos solo si vemos opciones reales de éxito y luchamos por tu readmisión o indemnización completa.',
+	},
+];
+
+const rangos = [
+	{ title: 'Despido improcedente', value: '33 días / año', note: 'Tope: 24 mensualidades' },
+	{ title: 'Despido objetivo', value: '20 días / año', note: 'Tope: 12 mensualidades' },
+	{ title: 'Despido nulo', value: 'Readmisión', note: 'Más salarios de tramitación' },
+	{ title: 'Acto de conciliación', value: '1 — 3 meses', note: 'Tras la papeleta' },
+];
+---
+
+<CustomLayout
+	title="Abogado Laboralista en Lucena | Despidos e Indemnizaciones"
+	description="Abogado laboralista en Lucena, Córdoba y Málaga: despido improcedente, acoso laboral y reclamación de indemnización. Primera consulta gratuita: 666 329 155."
+	keywords="abogado despidos Lucena, despido improcedente Córdoba, indemnización Málaga, reclamación laboral, abogado laboralista Andalucía, despido nulo"
+	ogImage={heroImg.src}
+	breadcrumb={[
+		{ name: 'Inicio', url: '/' },
+		{ name: 'Servicios', url: '/servicios/' },
+		{ name: 'Despidos', url: '/despidos/' },
+	]}
+	additionalSchemas={[
+		{
+			'@context': 'https://schema.org',
+			'@type': 'Service',
+			'@id': `${SITE_URL}/despidos/#service`,
+			serviceType: 'Derecho Laboral',
+			name: 'Despidos e indemnizaciones laborales',
+			description:
+				'Reclamación de despidos improcedentes, indemnizaciones, salarios impagados y accidentes laborales.',
+			provider: { '@id': `${SITE_URL}/#organization` },
+			areaServed: ['Lucena', 'Córdoba', 'Málaga', 'Andalucía'],
+		},
+		faqSchema,
+	]}
+>
+	<EditorialHero
+		image={heroImg}
+		imageAlt="Abogados laboralistas especialistas en despidos e indemnizaciones en Lucena, Córdoba y Málaga"
+		supertitle="Derecho Laboral · Despidos e indemnizaciones"
+		description="Impugnamos despidos improcedentes y reclamamos la indemnización completa. 20 días hábiles de plazo: actuamos con rapidez desde el primer momento."
+		stats={heroStats}
+	>
+		<span slot="title">Abogado laboralista en Lucena: <span class="text-primary">tu siguiente paso, defendido.</span></span>
+	</EditorialHero>
+
+	<EditorialIntro
+		supertitle="Bufete Scruz Abogados"
+		title={'Impugnamos despidos y reclamamos tu <span class="text-primary">indemnización completa</span>.'}
+		factboxSupertitle="Plazos cruciales"
+		factboxTitle="Lo que debes saber"
+		factboxItems={plazos}
+	>
+		<p class="mb-4">
+			¿Tu despido es nulo, improcedente o discriminatorio? No aceptes una salida
+			injusta. Analizamos tu caso en detalle para impugnar el despido y reclamar la
+			indemnización que te corresponde por ley, además de salarios pendientes, finiquito
+			y cualquier otro derecho vulnerado.
+		</p>
+		<p class="mb-4">
+			Trabajamos con la máxima rapidez porque los plazos en la jurisdicción social son
+			extraordinariamente cortos. En cuanto contactas con nosotros, analizamos la carta
+			de despido y el finiquito propuesto, calculamos la indemnización completa que te
+			corresponde y presentamos la papeleta de conciliación en el Centro de Mediación,
+			Arbitraje y Conciliación correspondiente.
+		</p>
+		<p>
+			Luchamos para que una decisión empresarial injusta no perjudique tu trayectoria
+			profesional ni tu economía. La jurisdicción social es gratuita para los trabajadores,
+			así que puedes reclamar sin coste de tasas ni procurador: solo nuestros honorarios
+			cuando alcanzan el éxito que perseguimos.
+		</p>
+	</EditorialIntro>
+
+	<EditorialConcepts
+		supertitle="Qué reclamamos"
+		title="Servicios laborales"
+		description="Abarcamos todas las áreas de reclamación por despido, salario y condiciones laborales en la jurisdicción social."
+		items={conceptos}
+	/>
+
+	<EditorialMeasures
+		supertitle="Indemnizaciones habituales"
+		title="Cálculo según la ley"
+		description="Una visión rápida de los principales conceptos indemnizatorios y plazos que aplican tras un despido en España."
+		valueFormat="single-currency"
+		noteLabel="Cifras indicativas."
+		disclaimer="Cifras y plazos orientativos. La indemnización exacta depende de tu antigüedad, salario, categoría y circunstancias personales — concertamos una cita para calcularla."
+		items={rangos}
+	/>
+
+	<EditorialProcess
+		supertitle="Metodología"
+		title="De la notificación del despido a la sentencia"
+		items={pasos}
+	/>
+
+	<EditorialWhyUs
+		supertitle="Por qué elegirnos"
+		title="Tu reclamación laboral, en manos expertas."
+		items={why}
+	/>
+
+	<EditorialFAQ
+		supertitle="Preguntas frecuentes"
+		title="Resolvemos tus dudas"
+		description="Las preguntas más habituales sobre despidos, finiquitos, plazos y salarios de tramitación."
+		items={faqEntries}
+	/>
+
+	<ServiceBlogGuides />
+	<EditorialCtaFinal
+		supertitle="Actúa con rapidez"
+		title={'Hablemos. <span class="text-primary">Sin compromiso.</span>'}
+		description="Te quedan 20 días hábiles para reclamar. Primera consulta gratuita y confidencial. Si decidimos no reclamar, no pagas nada."
+		relatedLinks={[
+			{ label: 'Transparencia retributiva: guía', href: '/blog/transparencia-retributiva/' },
+			{ label: 'Novedades laborales 2026: guía', href: '/blog/novedades-laborales-2026/' },
+			{ label: 'Jornada 37,5 horas: estado real', href: '/blog/jornada-375-horas/' },
+			{ label: 'Despido improcedente: guía', href: '/blog/despido-improcedente/' },
+			{ label: 'Accidente laboral', href: '/accidente-laboral/' },
+			{ label: 'Incapacidad permanente', href: '/incapacidad-permanente/' },
+		]}
+	/>
+</CustomLayout>

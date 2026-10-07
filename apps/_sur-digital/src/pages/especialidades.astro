@@ -1,0 +1,174 @@
+---
+// Hub de especialidades: agrupa todas las landings por sector en una sola
+// página. Fuente única de verdad: SECTORS en data/sectors.ts, así que los
+// sectores nuevos aparecen aquí solos (igual que en Topbar, home y footer).
+import { CRUMB_ESPECIALIDADES } from "../data/breadcrumbs";
+import { SECTORS } from "../data/sectors";
+import Layout from "../layouts/Layout.astro";
+import Topbar from "../components/Topbar.astro";
+import Footer from "../components/Footer.astro";
+import DoneIcon from "../icons/DoneIcon.astro";
+
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const pageUrl = `${site}/especialidades/`;
+
+// La lista de sectores se deriva de SECTORS: así estas descripciones no se
+// quedan desfasadas cuando se añade uno nuevo.
+const listaSectores = new Intl.ListFormat("es", {
+  style: "long",
+  type: "conjunction",
+}).format(SECTORS.map((sector) => sector.name.toLowerCase()));
+
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${site}/` },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Especialidades",
+      item: pageUrl,
+    },
+  ],
+};
+
+// CollectionPage + ItemList: le dice a Google que esta página agrupa las
+// landings por sector (refuerza el hub-and-spoke del SEO local)
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Especialidades: webs por sector en Málaga",
+  description: `Todas nuestras propuestas de diseño web por sector en Málaga: ${listaSectores}.`,
+  url: pageUrl,
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: SECTORS.map((sector, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: `Web para ${sector.name.toLowerCase()} en Málaga`,
+      url: `${site}/web-para-${sector.slug}/`,
+    })),
+  },
+};
+
+const benefits = [
+  "Estructura y textos pensados para las búsquedas de tu sector",
+  "Secciones que responden las dudas reales de tus clientes",
+  "SEO local: Google Maps, reseñas y tu barrio en el foco",
+  "Primera landing gratis, online en menos de 7 días",
+];
+---
+
+<Layout
+  title="Webs por sector en Málaga | Especialidades | Sur Digital"
+  description={`Webs por sector en Málaga: ${listaSectores}. Cada sector con su estrategia, sus secciones y su SEO local. Desde 0€.`}
+  image={`${site}/og/especialidades.png`}
+  path="/especialidades/"
+  breadcrumbs={CRUMB_ESPECIALIDADES}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(collectionSchema)}
+  />
+
+  <Topbar />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <!-- Hero del hub -->
+    <section class="container mx-auto px-6 max-w-4xl text-center mb-16" data-reveal>
+      <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
+        <a href="/" class="link link-hover">Inicio</a> · Especialidades
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        Webs que hablan <span class="text-wave">el idioma de tu sector</span>
+      </h1>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        Una web de restaurante no vende como una de gimnasio ni como un
+        despacho. Por eso no hacemos webs genéricas: cada sector tiene su
+        propuesta completa, con sus secciones, sus textos y sus búsquedas.
+      </p>
+    </section>
+
+    <!-- Grid de sectores -->
+    <section class="container mx-auto px-6 max-w-5xl mb-16">
+      <ul data-reveal-group class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          SECTORS.map((sector) => (
+            <li class="card bg-base-100 shadow-md border border-base-300 transition-all hover:shadow-lg hover:-translate-y-1">
+              <div class="card-body gap-3">
+                <span class="text-4xl" aria-hidden="true">{sector.emoji}</span>
+                <h2 class="card-title text-lg leading-snug">{sector.navLabel}</h2>
+                <p class="text-sm text-base-content/70 leading-relaxed">
+                  {sector.tagline}. Primera landing gratis y entrega en menos
+                  de 7 días.
+                </p>
+                <div class="flex flex-col gap-1 pt-1">
+                  <a
+                    href={`/web-para-${sector.slug}/`}
+                    class="link link-primary text-sm font-bold"
+                  >
+                    Ver propuesta para {sector.name.toLowerCase()} →
+                  </a>
+                  <a
+                    href={sector.blogPost}
+                    class="link link-hover text-xs text-base-content/60"
+                  >
+                    Lee la guía del sector
+                  </a>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Qué tienen en común todas las propuestas -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-6 text-center">
+        Lo que incluyen todas
+      </h2>
+      <ul class="flex flex-col gap-2">
+        {
+          benefits.map((benefit) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <p class="card-body py-4 flex-row items-center gap-3 text-base-content/70">
+                <DoneIcon class="size-5 shrink-0" />
+                {benefit}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- CTA -->
+    <section class="container mx-auto px-6 max-w-3xl" data-reveal>
+      <div class="card brand-surface shadow-lg">
+        <div class="card-body items-center text-center gap-3">
+          <p class="text-xl font-bold">
+            ¿Tu sector no está en la lista?
+          </p>
+          <p class="text-sm">
+            La estructura se adapta a cualquier negocio: cuéntanos el tuyo y te
+            preparamos la propuesta. Sin compromiso.
+          </p>
+          <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-1">
+            Solicita tu web gratis
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

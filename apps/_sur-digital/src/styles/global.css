@@ -1,0 +1,198 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "./text-wave.css";
+@import "./text-sand.css";
+
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "malaga-light";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(97% 0.014 254.604);
+  --color-base-300: oklch(93.2% 0.032 255.585);
+  --color-base-content: oklch(21% 0.006 285.885);
+
+  --color-primary: #0077c8; /* azul oscuro (oscurecido para contraste AA) */
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #f9a23f; /* naranja */
+  --color-secondary-content: #3b2410; /* marrón oscuro: AA sobre el naranja (el blanco daba 2:1) */
+
+  --color-accent: #00c6ff; /* celeste */
+  --color-accent-content: #003a4f;
+
+  --color-neutral: #8a5410; /* marrón (oscurecido para contraste AA) */
+  --color-neutral-content: #ffffff;
+
+  --color-info: #00f4ff; /* azul claro */
+  --color-success: #678a36; /* verde oscuro */
+  --color-warning: #fbd069; /* amarillo */
+  --color-error: #c0392b; /* rojo: ✗, notas bajas y alertas deben leerse como error */
+
+  /* Radious, border, etc */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* ── Modo oscuro: marca Sur Digital sobre fondo azul noche ────────────── */
+/* Los colores de marca suben de luminosidad para mantener el contraste AA */
+@plugin "daisyui/theme" {
+  name: "malaga-dark";
+  default: false;
+  prefersdark: false; /* lo aplicamos vía toggle con preferencia del SO */
+  color-scheme: "dark";
+
+  --color-base-100: oklch(19% 0.02 260); /* azul noche (superficies) */
+  --color-base-200: oklch(23% 0.022 260);
+  --color-base-300: oklch(28% 0.025 260);
+  --color-base-content: oklch(90% 0.01 250);
+
+  --color-primary: #55c1ff; /* azul claro de marca */
+  --color-primary-content: oklch(18% 0.04 250); /* texto oscuro sobre azul claro */
+
+  --color-secondary: #f9a23f; /* naranja de marca (funciona en ambos) */
+  --color-secondary-content: oklch(20% 0.05 60);
+
+  --color-accent: #00c6ff;
+  --color-accent-content: oklch(18% 0.04 250);
+
+  --color-neutral: #d9a05f; /* marrón aclarado */
+  --color-neutral-content: oklch(20% 0.04 60);
+
+  --color-info: #7de3ff;
+  --color-success: #a3d160;
+  --color-warning: #fbd069;
+  --color-error: #ff8f7d;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* ── Prosa (artículos del blog) en modo oscuro ─────────────────────────── */
+/* typography usa variables CSS: las remapeamos a los tokens del tema dark  */
+/* (no usamos la variante dark: de Tailwind porque sigue al media query del */
+/* SO, no al toggle por data-theme) */
+/* ── Fondo del hero con imagen: velo de degradado por tema ────────────── */
+/* La imagen pasa por encima una capa semitransparente distinta en claro y  */
+/* en oscuro, para que el texto (base-content) siempre contraste.           */
+.hero-banner {
+  --hero-gradient: linear-gradient(
+      to bottom right,
+      oklch(0.93 0.03 255.59 / 0.5),
+      rgb(255 255 255)
+    ),
+    linear-gradient(to bottom left, oklch(0.93 0.03 255.59 / 0.51), oklch(0.93 0.03 255.59));
+}
+[data-theme="malaga-dark"] .hero-banner {
+  --hero-gradient: linear-gradient(
+      to bottom right,
+      oklch(0.23 0.022 260 / 0.55),
+      oklch(0.19 0.02 260 / 0.92)
+    ),
+    linear-gradient(to bottom left, oklch(0.23 0.022 260 / 0.55), oklch(0.19 0.02 260 / 0.92));
+}
+
+[data-theme="malaga-dark"] .prose {
+  --tw-prose-body: oklch(85% 0.01 250);
+  --tw-prose-headings: oklch(95% 0.01 250);
+  --tw-prose-lead: oklch(80% 0.01 250);
+  --tw-prose-links: #55c1ff;
+  --tw-prose-bold: oklch(96% 0.01 250);
+  --tw-prose-counters: oklch(72% 0.01 250);
+  --tw-prose-bullets: oklch(45% 0.02 260);
+  --tw-prose-hr: oklch(35% 0.02 260);
+  --tw-prose-quotes: oklch(90% 0.01 250);
+  --tw-prose-quote-borders: #f9a23f;
+  --tw-prose-captions: oklch(72% 0.01 250);
+  --tw-prose-code: oklch(95% 0.01 250);
+  --tw-prose-pre-code: oklch(90% 0.01 250);
+  --tw-prose-pre-bg: oklch(15% 0.02 260);
+  --tw-prose-th-borders: oklch(45% 0.02 260);
+  --tw-prose-td-borders: oklch(30% 0.02 260);
+}
+
+/* ── Medidor circular (radial-progress de daisyUI) ────────────────────── */
+/* daisyUI declara @property dentro de @layer base; el optimizador de CSS lo
+   descarta por no ser válido ahí y el anillo se queda sin pintar (solo se ve
+   el punto). Al declararlo en el nivel raíz, el círculo vuelve a renderizar. */
+@property --radialprogress {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+/* ── Superficies de marca (footer y tarjetas CTA) ─────────────────────── */
+/* En claro van en el azul de marca con texto blanco. En oscuro el primary  */
+/* es un celeste muy luminoso: a tamaño grande deslumbra y el logo blanco   */
+/* (logoreverse) pierde contraste, así que usamos un azul noche con texto   */
+/* claro en su lugar.                                                      */
+.brand-surface {
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+}
+[data-theme="malaga-dark"] .brand-surface {
+  background-color: oklch(28% 0.055 250);
+  color: oklch(93% 0.015 250);
+}
+
+/* ── Anclas bajo la topbar fija ───────────────────────────────────────── */
+/* La topbar es fixed y el banner de lanzamiento la empuja hacia abajo: sin
+   esto, los saltos a #precios, #faq, #portafolio… dejaban el título oculto
+   debajo del header. */
+[id] {
+  scroll-margin-top: calc(5rem + var(--banner-h, 0px));
+}
+
+/* ── Banner de lanzamiento ────────────────────────────────────────────── */
+/* Solo se muestra con JS: es el script inline que precede al banner el que
+   comprueba, antes del primer paint, si el visitante ya lo cerró (añade
+   .banner-off a <html>). Sin JS no hay banner, igual que antes. */
+#launch-banner {
+  display: none;
+}
+html.js:not(.banner-off) #launch-banner {
+  display: block;
+}
+
+/* ── Hueco superior de la topbar (+ banner) ───────────────────────────── */
+/* La topbar es fixed y el banner la empuja hacia abajo. --banner-h lo mide
+   un script inline justo después del banner, antes de que se parsee el
+   contenido que va debajo: la reserva ya está lista en el primer paint, así
+   que no hay CLS. Un solo sitio para el hero y las cabeceras de página. */
+.page-top,
+.hero-banner {
+  padding-top: calc(7rem + var(--banner-h, 0px));
+}
+@media (min-width: 768px) {
+  .page-top {
+    padding-top: calc(10rem + var(--banner-h, 0px));
+  }
+  .hero-banner {
+    padding-top: calc(14rem + var(--banner-h, 0px));
+  }
+}
+
+/* Al cerrar el banner el contenido sube: que acompañe a la topbar (que ya
+   anima su `top` en 300ms) en vez de dar un salto seco. */
+@media (prefers-reduced-motion: no-preference) {
+  .page-top,
+  .hero-banner {
+    transition: padding-top 300ms ease;
+  }
+}

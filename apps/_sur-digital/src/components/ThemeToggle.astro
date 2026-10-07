@@ -1,0 +1,62 @@
+---
+// Alternar tema claro/oscuro con persistencia. La preferencia del SO manda
+// solo la primera vez (ver script inline en Layout.astro); después manda la
+// elección explícita del usuario guardada en localStorage.
+---
+
+<button
+  class="theme-toggle btn btn-ghost btn-circle btn-sm"
+  type="button"
+  aria-label="Cambiar tema claro/oscuro"
+  title="Cambiar tema"
+>
+  <span class="theme-icon-light" aria-hidden="true">☀️</span>
+  <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+</button>
+
+<style is:global>
+  /* En claro se ve la luna (invita a oscuro) y en oscuro el sol */
+  [data-theme="malaga-light"] .theme-icon-dark {
+    display: inline;
+  }
+  [data-theme="malaga-light"] .theme-icon-light {
+    display: none;
+  }
+  [data-theme="malaga-dark"] .theme-icon-dark {
+    display: none;
+  }
+  [data-theme="malaga-dark"] .theme-icon-light {
+    display: inline;
+  }
+</style>
+
+<script>
+  const KEY = "theme";
+
+  function apply(theme: string, persist = true) {
+    document.documentElement.dataset.theme = theme;
+    if (persist) {
+      try {
+        localStorage.setItem(KEY, theme);
+      } catch {
+        /* sin persistencia: el cambio dura esta sesión */
+      }
+    }
+  }
+
+  // La Topbar renderiza el toggle 2 veces (desktop + móvil). Como los ids
+  // deben ser únicos, usamos una clase y adjuntamos el listener a todas.
+  document.querySelectorAll(".theme-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const current = document.documentElement.dataset.theme;
+      apply(current === "malaga-dark" ? "malaga-light" : "malaga-dark");
+    });
+  });
+
+  // Sincroniza el tema entre pestañas abiertas
+  window.addEventListener("storage", (e) => {
+    if (e.key === KEY && (e.newValue === "malaga-light" || e.newValue === "malaga-dark")) {
+      apply(e.newValue, false);
+    }
+  });
+</script>

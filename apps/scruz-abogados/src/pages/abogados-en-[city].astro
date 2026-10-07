@@ -1,0 +1,84 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SeoLegalPage from '../components/SeoLegalPage.astro';
+import { CITY_LANDINGS, type CityLanding } from '../data/CITY_LANDINGS';
+
+/**
+ * Landings de ciudad con contenido propio.
+ *
+ * Este archivo solo compone la maquetación. **Todo el texto de la página viene
+ * de `src/data/cities/<slug>.ts`**: la intro, los titulares, las secciones y las
+ * FAQs. No se genera texto genérico aquí a propósito, por dos razones:
+ *
+ *  1. Una versión anterior de esta página montaba las secciones y las FAQs con
+ *     una fórmula común, y eso descartaba el contenido propio de cada plaza
+ *     entero: los datos de tribunal, los municipios y las preguntas reales
+ *     quedaban en el fichero sin llegar al HTML. Peor aún, la fórmula llevaba la
+ *     Sección de lo Social fijada a Málaga, así que las páginas de Granada, Cádiz
+ *     y Jaén acababan diciendo al lector que su juicio social iba a Málaga.
+ *  2. El texto común es justo lo que hace que 25 páginas sean la misma página.
+ *     `scripts/check-city-similarity.mjs` mide el HTML compilado, no este
+ *     fichero, para que un bloque genérico nuevo no pueda colarse sin que salte
+ *     el QA.
+ *
+ * Si una plaza necesita un párrafo propio, va en sus datos. Si cambia el
+ * esqueleto, cambia aquí.
+ */
+export const getStaticPaths = (() =>
+	CITY_LANDINGS.map((city) => ({
+		params: { city: city.slug },
+		props: { city },
+	}))) satisfies GetStaticPaths;
+
+interface Props {
+	city: CityLanding;
+}
+
+const { city } = Astro.props;
+const path = `/abogados-en-${city.slug}/`;
+const officeName = city.office === 'malaga' ? 'Málaga' : 'Lucena';
+const breadcrumb = [
+	{ label: 'Inicio', href: '/' },
+	{ label: 'Ubicaciones', href: '/ubicaciones' },
+	{ label: city.city, href: path },
+];
+
+const related = [
+	...city.links,
+	{
+		label: `Oficina de ${officeName}`,
+		href: city.office === 'malaga' ? '/abogados-en-malaga' : '/abogados-en-lucena',
+		description: `La oficina desde la que atendemos a ${city.city}.`,
+	},
+	{
+		label: '¿Qué juzgado me corresponde?',
+		href: '/que-juzgado-me-corresponde/',
+		description: 'Busca tu municipio y comprueba a qué partido judicial pertenece.',
+	},
+	{
+		label: 'Calculadora de plazos',
+		href: '/calculadora-plazos/',
+		description: 'Calcula hasta qué día tienes para reclamar o recurrir, con el artículo al lado.',
+	},
+	{
+		label: 'Oficinas y ubicaciones',
+		href: '/ubicaciones',
+		description: 'Dónde estamos y cómo se coordinan las citas a distancia.',
+	},
+];
+---
+
+<SeoLegalPage
+	title={city.title}
+	description={city.description}
+	breadcrumb={breadcrumb}
+	eyebrow={city.eyebrow}
+	headline={city.headline}
+	intro={city.intro}
+	highlights={city.highlights}
+	serviceType={`Asesoría jurídica para clientes de ${city.city}`}
+	areaServed={`${city.city}, ${city.area} (${city.province})`}
+	sections={city.sections}
+	faqs={city.faqs}
+	related={related}
+/>
