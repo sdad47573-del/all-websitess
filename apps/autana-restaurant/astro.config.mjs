@@ -1,5 +1,5 @@
 import { createAstroConfig } from '@astro-config';
 
 export default createAstroConfig({
-	site: 'https://autana-restaurant.vercel.app',
+	site: 'https://autana-restaurant.netlify.app',
 });

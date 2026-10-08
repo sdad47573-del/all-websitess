@@ -26,4 +26,6 @@ bun run build
 
 La portada usa la URL `lh3.googleusercontent.com` de la fotografía enlazada por el usuario en Google Maps. Google puede cambiar o retirar esta URL; revisarla antes de publicar. Se enlaza a la ficha pública para ver el resto de las fotos. No se han copiado otras fotos de usuarios.
 
+Además, la sección «Fotos de la ficha de Google Maps» sirve las fotos descargadas a `src/assets/fotos/` (el componente `Galeria.astro` las toma con un `import.meta.glob`, así que basta con añadir y quitar archivos de esa carpeta). Ahora mismo solo queda `talleres-caldado-apaisada-01.jpg`: la foto vertical que había (`talleres-caldado-vertical-02.jpg`) **se retiró porque mostraba una piscina**, no el taller. Su entrada sigue en `.maps-manifest.json` con una nota, para que `scripts/fetch-maps-photos.mjs` no la vuelva a descargar.
+
 Confirmar con el titular permiso de reutilización de la fotografía antes de publicar.

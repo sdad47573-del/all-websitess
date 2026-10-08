@@ -24,6 +24,9 @@ export const content = {
 		primaryCta: 'Llamar al restaurante',
 		secondaryCta: 'Cómo llegar',
 		heroNote: 'Lomo en manteca · Platos caseros · Tradición malagueña',
+		heroPhotoAlt: 'Fachada de Venta La Butibamba en la Carretera de Cádiz, La Cala de Mijas',
+		foodPhotoAlt: 'Bocadillo de lomo en manteca de Venta La Butibamba, La Cala de Mijas',
+		historicPhotoAlt: 'Fotografía antigua de Venta La Butibamba con el rótulo Comidas y Vinos, La Cala de Mijas',
 		restaurantLabel: 'La venta de siempre',
 		restaurantTitle: 'Una parada con historia en el camino de Cádiz.',
 		restaurantText:
@@ -109,6 +112,9 @@ export const content = {
 		primaryCta: 'Call the restaurant',
 		secondaryCta: 'Get directions',
 		heroNote: 'Pork loin in manteca · Homemade food · Andalusian tradition',
+		heroPhotoAlt: 'Facade of Venta La Butibamba on the Carretera de Cádiz, La Cala de Mijas',
+		foodPhotoAlt: 'Pork loin in manteca sandwich at Venta La Butibamba, La Cala de Mijas',
+		historicPhotoAlt: 'Old photograph of Venta La Butibamba with its Comidas y Vinos sign, La Cala de Mijas',
 		restaurantLabel: 'A traditional venta',
 		restaurantTitle: 'A historic stop along the old Cádiz road.',
 		restaurantText:

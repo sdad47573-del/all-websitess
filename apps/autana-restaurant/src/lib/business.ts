@@ -11,7 +11,7 @@ export const business = {
 	latitude: 36.5062557,
 	longitude: -4.6680244,
 	placeId: '0xd731f388ede47bf:0x6b9916a3fcdf5622',
-	site: 'https://autana-restaurant.vercel.app',
+	site: 'https://autana-restaurant.netlify.app',
 } as const;
 
 export const phoneHref = 'tel:+34621216593';

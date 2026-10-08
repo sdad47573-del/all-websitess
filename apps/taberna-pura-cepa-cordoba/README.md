@@ -24,7 +24,7 @@ Validación: `bun --filter taberna-pura-cepa-cordoba check`, `typecheck` y `buil
 
 Dirección Av. del Aeropuerto, 6 (Pasaje Poniente Sur), 14004 Córdoba, y teléfono +34 957 08 49 06, coincidentes con la ficha de Maps, el Instagram del negocio y varios directorios. El horario publicado (cerrado los lunes, servicio de desayunos, comidas y noches de jueves a sábado) proviene de los datos de Google Business recogidos por el directorio; puede variar, por lo que se muestra como orientativo.
 
-El enlace de Google Maps identifica la ficha, pero no incluye URLs directas a los archivos de imagen. La web enlaza a las galerías de Maps, Instagram y Facebook para consultar fotos auténticas; los SVG (favicon y Open Graph) son ilustraciones originales y están etiquetados como tal.
+Las fotos de la portada y de la sección «Pura Cepa, en fotos.» son las de la ficha pública de Google Maps (identificadores anotados en `src/assets/fotos/.maps-manifest.json`), descargadas a `src/assets/fotos/` y servidas optimizadas en AVIF con varios tamaños. La web sigue enlazando a las galerías de Maps, Instagram y Facebook para consultar el resto de fotos. Los SVG (favicon y Open Graph) son ilustraciones originales y están etiquetados como tal.
 
 ## Dominio
 

@@ -46,7 +46,7 @@ export const IMAGES = {
  * Dice solo lo que es cierto de todas ellas —que son fotos del local— para no inventar contenido
  * que no se ha comprobado. Al describir una foto, se le pone su propio `alt` en `GALLERY`.
  */
-const ALT_FOTO_LOCAL = 'Fotografía del local Sazón Teatinos, en Teatinos (Málaga)';
+export const ALT_FOTO_LOCAL = 'Fotografía del local Sazón Teatinos, en Teatinos (Málaga)';
 
 export const BUSINESS = {
 	name: 'Sazón Teatinos',

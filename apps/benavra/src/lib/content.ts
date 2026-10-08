@@ -82,6 +82,9 @@ export const content = {
 		facebookLabel: 'Facebook',
 		footerNote: 'Restaurante familiar · Torrenueva · La Cala de Mijas',
 		photoCaption: 'Galería de fotografías de Benavra en Google Maps',
+		photoAlt: 'Fotografía de Benavra publicada en su ficha de Google Maps',
+		cuisinePhotoAlt:
+			'Plato de Benavra con gambas y pescado, servido en la mesa del restaurante',
 		photoDisclaimer:
 			'Las fotografías pertenecen a sus respectivos autores y se muestran en Google Maps. Consulta la galería original en la ficha del restaurante.',
 	},
@@ -168,6 +171,8 @@ export const content = {
 		facebookLabel: 'Facebook',
 		footerNote: 'Family-run restaurant · Torrenueva · La Cala de Mijas',
 		photoCaption: 'Benavra photo gallery on Google Maps',
+		photoAlt: 'Photograph of Benavra published on its Google Maps listing',
+		cuisinePhotoAlt: 'A Benavra dish with prawns and fish, served at the restaurant table',
 		photoDisclaimer:
 			'Photos belong to their respective authors and are displayed on Google Maps. Visit the original restaurant listing to browse the gallery.',
 	},

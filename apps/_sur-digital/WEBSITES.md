@@ -5,7 +5,7 @@ agustin-el-picoteo.vercel.app
 am-industria-del-estilo.netlify.app
 ar-professional.vercel.app
 asador-la-granja.vercel.app
-autana-restaurant.vercel.app
+autana-restaurant.netlify.app
 bacchus-terrace.vercel.app
 bar-los-granainos-miguel.vercel.app
 carbikemotor.vercel.app
@@ -16,7 +16,7 @@ el-nido-aguilar.vercel.app
 sazon-teatinos.vercel.app
 sergiocruzchacon.vercel.app
 taberna-el-chato.vercel.app
-taberna-la-charata.vercel.app
+https://taberna-la-charata.netlify.app
 
 /////
 https://111-coffee-and-bakery.netlify.app/

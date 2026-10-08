@@ -24,7 +24,7 @@ Validación: `bun --filter rincon-gallego-egabrense-cabra check`, `typecheck` y 
 
 Dirección Avenida Fuente del Río, 34, 14940 Cabra (Córdoba) y teléfono +34 679 51 11 65, coincidentes en la ficha de Maps, Instagram, Facebook, Waze y varias guías. El nombre del negocio hace referencia a Cabra (Iulia Egabrum en época romana). El horario (lunes cerrado; martes y miércoles solo comida; de jueves a sábado comida y cena; domingo solo mediodía) se muestra como orientativo, por lo que conviene confirmarlo por teléfono.
 
-El enlace de Google Maps identifica la ficha, pero no incluye URLs directas a los archivos de imagen. La web enlaza a las galerías de Maps, Instagram y Facebook para consultar fotos auténticas; los SVG (favicon y Open Graph) son ilustraciones originales y están etiquetados como tal.
+Las fotos de la sección «El Rincón, en fotos.» son las de la ficha pública de Google Maps (identificadores anotados en `src/assets/fotos/.maps-manifest.json`), descargadas a `src/assets/fotos/` y servidas optimizadas en AVIF con varios tamaños. La web sigue enlazando a las galerías de Maps, Instagram, Facebook y Tripadvisor para consultar el resto de fotos. Los SVG (favicon y Open Graph) son ilustraciones originales y están etiquetados como tal.
 
 ## Dominio
 

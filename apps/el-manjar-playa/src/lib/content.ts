@@ -41,6 +41,8 @@ export const content = {
 		cuisineText:
 			'Pescados fritos, mariscos y arroces son protagonistas. Entre los platos mencionados en fuentes gastronómicas aparecen la fritura malagueña, la ensalada de pimientos, la pata de pulpo con puré, el gazpachuelo y las fideuás. Pregunta por la carta actual y los platos de temporada.',
 		cuisineTags: ['Pescados', 'Mariscos', 'Arroces', 'Fritura malagueña', 'Menú del día'],
+		cuisinePhotoAlt:
+			'Arroz con marisco de El Manjar Playa, con langostinos, mejillones y lima, servido en la mesa',
 		photosEyebrow: 'Así se ve El Manjar Playa',
 		photosTitle: 'Descubre el restaurante en imágenes.',
 		photosText:
@@ -127,6 +129,8 @@ export const content = {
 		cuisineText:
 			'Fish, seafood and rice dishes take centre stage. Food guides mention fritura malagueña, roasted pepper salad, octopus with mashed potato, gazpachuelo and fideuà. Ask about the current menu and seasonal dishes.',
 		cuisineTags: ['Fish', 'Seafood', 'Rice dishes', 'Andalusian fish fry', 'Daily menu'],
+		cuisinePhotoAlt:
+			'A seafood rice dish at El Manjar Playa with prawns, mussels and lime, served at the table',
 		photosEyebrow: 'A look inside El Manjar Playa',
 		photosTitle: 'Explore the restaurant in pictures.',
 		photosText:

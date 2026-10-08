@@ -16,7 +16,7 @@ bun run --filter autana-restaurant build
 - Español en `/` e inglés en `/en/`, con canonical, `hreflang`, metadatos geográficos y sociales, sitemap, JSON-LD `Restaurant` y `FAQPage`.
 - Incluye mapa, indicaciones, teléfono y llamadas de contacto.
 - La ficha proporcionada confirma nombre y coordenadas. Dirección y teléfono aparecen en fuentes gastronómicas públicas; verifica que sigan vigentes con el restaurante. No se fijan horarios ni platos concretos porque pueden cambiar.
-- Dominio provisional: `https://autana-restaurant.vercel.app`. Actualiza `astro.config.mjs`, `public/robots.txt` y `src/lib/business.ts` cuando se defina dominio propio.
+- Dominio provisional: `https://autana-restaurant.netlify.app`. Actualiza `astro.config.mjs`, `public/robots.txt` y `src/lib/business.ts` cuando se defina dominio propio.
 
 ## Fotografías
 
