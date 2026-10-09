@@ -18,7 +18,10 @@ export interface SectorPage {
   faq: { q: string; a: string }[];
 }
 
-export const SECTORS: SectorPage[] = [
+import { SECTORS_EXTRA } from "./sectors-extra";
+import { SECTORS_EXTRA_2 } from "./sectors-extra-2";
+
+export const SECTORS_BASE: SectorPage[] = [
   {
     slug: "restaurantes",
     name: "Restaurantes",
@@ -496,4 +499,10 @@ export const SECTORS: SectorPage[] = [
       },
     ],
   },
+];
+
+export const SECTORS: SectorPage[] = [
+  ...SECTORS_BASE,
+  ...SECTORS_EXTRA,
+  ...SECTORS_EXTRA_2,
 ];

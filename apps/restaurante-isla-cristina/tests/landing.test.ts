@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'bun:test';
 import { existsSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
-const appRoot = resolve(import.meta.dir, '..');
+const appRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const pagePath = resolve(appRoot, 'src/pages/index.astro');
 const page = () => readFileSync(pagePath, 'utf8');
 

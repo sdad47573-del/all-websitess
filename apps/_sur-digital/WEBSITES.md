@@ -56,3 +56,16 @@ taberna-lang.netlify.app
 https://restaurante-parritas.netlify.app
 https://restaurante-yumas.netlify.app
 https://restaurante-pescaito-la-espera.netlify.app
+
+///
+https://abaceria-tinta-de-toro.netlify.app
+https://bar-panel.netlify.app
+https://restaurante-di-mari.netlify.app
+https://asador-de-camilo.netlify.app
+https://el-rincon-de-fernando.netlify.app
+https://casa-gonzalez-sevilla.netlify.app
+https://encuentro-cafe-bar.netlify.app
+https://campo-cafe-bar.netlify.app
+https://carniceria-new-york.netlify.app
+https://restaurante-bar-sauco.netlify.app
+https://comidas-casa-garrido.netlify.app
