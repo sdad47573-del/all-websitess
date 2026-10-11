@@ -55,7 +55,7 @@ La ficha **no publica ningún distintivo** junto al nombre, así que no hay `dis
 
 ### El horario
 
-Es el horario que publica la ficha y se comprobó completo en una respuesta con los siete días. **Tiene dos turnos cada día y ningún día de cierre**, cosa que no ocurre en el resto de webs del repositorio:
+Es el horario que publica la ficha y se comprobó completo en una respuesta con los siete días. **Los siete días llevan dos turnos y ninguno está cerrado**, algo que no aparece en ninguna otra web del repositorio: las demás tienen alguna jornada de un solo turno o alguna jornada de cierre.
 
 | Día       | Horario publicado por la ficha   |
 | --------- | -------------------------------- |
@@ -82,7 +82,7 @@ La ficha **sí publica el grupo de accesibilidad**, con tres entradas y las tres
 - Aseo adaptado para sillas de ruedas.
 - Asientos adaptados sillas de ruedas.
 
-El `restaurantSchema` incluye `amenityFeature` con tres `LocationFeatureSpecification` (`value: true`). Es el primer caso del repositorio con el aseo adaptado entre las entradas publicadas. La web lista las tres etiquetas literales y no añade ninguna más.
+El `restaurantSchema` incluye `amenityFeature` con tres `LocationFeatureSpecification` (`value: true`), incluido el **aseo adaptado**, una entrada que otras fichas del repositorio también publican. La web lista las tres etiquetas literales y no añade ninguna más.
 
 ### El teléfono
 

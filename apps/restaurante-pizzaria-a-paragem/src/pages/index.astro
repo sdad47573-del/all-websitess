@@ -1,0 +1,444 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	addressLine,
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviewsUrl,
+	sinResenas,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Restaurante Pizzaria A Paragem · Pizzería en Mértola';
+const description =
+	'Restaurante Pizzaria A Paragem, restaurante y pizzería en Mértola (Portugal). 4,7 sobre 5 con 1987 reseñas; abre de martes a domingo, lunes cerrado.';
+const keywords =
+	'Restaurante Pizzaria A Paragem, pizzería Mértola, restaurante Mértola, A Paragem Mértola, 7750-312 Mértola';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto =
+	'Fotografía publicada en la ficha de Google Maps de Restaurante Pizzaria A Paragem, en Mértola';
+const altOg = 'Fotografía de Restaurante Pizzaria A Paragem publicada en su ficha de Google Maps';
+
+/**
+ * Galería completa: las diez fotografías de la ficha, en el orden en que se descargaron.
+ *
+ * Tres apaisadas y siete verticales, así que la galería va en tres columnas: con formatos
+ * verticales el mosaico se lee mejor que en una rejilla de recortes. Ninguna lleva pie con nombre
+ * de persona: las tres apaisadas las firma el propio local y el resto no trae autor atribuido.
+ */
+const galeria = [
+	'restaurante-pizzaria-a-paragem-apaisada-01.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-02.jpg',
+	'restaurante-pizzaria-a-paragem-apaisada-03.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-04.jpg',
+	'restaurante-pizzaria-a-paragem-apaisada-05.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-06.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-07.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-08.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-09.jpg',
+	'restaurante-pizzaria-a-paragem-vertical-10.jpg',
+];
+
+/**
+ * Tres fotos de avance en el collage de la portada (también están en la galería).
+ *
+ * Arriba va la apaisada 01 y abajo las verticales 02 y 04, con las proporciones por defecto del
+ * repositorio (16/9 y 4/5).
+ */
+const collage = [
+	{ name: 'restaurante-pizzaria-a-paragem-apaisada-01.jpg', clase: 'collage-item collage-item-a' },
+	{ name: 'restaurante-pizzaria-a-paragem-vertical-02.jpg', clase: 'collage-item collage-item-b' },
+	{ name: 'restaurante-pizzaria-a-paragem-vertical-04.jpg', clase: 'collage-item collage-item-c' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#141b2b" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="PT" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="Portugal" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">AP</span>
+				<span class="brand-text">
+					Restaurante Pizzaria A Paragem
+					<small>7750-312 · Mértola (Portugal)</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La casa</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Mértola (Portugal) · 7750-312</p>
+						<h1 id="hero-title">
+							Restaurante Pizzaria A Paragem,
+							<br />
+							<em>pizzas y restaurante en Mértola.</em>
+						</h1>
+						<p class="hero-lede">
+							Restaurante Pizzaria A Paragem está en {addressLine}. Google lo clasifica como
+							restaurante y pizzería, y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. Abre de martes a domingo
+							y cierra los lunes.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>{addressLine}</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-collage">
+						{collage.map((item, index) => (
+							<figure class={item.clase}>
+								<Image
+									src={foto(item.name)}
+									alt={altFoto}
+									widths={index === 0 ? [640, 900, 1200] : [320, 480, 640]}
+									sizes={
+										index === 0
+											? '(max-width: 1080px) 92vw, 46vw'
+											: '(max-width: 1080px) 45vw, 23vw'
+									}
+									format="avif"
+									quality={68}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : undefined}
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>{addressLine}</span>
+				<span>{hoursSummary}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">La casa</p>
+						<h2 class="title" id="local-title">
+							De restaurante a pizzería,
+							<br />
+							<em>en Mértola.</em>
+						</h2>
+						<p>
+							Google le cuelga dos categorías: restaurante y pizzería. Le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. Está en {addressLine};
+							la ficha no publica calle ni número, así que la forma exacta de ubicarlo es con
+							las coordenadas {business.latitude}, {business.longitude} o con el plus code{' '}
+							{business.plusCode}.
+						</p>
+						<p>
+							Cierra los lunes y abre de martes a sábado en dos turnos, mediodía y noche; el
+							domingo abre de 12:00 a 15:00.
+						</p>
+						<p>
+							En accesibilidad declara tres servicios adaptados para sillas de ruedas —acceso,
+							aparcamiento y asientos— y los tres figuran como disponibles.
+						</p>
+						<p>
+							Esta web se ha preparado solo con lo que publica esa ficha, consultada el{' '}
+							{site.consultado}: nombre, dirección, teléfono, categorías, horario, valoración,
+							servicios de accesibilidad y sus propias fotografías. La ficha no publica una
+							descripción del titular, ni precios, ni carta, así que aquí no se reproducen.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</div>
+						<p class="quote-note">{sinResenas}</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La casa <em>por dentro.</em>
+					</h2>
+					<p class="lead">
+						Son las diez fotografías que Restaurante Pizzaria A Paragem publica en su ficha de
+						Google Maps. Ninguna lleva pie con nombre de persona: las tres apaisadas las firma
+						el propio local y el resto no trae autor atribuido. La ficha no trae una descripción
+						del contenido de estas fotos, así que no se inventa ninguna y los textos
+						alternativos solo avisan de dónde salen.
+					</p>
+					<div class="cocina-grid">
+						{galeria.map((name) => (
+							<figure class="cocina-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="cocina-note">
+						La ficha no publica precios ni carta, así que esta web no los reproduce. Para saber
+						qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							7750-312 Mértola,
+							<br />
+							<em>Portugal.</em>
+						</h2>
+						<address>
+							{addressLine}
+							<br />
+							Plus code {business.plusCode}
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							El local <strong>cierra los lunes</strong> y abre{' '}
+							<strong>de martes a sábado en dos turnos</strong>, mediodía y noche; el{' '}
+							<strong>domingo abre de 12:00 a 15:00</strong>. Es el horario que publica la ficha
+							consultada el {site.consultado}.
+						</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<iframe
+							title={`Mapa de ${business.name} en ${business.city}, Portugal`}
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>{addressLine}</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>llamar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">AP</span>
+					<span>
+						Restaurante Pizzaria A Paragem
+						<small>{addressLine}</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Restaurante Pizzaria A Paragem · {addressLine}. Web informativa
+					elaborada con los datos y las fotografías que el local publica en su ficha de Google Maps,
+					consultada el {site.consultado}. Confirma horario y disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a A Paragem <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>
