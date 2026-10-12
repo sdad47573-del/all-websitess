@@ -130,6 +130,31 @@ const ENGLISH_WORDS = [
 /** Igual, pero solo si aparecen en mayúscula, para no chocar con identificadores del código. */
 const ENGLISH_CAPITALIZED = ['Needed', 'Thompson'];
 
+/**
+ * Términos técnicos que son vocabulario correcto en el texto visible (p. ej. `localStorage`
+ * en una política de cookies) aunque lleven una mayúscula dentro de la palabra.
+ */
+const CAMEL_ALLOWLIST = new Set(['localStorage']);
+
+/**
+ * Lo que no se ve en la web, vaciado pero manteniendo los saltos de línea para no mover
+ * los números de línea que salen en los avisos: comentarios HTML y de JavaScript, y el
+ * contenido de `<script>`, que es código aunque mencione etiquetas (`<html>`, `<img>`)
+ * o use identificadores en camelCase (`avisoTestamento`, `querySelector`).
+ *
+ * Los `//` solo se vacían cuando empiezan comentario (al inicio de línea o tras un espacio): una URL
+ * (`https://…`) también lleva `//` pero ahí va precedida de `:` y hay que dejarla intacta
+ * para no romper los atributos `href` o `content`.
+ */
+function blankNonRendered(source) {
+	const blank = (match) => match.replace(/[^\n]/g, ' ');
+	return source
+		.replace(/<!--[\s\S]*?-->/g, blank)
+		.replace(/\/\*[\s\S]*?\*\//g, blank)
+		.replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script\s*>)/gi, (_, open, inner, close) => open + blank(inner) + close)
+		.replace(/(^|[ \t\n])\/\/[^\n]*/g, (match, prefix) => prefix + blank(match.slice(prefix.length)));
+}
+
 /** Claves cuyo valor sí es texto visible para la persona que visita la web. */
 const CONTENT_KEYS = [
 	'text',
@@ -277,7 +302,9 @@ function contentValues(source) {
  * ------------------------------------------------------------------ */
 
 function checkProse(file, source, findings) {
-	const toLine = lineIndex(source);
+	// Lo no visible (comentarios, `<script>`) no se analiza como si fuera texto o marcado.
+	const scan = blankNonRendered(source);
+	const toLine = lineIndex(scan);
 	const add = (index, level, rule, message) =>
 		findings.push({ file, line: toLine(index), level, rule, message });
 
@@ -285,7 +312,7 @@ function checkProse(file, source, findings) {
 	// `TypeScript`), así que las reglas que buscan texto corrupto en prosa se saltan ahí.
 	const isMarkdown = file.endsWith('.md');
 
-	for (const region of extractProse(file, source)) {
+	for (const region of extractProse(file, scan)) {
 		const { text, index } = region;
 
 		for (const [name, pattern] of FOREIGN_SCRIPTS) {
@@ -297,7 +324,7 @@ function checkProse(file, source, findings) {
 		if (!isMarkdown) {
 			// `esThompson`: minúsculas seguidas de una palabra en camelCase dentro del texto.
 			const camel = /\b[a-záéíóúñ]{2,}(?:[A-Z][a-záéíóúñ]{2,})\b/.exec(text);
-			if (camel)
+			if (camel && !CAMEL_ALLOWLIST.has(camel[0]))
 				add(index, 'error', 'camel-in-word', `mayúscula dentro de una palabra: "${camel[0]}"`);
 
 			for (const word of ENGLISH_WORDS) {
@@ -335,9 +362,9 @@ function checkSiteUrl(app, dir, findings) {
 	const site = read('src/data/site.ts');
 	const config = read('astro.config.mjs');
 	const robots = read('public/robots.txt');
-	if (!site || !config || !robots) return;
-
-	const siteUrl = /siteUrl:\s*'([^']+)'/.exec(site)?.[1];
+	if (!site || !config || !robots) return;	// La clave canónica se llama `siteUrl` o `SITE_URL` según la plantilla.
+	const siteUrl =
+		/siteUrl:\s*'([^']+)'/.exec(site)?.[1] ?? /SITE_URL\s*[:=]\s*'([^']+)'/.exec(site)?.[1];
 	if (!siteUrl) {
 		// No todas las webs usan el mismo objeto de datos: solo se avisa.
 		findings.push({
@@ -348,7 +375,8 @@ function checkSiteUrl(app, dir, findings) {
 		});
 		return;
 	}
-	const configSite = /site:\s*'([^']+)'/.exec(config)?.[1];
+	// `site: SITE_URL` importa la misma constante: es coherente por construcción.
+	const configSite = /site:\s*'([^']+)'/.exec(config)?.[1] ?? (/site:\s*SITE_URL/.test(config) ? siteUrl : null);
 	const robotsSite = /Sitemap:\s*(\S+)/.exec(robots)?.[1];
 
 	if (configSite && configSite !== siteUrl)
@@ -495,17 +523,20 @@ function checkDraftFiles(app, dir, findings) {
 				level: 'warn',
 				rule: 'draft-file',
 				message,
-			});
-		if (MEANINGLESS_ASSET.test(name)) {
+			});	// Los nombres sin significado (`unnamed (4).jpg`, `imagen.png`) solo se persiguen en
+	// imágenes: `Image.astro` es el nombre estándar del componente de imagen, no una
+	// foto sin describir. Y en un asset el nombre describe su contenido, no su origen:
+	// `duplicado.jpg` es la foto de duplicar llaves de la cerrajería, no un fichero duplicado.
+	if (isImage) {
+		if (MEANINGLESS_ASSET.test(name))
 			report(
 				`«${name}» no dice qué contiene: renómbralo según lo que se ve en la foto, como el resto de assets de la web`,
 			);
-			continue;
-		}
-		// En un asset el nombre describe su contenido, no su origen: `duplicado.jpg` es la foto
-		// de duplicar llaves de la cerrajería, no un fichero duplicado.
-		if (isImage) continue;
-		if (!DRAFT_NAME.test(name)) continue;
+		continue;
+	}
+	// `*.test.*` y `*.spec.*` son tests de verdad (vitest), no borradores.
+	if (/\.(test|spec)\.[^.]+$/.test(name)) continue;
+	if (!DRAFT_NAME.test(name)) continue;
 		report(
 			isRoute
 				? `«${name}» está en src/pages, así que Astro publica una ruta más con este contenido: bórralo o muévelo fuera de pages`
@@ -549,6 +580,8 @@ function contentOf(tag) {
 }
 
 function checkHead(file, source, findings) {
+	// Los comentarios y el `<script>` no son marcado: se analizan vaciados.
+	source = blankNonRendered(source);
 	// Solo los ficheros que abren el documento; los componentes no llevan `<head>`.
 	if (!/<head[\s>]/.test(source)) return;
 	// `LocalSeo` es el componente compartido que ya emite la descripción, el canónico, la
@@ -644,6 +677,8 @@ function hasAccessibleName(attrs, inner) {
 }
 
 function checkAccessibility(file, source, findings) {
+	// Los comentarios y el `<script>` no son marcado: se analizan vaciados.
+	source = blankNonRendered(source);
 	const toLine = lineIndex(source);
 	const add = (index, level, rule, message) =>
 		findings.push({ file, line: toLine(index), level, rule, message });
@@ -684,9 +719,16 @@ function checkAccessibility(file, source, findings) {
 			// Los campos escondidos (`type="hidden"`) no se anuncian, así que no necesitan nombre.
 			if (/type="hidden"/.test(attrs)) continue;
 			const id = /\bid="([^"]+)"/.exec(attrs)?.[1];
+			// Un `<label>` que envuelve al campo (`<label>…<input>…</label>`) ya lo nombra:
+			// es la asociación implícita del HTML, válida para los lectores de pantalla.
+			const before = source.slice(0, index);
+			const opens = [...before.matchAll(/<label[\s>]/gi)];
+			const wrapped =
+				opens.length > 0 && !/<\/label[\s>]/i.test(before.slice(opens[opens.length - 1].index));
 			const labelled =
 				/\baria-label(?:ledby)?\s*=/.test(attrs) ||
-				(id !== undefined && new RegExp(`for="${id}"`).test(source));
+				(id !== undefined && new RegExp(`for="${id}"`).test(source)) ||
+				wrapped;
 			if (!labelled) add(index, 'warn', 'input-no-label', `campo ${name} sin label ni aria-label`);
 		}
 	}

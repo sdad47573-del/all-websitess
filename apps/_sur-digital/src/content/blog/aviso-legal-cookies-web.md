@@ -1,6 +1,6 @@
 ---
-title: "Aviso legal, cookies y privacidad: lo que tu web necesita para ser legal"
-description: "Qué textos legales exige una web de negocio en España (LSSI y RGPD), qué debe incluir cada uno y los errores más comunes con los formularios y el banner de cookies."
+title: "Aviso legal y cookies: lo que exige tu web"
+description: "Qué textos legales exige tu web en España (LSSI y RGPD), qué debe incluir cada uno y los fallos típicos con formularios y cookies."
 pubDate: 2026-10-09
 category: "Guías"
 ---

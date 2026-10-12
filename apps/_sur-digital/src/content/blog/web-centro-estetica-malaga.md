@@ -1,5 +1,5 @@
 ---
-title: "Cómo llenar la agenda de tu centro de estética en Málaga"
+title: "Llena la agenda de tu centro de estética"
 description: "Guía para centros de estética y belleza de Málaga: carta de servicios con precios, bonos, antes y después y cita online que no pasa por el teléfono."
 pubDate: 2026-10-04
 category: "Sectores"

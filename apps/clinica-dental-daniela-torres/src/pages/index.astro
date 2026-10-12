@@ -101,7 +101,14 @@ const faqSchema = {
 		</section>
 
 		<section id="ubicacion" class="bg-base-200/60 py-18 sm:py-24">
-			<div class="mx-auto max-w-7xl px-5 lg:px-8"><div class="mx-auto max-w-2xl text-center"><p class="section-kicker text-xs font-bold uppercase">Cómo llegar</p><h2 class="font-display mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Dentista en Cruz de Humilladero</h2><p class="mt-4 text-base-content/70">Av. de Andalucía, 64 · 29007 Málaga</p></div><div class="map-frame mt-10 overflow-hidden rounded-[2rem] border border-base-300 bg-base-200 shadow-sm"><iframe src={BUSINESS.googleMapsEmbed} title={`Mapa para llegar a ${BUSINESS.name}, Málaga`} width="100%" height="440" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div><div class="mt-5 flex flex-wrap justify-center gap-3"><a href={BUSINESS.googleMaps} target="_blank" rel="noopener noreferrer" class="btn btn-primary gap-2 rounded-full"><i class="ri-navigation-line" aria-hidden="true"></i>Abrir indicaciones</a><a href={BUSINESS.googlePhotos} target="_blank" rel="noopener noreferrer" class="btn btn-outline gap-2 rounded-full"><i class="ri-image-line" aria-hidden="true"></i>Ver fotos en Google Maps</a></div></div>
+			<div class="mx-auto max-w-7xl px-5 lg:px-8"><div class="mx-auto max-w-2xl text-center"><p class="section-kicker text-xs font-bold uppercase">Cómo llegar</p><h2 class="font-display mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Dentista en Cruz de Humilladero</h2><p class="mt-4 text-base-content/70">Av. de Andalucía, 64 · 29007 Málaga</p></div><div class="map-frame mt-10 overflow-hidden rounded-[2rem] border border-base-300 bg-base-200 shadow-sm"><div data-mapa-fachada style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+				<button type="button" data-cargar-mapa aria-label="Cargar mapa interactivo" style="position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;width:100%;height:100%;min-height:300px;padding:1.5rem;border:0;background-color:#e9e5db;background-image:linear-gradient(#d8d2c4 1px,transparent 1px),linear-gradient(90deg,#d8d2c4 1px,transparent 1px);background-size:28px 28px;color:#2c2622;font:inherit;cursor:pointer;">
+					<span aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+					<strong style="font-size:1rem;">Cargar mapa interactivo</strong>
+					<small style="opacity:0.65;">Se carga solo al pulsar</small>
+				</button>
+<iframe data-src={BUSINESS.googleMapsEmbed} title={`Mapa para llegar a ${BUSINESS.name}, Málaga`} width="100%" height="440" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+			</div></div><div class="mt-5 flex flex-wrap justify-center gap-3"><a href={BUSINESS.googleMaps} target="_blank" rel="noopener noreferrer" class="btn btn-primary gap-2 rounded-full"><i class="ri-navigation-line" aria-hidden="true"></i>Abrir indicaciones</a><a href={BUSINESS.googlePhotos} target="_blank" rel="noopener noreferrer" class="btn btn-outline gap-2 rounded-full"><i class="ri-image-line" aria-hidden="true"></i>Ver fotos en Google Maps</a></div></div>
 		</section>
 
 		<section class="bg-primary py-16 text-primary-content sm:py-20"><div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-7 px-5 sm:flex-row sm:items-center lg:px-8"><div><p class="text-xs font-bold tracking-[.16em] text-secondary uppercase">Clínica Dental Dra. Daniela Torres Sánchez</p><h2 class="font-display mt-3 text-2xl font-extrabold sm:text-3xl">Contacta para consultar disponibilidad</h2><p class="mt-2 text-sm text-white/75">Av. de Andalucía, 64 · Málaga</p></div><a href={BUSINESS.phoneHref} class="btn btn-secondary btn-lg gap-2 rounded-full"><i class="ri-phone-line" aria-hidden="true"></i>{BUSINESS.phoneDisplay}</a></div></section>
@@ -118,3 +125,18 @@ const faqSchema = {
 	<a href={BUSINESS.phoneHref} class="btn btn-primary btn-lg fixed right-4 bottom-4 z-40 gap-2 rounded-full shadow-xl md:hidden" aria-label={`Llamar a ${BUSINESS.name} al ${BUSINESS.phoneDisplay}`}><i class="ri-phone-fill" aria-hidden="true"></i>Llamar</a>
 	<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 </Layout>
+
+<script>
+// mapa-fachada: la URL del iframe vive en data-src y solo se asigna al pulsar (ahorra ~1MB de JS).
+document.addEventListener('click', function (e) {
+	var t = e.target && e.target.closest ? e.target.closest('[data-cargar-mapa]') : null;
+	if (!t) return;
+	var w = t.closest('[data-mapa-fachada]');
+	if (!w || w.dataset.cargado) return;
+	var f = w.querySelector('iframe');
+	if (!f || !f.dataset.src || f.getAttribute('src')) return;
+	w.dataset.cargado = '1';
+	f.setAttribute('src', f.dataset.src);
+	t.remove();
+});
+</script>

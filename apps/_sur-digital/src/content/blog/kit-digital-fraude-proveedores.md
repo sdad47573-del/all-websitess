@@ -1,5 +1,5 @@
 ---
-title: "Kit Digital: cómo elegir proveedor sin quemar la subvención (2026)"
+title: "Kit Digital: elige bien tu proveedor (2026)"
 description: "Trampas frecuentes al canjear el Kit Digital: plantillas disfrazadas, costes que la ayuda no cubre y permanencia encubierta. Checklist para elegir bien proveedor."
 pubDate: 2026-09-19
 category: "Precios"

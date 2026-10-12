@@ -1,5 +1,5 @@
 ---
-title: "SEO local sin agencia: lo que puedes hacer tú (y lo que no)"
+title: "SEO local sin agencia: guía práctica"
 description: "Plan realista de SEO local para hacer tú mismo en Málaga: ficha de Google, reseñas, páginas por servicio y qué tareas conviene delegar sin desperdiciar dinero."
 pubDate: 2026-10-09
 category: "SEO local"

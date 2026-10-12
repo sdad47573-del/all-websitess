@@ -1,5 +1,5 @@
 ---
-title: "Las fotos de tu negocio: cómo conseguir las que venden"
+title: "Fotos que venden para la web de tu negocio"
 description: "Qué fotos necesita la web de un negocio local, cómo hacerlas con el móvil sin gastar en un fotógrafo, y por qué las imágenes de banco restan más de lo que suman."
 pubDate: 2026-10-09
 category: "Guías"

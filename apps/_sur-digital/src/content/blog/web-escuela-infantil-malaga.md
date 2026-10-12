@@ -1,6 +1,6 @@
 ---
-title: "Cómo llenar las plazas de tu escuela infantil en Málaga"
-description: "Guía para escuelas infantiles y guarderías de Málaga: proyecto educativo por escrito, ratios por aula, cuotas claras y solicitud de plaza online para el periodo de matrícula."
+title: "Llena las plazas de tu escuela infantil"
+description: "Web para escuelas infantiles en Málaga: proyecto educativo, ratios por aula, cuotas claras y solicitud de plaza online."
 pubDate: 2026-10-06
 category: "Sectores"
 ---

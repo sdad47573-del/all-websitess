@@ -1,5 +1,5 @@
 ---
-title: "Cómo llenar las clases de tu estudio de yoga o pilates"
+title: "Llena las clases de tu estudio de yoga"
 description: "Guía para estudios de yoga y pilates en Málaga: horario siempre al día, bonos y cuotas claras, reserva de plaza online y profesores con su estilo bien explicado."
 pubDate: 2026-10-06
 category: "Sectores"

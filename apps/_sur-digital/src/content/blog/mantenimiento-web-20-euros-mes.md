@@ -1,5 +1,5 @@
 ---
-title: "Mantenimiento web por 20€/mes: qué debe incluir (y qué no)"
+title: "Mantenimiento web en Málaga por 20 €/mes"
 description: "Qué debe incluir un mantenimiento web de 20€/mes: las tareas de cada mes, lo que no debería cobrarse y las señales de que te están cobrando de más."
 pubDate: 2026-09-08
 category: "Precios"
@@ -36,6 +36,17 @@ Mantener una web **no es** escribirle nuevos textos cada mes ni hacerle campaña
 1. **No sabes qué hacen cada mes.** Un buen mantenimiento da un informe mínimo: qué se tocó y cómo está la web.
 2. **Te cobran por cambio.** Si modificar un horario cuesta 25€ extra, eso no es mantenimiento, es facturación por goteo.
 3. **Tu web sigue tardando.** Mídela en [PageSpeed Insights](https://pagespeed.web.dev/). Si pagas mantenimiento y sigue lenta, no lo estás pagando: [esto es lo que te cuesta](/blog/pagespeed-negocios-locales/).
+
+## Preguntas frecuentes sobre mantenimiento
+
+**¿Puedo mantenerla yo mismo?**
+Puedes, si sabes hacer copias, actualizar y revisar que todo sigue funcionando. Pero cuenta tus horas: si tu hora facturable vale más de 25 €, no sale a cuenta.
+
+**¿Incluye cambios de texto?**
+No. Mantener es que tu web siga funcionando como el primer día; los textos nuevos o las secciones nuevas son mejora continua y se presupuestan aparte.
+
+**¿Qué pasa si no la mantengo?**
+Se queda desactualizada y vulnerable, carga más lento y Google la entiende peor. Es decayendo en silencio mientras pagas el dominio.
 
 ---
 

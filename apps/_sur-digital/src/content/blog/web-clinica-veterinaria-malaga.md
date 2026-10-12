@@ -1,5 +1,5 @@
 ---
-title: "Web para clínicas veterinarias en Málaga: urgencias, citas y confianza"
+title: "Web para veterinarios: citas y urgencias"
 description: "Qué debe tener la web de una clínica veterinaria: urgencias visibles, tarifas claras, cita previa y ficha de Google Maps. Guía práctica 2026."
 pubDate: 2026-09-12
 category: "Sectores"

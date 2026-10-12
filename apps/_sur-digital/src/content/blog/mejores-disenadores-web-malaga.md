@@ -1,5 +1,5 @@
 ---
-title: "Los mejores diseñadores web de Málaga: cómo elegir (sin equivocarte)"
+title: "Cómo elegir diseñador web en Málaga"
 description: "Checklist honesta para comparar diseñadores y agencias web en Málaga: portfolio, precio, propiedad del dominio y señales de alarma."
 pubDate: 2026-09-10
 category: "Guías"

@@ -1,5 +1,5 @@
 ---
-title: "Web para psicólogos: cómo facilitar la primera cita"
+title: "Web para psicólogos: facilita la 1ª cita"
 description: "Guía para psicólogos y centros de salud mental en Málaga: áreas de terapia, cita discreta, terapia online y credenciales visibles para que pedir ayuda sea fácil."
 pubDate: 2026-10-06
 category: "Sectores"

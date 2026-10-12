@@ -211,8 +211,8 @@ export const SEO_ARTICLES_LEGAL: SeoArticle[] = [
 	},
 	{
 		slug: 'recuperar-coche-embargado',
-		title: 'Coche embargado por deudas: cómo recuperarlo o levantarlo',
-		description: 'Qué hacer si te embargan un coche: identificar la deuda, valorar el vehículo, negociar, levantar el embargo, defender un tercero y evitar la venta forzada.',
+		title: 'Coche embargado: cómo recuperarlo antes de su venta',
+		description: 'Te han embargado el coche: qué deuda lo causa, cómo levantar el embargo, qué hacer si es de un familiar y cómo frenar la venta. Consulta gratuita.',
 		date: '2026-09-21', category: 'Derecho Civil', readTime: '8 min',
 		intro: 'Un embargo no significa siempre que perderás el coche inmediatamente. La deuda, el procedimiento, la titularidad, el valor y la existencia de un tercero determinan si puedes liberarlo, negociar o levantar el embargo o impugnar.',
 		sections: [

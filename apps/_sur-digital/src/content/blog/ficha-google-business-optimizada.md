@@ -1,5 +1,5 @@
 ---
-title: "Cómo optimizar tu ficha de Google Business paso a paso (2026)"
+title: "Ficha de Google Business: guía paso a paso"
 description: "La ficha de Google Business es lo primero que ve un cliente local. Qué rellenar, en qué orden y qué errores te están costando clientes en Google Maps."
 pubDate: 2026-10-09
 category: "SEO local"

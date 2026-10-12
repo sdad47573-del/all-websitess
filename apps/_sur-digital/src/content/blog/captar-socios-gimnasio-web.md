@@ -1,5 +1,5 @@
 ---
-title: "Cómo captar socios para tu gimnasio en Málaga con una web que convierte"
+title: "Capta socios para tu gimnasio con tu web"
 description: "Horarios claros, planes de precios visibles y clase de prueba online: así capta socios un gimnasio de barrio en Málaga con su web."
 pubDate: 2026-09-23
 category: "Sectores"

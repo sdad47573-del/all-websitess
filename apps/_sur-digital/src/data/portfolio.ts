@@ -46,6 +46,28 @@ import puraCepaPreview from '../assets/taberna-pura-cepa-cordoba-preview.png';
 import talleresCaldadoPreview from '../assets/talleres-caldado-preview.png';
 import theBossPreview from '../assets/the-boss-restaurant-preview.png';
 import butibambaPreview from '../assets/venta-la-butibamba-preview.png';
+import barAlberoPreview from '../assets/bar-albero-tapas-preview.png';
+import barBermeoPreview from '../assets/bar-bermeotarrak-preview.png';
+import barSebastianPreview from '../assets/bar-cafeteria-sebastian-preview.png';
+import barEstebanPreview from '../assets/bar-de-esteban-preview.png';
+import barAnzueloPreview from '../assets/bar-el-anzuelo-preview.png';
+import barPallaresPreview from '../assets/bar-pallares-preview.png';
+import sierraAlhamillaPreview from '../assets/restaurante-sierra-alhamilla-preview.png';
+import yaLoSabesPreview from '../assets/restaurante-ya-lo-sabes-preview.png';
+import barSeoanePreview from '../assets/bar-seoane-preview.png';
+import dentalTorresPreview from '../assets/clinica-dental-daniela-torres-preview.png';
+import bodegaFuentePreview from '../assets/bodega-la-fuente-preview.png';
+import delitoSmashPreview from '../assets/delito-smash-preview.png';
+import aserraderoPreview from '../assets/el-aserradero-tharsis-preview.png';
+import tabernaNewPreview from '../assets/bar-taberna-la-new-preview.png';
+import elSotanoPreview from '../assets/restaurante-el-sotano-preview.png';
+import aliBabaPreview from '../assets/cuevas-ali-baba-preview.png';
+import newNaranjoPreview from '../assets/restaurante-new-naranjo-preview.png';
+import senseoPreview from '../assets/bistrot-senseo-preview.png';
+import boabdilPreview from '../assets/boabdil-restaurante-preview.png';
+import laCarreteraPreview from '../assets/cafe-bar-la-carretera-preview.png';
+import lasRiasPreview from '../assets/restaurante-las-rias-preview.png';
+import joseLuisPreview from '../assets/carniceria-jose-luis-preview.png';
 
 // Tipo explícito porque con `as const` cada elemento infería su propia forma y
 // `destacado` solo existía en los marcados, lo que rompía el destructuring.
@@ -592,5 +614,245 @@ export const PORTFOLIO: Project[] = [
 		accent: 'bg-secondary/15 text-neutral',
 		url: 'https://venta-la-butibamba.vercel.app',
 		preview: butibambaPreview,
+	},
+	{
+		title: 'Bar Albero Tapas',
+		category: 'Restaurantes y bares',
+		sector: 'Bar de tapas y marisquería',
+		description:
+			'Bar de tapas y marisquería en Isla Cristina, con 4,8★ y 317 reseñas en Google. Noches de martes a domingo.',
+		tags: ['Tapas y marisco', 'Isla Cristina'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://bar-albero-tapas.netlify.app',
+		preview: barAlberoPreview,
+	},
+	{
+		title: 'Bar Bermeotarrak',
+		category: 'Restaurantes y bares',
+		sector: 'Parrilla vasca',
+		description:
+			'Parrilla vasca en Cruces, Barakaldo, con pescados a la parrilla en la Plaza Inmaculada 23.',
+		tags: ['Parrilla vasca', 'Barakaldo'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://bar-bermeotarrak.netlify.app',
+		preview: barBermeoPreview,
+	},
+	{
+		title: 'Bar Cafetería Sebastián',
+		category: 'Restaurantes y bares',
+		sector: 'Bar cafetería',
+		description:
+			'Bar cafetería en Villanueva de los Castillejos (Huelva), con 4,6★ y 121 reseñas en Google.',
+		tags: ['Desayunos', 'Villanueva de los Castillejos'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://bar-cafeteria-sebastian.netlify.app',
+		preview: barSebastianPreview,
+	},
+	{
+		title: 'Bar de Esteban',
+		category: 'Restaurantes y bares',
+		sector: 'Cocina castellana',
+		description:
+			'Bar de cocina castellana con comida casera manchega en Ciudad Real, con 4,6★ y 149 reseñas en Google.',
+		tags: ['Comida casera', 'Ciudad Real'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://bar-de-esteban.netlify.app',
+		preview: barEstebanPreview,
+	},
+	{
+		title: 'Bar El Anzuelo',
+		category: 'Restaurantes y bares',
+		sector: 'Restaurante de mariscos',
+		description:
+			'Cocina del mar en Málaga: pescados frescos, mariscos y moluscos, con reservas en el 686 29 89 29.',
+		tags: ['Pescados frescos', 'Málaga'],
+		accent: 'bg-accent/15 text-neutral',
+		url: 'https://bar-el-anzuelo.netlify.app',
+		preview: barAnzueloPreview,
+	},
+	{
+		title: 'Bar Pallares',
+		category: 'Restaurantes y bares',
+		sector: 'Restaurante',
+		description:
+			'Restaurante en Benidorm, con 4,3★ y 252 reseñas en Google. Abierto todos los días de 8:00 a 1:00.',
+		tags: ['Restaurante', 'Benidorm'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://bar-pallares.netlify.app',
+		preview: barPallaresPreview,
+	},
+	{
+		title: 'Bar Restaurante Sierra Alhamilla',
+		category: 'Restaurantes y bares',
+		sector: 'Tapas y cocina andaluza',
+		description:
+			'Tapas y cocina andaluza en Pechina (Almería), con 4,5★ y 942 reseñas en Google.',
+		tags: ['Cocina andaluza', 'Pechina'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://restaurante-sierra-alhamilla.netlify.app',
+		preview: sierraAlhamillaPreview,
+	},
+	{
+		title: 'Bar Restaurante Ya Lo Sabes',
+		category: 'Restaurantes y bares',
+		sector: 'Bar restaurante',
+		description:
+			'Bar restaurante en el Paseo de España de Jaén, con 4,4★ y 729 reseñas en Google.',
+		tags: ['Bar restaurante', 'Jaén'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://restaurante-ya-lo-sabes.netlify.app',
+		preview: yaLoSabesPreview,
+	},
+	{
+		title: 'Bar Seoane',
+		category: 'Restaurantes y bares',
+		sector: 'Bar restaurante',
+		description:
+			'Bar restaurante en Calañas (Huelva), con 4,6★ y 208 reseñas en Google. Abre de lunes a sábado.',
+		tags: ['Bar restaurante', 'Calañas'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://bar-seoane.netlify.app',
+		preview: barSeoanePreview,
+	},
+	{
+		title: 'Clínica Dental Daniela Torres',
+		category: 'Servicios profesionales',
+		sector: 'Clínica dental',
+		description:
+			'Clínica dental en la Avenida de Andalucía de Málaga: odontología para adultos y niños.',
+		tags: ['Dentista', 'Málaga'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://clinica-dental-daniela-torres.netlify.app',
+		preview: dentalTorresPreview,
+	},
+	{
+		title: 'Bodega La Fuente',
+		category: 'Restaurantes y bares',
+		sector: 'Bar de tapas y vinos',
+		description:
+			'Bar de tapas y tienda de vinos en Cartagena, con 4,2★ y más de 3.800 reseñas en Google.',
+		tags: ['Tapas y vinos', 'Cartagena'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://bodega-la-fuente.netlify.app',
+		preview: bodegaFuentePreview,
+	},
+	{
+		title: 'Delito Smash',
+		category: 'Restaurantes y bares',
+		sector: 'Hamburguesería',
+		description:
+			'Hamburguesería en Isla Cristina, con 4,8★ en Google. Cenas de 21:00 a 24:00.',
+		tags: ['Smash burgers', 'Isla Cristina'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://delito-smash.netlify.app',
+		preview: delitoSmashPreview,
+	},
+	{
+		title: 'El Aserradero Tharsis',
+		category: 'Restaurantes y bares',
+		sector: 'Hamburguesería',
+		description: 'Hamburguesería en Tharsis (Huelva), con 5,0★ en Google.',
+		tags: ['Hamburguesas', 'Tharsis'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://el-aserradero-tharsis.netlify.app',
+		preview: aserraderoPreview,
+	},
+	{
+		title: 'Taberna La New',
+		category: 'Restaurantes y bares',
+		sector: 'Taberna',
+		description:
+			'Taberna de cocina casera malagueña en Teatinos: guisos a fuego lento, producto fresco y tapas para compartir.',
+		tags: ['Cocina malagueña', 'Teatinos'],
+		accent: 'bg-accent/15 text-neutral',
+		url: 'https://bar-taberna-la-new.netlify.app',
+		preview: tabernaNewPreview,
+	},
+	{
+		title: 'Bar Restaurante El Sótano',
+		category: 'Restaurantes y bares',
+		sector: 'Restaurante con zona infantil',
+		description:
+			'Restaurante con zona infantil en Jaén, con 4,4★ y 588 reseñas en Google.',
+		tags: ['Zona infantil', 'Jaén'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://restaurante-el-sotano.netlify.app',
+		preview: elSotanoPreview,
+	},
+	{
+		title: 'Cuevas Alí Babá',
+		category: 'Restaurantes y bares',
+		sector: 'Cocina marroquí',
+		description:
+			'Restaurante marroquí de cocina casera en Ciudad Real, con 4,7★ y 303 reseñas en Google.',
+		tags: ['Cocina marroquí', 'Ciudad Real'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://cuevas-ali-baba.netlify.app',
+		preview: aliBabaPreview,
+	},
+	{
+		title: 'Bar Restaurante New Naranjo',
+		category: 'Restaurantes y bares',
+		sector: 'Bar restaurante',
+		description:
+			'Bar restaurante en la Avenida de Andalucía de Benidorm, abierto todos los días de 11:00 a 1:00.',
+		tags: ['Bar restaurante', 'Benidorm'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://restaurante-new-naranjo.netlify.app',
+		preview: newNaranjoPreview,
+	},
+	{
+		title: 'Bistrot Senséô',
+		category: 'Restaurantes y bares',
+		sector: 'Cocina francesa',
+		description:
+			'Cocina francesa en Benidorm, con 4,9★ y 106 reseñas en Google. Terraza con vistas al mar y bar de cócteles.',
+		tags: ['Cocina francesa', 'Benidorm'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://bistrot-senseo.netlify.app',
+		preview: senseoPreview,
+	},
+	{
+		title: 'Boabdil Restaurante',
+		category: 'Restaurantes y bares',
+		sector: 'Tapas y cocina española',
+		description:
+			'Tapas y cocina española tradicional junto al Albaicín de Granada, a un paso de Plaza Nueva.',
+		tags: ['Tapas', 'Albaicín'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://boabdil-restaurante.netlify.app',
+		preview: boabdilPreview,
+	},
+	{
+		title: 'Café-Bar La Carretera',
+		category: 'Restaurantes y bares',
+		sector: 'Café-bar',
+		description: 'Café-bar de desayunos y cocina casera con menú del día y terraza.',
+		tags: ['Desayunos', 'Menú del día'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://cafe-bar-la-carretera.netlify.app',
+		preview: laCarreteraPreview,
+	},
+	{
+		title: 'Restaurante Las Rías',
+		category: 'Restaurantes y bares',
+		sector: 'Restaurante',
+		description:
+			'Restaurante de cocina española con pescados, mariscos y menú del día.',
+		tags: ['Pescados y mariscos', 'Menú del día'],
+		accent: 'bg-accent/15 text-neutral',
+		url: 'https://restaurante-las-rias.netlify.app',
+		preview: lasRiasPreview,
+	},
+	{
+		title: 'Carnicería Jose Luis',
+		category: 'Comercio',
+		sector: 'Carnicería',
+		description:
+			'Carnicería y tienda de alimentación con producto fresco, embutidos y elaborados caseros.',
+		tags: ['Carnicería', 'Comercio local'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://carniceria-jose-luis.netlify.app',
+		preview: joseLuisPreview,
 	},
 ];

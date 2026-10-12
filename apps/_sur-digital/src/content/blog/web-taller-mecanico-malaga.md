@@ -1,5 +1,5 @@
 ---
-title: "Cómo llenar la agenda de tu taller mecánico en Málaga"
+title: "Llena la agenda de tu taller mecánico"
 description: "Guía para talleres mecánicos de Málaga: cómo conseguir citas por servicio, presupuestos que no te cuesten el domingo y clientes de tu barrio desde Google."
 pubDate: 2026-10-05
 category: "Sectores"

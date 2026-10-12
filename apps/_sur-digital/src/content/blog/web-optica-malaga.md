@@ -1,5 +1,5 @@
 ---
-title: "Web para ópticas en Málaga: revisión, cita y Google Maps"
+title: "Web para ópticas: cita y Google Maps"
 description: "Cómo conseguir citas en una óptica de Málaga: revisión de la vista destacada, cita online, catálogo de monturas y ficha de Google Maps trabajada."
 pubDate: 2026-10-02
 category: "Sectores"

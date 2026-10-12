@@ -1,6 +1,6 @@
 ---
-title: "Lanzamos Sur Digital: tu primera web gratis hasta el 5 de octubre"
-description: "Estrenamos agencia en Málaga con una oferta sin letra pequeña: landing page profesional gratis, sin permanencia y con todo a tu nombre. Solo hasta el 5 de octubre."
+title: "Tu primera web gratis: oferta de lanzamiento"
+description: "Estrenamos agencia en Málaga con una oferta sin letra pequeña: landing page profesional gratis, sin permanencia y con todo a tu nombre."
 pubDate: 2026-09-21
 category: "Anuncios"
 ---

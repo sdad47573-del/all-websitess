@@ -1,5 +1,5 @@
 ---
-title: "Web para peluquerías: más clientas con cita online (guía 2026)"
+title: "Peluquerías: más clientas con cita online"
 description: "Cómo una web con menú de servicios, precios y cita online llena la agenda de tu peluquería o barbería en Málaga. Estrategia, ejemplos y errores a evitar."
 pubDate: 2026-09-14
 category: "Sectores"

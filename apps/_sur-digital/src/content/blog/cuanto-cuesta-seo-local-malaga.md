@@ -1,5 +1,5 @@
 ---
-title: "¿Cuánto cuesta el SEO local en Málaga? Precios reales (2026)"
+title: "Cuánto cuesta el SEO local en Málaga 2026"
 description: "Qué cobra una agencia por SEO local en Málaga, qué debe incluir cada mes y cómo distinguir un servicio serio de una cuota de 50€ que no hace nada."
 pubDate: 2026-09-29
 category: "Precios"

@@ -1,5 +1,5 @@
 ---
-title: "WhatsApp en tu web: cómo no perder clientes por el camino"
+title: "WhatsApp en tu web: no pierdas clientes"
 description: "Dónde poner el botón de WhatsApp, qué mensaje debe abrir el cliente y por qué no deberías usarlo como único canal. Guía práctica para negocios de Málaga."
 pubDate: 2026-10-08
 category: "Guías"

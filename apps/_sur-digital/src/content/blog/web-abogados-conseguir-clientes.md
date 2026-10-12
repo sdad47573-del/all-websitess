@@ -1,5 +1,5 @@
 ---
-title: "Web para abogados: cómo conseguir clientes con una presencia digital seria"
+title: "Diseño web para abogados: consigue clientes"
 description: "Qué debe tener la web de un despacho en Málaga para generar consultas: áreas de práctica, SEO local, blog jurídico y señales de confianza."
 pubDate: 2026-09-24
 category: "Sectores"

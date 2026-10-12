@@ -1,5 +1,5 @@
 ---
-title: "Cómo llenar las aulas de tu autoescuela en Málaga"
+title: "Llena las aulas de tu autoescuela"
 description: "Guía para autoescuelas de Málaga: precios por permiso publicados, matrícula online, horarios de teórica y prácticas, y cómo captar alumnos fuera de tu barrio."
 pubDate: 2026-10-06
 category: "Sectores"

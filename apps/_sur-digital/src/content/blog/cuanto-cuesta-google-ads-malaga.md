@@ -1,6 +1,6 @@
 ---
-title: "¿Cuánto cuesta Google Ads para un negocio local? (Málaga, 2026)"
-description: "Presupuestos realistas de Google Ads en Málaga: cuánto invertir, qué es el coste por clic en cada sector, y cuándo los anuncios tienen sentido y cuándo es tirar dinero."
+title: "Cuánto cuesta Google Ads en Málaga 2026"
+description: "Presupuestos realistas de Google Ads en Málaga: cuánto invertir, coste por clic por sector y cuándo compensa anunciarse."
 pubDate: 2026-10-08
 category: "Precios"
 ---

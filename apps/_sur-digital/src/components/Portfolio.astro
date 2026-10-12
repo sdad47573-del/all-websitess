@@ -1,5 +1,5 @@
 ---
-// Proyectos reales publicados. Datos y capturas en data/portfolio.
+// Clientes reales con web publicada. Datos y capturas en data/portfolio.
 import { Image } from "astro:assets";
 import { PORTFOLIO } from "../data/portfolio";
 
@@ -26,25 +26,25 @@ const slugify = (s: string) =>
 ---
 
 <section
-  id="portafolio"
+  id="clientes"
   class="pt-14 pb-20 bg-gradient-to-b from-base-100 to-base-200 flex flex-col items-center"
 >
   <div class="container mx-auto px-6 flex flex-col items-center">
     <div data-reveal class="flex flex-col items-center">
       <h2 class="text-4xl md:text-5xl font-bold text-base-content text-center">
-        Proyectos <span class="text-wave">reales</span>
+        Clientes <span class="text-wave">reales</span>
       </h2>
       <p class="text-base-content/70 text-center max-w-2xl mt-3">
-        Webs publicadas para negocios reales. Explora cada proyecto y descubre
+        Webs publicadas para negocios reales. Explora cada cliente y descubre
         cómo presentamos su marca, sus productos y sus servicios.
       </p>
     </div>
 
-    <!-- Filtros por categoría. Sin JS todos los proyectos quedan visibles. -->
+    <!-- Filtros por categoría. Sin JS todos los clientes quedan visibles. -->
     <div data-reveal-group
       class="flex flex-wrap justify-center gap-2 mt-8"
       role="group"
-      aria-label="Filtrar proyectos por categoría"
+      aria-label="Filtrar clientes por categoría"
     >
       <button
         type="button"
@@ -74,13 +74,14 @@ const slugify = (s: string) =>
     </div>
 
     <p data-portfolio-count class="sr-only" role="status" aria-live="polite">
-      Mostrando {PORTFOLIO.length} proyectos
+      Mostrando {PORTFOLIO.length} clientes
     </p>
 
     <ul
       id="portafolio-grid"
       data-reveal-group
       data-portfolio-grid
+      data-visible-count="6"
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 max-w-6xl w-full mt-8 grid-flow-row-dense"
     >
       {
@@ -204,6 +205,18 @@ const slugify = (s: string) =>
       }
     </ul>
 
+    <!-- Resumen: con JS se muestran 6 y este botón amplía. Sin JS el botón
+         no aparece y la lista completa queda visible. -->
+    <button
+      type="button"
+      class="btn btn-primary mt-8"
+      data-show-more
+      hidden
+      aria-controls="portafolio-grid"
+    >
+      Ver todos los clientes ({PORTFOLIO.length})
+    </button>
+
     <dialog
       id="portfolio-quick-view"
       data-portfolio-dialog
@@ -227,7 +240,7 @@ const slugify = (s: string) =>
           <p data-dialog-sector class="text-xs font-bold uppercase tracking-wide text-primary"></p>
           <h2 id="portfolio-dialog-title" data-dialog-title class="text-2xl font-bold text-base-content sm:text-3xl"></h2>
           <p id="portfolio-dialog-description" data-dialog-description class="text-base-content/75 leading-relaxed"></p>
-          <ul data-dialog-tags class="flex flex-wrap gap-2" aria-label="Etiquetas del proyecto"></ul>
+          <ul data-dialog-tags class="flex flex-wrap gap-2" aria-label="Etiquetas del cliente"></ul>
           <a data-dialog-link class="btn btn-primary mt-2 self-start" target="_blank" rel="noopener noreferrer">
             Visitar web <span aria-hidden="true">→</span>
           </a>
@@ -239,7 +252,7 @@ const slugify = (s: string) =>
     </dialog>
 
     <p data-portfolio-empty hidden class="text-base-content/70 mt-10 text-center">
-      No hay proyectos en esta categoría todavía.
+      No hay clientes en esta categoría todavía.
     </p>
   </div>
 </section>
@@ -306,6 +319,12 @@ const slugify = (s: string) =>
   );
   const status = document.querySelector<HTMLElement>("[data-portfolio-count]");
   const empty = document.querySelector<HTMLElement>("[data-portfolio-empty]");
+  const showMore = document.querySelector<HTMLButtonElement>("[data-show-more]");
+  // Resumen del inicio: solo se ven las primeras tarjetas hasta pulsar
+  // «Ver más». Una sola dirección (ampliar): los filtros trabajan siempre
+  // sobre la lista completa para no dejar resultados escondidos.
+  let expanded = false;
+  let currentFilter = "todos";
   const portfolioDialog = document.querySelector<HTMLDialogElement>("[data-portfolio-dialog]");
   const quickViewButtons = Array.from(
     document.querySelectorAll<HTMLButtonElement>("[data-quick-view]")
@@ -323,7 +342,7 @@ const slugify = (s: string) =>
       button.addEventListener("click", () => {
         if (!dialogImage || !dialogSector || !dialogTitle || !dialogDescription || !dialogTags || !dialogLink) return;
 
-        const title = button.dataset.title ?? "Proyecto";
+        const title = button.dataset.title ?? "Cliente";
         const cardImage = button.closest<HTMLElement>("[data-category]")
           ?.querySelector<HTMLImageElement>("img");
         dialogImage.src = cardImage?.currentSrc ?? cardImage?.src ?? "";
@@ -360,19 +379,26 @@ const slugify = (s: string) =>
     const cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-category]"));
 
     function apply(filter: string) {
+      currentFilter = filter;
       const filtering = filter !== "todos";
+      const visibleCount = Number.parseInt(
+        portfolioGrid.dataset.visibleCount ?? "6",
+        10
+      );
       let visible = 0;
 
       const visibleCards: HTMLElement[] = [];
-      for (const card of cards) {
+      cards.forEach((card, index) => {
         const match = !filtering || card.dataset.category === filter;
-        card.hidden = !match;
+        const collapsed =
+          !expanded && !filtering && index >= visibleCount;
+        card.hidden = !match || collapsed;
         card.classList.remove("portfolio-card-enter");
-        if (match) {
+        if (match && !collapsed) {
           visible += 1;
           visibleCards.push(card);
         }
-      }
+      });
       requestAnimationFrame(() => {
         visibleCards.forEach((card, index) => {
           card.style.setProperty("--portfolio-stagger", `${Math.min(index, 8) * 45}ms`);
@@ -394,10 +420,13 @@ const slugify = (s: string) =>
         const label = buttons.find((b) => b.dataset.filter === filter)?.dataset
           .label;
         status.textContent = `Mostrando ${visible} ${
-          visible === 1 ? "proyecto" : "proyectos"
+          visible === 1 ? "cliente" : "clientes"
         }${label ? ` en ${label}` : ""}`;
       }
       if (empty) empty.hidden = visible > 0;
+      // El botón solo tiene sentido en la vista «todos» sin ampliar: con
+      // un filtro activo se ven todos los resultados de esa categoría.
+      if (showMore) showMore.hidden = expanded || filtering;
     }
 
     for (const button of buttons) {
@@ -408,5 +437,15 @@ const slugify = (s: string) =>
     for (const button of buttons) {
       button.setAttribute("aria-controls", portfolioGrid.id);
     }
+
+    showMore?.addEventListener("click", () => {
+      expanded = true;
+      apply(currentFilter);
+      showMore.hidden = true;
+    });
+
+    // Estado inicial con JS: resumen de 6 + botón visible. Sin JS no se
+    // ejecuta nada y la lista completa queda a la vista.
+    apply("todos");
   }
 </script>

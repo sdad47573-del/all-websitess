@@ -1,6 +1,6 @@
 ---
-title: "Web para clínicas dentales en Málaga: de la búsqueda a la silla"
-description: "Qué debe tener la web de una clínica dental: página por tratamiento, precios orientativos, reseñas de pacientes y cita previa. Guía práctica 2026."
+title: "Web para dentistas: de la búsqueda a la silla"
+description: "Qué debe tener la web de tu clínica: página por tratamiento, precios, reseñas, cita previa y captación de urgencias. Guía 2026."
 pubDate: 2026-09-10
 category: "Sectores"
 ---
@@ -39,6 +39,17 @@ La estructura se repite en cualquier negocio de pacientes: en [fisioterapia](/bl
 ## El error clásico: la web folleto con "excelencia dental"
 
 Textos genéricos ("vanguardia tecnológica", "sonrisas que inspiran"), sin precios, sin reseñas, sin cita online, y un formulario que pide nombre, teléfono, email, dirección, DNI y el nombre de tu primera mascota. Esa web no capta pacientes: los manda a la competencia.
+
+## Preguntas frecuentes de clínicas dentales
+
+**¿Cómo capto urgencias dentales?**
+Quien busca «dentista urgencias domingo» llama al primero que ve teléfono y horario claros sin hacer scroll. Teléfono clicable arriba, horario visible y cita previa: eso es todo el secreto.
+
+**¿Pongo los precios en la web?**
+Sí, aunque sean orientativos. El paciente que no ve precios asume los peores y se va a la competencia. «Desde X €» convierte más que el silencio.
+
+**¿Una página por tratamiento o todo junto?**
+Una por tratamiento que quieras posicionar: implantes, ortodoncia invisible, urgencias. Cada búsqueda es una puerta y cada puerta necesita su página.
 
 ---
 

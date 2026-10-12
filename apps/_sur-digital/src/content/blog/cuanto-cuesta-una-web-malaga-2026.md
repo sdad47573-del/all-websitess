@@ -1,6 +1,6 @@
 ---
-title: "Cuánto cuesta una web en Málaga en 2026 (precios reales)"
-description: "Precios reales de una web en Málaga en 2026: landing 0–400€, web corporativa 400–1.200€ y tienda desde 900€. Qué incluye cada precio y cómo detectar letra pequeña."
+title: "Cuánto cuesta una web en Málaga: precios 2026"
+description: "Precios reales de una web en Málaga en 2026: landing 0–400 €, corporativa 400–1.200 € y tienda desde 900 €. Qué incluye cada precio y su letra pequeña."
 pubDate: 2026-09-21
 category: "Precios"
 ---
@@ -58,6 +58,17 @@ Y cuidado con las subvenciones: lo que la ayuda no cubre —empezando por el IVA
 ## ¿Puedo hacerla yo con un constructor?
 
 Puedes. Cuenta con 20–40 horas de tu tiempo, un resultado correcto pero genérico, y el mismo problema de siempre: cuando el negocio va corriendo, la web se queda sin actualizar. Si tu hora facturable vale más de 25€, no sale a cuenta.
+
+## Preguntas frecuentes sobre precios
+
+**¿El dominio y el hosting están incluidos?**
+Tiene que estar por escrito: dominio a tu nombre y cuántos años de hosting entran. En nuestras webs el dominio es tuyo y el primer año de hosting va incluido.
+
+**¿Cuánto cuesta mantenerla al año?**
+El mantenimiento son 20 €/mes, más la renovación anual del dominio. Todo lo demás (textos nuevos, secciones nuevas) es mejora y se presupuesta aparte.
+
+**¿Me vale con la opción más barata?**
+Para la mayoría de negocios locales, una landing es todo lo que necesitas para empezar a aparecer en Google. La web grande llega cuando el negocio la pide, no antes.
 
 ---
 

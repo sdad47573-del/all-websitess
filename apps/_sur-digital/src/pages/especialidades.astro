@@ -19,6 +19,30 @@ const listaSectores = new Intl.ListFormat("es", {
   type: "conjunction",
 }).format(SECTORS.map((sector) => sector.name.toLowerCase()));
 
+// FAQ visible + JSON-LD de la misma fuente (como en servicios)
+const especialidadesFaq = [
+  {
+    q: "¿Cuánto cuesta una web de mi sector?",
+    a: "Lo mismo que cualquier web: landing gratis, completa 99 € y tienda 299 €. El sector cambia el contenido y las secciones, no el precio.",
+  },
+  {
+    q: "¿Y si mi sector no está en la lista?",
+    a: "La estructura se adapta a cualquier negocio: cuéntanos el tuyo y te preparamos la propuesta sin compromiso.",
+  },
+  {
+    q: "¿Cuánto tarda?",
+    a: "Una landing, menos de 7 días. Una web completa o una tienda, normalmente 2–3 semanas según llegue el contenido.",
+  },
+  {
+    q: "¿Incluye posicionamiento en Google?",
+    a: "Toda web sale con SEO básico y alta en Search Console. El posicionamiento mensual va desde 100 €/mes, sin permanencia.",
+  },
+  {
+    q: "¿Puedo ver ejemplos de mi sector?",
+    a: "Sí: cada tarjeta enlaza a su propuesta y en el inicio tienes 47 clientes con la web publicada para comparar.",
+  },
+];
+
 const breadcrumbs = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -62,7 +86,7 @@ const benefits = [
 
 <Layout
   title="Webs por sector en Málaga | Especialidades | Sur Digital"
-  description={`Webs por sector en Málaga: ${listaSectores}. Cada sector con su estrategia, sus secciones y su SEO local. Desde 0€.`}
+  description={`Webs por sector en Málaga (${SECTORS.length} sectores): restaurantes, clínicas, gimnasios y más, cada una con su estrategia y SEO local. Desde 0 €.`}
   image={`${site}/og/especialidades.png`}
   path="/especialidades/"
   breadcrumbs={CRUMB_ESPECIALIDADES}
@@ -78,6 +102,20 @@ const benefits = [
     type="application/ld+json"
     slot="head"
     set:html={JSON.stringify(collectionSchema)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: especialidadesFaq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    })}
   />
 
   <Topbar />
@@ -149,6 +187,25 @@ const benefits = [
           ))
         }
       </ul>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <h2 class="text-2xl font-bold text-base-content mb-6 text-center">
+        Preguntas frecuentes
+      </h2>
+      <div class="flex flex-col gap-3">
+        {
+          especialidadesFaq.map((f) => (
+            <details class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <summary class="collapse-title font-bold">{f.q}</summary>
+              <div class="collapse-content text-sm text-base-content/70">
+                <p>{f.a}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
     </section>
 
     <!-- CTA -->

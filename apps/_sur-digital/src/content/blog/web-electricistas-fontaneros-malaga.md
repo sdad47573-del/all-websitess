@@ -1,5 +1,5 @@
 ---
-title: "Cómo conseguir avisos para tu empresa de electricidad y fontanería"
+title: "Más avisos para electricistas y fontaneros"
 description: "Guía para electricistas y fontaneros de Málaga: avisos por servicio, presupuestos por foto, zonas de trabajo y urgencias sin que el teléfono te coma el día."
 pubDate: 2026-10-06
 category: "Sectores"

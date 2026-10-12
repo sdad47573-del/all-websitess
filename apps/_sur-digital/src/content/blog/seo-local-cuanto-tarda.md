@@ -1,5 +1,5 @@
 ---
-title: "¿Cuánto tarda el SEO local en dar resultados?"
+title: "Cuánto tarda el SEO local en funcionar"
 description: "Realismo mes a mes: qué se mueve a las 4 semanas, a los 3 meses y al año, de qué depende y qué hacer mientras para no perder clientes."
 pubDate: 2026-10-07
 category: "SEO local"

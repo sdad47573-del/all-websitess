@@ -1,6 +1,6 @@
 ---
-title: "Web para floristerías: pedidos todo el año, no solo en tres fechas"
-description: "Guía para floristerías de Málaga: catálogo por ocasión, encargo online con dedicatoria, reparto el mismo día y suscripciones para dejar de depender de San Valentín."
+title: "Web para floristerías: vende todo el año"
+description: "Web para floristerías en Málaga: catálogo por ocasión, encargo online, reparto el mismo día y suscripciones todo el año."
 pubDate: 2026-10-06
 category: "Sectores"
 ---

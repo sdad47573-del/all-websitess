@@ -1,5 +1,5 @@
 ---
-title: "Web para empresas de reformas en Málaga: presupuestos que cierran"
+title: "Web para reformas: presupuestos que cierran"
 description: "Qué debe tener la web de una empresa de reformas en Málaga: obras reales, servicios por estancia y un formulario que filtra los presupuestos que no van a cerrar."
 pubDate: 2026-10-01
 category: "Sectores"

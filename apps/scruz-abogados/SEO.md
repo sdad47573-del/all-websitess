@@ -1,12 +1,12 @@
 # 🎯 SEO — Documento único de trabajo · Scruz Abogados
 
-> **Última verificación: 5 oct 2026.** Este es el **único documento SEO del repo**: sustituye a
+> **Última verificación: 12 oct 2026** (lote de snippets CTR + exporte fresco; ver §3 «Lote del 12 de octubre»). Este es el **único documento SEO del repo**: sustituye a
 > los 9 documentos anteriores (`SEO-SUMMARY`, `SEO-IMPROVEMENTS`, `SEO-ROADMAP-2026`, `SEO-ANALISIS-GSC-SEP-2026`,
 > `SEO-COMPETENCIA-CLICKS-SEP-2026`, `SEO-CONTENT-STRATEGY`, `CALENDARIO-CONTENIDO`, `CHECKLIST-LANZAMIENTO-SEO`,
 > `Untitled-1`), que se borraron por contener afirmaciones ya falsas. Todos son recuperables con
 > `git log --diff-filter=D --name-only` si hace falta el detalle de una sesión concreta.
 >
-> **Fuente de datos crudos:** `google_search/*.csv` (exporte de Search Console del **5 oct 2026**, período **últimos 16 meses: 20 oct 2025 – 3 oct 2026**).
+> **Fuente de datos crudos:** `google_search/*.csv` (exporte de Search Console del **12 oct 2026**, período **últimos 16 meses: 20 oct 2025 – 9 oct 2026**; totales: 15.915 impresiones, 123 clics; últimos 28 días: 8.457 imp, 83 clics, CTR 0,98 %).
 > Ojo al leerlo: `Consultas.csv` y `Páginas.csv` cubren **todo el periodo** (13.410 impresiones, 102 clics), pero las
 > **posiciones de ese exporte son la media de 16 meses** y mezclan los rankings de hace un año con los de hoy.
 > Para decidir hay que recortar con `Gráfico.csv`, que sí va día a día: **los últimos 30 días (4 sep – 3 oct) son 6.114 impresiones y 63 clics (CTR 1,03 %)**.
@@ -503,6 +503,47 @@ descripciones) y `check-city-similarity` por debajo del umbral 0,75.
 > `src/data/seo.ts` conserva entradas para muchas de estas rutas, pero **no es la fuente** de su `<title>` /
 > description (las páginas las pasan como props), así que un desajuste del espejo no afecta al HTML. Las 3 páginas
 > de servicio que sí caían en `routeDefaults` se corrigieron en `seo.ts`.
+
+### Lote del 12 de octubre de 2026 (exporte fresco: 20 oct 2025 – 9 oct 2026)
+
+El exporte del 12 oct añade 6 días al del 5 oct (misma ventana de 16 meses): **15.915 impresiones y 123 clics
+(CTR 0,77 %)** en `Gráfico.csv`; **últimos 28 días: 8.457 impresiones y 83 clics (CTR 0,98 %)**. La subida
+post-deploy continúa, pero el patrón es el mismo: páginas en posiciones 6-20 con cero clics = fuga de snippet.
+Las 30 reescrituras del 5 oct aún no pueden medirse (solo ~7 días de SERP nuevo en este exporte), así que este
+lote toca **únicamente páginas fuera de los experimentos del 21 sep y del 5 oct**.
+
+| Página | Impr. | Pos. | Consulta que la delata | Cambio |
+|---|---|---|---|---|
+| `/blog/baremo-lesiones-2026/` | 82 | 18,2 | `baremo 2026` (7 · 16,9), `baremo tráfico 2026` (5 · 15,2) | Title `Baremo 2026: calcula tu indemnización por accidente` (51) + description con teléfono |
+| `/blog/denuncias-falsas/` | 53 | 21,9 | `abogados especialistas en denuncias falsas` (**26 · 12,0**) | Title con la consulta exacta + description con 24 h y teléfono |
+| `/blog/recuperar-coche-embargado/` | 52 | 18,2 | `puedo recuperar mi carro embargado` (2 · **6,0**), `coche embargado venta` (5 · 24,2) | Title `Coche embargado: cómo recuperarlo antes de su venta` (52) + description con gancho y CTA (vía `SEO_ARTICLES_LEGAL.ts`; se añade además su espejo en `seo.ts`, que no existía) |
+| `/blog/custodia-compartida-cordoba/` | 63 | 20,4 | `custodia compartida córdoba` (15 · 23,9) | `guía \| Scruz Abogados` → `cuándo se concede` (49, igual que ya decía su espejo) |
+| `/blog/accidente-laboral-cordoba/` | 53 | 27,2 | cola larga laboral | Description con `Urgencias: 666 329 155` en vez del cierre genérico |
+| `/blog/divorcio-mutuo-acuerdo/` | 72 | 32,8 | `divorcio en cordoba` (**21 · 12,9**), `divorcio córdoba` (**11 · 12,8**), `abogado divorcio cordoba` (8 · 14,5) | Description con `precio cerrado` y teléfono (el title ya contenía la consulta) |
+| `/blog/asistencia-violencia-genero/` | 77 | 27,4 | `defensa víctimas violencia córdoba` (**25 · 14,6**), `asistencia legal mujeres maltratadas córdoba` (33 · 20,3) | Title `Defensa de víctimas…` (53): captura `defensa` sin perder `víctimas…Córdoba` |
+| `/abogados-en-lucena/` | — (hub) | — | `abogada en lucena` (19 · 13,7), `abogada lucena` (77 · 23,8) | Description arranca `¿Buscas abogada o abogado en Lucena?` (el title ya rankea; faltaba el femenino) |
+
+Todos los titles quedan entre 45 y 61 caracteres y las descriptions entre 138 y 152. Espejos de `seo.ts`
+sincronizados (incluido el nuevo de `recuperar-coche-embargado`); `BLOG_POSTS.ts` no se toca (sus teasers son
+copy de tarjetas, no snippet). Verificado: `bun run build` + `bun run qa` → 0 enlaces rotos, 0 huérfanas,
+0 titles/descriptions duplicados; los 8 titles nuevos comprobados en `dist/`.
+
+Decisiones explícitas de no hacer (12 oct):
+
+- **La variante sin slash** (`/blog/silencio-administrativo-positivo-negativo`, 74 imp) **no es un duplicado
+  vivo**: `astro.config.mjs` y `vercel.json` tienen `trailingSlash: 'always'` y la canonical es absoluta y
+autorreferente. La fila de GSC es agregación histórica. Sin cambio de código.
+- **Home vs landings** (`abogado` 49 imp · pos 5,5; `abogado civil` 33 · 3,5; `sergio abogado` 30 · 6,3;
+  `abogado testamentos lucena` 35 · 1,7 — todo 0 clics): es asignación por autoridad, no snippet. Se mantiene
+  el plan de no tocar el enlazado interno hasta después del **21 de octubre** para no contaminar la medición.
+- **FAQ/HowTo rich results en el blog**: Google los retiró para sitios no autoritativos (2023); el FAQPage
+  no devolvería CTR aquí. Se prioriza snippet + teléfono.
+- **`alcorcón cruz abogados madrid`** (27 imp · 11,4): confusión de marca con un despacho madrileño; la
+  cubre `/blog/sergio-cruz-chacon-abogado/`. Vigilar, no actuar.
+
+**Expectativa honesta:** las 8 URLs suman ~520 impresiones con CTR ~0 %; llevarlas a un CTR normal de
+página 2 (~1-1,5 %) son **+5-8 clics/mes** cuando Google reindexe los snippets (2-4 semanas). La métrica a
+vigilar es el **CTR por página**, no la posición.
 
 **El mercado visible reparte ~125-135 clics/mes** entre las 36 consultas principales, y **el 75 % va a 4 directorios + el colegio oficial**. De los despachos reales, solo 4-6 capturan ~25 clics/mes, y lo hacen con una fórmula repetible: **landing local por especialidad + dirección + teléfono + reseñas**.
 

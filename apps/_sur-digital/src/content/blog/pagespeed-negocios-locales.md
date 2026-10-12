@@ -1,6 +1,6 @@
 ---
-title: "Tu web tarda 6 segundos: lo que eso te cuesta (y cómo arreglarlo)"
-description: "Qué pasa cuando una web de negocio local tarda en cargar: clientes que se van, posiciones que caen y publicidad que se paga al aire. Cómo medirlo y cómo se arregla."
+title: "Tu web tarda 6 segundos: arréglalo así"
+description: "Qué pasa cuando tu web tarda en cargar: clientes que se van, posiciones que caen y anuncios al aire. Cómo medirlo y arreglarlo."
 pubDate: 2026-09-06
 category: "SEO local"
 ---

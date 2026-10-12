@@ -1,5 +1,5 @@
 ---
-title: "SEO local en Málaga: cómo aparecer en Google Maps (guía 2026)"
+title: "SEO local en Málaga: guía Google Maps 2026"
 description: "Guía práctica de SEO local para negocios de Málaga: ficha de Google Business, reseñas, keywords y señales locales para salir en Maps."
 pubDate: 2026-09-18
 category: "SEO local"
@@ -42,6 +42,17 @@ Directorios de negocio de Málaga, cámaras de comercio, asociaciones de comerci
 ## 5. Sé constante (el 90% no lo es)
 
 Publica fotos semanales en la ficha, responde reseñas, actualiza precios. El SEO local es de quien acumula meses de señales consistentes, no de quien hace una ficha y la abandona.
+
+## Preguntas frecuentes sobre SEO local
+
+**¿Me vale solo con la ficha, sin web?**
+Para empezar, sí: ficha completa + reseñas es lo primero que se mueve. Pero sin web no hay dónde convertir ni qué enlazar, así que el techo llega pronto.
+
+**¿Cuánto tarda en notarse?**
+La ficha y las reseñas se mueven en semanas; el posicionamiento sólido tarda meses. Los plazos realistas están en [cuánto tarda el SEO local](/blog/seo-local-cuanto-tarda/).
+
+**¿Y si tengo varios locales?**
+Cada sede necesita su ficha con horario y mapa propios, más una página conjunta que las agrupe. Es el mismo trabajo multiplicado, no uno distinto.
 
 ---
 

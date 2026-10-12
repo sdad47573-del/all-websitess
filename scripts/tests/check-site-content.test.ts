@@ -234,3 +234,54 @@ describe('el verificador sigue terminando bien', () => {
 		expect(runChecker(app).code).toBe(0);
 	});
 });
+
+describe('falsos positivos del código y los comentarios', () => {
+	test('un campo envuelto en su label ya tiene nombre accesible', () => {
+		const page = landing('Calculadora de la cerrajería', 'Calcula el precio de la apertura.').replace(
+			'</main>',
+		`<label>Hay testamento<input id="testamento" type="checkbox" /></label></main>`,
+		);
+		const app = writeApp('campo-con-label', { 'index.astro': page });
+		expect(runChecker(app).output).not.toContain('[input-no-label]');
+	});
+
+	test('los ficheros de tests no son borradores', () => {
+		const app = writeApp('con-tests', {
+			'index.astro': landing('Cerrajero Málaga 24 h Apertura de puertas', 'Cerrajería urgente en Málaga capital.'),
+		});
+		const dir = join(fixture, 'apps', app, 'src', 'data');
+		mkdirSync(dir, { recursive: true });
+		writeFileSync(join(dir, 'SEO_ARTICLES.test.ts'), 'import { expect, it } from "vitest";\n');
+		expect(runChecker(app).output).not.toContain('[draft-file]');
+	});
+
+	test('Image.astro es el componente de imagen, no una foto sin nombre', () => {
+		const app = writeApp('con-image', {
+			'index.astro': landing('Cerrajero Málaga 24 h Apertura de puertas', 'Cerrajería urgente en Málaga capital.'),
+		});
+		const dir = join(fixture, 'apps', app, 'src', 'components');
+		mkdirSync(dir, { recursive: true });
+		writeFileSync(join(dir, 'Image.astro'), '---\nconst { src } = Astro.props;\n---\n<img src={src} alt="Foto" />\n');
+		const { output, code } = runChecker(app);
+		expect(output).not.toContain('[draft-file]');
+		expect(code).toBe(0);
+	});
+
+	test('los comentarios y el script no son texto ni marcado visible', () => {
+		const app = writeApp('con-comentarios', {
+			'index.astro': `---
+// El hero renderiza la foto a 800 px cuando el <img> real solo necesita eso.
+/* El display lo resuelve global.css con .banner-off en <html>. */
+---
+${landing('Cerrajero Málaga 24 h Apertura de puertas', 'Cerrajería urgente en Málaga capital.')}
+<!-- Un <img> en un comentario no se pinta -->
+<script>const el = document.querySelector('.avisoTestamento');</script>
+`,
+		});
+		const { output, code } = runChecker(app);
+		expect(output).not.toContain('[img-no-alt]');
+		expect(output).not.toContain('[html-no-lang]');
+		expect(output).not.toContain('[camel-in-word]');
+		expect(code).toBe(0);
+	});
+});

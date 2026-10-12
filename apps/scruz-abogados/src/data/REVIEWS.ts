@@ -23,7 +23,7 @@
  * página: por eso solo se marca lo que la web pinta (SHOWN_REVIEWS).
  */
 import type { ImageMetadata } from 'astro';
-import unnamedImg from '@assets/unnamed (2).png';
+import elizabethBluImg from '@assets/resena-elizabeth-blu.png';
 
 export interface GoogleReview {
 	/** Nombre del autor tal y como aparece en Google Maps. */
@@ -40,7 +40,7 @@ export interface GoogleReview {
 
 export const GOOGLE_REVIEWS: GoogleReview[] = [
 	{
-		photo: unnamedImg,
+		photo: elizabethBluImg,
 		author: 'elizabeth blu',
 		rating: 5,
 		text: 'Un profesional excelente. Tuvimos un problema y no sólo nos ayudó con todo, también nos tranquilizó durante todo el proceso y ayudó a mi familiar a salir de una situación injusta. Súper agradecidos y lo recomendamos al 100%',

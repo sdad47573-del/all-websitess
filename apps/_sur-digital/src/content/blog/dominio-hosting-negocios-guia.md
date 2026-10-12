@@ -1,5 +1,5 @@
 ---
-title: "Dominio y hosting: guía para negocios de Málaga (y errores que cuestan dinero)"
+title: "Dominio y hosting para negocios: guía"
 description: "Qué es un dominio, qué es el hosting, cuánto cuestan de verdad y los tres errores que cometen los negocios locales al contratarlos (y cómo evitarlos)."
 pubDate: 2026-09-16
 category: "Guías"

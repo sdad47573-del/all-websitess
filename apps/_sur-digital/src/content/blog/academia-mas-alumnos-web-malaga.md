@@ -1,5 +1,5 @@
 ---
-title: "Cómo llena una academia sus grupos en Málaga antes de septiembre"
+title: "Llena los grupos de tu academia en septiembre"
 description: "Grupos y horarios claros, matrícula sin fricción y SEO por asignatura: así convierte una academia de Málaga las búsquedas de septiembre en alumnos."
 pubDate: 2026-09-26
 category: "Sectores"

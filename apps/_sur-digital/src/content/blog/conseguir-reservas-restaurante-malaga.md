@@ -1,5 +1,5 @@
 ---
-title: "Cómo conseguir más reservas en tu restaurante en Málaga (guía 2026)"
+title: "Más reservas en tu restaurante: guía 2026"
 description: "Estrategias reales para llenar mesas: Google Maps, carta QR, WhatsApp y una web que convierte visitas en reservas. Guía para restaurantes de Málaga."
 pubDate: 2026-09-22
 category: "Sectores"

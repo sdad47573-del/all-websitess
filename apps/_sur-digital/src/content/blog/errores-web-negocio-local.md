@@ -1,5 +1,5 @@
 ---
-title: "12 errores en la web de un negocio local (y cómo arreglarlos)"
+title: "12 errores de tu web (y cómo arreglarlos)"
 description: "Repaso a los errores más caros de la web de un negocio de barrio: teléfono escondido, carta en PDF, horarios desactualizados, fotos de banco y más."
 pubDate: 2026-10-09
 category: "Guías"

@@ -61,4 +61,24 @@ export const TERMINOS_EXTRA: Termino[] = [
     text: "El texto obligatorio donde dices quién eres y cómo se usan los datos de tu web. Sin él, tu formulario de contacto incumple la ley.",
     href: "/blog/aviso-legal-cookies-web/",
   },
+  {
+    term: "Carta digital con QR",
+    text: "Tu carta online en una dirección que no cambia: el QR de las mesas apunta ahí siempre, cambies precios o platos. Se lee sin zoom y Google la indexa, cosa que con el PDF no pasa.",
+    href: "/blog/web-bar-taberna-malaga/",
+  },
+  {
+    term: "Pedido directo",
+    text: "Que el cliente te pida a ti (WhatsApp o tu sistema) en vez de a una plataforma que se lleva hasta el 30%. Cada pedido directo es margen que no regalas.",
+    href: "/blog/web-hamburgueseria-malaga/",
+  },
+  {
+    term: "Encargo online",
+    text: "El cliente deja su pedido (tartas, cochinillo de Navidad, medio cordero) con fecha y datos desde la web o WhatsApp. Ni un encargo perdido entre mensajes sueltos.",
+    href: "/blog/web-carniceria-malaga/",
+  },
+  {
+    term: "Carta de desayunos",
+    text: "Tu oferta de mañanas (pitufos, molletes, tostadas) publicada donde se lee en el móvil, con precios y foto del desayuno estrella. Es lo que decide al cliente nuevo del barrio.",
+    href: "/blog/web-cafeteria-malaga/",
+  },
 ];

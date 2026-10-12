@@ -1,6 +1,6 @@
 ---
-title: "SEO local o Google Ads: en qué gastar primero tu dinero"
-description: "Comparativa práctica entre SEO local y anuncios de Google para un negocio de barrio: qué da resultados antes, qué cuesta cada mes y cómo combinarlos sin quemar presupuesto."
+title: "SEO local o Google Ads: en qué gastar"
+description: "SEO local o Google Ads para tu negocio: qué da resultados antes, qué cuesta cada mes y cómo combinarlos sin quemar presupuesto."
 pubDate: 2026-09-28
 category: "Guías"
 ---

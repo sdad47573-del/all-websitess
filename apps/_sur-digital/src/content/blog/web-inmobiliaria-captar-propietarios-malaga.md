@@ -1,5 +1,5 @@
 ---
-title: "Cómo captar propietarios para tu inmobiliaria en Málaga"
+title: "Capta propietarios para tu inmobiliaria"
 description: "Valoración gratuita, escaparate propio de inmuebles y visitas cualificadas: así deja una inmobiliaria de Málaga de pagar por cada contacto."
 pubDate: 2026-09-27
 category: "Sectores"

@@ -20,6 +20,7 @@ export interface SectorPage {
 
 import { SECTORS_EXTRA } from "./sectors-extra";
 import { SECTORS_EXTRA_2 } from "./sectors-extra-2";
+import { SECTORS_EXTRA_3 } from "./sectors-extra-3";
 
 export const SECTORS_BASE: SectorPage[] = [
   {
@@ -28,7 +29,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🍽️",
     navLabel: "Web para restaurantes",
     tagline: "Carta QR, reservas y Google Maps",
-    title: "Diseño Web para Restaurantes en Málaga | Carta QR y Reservas | Sur Digital",
+    title: "Web para restaurantes: carta QR y reservas",
     description:
       "Webs para restaurantes en Málaga: carta digital con QR, reservas online y posicionamiento en Google Maps. Desde 0€, entrega en menos de 7 días.",
     h1Prefix: "Tu restaurante",
@@ -81,7 +82,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🏋️",
     navLabel: "Web para gimnasios",
     tagline: "Horarios, planes y prueba gratis",
-    title: "Diseño Web para Gimnasios en Málaga | Clases y Prueba Gratis | Sur Digital",
+    title: "Diseño web para gimnasios: prueba gratis",
     description:
       "Webs para gimnasios en Málaga: horarios y clases, planes de precios, inscripción online y captación de socios con prueba gratuita. Desde 0€.",
     h1Prefix: "Llena tu gimnasio",
@@ -134,7 +135,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "⚖️",
     navLabel: "Web para abogados",
     tagline: "Áreas de práctica y cita previa",
-    title: "Diseño Web para Abogados en Málaga | Áreas de Práctica y Citas | Sur Digital",
+    title: "Web para abogados: áreas de práctica y citas",
     description:
       "Webs para abogados y despachos en Málaga: áreas de práctica, primera consulta, blog jurídico con SEO local y cita previa online. Imagen sobria y de confianza.",
     h1Prefix: "Un despacho",
@@ -187,7 +188,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "💇",
     navLabel: "Web para peluquerías",
     tagline: "Servicios, precios y cita online",
-    title: "Diseño Web para Peluquerías en Málaga | Cita Online y Precios | Sur Digital",
+    title: "Web para peluquerías: cita online y precios",
     description:
       "Webs para peluquerías y barberías en Málaga: menú de servicios con precios, cita previa online y galería de trabajos. Desde 0€, entrega en menos de 7 días.",
     h1Prefix: "Tu peluquería",
@@ -240,7 +241,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🐾",
     navLabel: "Web para veterinarias",
     tagline: "Servicios, urgencias y cita previa",
-    title: "Diseño Web para Clínicas Veterinarias en Málaga | Cita Online | Sur Digital",
+    title: "Web para veterinarios: cita online",
     description:
       "Webs para clínicas veterinarias en Málaga: servicios y tarifas, contacto de urgencias 24h, cita previa online y ficha de Google Maps optimizada. Desde 0€.",
     h1Prefix: "Tu clínica",
@@ -293,7 +294,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🦷",
     navLabel: "Web para clínicas dentales",
     tagline: "Tratamientos, primera visita y reseñas",
-    title: "Diseño Web para Clínicas Dentales en Málaga | Primera Visita | Sur Digital",
+    title: "Web para clínicas dentales: primera visita",
     description:
       "Webs para clínicas dentales en Málaga: tratamientos con precios orientativos, primera visita gratis, reseñas de pacientes y cita previa online. Desde 0€.",
     h1Prefix: "Tu clínica dental",
@@ -346,7 +347,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "💪",
     navLabel: "Web para fisioterapeutas",
     tagline: "Cita online, especialidades y bonos",
-    title: "Diseño Web para Fisioterapeutas en Málaga | Cita Online | Sur Digital",
+    title: "Web para fisioterapeutas: cita online",
     description:
       "Webs para clínicas de fisioterapia en Málaga: especialidades, precios de sesión y bonos, cita online y reseñas de pacientes. Desde 0€, en menos de 7 días.",
     h1Prefix: "Tu clínica de fisioterapia",
@@ -399,7 +400,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🎓",
     navLabel: "Web para academias",
     tagline: "Grupos, horarios y matrícula online",
-    title: "Diseño Web para Academias en Málaga | Matrícula Online | Sur Digital",
+    title: "Web para academias: matrícula online",
     description:
       "Webs para academias y centros de clases en Málaga: grupos y horarios, temario por asignatura, matrícula online y captación de alumnos. Desde 0€.",
     h1Prefix: "Llena tus grupos",
@@ -452,7 +453,7 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🏢",
     navLabel: "Web para inmobiliarias",
     tagline: "Escaparate de inmuebles y captación",
-    title: "Diseño Web para Inmobiliarias en Málaga | Captar Propietarios | Sur Digital",
+    title: "Web para inmobiliarias: más propietarios",
     description:
       "Webs para inmobiliarias y agentes en Málaga: escaparate de inmuebles, captación de propietarios, valoración gratuita y solicitud de visitas. Desde 0€.",
     h1Prefix: "Tu inmobiliaria",
@@ -505,4 +506,5 @@ export const SECTORS: SectorPage[] = [
   ...SECTORS_BASE,
   ...SECTORS_EXTRA,
   ...SECTORS_EXTRA_2,
+  ...SECTORS_EXTRA_3,
 ];

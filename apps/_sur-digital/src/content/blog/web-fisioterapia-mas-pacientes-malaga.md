@@ -1,5 +1,5 @@
 ---
-title: "Cómo llenar la agenda de tu clínica de fisioterapia en Málaga"
+title: "Llena la agenda de tu clínica de fisio"
 description: "Especialidades con su página, bonos visibles y cita online: así consigue pacientes una clínica de fisioterapia en Málaga sin depender del boca a boca."
 pubDate: 2026-09-25
 category: "Sectores"

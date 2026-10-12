@@ -382,12 +382,22 @@ const numeroResenas = reviews.length;
 						</div>
 					</div>
 					<div class="map-card">
-						<iframe
+						<div data-mapa-fachada style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+							<button type="button" data-cargar-mapa aria-label="Cargar mapa interactivo" style="position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;width:100%;height:100%;min-height:300px;padding:1.5rem;border:0;background-color:#e9e5db;background-image:linear-gradient(#d8d2c4 1px,transparent 1px),linear-gradient(90deg,#d8d2c4 1px,transparent 1px);background-size:28px 28px;color:#2c2622;font:inherit;cursor:pointer;">
+								<span aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+								<strong style="font-size:1rem;">Cargar mapa interactivo</strong>
+								<small style="opacity:0.65;">Se carga solo al pulsar</small>
+							</button>
+<iframe
 							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
-							src={mapEmbedUrl}
+						 data-src={mapEmbedUrl}
 							loading="lazy"
 							referrerpolicy="no-referrer-when-downgrade"
 							allowfullscreen></iframe>
+							<noscript>
+								<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+							</noscript>
+						</div>
 						<div class="map-tag">
 							<div>
 								<strong>{business.shortName}</strong>
@@ -461,3 +471,18 @@ const numeroResenas = reviews.length;
 		</nav>
 	</body>
 </html>
+
+<script>
+// mapa-fachada: la URL del iframe vive en data-src y solo se asigna al pulsar (ahorra ~1MB de JS).
+document.addEventListener('click', function (e) {
+	var t = e.target && e.target.closest ? e.target.closest('[data-cargar-mapa]') : null;
+	if (!t) return;
+	var w = t.closest('[data-mapa-fachada]');
+	if (!w || w.dataset.cargado) return;
+	var f = w.querySelector('iframe');
+	if (!f || !f.dataset.src || f.getAttribute('src')) return;
+	w.dataset.cargado = '1';
+	f.setAttribute('src', f.dataset.src);
+	t.remove();
+});
+</script>

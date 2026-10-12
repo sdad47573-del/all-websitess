@@ -1,5 +1,5 @@
 ---
-title: "Cómo conseguir reseñas en Google (y qué hacer con las malas)"
+title: "Cómo conseguir reseñas en Google (2026)"
 description: "Método realista para conseguir reseñas de Google en un negocio local: cuándo pedirlas, cómo pedirlas, cuántas necesitas y cómo responder una reseña negativa."
 pubDate: 2026-10-08
 category: "SEO local"

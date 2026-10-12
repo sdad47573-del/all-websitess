@@ -38,6 +38,17 @@ La [guía completa de SEO local para Málaga](/blog/seo-local-malaga-negocios/) 
 
 No encaja en una frase honesta, así que tiene [su propio artículo](/blog/seo-local-cuanto-tarda/): qué se mueve a las 4 semanas, qué a los 3 meses y de qué depende. Lo que sí te avanzamos: **empieza por la ficha y las reseñas**, que son lo primero que se mueve.
 
+## Preguntas frecuentes sobre SEO local
+
+**¿SEO local o anuncios de Google?**
+Los anuncios dan clientes esta semana y el SEO los da gratis dentro de meses. La comparativa completa está en [SEO local o Google Ads](/blog/seo-local-o-anuncios-google/).
+
+**¿Cuánto cuesta?**
+Desde el trabajo básico de ficha hasta posicionar en tu ciudad: los rangos reales están en [cuánto cuesta el SEO local](/blog/cuanto-cuesta-seo-local-malaga/).
+
+**¿Lo puedo hacer yo sin agencia?**
+Parte sí: ficha, reseñas y fotos están a tu alcance. [Esto es lo que puedes hacer tú y lo que no](/blog/seo-local-sin-agencia/).
+
 ---
 
 ¿Quieres saber cómo está tu negocio hoy en Google Maps? [Pide la revisión gratuita](/&#35;contacto) y te lo decimos punto por punto, sin compromiso.

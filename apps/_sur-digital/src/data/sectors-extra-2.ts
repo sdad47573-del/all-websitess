@@ -15,7 +15,7 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     navLabel: "Web para oficios",
     tagline: "Avisos, presupuestos y zonas",
     title:
-      "Diseño Web para Electricistas y Fontaneros en Málaga | Avisos | Sur Digital",
+      "Web para electricistas y fontaneros",
     description:
       "Webs para electricistas, fontaneros y climatización en Málaga: avisos por servicio, presupuestos por foto y zonas de trabajo. Desde 0€, en menos de 7 días.",
     h1Prefix: "Tu oficio",
@@ -69,7 +69,7 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     navLabel: "Web para autoescuelas",
     tagline: "Matrículas, permisos y prácticas",
     title:
-      "Diseño Web para Autoescuelas en Málaga | Matrículas Online | Sur Digital",
+      "Web para autoescuelas: matrículas",
     description:
       "Webs para autoescuelas en Málaga: precios por permiso, matrícula online, horarios de clases teóricas y prácticas. Desde 0€, entrega en menos de 7 días.",
     h1Prefix: "Tu autoescuela",
@@ -123,7 +123,7 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     navLabel: "Web para psicólogos",
     tagline: "Cita previa y confianza",
     title:
-      "Diseño Web para Psicólogos en Málaga | Cita Previa | Sur Digital",
+      "Web para psicólogos: cita previa",
     description:
       "Webs para psicólogos y centros de salud mental en Málaga: áreas de terapia, primera cita, modalidad online y confidencialidad. Desde 0€, sin promesas vacías.",
     h1Prefix: "Tu consulta",
@@ -177,7 +177,7 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     navLabel: "Web para escuelas infantiles",
     tagline: "Plazas, ratios y matrícula",
     title:
-      "Diseño Web para Escuelas Infantiles en Málaga | Plazas y Matrícula | Sur Digital",
+      "Web para guarderías: plazas y matrícula",
     description:
       "Webs para escuelas infantiles y guarderías en Málaga: proyecto educativo, ratios por aula, precios, horarios ampliados y solicitud de plaza online. Desde 0€.",
     h1Prefix: "Tu escuela infantil",
@@ -231,7 +231,7 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     navLabel: "Web para yoga y pilates",
     tagline: "Horarios, bonos y clases",
     title:
-      "Diseño Web para Estudios de Yoga y Pilates en Málaga | Horarios | Sur Digital",
+      "Web para yoga y pilates: horarios",
     description:
       "Webs para estudios de yoga, pilates y bienestar en Málaga: horarios por clase, bonos y cuotas, profesores y reserva de plaza. Desde 0€, en menos de 7 días.",
     h1Prefix: "Tu estudio",
@@ -285,7 +285,7 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     navLabel: "Web para floristerías",
     tagline: "Ramos, encargos y reparto",
     title:
-      "Diseño Web para Floristerías en Málaga | Pedidos y Reparto | Sur Digital",
+      "Web para floristerías: pedidos y reparto",
     description:
       "Webs para floristerías en Málaga: catálogo por ocasión, pedido online, reparto el mismo día y suscripciones. Desde 0€, entrega en menos de 7 días.",
     h1Prefix: "Tu floristería",

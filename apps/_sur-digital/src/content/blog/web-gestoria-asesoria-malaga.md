@@ -1,5 +1,5 @@
 ---
-title: "Web para gestorías y asesorías: captar autónomos en Málaga"
+title: "Web para gestorías: capta autónomos"
 description: "Cómo debe ser la web de una gestoría o asesoría en Málaga: áreas de servicio, cuota mensual clara, cita previa y la sección de cambio de gestoría."
 pubDate: 2026-10-03
 category: "Sectores"

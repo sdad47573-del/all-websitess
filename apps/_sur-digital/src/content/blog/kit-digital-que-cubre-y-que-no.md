@@ -1,6 +1,6 @@
 ---
-title: "Kit Digital: qué cubre y qué no cubre la subvención (2026)"
-description: "Qué soluciones financia el Kit Digital, qué gastos quedan fuera (IVA, hosting, mantenimiento) y cómo calcular el coste real antes de firmar con un agente digitalizador."
+title: "Kit Digital 2026: qué cubre y qué no"
+description: "Qué gastos cubre el Kit Digital, cuáles quedan fuera (IVA, hosting, mantenimiento) y cómo calcular el coste real antes de firmar."
 pubDate: 2026-09-04
 category: "Precios"
 ---

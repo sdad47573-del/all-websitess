@@ -461,6 +461,66 @@ describe('el lockfile se evalúa por app, no como un cambio global', () => {
 	});
 });
 
+describe('el ignore de Netlify filtra con CACHED_COMMIT_REF', () => {
+	/** Clona como Netlify: historial completo, así que el commit desplegado sí está en el clon. */
+	const cloneLikeNetlify = () => {
+		const dir = path.join(workspace, `netlify-${Math.random().toString(36).slice(2)}`);
+		execFileSync('git', ['clone', '--quiet', '--no-local', `file://${origin}`, dir], {
+			stdio: ['ignore', 'pipe', 'pipe'],
+		});
+		mkdirSync(path.join(dir, 'scripts'), { recursive: true });
+		writeFileSync(path.join(dir, 'scripts', 'vercel-ignore-build.mjs'), SCRIPT_SOURCE);
+		return dir;
+	};
+
+	/** El entorno que Netlify inyecta al ejecutar el `ignore`. Sin `cached`, primer despliegue. */
+	const netlifyEnv = (cached?: string) => ({
+		NETLIFY: 'true',
+		...(cached ? { CACHED_COMMIT_REF: cached } : {}),
+	});
+
+	/**
+	 * Ejecuta el script como lo haría Netlify: `0` salta el build, `1` lo construye. La ruta
+	 * lleva el prefijo `./` que exige Netlify para ficheros referenciados desde el `ignore`.
+	 */
+	const runAsNetlify = (repoRoot: string, app: string, env: NodeJS.ProcessEnv) => {
+		const result = spawnSync('node', ['./../../scripts/vercel-ignore-build.mjs'], {
+			cwd: path.join(repoRoot, 'apps', app),
+			env: { ...process.env, ...env },
+			encoding: 'utf8',
+		});
+		if (result.status === null || result.status === undefined) {
+			throw new Error(`el script no llegó a ejecutarse: ${result.stderr}`);
+		}
+		if (result.stderr) throw new Error(`el script falló: ${result.stderr}`);
+		return result.status;
+	};
+
+	test('solo construye la app que cambió desde el último despliegue', () => {
+		const cached = push({ 'apps/app-b/netlify.txt': 'b2\n' });
+		const repo = cloneLikeNetlify();
+		const env = netlifyEnv(cached);
+
+		expect(runAsNetlify(repo, 'app-b', env)).toBe(1);
+		expect(runAsNetlify(repo, 'app-a', env)).toBe(0);
+	});
+
+	test('un cambio fuera de las apps no reconstruye ninguna', () => {
+		const cached = push({ 'docs/netlify.md': '# Netlify\n' });
+		const repo = cloneLikeNetlify();
+		const env = netlifyEnv(cached);
+
+		expect(runAsNetlify(repo, 'app-a', env)).toBe(0);
+		expect(runAsNetlify(repo, 'app-b', env)).toBe(0);
+	});
+
+	test('el primer despliegue construye (sin CACHED_COMMIT_REF no hay con qué comparar)', () => {
+		const repo = cloneLikeNetlify();
+		expect(runAsNetlify(repo, 'app-a', netlifyEnv())).toBe(1);
+		expect(runAsNetlify(repo, 'app-b', netlifyEnv())).toBe(1);
+	});
+});
+
 describe('shouldBuild explica siempre contra qué base comparó', () => {
 	const withPreviousSha = <T>(sha: string, run: () => T): T => {
 		const previous = process.env.VERCEL_GIT_PREVIOUS_SHA;

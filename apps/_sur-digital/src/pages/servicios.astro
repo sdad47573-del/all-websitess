@@ -101,6 +101,34 @@ const serviceDetails = DATA.services.map((s) => ({
   ...DETAILS[s.title],
 }));
 
+// FAQ visible + JSON-LD de la misma fuente (como en el resto del sitio)
+const serviceFaq = [
+  {
+    q: "¿Cuánto tarda mi web en estar online?",
+    a: "Una landing, menos de 7 días. Una web completa o una tienda, normalmente 2–3 semanas según lo rápido que llegue el contenido.",
+  },
+  {
+    q: "¿De quién es la web, el dominio y las cuentas?",
+    a: "Tuyos, todo a tu nombre desde el primer día. Si algún día te vas, te llevas la web sin ataduras.",
+  },
+  {
+    q: "¿El precio es cerrado?",
+    a: "Sí, por escrito antes de empezar. La primera landing es gratis y no hay permanencia en ningún servicio mensual.",
+  },
+  {
+    q: "¿El SEO está incluido?",
+    a: "El SEO básico (alta en Search Console, sitemap y textos optimizados) viene en toda web. El posicionamiento mensual va desde 100 €/mes, sin permanencia.",
+  },
+  {
+    q: "¿Qué pasa después del lanzamiento?",
+    a: "30 días de ajustes gratis, canal directo para cambios pequeños y mantenimiento opcional de 20 €/mes.",
+  },
+  {
+    q: "¿Trabajáis fuera de Málaga?",
+    a: "En Málaga y provincia, la Costa del Sol incluida, presencial y online. Y también en inglés: web design in Marbella.",
+  },
+];
+
 const breadcrumbs = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -134,7 +162,7 @@ const servicesSchema = {
 
 <Layout
   title="Servicios de diseño web y SEO en Málaga | Sur Digital"
-  description="Desarrollo web, consultoría, SEO local, identidad gráfica, UX y redacción de contenidos en Málaga. Qué incluye cada servicio y cuál necesitas. Primera landing gratis."
+  description="Diseño web, SEO local, identidad y redacción en Málaga: qué incluye cada servicio y cuál necesita tu negocio. Primera landing gratis."
   image={`${site}/og/servicios.png`}
   path="/servicios/"
   breadcrumbs={CRUMB_SERVICIOS}
@@ -150,6 +178,20 @@ const servicesSchema = {
     type="application/ld+json"
     slot="head"
     set:html={JSON.stringify(servicesSchema)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: serviceFaq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    })}
   />
 
   <Topbar />
@@ -224,6 +266,25 @@ const servicesSchema = {
             }
           </ul>
         </div>
+      </div>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16" data-reveal>
+      <h2 class="text-2xl font-bold text-base-content mb-6 text-center">
+        Preguntas frecuentes
+      </h2>
+      <div class="flex flex-col gap-3">
+        {
+          serviceFaq.map((f) => (
+            <details class="collapse collapse-arrow bg-base-100 border border-base-300">
+              <summary class="collapse-title font-bold">{f.q}</summary>
+              <div class="collapse-content text-sm text-base-content/70">
+                <p>{f.a}</p>
+              </div>
+            </details>
+          ))
+        }
       </div>
     </section>
 

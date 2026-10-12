@@ -601,8 +601,8 @@ export const ROUTE_DEFAULTS: Record<
 			'blog abogados Lucena, guías legales Córdoba, divorcio mutuo acuerdo, herencia sin testamento, indemnización accidente tráfico',
 	},
 	'/blog/divorcio-mutuo-acuerdo/': {
-		title: `Divorcio de mutuo acuerdo en Lucena y Córdoba | ${SITE_NAME}`,
-		description: `Guía práctica del divorcio de mutuo acuerdo: requisitos, convenio regulador, documentación necesaria y plazos reales en Lucena, Córdoba y Málaga.`,
+		title: `Divorcio de mutuo acuerdo en Córdoba | ${SITE_NAME}`,
+		description: `Divorcio de mutuo acuerdo en Córdoba: convenio regulador, papeles, plazos reales y precio cerrado. Primera consulta gratuita: 666 329 155.`,
 		keywords: 'divorcio mutuo acuerdo, divorcio express Córdoba, convenio regulador, abogado divorcios Lucena',
 	},
 	'/blog/herencia-sin-testamento/': {
@@ -753,6 +753,12 @@ export const ROUTE_DEFAULTS: Record<
 		keywords:
 			'reclamar a Agroseguro, pedrisco olivar Lucena, helada cosecha, seguro agrario combinado, peritaje contradictorio, artículo 20 LCS, abogado seguros agrarios',
 	},
+	'/blog/recuperar-coche-embargado/': {
+		title: `Coche embargado: cómo recuperarlo antes de su venta`,
+		description: `Te han embargado el coche: qué deuda lo causa, cómo levantar el embargo, qué hacer si es de un familiar y cómo frenar la venta. Consulta gratuita.`,
+		keywords:
+			'coche embargado cómo recuperarlo, levantar embargo vehículo, embargo coche venta forzada, embargo coche de un familiar, abogado deudas Lucena Córdoba',
+	},
 	'/blog/reclamaciones-consumo-lucena/': {
 		title: `Cláusulas suelo y tarjetas revolving en Lucena: cómo reclamar | ${SITE_NAME}`,
 		description: `Guía de reclamaciones de consumo en Lucena y Córdoba: cláusulas suelo, tarjetas revolving con intereses usurarios, garantías y arbitraje de consumo.`,
@@ -766,7 +772,7 @@ export const ROUTE_DEFAULTS: Record<
 			'tipos de testamento, testamento cerrado córdoba, testamento ológrafo, testamento abierto notarial, testamento mancomunado Andalucía, testamento online córdoba, notario para testamentos en córdoba, precio testamento córdoba, abogado testamentos Lucena',
 	},
 	'/blog/asistencia-violencia-genero/': {
-		title: `Ayuda legal para víctimas de violencia de género en Córdoba`,
+		title: `Defensa de víctimas de violencia de género en Córdoba`,
 		description: `Orden de protección en 72 horas, abogado de oficio gratuito, teléfono 016 y cada paso del proceso explicado para víctimas en Córdoba y Lucena.`,
 		keywords:
 			'asistencia legal mujeres maltratadas córdoba, orden de protección lucena, abogado violencia de género, asistencia jurídica gratuita víctimas, teléfono 016, recursos violencia género Andalucía',
@@ -868,8 +874,8 @@ export const ROUTE_DEFAULTS: Record<
 			'desahucio por impago lucena, desahucio alquiler córdoba, enervación desahucio, juicio verbal desahucio plazos, lanzamiento inquilino, abogado arrendamientos Lucena',
 	},
 	'/blog/custodia-compartida-cordoba/': {
-		title: `Custodia compartida en Córdoba: cuándo se concede | ${SITE_NAME}`,
-		description: `Guía de la custodia compartida en Córdoba y Lucena: los criterios de los juzgados de familia, el reparto de tiempo típico, la pensión de alimentos y cómo solicitarla o modificarla. Consulta gratuita.`,
+		title: `Custodia compartida en Córdoba: cuándo se concede`,
+		description: `Custodia compartida en Córdoba y Lucena: los criterios que aplican los juzgados, el reparto de tiempo típico y cómo solicitarla. Consulta gratuita.`,
 		keywords:
 			'custodia compartida córdoba, custodia compartida cuándo se concede, juzgados familia córdoba, reparto tiempo custodia, pensión alimentos custodia compartida, abogado guarda custodia Lucena',
 	},
@@ -886,10 +892,10 @@ export const ROUTE_DEFAULTS: Record<
 			'tarjeta revolving usura, intereses usurarios tarjeta, reclamar tarjeta revolving, Ley de Usura 1908, nulidad contrato revolving, abogado consumo Lucena',
 	},
 	'/blog/denuncias-falsas/': {
-		title: `Denuncias falsas: cómo defenderte | ${SITE_NAME}`,
-		description: `Guía para defenderte de una denuncia falsa en Lucena y Córdoba: tus derechos como investigado, el delito de acusación falsa (art. 456 CP) y cómo reclamar la indemnización. Consulta 24/7.`,
+		title: `Abogados especialistas en denuncias falsas: defiéndete`,
+		description: `Defensa ante una denuncia falsa en Lucena y Córdoba: derechos del investigado y querella por acusación falsa (art. 456 CP). Urgencias 24 h: 666 329 155.`,
 		keywords:
-			'denuncia falsa defensa, acusación y denuncia falsa art 456, cómo defenderte de una denuncia falsa, derechos del investigado, querella por denuncia falsa, abogado penalista Lucena',
+			'abogados especialistas en denuncias falsas, denuncia falsa defensa, acusación y denuncia falsa art 456, cómo defenderte de una denuncia falsa, derechos del investigado, querella por denuncia falsa, abogado penalista Lucena',
 	},
 	'/blog/crear-empresa-andalucia/': {
 		title: `Crear una empresa en Andalucía: pasos y cuánto cuesta`,
@@ -910,8 +916,8 @@ export const ROUTE_DEFAULTS: Record<
 			'herencia entre hermanos, conflicto herencia hermanos, reparto herencia, legítima, tercio de mejora, colación donaciones, cuaderno particional, mediación familiar herencia, división judicial herencia, abogado herencias Lucena',
 	},
 	'/blog/baremo-lesiones-2026/': {
-		title: `Baremo de accidentes de tráfico 2026: cómo calcular tu indemnización | ${SITE_NAME}`,
-		description: `Cómo se calcula la indemnización por accidente de tráfico con el baremo 2026: días de baja, secuelas, factores de corrección, plazos y pago de la aseguradora. Consulta gratuita.`,
+		title: `Baremo 2026: calcula tu indemnización por accidente`,
+		description: `Cómo se calcula tu indemnización con el baremo 2026: días de baja, secuelas y lo que paga la aseguradora. Primera consulta gratuita: 666 329 155.`,
 		keywords:
 			'baremo lesiones 2026, calcular indemnización accidente de tráfico, baremo tráfico, indemnización secuelas, días impeditivos, reclamación aseguradora, abogado accidentes de tráfico Lucena',
 	},
@@ -923,7 +929,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/accidente-laboral-cordoba/': {
 		title: `Accidente laboral en Córdoba: pasos y prestaciones | ${SITE_NAME}`,
-		description: `Guía del accidente laboral en Córdoba y Lucena: qué hacer en las primeras 24 horas, prestaciones de la mutua, recargo del 30-50 % e indemnización. Primera consulta gratuita.`,
+		description: `Accidente laboral en Córdoba y Lucena: qué hacer en las primeras 24 horas, prestaciones de la mutua, recargo e indemnización. Urgencias: 666 329 155.`,
 		keywords:
 			'accidente laboral córdoba, accidente de trabajo, prestaciones mutua, recargo de prestaciones, enfermedad profesional, parte de accidente, abogado accidente laboral Lucena',
 	},
@@ -1051,7 +1057,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/abogados-en-lucena/': {
 		title: `Abogados en Lucena | Despacho Civil, Familia, Penal y Laboral`,
-		description: `Despacho de abogados en Lucena para particulares y empresas, con oficina en C. El Agua 19 y urgencias 24 h. Primera consulta gratuita: 666 329 155.`,
+		description: `¿Buscas abogada o abogado en Lucena? Oficina en C. El Agua 19 y urgencias 24 h para particulares y empresas. Primera consulta gratuita: 666 329 155.`,
 		keywords:
 			'despacho de abogados en lucena, abogados en lucena, abogado en lucena, asesoría jurídica lucena, abogados lucena córdoba',
 	},

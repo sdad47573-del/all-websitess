@@ -17,7 +17,7 @@ export const SECTORS_EXTRA: SectorPage[] = [
     navLabel: "Web para talleres",
     tagline: "Citas, presupuestos y confianza",
     title:
-      "Diseño Web para Talleres Mecánicos en Málaga | Citas y Presupuestos | Sur Digital",
+      "Web para talleres: citas y presupuestos",
     description:
       "Webs para talleres mecánicos y de chapa en Málaga: cita previa por servicio, presupuesto sin compromiso, pre-ITV y recambios. Desde 0€, en menos de 7 días.",
     h1Prefix: "Tu taller",
@@ -71,7 +71,7 @@ export const SECTORS_EXTRA: SectorPage[] = [
     navLabel: "Web para centros de estética",
     tagline: "Servicios, bonos y cita online",
     title:
-      "Diseño Web para Centros de Estética en Málaga | Cita Online | Sur Digital",
+      "Web para estética: cita online",
     description:
       "Webs para centros de estética y belleza en Málaga: servicios con precios, bonos, antes y después y cita online. Desde 0€, entrega en menos de 7 días.",
     h1Prefix: "Tu centro de estética",
@@ -125,7 +125,7 @@ export const SECTORS_EXTRA: SectorPage[] = [
     navLabel: "Web para gestorías",
     tagline: "Servicios fiscales y cita previa",
     title:
-      "Diseño Web para Gestorías y Asesorías en Málaga | Cita Previa | Sur Digital",
+      "Web para asesorías: cita previa",
     description:
       "Webs para gestorías, asesorías y despachos contables en Málaga: áreas fiscal, laboral y contable, cuota mensual clara y cita previa. Desde 0€.",
     h1Prefix: "Tu asesoría",
@@ -179,7 +179,7 @@ export const SECTORS_EXTRA: SectorPage[] = [
     navLabel: "Web para ópticas",
     tagline: "Revisión, catálogo y cita previa",
     title:
-      "Diseño Web para Ópticas en Málaga | Revisión y Cita Previa | Sur Digital",
+      "Web para ópticas: revisión y cita",
     description:
       "Webs para ópticas en Málaga: revisión de la vista con cita previa, catálogo de gafas y lentes, taller propio y ficha de Google Maps optimizada. Desde 0€.",
     h1Prefix: "Tu óptica",
@@ -233,7 +233,7 @@ export const SECTORS_EXTRA: SectorPage[] = [
     navLabel: "Web para empresas de reformas",
     tagline: "Presupuestos, obras y confianza",
     title:
-      "Diseño Web para Empresas de Reformas en Málaga | Presupuestos | Sur Digital",
+      "Web para reformas: presupuestos",
     description:
       "Webs para empresas de reformas y construcción en Málaga: servicios por estancia, galería de obras reales y solicitud de presupuesto. Desde 0€, en menos de 7 días.",
     h1Prefix: "Tu empresa de reformas",
@@ -287,7 +287,7 @@ export const SECTORS_EXTRA: SectorPage[] = [
     navLabel: "Web para alojamientos",
     tagline: "Reservas directas sin comisión",
     title:
-      "Diseño Web para Apartamentos Turísticos en Málaga | Reserva Directa | Sur Digital",
+      "Web para apartamentos: reserva directa",
     description:
       "Webs para apartamentos turísticos, casas rurales y hoteles en Málaga: reserva directa sin comisión, galería, entorno y normas de la casa. Desde 0€.",
     h1Prefix: "Tu alojamiento",

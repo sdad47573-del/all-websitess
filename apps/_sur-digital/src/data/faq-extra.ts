@@ -50,6 +50,18 @@ export const FAQ_EXTRA: FaqItem[] = [
     a: `Cada web sale con copias automáticas: si algo se rompe, se vuelve a la versión anterior en minutos y sin perder textos ni precios. En el mantenimiento revisamos además la seguridad y las actualizaciones.`,
   },
   {
+    q: "¿La web sirve para un bar con carta que cambia cada día?",
+    a: `Sí, es justo el caso de la <span class="font-bold">carta digital con QR</span>: cambias la tapa del día o un precio y el QR de las mesas sigue apuntando al mismo sitio, siempre actualizado. Tienes el ejemplo en <a class="link link-primary font-bold" href="/web-para-bares/">nuestra propuesta para bares y tabernas</a>.`,
+  },
+  {
+    q: "¿Puedo recibir pedidos o encargos sin pagar comisiones?",
+    a: `Sí. La web incluye el <span class="font-bold">pedido directo por WhatsApp</span> con mensaje pre-rellenado: el cliente te escribe a ti y te ahorras el porcentaje de las plataformas. Vale para burgers, encargos de carnicería o tartas de cafetería.`,
+  },
+  {
+    q: "¿Hacéis webs para comercios de alimentación?",
+    a: `Sí: carnicerías, charcuterías y tiendas de barrio con catálogo de producto, fotos del mostrador y encargos por WhatsApp. Mira <a class="link link-primary font-bold" href="/web-para-carnicerias/">la propuesta para carnicerías</a> y <a class="link link-primary font-bold" href="/especialidades/">todas las especialidades</a>.`,
+  },
+  {
     q: "¿Cuándo puedo contactar y cuánto tardáis en responder?",
     a: `Atendemos de lunes a jueves de 10:00 a 20:00 y los viernes de 10:00 a 15:00. Por LinkedIn respondemos <span class="font-bold">el mismo día laborable</span>; si escribes en fin de semana, el lunes a primera hora.`,
   },

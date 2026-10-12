@@ -67,6 +67,22 @@
  * Si el diff falla, se construye: un error de git tratado como "sin cambios" desplegaría webs
  * desactualizadas en silencio, que es el peor fallo posible en un filtro de despliegue.
  *
+ * ## También sirve para Netlify
+ *
+ * Netlify tiene el mismo problema (140 sitios sobre el mismo repo) y el mismo remedio: la
+ * clave `ignore` de `netlify.toml` con la misma convención invertida (`0` salta, `1`
+ * construye). El `ignore` corre desde el Base Directory con Node 18 fijo y expone
+ * `CACHED_COMMIT_REF` en vez de `VERCEL_GIT_PREVIOUS_SHA`; ver `resolveNetlifyBase`.
+ *
+ * Tres cosas que impone Netlify y este script respeta:
+ *
+ * - Node 18 sin dependencias del `package.json` del sitio: solo se usa la librería estándar
+ *   de Node (`child_process`, `fs`, `path`, `url`). Nada de `import.meta.dirname` (Node 20+).
+ * - La ruta al fichero en el `ignore` debe empezar por `./`: en `netlify.toml` va
+ *   `ignore = "node ./../../scripts/vercel-ignore-build.mjs"`, que resuelve igual que la de
+ *   Vercel pero cumple la regla de Netlify.
+ * - El `ignore` no cancela builds lanzados por build hook: esos siempre construyen.
+ *
  * ## Notas de entorno
  *
  * - Vercel clona con poco historial (`--depth`), así que la ventana del push se limita a 10
@@ -86,6 +102,15 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+/**
+ * Carpeta de este script. Se resuelve con `fileURLToPath(import.meta.url)` y no con
+ * `import.meta.dirname` porque Netlify ejecuta el `ignore` con Node 18 fijo (no se puede
+ * cambiar) y `import.meta.dirname` solo existe desde Node 20.11: con el otro el script
+ * reventaría al cargarlo, antes de decidir nada.
+ */
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 
 /** Ventana de commits que mira Vercel: clona con `--depth=10`. */
 const MAX_DEPTH = 10;
@@ -286,13 +311,48 @@ const fetchCommit = (repoRoot, sha) => {
 };
 
 /**
+ * Base contra la que comparar lo publicado en Netlify, con la misma explicación.
+ *
+ * Netlify expone `CACHED_COMMIT_REF` (el commit del último despliegue con éxito de ESTE sitio)
+ * y `COMMIT_REF` (el que se está construyendo), y clona el repo completo, así que el commit
+ * suele estar en el clon sin descargar nada. `fetchCommit` queda como recurso por si acaso.
+ *
+ * El caso que no existe en Vercel es el primer despliegue: `CACHED_COMMIT_REF` viene vacío
+ * porque aún no hay nada publicado. Comparar entonces contra la ventana de commits sería
+ * comparar 10 commits contra HEAD y, si ninguno toca esta app, saltarse el build y dejar el
+ * sitio sin publicar para siempre. Por eso sin `CACHED_COMMIT_REF` se compara contra el árbol
+ * vacío: todo el repo cuenta como cambio y el sitio se despliega sí o sí.
+ */
+const resolveNetlifyBase = (repoRoot) => {
+	const cached = process.env.CACHED_COMMIT_REF;
+	if (!cached) {
+		return { rev: EMPTY_TREE, source: 'primer despliegue (sin CACHED_COMMIT_REF)' };
+	}
+	if (hasCommit(repoRoot, cached)) {
+		return { rev: cached, source: 'CACHED_COMMIT_REF' };
+	}
+	if (fetchCommit(repoRoot, cached)) {
+		return { rev: cached, source: 'CACHED_COMMIT_REF (descargado)' };
+	}
+	return {
+		rev: resolvePushBase(repoRoot),
+		source: `ventana de commits (CACHED_COMMIT_REF=${cached} no se pudo descargar)`,
+	};
+};
+
+/**
  * Base contra la que comparar lo publicado, con una explicación de por qué se eligió esa.
  *
  * Se prioriza el SHA del despliegue anterior, que es lo que de verdad hay en producción. Si no
  * está en el clon se intenta traerlo (`fetchCommit`), y solo si eso tampoco vale se recurre a la
  * ventana del push.
+ *
+ * En Netlify (`NETLIFY=true`, que Netlify siempre define) manda `resolveNetlifyBase`: lee
+ * `CACHED_COMMIT_REF` en vez de `VERCEL_GIT_PREVIOUS_SHA`. Fuera de Netlify el camino de
+ * Vercel queda intacto.
  */
 const resolveBase = (repoRoot) => {
+	if (process.env.NETLIFY === 'true') return resolveNetlifyBase(repoRoot);
 	const previousSha = process.env.VERCEL_GIT_PREVIOUS_SHA;
 	if (previousSha) {
 		if (hasCommit(repoRoot, previousSha)) {
@@ -394,7 +454,7 @@ function lockfileVerdict({ repoRoot, appDir: app, base }) {
  * poder imprimirla en el log de Vercel y entender por qué un deploy sí o no ocurrió.
  */
 export function shouldBuild({ repoRoot, appDir: app, explain = false } = {}) {
-	const root = repoRoot ?? path.resolve(import.meta.dirname, '..');
+	const root = repoRoot ?? path.resolve(SCRIPT_DIR, '..');
 	const appPath = app ?? appDir(root);
 	if (!appPath) {
 		return { build: true, reasons: ['no se encontró el package.json de la app'], files: [], base: null };
@@ -488,8 +548,9 @@ export function shouldBuild({ repoRoot, appDir: app, explain = false } = {}) {
 }
 
 /**
- * Punto de entrada para Vercel. `0` salta el build, `1` lo ejecuta (ver la nota de códigos
- * invertidos al principio del archivo).
+ * Punto de entrada para Vercel (`ignoreCommand`) y Netlify (`ignore`). `0` salta el build,
+ * `1` lo ejecuta en las dos plataformas (ver la nota de códigos invertidos al principio del
+ * archivo): Netlify usa la misma convención que Vercel.
  */
 const main = () => {
 	const explain = process.argv.includes('--explain');
@@ -508,6 +569,6 @@ const main = () => {
 };
 
 // Solo cuando se ejecuta directamente, para que `shouldBuild` se pueda importar en tests.
-if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename)) {
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url))) {
 	main();
 }
