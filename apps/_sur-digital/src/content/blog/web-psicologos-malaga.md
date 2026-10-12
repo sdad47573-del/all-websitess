@@ -33,7 +33,7 @@ La gente no busca «gabinete de psicología aplicada». Escribe **«psicólogo e
 
 En Sur Digital la **primera landing page es gratis** y sale con formulario de cita, aviso de confidencialidad y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si la consulta crece, cada página de área extra son 30€, y el mantenimiento opcional (actualizar formación, añadir artículos) son 20€/mes sin permanencia.
+Si la consulta crece, cada página de área extra son 60€, y el mantenimiento opcional (actualizar formación, añadir artículos) son 39€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

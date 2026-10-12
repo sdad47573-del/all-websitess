@@ -44,4 +44,6 @@ Empieza por **ficha y reseñas**, que son lo primero que se mueve. La web es el 
 
 ---
 
+Si tu ficha ya está completa y aun así no sales en el mapa, mira [cómo salir en Google Maps en Málaga y Marbella](/blog/salir-en-google-maps-malaga/).
+
 Si quieres que revisemos tu ficha punto por punto, en Sur Digital lo hacemos gratis junto con la primera landing. [Cuéntanoslo por LinkedIn](/&#35;contacto) y te decimos qué falta.

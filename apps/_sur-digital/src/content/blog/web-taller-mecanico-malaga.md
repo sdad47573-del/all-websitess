@@ -33,7 +33,7 @@ Nadie busca «taller polivalente». Se busca **«taller de chapa en Málaga»**,
 
 En Sur Digital la **primera landing page es gratis** y sale con el formulario de cita, teléfono clicable y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si el taller crece, cada página de servicio extra son 30€, y el mantenimiento opcional (cambiar precios, añadir servicios, fotos nuevas) son 20€/mes sin permanencia.
+Si el taller crece, cada página de servicio extra son 60€, y el mantenimiento opcional (cambiar precios, añadir servicios, fotos nuevas) son 39€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

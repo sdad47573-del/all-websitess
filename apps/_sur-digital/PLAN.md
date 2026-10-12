@@ -56,7 +56,7 @@ Botón: **“Solicita tu web gratis”**
 Después de entregar el proyecto:
 
 - Ofreces **extras**: hosting, mantenimiento, SEO, tienda online, campañas en Google/Meta.
-- Suscripción mensual: “Mantenemos tu web siempre actualizada por solo 20€/mes”.
+- Suscripción mensual: “Mantenemos tu web siempre actualizada por solo 39€/mes”.
 
 5️⃣ **Escalado**
 Clientes satisfechos → pides testimonios y recomendaciones.

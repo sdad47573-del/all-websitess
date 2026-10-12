@@ -18,7 +18,7 @@ const pages: Record<string, { title: string; description: string }> = {
   "precios.png": {
     title: "Precios de diseño web en Málaga",
     description:
-      "Landing gratis, web completa 99€, tienda 299€ y mantenimiento 20€/mes. Precio cerrado por escrito.",
+      "Landing gratis, web completa 490€, tienda 890€ y mantenimiento 39€/mes. Precio cerrado por escrito.",
   },
   "servicios.png": {
     title: "Servicios de diseño web en Málaga",

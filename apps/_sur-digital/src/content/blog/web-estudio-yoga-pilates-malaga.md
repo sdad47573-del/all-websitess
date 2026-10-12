@@ -33,7 +33,7 @@ La gente no busca «centro de bienestar integral». Escribe **«clases de yoga e
 
 En Sur Digital la **primera landing page es gratis** y sale con el horario, el formulario de reserva y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si el estudio crece, cada página de estilo o taller extra son 30€, y el mantenimiento opcional (actualizar horarios, cambiar bonos, publicar talleres) son 20€/mes sin permanencia.
+Si el estudio crece, cada página de estilo o taller extra son 60€, y el mantenimiento opcional (actualizar horarios, cambiar bonos, publicar talleres) son 39€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

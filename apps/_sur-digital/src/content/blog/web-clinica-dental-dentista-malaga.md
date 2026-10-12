@@ -53,4 +53,6 @@ Una por tratamiento que quieras posicionar: implantes, ortodoncia invisible, urg
 
 ---
 
+La estrategia completa de captación (urgencias, implantes, reseñas) está en [cómo conseguir pacientes para tu clínica dental](/blog/conseguir-pacientes-clinica-dental-malaga/).
+
 ¿Apareces cuando alguien busca "implantes Málaga"? [Pide la revisión gratuita](/&#35;contacto) y te lo contamos sin compromiso. La [propuesta completa para clínicas dentales](/web-para-dentistas/) y el [precio de cada página extra](/precios/) están publicados.

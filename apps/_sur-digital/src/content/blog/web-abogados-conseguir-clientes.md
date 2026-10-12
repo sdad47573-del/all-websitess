@@ -51,4 +51,4 @@ La deontología del ilustre colegio es clara: sin resultados garantizados, sin c
 2. Define tus 2–3 áreas de práctica prioritarias.
 3. Reclama tu ficha de Google Business con la dirección del despacho ([guía paso a paso](/blog/seo-local-malaga-negocios/)).
 4. Escribe (o encarga) un artículo práctico por trimestre.
-5. Cuando quieras una web al nivel de tu ejercicio, [empieza por la landing gratis](https://www.linkedin.com/company/sur-digital-malaga) — sin compromiso y con [precio cerrado](/precios/) para crecer.
+5. Cuando quieras una web al nivel de tu ejercicio, [empieza por la landing gratis](https://www.linkedin.com/company/sur-digital-malaga) — sin compromiso y con [precio cerrado](/precios/) para crecer. La estructura exacta, página por página y con precio, en [página web para abogados en Málaga](/blog/pagina-web-para-abogados-malaga/).

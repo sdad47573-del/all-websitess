@@ -44,4 +44,6 @@ Sí, si eliges proveedor con criterio. No, si te apuntas al primero que te llama
 
 ---
 
+Y si la duda es si coger la ayuda siquiera, haz [el cálculo a 3 años de si merece la pena el Kit Digital](/blog/kit-digital-merece-la-pena-2026/).
+
 ¿Te han llegado ya tres ofertas de Kit Digital y no te fías de ninguna? [Escríbenos](/&#35;contacto) y te las revisamos gratis, línea por línea.

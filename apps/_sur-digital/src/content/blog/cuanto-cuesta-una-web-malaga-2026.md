@@ -12,15 +12,15 @@ Es la primera pregunta de todo el mundo y la que más se contesta con evasivas. 
 ## Los tres precios que vas a encontrar
 
 **1. Landing page (1 página): 0–400€.**
-Una sola página con tu propuesta de valor, servicios, reseñas y contacto. Para la mayoría de negocios locales es **todo lo que necesitas para empezar a aparecer en Google**.
+Una sola página con tu propuesta de valor, servicios, reseñas y contacto. Para la mayoría de negocios locales es **todo lo que necesitas para empezar a aparecer en Google**. Lo desarrollamos en [cuánto cuesta una landing page](/blog/cuanto-cuesta-landing-page-2026/).
 
 **2. Web corporativa (3–8 páginas): 400–1.200€.**
 Varias páginas: inicio, servicios, sobre nosotros, blog, contacto. Tiene sentido cuando vendes varios servicios distintos o necesitas posicionarte por separado.
 
 **3. Tienda online: desde 900€.**
-Catálogo, carrito, pagos y envíos. El coste no está en montarla, está en mantenerla: fotos, stock, incidencias. Entra aquí solo si ya vendes.
+Catálogo, carrito, pagos y envíos. El coste no está en montarla, está en mantenerla: fotos, stock, incidencias. Entra aquí solo si ya vendes. El desglose completo, en [cuánto cuesta una tienda online en Málaga](/blog/cuanto-cuesta-tienda-online-malaga/).
 
-Nuestros precios publicados —landing gratis, web completa 99€, tienda 299€— y los extras sueltos están en [planes y precios](/precios/).
+Nuestros precios publicados —landing gratis, web completa 490€, tienda 890€— y los extras sueltos están en [planes y precios](/precios/).
 
 ## Por qué hay tanta diferencia de precios
 
@@ -47,7 +47,7 @@ Vas a ver presupuestos de 300€ y de 3.000€ para lo que parece la misma web. 
 | "Precio orientativo, según horas" | Acabarás pagando 2x lo presupuestado |
 | "No incluye versión móvil" | Inaceptable en 2026 |
 
-El "hosting incluido 12 meses, luego 30€/mes" da para un artículo entero: así funcionan de verdad el [dominio y el hosting de un negocio local](/blog/dominio-hosting-negocios-guia/), y esto es lo que debería cubrir un [mantenimiento de 20€/mes](/blog/mantenimiento-web-20-euros-mes/).
+El "hosting incluido 12 meses, luego 30€/mes" da para un artículo entero: así funcionan de verdad el [dominio y el hosting de un negocio local](/blog/dominio-hosting-negocios-guia/), y esto es lo que debería cubrir un [mantenimiento de 39€/mes](/blog/mantenimiento-web-20-euros-mes/).
 
 ## Y el IVA, ¿quién lo pone?
 
@@ -57,7 +57,7 @@ Y cuidado con las subvenciones: lo que la ayuda no cubre —empezando por el IVA
 
 ## ¿Puedo hacerla yo con un constructor?
 
-Puedes. Cuenta con 20–40 horas de tu tiempo, un resultado correcto pero genérico, y el mismo problema de siempre: cuando el negocio va corriendo, la web se queda sin actualizar. Si tu hora facturable vale más de 25€, no sale a cuenta.
+Puedes. Cuenta con 20–40 horas de tu tiempo, un resultado correcto pero genérico, y el mismo problema de siempre: cuando el negocio va corriendo, la web se queda sin actualizar. Si tu hora facturable vale más de 25€, no sale a cuenta. La comparativa completa, en [hacer tu web tú mismo vs encargarla](/blog/hacer-web-uno-mismo-wix-wordpress/).
 
 ## Preguntas frecuentes sobre precios
 

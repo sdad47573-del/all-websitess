@@ -33,7 +33,7 @@ Nadie busca «empresa de instalaciones integrales». Se busca **«electricista e
 
 En Sur Digital la **primera landing page es gratis** y sale con formulario de aviso, teléfono clicable y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si el trabajo crece, cada página de servicio extra son 30€, y el mantenimiento opcional (cambiar precios, añadir servicios, subir trabajos nuevos) son 20€/mes sin permanencia.
+Si el trabajo crece, cada página de servicio extra son 60€, y el mantenimiento opcional (cambiar precios, añadir servicios, subir trabajos nuevos) son 39€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

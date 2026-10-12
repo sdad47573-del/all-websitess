@@ -32,7 +32,7 @@ La web de una asesoría debe ser informativa y sobria: sin promesas de resultado
 
 ## Cuánto cuesta y cuánto tarda
 
-**La primera landing page es gratis y está online en menos de 7 días.** Una web con las áreas de servicio y la sección de cambio de gestoría es el siguiente paso, con precio cerrado por escrito y cada página extra a 30€.
+**La primera landing page es gratis y está online en menos de 7 días.** Una web con las áreas de servicio y la sección de cambio de gestoría es el siguiente paso, con precio cerrado por escrito y cada página extra a 60€.
 
 ---
 

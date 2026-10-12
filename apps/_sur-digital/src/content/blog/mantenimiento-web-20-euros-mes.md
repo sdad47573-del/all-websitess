@@ -1,11 +1,11 @@
 ---
-title: "Mantenimiento web en Málaga por 20 €/mes"
-description: "Qué debe incluir un mantenimiento web de 20€/mes: las tareas de cada mes, lo que no debería cobrarse y las señales de que te están cobrando de más."
+title: 'Mantenimiento web por 39€/mes: qué debe incluir (y qué no)'
+description: 'Qué debe incluir un mantenimiento web de 39€/mes: las tareas de cada mes, lo que no debería cobrarse y las señales de que te están cobrando de más.'
 pubDate: 2026-09-08
-category: "Precios"
+category: 'Precios'
 ---
 
-# Mantenimiento web por 20€/mes: qué debe incluir (y qué no)
+# Mantenimiento web por 39€/mes: qué debe incluir (y qué no)
 
 El mantenimiento es el cobro más misterioso del sector. Unos te lo regalan y nunca lo hacen; otros te cobran 90€/mes por "actualizar WordPress". Esta es nuestra versión, con números.
 
@@ -13,7 +13,7 @@ El mantenimiento es el cobro más misterioso del sector. Unos te lo regalan y nu
 
 Mantener una web **no es** escribirle nuevos textos cada mes ni hacerle campañas: eso es mejora continua y se presupuesta aparte (igual que los [extras de una web](/precios/)). Mantener es que tu web **sigue funcionando como el primer día**: carga rápido, no da errores, no le entra spam y Google sigue entendiéndola.
 
-## Qué incluye un mantenimiento honesto de 20€/mes
+## Qué incluye un mantenimiento honesto de 39€/mes
 
 - **Actualizaciones técnicas** del sistema y componentes, con copia previa.
 - **Copias de seguridad periódicas** y comprobadas (una copia que nunca se ha restaurado no es una copia, es una esperanza).
@@ -24,12 +24,12 @@ Mantener una web **no es** escribirle nuevos textos cada mes ni hacerle campaña
 
 ## Qué NO debería entrar en ese precio
 
-| Lo intentan colar | Por qué no |
-| --- | --- |
-| Rediseño de la web | Es un proyecto nuevo, se presupuesta |
-| Campañas de Google Ads | Es otro servicio (y otro presupuesto) |
-| "Posicionamiento garantizado" | Quien garantiza posiciones miente |
-| Hosting a precio de oro | El [hosting se contrata aparte](/blog/dominio-hosting-negocios-guia/) y a tu nombre |
+| Lo intentan colar             | Por qué no                                                                          |
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| Rediseño de la web            | Es un proyecto nuevo, se presupuesta                                                |
+| Campañas de Google Ads        | Es otro servicio (y otro presupuesto)                                               |
+| "Posicionamiento garantizado" | Quien garantiza posiciones miente                                                   |
+| Hosting a precio de oro       | El [hosting se contrata aparte](/blog/dominio-hosting-negocios-guia/) y a tu nombre |
 
 ## Las señales de que te están cobrando de más
 
@@ -50,6 +50,6 @@ Se queda desactualizada y vulnerable, carga más lento y Google la entiende peor
 
 ---
 
-¿Pagas un mantenimiento del que no tienes noticias? [Escríbenos](/&#35;contacto) y te decimos gratis si tiene sentido.
+¿Pagas un mantenimiento del que no tienes noticias? [Escríbenos](/#contacto) y te decimos gratis si tiene sentido.
 
 Y si todavía estás montando la web, mira antes [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) para no firmar a ciegas.

@@ -33,7 +33,7 @@ Nadie busca «comercio especializado en plantas ornamentales». Se busca **«flo
 
 En Sur Digital la **primera landing page es gratis** y sale con catálogo, formulario de encargo y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si la floristería crece, cada página de ocasión o evento extra son 30€, y el mantenimiento opcional (cambiar el catálogo según temporada, añadir productos) son 20€/mes sin permanencia.
+Si la floristería crece, cada página de ocasión o evento extra son 60€, y el mantenimiento opcional (cambiar el catálogo según temporada, añadir productos) son 39€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

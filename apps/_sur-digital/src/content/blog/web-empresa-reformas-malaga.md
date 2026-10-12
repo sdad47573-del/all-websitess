@@ -33,7 +33,7 @@ Enseñar la obra por WhatsApp funciona, pero solo con quien ya te ha llamado. En
 
 ## Precio y plazo
 
-**La primera landing page es gratis y está lista en menos de 7 días**, con galería, servicios y formulario de presupuesto. La web completa con páginas por tipo de reforma va con precio cerrado, sin permanencia y con cada página extra a 30€.
+**La primera landing page es gratis y está lista en menos de 7 días**, con galería, servicios y formulario de presupuesto. La web completa con páginas por tipo de reforma va con precio cerrado, sin permanencia y con cada página extra a 60€.
 
 ---
 

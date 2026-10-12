@@ -36,7 +36,7 @@ Suma durante 3 años:
 - **Coste años 2 y 3** = hosting + dominio + mantenimiento × 24 meses
 - **Coste de salir** = qué pasa si te quieres cambiar de proveedor mañana
 
-Si el total de 3 años no convence comparado con una web a medida con precio cerrado —[estos son esos precios](/blog/cuanto-cuesta-una-web-malaga-2026/)—, has encontrado el porqué de las letras pequeñas.
+Si el total de 3 años no convence comparado con una web a medida con precio cerrado —[estos son esos precios](/blog/cuanto-cuesta-una-web-malaga-2026/)—, has encontrado el porqué de las letras pequeñas. El veredicto directo, con casos, en [si merece la pena el Kit Digital en 2026](/blog/kit-digital-merece-la-pena-2026/).
 
 ## Nuestra posición, sin rodeos
 

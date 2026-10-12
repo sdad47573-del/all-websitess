@@ -33,7 +33,7 @@ Nadie busca «centro de educación infantil de primer ciclo». Se busca **«guar
 
 En Sur Digital la **primera landing page es gratis** y sale con formulario de solicitud de plaza, horarios y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si la escuela crece, cada página de aula o servicio extra son 30€, y el mantenimiento opcional (menú del mes, calendario, actividades) son 20€/mes sin permanencia.
+Si la escuela crece, cada página de aula o servicio extra son 60€, y el mantenimiento opcional (menú del mes, calendario, actividades) son 39€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

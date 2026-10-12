@@ -27,7 +27,7 @@ export const FAQ_EXTRA: FaqItem[] = [
   },
   {
     q: "¿Puedo empezar con la landing gratis y ampliar después?",
-    a: `Sí, es el camino recomendado: empiezas con la landing gratis, mides cómo responde y amplías con páginas de servicio cuando el negocio lo pida. Cada página extra son <span class="font-bold">30€</span>, con el mismo diseño y la misma velocidad.`,
+    a: `Sí, es el camino recomendado: empiezas con la landing gratis, mides cómo responde y amplías con páginas de servicio cuando el negocio lo pida. Cada página extra son <span class="font-bold">60€</span>, con el mismo diseño y la misma velocidad.`,
   },
   {
     q: "¿Hacéis la web en varios idiomas?",
@@ -39,7 +39,7 @@ export const FAQ_EXTRA: FaqItem[] = [
   },
   {
     q: "¿Me ayudáis con el blog y el contenido?",
-    a: `Sí: redactamos los artículos del blog y las páginas de servicio a partir de una entrevista. También decidimos juntos qué temas merecen la pena, que es lo que de verdad trae visitas. Publicar contenido nuevo entra en el mantenimiento de <span class="font-bold">20€/mes</span>.`,
+    a: `Sí: redactamos los artículos del blog y las páginas de servicio a partir de una entrevista. También decidimos juntos qué temas merecen la pena, que es lo que de verdad trae visitas. Publicar contenido nuevo entra en el mantenimiento de <span class="font-bold">39€/mes</span>.`,
   },
   {
     q: "¿Qué pasa si el negocio cambia de nombre, teléfono o dirección?",
