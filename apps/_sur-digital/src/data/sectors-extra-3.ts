@@ -17,7 +17,7 @@ export const SECTORS_EXTRA_3: SectorPage[] = [
     navLabel: "Web para bares y tabernas",
     tagline: "Carta QR, tapa del día y reservas",
     title:
-      "Diseño Web para Bares y Tabernas en Málaga | Carta QR | Sur Digital",
+      "Web para bares y tabernas: carta QR | Sur Digital",
     description:
       "Webs para bares y tabernas en Málaga: carta digital con QR, tapa del día destacada, reservas por WhatsApp y SEO local. Desde 0€, en menos de 7 días.",
     h1Prefix: "Tu bar",
@@ -71,7 +71,7 @@ export const SECTORS_EXTRA_3: SectorPage[] = [
     navLabel: "Web para cafeterías",
     tagline: "Carta de desayunos y clientes de barrio",
     title:
-      "Diseño Web para Cafeterías en Málaga | Carta de Desayunos | Sur Digital",
+      "Web para cafeterías: carta y desayunos | Sur Digital",
     description:
       "Webs para cafeterías en Málaga: carta de desayunos online, desayuno estrella destacado, encargos por WhatsApp y SEO local. Desde 0€.",
     h1Prefix: "Tu cafetería",
@@ -125,7 +125,7 @@ export const SECTORS_EXTRA_3: SectorPage[] = [
     navLabel: "Web para hamburgueserías",
     tagline: "Carta visual y pedido directo",
     title:
-      "Diseño Web para Hamburgueserías en Málaga | Pedido Directo | Sur Digital",
+      "Web para hamburgueserías: pedido directo | Sur Digital",
     description:
       "Webs para hamburgueserías en Málaga: carta visual que vende, pedido directo sin comisiones, Google Maps y fotos que dan hambre. Desde 0€.",
     h1Prefix: "Tu hamburguesería",
@@ -179,7 +179,7 @@ export const SECTORS_EXTRA_3: SectorPage[] = [
     navLabel: "Web para carnicerías",
     tagline: "Catálogo, encargos y barrio",
     title:
-      "Diseño Web para Carnicerías en Málaga | Encargos Online | Sur Digital",
+      "Web para carnicerías: encargos online | Sur Digital",
     description:
       "Webs para carnicerías y tiendas de alimentación en Málaga: catálogo de producto, encargos por WhatsApp y SEO local de barrio. Desde 0€.",
     h1Prefix: "Tu carnicería",

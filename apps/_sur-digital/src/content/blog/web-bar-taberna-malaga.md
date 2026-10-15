@@ -1,11 +1,12 @@
 ---
-title: "Web para bares y tabernas en Málaga: reservas, carta QR y Google Maps (guía 2026)"
+title: "Web para bares y tabernas: guía 2026"
 description: "Cómo conseguir más clientes en tu bar o taberna de Málaga: carta digital con QR, Google Maps con reseñas, tapa del día en la web y reservas por WhatsApp."
 pubDate: 2026-10-12
+updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para bares y tabernas en Málaga: reservas, carta QR y Google Maps (guía 2026)
+# Web para bares y tabernas: guía 2026
 
 Un bar vive del barrio y del paso: del que sale a tapear, del que busca "bar cerca de mí" y del que vuelve porque lo trataron bien. La web de un bar no tiene que ser bonita sin más: tiene que **responder en 30 segundos** a tres preguntas: dónde estás, qué se come hoy y cómo se reserva.
 

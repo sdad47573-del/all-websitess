@@ -1,7 +1,8 @@
 ---
 title: "Llena las plazas de tu escuela infantil"
-description: "Web para escuelas infantiles en Málaga: proyecto educativo, ratios por aula, cuotas claras y solicitud de plaza online."
+description: "Web para escuelas infantiles en Málaga: proyecto educativo, ratios por aula, cuotas claras, solicitud de plaza online y SEO local. Guía 2026."
 pubDate: 2026-10-06
+updatedDate: 2026-10-15
 category: "Sectores"
 ---
 

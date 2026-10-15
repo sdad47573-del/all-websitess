@@ -1,11 +1,12 @@
 ---
-title: "Web para cafeterías en Málaga: desayunos, carta y clientes de barrio (guía 2026)"
+title: "Web para cafeterías: guía Málaga 2026"
 description: "Cómo llenar tu cafetería en Málaga: carta de desayunos online, Google Maps, fotos que abren el apetito y reservas por WhatsApp. Guía práctica 2026."
 pubDate: 2026-10-12
+updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para cafeterías en Málaga: desayunos, carta y clientes de barrio (guía 2026)
+# Web para cafeterías: guía Málaga 2026
 
 La cafetería vive de la repetición: el desayuno de cada mañana, el café de media tarde, el del sábado sin prisa. Y la repetición empieza por ser encontrado: quien se muda al barrio o cambia de ruta busca "cafetería cerca de mí" y prueba la primera que le convence en el móvil.
 

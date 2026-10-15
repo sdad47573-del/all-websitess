@@ -197,6 +197,23 @@ meta description): el lenguaje genérico de proceso («tu proyecto»)
 no se toca. Identificadores de código (`Project`, `portafolio-grid`)
 tampoco, para no romper nada.
 
+## 12. Nav sin duplicar: fuera el desplegable «Sectores» (15 oct 2026)
+
+El nav mostraba **dos veces lo mismo**: el desplegable «Sectores» (37 links
+uno por landing) y el enlace «Especialidades» (`/especialidades/`), que lleva
+al mismo hub con la misma lista. Se eliminó el desplegable en escritorio y el
+acordeón «Sectores» del menú móvil (`Topbar.astro`); el nav queda en
+Servicios · Especialidades · Clientes · Precios · FAQ · Blog.
+
+Se conserva `/especialidades/` (indexada, con `CollectionPage`+`FAQPage` y
+citada desde cada artículo, servicios, home y footer): solo se quitó el
+cromo duplicado del nav, no la página. Efecto colateral bueno: 37 enlaces
+sitewide menos en cada HTML (menos dilución del link equity). Las landings
+siguen enlazadas desde el hub, la home (`SectorsGrid`), el footer y sus
+artículos de blog.
+
+Barrido tras el build: 0/0/0/0 y `Sectores` solo en textos de contenido.
+
 ## 3. Pendiente operativo (fuera del repo, por impacto)
 
 1. **Desplegar** (nada de lo anterior existe en producción hasta entonces).

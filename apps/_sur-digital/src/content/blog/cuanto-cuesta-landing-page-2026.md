@@ -1,11 +1,12 @@
 ---
-title: "Cuánto cuesta una landing page en 2026 (y cuándo te basta con una)"
+title: "Cuánto cuesta una landing en 2026"
 description: "Precio real de una landing page en Málaga en 2026: rangos 0–490€, qué debe incluir, cuándo basta una página y cuándo necesitas web completa."
 pubDate: 2026-10-13
+updatedDate: 2026-10-15
 category: "Precios"
 ---
 
-# Cuánto cuesta una landing page en 2026 (y cuándo te basta con una)
+# Cuánto cuesta una landing en 2026
 
 La landing es la web mínima viable: una sola página que presenta tu negocio y consigue el contacto. Y para la mayoría de negocios locales, es todo lo que necesitan para empezar. Precio en Málaga: **entre 0€ y 490€** según quién la haga y qué incluya.
 

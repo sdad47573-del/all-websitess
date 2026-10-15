@@ -1,20 +1,27 @@
 import { describe, expect, test } from 'bun:test';
-import { business, directionsUrl, mapEmbedUrl, mapsUrl, photoUrl, phoneHref, structuredData } from '../src/lib/business';
+import { BUSINESS, IMAGES, SCHEMA } from '../src/data/site';
 
 describe('datos locales de The Haircut', () => {
-	test('prepara datos de contacto, ficha y foto concreta de Google Maps', () => {
-		expect(phoneHref).toBe('tel:+34951405960');
-		expect(business.streetAddress).toBe('Calle Flaubert, 3');
-		expect(mapsUrl).toContain('google.com/maps/place/The+Haircut');
-		expect(photoUrl).toContain('lh3.googleusercontent.com/gps-cs-s/');
+	test('prepara datos de contacto y ficha de Google Maps', () => {
+		expect(BUSINESS.phoneHref).toBe('tel:+34951405960');
+		expect(BUSINESS.street).toBe('Calle Flaubert, 3');
+		expect(BUSINESS.googleMaps).toContain('google.com/maps/place/The+Haircut');
+		expect(BUSINESS.booksy).toContain('booksy.com/es-es/2103_thehaircut_barberia_29485_malaga');
 	});
 
-	test('centra el mapa en las coordenadas confirmadas sin datos comerciales no verificados', () => {
-		expect(directionsUrl).toContain('destination=36.7238757%2C-4.4618764');
-		expect(mapEmbedUrl).toContain('q=36.7238757%2C-4.4618764');
-		expect(structuredData.geo.latitude).toBe(36.7238757);
-		expect(structuredData.geo.longitude).toBe(-4.4618764);
-		expect(structuredData).not.toHaveProperty('openingHours');
-		expect(structuredData).not.toHaveProperty('aggregateRating');
+	test('centra el mapa en las coordenadas confirmadas', () => {
+		expect(BUSINESS.geo.lat).toBe(36.7238757);
+		expect(BUSINESS.geo.lng).toBe(-4.4618764);
+		expect(SCHEMA.geo.latitude).toBe(36.7238757);
+		expect(SCHEMA.geo.longitude).toBe(-4.4618764);
+		expect(BUSINESS.googleMapsEmbed).toContain('Flaubert');
+	});
+
+	test('usa imágenes propias y ninguna foto de Google Maps', () => {
+		for (const image of Object.values(IMAGES)) {
+			const src = typeof image === 'string' ? image : (image as { src: string }).src;
+			expect(src).toContain('the-haircut-');
+			expect(src).not.toContain('googleusercontent');
+		}
 	});
 });

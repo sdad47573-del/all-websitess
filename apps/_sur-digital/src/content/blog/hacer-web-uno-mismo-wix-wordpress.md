@@ -1,11 +1,12 @@
 ---
-title: "Hacer tu web tú mismo (Wix, WordPress) vs encargarla: coste real"
+title: "Wix o encargar tu web: coste real"
 description: "Cuánto cuesta hacer tu web con Wix o WordPress contando tu tiempo: suscripciones, horas, resultado y cuándo compensa frente a encargarla a un profesional."
 pubDate: 2026-10-15
+updatedDate: 2026-10-15
 category: "Guías"
 ---
 
-# Hacer tu web tú mismo (Wix, WordPress) vs encargarla: coste real
+# Wix o encargar tu web: coste real
 
 "Hago yo la web y me ahorro el dinero" suena bien hasta que cuentas **tu tiempo**. Aquí van los números reales de cada camino para que decidas con la calculadora, no con el orgullo.
 

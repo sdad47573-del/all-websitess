@@ -1,0 +1,28 @@
+# Imágenes — Alfonso.M Estilista
+
+## Descarga intentada (sin fotos)
+
+La ficha de Google Maps (`Alfonso.M Estilista Salud, Bienestar Y Belleza`, 37.8977293,-4.7777424, feature `0xd6cdf72270c8313:0xe1291c729b8675f8`) **no devolvió bloque de fotos** en 3 ejecuciones de:
+
+```bash
+node scripts/fetch-maps-photos.mjs alfonso-m-estilista
+```
+
+La web usa 4 SVG propios de marcador en `src/assets/fotos/` (más el logo):
+
+- `alfonso-m-estilista-malaga.svg` → portada / hero
+- `-estudio/-facial/-corporal.svg` → secciones y galería (`GALLERY` con 4 entradas)
+- `alfonso-m-estilista-logo.svg` → logo
+
+Si la ficha publica fotos más adelante, reintenta el script y actualiza los imports en `src/data/site.ts`.
+
+## Cómo sustituirlas por fotos reales
+
+1. Pide al centro sus fotos originales (JPG, con permiso por escrito).
+2. Guárdalas en `src/assets/fotos/` y actualiza los imports en `src/data/site.ts` y `GALLERY`.
+3. `bun run --filter alfonso-m-estilista build`
+
+## Aviso legal (importante)
+
+- [Condiciones de Google Maps / Google Earth](https://www.google.com/help/legalnotices_maps/): el contenido (incluidas fotos de usuarios) no puede copiarse ni reutilizarse sin permiso.
+- [Política de Contenido Aportado por Usuarios de Google Maps](https://maps.google.com/localguides/rules/): cada foto sigue perteneciendo a su autor.

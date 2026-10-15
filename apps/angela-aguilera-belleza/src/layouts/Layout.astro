@@ -1,0 +1,124 @@
+---
+import 'remixicon/fonts/remixicon.css';
+import '../styles/index.css';
+
+import { BUSINESS, GALLERY, IMAGES, SCHEMA } from '../data/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	path?: string;
+	keywords?: string;
+	schema?: unknown[];
+	noIndex?: boolean;
+}
+
+const {
+	title = `${BUSINESS.name} · Centro de estética en Poniente Sur, ${BUSINESS.city}`,
+	description = `Ángela Aguilera Belleza, centro de estética en Calle José María Martorell 1 (Sur, 14005 Córdoba): uñas, maquillaje y cosmética coreana. Cita en el 636 51 02 13.`,
+	path = '/',
+	keywords = 'Ángela Aguilera Belleza, estética Sur, centro estética Martorell Córdoba, facial Córdoba, corporal Córdoba, estética 14005',
+	schema = [],
+	noIndex = false,
+} = Astro.props;
+
+const canonical = new URL(path, BUSINESS.siteUrl).toString();
+const ogImage = new URL(IMAGES.fotoFachada.src, BUSINESS.siteUrl).toString();
+const robots = noIndex
+	? 'noindex, follow'
+	: 'index, follow, max-image-preview:large, max-snippet:-1';
+
+const imagenesSchema = GALLERY.map((foto) =>
+	new URL(foto.src.src, BUSINESS.siteUrl).toString(),
+);
+
+const webPage = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	'@id': `${canonical}#webpage`,
+	url: canonical,
+	name: title,
+	description,
+	isPartOf: {
+		'@type': 'WebSite',
+		'@id': `${BUSINESS.siteUrl}/#website`,
+		name: BUSINESS.name,
+		url: `${BUSINESS.siteUrl}/`,
+	},
+	about: { '@id': SCHEMA['@id'] },
+	inLanguage: 'es',
+	primaryImageOfPage: imagenesSchema[0],
+};
+
+const datosEstructurados = [{ ...SCHEMA, image: imagenesSchema }, webPage, ...schema];
+---
+
+<!doctype html>
+<html lang="es" data-theme="medicina" prefix="og: https://ogp.me/ns# place: https://ogp.me/ns/place#">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={BUSINESS.name} />
+		<meta name="robots" content={robots} />
+		<meta name="theme-color" content="#0e3a3a" />
+		<link rel="canonical" href={canonical} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content={`${BUSINESS.name} en Poniente Sur, ${BUSINESS.city}`} />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:street-address" content={`${BUSINESS.street}, ${BUSINESS.district}`} />
+		<meta property="og:locality" content={BUSINESS.city} />
+		<meta property="og:region" content={BUSINESS.region} />
+		<meta property="og:postal-code" content={BUSINESS.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="place:location:latitude" content={String(BUSINESS.geo.lat)} />
+		<meta property="place:location:longitude" content={String(BUSINESS.geo.lng)} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content={`${BUSINESS.name} en Poniente Sur, ${BUSINESS.city}`} />
+
+		<meta name="geo.region" content="ES-AN" />
+		<meta name="geo.placename" content={BUSINESS.city} />
+		<meta name="geo.position" content={`${BUSINESS.geo.lat};${BUSINESS.geo.lng}`} />
+		<meta name="ICBM" content={`${BUSINESS.geo.lat}, ${BUSINESS.geo.lng}`} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Outfit:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<noscript
+			><link
+				href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Outfit:wght@300;400;500;600;700&display=swap"
+				rel="stylesheet"
+			/></noscript
+		>
+
+		{
+			datosEstructurados.map((bloque) => (
+				<script type="application/ld+json" is:inline set:html={JSON.stringify(bloque)} />
+			))
+		}
+	</head>
+	<body class="bg-base-100 text-base-content font-sans antialiased">
+		<slot />
+	</body>
+</html>

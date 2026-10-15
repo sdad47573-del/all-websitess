@@ -1,11 +1,12 @@
 ---
-title: "Web para hamburgueserías en Málaga: carta, delivery y Google Maps (guía 2026)"
+title: "Web para hamburgueserías: guía 2026"
 description: "Cómo llenar tu hamburguesería en Málaga: carta visual que vende, pedido directo sin comisiones, Google Maps y fotos que dan hambre. Guía 2026."
 pubDate: 2026-10-12
+updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para hamburgueserías en Málaga: carta, delivery y Google Maps (guía 2026)
+# Web para hamburgueserías: guía 2026
 
 La hamburguesería compite en el móvil: el cliente compara cartas con fotos a las 21:00 y pide donde le entra por los ojos. Si tu carta vive en capturas de Instagram y tu único pedido pasa por una plataforma que se lleva el 30%, estás regalando margen cada noche.
 

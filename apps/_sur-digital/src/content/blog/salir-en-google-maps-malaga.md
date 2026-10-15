@@ -1,11 +1,12 @@
 ---
-title: "Cómo salir en Google Maps en Málaga (y Marbella): guía práctica 2026"
+title: "Salir en Google Maps: guía 2026"
 description: "Qué hacer para aparecer en Google Maps y en el pack local de Málaga o Marbella: ficha optimizada, categorías, reseñas, fotos y web que respalde."
 pubDate: 2026-10-10
+updatedDate: 2026-10-15
 category: "SEO local"
 ---
 
-# Cómo salir en Google Maps en Málaga (y Marbella): guía práctica 2026
+# Salir en Google Maps: guía 2026
 
 Cuando alguien busca "fontanero cerca de mí" o "dentista Marbella", Google enseña primero el mapa con 3 negocios. Estar ahí vale más que cualquier anuncio: es el cliente con intención de compra inmediata. Esto es lo que hay que hacer para salir, sin humo.
 

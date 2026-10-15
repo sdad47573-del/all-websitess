@@ -1,29 +1,40 @@
 import { describe, expect, test } from 'bun:test';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+const srcDir = fileURLToPath(new URL('../src/', import.meta.url));
+
+function walk(dir: string): string[] {
+	const entries = readdirSync(dir);
+	return entries.flatMap((entry) => {
+		const full = join(dir, entry);
+		return statSync(full).isDirectory() ? walk(full) : [full];
+	});
+}
+
+const sources = walk(srcDir).filter((file) => /\.(astro|ts|css)$/.test(file));
 const page = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
-const styles = readFileSync(new URL('../src/styles/global.css', import.meta.url), 'utf8');
 
 describe('landing de The Haircut', () => {
-	test('presenta contacto directo y los datos NAP confirmados', () => {
-		expect(page).toContain('href={phoneHref}');
-		expect(page).toContain('{business.phone}');
-		expect(page).toContain('{business.streetAddress}');
-		expect(page).toContain('{business.postalCode}');
+	test('presenta las secciones principales y el contacto directo', () => {
+		for (const section of ['Hero', 'Salon', 'Servicios', 'Galeria', 'Contact', 'Faq']) {
+			expect(page).toContain(section);
+		}
+		expect(page).toContain('breadcrumbs');
 	});
 
-	test('usa la foto identificada en Maps y proporciona mapa e indicaciones', () => {
-		expect(page).toContain('src={photoUrl}');
-		expect(page).toContain('src={mapEmbedUrl}');
-		expect(page).toContain('href={directionsUrl}');
-		expect(page).toContain('href={mapsUrl}');
+	test('no incrusta ni enlaza fotos de Google Maps en ningún fuente', () => {
+		for (const file of sources) {
+			const content = readFileSync(file, 'utf8');
+			expect(content).not.toContain('googleusercontent');
+			expect(content).not.toContain('gps-cs-s');
+		}
 	});
 
-	test('incluye metadatos locales y una llamada fija usable en móvil', () => {
-		expect(page).toContain('rel="canonical"');
-		expect(page).toContain('application/ld+json');
-		expect(page).toContain('phone-cta');
-		expect(styles).toContain('.phone-cta');
-		expect(styles).toContain('@media (max-width: 700px)');
+	test('el aviso legal identifica al titular y la web enlaza la ficha', () => {
+		const legal = readFileSync(new URL('../src/pages/aviso-legal.astro', import.meta.url), 'utf8');
+		expect(legal).toContain('BUSINESS');
+		expect(legal).toContain('googleMaps');
 	});
 });

@@ -1,11 +1,12 @@
 ---
-title: "Cómo conseguir pacientes para tu clínica dental en Málaga (web + reseñas)"
+title: "Clínica dental: más pacientes en Málaga"
 description: "De dónde vienen los pacientes de una clínica en Málaga: urgencias, implantes y ortodoncia. Web por tratamiento, ficha de Google y reseñas que convierten."
 pubDate: 2026-10-12
+updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Cómo conseguir pacientes para tu clínica dental en Málaga (web + reseñas)
+# Clínica dental: más pacientes en Málaga
 
 En dental el paciente elige con el móvil y con miedo. Gana la clínica que responde antes a tres preguntas: **¿tratáis lo mío?, ¿cuánto cuesta?, ¿puedo fiarme?** Esto es lo que tiene que hacer tu web para traer pacientes de verdad.
 

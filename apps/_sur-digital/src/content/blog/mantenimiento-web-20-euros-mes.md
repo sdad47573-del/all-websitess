@@ -1,11 +1,12 @@
 ---
-title: 'Mantenimiento web por 39€/mes: qué debe incluir (y qué no)'
-description: 'Qué debe incluir un mantenimiento web de 39€/mes: las tareas de cada mes, lo que no debería cobrarse y las señales de que te están cobrando de más.'
+title: 'Mantenimiento web 39€/mes: qué incluye'
+description: 'Qué debe incluir un mantenimiento web de 39€/mes en Málaga: tareas de cada mes, lo que no debería cobrarse y señales de que pagas de más.'
 pubDate: 2026-09-08
+updatedDate: 2026-10-15
 category: 'Precios'
 ---
 
-# Mantenimiento web por 39€/mes: qué debe incluir (y qué no)
+# Mantenimiento web 39€/mes: qué incluye
 
 El mantenimiento es el cobro más misterioso del sector. Unos te lo regalan y nunca lo hacen; otros te cobran 90€/mes por "actualizar WordPress". Esta es nuestra versión, con números.
 

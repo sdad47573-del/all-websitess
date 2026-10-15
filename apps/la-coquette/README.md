@@ -1,0 +1,46 @@
+# La Coquette, Peluquería y Estética
+
+Web de **La Coquette, Peluquería y Estética**, salón de peluquería y estética en
+Avenida José Ribera (El Romeral, Teatinos-Universidad, 29071 Málaga).
+
+- Astro + Tailwind CSS 4 + daisyUI (tema `medicina` en `src/styles/index.css`,
+  verde clínico + marfil + arena).
+- Datos del negocio en `src/data/site.ts`.
+- Fotos propias de marcador en `src/assets/fotos/*.svg` (no se reutilizan fotos
+  de Google Maps por copyright). Ver `README_IMAGENES.md`.
+- Enlace de Google Maps aportado:
+  `https://www.google.com/maps/place/La+Coquette,+Peluquer%C3%ADa+y+Est%C3%A9tica/@36.7219209,-4.4730013,17z/...`
+  (feature `0xd72f7365b60ff75:0x9162cd496b2e2d80`).
+
+## Scripts
+
+```bash
+bun install
+bun run dev # servidor de desarrollo
+bun run build # build estático
+bun run check # astro check
+bun run typecheck
+```
+
+## Páginas
+
+| Ruta | Contenido |
+| ---- | --------- |
+| `/` | Portada: hero, destacados, el salón, servicios, galería, contacto/mapa y FAQ |
+| `/servicios` | Detalle de áreas (peluquería, estética) sin precios inventados |
+| `/aviso-legal` | Aviso legal + privacidad |
+
+## Contenido y fuentes
+
+La información verificable es solo la del enlace de Maps (nombre, coordenadas
+36.7219209,-4.4730013) más el reverse-geocode OSM (Avenida José Ribera,
+El Romeral, Teatinos-Universidad, 29071 Málaga).
+
+> ⚠️ **Antes de publicar**:
+>
+> 1. Completa NIF/CIF, razón social y correo en `LEGAL` (`src/data/site.ts`).
+> 2. Confirma teléfono, horario y carta real con el salón y actualiza
+>    `BUSINESS` + `SCHEMA`. Ahora mismo remiten a la ficha de Google a propósito.
+> 3. Sustituye los SVG por fotos originales (ver `README_IMAGENES.md`).
+> 4. Si el dominio final cambia, actualiza `BUSINESS.siteUrl`,
+>    `astro.config.mjs` → `site` y `public/robots.txt`.

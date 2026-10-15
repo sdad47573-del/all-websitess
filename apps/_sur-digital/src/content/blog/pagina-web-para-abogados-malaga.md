@@ -1,11 +1,12 @@
 ---
-title: "Página web para abogados en Málaga: qué debe incluir (y cuánto cuesta)"
+title: "Web para abogados en Málaga 2026"
 description: "Estructura, páginas y precio de una web para un despacho de abogados en Málaga: áreas de práctica, confianza, primera consulta y SEO local conforme a deontología."
 pubDate: 2026-10-11
+updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Página web para abogados en Málaga: qué debe incluir (y cuánto cuesta)
+# Web para abogados en Málaga 2026
 
 Un despacho no vende por impulso: vende por confianza. La web de un abogado tiene que parecer un despacho serio a las 23:00 en el móvil de alguien con un problema. Esto es lo que debe incluir, ni más ni menos.
 

@@ -1,11 +1,12 @@
 ---
-title: "Cuánto tarda hacer una página web (y por qué la nuestra sale en 7 días)"
+title: "Cuánto tarda una web (guía 2026)"
 description: "Plazos reales: agencia 3–8 semanas, freelance variable, nosotros menos de 7 días. Qué alarga un proyecto web y cómo evitarlo."
 pubDate: 2026-10-16
+updatedDate: 2026-10-15
 category: "Guías"
 ---
 
-# Cuánto tarda hacer una página web (y por qué la nuestra sale en 7 días)
+# Cuánto tarda una web (guía 2026)
 
 El plazo es la segunda pregunta después del precio, y la que más decepciones causa. Estos son los plazos reales del mercado y lo que los alarga.
 

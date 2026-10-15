@@ -617,7 +617,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/procedimiento-sancionador/': {
 		title: `Procedimiento sancionador: fases, plazos y cómo defenderse`,
-		description: `Las 3 fases del expediente sancionador, los plazos de caducidad y las garantías del sancionado: cómo recurrir una multa desde la notificación. Consulta gratuita.`,
+		description: `Las 3 fases del expediente sancionador, plazos de caducidad y garantías: cómo recurrir tu multa a tiempo. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'procedimiento sancionador fases, expediente sancionador plazos, caducidad procedimiento sancionador, cómo defenderse de una multa, alegaciones expediente sancionador, proporcionalidad sanción administrativa, procedimiento sancionador Lucena, abogado recursos administrativos Córdoba',
 	},
@@ -640,14 +640,14 @@ export const ROUTE_DEFAULTS: Record<
 			'reclamación pensión seguridad social, INSS no responde silencio administrativo, cómo reclamar pensión jubilación, pensión viudedad reclamación, prestaciones seguridad social denegadas, atrasos pensión seguridad social, reclamación previa INSS, abogado pensiones Lucena Córdoba',
 	},
 	'/blog/multas-penales-suspension-condenas/': {
-		title: `Multa penal: cuánto se paga y cómo suspender la condena`,
-		description: `La multa penal se paga en cuotas diarias: cuánto costará, qué pasa si no pagas y cuándo el juez suspende o sustituye la condena. Consulta gratuita: 666 329 155.`,
+		title: `Multa penal 2026: cuánto pagas y cómo suspenderla`,
+		description: `Cuánto cuesta una multa penal: cuotas diarias, qué pasa si no pagas y cuándo el juez suspende la condena. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'multa penal cuotas diarias, cómo se calcula multa penal España, pagar multa penal plazos fraccionar, suspensión de la pena requisitos, sustitución pena multa trabajo comunitario, impago multa penal consecuencias, multa penal vs administrativa, abogado penalista Lucena Córdoba',
 	},
 	'/blog/prorroga-estancia-y-renovacion/': {
 		title: `Prórroga de estancia y renovación del TIE: plazos y errores`,
-		description: `Guía de las renovaciones de extranjería: la prórroga de estancia de 90 días, cuándo renovar la tarjeta TIE, el silencio negativo, cómo justificar la actividad y cómo evitar perder la residencia por renovar tarde.`,
+		description: `Prórroga de estancia y renovación del TIE: cuándo renovar, el silencio negativo y cómo no perder la residencia. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'prórroga de estancia 90 días España, renovación tarjeta TIE plazo, renovar residencia cuándo presentar, silencio administrativo extranjería, renovación residencia justificación económica, autorización de retorno, tarjeta roja renovación, abogado extranjería Lucena Córdoba',
 	},
@@ -737,19 +737,19 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/cuanto-cuesta-constituir-sl-2026/': {
 		title: `Cuánto cuesta constituir una SL en 2026 | ${SITE_NAME}`,
-		description: `Desglose real del coste de constituir una sociedad limitada en 2026: notaría, Registro Mercantil, vía telemática, capital de 1 € o 3.000 € y los gastos del primer año.`,
+		description: `Cuánto cuesta constituir una SL en 2026: notaría, Registro, vía telemática y capital desde 1 €. Presupuesto cerrado: 666 329 155.`,
 		keywords:
 			'cuánto cuesta constituir una SL, coste constituir sociedad limitada 2026, crear una sociedad limitada Lucena, notaría constitución SL Córdoba, capital social SL 1 euro, estatutos tipo Ley Crea y Crece, constitución telemática SL',
 	},
 	'/blog/seguro-cultivos-agroseguro/': {
 		title: `Agroseguro: qué cubre el seguro de cultivos y cómo reclamar`,
-		description: `Plazos del seguro agrario combinado, franquicias del siniestro y la tasación pericial contradictoria si Agroseguro paga menos de lo debido.`,
+		description: `¿Agroseguro paga menos de lo debido? Plazos, franquicias y peritaje contradictorio en Lucena y Córdoba. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'agroseguro, seguro de cultivos, seguro agrario combinado, agroseguro qué cubre, pedir siniestro agroseguro, tasación pericial contradictoria, indemnización pedrisco helada, sequía olivar seguro, abogado seguros agrarios Córdoba Lucena',
 	},
 	'/blog/reclamar-agroseguro/': {
 		title: `Agroseguro: cómo reclamar por pedrisco, helada o sequía`,
-		description: `Agroseguro indemniza los daños por pedrisco, helada o sequía. Plazos de comunicación, peritaje contradictorio y qué hacer si pagan de menos. Consulta gratuita.`,
+		description: `Pedrisco, helada o sequía: plazos para comunicar a Agroseguro, peritaje contradictorio y qué hacer si pagan de menos. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'reclamar a Agroseguro, pedrisco olivar Lucena, helada cosecha, seguro agrario combinado, peritaje contradictorio, artículo 20 LCS, abogado seguros agrarios',
 	},
@@ -766,8 +766,8 @@ export const ROUTE_DEFAULTS: Record<
 			'cláusula suelo Lucena, tarjeta revolving intereses usurarios, reclamación consumo Córdoba, arbitraje de consumo, garantía producto, abogado consumidores Andalucía',
 	},
 	'/blog/testamento-online-cordoba/': {
-		title: `Tipos de testamento en Córdoba | Cerrado, ológrafo y online`,
-		description: `Testamento cerrado, ológrafo o abierto ante notario: qué exige cada tipo, cuánto cuesta hacer testamento en Córdoba en 2026 y cuál te conviene.`,
+		title: `Testamento ológrafo, cerrado y online en Córdoba`,
+		description: `Testamento ológrafo, cerrado u online en Córdoba: qué exige cada tipo, cuánto cuesta en 2026 y cuál te conviene. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'tipos de testamento, testamento cerrado córdoba, testamento ológrafo, testamento abierto notarial, testamento mancomunado Andalucía, testamento online córdoba, notario para testamentos en córdoba, precio testamento córdoba, abogado testamentos Lucena',
 	},
@@ -821,7 +821,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/jubilacion-2027/': {
 		title: `Tabla de jubilación 2027: edad según los años cotizados`,
-		description: `65 años con 38 años y 6 meses cotizados; 67 sin ellos. Tabla por años cotizados, anticipada y parcial, activa y complemento por hijos.`,
+		description: `65 con 38,5 años cotizados; 67 sin ellos. Tabla 2027, anticipada, parcial y complemento por hijos. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'tabla de jubilación por años cotizados, tabla edad jubilación 2027, jubilación 2027 edad 67 años, jubilación 65 años 38 años 6 meses cotizados, fin periodo transitorio pensiones 2027, jubilación anticipada 2027, complemento brecha de género jubilación, abogado seguridad social Lucena',
 	},
@@ -839,7 +839,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/zonas-tensionadas-alquiler/': {
 		title: `Zonas tensionadas de alquiler: topes y subidas 2026`,
-		description: `Andalucía no ha declarado ninguna, pero el IRAV ya limita la subida de todos los alquileres. Qué puedes subir y qué no, con las cifras del IRPF.`,
+		description: `¿Pueden subirte el alquiler en 2026? Topes del IRAV, zonas tensionadas y qué revisar antes de firmar en Lucena. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'zonas tensionadas alquiler, contención rentas alquiler, ley vivienda 12/2023, IRAV actualización renta, alquiler lucena, reducción IRPF arrendadores',
 	},
@@ -880,8 +880,8 @@ export const ROUTE_DEFAULTS: Record<
 			'custodia compartida córdoba, custodia compartida cuándo se concede, juzgados familia córdoba, reparto tiempo custodia, pensión alimentos custodia compartida, abogado guarda custodia Lucena',
 	},
 	'/blog/incapacidad-permanente/': {
-		title: `Incapacidad permanente: grados, requisitos y cómo solicitarla | ${SITE_NAME}`,
-		description: `Guía de la incapacidad permanente en Córdoba y Lucena: los 4 grados, requisitos de cotización, el tribunal médico (EVI) y cómo reclamar una negativa del INSS. Consulta gratuita.`,
+		title: `Incapacidad permanente: grados y cómo reclamarla`,
+		description: `Los 4 grados de incapacidad en Córdoba y Lucena: requisitos, tribunal médico y cómo reclamar si el INSS la deniega. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'incapacidad permanente grados, incapacidad total 55%, incapacidad absoluta, gran invalidez, solicitar incapacidad permanente, tribunal médico EVI, reclamar negativa INSS, abogado incapacidad Lucena',
 	},
@@ -959,7 +959,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/sergio-cruz-chacon-abogado/': {
 		title: `Sergio Cruz Chacón: abogado en Lucena desde 2005`,
-		description: `Más de 20 años defendiendo casos en Lucena, Córdoba y Málaga: civil, familia, laboral, penal y seguros. Oficina en C. El Agua 19. Consulta gratuita.`,
+		description: `Más de 20 años defendiendo casos en Lucena, Córdoba y Málaga: civil, familia, laboral, penal y seguros. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'sergio abogado, abogado sergio, sergio cruz abogado, abogado cruz, abogado sergio cruz chacon, abogado en lucena, despacho scruz abogados',
 	},
@@ -1080,7 +1080,7 @@ export const ROUTE_DEFAULTS: Record<
 			'abogado liquidación de gananciales Lucena, liquidación de sociedad de gananciales, inventario ganancial, adjudicación de bienes divorcio, cuaderno particional, capitulaciones matrimoniales, abogado familia Córdoba, abogado divorcios Málaga',
 	},
 	'/herencias-testamentos/': {
-		title: `Abogado de Herencias y Testamentos en Lucena`,
+		title: `Abogado de Testamentos y Herencias en Lucena`,
 		description: `Herencias con o sin testamento, declaración de herederos e impuesto de sucesiones en Andalucía. Primera consulta gratuita: 666 329 155.`,
 		keywords:
 			'abogado herencias Lucena, testamento Córdoba, sucesiones Málaga, herencia intestada, aceptación herencia, impuesto sucesiones, declaración herederos',
@@ -1104,7 +1104,7 @@ export const ROUTE_DEFAULTS: Record<
 			'accidente laboral Lucena, abogado accidentes trabajo Córdoba, incapacidad Málaga, prestaciones mutua, responsabilidad empresarial',
 	},
 	'/derecho-penal/': {
-		title: `Abogado Penalista en Lucena | Urgencias 24 h`,
+		title: `Abogado Penalista Lucena: detenidos y urgencias 24 h`,
 		description: `Detenciones, denuncias falsas y acusación particular. Si es urgente, te atendemos ahora: abogado penalista en Lucena. Teléfono 24 h: 666 329 155.`,
 		keywords:
 			'abogado penalista Lucena, defensa penal Córdoba, delitos Málaga, violencia género penal, abogado urgencias penales',
@@ -1134,7 +1134,7 @@ export const ROUTE_DEFAULTS: Record<
 			'incapacidad permanente Lucena, pensión invalidez Córdoba, abogado INSS Málaga, incapacidad absoluta, total, Gran Invalidez',
 	},
 	'/complemento-paternidad-maternidad/': {
-		title: `Complemento de Paternidad y Maternidad en Lucena`,
+		title: `Reclamar el complemento de paternidad y maternidad`,
 		description: `Abogado del complemento de paternidad o maternidad en Lucena, Córdoba y Málaga: aumentamos tu pensión de jubilación. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'complemento maternidad pensión Lucena, complemento paternidad Córdoba, jubilación Málaga, Seguridad Social',

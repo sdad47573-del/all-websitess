@@ -1,7 +1,8 @@
 ---
 title: "Google Ads: cuánto tarda en funcionar"
-description: "Plazos realistas de Google Ads: fase de aprendizaje, primeras llamadas y cuándo una campaña está optimizada. Sin humo."
+description: "Plazos realistas de Google Ads en Málaga: fase de aprendizaje, primeras llamadas y cuándo una campaña está optimizada. Guía sin humo."
 pubDate: 2026-10-12
+updatedDate: 2026-10-15
 category: "Anuncios"
 ---
 

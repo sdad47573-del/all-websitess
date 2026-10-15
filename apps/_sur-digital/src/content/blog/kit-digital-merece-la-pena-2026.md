@@ -1,11 +1,12 @@
 ---
-title: "¿Merece la pena el Kit Digital en 2026? Cuentas claras para decidir"
+title: "Kit Digital: ¿merece la pena? 2026"
 description: "Si te preguntas si merece la pena el Kit Digital, haz este cálculo a 3 años: IVA, hosting, mantenimiento y coste de salida. Cuándo sí compensa y cuándo no."
 pubDate: 2026-10-08
+updatedDate: 2026-10-15
 category: "Precios"
 ---
 
-# ¿Merece la pena el Kit Digital en 2026? Cuentas claras para decidir
+# Kit Digital: ¿merece la pena? 2026
 
 Es la pregunta que nos hacen cada mes en Málaga: "me han ofrecido el Kit Digital, ¿lo cojo?". La respuesta honesta es **depende de tus números**, no del comercial. Aquí va el cálculo que deberías hacer antes de firmar nada.
 
