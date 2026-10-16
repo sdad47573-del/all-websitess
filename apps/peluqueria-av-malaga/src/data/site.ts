@@ -9,26 +9,28 @@
  *   Teatinos-Universidad, Málaga 29010.
  *
  * Lo que la web NO inventa:
- * - La ficha no aporta teléfono, horario, web propia, carta de servicios,
- *   precios ni recuento de reseñas verificable desde fuera, así que no se
- *   publican. Todo remite a "consultar la ficha de Google Maps".
+ * - La ficha no publica web propia, carta de servicios ni precios, así que no
+ *   se publican. Teléfono, horario y valoración sí se publican porque salen de
+ *   la ficha leída el 16-10-2026 desde /maps/preview/place.
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: 10 fotos descargadas de la ficha con
+ * scripts/fetch-maps-photos.mjs (ver .maps-manifest.json). Se muestran
+ * optimizadas con enlace a la ficha original. Ver README_IMAGENES.md.
  */
 
-import fotoPortada from '../assets/fotos/peluqueria-av-malaga.svg';
-import fotoSalon from '../assets/fotos/peluqueria-av-salon.svg';
-import fotoCorte from '../assets/fotos/peluqueria-av-corte.svg';
-import fotoColor from '../assets/fotos/peluqueria-av-color.svg';
+import fotoHero from '../assets/fotos/peluqueria-av-malaga-vertical-04.jpg';
+import fotoLocal2 from '../assets/fotos/peluqueria-av-malaga-vertical-01.jpg';
+import fotoLocal3 from '../assets/fotos/peluqueria-av-malaga-vertical-03.jpg';
+import fotoLocal4 from '../assets/fotos/peluqueria-av-malaga-apaisada-02.jpg';
+import fotoLocal5 from '../assets/fotos/peluqueria-av-malaga-vertical-05.jpg';
+import fotoLocal6 from '../assets/fotos/peluqueria-av-malaga-vertical-07.jpg';
 import logo from '../assets/fotos/peluqueria-av-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoSalon,
-	fotoCejas: fotoCorte,
-	fotoCalle: fotoColor,
+	fotoFachada: fotoHero,
+	fotoInterior: fotoLocal2,
+	fotoCejas: fotoLocal3,
+	fotoCalle: fotoLocal4,
 	logo,
 };
 
@@ -41,7 +43,7 @@ export const BUSINESS = {
 	tagline: 'Peluquería en Teatinos, Málaga',
 	claim: 'Tu peluquería de barrio en El Romeral',
 	summary:
-		'Peluquería AV es una peluquería en Calle Margarita Xirgu, 4 (El Romeral, Teatinos-Universidad, 29010 Málaga). Consulta su ficha de Google Maps para horario, cita y servicios actuales.',
+		'Peluquería AV es una peluquería en Calle Margarita Xirgu, 4 (El Romeral, Teatinos-Universidad, 29010 Málaga). 5,0 sobre 5 con 114 reseñas. Llama al 642 86 93 53.',
 	street: 'Calle Margarita Xirgu, 4',
 	district: 'El Romeral',
 	borough: 'Teatinos-Universidad',
@@ -49,9 +51,14 @@ export const BUSINESS = {
 	postalCode: '29010',
 	region: 'Andalucía',
 	country: 'ES',
-	// Sin teléfono verificado fuera de la ficha: se enlaza a Maps en vez de inventar uno.
-	phoneDisplay: 'Ver ficha de Google',
-	phoneHref: GOOGLE_MAPS,
+	phoneDisplay: '+34 642 86 93 53',
+	phoneHref: 'tel:+34642869353',
+	reviewsUrl:
+		'https://search.google.com/local/reviews?placeid=ChIJv6J-8c_3cg0RrdWaYDFpCtE&hl=es',
+	placeId: 'ChIJv6J-8c_3cg0RrdWaYDFpCtE',
+	rating: 5.0,
+	reviewCount: 114,
+	mapsHref: GOOGLE_MAPS,
 	googleMaps: GOOGLE_MAPS,
 	googleMapsEmbed:
 		'https://maps.google.com/maps?q=Calle%20Margarita%20Xirgu%2C%204%2C%2029010%20M%C3%A1laga&t=&z=17&ie=UTF8&iwloc=&output=embed',
@@ -59,9 +66,13 @@ export const BUSINESS = {
 	featureId: '0xd72f7cff17ea2bf:0xd10a6931609ad5ad',
 	priceRange: '€€',
 	categories: ['Peluquería', 'Corte de pelo', 'Color', 'Peinado'],
-	hours: [{ days: 'Horario', hours: 'Consultar ficha de Google Maps' }],
+	hours: [
+		{ days: 'Lunes a viernes', hours: '10:00–14:00 y 16:00–20:00' },
+		{ days: 'Sábado', hours: 'Cerrado' },
+		{ days: 'Domingo', hours: 'Cerrado' },
+	],
 	hoursNote:
-		'Horario sin verificar fuera de Google Maps: abre la ficha de la peluquería para ver apertura actual y festivos.',
+		'Horario publicado en la ficha de Google Maps (16-10-2026). Puede cambiar en festivos: ante la duda, llama al 642 86 93 53.',
 	siteUrl: 'https://peluqueria-av-malaga.vercel.app',
 };
 
@@ -97,9 +108,9 @@ export const HIGHLIGHTS = [
 		text: 'Calle Margarita Xirgu, 4 · 29010 Málaga. En El Romeral, Teatinos.',
 	},
 	{
-		icon: 'ri-google-fill',
-		title: 'Ficha de Google',
-		text: 'Horario, cita y contacto actualizados en su ficha pública de Google Maps.',
+		icon: 'ri-phone-line',
+		title: '642 86 93 53',
+		text: 'Llama para pedir cita. 5,0 sobre 5 con 114 reseñas en Google.',
 	},
 	{
 		icon: 'ri-sparkling-2-line',
@@ -174,7 +185,7 @@ export const VENTAJAS = [
 	{
 		icon: 'ri-google-fill',
 		title: 'Ficha verificable',
-		text: 'Todo lo operativo (horario, teléfono, cita) enlaza a su ficha pública de Google.',
+		text: 'Horario, teléfono y valoración de su ficha pública de Google (16-10-2026).',
 	},
 	{
 		icon: 'ri-shield-check-line',
@@ -200,7 +211,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cómo pido cita?',
-		a: 'La peluquería no publica web propia ni teléfono verificado fuera de Google Maps, así que la vía fiable es su ficha pública de Google: abre “Ver ficha de Google” y usa el teléfono o el botón de contacto que indique allí.',
+		a: 'Llama al 642 86 93 53, el teléfono publicado en su ficha de Google Maps. La peluquería no publica web propia, así que la vía fiable es ese teléfono o su ficha pública de Google.'
 	},
 	{
 		q: '¿Qué servicios ofrecen?',
@@ -212,11 +223,11 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cuál es el horario?',
-		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha para ver apertura actual, festivos y cambios.',
+		a: 'Según su ficha de Google (16-10-2026): lunes a viernes 10:00–14:00 y 16:00–20:00, sábado y domingo cerrado. Puede cambiar en festivos: llama antes de salir.'
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales de la peluquería (ver README_IMAGENES.md).',
+		q: '¿De dónde son las fotos?',
+		a: 'Son 10 fotos de la ficha pública de Google Maps del propio negocio, descargadas con scripts/fetch-maps-photos.mjs y servidas aquí optimizadas, con enlace a la ficha original (ver README_IMAGENES.md).'
 	},
 ];
 
@@ -228,10 +239,12 @@ export const FEATURES = [
 ];
 
 export const GALLERY = [
-	{ src: IMAGES.fotoFachada, alt: 'Peluquería AV en Teatinos (Málaga)' },
-	{ src: IMAGES.fotoInterior, alt: 'Salón de Peluquería AV en Calle Margarita Xirgu' },
-	{ src: IMAGES.fotoCejas, alt: 'Corte en Peluquería AV (Málaga)' },
-	{ src: IMAGES.fotoCalle, alt: 'Color en Peluquería AV (Málaga)' },
+	{ src: fotoHero, alt: 'Peluquería AV en Teatinos (Málaga), foto de su ficha de Google Maps' },
+	{ src: fotoLocal2, alt: 'Salón de Peluquería AV en Calle Margarita Xirgu' },
+	{ src: fotoLocal3, alt: 'Corte en Peluquería AV (Málaga)' },
+	{ src: fotoLocal4, alt: 'Color en Peluquería AV (Málaga)' },
+	{ src: fotoLocal5, alt: 'Interior de Peluquería AV, El Romeral' },
+	{ src: fotoLocal6, alt: 'Detalle de Peluquería AV en Teatinos-Universidad' },
 ];
 
 export const SCHEMA = {
@@ -242,6 +255,8 @@ export const SCHEMA = {
 	alternateName: 'Peluquería AV Málaga',
 	description: BUSINESS.summary,
 	url: `${BUSINESS.siteUrl}/`,
+	telephone: BUSINESS.phoneHref,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
 	priceRange: BUSINESS.priceRange,
 	currenciesAccepted: 'EUR',
 	knowsAbout: BUSINESS.categories,
@@ -260,6 +275,12 @@ export const SCHEMA = {
 		longitude: BUSINESS.geo.lng,
 	},
 	hasMap: BUSINESS.googleMaps,
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewCount,
+		bestRating: 5,
+	},
 	hasOfferCatalog: {
 		'@type': 'OfferCatalog',
 		name: `Servicios de ${BUSINESS.shortName}`,
@@ -280,5 +301,18 @@ export const SCHEMA = {
 		name: feature.label,
 		value: true,
 	})),
-	openingHoursSpecification: [],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '10:00',
+			closes: '14:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '16:00',
+			closes: '20:00',
+		},
+	],
 };

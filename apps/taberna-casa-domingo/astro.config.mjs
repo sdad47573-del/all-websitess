@@ -1,5 +1,5 @@
 import { createAstroConfig } from '@astro-config';
 
 export default createAstroConfig({
-	site: 'https://restaurante-la-tasca-de-alonso.vercel.app',
+	site: 'https://taberna-casa-domingo.vercel.app',
 });

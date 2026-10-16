@@ -1,0 +1,377 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const business = {
+	name: 'Florlover Vialia',
+	tagline: 'Tu floristería en el Centro Comercial Vialia',
+	city: 'Málaga',
+	latitude: 36.7121164,
+	longitude: -4.4325451,
+	site: 'https://florlover-vialia.vercel.app',
+};
+const mapsUrl =
+	'https://www.google.com/maps/place/Florlover+Vialia/@36.7121164,-4.4325451,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7b5a2b88d77:0x692470c8f93b0254!8m2!3d36.7121164!4d-4.4325451!16s%2Fg%2F11mz0rwnzy';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&output=embed`;
+const reviewsUrl = 'https://search.google.com/local/reviews?placeid=ChIJAHuIK1v7cg0RJUOwL8hwJmk';
+const servicio = [
+	{
+		number: '01',
+		title: 'Ramos y bouquets',
+		text: 'Rosas, flores de temporada y ramos para regalar, celebrar o simplemente alegrar el día.',
+	},
+	{
+		number: '02',
+		title: 'Bodas y eventos',
+		text: 'Detalles y decoración floral para acompañar los momentos que quieres recordar.',
+	},
+	{
+		number: '03',
+		title: 'Plantas y centros',
+		text: 'Planta de interior, orquídeas y composiciones para dar vida a tus espacios.',
+	},
+	{
+		number: '04',
+		title: 'Flores para llevar',
+		text: 'Pásate por la tienda y consulta la selección floral disponible ese día.',
+	},
+];
+const photos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const manifest = import.meta.glob<{ default: Record<string, { file: string; author?: string }> }>(
+	'../assets/fotos/.maps-manifest.json',
+	{ eager: true, import: 'default' },
+);
+const credits = Object.values(manifest)[0] ?? {};
+const gallery = Object.entries(photos)
+	.map(([path, image]) => {
+		const filename = path.split('/').at(-1) ?? '';
+		const entry = Object.values(credits).find((photo) => photo.file === filename);
+		return {
+			image: image.default,
+			filename,
+			author: entry?.author?.trim() || 'Autoría no indicada en Google Maps',
+		};
+	})
+	.sort((a, b) => a.filename.localeCompare(b.filename));
+const heroPhoto = gallery.find(({ filename }) => filename.includes('apaisada')) ?? gallery[0];
+const title = 'Florlover Vialia | Floristería en Málaga';
+const description =
+	'Florlover Vialia, floristería en el Centro Comercial Vialia de Málaga. Ramos y bouquets, flores de temporada, bodas, eventos y plantas. Consulta cómo llegar.';
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'Florist',
+	name: business.name,
+	description,
+	url: `${business.site}/`,
+	image: gallery.slice(0, 4).map(({ image }) => new URL(image.src, business.site).toString()),
+	address: { '@type': 'PostalAddress', addressLocality: business.city, addressCountry: 'ES' },
+	geo: { '@type': 'GeoCoordinates', latitude: business.latitude, longitude: business.longitude },
+	hasMap: mapsUrl,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#28392f" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image:alt" content={`Fotografías de ${business.name} en Málaga`} />
+		{heroPhoto && (
+			<meta property="og:image" content={new URL(heroPhoto.image.src, business.site).toString()} />
+		)}
+		<meta name="twitter:card" content={heroPhoto ? 'summary_large_image' : 'summary'} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Florlover Vialia, inicio">
+				<span class="brand-flower" aria-hidden="true">
+					✿
+				</span>
+				<span>
+					FLORLOVER<small>VIALIA · MÁLAGA</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#esencia">La floristería</a>
+				<a href="#servicios">Servicios</a>
+				<a href="#galeria">Galería</a>
+			</nav>
+			<a class="header-cta" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+				Ven a vernos <span aria-hidden="true">↗</span>
+			</a>
+		</header>
+		<main id="contenido">
+			<section class="hero" id="inicio">
+				<div class="hero-content">
+					<p class="eyebrow">
+						<span></span> FLORES BONITAS, MOMENTOS BONITOS
+					</p>
+					<h1>
+						Un poquito
+						<br />
+						de <em>primavera,</em>
+						<br />
+						todo el año.
+					</h1>
+					<p class="hero-description">
+						Flores frescas, plantas y detalles para regalar. Encuentra Florlover en el Centro
+						Comercial Vialia, en pleno corazón de Málaga.
+					</p>
+					<div class="hero-actions">
+						<a
+							class="button button-cream"
+							href={directionsUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="hero-link" href="#galeria">
+							Descubre la tienda <span aria-hidden="true">↓</span>
+						</a>
+					</div>
+					<div class="hero-detail">
+						<span class="detail-icon" aria-hidden="true">
+							⌖
+						</span>
+						<span>
+							CENTRO COMERCIAL VIALIA<small>MÁLAGA · ANDALUCÍA</small>
+						</span>
+					</div>
+				</div>
+				<div class="hero-art">
+					{heroPhoto ? (
+						<figure class="hero-photo">
+							<Image
+								src={heroPhoto.image}
+								alt="Floristería Florlover Vialia, fotografía de su ficha de Google Maps"
+								widths={[600, 900, 1200]}
+								sizes="(min-width: 900px) 48vw, 100vw"
+								quality={82}
+								loading="eager"
+								fetchpriority="high"
+							/>
+							<figcaption>
+								Un detalle que florece <span>✿</span>
+							</figcaption>
+						</figure>
+					) : (
+						<div class="hero-placeholder">
+							<span aria-hidden="true">✿</span>
+							<p>
+								Flores para
+								<br />
+								hacerte sonreír.
+							</p>
+						</div>
+					)}
+					<div class="hero-seal" aria-hidden="true">
+						<span>FLOWERS</span>
+						<b>✿</b>
+						<span>MAKE US</span>
+						<span>HAPPY</span>
+					</div>
+					<div class="hero-scribble" aria-hidden="true">
+						✳
+					</div>
+				</div>
+				<div class="hero-baseline">
+					<span>36.71212° N</span>
+					<i></i>
+					<span>4.43255° O</span>
+					<i></i>
+					<span>FLORES PARA TODOS LOS DÍAS</span>
+				</div>
+			</section>
+			<section class="intro section-pad" id="esencia">
+				<div class="section-label">
+					<span>01</span>
+					<i></i>
+					<span>PEQUEÑAS ALEGRÍAS</span>
+				</div>
+				<div class="intro-grid">
+					<h2>
+						El lenguaje más
+						<br />
+						bonito es <em>natural.</em>
+					</h2>
+					<div class="intro-copy">
+						<p>
+							Un ramo puede cambiar el tono de un día. Una planta puede convertir un rincón en tu
+							lugar favorito. En Florlover Vialia encontrarás inspiración floral para acompañar
+							ocasiones especiales y gestos cotidianos.
+						</p>
+						<p>
+							Estamos en el Centro Comercial Vialia, en Málaga. Ven a descubrir la selección
+							disponible en tienda.
+						</p>
+						<a class="inline-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							Ver Florlover en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+			<section class="services" id="servicios">
+				<div class="services-head section-pad">
+					<div>
+						<div class="section-label">
+							<span>02</span>
+							<i></i>
+							<span>IDEAS QUE FLORECEN</span>
+						</div>
+						<h2>
+							Un detalle para
+							<br />
+							<em>cada ocasión.</em>
+						</h2>
+					</div>
+					<p>Flores y plantas para regalar, decorar y celebrar.</p>
+				</div>
+				<div class="service-grid section-pad">
+					{servicio.map((item) => (
+						<article class="service-card">
+							<span>{item.number}</span>
+							<div>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</div>
+							<b aria-hidden="true">✳</b>
+						</article>
+					))}
+				</div>
+			</section>
+			<section class="gallery-section" id="galeria">
+				<div class="gallery-head section-pad">
+					<div>
+						<div class="section-label">
+							<span>03</span>
+							<i></i>
+							<span>UN VISTAZO A FLORLOVER</span>
+						</div>
+						<h2>
+							El color de
+							<br />
+							<em>las cosas bonitas.</em>
+						</h2>
+					</div>
+					<p>
+						Una selección de imágenes publicadas en la ficha de Florlover Vialia en Google Maps.
+					</p>
+				</div>
+				{gallery.length ? (
+					<div class="gallery-grid">
+						{gallery.map(({ image, filename, author }, index) => (
+							<figure class={`gallery-item gallery-item-${index % 4}`}>
+								<Image
+									src={image}
+									alt={`Fotografía ${index + 1} de Florlover Vialia, publicada en Google Maps`}
+									widths={[360, 600, 900]}
+									sizes="(min-width: 1100px) 30vw, (min-width: 700px) 46vw, 92vw"
+									quality={78}
+									loading="lazy"
+								/>
+								<figcaption>
+									<span>FLORLOVER VIALIA</span>
+									<small>{author}</small>
+								</figcaption>
+							</figure>
+						))}
+					</div>
+				) : (
+					<div class="gallery-empty section-pad">
+						<span aria-hidden="true">✿</span>
+						<p>Visita nuestra ficha para descubrir las fotografías.</p>
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							Abrir ficha en Google Maps ↗
+						</a>
+					</div>
+				)}
+				<p class="gallery-credit">
+					Fotografías de la ficha de Google Maps ·{' '}
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ver ficha completa ↗
+					</a>
+				</p>
+			</section>
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<div class="section-label">
+						<span>04</span>
+						<i></i>
+						<span>ENCUÉNTRANOS</span>
+					</div>
+					<h2>
+						Un paseo por
+						<br />
+						<em>Vialia y unas flores.</em>
+					</h2>
+					<p>
+						Estamos en el Centro Comercial Vialia, junto a la estación María Zambrano, en Málaga.
+						Consulta el mapa y prepara tu visita.
+					</p>
+					<a
+						class="button button-dark"
+						href={directionsUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Ver indicaciones <span aria-hidden="true">↗</span>
+					</a>
+					<a class="review-link" href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Leer opiniones de clientes <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+				<div class="map-card">
+					<iframe
+						title="Mapa de Florlover Vialia en Málaga"
+						src={mapEmbedUrl}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen
+					></iframe>
+					<span class="map-tag">CENTRO COMERCIAL VIALIA · MÁLAGA</span>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<a class="brand footer-brand" href="#inicio">
+				<span class="brand-flower" aria-hidden="true">
+					✿
+				</span>
+				<span>
+					FLORLOVER<small>VIALIA · MÁLAGA</small>
+				</span>
+			</a>
+			<p>Flores bonitas, momentos bonitos.</p>
+			<span>© {new Date().getFullYear()} Florlover Vialia</span>
+		</footer>
+	</body>
+</html>

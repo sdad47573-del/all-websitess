@@ -1,32 +1,19 @@
 # Imágenes — Peluquería AV
 
-## Por qué no se descargan las fotos de Google Maps
+## Fotos descargadas de la ficha de Google Maps
 
-La ficha pública de Google Maps (`Peluquería AV`,
-36.7218896,-4.4731652) tiene fotos con derechos de autor y sus condiciones
-prohíben descargarlas para reutilizarlas en otra web:
+La ficha pública (`Peluquería AV`, 36.7218896,-4.4731652,
+feature `0xd72f7cff17ea2bf:0xd10a6931609ad5ad`, C. Margarita Xirgu,
+29010 Málaga) se descargó el 16-10-2026 con:
 
-- [Condiciones de Google Maps / Google Earth](https://www.google.com/help/legalnotices_maps/): el contenido (incluidas fotos de usuarios) no puede copiarse ni reutilizarse sin permiso.
-- [Política de Contenido Aportado por Usuarios de Google Maps](https://maps.google.com/localguides/rules/): cada foto sigue perteneciendo a su autor.
+```sh
+node scripts/fetch-maps-photos.mjs peluqueria-av-malaga
+```
 
-Por eso **no se descarga ninguna foto**: esta plantilla trae 5 imágenes propias
-de marcador en `src/assets/fotos/*.svg`. La web compila y se ve bien con ellas,
-y evita cualquier problema legal.
+Hay **10 fotos** en `src/assets/fotos/peluqueria-av-malaga-*.jpg` (con su
+`.maps-manifest.json`). Se muestran optimizadas (AVIF/varios tamaños) en
+hero y galería, con enlace a la ficha original. Los SVG antiguos quedan
+solo como logo de respaldo (`peluqueria-av-logo.svg`).
 
-## Cómo poner fotos reales (2 minutos)
-
-1. Pide a la peluquería sus fotos originales (JPG, con permiso por escrito).
-2. Guárdalas en `src/assets/fotos/` y cambia en `src/data/site.ts` la
-   extensión de `.svg` a `.jpg` con el mismo nombre base:
-   - `peluqueria-av-malaga.svg` → portada / hero
-   - `peluqueria-av-salon.svg` → el salón
-   - `peluqueria-av-corte.svg` → corte
-   - `peluqueria-av-color.svg` → color
-   - `peluqueria-av-logo.svg` → logo (o usa el logo real)
-3. `bun run --filter peluqueria-av-malaga build`
-
-## Alternativa gratuita y legal
-
-Si necesitas fotos temporales libres, usa [Unsplash](https://unsplash.com/es)
-(peluquería, corte, color) con su licencia gratuita y cita al autor si lo pide
-la licencia.
+Si la peluquería aporta fotos originales, sustitúyelas en `src/data/site.ts`
+y reconstruye con `bun run --filter peluqueria-av-malaga build`.

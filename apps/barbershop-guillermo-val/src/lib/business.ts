@@ -9,6 +9,9 @@ export const business = {
 	phone: '+34 600 24 13 83',
 	latitude: 36.7211362,
 	longitude: -4.4537981,
+	/** Valoración de la ficha de Google Maps (4,9 sobre 5 con 268 reseñas, 16 oct 2026). */
+	rating: 4.9,
+	reviewCount: 268,
 	site: 'https://barbershop-guillermo-val.vercel.app',
 } as const;
 
@@ -19,6 +22,15 @@ export const photoUrl =
 	'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QMoQ8tfXiW1UnZ_rjSA3X5gpK003dFA08U8nEXHu8x0se0mzsmqtqv77cIgZ8_TXKKEBeBE0tky7R16utxE-W-6n5bRbbIL92XNGHlEoWJuRi63zvX_LqMna0Fma_z5_iEDZnS=w1200-h900-k-no';
 
 export const phoneHref = 'tel:+34600241383';
+
+/**
+ * Horario semanal publicado en la ficha (16 oct 2026): de lunes a viernes de 10:00 a 20:00;
+ * sábado y domingo cerrado. Puede cambiar: ante la duda, llama antes de salir.
+ */
+export const horario = [
+	{ days: 'Lunes a viernes', hours: '10:00–20:00' },
+	{ days: 'Sábado y domingo', hours: 'Cerrado' },
+] as const;
 export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
 export const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=16&output=embed`;
 
@@ -45,4 +57,18 @@ export const structuredData = {
 		longitude: business.longitude,
 	},
 	hasMap: mapsUrl,
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: business.rating,
+		reviewCount: business.reviewCount,
+		bestRating: 5,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '10:00',
+			closes: '20:00',
+		},
+	],
 };

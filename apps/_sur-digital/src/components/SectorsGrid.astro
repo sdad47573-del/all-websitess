@@ -1,6 +1,8 @@
 ---
 // Grid de especialidades por sector. Fuente única de verdad: SECTORS en
 // data/sectors.ts, así que las landings nuevas aparecen aquí solas.
+// Resumen como el Portfolio: con JS se ven 6 y el botón amplía; sin JS
+// la lista completa queda visible (y los enlaces siguen en el HTML).
 import { SECTORS } from "../data/sectors";
 ---
 
@@ -21,11 +23,13 @@ import { SECTORS } from "../data/sectors";
 
     <ul
       data-reveal-group
+      data-sectors-grid
+      data-visible-count="6"
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center max-w-5xl w-full"
     >
       {
         SECTORS.map((sector) => (
-          <li class="card bg-base-100 shadow-md border border-base-300 w-full transition-all hover:shadow-lg hover:-translate-y-1">
+          <li data-sector-card class="card bg-base-100 shadow-md border border-base-300 w-full transition-all hover:shadow-lg hover:-translate-y-1">
             <a href={`/web-para-${sector.slug}/`} class="card-body gap-2">
               <span class="text-3xl" aria-hidden="true">{sector.emoji}</span>
               <h3 class="card-title text-lg">{sector.navLabel}</h3>
@@ -42,8 +46,17 @@ import { SECTORS } from "../data/sectors";
     </ul>
 
     <div data-reveal class="flex flex-col sm:flex-row gap-3 mt-8">
-      <a href="/especialidades/" class="btn btn-outline">
-        Ver todas las especialidades
+      <button
+        type="button"
+        class="btn btn-outline"
+        data-show-more-sectors
+        hidden
+        aria-controls="especialidades"
+      >
+        Ver todas las especialidades ({SECTORS.length})
+      </button>
+      <a href="/especialidades/" class="btn btn-ghost">
+        Ir al hub de especialidades →
       </a>
       <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
         ¿Tu negocio es de otro sector? Cuéntanoslo
@@ -51,3 +64,34 @@ import { SECTORS } from "../data/sectors";
     </div>
   </div>
 </section>
+
+<script>
+  // Resumen del grid de sectores: con JS solo se ven las primeras tarjetas
+  // hasta pulsar «Ver todas». Sin JS el botón no aparece y todo queda visible.
+  const sectorsGrid = document.querySelector<HTMLElement>("[data-sectors-grid]");
+  const showMoreSectors = document.querySelector<HTMLButtonElement>(
+    "[data-show-more-sectors]"
+  );
+
+  if (sectorsGrid && showMoreSectors) {
+    const cards = Array.from(
+      sectorsGrid.querySelectorAll<HTMLElement>("[data-sector-card]")
+    );
+    const visibleCount = Number.parseInt(
+      sectorsGrid.dataset.visibleCount ?? "6",
+      10
+    );
+
+    cards.forEach((card, index) => {
+      card.hidden = index >= visibleCount;
+    });
+    showMoreSectors.hidden = false;
+
+    showMoreSectors.addEventListener("click", () => {
+      cards.forEach((card) => {
+        card.hidden = false;
+      });
+      showMoreSectors.hidden = true;
+    });
+  }
+</script>

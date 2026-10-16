@@ -1,36 +1,43 @@
 /**
- * Datos de La Barbería de Teatinos — Av. Plutarco, 81 (Finca La Palma,
+ * Datos de La Barbería de Teatinos — Av. Plutarco, 83, Loc 2 (Finca La Palma,
  * Teatinos-Universidad, 29010 Málaga).
  *
  * Fuentes públicas:
  * - Enlace de Google Maps aportado: La Barbería de Teatinos,
  *   36.7209134,-4.4728015, feature 0xd72f736372655af:0x2096b7484de5aceb
- * - Reverse-geocode OSM (Nominatim): Av. Plutarco 81, Finca La Palma,
- *   Teatinos-Universidad, Málaga 29010.
+ * - Ficha pública leída el 16-10-2026 desde /maps/preview/place: nombre,
+ *   dirección (Av. Plutarco, 83, Loc 2), teléfono 690 17 96 99, valoración
+ *   4,7 con 233 reseñas, horario L–V 9:00–14:00 y 16:00–20:00 / S 9:00–14:00 /
+ *   D cerrado, placeid ChIJr1UmNzb3cg0R66zlTUi3liA.
  *
  * Lo que la web NO inventa:
- * - La ficha no aporta teléfono, horario, web propia, carta de servicios,
- *   precios ni recuento de reseñas verificable desde fuera, así que no se
- *   publican. Todo remite a "consultar la ficha de Google Maps".
+ * - La ficha no publica web propia, carta de servicios ni precios, así que no
+ *   se publican. Todo remite a la ficha de Google Maps y al teléfono verificado.
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: 10 fotos descargadas de la ficha con
+ * scripts/fetch-maps-photos.mjs (ver .maps-manifest.json). Se muestran
+ * optimizadas con enlace a la ficha original. Ver README_IMAGENES.md.
  */
 
-import fotoPortada from '../assets/fotos/barberia-teatinos-malaga.svg';
-import fotoCentro from '../assets/fotos/barberia-teatinos-plutarco.svg';
-import fotoCorte from '../assets/fotos/barberia-teatinos-corte.svg';
-import fotoBarba from '../assets/fotos/barberia-teatinos-barba.svg';
+import fotoHero from '../assets/fotos/barberia-teatinos-apaisada-01.jpg';
+import fotoLocal2 from '../assets/fotos/barberia-teatinos-apaisada-02.jpg';
+import fotoLocal3 from '../assets/fotos/barberia-teatinos-apaisada-04.jpg';
+import fotoLocal4 from '../assets/fotos/barberia-teatinos-apaisada-10.jpg';
+import fotoVert1 from '../assets/fotos/barberia-teatinos-vertical-03.jpg';
+import fotoVert2 from '../assets/fotos/barberia-teatinos-vertical-05.jpg';
+import fotoVert3 from '../assets/fotos/barberia-teatinos-vertical-06.jpg';
 import logo from '../assets/fotos/barberia-teatinos-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoCorte,
-	fotoCalle: fotoBarba,
+	fotoFachada: fotoHero,
+	fotoInterior: fotoVert1,
+	fotoCejas: fotoVert2,
+	fotoCalle: fotoVert3,
 	logo,
 };
+
+export const PHOTOS_MANIFEST_NOTE =
+	'Fotos de la ficha pública de Google Maps, alojadas aquí para servirlas optimizadas.';
 
 export const BUSINESS = {
 	name: 'La Barbería de Teatinos',
@@ -38,22 +45,27 @@ export const BUSINESS = {
 	tagline: 'Barbería en Teatinos, Málaga',
 	claim: 'Tu barbería en Teatinos',
 	summary:
-		'La Barbería de Teatinos es una barbería en la Av. Plutarco, 81 (Finca La Palma, Teatinos-Universidad, 29010 Málaga). Consulta su ficha de Google Maps para horario, cita y servicios actuales.',
-	street: 'Av. Plutarco, 81',
+		'La Barbería de Teatinos es una barbería en la Av. Plutarco, 83, Loc 2 (Finca La Palma, Teatinos-Universidad, 29010 Málaga). 4,7 sobre 5 con 233 reseñas. Llama al 690 17 96 99.',
+	street: 'Av. Plutarco, 83, Loc 2',
 	district: 'Finca La Palma',
 	borough: 'Teatinos-Universidad',
 	city: 'Málaga',
 	postalCode: '29010',
 	region: 'Andalucía',
 	country: 'ES',
-	// Sin teléfono verificado fuera de la ficha: se enlaza a Maps en vez de inventar uno.
-	phoneDisplay: 'Ver ficha de Google',
-	phoneHref:
+	phoneDisplay: '+34 690 17 96 99',
+	phoneHref: 'tel:+34690179699',
+	reviewsUrl:
+		'https://search.google.com/local/reviews?placeid=ChIJr1UmNzb3cg0R66zlTUi3liA&hl=es',
+	placeId: 'ChIJr1UmNzb3cg0R66zlTUi3liA',
+	rating: 4.7,
+	reviewCount: 233,
+	mapsHref:
 		'https://www.google.com/maps/place/La+Barber%C3%ADa+de+Teatinos/@36.7209134,-4.4728015,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f736372655af:0x2096b7484de5aceb!8m2!3d36.7209134!4d-4.4728015!16s%2Fg%2F11gb3r28gf?authuser=0&hl=es&entry=ttu',
 	googleMaps:
 		'https://www.google.com/maps/place/La+Barber%C3%ADa+de+Teatinos/@36.7209134,-4.4728015,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f736372655af:0x2096b7484de5aceb!8m2!3d36.7209134!4d-4.4728015!16s%2Fg%2F11gb3r28gf?authuser=0&hl=es&entry=ttu',
 	googleMapsEmbed:
-		'https://maps.google.com/maps?q=Av.%20Plutarco%2C%2081%2C%2029010%20M%C3%A1laga&t=&z=17&ie=UTF8&iwloc=&output=embed',
+		'https://maps.google.com/maps?q=Av.%20Plutarco%2C%2083%2C%2029010%20M%C3%A1laga&t=&z=17&ie=UTF8&iwloc=&output=embed',
 	geo: { lat: 36.7209134, lng: -4.4728015 },
 	featureId: '0xd72f736372655af:0x2096b7484de5aceb',
 	priceRange: '€€',
@@ -64,10 +76,12 @@ export const BUSINESS = {
 		'Cuidado masculino',
 	],
 	hours: [
-		{ days: 'Horario', hours: 'Consultar ficha de Google Maps' },
+		{ days: 'Lunes a viernes', hours: '9:00–14:00 y 16:00–20:00' },
+		{ days: 'Sábado', hours: '9:00–14:00' },
+		{ days: 'Domingo', hours: 'Cerrado' },
 	],
 	hoursNote:
-		'Horario sin verificar fuera de Google Maps: abre la ficha de la barbería para ver apertura actual y festivos.',
+		'Horario publicado en la ficha de Google Maps (16-10-2026). Puede cambiar en festivos: ante la duda, llama al 690 17 96 99.',
 	siteUrl: 'https://barberia-teatinos.vercel.app',
 };
 
@@ -99,13 +113,13 @@ export const HIGHLIGHTS = [
 	},
 	{
 		icon: 'ri-map-pin-2-line',
-		title: 'Plutarco, 81',
-		text: 'Av. Plutarco, 81 · 29010 Málaga. Teatinos-Universidad.',
+		title: 'Plutarco, 83',
+		text: 'Av. Plutarco, 83, Loc 2 · 29010 Málaga. Teatinos-Universidad.',
 	},
 	{
-		icon: 'ri-google-fill',
-		title: 'Ficha de Google',
-		text: 'Horario, cita y contacto actualizados en su ficha pública de Google Maps.',
+		icon: 'ri-phone-line',
+		title: '690 17 96 99',
+		text: 'Llama para pedir cita. 4,7 sobre 5 con 233 reseñas en Google.',
 	},
 	{
 		icon: 'ri-user-smile-line',
@@ -202,11 +216,11 @@ export const VENTAJAS = [
 export const FAQ = [
 	{
 		q: '¿Dónde está La Barbería de Teatinos?',
-		a: 'En la Av. Plutarco, 81 (Finca La Palma, Teatinos-Universidad, 29010 Málaga). Abre la ubicación exacta en Google Maps desde el botón “Cómo llegar” de esta página.',
+		a: 'En la Av. Plutarco, 83, Loc 2 (Finca La Palma, Teatinos-Universidad, 29010 Málaga). Abre la ubicación exacta en Google Maps desde el botón “Cómo llegar” de esta página.',
 	},
 	{
 		q: '¿Cómo pido cita?',
-		a: 'La barbería no publica web propia ni teléfono verificado fuera de Google Maps, así que la vía fiable es su ficha pública de Google: abre “Ver ficha de Google” y usa el teléfono o el botón de contacto que indique allí.',
+		a: 'Llama al 690 17 96 99, el teléfono publicado en su ficha de Google Maps. La barbería no publica web propia, así que la vía fiable es ese teléfono o su ficha pública de Google.'
 	},
 	{
 		q: '¿Qué servicios ofrecen?',
@@ -218,11 +232,11 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cuál es el horario?',
-		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha para ver apertura actual, festivos y cambios.',
+		a: 'Según su ficha de Google (16-10-2026): lunes a viernes 9:00–14:00 y 16:00–20:00, sábado 9:00–14:00 y domingo cerrado. Puede cambiar en festivos: llama antes de salir.'
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales (ver README_IMAGENES.md).',
+		q: '¿De dónde son las fotos?',
+		a: 'Son 10 fotos de la ficha pública de Google Maps del propio negocio, descargadas con scripts/fetch-maps-photos.mjs y servidas aquí optimizadas, con enlace a la ficha original (ver README_IMAGENES.md).'
 	},
 ];
 
@@ -235,19 +249,31 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'La Barbería de Teatinos en Málaga',
+		src: fotoHero,
+		alt: 'La Barbería de Teatinos en Málaga, foto de su ficha de Google Maps',
 	},
 	{
-		src: IMAGES.fotoInterior,
-		alt: 'La Barbería de Teatinos en Av. Plutarco, Málaga',
+		src: fotoLocal2,
+		alt: 'Interior de La Barbería de Teatinos en Av. Plutarco, Málaga',
 	},
 	{
-		src: IMAGES.fotoCejas,
+		src: fotoLocal3,
+		alt: 'Detalle del local de La Barbería de Teatinos (Málaga)',
+	},
+	{
+		src: fotoLocal4,
+		alt: 'La Barbería de Teatinos, barbería en Teatinos-Universidad',
+	},
+	{
+		src: fotoVert1,
 		alt: 'Corte de pelo en La Barbería de Teatinos (Málaga)',
 	},
 	{
-		src: IMAGES.fotoCalle,
+		src: fotoVert2,
+		alt: 'Servicio de barbería en La Barbería de Teatinos',
+	},
+	{
+		src: fotoVert3,
 		alt: 'Arreglo de barba en La Barbería de Teatinos',
 	},
 ];
@@ -260,6 +286,8 @@ export const SCHEMA = {
 	alternateName: 'Barbería Teatinos Málaga',
 	description: BUSINESS.summary,
 	url: `${BUSINESS.siteUrl}/`,
+	telephone: BUSINESS.phoneHref,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
 	priceRange: BUSINESS.priceRange,
 	currenciesAccepted: 'EUR',
 	knowsAbout: BUSINESS.categories,
@@ -278,6 +306,12 @@ export const SCHEMA = {
 		longitude: BUSINESS.geo.lng,
 	},
 	hasMap: BUSINESS.googleMaps,
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewCount,
+		bestRating: 5,
+	},
 	hasOfferCatalog: {
 		'@type': 'OfferCatalog',
 		name: 'Servicios de La Barbería de Teatinos',
@@ -298,5 +332,24 @@ export const SCHEMA = {
 		name: feature.label,
 		value: true,
 	})),
-	openingHoursSpecification: [],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '14:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '16:00',
+		closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '09:00',
+		closes: '14:00',
+		},
+	],
 };

@@ -37,8 +37,8 @@ node scripts/fetch-maps-photos.mjs estetica-alicia-toledo
 ## Contenido y fuentes
 
 - Nombre, coordenadas 37.8912377,-4.8053837 y feature id del enlace de Maps aportado.
-- Dirección Plaza Marina Española 16, 14011 Córdoba + teléfono 957 94 67 27 (QDQ/BellezaOn).
-- Horario: lun–vie 10:00–20:00, sáb 10:00–14:00 (Groupon).
+- Dirección Plaza Marina Española 16, 14011 Córdoba + teléfono 957 96 23 83, valoración 4,8/46 y horario de la ficha de Google (16-10-2026).
+- Horario: lun cerrado; mar–vie 10:00–20:00, sáb 10:00–14:00, dom cerrado.
 - Servicios: láser diodo 800 W por zonas, peluquería, estética.
 
 > ⚠️ **Antes de publicar**:

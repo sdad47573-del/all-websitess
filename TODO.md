@@ -1,43 +1,42 @@
-bar el anzuelo, revisar en local, no usa imagenes actualemtne
+crea una web con astro y descarga las imagenes de google para
+https://www.google.com/maps/place/Alimentaci%C3%B3n+Asia/@36.7100316,-4.4626952,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7433a9757df:0xd000f774649330ba!8m2!3d36.7100316!4d-4.4626952!16s%2Fg%2F11f34t0lsz?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Sal%C3%B3n+de+Belleza+Medina+Azahara/@37.8854452,-4.7909253,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdfe3d1500ec9:0x66c0c225631b6d5f!8m2!3d37.8854452!4d-4.7909253!16s%2Fg%2F11gxgctvxn?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Tienda+24+horas/@36.7225509,-4.4290741,3a,75y,90t/data=!3m8!1e2!3m6!1sCIABIhCztGgKELCFXgwT4bE9dO0u!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgrass-cs%2FAABkmLfUFooNdIS1nVNV79u6ByubOnCxqlTWgr0vgunHx05hQKGYtBQycT0hSLbsBLRPUxVnb88fOwA0oFd8R3FGLgx-K_TvEVvowEdh2ZzKZmaxbIk75Cz8n69iwUiiDjQydw1QqVs8r1dBGEiq%3Dw114-h86-k-no!7i5712!8i4284!4m7!3m6!1s0xd72f7ab7ec6c051:0xcda7a31c6f00915d!8m2!3d36.7225509!4d-4.4290741!10e5!16s%2Fg%2F11w92j6hyt?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Est%C3%A9tica+Alicia+Toledo/@37.8912377,-4.8053837,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf51e350b693:0xfa54f90c7d0abc20!8m2!3d37.8912377!4d-4.8053837!16s%2Fg%2F11b6dg2btv?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Floristeria+Myriam/@36.7243477,-4.443716,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70b8a083cb3:0xe8d23d9abc7faa09!8m2!3d36.7243477!4d-4.443716!16s%2Fg%2F11bxddrl75?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Centro+de+Belleza+Mimate/@37.8759824,-4.7971771,17z/data=!3m1!4b1!4m6!3m5!1s0xd6d20a65c418827:0xdf4422364c5f5ceb!8m2!3d37.8759824!4d-4.7971771!16s%2Fg%2F11ynqmchl?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Florister%C3%ADa+el+nieto/@36.7118649,-4.4414763,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7a5e5e5cb07:0xb3fd121cf1f3a2a3!8m2!3d36.7118649!4d-4.4414763!16s%2Fg%2F11rfbn8xzp?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Sal%C3%B3n+de+belleza+CrissFany's/@37.888565,-4.762951,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf8106113317:0x6e02c94cb931230a!8m2!3d37.888565!4d-4.762951!16s%2Fg%2F11f5h05lnv?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Cisneros+Florister%C3%ADa/@36.7234891,-4.4652276,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7058dbb1fab:0x562995f49b82c604!8m2!3d36.7234891!4d-4.4652276!16s%2Fg%2F11n86cqxqs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Sal%C3%B3n+de+Belleza+Nuevo+Estilo/@37.8965843,-4.7752082,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf71471f1eab:0x60c84ed51f7b57c1!8m2!3d37.8965843!4d-4.7752082!16s%2Fg%2F11tf1c8ddm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Mimosa+Blossom+Florister%C3%ADa/@36.718552,-4.4331227,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7d186a43dcd:0x241fbf6fd20801dc!8m2!3d36.718552!4d-4.4331227!16s%2Fg%2F11y3_f68rx?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Peluquer%C3%ADa+AV/@36.7218896,-4.4731652,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7cff17ea2bf:0xd10a6931609ad5ad!8m2!3d36.7218896!4d-4.4731652!16s%2Fg%2F11vy2f5gzk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/ANTOL%C3%8DN+FLORISTER%C3%8DA+(+Antigua+Lunaflor+Florister%C3%ADa)/@36.7002512,-4.4449136,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f762ea8a81dd:0xd8914db4f2fa6f05!8m2!3d36.7002512!4d-4.4449136!16s%2Fg%2F11rkb6x00s?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Nexus+Essence+Tattoo+%26+Barbershop/@36.7207307,-4.4715546,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f700387acbf5:0x1ba6e431b8c71747!8m2!3d36.7207307!4d-4.4715546!16s%2Fg%2F11zgcjzt_n?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Florister%C3%ADa+Emilia+El+Perchel/@36.7139825,-4.4266595,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7a8c863af6d:0xc62b1bc6b50aab2a!8m2!3d36.7139825!4d-4.4266595!16s%2Fg%2F11kk7p6_fs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/La+Barber%C3%ADa+de+Teatinos/@36.7209134,-4.4728015,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f736372655af:0x2096b7484de5aceb!8m2!3d36.7209134!4d-4.4728015!16s%2Fg%2F11gb3r28gf?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Florlover+Vialia/@36.7121164,-4.4325451,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7b5a2b88d77:0x692470c8f93b0254!8m2!3d36.7121164!4d-4.4325451!16s%2Fg%2F11mz0rwnzy?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/PELUQUER%C3%8DA+LE+BARBIERE+TEATINOS/@36.7218951,-4.475792,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7ade71fc967:0xd395a9d0bd9c98f2!8m2!3d36.7218951!4d-4.475792!16s%2Fg%2F11sy9q12nc?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Florister%C3%ADa+Araucaria/@36.741443,-4.5541639,12z/data=!4m11!1m3!2m2!1sflorister%C3%ADa!6e6!3m6!1s0xd72f7dfe103feab:0xe36c548ac88b5afa!8m2!3d36.7232994!4d-4.396258!15sCgxmbG9yaXN0ZXLDrWFaDiIMZmxvcmlzdGVyw61hkgEHZmxvcmlzdJoBI0NoWkRTVWhOTUc5blMwVkpRMEZuVFVSM2FuRlRUVlYzRUFF4AEA-gEECAAQRg!16s%2Fg%2F11xblvdmt?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Zero+Onze+hair+studio/@36.7207816,-4.4798433,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7b4ba8841ad:0x64c2947cb043ff89!8m2!3d36.7207816!4d-4.4798433!16s%2Fg%2F11kk4sjbxw?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/MALAGA+SUPERMARKET+24%2F7/@36.7231956,-4.4212835,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7ee5202b239:0xbd4a4e5f80e3fcd5!8m2!3d36.7231956!4d-4.4212835!16s%2Fg%2F11xl93yc1m?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
+crea una web con astro y descarga las imagenes de google para
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Felipe+Barber/@36.7275167,-4.4674271,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7d9f04b4337:0xffe64db45585bf5!8m2!3d36.7275167!4d-4.4674271!16s%2Fg%2F11gxn5y32_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Alsara+express+Los+Tilos/@36.7136423,-4.4336503,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f700509b23bd:0xa82661605abacb41!8m2!3d36.7136423!4d-4.4336503!16s%2Fg%2F11ytp83fz_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/DifferentBarber/@36.7271106,-4.4673494,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f77c7bd5d5e5:0x7dda748b78e036fb!8m2!3d36.7271106!4d-4.4673494!16s%2Fg%2F11yn6c5vz_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Supermarket+DT88/@36.719384,-4.4250809,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f727c9700b33:0x6e7733507158bc27!8m2!3d36.719384!4d-4.4250809!16s%2Fg%2F11yrbs79pt?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D
 
 crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Barbershop+Guillermo+Val/@36.7211362,-4.4537981,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f71a2730bbcd:0xf23b304a1084b617!8m2!3d36.7211362!4d-4.4537981!16s%2Fg%2F11t8641y8_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMi4wIKXMDSoASAFQAw%3D%3D
-
-crea una web con astro y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurante+Villatorres/@37.798035,-3.7823332,17z/data=!3m1!4b1!4m6!3m5!1s0xd6dd659dbb0b4a9:0x8a4fd6dd4fdffdd2!8m2!3d37.798035!4d-3.7823332!16s%2Fg%2F1td6hv2c?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAwNC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Minimarket+D%C2%B4Paso+m%C3%A1laga/@36.6984561,-4.4543047,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f9ff7e0ff157:0x3d2ce22986e036df!8m2!3d36.6984561!4d-4.4543047!16s%2Fg%2F11t5xqthnn?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D

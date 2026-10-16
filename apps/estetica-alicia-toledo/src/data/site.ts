@@ -48,7 +48,7 @@ export const BUSINESS = {
 	tagline: 'Peluquería, láser y estética en Figueroa, Córdoba',
 	claim: 'Tu imagen, con las técnicas más novedosas',
 	summary:
-		'Estética Alicia Toledo es un centro de peluquería y estética en Plaza Marina Española 16, local (Parque Figueroa, 14011 Córdoba): depilación láser diodo, peluquería y estética. Llama al 957 94 67 27 o consulta su ficha de Google Maps para cita y servicios actuales.',
+		'Estética Alicia Toledo es un centro de peluquería y estética en Plaza Marina Española 16, local (Parque Figueroa, 14011 Córdoba): depilación láser diodo, peluquería y estética. Llama al 957 96 23 83 o consulta su ficha de Google Maps para cita y servicios actuales.',
 	street: 'Plaza Marina Española 16, local',
 	district: 'Parque Figueroa',
 	borough: 'Distrito Noroeste',
@@ -56,9 +56,14 @@ export const BUSINESS = {
 	postalCode: '14011',
 	region: 'Andalucía',
 	country: 'ES',
-	phoneDisplay: '957 94 67 27',
-	phoneHref: 'tel:+34957946727',
-	whatsapp: 'https://wa.me/34957946727?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Alicia%20Toledo.%20%C2%BFMe%20confirm%C3%A1is%20disponibilidad%3F',
+	phoneDisplay: '957 96 23 83',
+	phoneHref: 'tel:+34957962383',
+	whatsapp: 'https://wa.me/34957962383?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Alicia%20Toledo.%20%C2%BFMe%20confirm%C3%A1is%20disponibilidad%3F',
+	reviewsUrl:
+		'https://search.google.com/local/reviews?placeid=ChIJk7ZQ41HfbA0RILwKfQz5VPo&hl=es',
+	placeId: 'ChIJk7ZQ41HfbA0RILwKfQz5VPo',
+	rating: 4.8,
+	reviewCount: 46,
 	facebook: 'https://www.facebook.com/peluqueriaestetica.toledo/',
 	groupon: 'https://www.groupon.es/deals/estetica-alicia-toledo-1',
 	googleMaps: GOOGLE_MAPS,
@@ -69,12 +74,13 @@ export const BUSINESS = {
 	priceRange: '€€',
 	categories: ['Peluquería', 'Depilación láser', 'Estética', 'Belleza'],
 	hours: [
-		{ days: 'Lunes a viernes', hours: '10:00–20:00' },
+		{ days: 'Lunes', hours: 'Cerrado' },
+		{ days: 'Martes a viernes', hours: '10:00–20:00' },
 		{ days: 'Sábado', hours: '10:00–14:00' },
 		{ days: 'Domingo', hours: 'Cerrado' },
 	],
 	hoursNote:
-		'Horario según oferta agregada (Groupon). Confirma en la ficha de Google o llamando al 957 94 67 27, porque puede variar en festivos.',
+		'Horario publicado en la ficha de Google Maps (16-10-2026). Confirma llamando al 957 96 23 83, porque puede variar en festivos.',
 	siteUrl: 'https://estetica-alicia-toledo.vercel.app',
 };
 
@@ -111,7 +117,7 @@ export const HIGHLIGHTS = [
 	},
 	{
 		icon: 'ri-phone-line',
-		title: '957 94 67 27',
+		title: '957 96 23 83',
 		text: 'Cita por teléfono o WhatsApp.',
 	},
 	{
@@ -125,7 +131,7 @@ export const SERVICIOS = [
 	{
 		icon: 'ri-scissors-2-line',
 		title: 'Peluquería',
-		text: 'Peluquería y asesoría de imagen. Confirma en el 957 94 67 27.',
+		text: 'Peluquería y asesoría de imagen. Confirma en el 957 96 23 83.',
 	},
 	{
 		icon: 'ri-flashlight-line',
@@ -145,7 +151,7 @@ export const SERVICIOS = [
 	{
 		icon: 'ri-calendar-check-line',
 		title: 'Cita',
-		text: 'Con cita: llama al 957 94 67 27 o escribe por WhatsApp.',
+		text: 'Con cita: llama al 957 96 23 83 o escribe por WhatsApp.',
 	},
 	{
 		icon: 'ri-map-pin-line',
@@ -187,7 +193,7 @@ export const VENTAJAS = [
 	{
 		icon: 'ri-phone-line',
 		title: 'Cita directa',
-		text: 'Teléfono 957 94 67 27 y WhatsApp para confirmar servicio, precio y hora.',
+		text: 'Teléfono 957 96 23 83 y WhatsApp para confirmar servicio, precio y hora.',
 	},
 	{
 		icon: 'ri-shield-check-line',
@@ -213,7 +219,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cómo pido cita?',
-		a: 'Llamando al 957 94 67 27 o por WhatsApp, con tu código si vienes con oferta. Se necesita reserva previa.',
+		a: 'Llamando al 957 96 23 83 o por WhatsApp, con tu código si vienes con oferta. Se necesita reserva previa.',
 	},
 	{
 		q: '¿Qué servicios ofrecen?',
@@ -225,7 +231,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cuál es el horario?',
-		a: 'Lunes a viernes 10:00–20:00 y sábado 10:00–14:00, según oferta agregada. Llega 10-15 minutos antes de tu cita.',
+		a: 'Lunes cerrado; martes a viernes 10:00–20:00 y sábado 10:00–14:00, según su ficha de Google. Llega 10-15 minutos antes de tu cita.'
 	},
 	{
 		q: '¿Necesito preparar la sesión de láser?',
@@ -237,7 +243,7 @@ export const FEATURES = [
 	{ icon: 'ri-scissors-2-line', label: 'Peluquería' },
 	{ icon: 'ri-flashlight-line', label: 'Láser diodo' },
 	{ icon: 'ri-map-pin-line', label: 'Figueroa, Córdoba' },
-	{ icon: 'ri-phone-line', label: '957 94 67 27' },
+	{ icon: 'ri-phone-line', label: '957 96 23 83' },
 ];
 
 export const GALLERY = [
@@ -259,7 +265,13 @@ export const SCHEMA = {
 	alternateName: 'Alicia Toledo Córdoba',
 	description: BUSINESS.summary,
 	url: `${BUSINESS.siteUrl}/`,
-	telephone: '+34957946727',
+	telephone: '+34957962383',
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: 4.8,
+		reviewCount: 46,
+		bestRating: 5,
+	},
 	priceRange: BUSINESS.priceRange,
 	currenciesAccepted: 'EUR',
 	knowsAbout: BUSINESS.categories,
@@ -282,7 +294,7 @@ export const SCHEMA = {
 	openingHoursSpecification: [
 		{
 			'@type': 'OpeningHoursSpecification',
-			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
 			opens: '10:00',
 			closes: '20:00',
 		},
