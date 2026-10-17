@@ -1,0 +1,540 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'La Factoría Vegana · Restaurante vegano en León';
+const description =
+	'La Factoría Vegana, restaurante vegano en la calle Fernando III el Santo, 5 de León. 4,8 sobre 5 con 1002 reseñas; abre de miércoles a domingo.';
+const keywords =
+	'La Factoría Vegana, restaurante vegano León, comida vegana León, Fernando III el Santo León, restaurante vegetariano León, La Factoría Vegana teléfono';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada en la ficha de Google Maps de La Factoría Vegana, en León';
+const altOg = 'Fotografía de La Factoría Vegana publicada en su ficha de Google Maps';
+
+/**
+ * Galería completa: las diez fotografías de la ficha, en el orden en que se descargaron (cinco
+ * apaisadas y cinco verticales). El manifiesto no atribuye autor a ninguna, así que no llevan pie.
+ */
+const galeria = [
+	'la-factoria-vegana-vertical-01.jpg',
+	'la-factoria-vegana-vertical-02.jpg',
+	'la-factoria-vegana-apaisada-03.jpg',
+	'la-factoria-vegana-apaisada-04.jpg',
+	'la-factoria-vegana-apaisada-05.jpg',
+	'la-factoria-vegana-vertical-06.jpg',
+	'la-factoria-vegana-vertical-07.jpg',
+	'la-factoria-vegana-apaisada-08.jpg',
+	'la-factoria-vegana-apaisada-09.jpg',
+	'la-factoria-vegana-vertical-10.jpg',
+];
+
+/**
+ * Platos que nombran las dos reseñas destacadas. No son una carta ni un menú: la ficha no publica
+ * ninguno, así que se presentan solo como menciones de las reseñas.
+ */
+const platos = [
+	{
+		numero: '01',
+		nombre: 'Arroz',
+		nota: '«Delicioso el arroz», dice una de las reseñas destacadas.',
+	},
+	{
+		numero: '02',
+		nombre: 'Burger mediterránea',
+		nota: 'La misma reseña la menciona junto al arroz y el tiramisú.',
+	},
+	{
+		numero: '03',
+		nombre: 'Tiramisú',
+		nota: 'El postre que cierra esa misma reseña destacada.',
+	},
+];
+
+/**
+ * Número de reseñas destacadas que publica la ficha.
+ *
+ * Se cuenta en vez de escribirlo a mano para que el texto no se desincronice si la ficha cambia.
+ */
+const numeroResenas = reviews.length;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#2f5d3a" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-CL" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.shortName} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.shortName}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">
+					<svg viewBox="0 0 32 32" fill="none">
+						<path
+							d="M8 21c0-7 5.5-12 16-12 0 9-5.5 14-13 14"
+							stroke="currentColor"
+							stroke-width="2.4"
+							stroke-linecap="round"></path>
+						<path
+							d="M8 24c2.6-5 6.3-8.4 11-10.5"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"></path>
+					</svg>
+				</span>
+				<span class="brand-text">
+					La Factoría Vegana
+					<small>León · Fernando III el Santo</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La casa</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">León · Calle Fernando III el Santo, 5</p>
+						<h1 id="hero-title">
+							Vegano,
+							<br />
+							<em>de principio a fin.</em>
+						</h1>
+						<p class="hero-lede">
+							La Factoría Vegana está en la calle Fernando III el Santo, 5, con código
+							postal 24007, en León. Google lo clasifica como restaurante vegano y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. Abre de miércoles a
+							domingo para comer y, los viernes y los sábados, también para cenar.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-media">
+						<div class="hero-plate">
+							<Image
+								src={foto('la-factoria-vegana-apaisada-03.jpg')}
+								alt={altFoto}
+								widths={[480, 720, 960]}
+								sizes="(max-width: 1080px) 88vw, 40vw"
+								format="avif"
+								quality={70}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figure class="hero-side">
+							<Image
+								src={foto('la-factoria-vegana-vertical-01.jpg')}
+								alt={altFoto}
+								widths={[220, 320, 420]}
+								sizes="(max-width: 1080px) 32vw, 14vw"
+								format="avif"
+								quality={68}
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+						<p class="hero-badge" aria-hidden="true">
+							<strong>100%</strong>
+							<span>vegetal</span>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>{hoursSummary}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section local" id="local" aria-labelledby="local-title">
+				<div class="wrap local-grid">
+					<div class="local-text">
+						<p class="kicker">La casa</p>
+						<h2 class="title" id="local-title">
+							Una fábrica
+							<br />
+							<em>de cocina vegana.</em>
+						</h2>
+						<p>
+							La Factoría Vegana está en la calle Fernando III el Santo, 5, con código
+							postal 24007, en León (Castilla y León). Google lo clasifica como restaurante
+							vegano y le da {business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. La ficha publica su
+							plus code {business.plusCode} y las coordenadas {business.latitude},{' '}
+							{business.longitude}.
+						</p>
+						<ul class="category-list" aria-label="Categoría que publica la ficha">
+							<li>{business.category}</li>
+							<li>100 % vegetal</li>
+						</ul>
+						<p>
+							El titular describe la casa simplemente como «{business.description}» y no
+							publica nada más: ni carta, ni precios, ni web propia. El horario sí está
+							publicado: comidas de miércoles a domingo, de 13:30 a 16:30, y cenas los
+							viernes y los sábados, de 20:30 a 23:30. Lunes y martes cierra.
+						</p>
+						<p class="local-note">
+							Esta web se ha preparado solo con lo que publica la ficha de Google Maps,
+							consultada el {site.consultado}: nombre, dirección, teléfono, categoría,
+							descripción del titular, valoración, horario, accesibilidad, las{' '}
+							{numeroResenas} reseñas que destaca y sus propias fotografías. La ficha no
+							publica carta ni precios, así que aquí no se reproducen.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>
+								{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps
+							</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+								Ver todas ↗
+							</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									<strong>{review.rating} sobre 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+
+				<div class="wrap dish-strip" aria-labelledby="platos-title">
+					<div class="dish-head">
+						<p class="kicker">Menciones de una reseña</p>
+						<h3 id="platos-title">Tres nombres de la reseña.</h3>
+					</div>
+					<ul class="dish-list">
+						{platos.map((plato) => (
+							<li>
+								<span class="dish-number" aria-hidden="true">{plato.numero}</span>
+								<strong>{plato.nombre}</strong>
+								<p>{plato.nota}</p>
+							</li>
+						))}
+					</ul>
+					<p class="dish-note">
+						No es la carta: la ficha no la publica. Son los platos que nombran las reseñas
+						destacadas, sin precios ni disponibilidad comprobada.
+					</p>
+				</div>
+			</section>
+
+			<section class="section fotos" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La fábrica <em>por dentro.</em>
+					</h2>
+					<p class="lead">
+						Son las diez fotografías que el restaurante publica en su ficha de Google
+						Maps. El manifiesto de la descarga no atribuye autor a ninguna, así que no
+						llevan pie. La ficha tampoco describe su contenido, de modo que no se inventa
+						ninguna descripción y los textos alternativos solo avisan de dónde salen.
+					</p>
+					<div class="fotos-grid">
+						{galeria.map((name) => (
+							<figure class="foto-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="fotos-note">
+						La ficha no publica la carta ni los precios, así que esta web no los reproduce.
+						Para saber qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section horario" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div class="hours-panel">
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Fernando III el Santo, 5,
+							<br />
+							<em>24007 León.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							Comidas de miércoles a domingo, de 13:30 a 16:30. Las cenas son solo de
+							viernes y sábado, de 20:30 a 23:30. Es el horario de la ficha consultada el{' '}
+							{site.consultado}; puede cambiar, así que conviene confirmarlo por teléfono.
+						</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+					</div>
+					<div class="map-column">
+						<div class="map-card">
+							<iframe
+								title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+								src={mapEmbedUrl}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+							<div class="map-tag">
+								<div>
+									<strong>{business.shortName}</strong>
+									<small>
+										{business.streetAddress} · {business.postalCode} {business.city}
+									</small>
+								</div>
+								<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+									Cómo llegar ↗
+								</a>
+							</div>
+						</div>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>venir.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.shortName}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">
+						<svg viewBox="0 0 32 32" fill="none">
+							<path
+								d="M8 21c0-7 5.5-12 16-12 0 9-5.5 14-13 14"
+								stroke="currentColor"
+								stroke-width="2.4"
+								stroke-linecap="round"></path>
+							<path
+								d="M8 24c2.6-5 6.3-8.4 11-10.5"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"></path>
+						</svg>
+					</span>
+					<span>
+						La Factoría Vegana
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} La Factoría Vegana · Calle Fernando III el Santo, 5 (24007
+					León). Web informativa elaborada con los datos y las fotografías que el local publica en
+					su ficha de Google Maps, consultada el {site.consultado}. Confirma horario y
+					disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a La Factoría Vegana <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

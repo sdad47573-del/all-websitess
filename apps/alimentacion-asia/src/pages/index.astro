@@ -1,0 +1,447 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	numeroResenas,
+	phoneHref,
+	reviews,
+	reviewsUrl,
+	site,
+	storeSchema,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Alimentación Asia · Tienda de alimentación en Málaga';
+const description =
+	'Alimentación Asia en la Calle Mefistofeles, 14, Local V (Teatinos-Universidad, Málaga). 2,8 sobre 5 con 11 reseñas en Google Maps. Teléfono 365 68 32 12.';
+const keywords =
+	'Alimentación Asia, tienda de alimentación Málaga, bazar Málaga, Teatinos-Universidad, Calle Mefistofeles';
+
+/** «1 reseña» en singular y «81 reseñas» en plural, sin escribirlo a mano. */
+const textoResenas = `${business.reviewCount.toLocaleString('es-ES')} ${
+	business.reviewCount === 1 ? 'reseña' : 'reseñas'
+}`;
+
+/**
+ * Texto alternativo de la foto.
+ *
+ * La ficha no describe el contenido de estas dos fotografías, así que no se inventa una descripción y el
+ * `alt` avisa solo de dónde sale.
+ */
+const altFoto =
+	'Fotografía publicada en la ficha de Google Maps de Alimentación Asia, en Málaga';
+const altOg = 'Fotografía de Alimentación Asia publicada en su ficha de Google Maps';
+
+/**
+ * Las fotografías de la ficha: las 2 fotos de la portada de la galería (apaisada ancha y apaisada).
+ *
+ * El manifiesto de la descarga quedó sin autor (`author` vacío), así que se publican sin pie y sin
+ * atribución: no hay nada que citar. La panorámica es la foto del collage de portada y las
+ * dos forman la galería.
+ */
+const panoramica = 'alimentacion-asia-panoramica-01.jpg';
+const galeria = [
+  'alimentacion-asia-panoramica-01.jpg',
+  'alimentacion-asia-apaisada-02.jpg',
+];
+
+// La ficha cita 2 extractos: `reviews` los trae y el bloque de citas de la portada los reproduce
+// tal cual junto a la tarjeta con la valoración.
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#1f2a5a" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-MA" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(storeSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">A</span>
+				<span class="brand-text">
+					Alimentación Asia
+					<small>Calle Mefistofeles · Málaga</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La tienda</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Málaga · Teatinos-Universidad · Calle Mefistofeles, 14</p>
+						<h1 id="hero-title">
+							Alimentación Asia,
+							<br />
+							<em>en Málaga.</em>
+						</h1>
+						<p class="hero-lede">
+							Alimentación Asia está en la Calle Mefistofeles, 14, Local V, con
+							código postal 29006, en Málaga, en Teatinos-Universidad. Google la clasifica
+							como tienda de alimentación y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con {textoResenas}.
+							Abre todos los días a las 9:00: de lunes a jueves y el domingo cierra a las 23:30, y viernes y sábado a las 23:45. Su descripción en la ficha dice, literalmente: «Bazar del barrio».
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode}
+									{business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con {textoResenas}
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-collage">
+						<figure class="collage-item collage-item-a">
+							<Image
+								src={foto(panoramica)}
+								alt={altFoto}
+								widths={[640, 900, 1200]}
+								sizes="(max-width: 1080px) 92vw, 46vw"
+								format="avif"
+								quality={68}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</figure>
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con {textoResenas}
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>{hoursSummary}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">La tienda</p>
+						<h2 class="title" id="local-title">
+							Tienda y bazar,
+							<br />
+							<em>en Teatinos-Universidad.</em>
+						</h2>
+						<p>
+							Google la clasifica como tienda de alimentación y bazar. Le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con {textoResenas}.
+							Está en la Calle Mefistofeles, 14, Local V, con código postal 29006, en
+							Teatinos-Universidad, Málaga, y la ficha publica su plus code
+							PG6P+2W Málaga.
+						</p>
+						<p>
+							Su propia descripción en la ficha dice, literalmente: «Bazar del barrio». La ficha no publica catálogo ni precios, así que
+							esta web no inventa ninguno: lo único que dice de la tienda son sus
+							datos, su horario y su descripción. Tiene {textoResenas} en la ficha y Google cita {numeroResenas}
+exractos, que aquí se reproducen tal cual, sin añadir nada.
+						</p>
+						<p>
+							Esta web se ha preparado solo con lo que publica la ficha, consultada el{' '}
+							{site.consultado}: nombre, dirección, teléfono, categoría, descripción, horario,
+							valoración, el servicio de accesibilidad, las {numeroResenas} reseñas que destaca y sus fotografías.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>{textoResenas} en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									<strong>{review.rating} sobre 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La tienda <em>en fotos.</em>
+					</h2>
+					<p class="lead">
+						Son las dos fotografías de la portada de la galería que Alimentación Asia
+						publica en su ficha de Google Maps. El manifiesto de la descarga no las atribuye a un autor con
+						nombre, así que se publica sin pie y sin atribución. La ficha no describe su
+						contenido y aquí no se inventa ninguna descripción.
+					</p>
+					<div class="cocina-grid">
+						{galeria.map((name) => (
+							<figure class="cocina-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="cocina-note">
+						La ficha no publica catálogo ni precios, así que esta web no los reproduce.
+						Para saber qué hay disponible, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar la{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Calle Mefistofeles, 14, Local V,
+							<br />
+							<em>29006 Málaga.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.district}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							La tienda abre <strong>todos los días a las 9:00</strong>: de <strong>lunes a jueves</strong> y el <strong>domingo</strong> cierra a las 23:30, y <strong>viernes y sábado</strong> a las 23:45. Conviene confirmar por teléfono antes de ir.
+						</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+						 src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+							<noscript>
+								<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+							</noscript>
+						</div>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>llamar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">A</span>
+					<span>
+						Alimentación Asia
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Alimentación Asia · Calle Mefistofeles, 14, Local V,
+					18 (29006 Málaga). Web informativa elaborada con los datos, la descripción,
+					las reseñas destacadas y las fotografías que el local publica en su ficha de Google Maps, consultada el{' '}
+					{site.consultado}. Confirma horario y disponibilidad por teléfono antes de
+					salir.
+				</small>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a Alimentación Asia <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>
