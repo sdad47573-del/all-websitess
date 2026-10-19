@@ -1,0 +1,385 @@
+---
+import '../styles/global.css';
+
+const business = {
+	name: 'Bar Restaurante El Embarcadero',
+	short: 'El Embarcadero',
+	street: 'Av. Cabo Diego Pérez Rodríguez, 37',
+	area: 'Paseo Fluvial del Río Barbate',
+	city: 'Barbate',
+	postalCode: '11160',
+	phone: '+34 628 26 58 48',
+	latitude: 36.1887359,
+	longitude: -5.915811,
+	site: 'https://bar-restaurante-el-embarcadero.vercel.app',
+};
+
+const mapsUrl =
+	'https://www.google.com/maps/place/Bar+restaurante+El+Embarcadero/@36.1887359,-5.915811,17z/data=!3m1!4b1!4m6!3m5!1s0xd0c43a6d77d679f:0xf2524682b204e861!8m2!3d36.1887359!4d-5.915811!16s%2Fg%2F11hzt_x404?authuser=0&hl=es&entry=ttu';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=16&output=embed`;
+const phoneHref = 'tel:+34628265848';
+
+const specialties = [
+	{
+		kicker: 'Plato estrella',
+		title: 'Espetos en barco espetero',
+		text: 'Sardinas, dorada, lubina, calamar de potera y pulpo sobre las brasas, en su barco sobre el río.',
+	},
+	{
+		kicker: 'A la brasa',
+		title: 'Pescado y carne al carbón',
+		text: 'Calamar a la brasa, pulpo, solomillo, entrecot de vaca vieja y secreto ibérico.',
+	},
+	{
+		kicker: 'Para compartir',
+		title: 'Entrantes y raciones',
+		text: 'Tomate aliñado, ensaladilla, puntillitas, gambas, chocos, croquetas y cazón.',
+	},
+	{
+		kicker: 'Bajo encargo',
+		title: 'Paellas y arroz',
+		text: 'Paellas y arroz con marisco para grupos, bajo encargo previo.',
+	},
+	{
+		kicker: 'Dulce',
+		title: 'Postres caseros',
+		text: 'Tocino de cielo, tarta de queso y mousse de limón para cerrar.',
+	},
+	{
+		kicker: 'Hasta las 3:00',
+		title: 'Comer, cenar y copas',
+		text: 'Abierto a diario del mediodía a las 3:00: almuerzo, cena y copas al atardecer.',
+	},
+];
+
+const gallery = [
+	{ src: '/fotos/rio.svg', alt: 'Ilustración del río Barbate — sustituye por foto propia' },
+	{ src: '/fotos/espeto.svg', alt: 'Ilustración de espetos — sustituye por foto propia' },
+	{ src: '/fotos/barco.svg', alt: 'Ilustración del barco espetero — sustituye por foto propia' },
+	{ src: '/fotos/terraza.svg', alt: 'Ilustración de la terraza — sustituye por foto propia' },
+	{ src: '/fotos/brasa.svg', alt: 'Ilustración de brasa — sustituye por foto propia' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está El Embarcadero?',
+		a: 'En Av. Cabo Diego Pérez Rodríguez, 37, Paseo Fluvial del Río Barbate, 11160 Barbate (Cádiz).',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'Abierto todos los días del mediodía a las 3:00 de la madrugada, según directorios. Confirma en el 628 26 58 48.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'En temporada y fin de semana conviene reservar en el 628 26 58 48; las paellas van bajo encargo.',
+	},
+	{
+		q: '¿Qué se puede comer?',
+		a: 'Espetos (dorada, sardinas, lubina, calamar, pulpo), carnes a la brasa, entrantes, paellas bajo encargo y postres caseros.',
+	},
+	{
+		q: '¿Cómo llego?',
+		a: 'Está en el paseo fluvial junto al río Barbate. Usa el botón «Cómo llegar» para abrir la ruta en Google Maps.',
+	},
+];
+
+const description =
+	'El Embarcadero: bar restaurante de espetos junto al río en Av. Cabo Diego Pérez Rodríguez 37, Barbate. Del mediodía a las 3:00. Tel. 628 26 58 48.';
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${business.site}/#restaurante`,
+	name: business.name,
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 628 26 58 48',
+	image: [`${business.site}/fotos/rio.svg`],
+	priceRange: '€€€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Española', 'Pescados'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	acceptsReservations: 'True',
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '03:00',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#16241c" />
+		<meta name="description" content="El Embarcadero: espetos junto al río en Av. Cabo Diego Pérez Rodríguez 37, Barbate. Del mediodía a las 3:00. 628 26 58 48." />
+		<meta name="keywords" content="El Embarcadero Barbate, espetos Barbate, río Barbate comer, paseo fluvial Barbate, dorada espeto" />
+		<meta name="author" content="El Embarcadero" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<title>El Embarcadero | Espetos junto al río en Barbate</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="El Embarcadero · Espetos junto al río" />
+		<meta property="og:description" content="Espetos en barco espetero en el paseo fluvial de Barbate. Del mediodía a las 3:00." />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/fotos/rio.svg`} />
+		<meta property="og:image:alt" content="El Embarcadero, río Barbate" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content="Andalucía" />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="El Embarcadero · Espetos junto al río" />
+		<meta name="twitter:description" content="Paseo fluvial de Barbate: espetos del mediodía a las 3:00." />
+		<meta name="twitter:image" content={`${business.site}/fotos/rio.svg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<meta name="geo.placename" content="Barbate" />
+		<meta name="geo.position" content="36.1887359;-5.915811" />
+		<meta name="ICBM" content="36.1887359, -5.915811" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="El Embarcadero, inicio">
+				<span class="brand-mark" aria-hidden="true">EE</span>
+				<span class="brand-name">El Embarcadero <small>Río · Barbate</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#embarcadero">El local</a>
+				<a href="#carta">La carta</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>628 26 58 48</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Paseo fluvial · Río Barbate</p>
+					<h1 id="hero-title">Espetos junto<br />al <em>río.</em></h1>
+					<p class="hero-lede">
+						Bar restaurante en el paseo fluvial de Barbate: espetos en barco espetero,
+						brasa, terraza entre palmeras y copas al atardecer.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={phoneHref}>Llamar 628 26 58 48</a>
+						<a class="button button-ghost" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>12–3</b> todos los días</li>
+						<li>Espetos</li>
+						<li>Barco espetero</li>
+						<li>Junto al río</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<img src="/fotos/rio.svg" alt="Ilustración de El Embarcadero junto al río Barbate" fetchpriority="high" decoding="async" width="1200" height="800" />
+					<figcaption>
+						<span>Paseo fluvial · Barbate</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios">
+				<div class="ratings">
+					<div><b>4/5</b><span>671 reseñas</span></div>
+					<div><b>12–3</b><span>A diario</span></div>
+					<div><b>Nº 37</b><span>Paseo fluvial</span></div>
+				</div>
+				<ul class="services">
+					<li>Espetos</li>
+					<li>Brasa</li>
+					<li>Paellas encargo</li>
+					<li>Terraza</li>
+					<li>Copas</li>
+					<li>Reservas</li>
+				</ul>
+			</section>
+
+			<section class="about section-pad" id="embarcadero">
+				<p class="section-label"><span aria-hidden="true"></span> El local</p>
+				<div class="about-grid">
+					<h2>Un oasis<br />en el <em>río.</em></h2>
+					<div class="about-copy">
+						<p>
+							El Embarcadero está en Av. Cabo Diego Pérez Rodríguez, 37 (Paseo Fluvial del Río
+							Barbate, 11160 Barbate), con coordenadas 36.1887359, -5.915811.
+						</p>
+						<p>
+							Terraza en varias áreas con jardín y vistas al agua, entre palmeras, con barco espetero
+							sobre el río. Precios medio-altos y parte del pescado según mercado: pregunta antes de pedir.
+						</p>
+						<p class="about-note">
+							Abre todos los días del mediodía a las 3:00, según directorios. En temporada alta reserva
+							en el 628 26 58 48 y arma paciencia en horas punta.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="carta">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> De su casa</p>
+						<h2>Lo que sale<br /><em>de la brasa.</em></h2>
+					</div>
+					<p>
+						Líneas generales según reseñas públicas. Confirma carta y precios del día
+						en el propio restaurante.
+					</p>
+				</div>
+				<div class="cards">
+					{specialties.map((item) => (
+						<article class="card">
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="gallery section-pad" id="galeria">
+				<div class="gallery-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Galería</p>
+						<h2>El río<br /><em>y la brasa.</em></h2>
+					</div>
+					<div class="gallery-cta">
+						<p>
+							Estas ilustraciones son marcadores de posición creados para la web. No usamos fotos de Google Maps
+							por derechos de autor: sustitúyelas por fotos propias del restaurante.
+						</p>
+						<a class="button button-ink" href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos en Google Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{gallery.map((photo, index) => (
+						<figure class:list={['shot', index === 0 && 'shot-wide']}>
+							<img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width="800" height="800" />
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes propias temporales en SVG. Para publicar, reemplaza los archivos de /public/fotos/ por fotografías
+					del titular con sus textos alt correspondientes.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Av. Cabo Diego Pérez Rodríguez, 37</p>
+					<h2>Ven al río<br /><em>al espeto.</em></h2>
+					<p class="address">
+						{business.street} ({business.area})<br />
+						{business.postalCode} {business.city}, España
+					</p>
+
+					<table class="hours">
+						<caption>Horario</caption>
+						<tbody>
+							<tr>
+								<th scope="row">Lunes a domingo</th>
+								<td>12:00 – 3:00</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="hours-note">Según directorios (apertura al mediodía). Confirma en el 628 26 58 48 antes de venir.</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={phoneHref}>Llamar al restaurante ↗</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<a class="phone-link" href={phoneHref}>+34 628 26 58 48</a>
+				</div>
+
+				<div class="map-frame">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+						<iframe title="Mapa de El Embarcadero en el paseo fluvial, Barbate" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript><p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p></noscript>
+					</div>
+					<a class="map-label" href={mapsUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">⌖</span> El Embarcadero · Barbate</a>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2>Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">EE</span>
+				<p>El Embarcadero<small>{business.street} · {business.city}</small></p>
+			</div>
+			<nav aria-label="Enlaces del restaurante">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} El Embarcadero · Barbate. Ilustraciones propias temporales, pendientes de fotos del local.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>Llamar al restaurante <span>628 26 58 48</span></a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

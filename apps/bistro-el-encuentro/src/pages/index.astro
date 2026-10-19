@@ -1,0 +1,393 @@
+---
+import '../styles/global.css';
+
+const business = {
+	name: 'Bistró El Encuentro',
+	short: 'El Encuentro',
+	street: 'C/ Conil, 8',
+	city: 'Vejer de la Frontera',
+	postalCode: '11150',
+	phone: '+34 678 67 44 66',
+	latitude: 36.2504177,
+	longitude: -5.9677411,
+	site: 'https://bistro-el-encuentro.vercel.app',
+};
+
+const mapsUrl =
+	'https://www.google.com/maps/place/Bistr%C3%B3+El+Encuentro/@36.2504177,-5.9677411,17z/data=!3m1!4b1!4m6!3m5!1s0xd0c453fc8f7b89d:0x8d679ab83531956b!8m2!3d36.2504177!4d-5.9677411!16s%2Fg%2F11fj2t3pyn?authuser=0&hl=es&entry=ttu';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&output=embed`;
+const phoneHref = 'tel:+34678674466';
+
+const specialties = [
+	{
+		kicker: 'Por la mañana',
+		title: 'Café y desayunos',
+		text: 'Mar–vie desde las 8:00; sáb y dom desde las 9:00. Mediodía hasta las 12:00.',
+	},
+	{
+		kicker: 'De barrio',
+		title: 'Bistró de la calle Conil',
+		text: 'Café bar cercano en la C/ Conil, para el café de cada día.',
+	},
+	{
+		kicker: 'Para picar',
+		title: 'Tostadas y barra',
+		text: 'Lo propio de un bar de mañana vejeriego.',
+	},
+	{
+		kicker: 'Descanso',
+		title: 'Lunes cerrado',
+		text: 'Los lunes descansa. El resto, confirma en el 678 67 44 66.',
+	},
+	{
+		kicker: 'En Vejer',
+		title: 'Junto a la avenida',
+		text: 'A dos pasos de la Av. Andalucía y del centro de Vejer.',
+	},
+	{
+		kicker: 'Aviso',
+		title: 'Hasta las 12:00',
+		text: 'Bar de mañana: cierra al mediodía. Ven temprano.',
+	},
+];
+
+const gallery = [
+	{ src: '/fotos/bistro.svg', alt: 'Ilustración del bistró — sustituye por foto propia' },
+	{ src: '/fotos/desayuno.svg', alt: 'Ilustración de desayunos — sustituye por foto propia' },
+	{ src: '/fotos/barra.svg', alt: 'Ilustración de la barra — sustituye por foto propia' },
+	{ src: '/fotos/tostada.svg', alt: 'Ilustración de tostadas — sustituye por foto propia' },
+	{ src: '/fotos/calle.svg', alt: 'Ilustración de la calle Conil — sustituye por foto propia' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está El Encuentro?',
+		a: 'En C/ Conil, 8, 11150 Vejer de la Frontera (Cádiz). No confundir con otro negocio homónimo de Málaga.',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'Lunes cerrado; mar–vie 8:00–12:00; sáb–dom 9:00–12:00, según directorio. Confirma en el 678 67 44 66.',
+	},
+	{
+		q: '¿Qué se puede tomar?',
+		a: 'Café bar de mañana: café, desayunos y tostadas. Confirma la oferta del día en el local.',
+	},
+	{
+		q: '¿Cómo llego?',
+		a: 'Está en la C/ Conil de Vejer. Usa el botón «Cómo llegar» para abrir la ruta en Google Maps.',
+	},
+];
+
+const description =
+	'Bistró El Encuentro: café bar en C/ Conil 8, Vejer. Desayunos. Mar–vie 8–12, sáb–dom 9–12, lun cerrado. Tel. 678 67 44 66.';
+
+const placeSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CafeOrCoffeeShop',
+	'@id': `${business.site}/#bar`,
+	name: business.name,
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 678 67 44 66',
+	image: [`${business.site}/fotos/bistro.svg`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Cafetería'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '12:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '09:00',
+			closes: '12:00',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#16241c" />
+		<meta name="description" content="Bistró El Encuentro: café bar en C/ Conil 8, Vejer. Desayunos. Mar–vie 8–12, sáb–dom 9–12, lun cerrado. 678 67 44 66." />
+		<meta name="keywords" content="Bistró El Encuentro Vejer, café bar Conil 8, desayunos Vejer" />
+		<meta name="author" content="Bistró El Encuentro" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<title>El Encuentro | Bistró en Vejer</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="El Encuentro · Bistró en Vejer" />
+		<meta property="og:description" content="Café y desayunos en C/ Conil 8. Mar–vie 8–12, sáb–dom 9–12." />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/fotos/bistro.svg`} />
+		<meta property="og:image:alt" content="Bistró El Encuentro, Vejer" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content="Andalucía" />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="El Encuentro · Bistró en Vejer" />
+		<meta name="twitter:description" content="C/ Conil 8: café y desayunos de mañana." />
+		<meta name="twitter:image" content={`${business.site}/fotos/bistro.svg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(placeSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<meta name="geo.placename" content="Vejer de la Frontera" />
+		<meta name="geo.position" content="36.2504177;-5.9677411" />
+		<meta name="ICBM" content="36.2504177, -5.9677411" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="El Encuentro, inicio">
+				<span class="brand-mark" aria-hidden="true">EE</span>
+				<span class="brand-name">El Encuentro <small>Vejer · C/ Conil</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#bistro">El bistró</a>
+				<a href="#carta">La carta</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>678 67 44 66</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> C/ Conil, 8 · Vejer</p>
+					<h1 id="hero-title">El café<br />de <em>la mañana.</em></h1>
+					<p class="hero-lede">
+						Bistró de barrio en la calle Conil: café y desayunos hasta el mediodía,
+						con el lunes de descanso.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={phoneHref}>Llamar 678 67 44 66</a>
+						<a class="button button-ghost" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>8–12</b> mar–vie</li>
+						<li><b>9–12</b> fin de semana</li>
+						<li>Lunes cerrado</li>
+						<li>C/ Conil 8</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<img src="/fotos/bistro.svg" alt="Ilustración de Bistró El Encuentro, Vejer" fetchpriority="high" decoding="async" width="1200" height="800" />
+					<figcaption>
+						<span>C/ Conil 8 · Vejer</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios">
+				<div class="ratings">
+					<div><b>8–12</b><span>Laborables</span></div>
+					<div><b>9–12</b><span>Fin de semana</span></div>
+					<div><b>Nº 8</b><span>C/ Conil</span></div>
+				</div>
+				<ul class="services">
+					<li>Café</li>
+					<li>Desayunos</li>
+					<li>Tostadas</li>
+					<li>Barra</li>
+					<li>Barrio</li>
+					<li>Mañana</li>
+				</ul>
+			</section>
+
+			<section class="about section-pad" id="bistro">
+				<p class="section-label"><span aria-hidden="true"></span> El bistró</p>
+				<div class="about-grid">
+					<h2>Hasta el<br /><em>mediodía.</em></h2>
+					<div class="about-copy">
+						<p>
+							Bistró El Encuentro está en C/ Conil, 8 (11150 Vejer),
+							con coordenadas 36.2504177, -5.9677411.
+						</p>
+						<p>
+							Café bar de mañana vejeriego: abre entre semana a las 8:00 y el fin de semana
+							a las 9:00, y cierra a las 12:00.
+						</p>
+						<p class="about-note">
+							Los lunes cerrado, según directorio. Confirma en el 678 67 44 66 antes de venir.
+							No confundir con otro negocio homónimo de Málaga.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="carta">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> De su casa</p>
+						<h2>Lo que sale<br /><em>de cocina.</em></h2>
+					</div>
+					<p>
+						Líneas generales de café bar. Confirma la oferta del día
+						en el propio local.
+					</p>
+				</div>
+				<div class="cards">
+					{specialties.map((item) => (
+						<article class="card">
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="gallery section-pad" id="galeria">
+				<div class="gallery-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Galería</p>
+						<h2>El bistró<br /><em>y la mesa.</em></h2>
+					</div>
+					<div class="gallery-cta">
+						<p>
+							Estas ilustraciones son marcadores de posición creados para la web. No usamos fotos de Google Maps
+							por derechos de autor: sustitúyelas por fotos propias del bistró.
+						</p>
+						<a class="button button-ink" href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos en Google Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{gallery.map((photo, index) => (
+						<figure class:list={['shot', index === 0 && 'shot-wide']}>
+							<img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width="800" height="800" />
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes propias temporales en SVG. Para publicar, reemplaza los archivos de /public/fotos/ por fotografías
+					del titular con sus textos alt correspondientes.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> C/ Conil, 8</p>
+					<h2>Ven por la<br /><em>mañana.</em></h2>
+					<p class="address">
+						{business.street}<br />
+						{business.postalCode} {business.city}, España
+					</p>
+
+					<table class="hours">
+						<caption>Horario</caption>
+						<tbody>
+							<tr>
+								<th scope="row">Martes a viernes</th>
+								<td>8:00 – 12:00</td>
+							</tr>
+							<tr>
+								<th scope="row">Sábado y domingo</th>
+								<td>9:00 – 12:00</td>
+							</tr>
+							<tr>
+								<th scope="row">Lunes</th>
+								<td>Cerrado</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="hours-note">Según directorio. Confirma en el 678 67 44 66 antes de venir.</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={phoneHref}>Llamar al bistró ↗</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<a class="phone-link" href={phoneHref}>+34 678 67 44 66</a>
+				</div>
+
+				<div class="map-frame">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+						<iframe title="Mapa de El Encuentro en C/ Conil 8, Vejer" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript><p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p></noscript>
+					</div>
+					<a class="map-label" href={mapsUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">⌖</span> El Encuentro · Vejer</a>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2>Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">EE</span>
+				<p>El Encuentro<small>{business.street} · {business.city}</small></p>
+			</div>
+			<nav aria-label="Enlaces del bistró">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} El Encuentro · Vejer de la Frontera. Ilustraciones propias temporales, pendientes de fotos del local.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>Llamar al bistró <span>678 67 44 66</span></a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

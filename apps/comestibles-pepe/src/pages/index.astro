@@ -1,28 +1,414 @@
 ---
-import Contact from '../components/Contact.astro';
-import Fab from '../components/Fab.astro';
-import Faq from '../components/Faq.astro';
-import Footer from '../components/Footer.astro';
-import Galeria from '../components/Galeria.astro';
-import Hero from '../components/Hero.astro';
-import Highlights from '../components/Highlights.astro';
-import Productos from '../components/Productos.astro';
-import Tienda from '../components/Tienda.astro';
-import Topbar from '../components/Topbar.astro';
-import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import fotoHero from '../assets/fotos/comestibles-pepe-google-maps.jpg';
+import foto1 from '../assets/fotos/comestibles-pepe-apaisada-01.jpg';
+import foto2 from '../assets/fotos/comestibles-pepe-apaisada-03.jpg';
+import foto3 from '../assets/fotos/comestibles-pepe-apaisada-04.jpg';
+import foto4 from '../assets/fotos/comestibles-pepe-vertical-02.jpg';
+import foto5 from '../assets/fotos/comestibles-pepe-vista-5-05.jpg';
+
+const business = {
+	name: 'Comestibles Pepe',
+	street: 'Plaza Pío XII, 5',
+	district: 'Cruz de Humilladero',
+	city: 'Málaga',
+	postalCode: '29007',
+	phone: '+34 697 65 50 93',
+	latitude: 36.7179249,
+	longitude: -4.4433512,
+	site: 'https://comestibles-pepe.vercel.app',
+};
+
+const mapsUrl =
+	'https://www.google.com/maps/place/Comestibles+Pepe/@36.7179249,-4.4433512,17z/data=!4m17!1m10!3m9!1s0xd72f74c1fcee779:0x43f2c3b25fb4b9a4!2sComestibles+Pepe!8m2!3d36.7179249!4d-4.4433512!10e5!14m1!1BCgIgAQ!16s%2Fg%2F11hqrgjgdk';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=Plaza%20P%C3%ADo%20XII%2C%205%2C%2029007%20M%C3%A1laga&t=&z=18&ie=UTF8&iwloc=&output=embed`;
+const phoneHref = 'tel:+34697655093';
+
+const products = [
+	{
+		kicker: 'Del mostrador',
+		title: 'Embutidos',
+		text: 'Lomo, salchichón y embutidos seleccionados, cortados delante de ti. El producto estrella de la casa.',
+	},
+	{
+		kicker: 'Curados',
+		title: 'Jamón y piezas',
+		text: 'Jamón y piezas curadas para el día a día y para poner en la mesa cuando hay invitados.',
+	},
+	{
+		kicker: 'En pieza o cuña',
+		title: 'Quesos',
+		text: 'Curados, semicurados y frescos, en pieza entera o porcionados a tu medida.',
+	},
+	{
+		kicker: 'Fondo de despensa',
+		title: 'Conservas',
+		text: 'Latas, aceite y todo lo que completa la cesta de la compra de la casa.',
+	},
+	{
+		kicker: 'Para regalo',
+		title: 'Lotes y cestas',
+		text: 'Lotes y cestas para regalo y para empresas, preparados a tu medida.',
+	},
+	{
+		kicker: 'Ya montadas',
+		title: 'Bandejas',
+		text: 'Bandejas ya montadas para compartir, para la oficina o para la mesa del finde.',
+	},
+];
+
+const gallery = [
+	{ src: foto1, alt: 'Fotografía de Comestibles Pepe publicada en su ficha de Google Maps (Málaga)' },
+	{ src: foto2, alt: 'Fotografía de la tienda Comestibles Pepe, charcutería en Plaza Pío XII, Málaga' },
+	{ src: foto3, alt: 'Fotografía de Comestibles Pepe en Cruz de Humilladero, Málaga, desde Google Maps' },
+	{ src: foto4, alt: 'Imagen vertical de Comestibles Pepe (Málaga) subida a su perfil de Google Maps' },
+	{ src: foto5, alt: 'Detalle de Comestibles Pepe en Málaga según las fotos de su ficha de Google Maps' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está Comestibles Pepe?',
+		a: 'En la Plaza Pío XII, 5, en el barrio del Cruz de Humilladero de Málaga (29007).',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'De lunes a viernes de 6:30 a 14:30 y de 17:30 a 20:30. Los sábados de 8:00 a 14:30. Los domingos cerrado.',
+	},
+	{
+		q: '¿Qué se vende en la tienda?',
+		a: 'Charcutería y alimentación: embutidos, jamón, quesos, conservas y despensa, además de lotes y cestas para regalo y empresas.',
+	},
+	{
+		q: '¿Cuál es el teléfono?',
+		a: 'El 697 65 50 93. Llama para consultar si hay un producto concreto antes de pasar por la tienda.',
+	},
+	{
+		q: '¿Tienen web o redes sociales?',
+		a: 'Esta web es su primera presencia digital. Cuando el negocio tenga perfiles propios, se enlazarán aquí.',
+	},
+];
+
+const description =
+	'Comestibles Pepe: charcutería y tienda de alimentación en Plaza Pío XII, 5 (Málaga). Embutidos, jamón, quesos y lotes. L–V 6:30–14:30 y 17:30–20:30. Tel. 697 65 50 93.';
+
+const storeSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'GroceryStore',
+	'@id': `${business.site}/#tienda`,
+	name: business.name,
+	alternateName: 'Comestibles Pepe Málaga',
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 697 65 50 93',
+	image: [`${business.site}/og.jpg`, `${business.site}${foto1.src}`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	serviceType: ['Tienda de alimentación', 'Charcutería'],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '06:30',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '17:30',
+			closes: '20:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '08:00',
+			closes: '14:30',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
 ---
 
-<Layout>
-	<Topbar />
-	<main>
-		<Hero />
-		<Highlights />
-		<Tienda />
-		<Galeria />
-		<Productos />
-		<Contact />
-		<Faq />
-	</main>
-	<Footer />
-	<Fab />
-</Layout>
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#22331f" />
+		<meta name="description" content="Comestibles Pepe: charcutería y tienda de alimentación en Plaza Pío XII, 5 (Málaga). Embutidos, jamón, quesos y lotes. L–V 6:30–14:30 y 17:30–20:30. 697 65 50 93." />
+		<meta name="keywords" content="Comestibles Pepe Málaga, charcutería Málaga, Plaza Pío XII tienda, embutidos Cruz de Humilladero, lotes y cestas Málaga, tienda alimentación Málaga" />
+		<meta name="author" content="Comestibles Pepe" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<title>Comestibles Pepe · Charcutería en Cruz de Humilladero, Málaga</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Comestibles Pepe · Charcutería de barrio en Málaga" />
+		<meta property="og:description" content="Embutidos, jamón, quesos, conservas y lotes en Plaza Pío XII, 5 (Málaga). L–V mañana y tarde, sábados por la mañana." />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Comestibles Pepe, charcutería en Cruz de Humilladero, Málaga" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content="Andalucía" />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Comestibles Pepe · Charcutería de barrio en Málaga" />
+		<meta name="twitter:description" content="Embutidos, jamón, quesos y lotes en Plaza Pío XII, 5, Málaga." />
+		<meta name="twitter:image" content={`${business.site}/og.jpg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(storeSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<meta name="geo.placename" content="Málaga" />
+		<meta name="geo.position" content="36.7179249;-4.4433512" />
+		<meta name="ICBM" content="36.7179249, -4.4433512" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Comestibles Pepe, inicio">
+				<span class="brand-mark" aria-hidden="true">P</span>
+				<span class="brand-name">Comestibles Pepe <small>Málaga · Humilladero</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#tienda">La tienda</a>
+				<a href="#productos">Productos</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>697 65 50 93</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Plaza Pío XII, 5 · Málaga</p>
+					<h1 id="hero-title">La compra del barrio,<br />de toda <em>la vida.</em></h1>
+					<p class="hero-lede">
+						Charcutería y tienda de alimentación en Cruz de Humilladero: embutidos cortados al momento,
+						jamón, quesos, conservas y lotes y cestas para regalo.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a class="button button-ghost" href={phoneHref}>Llamar 697 65 50 93</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>L–V</b> mañana y tarde</li>
+						<li><b>Sáb</b> 8:00–14:30</li>
+						<li>Domingo cerrado</li>
+						<li>Lotes y cestas</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<Image src={fotoHero} widths={[480, 720, 960, 1200]} sizes="(max-width: 980px) 92vw, 46vw" format="avif" quality={70} alt="Fotografía de Comestibles Pepe publicada en su ficha de Google Maps (Málaga)" fetchpriority="high" decoding="async" />
+					<figcaption>
+						<span>Plaza Pío XII 5 · Málaga</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios">
+				<div class="ratings">
+					<div><b>6:30</b><span>Apertura L–V</span></div>
+					<div><b>5</b><span>Plaza Pío XII</span></div>
+					<div><b>7d</b><span>Semana salvo dom</span></div>
+				</div>
+				<ul class="services">
+					<li>Charcutería</li>
+					<li>Embutidos</li>
+					<li>Quesos</li>
+					<li>Conservas</li>
+					<li>Lotes y cestas</li>
+					<li>Trato de barrio</li>
+				</ul>
+			</section>
+
+			<section class="about section-pad" id="tienda">
+				<p class="section-label"><span aria-hidden="true"></span> Comercio de barrio</p>
+				<div class="about-grid">
+					<h2>Todo en una sola <em>parada.</em></h2>
+					<div class="about-copy">
+						<p>
+							Comestibles Pepe es una charcutería y tienda de alimentación en la Plaza Pío XII, 5,
+							en el Cruz de Humilladero de Málaga. La compra del día a día concentrada en una sola
+							parada, con el trato de la tienda de siempre.
+						</p>
+						<p>
+							Su fuerte son los embutidos seleccionados y cortados en el mostrador, además de jamón,
+							quesos, conservas y despensa. También preparan lotes y cestas para regalo y empresas.
+						</p>
+						<p class="about-note">
+							Abren temprano entre semana (6:30) en dos turnos y los sábados por la mañana. Los domingos
+							cierran. Si buscas algo concreto, llama antes al 697 65 50 93.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="productos">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Del lineal</p>
+						<h2>Lo que hay<br /><em>en el mostrador.</em></h2>
+					</div>
+					<p>
+						Familias genéricas de charcutería según las categorías del negocio. No es un inventario real:
+						confirma disponibilidad en la tienda.
+					</p>
+				</div>
+				<div class="cards">
+					{products.map((item) => (
+						<article class="card">
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="gallery section-pad" id="galeria">
+				<div class="gallery-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Galería</p>
+						<h2>La tienda<br /><em>por dentro.</em></h2>
+					</div>
+					<div class="gallery-cta">
+						<p>
+							Estas fotografías proceden de la ficha de Google Maps de Comestibles Pepe. En la ficha
+							encontrarás la galería completa, con aportaciones de clientes.
+						</p>
+						<a class="button button-ink" href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{gallery.map((photo, index) => (
+						<figure class:list={['shot', index === 0 && 'shot-wide']}>
+							<Image src={photo.src} alt={photo.alt} widths={[320, 480, 640]} sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw" format="avif" quality={65} loading="lazy" decoding="async" />
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Fotografías procedentes de la ficha del comercio en Google Maps, atribuidas a Comestibles Pepe.
+					Si eres el titular y quieres retirar alguna, escríbenos.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Plaza Pío XII, 5</p>
+					<h2>Ven a hacer<br /><em>la compra.</em></h2>
+					<p class="address">
+						{business.street}<br />
+						{business.postalCode} {business.city} ({business.district}), España
+					</p>
+
+					<table class="hours">
+						<caption>Horario</caption>
+						<tbody>
+							<tr>
+								<th scope="row">Lunes a viernes</th>
+								<td>6:30 – 14:30 · 17:30 – 20:30</td>
+							</tr>
+							<tr>
+								<th scope="row">Sábado</th>
+								<td>8:00 – 14:30</td>
+							</tr>
+							<tr>
+								<th scope="row">Domingo</th>
+								<td>Cerrado</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="hours-note">Horario según la ficha pública del comercio. En festivos, llama antes de venir.</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={phoneHref}>Llamar a la tienda ↗</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<a class="phone-link" href={phoneHref}>+34 697 65 50 93</a>
+				</div>
+
+				<div class="map-frame">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+						<iframe title="Mapa de Comestibles Pepe en Plaza Pío XII, 5, Málaga" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript><p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p></noscript>
+					</div>
+					<a class="map-label" href={mapsUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">⌖</span> Comestibles Pepe · Málaga</a>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2>Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">P</span>
+				<p>Comestibles Pepe<small>{business.street} · {business.postalCode} {business.city}</small></p>
+			</div>
+			<nav aria-label="Enlaces de la tienda">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} Comestibles Pepe · Málaga. Fotografías procedentes de la ficha del comercio en Google Maps.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>Llamar a la tienda <span>697 65 50 93</span></a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>
