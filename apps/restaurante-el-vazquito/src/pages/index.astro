@@ -1,0 +1,444 @@
+---
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/fotos/restaurante-el-vazquito-apaisada-01.jpg';
+import terracePhoto from '../assets/fotos/restaurante-el-vazquito-vertical-06.jpg';
+import Galeria from '../components/Galeria.astro';
+import {
+	business,
+	description,
+	directionsUrl,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	schedule,
+} from '../lib/business';
+import '../styles/global.css';
+
+const site = business.site;
+
+const facts = [
+	{ value: '4,1 ★', label: `${business.reviews} reseñas en Google` },
+	{ value: '10–20 €', label: 'Por persona' },
+	{ value: 'Terraza', label: 'Sobre césped' },
+];
+
+const pills = ['Tapas y raciones', 'Arroces', 'Carnes y pescados a la brasa', 'Croquetas caseras', 'Desayunos de fin de semana'];
+
+const dishes = [
+	{
+		n: '01',
+		tag: 'Para picar',
+		title: 'Tapas y raciones',
+		text: 'Papas arrieras, ensaladilla de pulpo, croquetas caseras y parrillada de verduras. Raciones pensadas para poner en el centro de la mesa.',
+	},
+	{
+		n: '02',
+		tag: 'Al centro',
+		title: 'Arroces de la casa',
+		text: 'Arroces para compartir, cocinados al momento. Es el plato que más se ve en las mesas de la terraza cuando aprieta el buen tiempo.',
+	},
+	{
+		n: '03',
+		tag: 'A la brasa',
+		title: 'Carnes y pescados',
+		text: 'Carne y pescado a la brasa, con el punto justo y sin más compañía que el producto. La parte de la carta que huele desde la carretera.',
+	},
+	{
+		n: '04',
+		tag: 'Solo fin de semana',
+		title: 'Desayunos de sábado y domingo',
+		text: 'Tostadas de paté y de atún con café, de 9:00 a 12:00. El arranque tranquilo del día antes de que se llene la terraza.',
+	},
+	{
+		n: '05',
+		tag: 'Cuando hay',
+		title: 'Fuera de carta',
+		text: 'Hortiguillas y otras sorpresas de temporada que no siempre están en la carta. Merece la pena preguntar qué ha entrado ese día.',
+	},
+	{
+		n: '06',
+		tag: 'Sin prisa',
+		title: 'Sobremesa larga',
+		text: 'Café, conversación y el césped alrededor. Aquí la mesa no se levanta corriendo: forma parte de la comida tanto como el plato.',
+	},
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está Restaurante El Vazquito?',
+		a: 'En Pago Copina, Carr. Pista de Montijo, 11550 Chipiona (Cádiz). La entrada de la terraza está en la misma carretera, junto al pinar.',
+	},
+	{
+		q: '¿Qué horario tiene?',
+		a: 'Los almuerzos se sirven de 11:30 a 17:00 de lunes a domingo, excepto el jueves, que permanece cerrado. Los desayunos son solo de sábado y domingo, de 9:00 a 12:00.',
+	},
+	{
+		q: '¿Hay terraza?',
+		a: 'Sí. Es una de las señas de la casa: una terraza amplia sobre césped, con mesas al aire libre y sitio de sobra para grupos y familias.',
+	},
+	{
+		q: '¿Se puede ir con perro?',
+		a: 'Sí, en la terraza. Los clientes que han venido con su perro destacan el buen trato del personal en sus reseñas de Google.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'No es obligatorio, según los datos de la ficha de Google. Para grupos grandes, celebraciones o fines de semana conviene llamar antes al 685 71 05 17.',
+	},
+	{
+		q: '¿Es accesible y tiene aparcamiento?',
+		a: 'Sí. La ficha de Google recoge entrada, asientos, aseo y aparcamiento adaptados para sillas de ruedas. Además, hay aparcamiento en la zona.',
+	},
+	{
+		q: '¿Cuánto cuesta comer?',
+		a: 'El rango de precio por persona que indica Google es de 10 a 20 €. La cuenta final depende de lo que se pida para compartir.',
+	},
+	{
+		q: '¿Se puede desayunar entre semana?',
+		a: 'No. Los desayunos se sirven solo sábados y domingos, de 9:00 a 12:00. De lunes a viernes la cocina abre a las 11:30.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#12333a" />
+		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="Restaurante El Vazquito, El Vazquito Chipiona, restaurante Chipiona, terraza Chipiona, tapas Chipiona, arroces Chipiona, Pago Copina"
+		/>
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Restaurante El Vazquito | Cocina casera en Chipiona</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Restaurante El Vazquito · Chipiona" />
+		<meta
+			property="og:description"
+			content="Tapas, arroces y brasa en Pago Copina. Terraza sobre césped y desayunos de fin de semana. Comer en Chipiona sin prisa."
+		/>
+		<meta property="og:url" content={`${site}/`} />
+		<meta property="og:image" content={`${site}/og.jpg`} />
+		<meta property="og:image:alt" content="Restaurante El Vazquito, Chipiona" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Restaurante El Vazquito · Chipiona" />
+		<meta
+			name="twitter:description"
+			content="Tapas, arroces, carnes y pescados a la brasa. Terraza sobre césped en Pago Copina, Chipiona."
+		/>
+		<meta name="twitter:image" content={`${site}/og.jpg`} />
+		<meta name="geo.region" content="ES-CA" />
+		<meta name="geo.placename" content="Chipiona" />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Restaurante El Vazquito, inicio">
+				<span class="brand-mark" aria-hidden="true">VZ</span>
+				<span class="brand-name">
+					El Vazquito
+					<small>Chipiona · Pago Copina</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#casa">La casa</a>
+				<a href="#carta">La carta</a>
+				<a href="#terraza">Terraza</a>
+				<a href="#galeria">Fotos</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-call" href={phoneHref}><span aria-hidden="true">☎</span> {business.phone}</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<figure class="hero-photo">
+					<Image
+						src={heroPhoto}
+						alt="Fotografía del Restaurante El Vazquito publicada en su ficha de Google Maps"
+						widths={[640, 960, 1440, 1920]}
+						sizes="100vw"
+						format="avif"
+						quality={70}
+						loading="eager"
+						decoding="async"
+					/>
+				</figure>
+				<div class="hero-inner">
+					<p class="hero-eyebrow">Pago Copina · Chipiona · Cádiz</p>
+					<h1 id="hero-title">Comer sin prisa en <em>El Vazquito.</em></h1>
+					<div class="hero-bottom">
+						<p class="hero-lede">
+							Tapas, arroces y brasa en una casa de comidas de Chipiona. Terraza sobre césped, mesas largas y
+							una cocina que no corre: solo abre a la hora del almuerzo.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-solid" href={phoneHref}>Llamar {business.phone}</a>
+							<a class="button button-outline" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<ul class="hero-strip">
+						{facts.map((fact) => <li>{fact.value} · {fact.label}</li>)}
+					</ul>
+				</div>
+			</section>
+
+			<section class="band" aria-label="Resumen del restaurante">
+				<p class="band-note">
+					<b>{business.rating.toLocaleString('es-ES', { minimumFractionDigits: 1 })} / 5</b>
+					<span>{business.reviews} reseñas · Google Maps</span>
+				</p>
+				<ul class="band-list">
+					{pills.map((pill) => <li>{pill}</li>)}
+				</ul>
+			</section>
+
+			<section class="intro pad" id="casa">
+				<div class="intro-copy">
+					<p class="section-label">La casa</p>
+					<h2 class="section-title">Una mesa de campo<br />a un paso del <em>pinar.</em></h2>
+					<p class="lead">
+						El Vazquito está en Pago Copina, sobre la Pista de Montijo, donde Chipiona deja de ser calle y
+						empieza a parecer campo.
+					</p>
+					<p>
+						Es un restaurante de los de siempre: se viene a comer, se pide para compartir y la sobremesa se
+						alarga lo que haga falta. La carta es corta de leer y generosa de servir, con las tapas y raciones
+						como centro de todo.
+					</p>
+					<p>
+						Lo que más se recuerda después no es un plato concreto, sino la terraza sobre césped, el trato del
+						personal y esa sensación de estar comiendo en casa de alguien. Los fines de semana la casa abre
+						antes, a las nueve, para desayunar.
+					</p>
+					<p class="signature">Cocina casera · Producto de temporada · Chipiona</p>
+				</div>
+				<aside aria-label="Datos de la casa">
+					<dl class="facts">
+						<div><dt>Dónde</dt><dd>Pago Copina, Chipiona</dd></div>
+						<div><dt>Almuerzos</dt><dd>11:30 – 17:00</dd></div>
+						<div><dt>Cierra</dt><dd>Jueves</dd></div>
+						<div><dt>Desayunos</dt><dd>Sábado y domingo</dd></div>
+						<div><dt>Terraza</dt><dd>Sobre césped</dd></div>
+						<div><dt>Google</dt><dd>{business.rating} / 5 · {business.reviews} reseñas</dd></div>
+					</dl>
+				</aside>
+			</section>
+
+			<section class="carta pad" id="carta" aria-labelledby="carta-title">
+				<div class="carta-head">
+					<div>
+						<p class="section-label">La carta</p>
+						<h2 class="section-title" id="carta-title">Lo que se pone<br />en el <em>centro.</em></h2>
+					</div>
+					<p>
+						Tapas, raciones y platos para compartir. Esta es la línea de la casa; lo que hay cada día se
+						consulta en el local, porque la cocina cambia con la temporada y con lo que llega.
+					</p>
+				</div>
+				<ol class="dishes">
+					{dishes.map((dish) => (
+						<li>
+							<span class="dish-number" aria-hidden="true">{dish.n}</span>
+							<div class="dish-body">
+								<h3>{dish.title}</h3>
+								<span class="dish-tag">{dish.tag}</span>
+								<p>{dish.text}</p>
+							</div>
+						</li>
+					))}
+				</ol>
+				<p class="carta-note">
+					Carta orientativa. Precios y disponibilidad pueden variar según temporada. Para alergias o
+					intolerancias, consulta al personal del local antes de pedir.
+				</p>
+			</section>
+
+			<section class="terraza" id="terraza" aria-labelledby="terraza-title">
+				<figure class="terraza-photo">
+					<Image
+						src={terracePhoto}
+						alt="Fotografía de la terraza de Restaurante El Vazquito publicada en su ficha de Google Maps"
+						widths={[480, 720, 960, 1200]}
+						sizes="(max-width: 980px) 100vw, 50vw"
+						format="avif"
+						quality={70}
+						loading="lazy"
+						decoding="async"
+					/>
+					<figcaption>Pago Copina · Chipiona</figcaption>
+				</figure>
+				<div class="terraza-copy">
+					<p class="section-label">Al aire libre</p>
+					<h2 class="section-title" id="terraza-title">La terraza<br />es la <em>casa.</em></h2>
+					<p>
+						Aquí se come mirando al césped, con la brisa de Chipiona y sin reloj. Un espacio amplio, con
+						sombra y mesas separadas, que en verano se llena y en invierno se disfruta igual.
+					</p>
+					<ul class="checklist">
+						<li>Amplia terraza sobre césped, con mesas para grupos</li>
+						<li>Admite perros en la terraza</li>
+						<li>Entrada, asientos y aseo adaptados para sillas de ruedas</li>
+						<li>Aparcamiento adaptado y sitio para dejar el coche</li>
+					</ul>
+					<a class="button button-outline" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ver reseñas en Google <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</section>
+
+			<Galeria
+				nombre={business.name}
+				mapsUrl={mapsUrl}
+				titulo="El Vazquito, en fotos"
+				intro="Una selección de las fotografías publicadas en la ficha de Google Maps de Restaurante El Vazquito. La ficha completa reúne muchas más."
+				nota="Fotografías de la ficha pública de Google Maps, alojadas aquí para servirlas optimizadas. Los derechos pertenecen a sus autores."
+			/>
+
+			<section class="visit pad" id="visitanos">
+				<div>
+					<p class="section-label">Visítanos</p>
+					<h2 class="section-title">Te esperamos<br />a la hora del <em>almuerzo.</em></h2>
+					<table class="hours">
+						<caption>Horario de la casa</caption>
+						<tbody>
+							{schedule.map((row) => (
+								<tr>
+									<th scope="row">{row.day}</th>
+									<td class={row.hours === 'Cerrado' ? 'closed' : undefined}>{row.hours}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+					<p class="hours-note">
+						Horario según su ficha de Google Maps. Los desayunos del fin de semana se sirven de 9:00 a 12:00.
+						En festivos y puentes conviene llamar antes.
+					</p>
+					<address class="visit-address">
+						{business.street}<br />
+						{business.postalCode} {business.city}, {business.province}
+					</address>
+					<div class="visit-links">
+						<a class="button button-solid" href={phoneHref}>Llamar {business.phone}</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="visit-side">
+					<div class="map-frame">
+						<iframe
+							title="Mapa de Restaurante El Vazquito en Chipiona"
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen
+						></iframe>
+						<a class="map-label" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							<span aria-hidden="true">⌖</span> El Vazquito · Chipiona
+						</a>
+					</div>
+					<div class="visit-cards">
+						<p>
+							<b>Terraza y césped</b>
+							<span>Mesas al aire libre, con sitio para niños y perros.</span>
+						</p>
+						<p>
+							<b>Acceso y aparcamiento</b>
+							<span>Entrada y aseo adaptados, con aparcamiento en la zona.</span>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="faq pad" id="preguntas">
+				<div class="faq-head">
+					<p class="section-label">Preguntas frecuentes</p>
+					<h2 class="section-title">Antes de <em>sentarte.</em></h2>
+				</div>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">VZ</span>
+				<p>
+					Restaurante El Vazquito
+					<small>{business.street} · {business.city}</small>
+				</p>
+			</div>
+			<nav aria-label="Enlaces del restaurante">
+				<a href={mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+				<a href="#inicio">Volver arriba</a>
+			</nav>
+			<p class="footer-legal">
+				© {new Date().getFullYear()} Restaurante El Vazquito · Chipiona, Cádiz. Fotografías de la ficha pública de
+				Google Maps, con derechos de sus autores.
+			</p>
+			<p class="footer-credit">
+				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+			</p>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a El Vazquito <span>{business.phone}</span>
+		</a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

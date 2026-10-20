@@ -68,6 +68,7 @@ import boabdilPreview from '../assets/boabdil-restaurante-preview.jpg';
 import laCarreteraPreview from '../assets/cafe-bar-la-carretera-preview.jpg';
 import lasRiasPreview from '../assets/restaurante-las-rias-preview.jpg';
 import joseLuisPreview from '../assets/carniceria-jose-luis-preview.jpg';
+import laTapitaPreview from '../assets/bar-restaurante-la-tapita-preview.jpg';
 
 // Tipo explícito porque con `as const` cada elemento infería su propia forma y
 // `destacado` solo existía en los marcados, lo que rompía el destructuring.
@@ -854,5 +855,16 @@ export const PORTFOLIO: Project[] = [
 		accent: 'bg-secondary/15 text-neutral',
 		url: 'https://carniceria-jose-luis.netlify.app',
 		preview: joseLuisPreview,
+	},
+	{
+		title: 'Bar restaurante La Tapita',
+		category: 'Restaurantes y bares',
+		sector: 'Bar restaurante',
+		description:
+			'Bar restaurante en el Paseo Jardín Botánico de Sanlúcar de Barrameda: tapas, raciones y arroces, con 4,3★ y 118 reseñas en Google.',
+		tags: ['Tapas y raciones', 'Sanlúcar de Barrameda'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://bar-restaurante-la-tapita.vercel.app',
+		preview: laTapitaPreview,
 	},
 ];

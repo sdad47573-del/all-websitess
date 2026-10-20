@@ -4,6 +4,7 @@ https://taberna-la-charata.netlify.app/
 https://talleres-caldado.netlify.app/
 https://the-boss-restaurant.netlify.app/
 https://bar-taberna-la-new.netlify.app/
+https://el-rincon-del-perlita.netlify.app/
 
 arregla el hero, no se ven los textos porque es del mismo color que el fondo
 https://clinica-dental-daniela-torres.netlify.app/
