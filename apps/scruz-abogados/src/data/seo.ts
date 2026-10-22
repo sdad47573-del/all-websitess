@@ -197,12 +197,32 @@ export const PERSON = {
 	'@id': PERSON_ID,
 	name: NAP.legalName,
 	jobTitle: 'Abogado',
-	url: 'https://www.linkedin.com/in/sergio-cruz-chac%C3%B3n-75ba7a26',
-	image: OG_IMAGE_DEFAULT,
+	// Perfil propio como URL principal de la entidad; LinkedIn y los directorios
+	// quedan en sameAs. Google usa `memberOf` y `knowsAbout` para asociar al
+	// letrado con su colegio y sus materias (señal de experiencia en YMYL legal).
+	description:
+		'Abogado colegiado en el Ilustre Colegio de Abogados de Lucena y titular de Scruz Abogados, con más de 20 años de experiencia en derecho civil, familia, sucesiones, penal, laboral y mercantil.',
+	url: `${SITE_URL}/blog/sergio-cruz-chacon-abogado/`,
+	// `image` debe ser absoluta en JSON-LD: `OG_IMAGE_DEFAULT` es la ruta emitida
+	// por Astro (/_astro/...), así que se resuelve contra SITE_URL.
+	image: absUrl(OG_IMAGE_DEFAULT),
 	worksFor: { '@id': ORG_ID },
-	sameAs: [
-		'https://www.linkedin.com/in/sergio-cruz-chac%C3%B3n-75ba7a26',
+	memberOf: {
+		'@type': 'Organization',
+		name: 'Ilustre Colegio de Abogados de Lucena',
+	},
+	knowsAbout: [
+		'Derecho civil',
+		'Derecho de familia',
+		'Herencias y sucesiones',
+		'Derecho penal',
+		'Derecho laboral',
+		'Derecho mercantil',
+		'Derecho administrativo',
+		'Extranjería',
+		'Seguridad Social',
 	],
+	sameAs: [...SOCIAL_PROFILES],
 	knowsLanguage: ['es-ES', 'en'],
 } as const;
 
