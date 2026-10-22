@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Guías"
 ---
 
-# Cuánto tarda una web (guía 2026)
-
 El plazo es la segunda pregunta después del precio, y la que más decepciones causa. Estos son los plazos reales del mercado y lo que los alarga.
 
 ## Plazos típicos en Málaga

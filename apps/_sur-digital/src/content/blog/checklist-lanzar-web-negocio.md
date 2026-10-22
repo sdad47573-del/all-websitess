@@ -1,5 +1,5 @@
 ---
-title: "Checklist: lanza la web de tu negocio"
+title: "Lista de comprobación para lanzar tu web"
 description: "Las 24 comprobaciones antes de publicar la web de un negocio: contenido, legal, dominio, Google, velocidad y medición. Con la lista para copiar."
 pubDate: 2026-09-27
 category: "Guías"

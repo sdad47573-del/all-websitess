@@ -5,8 +5,6 @@ pubDate: 2026-09-25
 category: "Sectores"
 ---
 
-# Cómo llenar la agenda de tu clínica de fisioterapia en Málaga
-
 Un fisioterapeuta no compite con las clínicas del centro: compite con el **boca a boca** y con la agenda de los compañeros que sí aparecen en Google. Lo segundo se arregla. Esto es lo que funciona.
 
 ## El recorrido de tu paciente (y dónde lo pierdes)

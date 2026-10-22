@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Guías"
 ---
 
-# Wix o encargar tu web: coste real
-
 "Hago yo la web y me ahorro el dinero" suena bien hasta que cuentas **tu tiempo**. Aquí van los números reales de cada camino para que decidas con la calculadora, no con el orgullo.
 
 ## Opción A: constructor tipo Wix o Squarespace

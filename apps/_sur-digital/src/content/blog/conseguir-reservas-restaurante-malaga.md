@@ -5,8 +5,6 @@ pubDate: 2026-09-22
 category: "Sectores"
 ---
 
-# Cómo conseguir más reservas en tu restaurante en Málaga (guía 2026)
-
 Tienes el producto (buena cocina), el local y la clientela habitual. Lo que falta es **que te encuentren los que aún no te conocen**. Esta guía ordena, de más a menos urgente, lo que mueve la aguja en un restaurante de Málaga.
 
 ## 1. Tu restaurante en Google Maps (no negociable)

@@ -5,8 +5,6 @@ pubDate: 2026-09-29
 category: "Guías"
 ---
 
-# ¿Publicar los precios en tu web? Sí (y así se ponen)
-
 "Es que si los pongo, ya no me llaman." Lo hemos oído en gimnasios, peluquerías, clínicas y talleres. Y funciona justo al revés: quien no ve el precio no te llama, se va a la web del que sí lo enseña. Lo que pierdes no son clientes, son las llamadas de quien solo curioseaba.
 
 ## Por qué "para que pregunten" sale caro

@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Clínica dental: más pacientes en Málaga
-
 En dental el paciente elige con el móvil y con miedo. Gana la clínica que responde antes a tres preguntas: **¿tratáis lo mío?, ¿cuánto cuesta?, ¿puedo fiarme?** Esto es lo que tiene que hacer tu web para traer pacientes de verdad.
 
 ## Los tres pacientes que mandan

@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: 'Precios'
 ---
 
-# Tienda online en Málaga: precios 2026
-
 Si vendes productos en Málaga y te planteas vender online, esta es la pregunta del millón. Respuesta corta: **una tienda pequeña funcional sale por 890–1.500€, y una tienda seria con catálogo amplio por 1.500–3.500€**. Aquí va el desglose para que ningún presupuesto te pille descalzo.
 
 ## Los rangos que vas a encontrar en Málaga

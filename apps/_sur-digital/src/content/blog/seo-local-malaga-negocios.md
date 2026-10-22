@@ -5,8 +5,6 @@ pubDate: 2026-09-18
 category: "SEO local"
 ---
 
-# SEO local en Málaga: cómo aparecer en Google Maps (guía 2026)
-
 Cuando alguien busca "[restaurante cerca de mí](/web-para-restaurantes/)" o "[gimnasio en Málaga centro](/web-para-gimnasios/)", Google muestra un mapa con tres negocios destacados. Aparecer ahí es **la fuente de clientes más barata** que existe para un negocio local. Esta es la guía práctica, sin humo.
 
 ## 1. Crea (o reclama) tu ficha de Google Business

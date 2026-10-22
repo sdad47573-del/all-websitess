@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para bares y tabernas: guía 2026
-
 Un bar vive del barrio y del paso: del que sale a tapear, del que busca "bar cerca de mí" y del que vuelve porque lo trataron bien. La web de un bar no tiene que ser bonita sin más: tiene que **responder en 30 segundos** a tres preguntas: dónde estás, qué se come hoy y cómo se reserva.
 
 ## 1. Google Maps decide quién llena la barra

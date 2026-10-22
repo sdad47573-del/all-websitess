@@ -5,8 +5,6 @@ pubDate: 2026-09-10
 category: "Sectores"
 ---
 
-# Web para clínicas dentales en Málaga: de la búsqueda a la silla
-
 El paciente no busca "clínica dental": busca **"implantes dentales Málaga"**, "ortodoncia invisible precio" o "dentista urgencias domingo". Cada una de esas búsquedas es una oportunidad, y la mayoría de clínicas las está dejando en la mesa.
 
 ## Las búsquedas que tu web debería captar

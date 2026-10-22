@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para carnicerías: guía Málaga 2026
-
 La carnicería vive de la confianza: quien compra carne quiere saber de dónde viene, quién la corta y que el sábado habrá cordero. Esa confianza hoy se gana también en el móvil, cuando el vecino nuevo busca "carnicería cerca de mí" y compara en dos minutos.
 
 ## 1. Google Maps: que te encuentren los del barrio

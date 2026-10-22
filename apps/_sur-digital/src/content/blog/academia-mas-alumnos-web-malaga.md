@@ -5,8 +5,6 @@ pubDate: 2026-09-26
 category: "Sectores"
 ---
 
-# Cómo llena una academia sus grupos en Málaga antes de septiembre
-
 Una academia no vende durante todo el año: vende en **junio y septiembre**, en dos semanas en las que las familias comparan. Lo que decida a un padre o a una madre en ese plazo no es tu método pedagógico, es **cuánto tarda en entender horarios, grupos y precio**.
 
 ## El calendario manda

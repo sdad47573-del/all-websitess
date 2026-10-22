@@ -1,5 +1,5 @@
 ---
-title: "Kit Digital e IVA: lo que nadie te cuenta"
+title: "Kit Digital e IVA: quién paga el 21 %"
 description: "El Kit Digital no cubre el IVA: lo pagas tú y a veces lo deduces. Qué dice Hacienda, cómo calcular tu coste real y las letras pequeñas del bono."
 pubDate: 2026-10-07
 category: "Precios"

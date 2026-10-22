@@ -5,8 +5,6 @@ pubDate: 2026-09-19
 category: "Precios"
 ---
 
-# Kit Digital: cómo elegir proveedor sin quemar la subvención (2026)
-
 El Kit Digital es dinero público para digitalizar tu negocio y, como todo dinero fácil, atrae a quien quiere canjearlo rápido por una plantilla. Si tienes la subvención concedida (o la vas a pedir), esta checklist te puede ahorrar meses de arrepentimiento.
 
 ## Trampa nº 1: la plantilla disfrazada de "solución a medida"
@@ -44,6 +42,6 @@ Sí, si eliges proveedor con criterio. No, si te apuntas al primero que te llama
 
 ---
 
-Y si la duda es si coger la ayuda siquiera, haz [el cálculo a 3 años de si merece la pena el Kit Digital](/blog/kit-digital-merece-la-pena-2026/).
+Y si la duda es si coger la ayuda siquiera, haz [el cálculo a 3 años de si merece la pena el Kit Digital](/blog/kit-digital-merece-la-pena/).
 
 ¿Te han llegado ya tres ofertas de Kit Digital y no te fías de ninguna? [Escríbenos](/&#35;contacto) y te las revisamos gratis, línea por línea.

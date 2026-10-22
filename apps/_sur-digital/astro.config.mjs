@@ -31,6 +31,13 @@ export default defineConfig({
   redirects: {
     "/blog/crear-pagina-web-malaga-2026":
       "/blog/cuanto-cuesta-una-web-malaga-2026/",
+    // Duplicados consolidados (22 oct 2026): dos URLs competían por la misma
+    // búsqueda y ninguna entraba en el top 10. Se conserva el slug con más
+    // historial y el otro se redirige con 301 para no perder las señales.
+    "/blog/kit-digital-merece-la-pena-2026":
+      "/blog/kit-digital-merece-la-pena/",
+    "/blog/diseno-web-marbella-costa-del-sol":
+      "/blog/diseno-web-marbella/",
     // URLs fantasma (/1/ … /5/): rutas de una versión anterior que Google
     // sigue teniendo indexadas y que hoy dan 404, así que se llevan las
     // impresiones sin poder recibir clics. Se redirigen a la home (301) para

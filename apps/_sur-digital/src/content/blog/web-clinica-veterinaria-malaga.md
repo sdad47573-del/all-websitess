@@ -5,8 +5,6 @@ pubDate: 2026-09-12
 category: "Sectores"
 ---
 
-# Web para clínicas veterinarias en Málaga: urgencias, citas y confianza
-
 Cuando el perro está malo, el dueño no compara páginas bonitas: busca "veterinario cerca de mí", mira el primer resultado y **llama al primero que ve con teléfono de urgencias visible**. Tu web tiene 5 segundos para darle esa respuesta.
 
 ## Las 4 cosas que debe resolver tu web (en orden)

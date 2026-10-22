@@ -2,16 +2,15 @@
 title: "Tu primera web gratis: oferta de lanzamiento"
 description: "Estrenamos agencia en Málaga con una oferta sin letra pequeña: landing page profesional gratis, sin permanencia y con todo a tu nombre."
 pubDate: 2026-09-21
+updatedDate: 2026-10-22
 category: "Anuncios"
 ---
-
-# Lanzamos Sur Digital: tu primera web gratis hasta el 5 de octubre
 
 Hoy hacemos oficial lo que llevábamos meses preparando: **Sur Digital ya está en línea**. Una agencia web de Málaga con una idea sencilla — que ningún negocio local se quede fuera de internet por precio.
 
 Y para estrenarnos, la oferta es directa:
 
-> **Tu primera landing page, gratis.** Sin permanencia, sin costes ocultos y con el dominio y la web registrados a tu nombre. Solo hasta el **5 de octubre**.
+> **Tu primera landing page, gratis.** Sin permanencia, sin costes ocultos y con el dominio y la web registrados a tu nombre.
 
 [Solicita tu landing gratis →](https://www.linkedin.com/company/sur-digital-malaga)
 
@@ -46,9 +45,9 @@ Y hay [muchos más sectores](/especialidades/) con su propuesta ya pensada: fisi
 3. Nos pasas textos y fotos (o te ayudamos con ellos).
 4. En **menos de 7 días**, tu web está online y apareces en Google.
 
-## Solo hasta el 5 de octubre
+## Plazas limitadas al mes
 
-Aceptamos un número limitado de landings gratuitas al mes para cuidar la calidad de cada proyecto — cuando se llena la agenda, se cierra hasta el mes siguiente. Si estás leyendo esto y la fecha del banner sigue activa, **quedan plazas**.
+Aceptamos un número limitado de landings gratuitas al mes para cuidar la calidad de cada proyecto — cuando se llena la agenda, se cierra hasta el mes siguiente. Si estás leyendo esto, **pregúntanos por las plazas de este mes**.
 
 [Solicita tu web gratis ahora](https://www.linkedin.com/company/sur-digital-malaga)
 

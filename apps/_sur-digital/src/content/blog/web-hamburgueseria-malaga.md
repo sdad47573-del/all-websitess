@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para hamburgueserías: guía 2026
-
 La hamburguesería compite en el móvil: el cliente compara cartas con fotos a las 21:00 y pide donde le entra por los ojos. Si tu carta vive en capturas de Instagram y tu único pedido pasa por una plataforma que se lleva el 30%, estás regalando margen cada noche.
 
 ## 1. Google Maps: aparecer cuando hay hambre

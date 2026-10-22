@@ -5,8 +5,6 @@ pubDate: 2026-09-16
 category: "Guías"
 ---
 
-# Dominio y hosting: guía para negocios de Málaga
-
 Si alguien te gestiona la web y no sabes qué es el dominio ni el hosting (ni quién los paga), este artículo es para tu tranquilidad. Son dos cosas distintas, baratas, y el origen del 80% de los líos con proveedores.
 
 ## Dominio: la dirección de tu negocio

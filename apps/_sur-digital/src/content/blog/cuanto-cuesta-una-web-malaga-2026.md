@@ -5,8 +5,6 @@ pubDate: 2026-09-21
 category: "Precios"
 ---
 
-# Cuánto cuesta una web en Málaga en 2026 (precios reales)
-
 Es la primera pregunta de todo el mundo y la que más se contesta con evasivas. Aquí van los números reales del mercado malagueño de 2026, sin rodeos.
 
 ## Los tres precios que vas a encontrar

@@ -5,8 +5,6 @@ pubDate: 2026-09-24
 category: "Sectores"
 ---
 
-# Web para abogados: cómo conseguir clientes con una presencia digital seria
-
 El cliente de un despacho no decide por un anuncio: decide por **confianza**. Y hoy la primera impresión de confianza no es tu despacho físico — es tu web, a las 23:00, en el móvil de alguien con un problema urgente.
 
 ## Lo que busca quien necesita un abogado

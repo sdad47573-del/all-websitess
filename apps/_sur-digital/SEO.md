@@ -1,10 +1,10 @@
 # 🎯 SEO — Sur Digital (sur-digital.vercel.app)
 
-> **Última verificación: 12 oct 2026.**
-> **Fuente de datos:** `google_search/*.csv` (exporte Search Console del **12 oct 2026**,
-> últimos 16 meses: 6 oct 2025 – 10 oct 2026).
-> Totales: **14.224 impresiones, 7 clics, CTR 0,05 %**.
-> Últimos 28 días: 977 imp, 1 clic (CTR 0,10 %).
+> **Última verificación: 22 oct 2026.**
+> **Fuente de datos:** `google_search/*.csv` (exporte Search Console del **22 oct 2026**,
+> últimos 3 meses: 21 jul – 20 oct 2026).
+> Totales: **4.514 impresiones, 5 clics, CTR 0,11 %**.
+> El exporte anterior (16 meses) sirve de histórico: 14.224 impresiones y 7 clics.
 
 ## 1. Diagnóstico
 
@@ -14,10 +14,10 @@ El ~90 % de las impresiones son búsquedas de Diario SUR, no de la agencia:
 
 | Consulta | Impr. | Pos. | Clics | Intención real |
 |---|---|---|---|---|
-| `surdigital` | 7.852 | 6,1 | 3 | Periódico SUR digital |
-| `sur digital` | 2.899 | 5,4 | 0 | Periódico |
-| `sur digital malaga` | 1.300 | 5,3 | 0 | Periódico |
-| `sur` / `digital` / `el sur digital` / `quiosco` / `diario sur malaga` | ~450 | 2-9 | 0 | Periódico/quiosco |
+| `surdigital` | 2.464 | 5,4 | 2 | Periódico SUR digital |
+| `sur digital` | 1.329 | 5,7 | 0 | Periódico |
+| `sur digital malaga` | 19 | 11,9 | 0 | Periódico |
+| `sur` / `el sur digital` / `sur web` / `sur digital marbella` | ~13 | 2-15 | 0 | Periódico/marca |
 
 Posiciones 2-9 con CTR ~0 %: el que busca quiere el periódico y no hace clic.
 **Decisión:** no perseguir esas consultas. El snippet ya dice
@@ -29,18 +29,21 @@ que importa es el **CTR de las consultas comerciales**.
 
 | Página | Impr. | Pos. | Consulta que la delata |
 |---|---|---|---|
-| `/servicios/` | 14 | **4,4** | genérica servicios |
-| `/blog/cuanto-cuesta-una-web-malaga-2026/` | 12 | **6,8** | `diseño web precios` (8 · 31,8) |
+| `/servicios/` | 26 | **4,3** | genérica servicios |
+| `/blog/cuanto-cuesta-una-web-malaga-2026/` | 14 | **8,7** | `diseño web precios` (8 · 31,8) |
 | `/blog/mantenimiento-web-20-euros-mes/` | 5 | **5,2** | `mantenimiento web malaga` (5 · 5,2) |
-| `/blog/crear-pagina-web-malaga-2026/` → 301 a cuanto-cuesta | 7 | 13,6 | — (redirigido) |
+| `/blog/crear-pagina-web-malaga-2026/` → 301 a cuanto-cuesta | 8 | 13,1 | — (redirigido) |
 | `/blog/kit-digital-que-cubre-y-que-no/` | 8 | 16,0 | `iva kit digital` (6 · 17,0) |
-| `/blog/seo-local-malaga-negocios/` | 80 | 77,0 | `seo local` (92 · 24,1)¹ |
-| `/blog/web-abogados-conseguir-clientes/` | 14 | 32,9 | `desarrollo web abogados` (6 · 19,0) |
+| `/blog/seo-local-malaga-negocios/` | 143 | 82,8 | `seo local` (92 · 24,1)¹ |
+| `/blog/diseno-web-marbella/` | 59 | 74,6 | `diseño web marbella` (16 · 78,8) |
+| `/blog/web-optica-malaga/` | 31 | 44,5 | `web para ópticas` |
 | `/blog/web-clinica-dental-dentista-malaga/` | 29 | 30,3 | `dentista urgencia malaga` (5 · 17,6) |
+| `/blog/web-abogados-conseguir-clientes/` | 22 | 54,9 | `desarrollo web abogados` (6 · 19,0) |
+| `/precios/` | 22 | 31,6 | `diseño web precios` |
 | `/web-para-gimnasios/` | 6 | 27,8 | `diseño web para gimnasios` (6 · 27,8) |
-| `/precios/` | 21 | 32,9 | `diseño web precios` |
+| `/web-para-inmobiliarias/` | 6 | **6,8** | `diseño web inmobiliarias` |
 
-¹ `seo local` (pos 24) la sirve probablemente `/blog/category/seo-local/`
+¹ `seo local` (pos 24) la sirve `/blog/category/seo-local/`
 (120 imp · pos 24,4): el hub funciona, hay que subirlo a página 1 con enlaces
 y reseñas, no con snippets.
 
@@ -214,14 +217,71 @@ artículos de blog.
 
 Barrido tras el build: 0/0/0/0 y `Sectores` solo en textos de contenido.
 
-## 3. Pendiente operativo (fuera del repo, por impacto)
+## 13. Auditoría del exporte de 3 meses (22 oct 2026)
+
+### Canibalización: dos pares de URLs competían entre sí
+
+El exporte deja dos duplicados evidentes, ambos con la misma intención y
+contenido solapado. Ninguna de las dos URLs entraba en el top 10:
+
+- **Kit Digital**: `kit-digital-merece-la-pena` y `kit-digital-merece-la-pena-2026`
+  (misma pregunta, mismo cálculo). Se conserva el slug limpio con el artículo
+  del cálculo a 3 años, y el `-2026` pasa a **301**.
+- **Marbella**: `diseno-web-marbella` (59 imp) y `diseno-web-marbella-costa-del-sol`
+  (3 imp, creado 2 días después). Se conserva el slug con más historial, se le
+  integran los precios actuales, el enfoque Costa del Sol y el checklist, y el
+  otro pasa a **301**.
+
+Los enlaces internos que apuntaban a los slugs retirados se han actualizado.
+El sitemap solo anuncia las URLs supervivientes.
+
+### `/blog/category/seo-local/`: de archivo vacío a hub
+
+Es la URL que Google usa para `seo local` (120 imp, pos 24,4) y solo tenía
+tarjetas. Ahora lleva intro, tres secciones (cómo decide Google, páginas por
+servicio y zona, precios y plazos), 4 preguntas frecuentes visibles con
+`FAQPage` y enlaces a la guía, la ficha de Google, precios y servicio. Es la
+página con más margen de la banda 20-30.
+
+### Snippets con la consulta real
+
+- `mantenimiento-web-20-euros-mes`: title «Mantenimiento web en Málaga: 39 €/mes»
+  (la consulta `mantenimiento web malaga` estaba en pos 5,2 sin clic).
+- `kit-digital-iva`: title «Kit Digital e IVA: quién paga el 21 %» y enlaces
+  desde el artículo de «qué cubre», que era el que capturaba `iva kit digital`.
+- `checklist-lanzar-web-negocio`: title «Lista de comprobación para lanzar tu
+  web», la frase exacta de la consulta en español (pos 20).
+
+### Técnico y consistencia
+
+- **30 artículos tenían dos `<h1>`**: el del template y un `#` al inicio del
+  Markdown. Se eliminó el duplicado del cuerpo; ahora cada página tiene un solo
+  H1, el mismo que el title.
+- **Precios obsoletos**: la FAQ de `/servicios/` decía 20 €/mes (el sitio ya
+  cobra 39), y la de `/especialidades/` y un artículo de marketing seguían
+  anunciando 99/299 € cuando la web completa son 490 € y la tienda 890 €.
+  Corregidos los tres.
+- **Oferta caducada**: el artículo de lanzamiento seguía anunciando «hasta el
+  5 de octubre» en el cuerpo. Se quitó la fecha y se mantuvo la oferta vigente
+  (primera landing gratis) con plazas limitadas al mes.
+- Verificado en `dist/`: **116 páginas, 0 títulos/descripciones duplicados,
+  0 titles > 60, 0 descriptions > 162, 0 páginas con más de un H1, 0 enlaces
+  internos rotos**. Los dos 301 están en `.vercel/output/config.json`; las
+  variantes con barra final (las canónicas indexadas) tienen fallback estático
+  en `public/blog/…` con `noindex, follow` y canonical al destino.
+
+## 14. Pendiente operativo (fuera del repo, por impacto)
 
 1. **Desplegar** (nada de lo anterior existe en producción hasta entonces).
-2. **Search Console**: las URLs fantasma /1/–/5/ ya devuelven 301; pedir
-   indexación de `/servicios/`, `/precios/` y los 3 artículos en top 10.
+2. **Search Console**: pedir indexación de `/blog/category/seo-local/`, los dos
+   slugs consolidados y los 3 snippets nuevos; comprobar que los 301 de
+   `kit-digital-merece-la-pena-2026` y `diseno-web-marbella-costa-del-sol`
+   se leen como transferencia de señales y no como error.
 3. **Google Business Profile** de la agencia (el pack local decide en
    «diseño web málaga» / «seo local málaga»); pedir reseñas a clientes.
-4. **Medir a 30 días**: CTR de `/servicios/`, `cuanto-cuesta-una-web` y
-   `mantenimiento` (pos ≤ 10 + 0 clics era fuga de snippet pura).
+4. **Medir a 30 días**: CTR de `/servicios/` (26 imp, pos 4,3),
+   `mantenimiento` (pos 5,2), `cuanto-cuesta-una-web` (pos 8,7) y la categoría
+   de SEO local (120 imp, pos 24,4).
 5. El siguiente escalón (`seo local`, `paginas web malaga`, `agencia digital
-   malaga` en pos 24-88) es **autoridad y enlaces**, no snippets.
+   malaga`, clúster Marbella en pos 68-98) es **autoridad y enlaces**, no
+   snippets: GBP, reseñas, directorios y menciones locales.

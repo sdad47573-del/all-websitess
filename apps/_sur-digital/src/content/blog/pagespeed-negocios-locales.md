@@ -5,8 +5,6 @@ pubDate: 2026-09-06
 category: "SEO local"
 ---
 
-# Tu web tarda 6 segundos: lo que eso te cuesta (y cómo arreglarlo)
-
 Haz la prueba ahora: abre tu web en el móvil, con datos (no wifi), y cuenta. Si tarda más de 3 segundos en poder tocar algo, sigue leyendo: cada día hay gente que buscaba lo que vendes y se fue antes de verte.
 
 ## Qué pasa segundo a segundo

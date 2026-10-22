@@ -33,6 +33,61 @@ const categoryTitles: Record<string, string> = {
   Anuncios: "Anuncios y novedades",
 };
 
+// La categoría de SEO local es la que más impresiones recibe (120 en 3 meses,
+// posición 24) y era un archivo vacío: solo tarjetas. Un hub con contenido
+// propio puede pelear la primera página; el resto de categorías no tienen
+// volumen suficiente para justificar textos únicos.
+const seoLocalContent =
+  category === "SEO local"
+    ? {
+        intro: [
+          "El SEO local es el trabajo de aparecer en Google cuando alguien busca tu servicio en tu zona: el mapa de tres negocios que sale antes que las webs, las búsquedas \"cerca de mí\" y las de \"fontanero en Málaga\". No compites contra toda internet: compites contra los negocios que están a tu alrededor.",
+          "Estos artículos cubren el ciclo completo: qué es, cómo se optimiza la ficha de Google Business, cómo se piden reseñas, cuánto cuesta y cuánto tarda. Si prefieres empezar por lo urgente, ve directo a la <a href=\"/blog/que-es-el-seo-local/\">guía de qué es el SEO local</a>.",
+        ],
+        sections: [
+          {
+            heading: "Cómo decide Google qué negocios enseña en el mapa",
+            paragraphs: [
+              "Google resume sus criterios en tres: <strong>relevancia</strong> (que tu ficha y tu web digan lo que la gente busca), <strong>distancia</strong> (lo lejos que está el negocio de quien busca) y <strong>prominencia</strong> (reseñas, menciones y enlaces que te dan autoridad). La distancia no se compra; la relevancia y la prominencia sí se trabajan.",
+              "En la práctica, la ficha de Google Business es la pieza que más mueve la aguja al principio: categoría correcta, horario real, fotos propias, publicaciones y reseñas respondidas. La guía paso a paso está en <a href=\"/blog/ficha-google-business-optimizada/\">cómo optimizar tu ficha de Google</a>.",
+            ],
+          },
+          {
+            heading: "Web local: una página por servicio y zona",
+            paragraphs: [
+              "La ficha sola no basta. Tu web necesita una página por servicio y por zona donde trabajas de verdad, con contenido propio y datos locales: no veinte páginas copiadas cambiando el nombre del municipio. Esa es la diferencia entre posicionar y que Google ignore el intento.",
+              "Si trabajas en Málaga capital y Costa del Sol, la estructura es la misma: servicios claros, pruebas (clientes, reseñas, casos) y una ficha que coincida con el nombre, la dirección y el teléfono de la web.",
+            ],
+          },
+          {
+            heading: "Cuánto cuesta y cuánto tarda",
+            paragraphs: [
+              "El posicionamiento local mensual en Sur Digital parte de <a href=\"/servicios/\">100 €/mes, sin permanencia</a>. Lo que cuesta dependerá de la competencia de tu zona y del punto de partida de tu ficha y tu web; los rangos están en <a href=\"/blog/cuanto-cuesta-seo-local-malaga/\">cuánto cuesta el SEO local en Málaga</a>.",
+              "En plazos, seamos honestos: las primeras semanas se mueven las bases, los resultados notables suelen llegar entre el mes 2 y el 4, y lo bueno se consolida al año. Lo detallamos mes a mes en <a href=\"/blog/seo-local-cuanto-tarda/\">cuánto tarda el SEO local</a>.",
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: "¿Qué es el SEO local en una frase?",
+            a: "Es el conjunto de acciones para que tu negocio aparezca en Google Maps y en las búsquedas de tu zona cuando alguien busca lo que vendes cerca de ti.",
+          },
+          {
+            q: "¿Puedo salir en Google Maps sin web?",
+            a: "Sí, con una ficha de Google Business verificada. Pero una web con páginas por servicio y zona te da relevancia y refuerza la ficha; sin ella compites con una mano atada.",
+          },
+          {
+            q: "¿Comprar reseñas acelera el posicionamiento?",
+            a: "No, y puede costarte la ficha. Google detecta patrones artificiales. Tres reseñas reales al mes durante un año pesan más que treinta compradas en una semana.",
+          },
+          {
+            q: "¿Cuánto tarda el SEO local en dar clientes?",
+            a: "Las bases se mueven en 4 semanas, los primeros resultados notables entre el mes 2 y el 4, y la autoridad se consolida al año. Nadie serio garantiza posiciones.",
+          },
+        ],
+      }
+    : null;
+
 const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
 const categoryUrl = `${site}/blog/category/${slugifyCategory(category)}/`;
 const breadcrumbs = {
@@ -68,7 +123,9 @@ const formatDate = (d: Date) =>
   title={pageTitle(
     categoryTitles[category] ?? `${category} para negocios de Málaga`
   )}
-  description={`${posts.length} artículos sobre ${category.toLowerCase()} para negocios de Málaga: qué hacer, cuánto cuesta y los errores que cuestan clientes. Sin humo.`}
+  description={seoLocalContent
+    ? "Qué es el SEO local y cómo salir en Google Maps en Málaga: ficha, reseñas, páginas por zona, precios y plazos reales. Guía y artículos."
+    : `${posts.length} artículos sobre ${category.toLowerCase()} para negocios de Málaga: qué hacer, cuánto cuesta y los errores que cuestan clientes. Sin humo.`}
   path={`/blog/category/${slugifyCategory(category)}/`}
 >
   <script
@@ -77,6 +134,22 @@ const formatDate = (d: Date) =>
     slot="head"
     set:html={JSON.stringify(breadcrumbs)}
   />
+  {seoLocalContent && (
+    <script
+      is:inline
+      type="application/ld+json"
+      slot="head"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: seoLocalContent.faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      })}
+    />
+  )}
 
   <Topbar />
 
@@ -91,10 +164,28 @@ const formatDate = (d: Date) =>
         <span>{category}</span>
       </nav>
       <h1 data-reveal class="text-4xl md:text-5xl font-bold text-base-content mb-3">{category}</h1>
-      <p class="text-base-content/70 mb-12">
+      <p class="text-base-content/70 mb-8">
         {posts.length}
         {posts.length === 1 ? "artículo" : "artículos"} en esta categoría.
       </p>
+
+      {seoLocalContent && (
+        <div class="mb-12 space-y-5 text-base-content/70 leading-relaxed">
+          {seoLocalContent.intro.map((paragraph) => (
+            <p set:html={paragraph} />
+          ))}
+          {seoLocalContent.sections.map((section) => (
+            <section>
+              <h2 class="text-2xl font-bold text-base-content mt-8 mb-3">
+                {section.heading}
+              </h2>
+              {section.paragraphs.map((paragraph) => (
+                <p class="mb-3" set:html={paragraph} />
+              ))}
+            </section>
+          ))}
+        </div>
+      )}
 
       <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {
@@ -126,6 +217,24 @@ const formatDate = (d: Date) =>
           ))
         }
       </ul>
+
+      {seoLocalContent && (
+        <section class="mt-12">
+          <h2 class="text-2xl font-bold text-base-content mb-6">
+            Preguntas frecuentes sobre SEO local
+          </h2>
+          <div class="flex flex-col gap-3">
+            {seoLocalContent.faq.map((f) => (
+              <details class="collapse collapse-arrow bg-base-100 border border-base-300">
+                <summary class="collapse-title font-bold">{f.q}</summary>
+                <div class="collapse-content text-sm text-base-content/70">
+                  <p>{f.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
 
       <p class="mt-12">
         <a href="/blog/" class="link link-primary font-bold"

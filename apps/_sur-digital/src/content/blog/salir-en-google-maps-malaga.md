@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "SEO local"
 ---
 
-# Salir en Google Maps: guía 2026
-
 Cuando alguien busca "fontanero cerca de mí" o "dentista Marbella", Google enseña primero el mapa con 3 negocios. Estar ahí vale más que cualquier anuncio: es el cliente con intención de compra inmediata. Esto es lo que hay que hacer para salir, sin humo.
 
 ## 1. Reclama y verifica tu ficha de Google Business
@@ -38,7 +36,7 @@ Google cruza datos: si tu ficha dice "abierto hasta las 20:00" y tu web dice otr
 
 ## Málaga, Marbella y la Costa del Sol
 
-El mapa es hiperlocal: posicionas por zonas, no por ciudades enteras. Si trabajas en varios municipios (Málaga capital, Marbella, Fuengirola, Estepona), tu web debe tener contenido para cada zona que trabajes de verdad, y tus reseñas mencionarán esos sitios de forma natural. Prometer "toda la Costa del Sol" desde un local sin contenido que lo respalde no funciona. Si buscas proveedor en la costa, mira [diseño web en Marbella y Costa del Sol](/blog/diseno-web-marbella-costa-del-sol/).
+El mapa es hiperlocal: posicionas por zonas, no por ciudades enteras. Si trabajas en varios municipios (Málaga capital, Marbella, Fuengirola, Estepona), tu web debe tener contenido para cada zona que trabajes de verdad, y tus reseñas mencionarán esos sitios de forma natural. Prometer "toda la Costa del Sol" desde un local sin contenido que lo respalde no funciona. Si buscas proveedor en la costa, mira [diseño web en Marbella y Costa del Sol](/blog/diseno-web-marbella/).
 
 ---
 

@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para abogados en Málaga 2026
-
 Un despacho no vende por impulso: vende por confianza. La web de un abogado tiene que parecer un despacho serio a las 23:00 en el móvil de alguien con un problema. Esto es lo que debe incluir, ni más ni menos.
 
 ## Estructura mínima que funciona

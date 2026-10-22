@@ -6,8 +6,6 @@ updatedDate: 2026-10-15
 category: "Sectores"
 ---
 
-# Web para cafeterías: guía Málaga 2026
-
 La cafetería vive de la repetición: el desayuno de cada mañana, el café de media tarde, el del sábado sin prisa. Y la repetición empieza por ser encontrado: quien se muda al barrio o cambia de ruta busca "cafetería cerca de mí" y prueba la primera que le convence en el móvil.
 
 ## 1. Google Maps: el escaparate de las 8 de la mañana

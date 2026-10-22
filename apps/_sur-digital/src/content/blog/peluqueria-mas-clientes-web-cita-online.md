@@ -5,8 +5,6 @@ pubDate: 2026-09-14
 category: "Sectores"
 ---
 
-# Web para peluquerías: más clientas con cita online
-
 Tu Instagram tiene 2.000 seguidores. Tu agenda, huecos los martes. La diferencia entre ambas no es seguidores: es **cómo de fácil es pedir cita**. Esta es la guía para cerrar ese hueco.
 
 ## El problema: la cita depende de tu disponibilidad

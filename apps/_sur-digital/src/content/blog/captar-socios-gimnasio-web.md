@@ -5,8 +5,6 @@ pubDate: 2026-09-23
 category: "Sectores"
 ---
 
-# Cómo captar socios para tu gimnasio en Málaga con una web que convierte
-
 Un gimnasio de barrio no compite con las cadenas por precio: compite por **cercanía y confianza**. Pero si tu web no transmite ni lo uno ni lo otro, esa competencia ya está perdida. Esto es lo que funciona.
 
 ## El recorrido de tu futuro socio (y dónde lo pierdes)
