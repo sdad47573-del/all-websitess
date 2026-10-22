@@ -2528,7 +2528,7 @@ export const SEO_ARTICLES_NEW: SeoArticle[] = [
 	},
 	{
 		slug: 'deudas-de-una-sociedad-limitada',
-		title: 'Quién responde de las deudas de una sociedad limitada',
+		title: 'Deudas de una sociedad limitada: quién responde y cuándo',
 		description:
 			'Cuándo responde la sociedad limitada de sus deudas y cuándo alcanza a los socios o administradores: avales, levantamiento del velo y responsabilidad.',
 		date: '2026-10-06',

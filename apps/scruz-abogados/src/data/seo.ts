@@ -846,7 +846,7 @@ export const ROUTE_DEFAULTS: Record<
 			'tabla de jubilación por años cotizados, tabla edad jubilación 2027, jubilación 2027 edad 67 años, jubilación 65 años 38 años 6 meses cotizados, fin periodo transitorio pensiones 2027, jubilación anticipada 2027, complemento brecha de género jubilación, abogado seguridad social Lucena',
 	},
 	'/blog/transparencia-retributiva/': {
-		title: `Transparencia retributiva 2026: cómo reclamar tu salario`,
+		title: `Registro retributivo y transparencia salarial: cómo reclamar`,
 		description: `Registro retributivo obligatorio y Directiva UE 2023/970: cómo pedir la información salarial de tu puesto, las bandas y qué hacer si tu empresa no cumple.`,
 		keywords:
 			'transparencia retributiva, registro retributivo obligatorio, directiva transparencia salarial 2026, derecho información salarial, brecha salarial, igualdad retributiva, abogado laboralista Lucena',
@@ -906,7 +906,7 @@ export const ROUTE_DEFAULTS: Record<
 			'incapacidad permanente grados, incapacidad total 55%, incapacidad absoluta, gran invalidez, solicitar incapacidad permanente, tribunal médico EVI, reclamar negativa INSS, abogado incapacidad Lucena',
 	},
 	'/blog/tarjetas-revolving-usura/': {
-		title: `Tarjetas revolving y usura: cuándo reclamar | ${SITE_NAME}`,
+		title: `Tarjeta revolving: cómo reclamar los intereses usurarios`,
 		description: `Cómo reclamar tu tarjeta revolving por intereses usurarios: la Ley de Usura de 1908, la doctrina del Tribunal Supremo, cuánto puedes recuperar y cómo hacerlo. Consulta gratuita.`,
 		keywords:
 			'tarjeta revolving usura, intereses usurarios tarjeta, reclamar tarjeta revolving, Ley de Usura 1908, nulidad contrato revolving, abogado consumo Lucena',
@@ -930,7 +930,7 @@ export const ROUTE_DEFAULTS: Record<
 			'cláusula suelo córdoba, reclamar cláusula suelo, IRPH nulidad, gastos hipotecarios devolución, abogado reclamaciones bancarias Lucena, hipoteca abusiva',
 	},
 	'/blog/herencias-entre-hermanos/': {
-		title: `Herencias entre hermanos: cómo repartir sin conflictos`,
+		title: `Repartir una herencia entre hermanos: cómo hacerlo`,
 		description: `Reparto de herencia entre hermanos: la legítima, las donaciones en vida, el cuaderno particional y cuándo conviene la vía judicial. Consulta gratuita.`,
 		keywords:
 			'herencia entre hermanos, conflicto herencia hermanos, reparto herencia, legítima, tercio de mejora, colación donaciones, cuaderno particional, mediación familiar herencia, división judicial herencia, abogado herencias Lucena',
@@ -943,7 +943,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/impuesto-sucesiones-andalucia/': {
 		title: `Impuesto de sucesiones en Andalucía: bonificación del 99 %`,
-		description: `Quién paga el 99 % bonificado, el plazo de 6 meses para no perderlo y las reducciones por vivienda habitual y empresa familiar. Guía con casos.`,
+		description: `En Andalucía el impuesto de sucesiones está bonificado al 99 % para hijos, cónyuge y padres. Cuánto se paga, dónde se liquida y el plazo de 6 meses.`,
 		keywords:
 			'impuesto de sucesiones andalucía, bonificación 99% sucesiones, plazo impuesto sucesiones, reducción vivienda habitual herencia, empresa familiar reducción, modelo 650, abogado herencias Lucena',
 	},
@@ -972,8 +972,8 @@ export const ROUTE_DEFAULTS: Record<
 			'abogado contratos lucena, revisión de contratos abogado, contrato compraventa cláusulas, incumplimiento de contrato, contratos mercantiles Córdoba, cláusulas abusivas contrato',
 	},
 	'/blog/pension-de-alimentos/': {
-		title: `Pensión de alimentos: cuánto se paga y hasta cuándo`,
-		description: `Cómo se calcula la pensión de alimentos de los hijos, hasta qué edad se paga, cómo se modifica y qué hacer si el otro progenitor deja de pagar. Consulta gratuita.`,
+		title: `Pensión de alimentos en Córdoba: cuánto y hasta cuándo`,
+		description: `Pensión de alimentos en Córdoba: cómo se calcula, hasta qué edad se paga, cómo se modifica y qué hacer si el otro progenitor deja de pagar.`,
 		keywords:
 			'abogado reclamación de pensión lucena, pensión de alimentos hijos, impago pensión de alimentos, modificación pensión alimentos, cuánto pagar pensión hijos, abogado familia Córdoba',
 	},
