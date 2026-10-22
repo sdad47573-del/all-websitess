@@ -21,7 +21,9 @@ El ~90 % de las impresiones son búsquedas de Diario SUR, no de la agencia:
 
 Posiciones 2-9 con CTR ~0 %: el que busca quiere el periódico y no hace clic.
 **Decisión:** no perseguir esas consultas. El snippet ya dice
-«Agencia de diseño web en Málaga», que es lo único que filtra bien.
+«Consultora web en Málaga | Landing gratis», que es lo único que filtra bien
+(se ajustó el 22 oct: la posición de consultora define mejor el negocio que
+«agencia», sin perder «diseño web» en la description).
 El CTR global del sitio **siempre** parecerá bajo por este ruido; la métrica
 que importa es el **CTR de las consultas comerciales**.
 
@@ -270,13 +272,48 @@ página con más margen de la banda 20-30.
   variantes con barra final (las canónicas indexadas) tienen fallback estático
   en `public/blog/…` con `noindex, follow` y canonical al destino.
 
-## 14. Pendiente operativo (fuera del repo, por impacto)
+## 14. Posicionamiento de consultora y clúster abogados (22 oct 2026)
+
+La web se presentaba como «agencia de diseño web», pero el negocio es una
+consultoría: el valor está en decidir qué necesita el cliente antes de
+construir. Se ajustó el mensaje sin abandonar las keywords que traen
+búsquedas:
+
+- **Home**: title «Consultora web en Málaga | Landing gratis», description con
+  diseño web, SEO local, tiendas y precios. El H1 sigue orientado al resultado
+  («una web que traiga clientes»), no al sustantivo.
+- **`/servicios/`**: title «Consultoría y diseño web Málaga desde 0€» y bloque
+  nuevo «Consultoría web: decidir antes de construir», con enlace a precios.
+- **`/quienes-somos`**: «No somos una consultora con comerciales…», coherente
+  con el posicionamiento.
+- **Schema `ProfessionalService`**: `founder` (Jose Aguilar), `slogan` y seis
+  materias en `knowsAbout` (consultoría, diseño, desarrollo, SEO local, GBP y
+  tiendas). Refuerza entidad y E-E-A-T sin inventar reseñas.
+
+### Tercer duplicado: abogados
+
+Había tres URLs para «web para abogados»: la landing de sector, una guía con
+22 impresiones y otra con 0. Se conserva
+`/blog/web-abogados-conseguir-clientes/`, se le añade la sección de precio
+(490 € + 60 €/área + 39 €/mes) de la otra y la tercera pasa a **301** con
+fallback estático para la variante con barra.
+
+También se alineó `cuanto-cuesta-tienda-online-malaga` con la consulta real
+`presupuesto tienda online malaga` (17 imp · pos 68,7): el title pasa a
+«Presupuesto de tienda online en Málaga».
+
+Verificado en `dist/`: **115 páginas, 113 indexables, 0 títulos/descripciones
+ duplicados, 0 titles > 60, 0 descriptions > 162, 0 páginas con más de un H1,
+ 0 enlaces internos rotos y 3 stubs `noindex` de redirección**.
+
+## 15. Pendiente operativo (fuera del repo, por impacto)
 
 1. **Desplegar** (nada de lo anterior existe en producción hasta entonces).
-2. **Search Console**: pedir indexación de `/blog/category/seo-local/`, los dos
-   slugs consolidados y los 3 snippets nuevos; comprobar que los 301 de
-   `kit-digital-merece-la-pena-2026` y `diseno-web-marbella-costa-del-sol`
-   se leen como transferencia de señales y no como error.
+2. **Search Console**: pedir indexación de `/blog/category/seo-local/`, los tres
+   slugs consolidados y los snippets nuevos; comprobar que los 301 de
+   `kit-digital-merece-la-pena-2026`, `diseno-web-marbella-costa-del-sol` y
+   `pagina-web-para-abogados-malaga` se leen como transferencia de señales y no
+   como error.
 3. **Google Business Profile** de la agencia (el pack local decide en
    «diseño web málaga» / «seo local málaga»); pedir reseñas a clientes.
 4. **Medir a 30 días**: CTR de `/servicios/` (26 imp, pos 4,3),

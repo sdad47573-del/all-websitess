@@ -38,6 +38,8 @@ export default defineConfig({
       "/blog/kit-digital-merece-la-pena/",
     "/blog/diseno-web-marbella-costa-del-sol":
       "/blog/diseno-web-marbella/",
+    "/blog/pagina-web-para-abogados-malaga":
+      "/blog/web-abogados-conseguir-clientes/",
     // URLs fantasma (/1/ … /5/): rutas de una versión anterior que Google
     // sigue teniendo indexadas y que hoy dan 404, así que se llevan las
     // impresiones sin poder recibir clics. Se redirigen a la home (301) para

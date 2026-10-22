@@ -1,5 +1,5 @@
 ---
-title: 'Tienda online en Málaga: precios 2026'
+title: 'Presupuesto de tienda online en Málaga'
 description: 'Precio real de una tienda online en Málaga: rangos por catálogo, pagos y envíos, qué encarece el presupuesto y cuánto cuesta mantenerla cada año.'
 pubDate: 2026-10-09
 updatedDate: 2026-10-15

@@ -2,6 +2,7 @@
 title: "Diseño web para abogados: consigue clientes"
 description: "Qué debe tener la web de un despacho en Málaga para generar consultas: áreas de práctica, SEO local, blog jurídico y señales de confianza."
 pubDate: 2026-09-24
+updatedDate: 2026-10-22
 category: "Sectores"
 ---
 
@@ -43,10 +44,16 @@ La filosofía es la misma que aplicamos en [nuestra propuesta de web para abogad
 
 La deontología del ilustre colegio es clara: sin resultados garantizados, sin casos inventados, sin lenguaje promocional agresivo. La buena noticia: **el SEO local y el contenido técnico son 100% conformes** — de hecho, son el canal más honesto y sostenible que existe para un despacho.
 
+## Cuánto cuesta una web para abogados
+
+Una web de despacho (5–8 páginas: inicio, 3–4 áreas de práctica, el despacho y contacto) encaja en nuestra **Web Completa por 490€**: diseño sobrio a medida, dominio y hosting el primer año, SEO básico y entrega en menos de 7 días. Cada área de práctica extra son 60€, y el mantenimiento opcional 39€/mes. Todo con [precio cerrado](/precios/) y la ficha de Google Business optimizada incluida.
+
+La propuesta completa del sector, con ejemplos de secciones, está en [web para abogados en Málaga](/web-para-abogados/).
+
 ## Plan de acción para tu despacho
 
 1. Audita tu web actual con la lista de arriba (o pídenosla gratis).
 2. Define tus 2–3 áreas de práctica prioritarias.
 3. Reclama tu ficha de Google Business con la dirección del despacho ([guía paso a paso](/blog/seo-local-malaga-negocios/)).
 4. Escribe (o encarga) un artículo práctico por trimestre.
-5. Cuando quieras una web al nivel de tu ejercicio, [empieza por la landing gratis](https://www.linkedin.com/company/sur-digital-malaga) — sin compromiso y con [precio cerrado](/precios/) para crecer. La estructura exacta, página por página y con precio, en [página web para abogados en Málaga](/blog/pagina-web-para-abogados-malaga/).
+5. Cuando quieras una web al nivel de tu ejercicio, [empieza por la landing gratis](https://www.linkedin.com/company/sur-digital-malaga) — sin compromiso y con [precio cerrado](/precios/) para crecer. La estructura exacta, página por página, en [web para abogados en Málaga](/web-para-abogados/).
