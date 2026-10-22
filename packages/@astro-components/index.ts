@@ -16,3 +16,8 @@ export { default as LocalGallery } from './src/local/Gallery.astro';
 export { default as LocalVisit } from './src/local/Visit.astro';
 export { default as LocalFaq } from './src/local/Faq.astro';
 export { default as LocalFooter } from './src/local/Footer.astro';
+export { default as LocalHighlights } from './src/local/Highlights.astro';
+export { default as LocalGaleria } from './src/local/Galeria.astro';
+export { default as LocalFaqBlock } from './src/local/FaqBlock.astro';
+export { default as LocalMapFab } from './src/local/MapFab.astro';
+export { default as LocalWhatsappFab } from './src/local/WhatsappFab.astro';
