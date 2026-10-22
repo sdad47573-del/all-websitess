@@ -88,3 +88,53 @@ https://boabdil-restaurante.netlify.app
 https://cafe-bar-la-carretera.netlify.app
 https://restaurante-las-rias.netlify.app
 https://carniceria-jose-luis.netlify.app
+
+## Portfolio ampliado (22 oct 2026)
+
+Añadidas al portfolio con captura 1254×564 y ficha propia:
+
+https://restaurante-pizzaria-a-paragem.netlify.app
+https://abaceria-tinta-de-toro.netlify.app
+https://actitud-centro-belleza.netlify.app
+https://asador-de-camilo.netlify.app
+https://la-bendita-restaurante.netlify.app
+https://carolina-centro-belleza.netlify.app
+https://barberia-teatinos.netlify.app
+https://bquarters.netlify.app
+https://barbershop-guillermo-val.netlify.app
+https://bbells-salon-belleza.netlify.app
+https://el-rincon-del-perlita.netlify.app
+https://la-talega.netlify.app
+https://gigantes-street-food.netlify.app
+https://el-chuleton.netlify.app
+https://la-nicoba.netlify.app
+https://el-terrazeo-del-guinda.netlify.app
+https://gym-krono.netlify.app
+https://78-street-burguer.netlify.app
+https://la-mimosa-atelier.netlify.app
+https://alcaravan-gastroteca.netlify.app
+https://alexflor.netlify.app
+https://alimentacion-asia.netlify.app
+https://amparo-aluche.netlify.app
+https://floristeria-ana-maria.netlify.app
+https://anabel-vegara-estetica.netlify.app
+https://ama-leku.netlify.app
+https://el-garbanzo-negro.netlify.app
+
+## Pendientes de acceso público
+
+Estas devuelven `401 Login Redirect` (Netlify Edge Access), así que no se han
+añadido al portfolio hasta que sean públicas o se indique su dominio propio:
+
+https://los-mena.netlify.app
+https://cafe-restaurante-andalucia.netlify.app
+https://centro-estetica-nina.netlify.app
+https://centro-belleza-maria-batun.netlify.app
+https://bar-venta-el-cruce.netlify.app
+https://carlos-troya.netlify.app
+https://floristeria-baraka.netlify.app
+https://casafran.netlify.app
+
+`abaceria-tinta-de-toro` y `asador-de-camilo` siguen enlazadas desde Netlify:
+su canonical apunta a un `.vercel.app` que devuelve 404, así que el dominio
+propio (si existe) queda pendiente de confirmar.

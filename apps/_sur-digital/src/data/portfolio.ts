@@ -69,6 +69,33 @@ import laCarreteraPreview from '../assets/cafe-bar-la-carretera-preview.jpg';
 import lasRiasPreview from '../assets/restaurante-las-rias-preview.jpg';
 import joseLuisPreview from '../assets/carniceria-jose-luis-preview.jpg';
 import laTapitaPreview from '../assets/bar-restaurante-la-tapita-preview.jpg';
+import aParagemPreview from '../assets/restaurante-pizzaria-a-paragem-preview.jpg';
+import tintaDeToroPreview from '../assets/abaceria-tinta-de-toro-preview.jpg';
+import actitudPreview from '../assets/actitud-centro-belleza-preview.jpg';
+import asadorCamiloPreview from '../assets/asador-de-camilo-preview.jpg';
+import laBenditaPreview from '../assets/la-bendita-restaurante-preview.jpg';
+import carolinaPreview from '../assets/carolina-centro-belleza-preview.jpg';
+import barberiaTeatinosPreview from '../assets/barberia-teatinos-preview.jpg';
+import bquartersPreview from '../assets/bquarters-preview.jpg';
+import guillermoValPreview from '../assets/barbershop-guillermo-val-preview.jpg';
+import medicinaBellezaPreview from '../assets/bbells-salon-belleza-preview.jpg';
+import perlitaPreview from '../assets/el-rincon-del-perlita-preview.jpg';
+import laTalegaPreview from '../assets/la-talega-preview.jpg';
+import gigantesPreview from '../assets/gigantes-street-food-preview.jpg';
+import chuletonPreview from '../assets/el-chuleton-preview.jpg';
+import laNicobaPreview from '../assets/la-nicoba-preview.jpg';
+import terrazeoPreview from '../assets/el-terrazeo-del-guinda-preview.jpg';
+import gymKronoPreview from '../assets/gym-krono-preview.jpg';
+import street78Preview from '../assets/78-street-burguer-preview.jpg';
+import mimosaPreview from '../assets/la-mimosa-atelier-preview.jpg';
+import alcaravanPreview from '../assets/alcaravan-gastroteca-preview.jpg';
+import alexflorPreview from '../assets/alexflor-preview.jpg';
+import alimentacionAsiaPreview from '../assets/alimentacion-asia-preview.jpg';
+import amparoPreview from '../assets/amparo-aluche-preview.jpg';
+import anaMariaPreview from '../assets/floristeria-ana-maria-preview.jpg';
+import anabelPreview from '../assets/anabel-vegara-estetica-preview.jpg';
+import amaLekuPreview from '../assets/ama-leku-preview.jpg';
+import garbanzoNegroPreview from '../assets/el-garbanzo-negro-preview.jpg';
 
 // Tipo explícito porque con `as const` cada elemento infería su propia forma y
 // `destacado` solo existía en los marcados, lo que rompía el destructuring.
@@ -866,5 +893,302 @@ export const PORTFOLIO: Project[] = [
 		accent: 'bg-accent/15 text-primary',
 		url: 'https://bar-restaurante-la-tapita.vercel.app',
 		preview: laTapitaPreview,
+	},
+	{
+		title: 'Restaurante Pizzaria A Paragem',
+		category: 'Restaurantes y bares',
+		sector: 'Pizzería y restaurante',
+		description:
+			'Pizzería y restaurante en Mértola (Portugal), con pizzas de horno y cocina tradicional. Abre de martes a domingo.',
+		tags: ['Pizzería', 'Mértola', 'Portugal'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://restaurante-pizzaria-a-paragem.netlify.app',
+		preview: aParagemPreview,
+	},
+	{
+		title: 'Abacería Tinta de Toro',
+		category: 'Restaurantes y bares',
+		sector: 'Abacería y tapas',
+		description:
+			'Abacería de tapas y cocina tradicional en el Paseo de la Estación de Jaén, con producto de despensa y vinos.',
+		tags: ['Tapas', 'Jaén', 'Vinos'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://abaceria-tinta-de-toro.netlify.app',
+		preview: tintaDeToroPreview,
+	},
+	{
+		title: 'Actitud Centro de Belleza',
+		category: 'Peluquería y belleza',
+		sector: 'Peluquería y estética',
+		description:
+			'Peluquería y estética en el barrio Noroeste de Córdoba: corte, color y tratamientos con trato personalizado.',
+		tags: ['Peluquería', 'Córdoba', 'Estética'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://actitud-centro-belleza.netlify.app',
+		preview: actitudPreview,
+	},
+	{
+		title: 'Asador de Camilo',
+		category: 'Restaurantes y bares',
+		sector: 'Parrilla',
+		description:
+			'Parrilla de brasa en la Puerta del Sol de Jaén, con carnes a la parrilla y comidas de martes a domingo.',
+		tags: ['Parrilla', 'Jaén', 'Carnes'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://asador-de-camilo.netlify.app',
+		preview: asadorCamiloPreview,
+	},
+	{
+		title: 'La Bendita Restaurante',
+		category: 'Restaurantes y bares',
+		sector: 'Cocina española y cafetería',
+		description:
+			'Cocina española y cafetería en Ciudad Real, con espacio para gastronomía, arte y entretenimiento.',
+		tags: ['Restaurante', 'Ciudad Real', 'Cafetería'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://la-bendita-restaurante.netlify.app',
+		preview: laBenditaPreview,
+	},
+	{
+		title: 'Carolina Centro & Belleza',
+		category: 'Peluquería y belleza',
+		sector: 'Centro de belleza',
+		description:
+			'Centro de belleza en Ciudad Jardín (Málaga): tratamientos faciales y corporales con cita previa.',
+		tags: ['Belleza', 'Málaga', 'Facial'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://carolina-centro-belleza.netlify.app',
+		preview: carolinaPreview,
+	},
+	{
+		title: 'La Barbería de Teatinos',
+		category: 'Peluquería y belleza',
+		sector: 'Barbería',
+		description:
+			'Barbería en Teatinos (Málaga): corte, barba y afeitado clásico con reserva online.',
+		tags: ['Barbería', 'Teatinos', 'Málaga'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://barberia-teatinos.netlify.app',
+		preview: barberiaTeatinosPreview,
+	},
+	{
+		title: 'Bquarters',
+		category: 'Peluquería y belleza',
+		sector: 'Barbería',
+		description:
+			'Barbería en Teatinos con corte, ritual de barba y packs combinados; reserva por Booksy o teléfono.',
+		tags: ['Barbería', 'Teatinos', 'Reservas'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://bquarters.netlify.app',
+		preview: bquartersPreview,
+	},
+	{
+		title: 'Barbershop Guillermo Val',
+		category: 'Peluquería y belleza',
+		sector: 'Barbería',
+		description:
+			'Barbería en el centro de Málaga especializada en corte con carácter, barba y afeitado.',
+		tags: ['Barbería', 'Málaga', 'Barba'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://barbershop-guillermo-val.netlify.app',
+		preview: guillermoValPreview,
+	},
+	{
+		title: 'Medicina & Belleza',
+		category: 'Peluquería y belleza',
+		sector: 'Medicina estética',
+		description:
+			'Medicina estética en La Malagueta (Málaga): tratamientos faciales y corporales con asesoramiento previo.',
+		tags: ['Estética', 'Málaga', 'Facial'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://bbells-salon-belleza.netlify.app',
+		preview: medicinaBellezaPreview,
+	},
+	{
+		title: 'El Rincón del Perlita',
+		category: 'Restaurantes y bares',
+		sector: 'Bar de tapas y cervezas',
+		description:
+			'Bar con terraza en Cartagena, más de 150 cervezas, tapas y hamburguesas; abierto todos los días.',
+		tags: ['Cervezas', 'Cartagena', 'Terraza'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://el-rincon-del-perlita.netlify.app',
+		preview: perlitaPreview,
+	},
+	{
+		title: 'La Talega',
+		category: 'Restaurantes y bares',
+		sector: 'Restaurante y bar',
+		description:
+			'Restaurante y bar en el centro de Jaén con tapeo, mediodía y cenas de martes a sábado.',
+		tags: ['Tapas', 'Jaén', 'Restaurante'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://la-talega.netlify.app',
+		preview: laTalegaPreview,
+	},
+	{
+		title: 'Gigantes Street Food',
+		category: 'Restaurantes y bares',
+		sector: 'Cocina americana',
+		description:
+			'Street food americana en Ciudad Real: hamburguesas, alitas y raciones, con dos turnos de servicio.',
+		tags: ['Hamburguesas', 'Ciudad Real', 'Street food'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://gigantes-street-food.netlify.app',
+		preview: gigantesPreview,
+	},
+	{
+		title: 'El Chuletón',
+		category: 'Restaurantes y bares',
+		sector: 'Parrilla',
+		description:
+			'Parrilla y desayunos en Instinción (Almería), con carnes a la brasa y menús de mediodía.',
+		tags: ['Parrilla', 'Almería', 'Desayunos'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://el-chuleton.netlify.app',
+		preview: chuletonPreview,
+	},
+	{
+		title: 'Restaurante La Nicoba',
+		category: 'Restaurantes y bares',
+		sector: 'Menú del día',
+		description:
+			'Menú del día y cocina de siempre en Huelva, de lunes a viernes desde primera hora.',
+		tags: ['Menú del día', 'Huelva', 'Cocina casera'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://la-nicoba.netlify.app',
+		preview: laNicobaPreview,
+	},
+	{
+		title: 'El Terrazeo del Guinda',
+		category: 'Restaurantes y bares',
+		sector: 'Desayunos y tapas',
+		description:
+			'Desayunos, tapas y comidas en Cruz de Humilladero (Málaga), con terraza y calamares fritos.',
+		tags: ['Desayunos', 'Málaga', 'Terraza'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://el-terrazeo-del-guinda.netlify.app',
+		preview: terrazeoPreview,
+	},
+	{
+		title: 'Gym Krono',
+		category: 'Servicios profesionales',
+		sector: 'Gimnasio',
+		description:
+			'Gimnasio de barrio en Teatinos (Málaga): musculación, cardio y monitores para entrenar a tu ritmo.',
+		tags: ['Gimnasio', 'Teatinos', 'Musculación'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://gym-krono.netlify.app',
+		preview: gymKronoPreview,
+	},
+	{
+		title: '78 Street Burger',
+		category: 'Restaurantes y bares',
+		sector: 'Hamburguesería',
+		description:
+			'Hamburguesería en Cáceres con burgers a la parrilla, menús y servicio para llevar.',
+		tags: ['Hamburguesas', 'Cáceres', 'Para llevar'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://78-street-burguer.netlify.app',
+		preview: street78Preview,
+	},
+	{
+		title: 'La Mimosa Atelier',
+		category: 'Comercio',
+		sector: 'Floristería',
+		description:
+			'Floristería en Córdoba: ramos, plantas y arreglos florales para eventos y regalos.',
+		tags: ['Floristería', 'Córdoba', 'Ramos'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://la-mimosa-atelier.netlify.app',
+		preview: mimosaPreview,
+	},
+	{
+		title: 'Alcaraván Gastroteca',
+		category: 'Restaurantes y bares',
+		sector: 'Gastroteca',
+		description:
+			'Gastroteca en Cáceres con cocina de mercado, tapas y una carta pensada para compartir.',
+		tags: ['Gastroteca', 'Cáceres', 'Tapas'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://alcaravan-gastroteca.netlify.app',
+		preview: alcaravanPreview,
+	},
+	{
+		title: 'Alexflor',
+		category: 'Comercio',
+		sector: 'Floristería',
+		description:
+			'Floristería en Málaga con ramos personalizados, plantas y entrega a domicilio.',
+		tags: ['Floristería', 'Málaga', 'Plantas'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://alexflor.netlify.app',
+		preview: alexflorPreview,
+	},
+	{
+		title: 'Málaga Supermarket 24/7',
+		category: 'Comercio',
+		sector: 'Supermercado 24 horas',
+		description:
+			'Supermercado 24 horas en el centro de Málaga: alimentación, bebidas y compra rápida.',
+		tags: ['Supermercado', 'Málaga', '24 horas'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://alimentacion-asia.netlify.app',
+		preview: alimentacionAsiaPreview,
+	},
+	{
+		title: 'Floristería Amparo',
+		category: 'Comercio',
+		sector: 'Floristería',
+		description:
+			'Floristería en Aluche (Madrid) con ramos, plantas y servicio de entrega para ocasiones especiales.',
+		tags: ['Floristería', 'Madrid', 'Ramos'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://amparo-aluche.netlify.app',
+		preview: amparoPreview,
+	},
+	{
+		title: 'Floristería Ana María',
+		category: 'Comercio',
+		sector: 'Floristería',
+		description:
+			'Floristería en Leganés (Madrid) especializada en ramos, bodas y arreglos para eventos.',
+		tags: ['Floristería', 'Leganés', 'Eventos'],
+		accent: 'bg-primary/15 text-primary',
+		url: 'https://floristeria-ana-maria.netlify.app',
+		preview: anaMariaPreview,
+	},
+	{
+		title: 'Anabel Vegara Estética',
+		category: 'Peluquería y belleza',
+		sector: 'Centro de estética',
+		description:
+			'Centro de estética y bienestar en Nou Barris (Barcelona): facial, corporal y tratamientos personalizados.',
+		tags: ['Estética', 'Barcelona', 'Bienestar'],
+		accent: 'bg-secondary/15 text-neutral',
+		url: 'https://anabel-vegara-estetica.netlify.app',
+		preview: anabelPreview,
+	},
+	{
+		title: 'Ama Leku',
+		category: 'Restaurantes y bares',
+		sector: 'Cocina vasca',
+		description:
+			'Cocina vasca en el centro de Zaragoza: pescado del Cantábrico, tapas y menú del día.',
+		tags: ['Cocina vasca', 'Zaragoza', 'Pescado'],
+		accent: 'bg-accent/15 text-primary',
+		url: 'https://ama-leku.netlify.app',
+		preview: amaLekuPreview,
+	},
+	{
+		title: 'El Garbanzo Negro',
+		category: 'Restaurantes y bares',
+		sector: 'Menú del día',
+		description:
+			'Menú del día casero en el centro de Cádiz, con cocina tradicional y servicio de mediodía.',
+		tags: ['Menú del día', 'Cádiz', 'Cocina casera'],
+		accent: 'bg-neutral/15 text-neutral',
+		url: 'https://el-garbanzo-negro.netlify.app',
+		preview: garbanzoNegroPreview,
 	},
 ];
