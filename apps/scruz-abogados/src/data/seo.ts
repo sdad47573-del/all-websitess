@@ -742,8 +742,8 @@ export const ROUTE_DEFAULTS: Record<
 			'cuánto cuesta constituir una SL, coste constituir sociedad limitada 2026, crear una sociedad limitada Lucena, notaría constitución SL Córdoba, capital social SL 1 euro, estatutos tipo Ley Crea y Crece, constitución telemática SL',
 	},
 	'/blog/seguro-cultivos-agroseguro/': {
-		title: `Agroseguro: qué cubre el seguro de cultivos y cómo reclamar`,
-		description: `¿Agroseguro paga menos de lo debido? Plazos, franquicias y peritaje contradictorio en Lucena y Córdoba. Consulta gratuita: 666 329 155.`,
+		title: `Agroseguro: qué cubre el seguro de cultivos en 2026`,
+		description: `Agroseguro, el seguro agrario combinado: qué cubre en olivar, cereal o viña, franquicias, plazos y cómo reclamar si pagan de menos. Consulta gratuita.`,
 		keywords:
 			'agroseguro, seguro de cultivos, seguro agrario combinado, agroseguro qué cubre, pedir siniestro agroseguro, tasación pericial contradictoria, indemnización pedrisco helada, sequía olivar seguro, abogado seguros agrarios Córdoba Lucena',
 	},
@@ -766,8 +766,8 @@ export const ROUTE_DEFAULTS: Record<
 			'cláusula suelo Lucena, tarjeta revolving intereses usurarios, reclamación consumo Córdoba, arbitraje de consumo, garantía producto, abogado consumidores Andalucía',
 	},
 	'/blog/testamento-online-cordoba/': {
-		title: `Testamento ológrafo, cerrado y online en Córdoba`,
-		description: `Testamento ológrafo, cerrado u online en Córdoba: qué exige cada tipo, cuánto cuesta en 2026 y cuál te conviene. Consulta gratuita: 666 329 155.`,
+		title: `Testamento en Córdoba: tipos, notaría y precio (2026)`,
+		description: `Testamento abierto, cerrado, ológrafo u online en Córdoba: qué exige cada uno, cuánto cuesta y por qué el mancomunado no cabe en Andalucía. Consulta gratuita.`,
 		keywords:
 			'tipos de testamento, testamento cerrado córdoba, testamento ológrafo, testamento abierto notarial, testamento mancomunado Andalucía, testamento online córdoba, notario para testamentos en córdoba, precio testamento córdoba, abogado testamentos Lucena',
 	},
@@ -839,7 +839,7 @@ export const ROUTE_DEFAULTS: Record<
 	},
 	'/blog/zonas-tensionadas-alquiler/': {
 		title: `Zonas tensionadas de alquiler: topes y subidas 2026`,
-		description: `¿Pueden subirte el alquiler en 2026? Topes del IRAV, zonas tensionadas y qué revisar antes de firmar en Lucena. Consulta gratuita: 666 329 155.`,
+		description: `Andalucía no ha declarado ninguna zona tensionada, pero el IRAV sí topa tu subida anual. Cómo reclamar en Lucena y Córdoba. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'zonas tensionadas alquiler, contención rentas alquiler, ley vivienda 12/2023, IRAV actualización renta, alquiler lucena, reducción IRPF arrendadores',
 	},
