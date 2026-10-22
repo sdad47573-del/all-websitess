@@ -1,10 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Asador+Valle+de+Ricote/@38.1793861,-1.3714672,17z/data=!3m1!4b1!4m6!3m5!1s0xd646f6a02610771:0xe9d7e285d5e386ce!8m2!3d38.1793861!4d-1.3714672!16s%2Fg%2F11qh8dxd0b?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Molinico/@38.1978432,-1.1158811,17z/data=!3m1!4b1!4m9!3m8!1s0xd638e94a5f1568d:0x9d62277a369bb14b!5m2!4m1!1i2!8m2!3d38.1978432!4d-1.1158811!16s%2Fg%2F1tcymcwp?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Bar+Restaurante+Avenida/@37.9184829,-1.4154084,17z/data=!3m1!4b1!4m6!3m5!1s0xd64890f9487314f:0xec4d9f8d6520f439!8m2!3d37.9184829!4d-1.4154084!16s%2Fg%2F11by_h78s2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+Domingo+%2F+Precio+medio+30%2F50/@38.0931285,-1.7870097,17z/data=!3m1!4b1!4m6!3m5!1s0xd64525340f85907:0x96665dbbd9947200!8m2!3d38.0931285!4d-1.7870097!16s%2Fg%2F11cjj3xbss?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+%22El+Rocio%22/@38.1842754,-1.1260929,17z/data=!3m1!4b1!4m6!3m5!1s0xd638f280253b527:0x46cd0bff789c1c99!8m2!3d38.1842754!4d-1.1260929!16s%2Fg%2F11cntmptng?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
