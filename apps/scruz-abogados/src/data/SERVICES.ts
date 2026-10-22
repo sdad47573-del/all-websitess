@@ -129,4 +129,12 @@ export const SERVICES = [
 		description: 'Licencias, disciplina urbanística, sanciones y suelo rústico.',
 		path: '/urbanismo',
 	},
+	// Al final a propósito: `DATA.heroServices` toma `SERVICES.slice(0, 4)` y
+	// esas cuatro tarjetas tienen icono propio en `data.ts`. Una entrada nueva
+	// delante desplazaría una de ellas y dejaría `img` sin definir.
+	{
+		title: 'Testamentos en Córdoba',
+		description: 'Revisión de legítimas, borrador a medida y cita en notaría.',
+		path: '/testamentos-cordoba',
+	},
 ];

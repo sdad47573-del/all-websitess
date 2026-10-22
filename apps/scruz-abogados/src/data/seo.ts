@@ -634,31 +634,31 @@ export const ROUTE_DEFAULTS: Record<
 			'medidas paterno filiales, medidas paternofiliales procedimiento, guarda y custodia sin estar casados, medidas hijos no matrimoniales, Ministerio Fiscal medidas hijos, medidas paterno filiales Lucena, abogado familia Lucena Córdoba',
 	},
 	'/blog/reclamacion-pension-seguridad-social/': {
-		title: `Reclamar una pensión a la Seguridad Social: plazos y atrasos`,
-		description: `La solicitud previa, el silencio negativo a los 3 meses, las prestaciones reclamables y los atrasos que se pierden al esperar. Consulta gratuita.`,
+		title: `Reclamar pensión a la Seguridad Social: plazos y atrasos`,
+		description: `La reclamación previa al INSS, el silencio negativo a los 3 meses, las prestaciones reclamables y los atrasos que se pierden al esperar. Consulta gratuita.`,
 		keywords:
 			'reclamación pensión seguridad social, INSS no responde silencio administrativo, cómo reclamar pensión jubilación, pensión viudedad reclamación, prestaciones seguridad social denegadas, atrasos pensión seguridad social, reclamación previa INSS, abogado pensiones Lucena Córdoba',
 	},
 	'/blog/multas-penales-suspension-condenas/': {
-		title: `Multa penal 2026: cuánto pagas y cómo suspenderla`,
+		title: `Multa penal: cuánto se paga y cómo suspender la condena`,
 		description: `Cuánto cuesta una multa penal: cuotas diarias, qué pasa si no pagas y cuándo el juez suspende la condena. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'multa penal cuotas diarias, cómo se calcula multa penal España, pagar multa penal plazos fraccionar, suspensión de la pena requisitos, sustitución pena multa trabajo comunitario, impago multa penal consecuencias, multa penal vs administrativa, abogado penalista Lucena Córdoba',
 	},
 	'/blog/prorroga-estancia-y-renovacion/': {
-		title: `Prórroga de estancia y renovación del TIE: plazos y errores`,
-		description: `Prórroga de estancia y renovación del TIE: cuándo renovar, el silencio negativo y cómo no perder la residencia. Consulta gratuita: 666 329 155.`,
+		title: `Renovación del TIE: plazos y prórroga de estancia`,
+		description: `Renovación del TIE y prórroga de estancia: cuándo presentar (60 días antes), el silencio negativo y cómo no perder la residencia. Consulta gratuita.`,
 		keywords:
 			'prórroga de estancia 90 días España, renovación tarjeta TIE plazo, renovar residencia cuándo presentar, silencio administrativo extranjería, renovación residencia justificación económica, autorización de retorno, tarjeta roja renovación, abogado extranjería Lucena Córdoba',
 	},
 	'/blog/silencio-administrativo-positivo-negativo/': {
-		title: `Silencio administrativo: positivo o negativo y qué hacer`,
+		title: `Silencio administrativo positivo y negativo: qué hacer`,
 		description: `Cuándo el silencio es positivo y cuándo negativo, los plazos de la Administración, cómo acreditarlo y qué hacer después: ejecutar o recurrir. Consulta gratuita.`,
 		keywords:
 			'silencio administrativo positivo, silencio administrativo negativo, plazo resolver administración 3 meses, certificado silencio administrativo, silencio positivo licencia, cómo reclamar si la administración no contesta, abogado recursos administrativos Lucena Córdoba',
 	},
 	'/blog/resolucion-contrato-incumplimiento/': {
-		title: `Resolución del contrato por incumplimiento: guía paso a paso`,
+		title: `Resolución de contrato por incumplimiento: guía y plazos`,
 		description: `Cómo resolver un contrato por incumplimiento: el art. 1124 CC, el requerimiento fehaciente, la resolución extrajudicial y sus riesgos, la restitución de lo recibido y los daños del art. 1101. Lucena y Córdoba.`,
 		keywords:
 			'resolución de contrato incumplimiento, art 1124 código civil, resolución contrato art 1101, requerimiento fehaciente resolución, incumplimiento esencial contrato, contrato resuelto qué devolver, arras penitenciales resolución, abogado contratos Lucena Córdoba',
@@ -694,7 +694,7 @@ export const ROUTE_DEFAULTS: Record<
 			'okupas qué hacer legalmente, allanamiento de morada vs usurpación, recuperar piso okupado plazo, desahucio usurpación 2027, denuncia okupación primeros 48 horas, acaballera reclamación vivienda, abogado okupas Lucena Córdoba',
 	},
 	'/blog/bajas-laborales-2026-2027/': {
-		title: `Bajas laborales 2026-2027: plazos, cobro y derechos`,
+		title: `Baja laboral 2026-2027: cuánto se cobra y cuánto dura`,
 		description: `Guía de la baja por incapacidad temporal: cobro por días (60/75 %), plazo máximo de 365+180 días, la reserva del puesto de trabajo, cómo impugnar el alta médica en 4 días y qué pasa si te despiden estando de baja.`,
 		keywords:
 			'baja laboral cuánto se cobra, incapacidad temporal plazos, impugnar alta médica mutua, reserva puesto de trabajo baja, baja por contingencia común 75, fin de baja impugnación 4 días, despido estando de baja, laboralista Lucena Córdoba',
@@ -820,7 +820,7 @@ export const ROUTE_DEFAULTS: Record<
 			'jornada 37,5 horas España 2026, reducción jornada laboral rechazada Congreso, registro de jornada obligatorio, registro horario digital 2026, reclamar horas extra, despido por reclamar horas nulo, abogado laboralista Lucena',
 	},
 	'/blog/jubilacion-2027/': {
-		title: `Tabla de jubilación 2027: edad según los años cotizados`,
+		title: `Tabla de jubilación 2027: edad por años cotizados`,
 		description: `65 con 38,5 años cotizados; 67 sin ellos. Tabla 2027, anticipada, parcial y complemento por hijos. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'tabla de jubilación por años cotizados, tabla edad jubilación 2027, jubilación 2027 edad 67 años, jubilación 65 años 38 años 6 meses cotizados, fin periodo transitorio pensiones 2027, jubilación anticipada 2027, complemento brecha de género jubilación, abogado seguridad social Lucena',
@@ -832,8 +832,8 @@ export const ROUTE_DEFAULTS: Record<
 			'transparencia retributiva, registro retributivo obligatorio, directiva transparencia salarial 2026, derecho información salarial, brecha salarial, igualdad retributiva, abogado laboralista Lucena',
 	},
 	'/blog/novedades-pensiones-2027/': {
-		title: `Pensiones 2027: cuánto suben y desde cuándo`,
-		description: `Pensiones: subida por IPC (2,7 % en 2026 y en torno al 3,2 % en 2027), mínimas, brecha de género y qué revisar en tu incapacidad. Consulta gratuita.`,
+		title: `Subida de pensiones 2027: cuánto y desde cuándo`,
+		description: `La subida de pensiones 2027, por IPC: 2,7 % en 2026 y cerca del 3,2 % en 2027, mínimas, brecha de género y qué revisar en tu incapacidad. Consulta gratuita.`,
 		keywords:
 			'novedades pensiones 2027, subida pensiones 2026, revalorización IPC, pensión incapacidad permanente, complemento brecha género, pensión mínima, abogado pensiones Lucena',
 	},
@@ -898,7 +898,7 @@ export const ROUTE_DEFAULTS: Record<
 			'abogados especialistas en denuncias falsas, denuncia falsa defensa, acusación y denuncia falsa art 456, cómo defenderte de una denuncia falsa, derechos del investigado, querella por denuncia falsa, abogado penalista Lucena',
 	},
 	'/blog/crear-empresa-andalucia/': {
-		title: `Crear una empresa en Andalucía: pasos y cuánto cuesta`,
+		title: `Cuánto cuesta constituir una empresa en Andalucía`,
 		description: `Autónomo o SL, los trámites en orden, los costes reales y los plazos en Lucena y Córdoba. Primera consulta gratuita: 666 329 155.`,
 		keywords:
 			'crear empresa andalucía, autónomo o SL, constituir sociedad limitada, pasos crear empresa lucena, coste constituir SL, abogado empresas Córdoba',
@@ -1084,6 +1084,12 @@ export const ROUTE_DEFAULTS: Record<
 		description: `Herencias con o sin testamento, declaración de herederos e impuesto de sucesiones en Andalucía. Primera consulta gratuita: 666 329 155.`,
 		keywords:
 			'abogado herencias Lucena, testamento Córdoba, sucesiones Málaga, herencia intestada, aceptación herencia, impuesto sucesiones, declaración herederos',
+	},
+	'/testamentos-cordoba/': {
+		title: `Abogado de Testamentos en Córdoba | Precio y Notaría`,
+		description: `Haz tu testamento en Córdoba con abogado: revisamos legítimas y bienes, preparamos el borrador y te acompañamos a la notaría. Consulta gratuita.`,
+		keywords:
+			'abogado testamentos Córdoba, hacer testamento en Córdoba, precio testamento Córdoba, testamento notaría Córdoba, testamento ante notario Lucena, testamento cerrado Córdoba, legítima Andalucía, revisión testamento',
 	},
 	'/despidos/': {
 		title: `Abogado Laboralista en Lucena | Despidos e Indemnizaciones`,
