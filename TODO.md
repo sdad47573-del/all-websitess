@@ -1,6 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurante+Domingo+%2F+Precio+medio+30%2F50/@38.0931285,-1.7870097,17z/data=!3m1!4b1!4m6!3m5!1s0xd64525340f85907:0x96665dbbd9947200!8m2!3d38.0931285!4d-1.7870097!16s%2Fg%2F11cjj3xbss?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+%22El+Rocio%22/@38.1842754,-1.1260929,17z/data=!3m1!4b1!4m6!3m5!1s0xd638f280253b527:0x46cd0bff789c1c99!8m2!3d38.1842754!4d-1.1260929!16s%2Fg%2F11cntmptng?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+Domingo+Ceut%C3%AD/@38.098631,-1.2816181,17z/data=!3m1!4b1!4m6!3m5!1s0xd64798283d6ca89:0x60053bbd9f49bab0!8m2!3d38.098631!4d-1.2816181!16s%2Fg%2F1tdbs6bm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
