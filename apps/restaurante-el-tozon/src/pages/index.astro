@@ -1,0 +1,291 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/restaurante-el-tozon-vertical-01.jpg';
+import tapa from '../assets/fotos/restaurante-el-tozon-apaisada-02.jpg';
+import paella from '../assets/fotos/restaurante-el-tozon-apaisada-03.jpg';
+import helado from '../assets/fotos/restaurante-el-tozon-apaisada-05.jpg';
+import chuleton from '../assets/fotos/restaurante-el-tozon-vertical-06.jpg';
+import ensalada from '../assets/fotos/restaurante-el-tozon-apaisada-07.jpg';
+import carrillera from '../assets/fotos/restaurante-el-tozon-vertical-09.jpg';
+import carpaccio from '../assets/fotos/restaurante-el-tozon-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante El Tozón, bar restaurante con terraza en Arroyomolinos de la Vera (Cáceres). Ensalada de naranja y jamón, sepia, paella, chuletón y carrillera, con vistas al valle. Reservas en el 927 17 76 35.';
+
+const galeria = [
+	{ src: tapa, alt: 'Caña y tapa de la casa en la terraza de Restaurante El Tozón' },
+	{ src: ensalada, alt: 'Ensalada de naranja y jamón de El Tozón, en Arroyomolinos de la Vera' },
+	{ src: paella, alt: 'Paella de pollo y pimientos verdes en paellera de El Tozón' },
+	{ src: chuleton, alt: 'Chuletón a la plancha con patatas paja en Restaurante El Tozón' },
+	{ src: carrillera, alt: 'Carrillera en salsa de El Tozón, en La Vera' },
+	{ src: carpaccio, alt: 'Carpaccio con parmesano y rúcula de Restaurante El Tozón' },
+	{ src: helado, alt: 'Helado con frutos rojos de postre en El Tozón' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['El Tozón', 'Bar El Tozón', 'Restaurante El Tozón Arroyomolinos'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 927 17 76 35',
+	priceRange: BUSINESS.priceRange,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Extremeña', 'Española', 'Cocina de bar'],
+	areaServed: [
+		{ '@type': 'AdministrativeArea', name: 'La Vera' },
+		{ '@type': 'City', name: 'Arroyomolinos de la Vera' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '10:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '18:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '10:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '18:00',
+			closes: '23:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '10:00',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '10:00',
+			closes: '21:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza cubierta', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Reserva por teléfono', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El bar', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante El Tozón · Terraza y raciones en Arroyomolinos de la Vera';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#8c3a2b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante El Tozón, El Tozón Arroyomolinos, bar restaurante La Vera, comer en Arroyomolinos de la Vera, terraza vistas La Vera, ensalada de naranja y jamón, paella La Vera, chuletón Cáceres, Avenida Constitución Arroyomolinos"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="El Tozón · Terraza y raciones en Arroyomolinos de la Vera"
+			ogDescription="Ensalada de naranja y jamón, sepia, paella y chuletón en un bar restaurante con terraza cubierta sobre los bancales de La Vera. 4,6 en Google con 229 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza con vistas al valle de Restaurante El Tozón, en Arroyomolinos de la Vera"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.shortName}
+			themeColor="#8c3a2b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34927177635"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Tozón"
+			subtitle="Bar restaurante · La Vera"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. Constitución · Arroyomolinos de la Vera"
+				title="Terraza, raciones<br /><em>y vistas al valle.</em>"
+				lede={`Ensalada de naranja y jamón, sepia, paella y chuletón en un bar restaurante con terraza cubierta sobre los bancales. Abierto viernes, sábado, domingo y lunes; de martes a jueves cierra. Reservas en el ${BUSINESS.phoneDisplay}.`}
+				image={terraza}
+				imageAlt="Terraza cubierta con sillas rojas y vistas al valle de Restaurante El Tozón"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Horario', html: 'Vie–Lun · desde las 10:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece El Tozón" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El bar restaurante"
+				title="Terraza<br /><em>sobre el valle.</em>"
+				paragraphs={[
+					`El Tozón está en la Avenida Constitución, 22B, en Arroyomolinos de la Vera (${BUSINESS.postalCode}, Cáceres). La terraza va cubierta, con sillas rojas y vistas a los bancales del valle; dentro, el bar y el comedor.`,
+					'Es bar restaurante: caña y tapa, raciones abundantes, ensaladas, arroces y carnes a la plancha. En las reseñas se repiten la ensalada de naranja y jamón, la sepia, la carrillera y los postres.',
+					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios y disponibilidad se llama al restaurante.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repiten las raciones abundantes, el trato, la carrillera y la ensalada de naranja.`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Raciones, arroces<br /><em>y postres.</em>"
+				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el restaurante."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La carta cambia con el mercado y la temporada. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La terraza<br /><em>y la mesa.</em>"
+				description="Estas fotografías proceden del perfil de El Tozón en Google Maps: la tapa con la caña, la ensalada de naranja, la paella, el chuletón, la carrillera, el carpaccio y el postre."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos<br /><em>en la avenida.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google. Cierra de martes a jueves; el resto de días abre a las 10:00, con corte al mediodía el viernes y el lunes."
+				mapTitle="Mapa de Restaurante El Tozón en la Avenida Constitución, 22B, Arroyomolinos de la Vera (Cáceres)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Tozón · La Vera"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google marca acceso, aseo y asientos adaptados, y la terraza va cubierta; para grupos conviene avisar con tiempo."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="El Tozón"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a El Tozón"
+		/>
+	</body>
+</html>

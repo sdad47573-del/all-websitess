@@ -1,16 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Mes%C3%B3n+Lax/@38.0181159,-1.1063237,17z/data=!3m1!4b1!4m6!3m5!1s0xd6383b288f1cc85:0xd28fe7b7038d5047!8m2!3d38.0181159!4d-1.1063237!16s%2Fg%2F11dxdhc_s1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+la+Fragua/@40.1112973,-5.776451,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e3459771f3aad:0x848fa4c04b1d1c57!8m2!3d40.1112973!4d-5.776451!16s%2Fg%2F1td6tjlx?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+El+Bobo+de+Coria/@39.9832617,-6.5359759,17z/data=!3m1!4b1!4m6!3m5!1s0xd3de4e02af9a9eb:0xa2b7306a370e0bf3!8m2!3d39.9832617!4d-6.5359759!16s%2Fg%2F1v_z5m76?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+valle+del+jerte+La+Caba%C3%B1a+del+Jerte/@40.222238,-5.7528862,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e4b3e105e9f41:0x157806c9a54db781!8m2!3d40.222238!4d-5.7528862!16s%2Fg%2F12qf7w9bl?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+El+Toz%C3%B3n/@40.05403,-5.85012,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e319cf73bbcfb:0xe9a7cb812bfb45b4!8m2!3d40.05403!4d-5.85012!16s%2Fg%2F11fkf07fqs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Asador+Villa+de+Ca%C3%B1averal/@39.7921055,-6.3906577,17z/data=!3m1!4b1!4m6!3m5!1s0xd15ffec372ff195:0xe5d2d00b90f46f9e!8m2!3d39.7921055!4d-6.3906577!16s%2Fg%2F11btvwl0n2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/La+Posada+Taper%C3%ADa/@39.9847827,-6.5366401,17z/data=!3m1!4b1!4m6!3m5!1s0xd3de51e3a06dccb:0x19fda98de161f5e0!8m2!3d39.9847827!4d-6.5366401!16s%2Fg%2F11dynypywq?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Cafeter%C3%ADa+Restaurante+Fezur/@40.0620708,-5.7518574,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e33156d308655:0x5ea0a5be4d0d1987!8m2!3d40.0620708!4d-5.7518574!16s%2Fg%2F11b6d0lqm9?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
