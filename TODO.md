@@ -1,11 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-
-https://www.google.com/maps/place/Restaurante+las+palmeras+2/@38.0773622,-1.2224829,17z/data=!3m1!4b1!4m6!3m5!1s0xd647991337d8589:0xee3a9384e4495652!8m2!3d38.0773622!4d-1.2224829!16s%2Fg%2F11nycdcy9z?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Benfis+Restaurante/@38.1464329,-0.9623564,17z/data=!3m1!4b1!4m6!3m5!1s0xd639760a9f5b3d3:0x6205c284665833b6!8m2!3d38.1464329!4d-0.9623564!16s%2Fg%2F1tkkw6ly?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Virgen+del+Mar/@37.9857508,-1.134696,17z/data=!3m1!4b1!4m6!3m5!1s0xd6383e477a7255b:0xdb656aaccac69cc0!8m2!3d37.9857508!4d-1.134696!16s%2Fg%2F11j8k3j7_d?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Bar+El+Guapo/@38.0268646,-1.0667353,17z/data=!3m1!4b1!4m6!3m5!1s0xd639c97ab3c0993:0xd91d63eea503730c!8m2!3d38.0268646!4d-1.0667353!16s%2Fg%2F11xv78tdj?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Mes%C3%B3n+Lax/@38.0181159,-1.1063237,17z/data=!3m1!4b1!4m6!3m5!1s0xd6383b288f1cc85:0xd28fe7b7038d5047!8m2!3d38.0181159!4d-1.1063237!16s%2Fg%2F11dxdhc_s1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D

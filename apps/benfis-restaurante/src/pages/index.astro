@@ -1,0 +1,304 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/benfis-restaurante-apaisada-01.jpg';
+import carneGuisada from '../assets/fotos/benfis-restaurante-apaisada-02.jpg';
+import fachada from '../assets/fotos/benfis-restaurante-apaisada-03.jpg';
+import mesaTerraza from '../assets/fotos/benfis-restaurante-apaisada-05.jpg';
+import plancha from '../assets/fotos/benfis-restaurante-apaisada-08.jpg';
+import tartaQueso from '../assets/fotos/benfis-restaurante-apaisada-09.jpg';
+import lomoParrilla from '../assets/fotos/benfis-restaurante-vertical-04.jpg';
+import fritura from '../assets/fotos/benfis-restaurante-vertical-06.jpg';
+import carta from '../assets/fotos/benfis-restaurante-vertical-07.jpg';
+import estofado from '../assets/fotos/benfis-restaurante-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Benfis Restaurante en Benferri (Alicante): bar restaurante con terraza y aparcamiento, cocina casera de entrantes, carnes y pescado desde las 8:00. Reservas en el 966 19 44 64.';
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de Benfis Restaurante en Benferri con sombrillas, mesas y sillas negras, barandilla blanca y palmeras',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada amarilla de Benfis Restaurante en la calle Nº 10 de Benferri, con palmeras y el aparcamiento delante',
+	},
+	{
+		src: carta,
+		alt: 'Carta impresa de Benfis Restaurante con los entrantes, las carnes y los pescados de la casa',
+	},
+	{
+		src: lomoParrilla,
+		alt: 'Lomo a la parrilla con patatas fritas, pimiento rojo y una rodaja de limón en Benfis Restaurante',
+	},
+	{
+		src: plancha,
+		alt: 'Carne a la plancha con patatas panadera, cebolla y calabacín y media lima, en Benfis Restaurante',
+	},
+	{
+		src: carneGuisada,
+		alt: 'Carne guisada con su salsa, patatas fritas y pimientos en Benfis Restaurante, Benferri',
+	},
+	{
+		src: estofado,
+		alt: 'Carne estofada con patatas paja y zanahoria en Benfis Restaurante, Benferri',
+	},
+	{
+		src: fritura,
+		alt: 'Fritura mixta de calamares y gambas con limón en Benfis Restaurante, Benferri',
+	},
+	{
+		src: mesaTerraza,
+		alt: 'Botella de vino blanco y copa sobre una mesa de la terraza de Benfis Restaurante, con las sombrillas al fondo',
+	},
+	{
+		src: tartaQueso,
+		alt: 'Tarta de queso con mermelada de frutos rojos y nata en Benfis Restaurante, Benferri',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Benfis', 'Benfis Benferri', 'Bar Benfis', 'Benfis Restaurante Benferri'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34 966 19 44 64',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Mediterránea', 'Cocina casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Benferri' },
+		{ '@type': 'AdministrativeArea', name: 'Vega Baja del Segura' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Alicante' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'],
+			opens: '08:00',
+			closes: '18:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '08:00',
+			closes: '01:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Reserva por teléfono', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Benfis Restaurante · Comidas y terraza en Benferri';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f5c4d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Benfis Restaurante, Benfis Benferri, restaurante Benferri, bar restaurante Benferri, comer en Benferri, almorzar Benferri, restaurante con terraza Vega Baja, cocina casera Alicante, Calle Nº 10 Benferri, reservar mesa Benferri"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Benfis Restaurante · Comidas y terraza en Benferri"
+			ogDescription="Bar restaurante con terraza y aparcamiento en Benferri (Alicante). Entrantes, carnes y pescado, desde las 8:00. 4,4 en Google con 903 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de Benfis Restaurante en Benferri, con sombrillas y palmeras"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f5c4d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34966194464"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`Benferri, ${BUSINESS.region}`}
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Benfis"
+			subtitle="Bar restaurante · Benferri"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Benferri · Vega Baja del Segura"
+				title="Cocina casera<br /><em>con terraza y sombra.</em>"
+				lede={`En la calle Nº 10 de Benferri, con el coche aparcado en la misma puerta. Desayunos desde las 8:00, almuerzos, comidas y carta de entrantes, carnes y pescado. Se llama al ${BUSINESS.phoneDisplay}.`}
+				image={terraza}
+				imageAlt="Terraza de Benfis Restaurante en Benferri con sombrillas, mesas y sillas negras y barandilla blanca"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Horario', html: 'Martes a domingo, desde las 8:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Benfis Restaurante" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un bar de carretera<br /><em>con cocina de casa.</em>"
+				paragraphs={[
+					`Benfis Restaurante está en la calle Nº 10, 3, en Benferri (03316, Alicante), en plena Vega Baja, a un paso de Orihuela y Albatera. Es un edificio amarillo de dos plantas con palmeras alrededor y aparcamiento propio justo delante, así que se llega en coche y se aparca sin dar vueltas.`,
+					'La casa abre a las 8:00 de la mañana: primero el desayuno, luego el almuerzo y después la comida. La terraza está en alto, sobre el aparcamiento, con mesas de cuatro y sombrillas grandes; dentro hay comedor para los días de frío o de lluvia.',
+					'La cocina es casera y sin adornos: platos de cuchara, guisos, plancha y fritos. En la carta están las pelotas con caldo, el gazpacho manchego con costillar y pollo, el arroz y costra de la casa, la carrillera al oporto o el costillar asado al horno. De pescado, lenguado a la romana, dorada, merluza y atún a la plancha.',
+				]}
+				note={`La nota media en Google es ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre ${BUSINESS.reviewsCount} opiniones. Lo que más se repite es el precio —«razonable», «asequible»—, el tamaño de las raciones y el trato.`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Entrantes, carnes<br /><em>y pescado.</em>"
+				description="Carta transcrita de la que el restaurante tiene impresa y subida a su ficha de Google Maps. Están todos los platos que figuran en ella, con sus nombres tal cual."
+				cta={{ label: `Preguntar por teléfono: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La carta impresa del restaurante no lleva precios y esta web no publica importes que no pueda confirmar: pregúntalos al llamar o en el local. Los platos cambian con el día y el mercado, así que si vas por uno concreto conviene llamar antes."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La terraza,<br /><em>la mesa y los platos.</em>"
+				description="Estas fotografías proceden del perfil de Benfis Restaurante en Google Maps, con imágenes subidas por el propio establecimiento. En la ficha están todas las fotos y las 903 reseñas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} Benferri`}
+				title="Nos vemos<br /><em>en Benfis.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.region}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario publicado en la ficha de Google. Abre de martes a domingo y cierra los lunes; el sábado alarga hasta la 1:00. En festivos y puentes puede cambiar, así que confírmalo por teléfono si vienes de lejos."
+				mapTitle="Mapa de Benfis Restaurante en la calle Nº 10, 3, Benferri, Alicante"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Benfis Restaurante · Benferri"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Aparcamiento en la puerta', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google indica aseo y asientos adaptados para sillas de ruedas; la terraza está en alto, sobre el aparcamiento, así que si necesitas una mesa a pie de calle pídela al reservar."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Benfis"
+		/>
+	</body>
+</html>
