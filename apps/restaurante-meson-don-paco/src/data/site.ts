@@ -113,7 +113,7 @@ export const SERVICIOS = [
 		text: 'Cocina tradicional jerezana: tapas, raciones y platos del día.',
 	},
 	{
-		icon: 'ri-glass-line',
+		icon: 'ri-goblet-line',
 		title: 'Tapas y vinos',
 		text: 'Ambiente de mesón y taberna para tapear en El Bosque.',
 	},

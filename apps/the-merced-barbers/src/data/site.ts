@@ -141,7 +141,7 @@ export const SERVICIOS = [
 		text: 'Peinado, styling y camuflaje de canas. Precio a consultar.',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Corte infantil',
 		text: 'Corte para los más pequeños, con paciencia. Precio a consultar.',
 	},

@@ -142,7 +142,7 @@ export const SERVICIOS = [
 		text: 'Rapado básico, 15 min. 8 € (con barba 12 €).',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Corte de niño',
 		text: 'Corte de niño hasta 5 años, 30 min. 11 €.',
 	},
@@ -239,7 +239,7 @@ export const FAQ = [
 
 export const FEATURES = [
 	{ icon: 'ri-scissors-line', label: 'Salón de caballeros' },
-	{ icon: 'ri-child-line', label: 'Corte infantil' },
+	{ icon: 'ri-bear-smile-line', label: 'Corte infantil' },
 	{ icon: 'ri-map-pin-line', label: 'Teatinos, Málaga' },
 	{ icon: 'ri-calendar-check-line', label: 'Reserva en Booksy' },
 ];

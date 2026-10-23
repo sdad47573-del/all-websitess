@@ -145,7 +145,7 @@ export const SERVICIOS = [
 		text: 'Barba completa 7 €; perfilado de barba 5 €.',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Corte niño (-10 años)',
 		text: 'Corte de pelo niño hasta 10 años, 30 min. 11 €.',
 	},

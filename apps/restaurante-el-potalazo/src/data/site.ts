@@ -90,7 +90,7 @@ export const PAGE_NAV = [
 
 export const HIGHLIGHTS = [
 	{
-		icon: 'ri-sail-line',
+		icon: 'ri-sailboat-line',
 		title: 'Paseo marítimo',
 		text: 'Junto a Cruz del Mar, donde desemboca Isaac Peral.',
 	},

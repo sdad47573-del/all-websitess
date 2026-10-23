@@ -112,7 +112,7 @@ export const SERVICIOS = [
 		text: 'Cocina para almuerzos, cenas y celebraciones en Trebujena.',
 	},
 	{
-		icon: 'ri-glass-line',
+		icon: 'ri-goblet-line',
 		title: 'Copas',
 		text: 'Zona de copas para alargar la sobremesa.',
 	},

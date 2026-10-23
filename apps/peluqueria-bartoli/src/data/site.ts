@@ -132,7 +132,7 @@ export const SERVICIOS = [
 		text: 'Perfilado y cuidado de barba. Precio a consultar.',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Corte infantil',
 		text: 'Corte para niños en peluquería de barrio. Precio a consultar.',
 	},
@@ -233,7 +233,7 @@ export const FAQ = [
 
 export const FEATURES = [
 	{ icon: 'ri-scissors-line', label: 'Peluquería de caballeros' },
-	{ icon: 'ri-child-line', label: 'Corte infantil' },
+	{ icon: 'ri-bear-smile-line', label: 'Corte infantil' },
 	{ icon: 'ri-map-pin-line', label: 'Teatinos, Málaga' },
 	{ icon: 'ri-phone-line', label: 'Cita por teléfono' },
 ];

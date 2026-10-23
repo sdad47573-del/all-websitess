@@ -135,7 +135,7 @@ export const SERVICIOS = [
 		text: 'Depilación por zonas (también cera de brazos según Fresha). Precio a confirmar.',
 	},
 	{
-		icon: 'ri-massage-line',
+		icon: 'ri-hand-heart-line',
 		title: 'Masajes',
 		text: 'Masajes de bienestar y cuidado personal. Reserva por teléfono.',
 	},

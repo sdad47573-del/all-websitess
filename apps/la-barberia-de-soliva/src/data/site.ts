@@ -142,7 +142,7 @@ export const SERVICIOS = [
 		text: 'Arreglo de barba larga 7 €; perfilado de barba 4 €.',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Niños y jubilados',
 		text: 'Corte de niño (0–8 años) 10 €; corte jubilado 10 €.',
 	},

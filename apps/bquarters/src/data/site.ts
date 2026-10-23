@@ -208,7 +208,7 @@ export const VENTAJAS = [
 		text: 'Booksy 24/7, teléfono 951 01 84 22 o ficha de Google.',
 	},
 	{
-		icon: 'ri-spa-line',
+		icon: 'ri-hand-heart-line',
 		title: 'Ritual de barba',
 		text: 'Navaja con toalla caliente y masaje facial: momento de relax.',
 	},

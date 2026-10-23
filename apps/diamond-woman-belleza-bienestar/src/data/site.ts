@@ -93,7 +93,7 @@ export const PAGE_NAV = [
 
 export const HIGHLIGHTS = [
 	{
-		icon: 'ri-gem-line',
+		icon: 'ri-diamond-ring-line',
 		title: 'Belleza y bienestar',
 		text: 'Centro de belleza y bienestar en La Paz, Carretera de Cádiz.',
 	},
@@ -173,7 +173,7 @@ export const VENTAJAS = [
 		text: 'Haendel, 2: barrio de La Paz, Carretera de Cádiz, ambiente local.',
 	},
 	{
-		icon: 'ri-gem-line',
+		icon: 'ri-diamond-ring-line',
 		title: 'Belleza y bienestar',
 		text: 'Dos mundos en un mismo centro: estética y momentos de calma.',
 	},
@@ -227,7 +227,7 @@ export const FAQ = [
 ];
 
 export const FEATURES = [
-	{ icon: 'ri-gem-line', label: 'Belleza y bienestar' },
+	{ icon: 'ri-diamond-ring-line', label: 'Belleza y bienestar' },
 	{ icon: 'ri-sparkling-2-line', label: 'Facial y corporal' },
 	{ icon: 'ri-map-pin-line', label: 'La Paz, Málaga' },
 	{ icon: 'ri-google-fill', label: 'Ficha en Google Maps' },

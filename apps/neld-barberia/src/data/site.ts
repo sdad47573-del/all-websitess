@@ -137,7 +137,7 @@ export const SERVICIOS = [
 		text: 'Recorte de barba, 30 min. 8 € (con cejas 11 €).',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Adaptado para niños',
 		text: 'Local adaptado para niños y con aparcamiento.',
 	},

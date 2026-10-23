@@ -1,12 +1,12 @@
 # Floristeria Rehoboth · Carrer de Balmes · Barcelona
 
 Web informativa de una sola página (Astro, estática) con los datos y las fotos que
-**Floristeria Rehoboth. 利沛伯花艺店** publica en su ficha de Google Maps (consultada el 18 de
+**Floristeria Rehoboth** publica en su ficha de Google Maps (consultada el 18 de
 octubre de 2026).
 
 ## Datos de la ficha
 
-- **Nombre:** Floristeria Rehoboth. 利沛伯花艺店 · **Categoría:** Floristería
+- **Nombre:** Floristeria Rehoboth · **Categoría:** Floristería
 - **Dirección:** Carrer de Balmes, 292, Sarrià-Sant Gervasi, 08006 Barcelona
 - **Plus code:** C42W+QH Barcelona · **Coords:** 41.401953, 2.1464567
 - **Ficha:** `0x12a4a2a03cc44e87:0x998aec6962fb63fc` · `/g/11t28cb7fs`

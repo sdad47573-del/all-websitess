@@ -134,7 +134,7 @@ export const SERVICIOS = [
 		text: 'Barba con forma, diseño y acabado (1 h) + corte. 20 €.',
 	},
 	{
-		icon: 'ri-child-line',
+		icon: 'ri-bear-smile-line',
 		title: 'Corte de niño',
 		text: 'Corte infantil hasta 10 años, 30 min. 13 €.',
 	},
