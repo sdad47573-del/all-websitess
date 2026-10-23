@@ -1,5 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurante+Domingo+Ceut%C3%AD/@38.098631,-1.2816181,17z/data=!3m1!4b1!4m6!3m5!1s0xd64798283d6ca89:0x60053bbd9f49bab0!8m2!3d38.098631!4d-1.2816181!16s%2Fg%2F1tdbs6bm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+las+palmeras+2/@38.0773622,-1.2224829,17z/data=!3m1!4b1!4m6!3m5!1s0xd647991337d8589:0xee3a9384e4495652!8m2!3d38.0773622!4d-1.2224829!16s%2Fg%2F11nycdcy9z?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 

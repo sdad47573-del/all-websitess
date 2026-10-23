@@ -73,50 +73,78 @@ export const REVIEWS = [
 	},
 ];
 
-export const SERVICIOS = [
-	'Cocina española',
-	'Arroces y paellas',
-	'Entrantes y raciones',
-	'Comidas de empresa',
-	'Comidas familiares',
-	'Menú del día',
-	'Para llevar',
-	'Aparcamiento junto al local',
-	'Acceso adaptado',
-	'Reserva por teléfono',
+export const FAQ = [
+	{
+		q: '¿Dónde está Restaurante "El Rocío"?',
+		a: 'En la Avenida Narciso Yepes, 22, en Fortuna (30620, Murcia). Es una avenida amplia a la entrada del municipio, con acceso en coche y aparcamiento en la zona. Con «Cómo llegar» se abre la ruta en Google Maps.',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'Abre de lunes a sábado, de 9:00 a 18:00, y cierra los domingos. Es el horario publicado en la ficha de Google, así que en festivos o puentes puede cambiar: llama antes si vienes de lejos.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'No hay reserva online: se reserva por teléfono en el 868 68 03 03. Para grupos y fines de semana conviene llamar con antelación.',
+	},
+	{
+		q: '¿Qué se come?',
+		a: 'Cocina española: entrantes y raciones (mejillones, almejas a la marinera, gambas al ajillo, calamares, patatas con alioli), arroces como el arroz con conejo y caracoles o la paella, carnes a la brasa y platos de cuchara como el potaje de alubias con chorizo y morcilla.',
+	},
+	{
+		q: '¿Las raciones son grandes?',
+			a: 'Sí, y es lo que más se repite en las reseñas: hay quien dice que son «enormes». También hay opiniones que las consideran caras para el tamaño. Si vais pocos, pregunta por media ración o comparte: se suele pedir de más.',
+	},
+	{
+		q: '¿Es accesible para sillas de ruedas?',
+		a: 'La ficha de Google indica acceso, aparcamiento, aseo y asientos adaptados para sillas de ruedas. Si necesitas una mesa concreta, avisa al reservar por teléfono.',
+	},
 ];
 
+export const SERVICIOS = [
+	'Cocina española',
+	'Entrantes y raciones',
+	'Arroces y paellas',
+	'Carnes a la brasa',
+	'Platos de cuchara',
+	'Menú del día',
+	'Reserva por teléfono',
+	'Aparcamiento',
+	'Acceso adaptado',
+];
+
+/** Carta resumida a partir de los platos que se ven en las fotos de la ficha. */
 export const MENU = [
 	{
 		title: 'Entrantes y raciones',
 		items: [
-			{ name: 'Chorizo', note: 'uno de los entrantes que destacan las reseñas' },
-			{ name: 'Alcachofas con torreznos', note: 'el entrante más citado en la ficha' },
-			{ name: 'Almejas', note: 'entrante de mar, también en las reseñas' },
-			{ name: 'Raciones para compartir', note: 'ración abundante: pregunta antes de pedir de más' },
+			{ name: 'Mejillones', note: 'al vapor, en cazuela de barro, con limón' },
+			{ name: 'Almejas a la marinera', note: 'en salsa, con limón y picatoste de ajo y perejil' },
+			{ name: 'Gambas al ajillo', note: 'en cazuela, con el aceite aún borboteando' },
+			{ name: 'Calamares a la plancha', note: 'con ensalada, limón y salsa verde' },
+			{ name: 'Patatas fritas con alioli', note: 'para picar mientras llega el resto' },
 		],
 	},
 	{
 		title: 'Arroces',
 		items: [
-			{ name: 'Paella', note: 'el plato que más se repite en los comentarios' },
-			{ name: 'Arroces por encargo', note: 'confirma disponibilidad y tiempo de espera al reservar' },
+			{ name: 'Arroz con conejo y caracoles', note: 'arrocejo de la casa, con romero y limón' },
+			{ name: 'Paella', note: 'el plato que más se repite en los comentarios de Google' },
 		],
 	},
 	{
-		title: 'Cocina española de casa',
+		title: 'Brasa y cuchara',
 		items: [
-			{ name: 'Platos de cuchara', note: 'cocina de temporada: pregunta qué hay el día de tu visita' },
-			{ name: 'Carnes a la brasa', note: 'consulta la carta del día en el local' },
-			{ name: 'Pescado fresco', note: 'según mercado' },
+			{ name: 'Entrecot a la brasa', note: 'con patatas, pimientos y sal en escamas' },
+			{ name: 'Potaje de alubias con chorizo y morcilla', note: 'plato de cuchara de los de antes' },
+			{ name: 'Pollo asado con patatas', note: 'habitual en el menú del día' },
 		],
 	},
 	{
-		title: 'Menú y postres',
+		title: 'Menú del día',
 		items: [
-			{ name: 'Menú del día', note: 'de lunes a sábado, a mediodía; consulta precio en el local' },
-			{ name: 'Postres caseros', note: 'la ficha no publica la carta de postres' },
-			{ name: 'Cafés y sobremesa', note: 'el local cierra a las 18:00' },
+			{ name: 'Primero, segundo y postre', note: 'sopa o ensalada, plato principal, flan o postre casero, pan y café' },
+			{ name: 'Raciones generosas', note: 'los clientes avisan: son enormes, valora compartir' },
+			{ name: 'Precio', note: 'la ficha no publica carta ni importes: confírmalo al reservar' },
 		],
 	},
 ];
