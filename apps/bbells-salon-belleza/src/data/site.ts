@@ -14,14 +14,15 @@
  *   publican. Todo remite a "consultar la ficha de Google Maps".
  *
  * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * la ficha (copyright + condiciones de Google). Esta web usa imágenes de recurso
+ * de Pexels (licencia libre, sin atribución) que no son fotos del local. Ver
+ * README_IMAGENES.md.
  */
 
-import fotoPortada from '../assets/fotos/bbells-malaga.svg';
-import fotoSalon from '../assets/fotos/bbells-salon.svg';
-import fotoPelu from '../assets/fotos/bbells-peluqueria.svg';
-import fotoEstetica from '../assets/fotos/bbells-estetica.svg';
+import fotoPortada from '../assets/fotos/bbells-malaga.jpg';
+import fotoSalon from '../assets/fotos/bbells-salon.jpg';
+import fotoPelu from '../assets/fotos/bbells-peluqueria.jpg';
+import fotoEstetica from '../assets/fotos/bbells-estetica.jpg';
 import logo from '../assets/fotos/bbells-logo.svg';
 
 export const IMAGES = {
@@ -215,8 +216,8 @@ export const FAQ = [
 		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha para ver apertura actual, festivos y cambios.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales del salón (ver README_IMAGENES.md).',
+		q: '¿Las fotos son del salón?',
+		a: 'No. Son imágenes de recurso de un salón de belleza (Pexels, licencia libre) y se usan como apoyo visual: las fotos reales del local están en su ficha de Google Maps. Las de Maps no se pueden copiar por derechos de autor.',
 	},
 ];
 
@@ -228,10 +229,10 @@ export const FEATURES = [
 ];
 
 export const GALLERY = [
-	{ src: IMAGES.fotoFachada, alt: "B'bells Salón de Belleza en La Luz (Málaga)" },
-	{ src: IMAGES.fotoInterior, alt: "Salón B'bells en Calle Salzillo" },
-	{ src: IMAGES.fotoCejas, alt: "Peluquería en B'bells (Málaga)" },
-	{ src: IMAGES.fotoCalle, alt: "Belleza en B'bells (Málaga)" },
+	{ src: IMAGES.fotoFachada, alt: 'Interior de un salón de belleza con puestos de peluquería' },
+	{ src: IMAGES.fotoInterior, alt: 'Cabina de tratamientos de estética' },
+	{ src: IMAGES.fotoCejas, alt: 'Clienta con el pelo peinado en un salón de belleza' },
+	{ src: IMAGES.fotoCalle, alt: 'Tratamiento facial en una cabina de estética' },
 ];
 
 export const SCHEMA = {
