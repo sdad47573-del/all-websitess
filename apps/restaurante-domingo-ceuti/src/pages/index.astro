@@ -1,0 +1,294 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import comedor from '../assets/fotos/restaurante-domingo-ceuti-apaisada-10.jpg';
+import barra from '../assets/fotos/restaurante-domingo-ceuti-apaisada-01.jpg';
+import terraza from '../assets/fotos/restaurante-domingo-ceuti-apaisada-05.jpg';
+import brasaCarbon from '../assets/fotos/restaurante-domingo-ceuti-apaisada-06.jpg';
+import brasaHecha from '../assets/fotos/restaurante-domingo-ceuti-apaisada-08.jpg';
+import chuletillas from '../assets/fotos/restaurante-domingo-ceuti-apaisada-09.jpg';
+import arrozFuego from '../assets/fotos/restaurante-domingo-ceuti-apaisada-03.jpg';
+import paella from '../assets/fotos/restaurante-domingo-ceuti-vertical-04.jpg';
+import calamares from '../assets/fotos/restaurante-domingo-ceuti-vertical-07.jpg';
+import patatasPimenton from '../assets/fotos/restaurante-domingo-ceuti-vertical-02.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Bar restaurante y arrocería en Ceutí (Murcia): arroces al fuego, carne a la brasa y terraza con parque infantil. Isaac Peral, 2. Martes a domingo, 13:00–18:30.';
+
+const galeria = [
+	{
+		src: barra,
+		alt: 'Barra y mesa larga preparada con mantel y copas en Restaurante Domingo Ceutí, Ceutí (Murcia)',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor de Restaurante Domingo Ceutí con mesas de mantel, lámparas de mimbre y barra Amstel al fondo',
+	},
+	{
+		src: terraza,
+		alt: 'Terraza exterior con césped artificial, mesas y parque infantil con columpios y tobogán en Restaurante Domingo Ceutí',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco con gambas, langostinos, mejillones y calamar en Restaurante Domingo Ceutí',
+	},
+	{
+		src: arrozFuego,
+		alt: 'Arroz cocinándose en paella grande sobre fuego de leña en Restaurante Domingo Ceutí',
+	},
+	{
+		src: chuletillas,
+		alt: 'Chuletillas a la brasa con patatas y pimientos de Padrón, plato de Restaurante Domingo Ceutí',
+	},
+	{
+		src: brasaHecha,
+		alt: 'Carne a la brasa en la parrilla sobre carbón en Restaurante Domingo Ceutí, Ceutí',
+	},
+	{
+		src: brasaCarbon,
+		alt: 'Chuletillas crudas sobre la parrilla con el carbón encendido, brasa de Restaurante Domingo Ceutí',
+	},
+	{
+		src: calamares,
+		alt: 'Calamares a la romana con pimientos de Padrón y limón en Restaurante Domingo Ceutí',
+	},
+	{
+		src: patatasPimenton,
+		alt: 'Patatas en salsa con pimentón y perejil de Restaurante Domingo Ceutí, en Ceutí (Murcia)',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Domingo Ceutí', 'Restaurante Domingo', 'Bar Restaurante Domingo Ceutí'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34 968 69 12 38',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Española', 'Arroces'],
+	areaServed: [
+		{ '@type': 'City', name: 'Ceutí' },
+		{ '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '13:00',
+			closes: '18:30',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Parque infantil', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El restaurante', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante Domingo Ceutí · Arroces y brasa en Ceutí, Murcia';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#8d2b2b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Domingo Ceutí, restaurante Ceutí, comer en Ceutí, arrocería Ceutí, paella Ceutí, carne a la brasa Ceutí, bar restaurante Ceutí Murcia, menú del día Ceutí, terraza con parque infantil Ceutí, Isaac Peral Ceutí"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante Domingo Ceutí · Arroces y brasa en Ceutí"
+			ogDescription="Arroces al fuego, carne a la brasa y terraza con parque infantil en la calle Isaac Peral, 2 (Ceutí). Martes a domingo, 13:00–18:30. 4,4 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Comedor de Restaurante Domingo Ceutí, en Ceutí (Murcia)"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#8d2b2b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34968691238"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`Ceutí, ${BUSINESS.regionName}`}
+			preload={[comedor]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Domingo Ceutí"
+			subtitle="Arroces y brasa · Ceutí"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Ceutí · Región de Murcia"
+				title="Arroces al fuego<br /><em>y brasa de leña.</em>"
+				lede={`En la calle Isaac Peral, 2, en el centro de Ceutí. Arroces y paellas hechos al fuego, carne a la brasa y una terraza con parque infantil para ir en familia. De martes a domingo, de 13:00 a 18:30. Teléfono ${BUSINESS.phoneDisplay}.`}
+				image={comedor}
+				imageAlt="Comedor de Restaurante Domingo Ceutí con mesas de mantel y barra Amstel al fondo"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				galleryHref={MAPS.place}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Horario', html: 'Martes a domingo, 13:00–18:30' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante Domingo Ceutí" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El restaurante"
+				title="Bar restaurante<br /><em>de toda la vida.</em>"
+				paragraphs={[
+					'Restaurante Domingo Ceutí está en la calle Isaac Peral, 2, en Ceutí (30563, Murcia). Un bar restaurante de los de mantel, mesa grande y barra con aperitivos: el comedor es amplio, con mesas de mantel y sillas de forja, y hay también terraza al aire libre.',
+					'La cocina es mediterránea y española, con la arrocería como seña de la casa: arroces y paellas hechos al fuego, entre ellos la paella de marisco con gambas, langostinos, mejillones y calamar. A la brasa salen las chuletillas y la carne a la parrilla sobre carbón, y para compartir hay clásicos como los calamares a la romana, el pulpo o las patatas en salsa con pimentón.',
+					'La ficha de Google no publica la carta completa ni los precios, así que aquí no se inventan: lo que hay en esta web es lo que se ve en sus fotos y lo que cuentan sus reseñas. Para grupos y familias es cómodo, porque la terraza tiene césped y un parque infantil con columpios y tobogán.',
+				]}
+				note={`La nota media en Google es ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre ${BUSINESS.reviewsCount} opiniones. Lo que más se repite es la comida: «pulpo, calamares, arroz y la carne a la brasa todo exquisito», y hay quien destaca el menú completo con aperitivo, cerveza y vino.`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Arroces, brasa<br /><em>y para compartir.</em>"
+				description="Resumen de lo que se sirve, sacado de las fotos y las reseñas de la ficha de Google Maps del restaurante. No es la carta completa ni tiene precios: pídelos en el local o al llamar."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La carta cambia con la temporada y el mercado. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El comedor, la terraza<br /><em>y la brasa.</em>"
+				description="Estas fotografías proceden del perfil de Restaurante Domingo Ceutí en Google Maps, con imágenes de la ficha y de sus clientes. En la ficha del restaurante están todas las fotos y las reseñas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} Ceutí`}
+				title="Nos vemos<br /><em>en Ceutí.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario publicado en la ficha de Google. Abre de martes a domingo y cierra los lunes; en festivos y puentes puede cambiar, así que confírmalo por teléfono si vienes de lejos."
+				mapTitle="Mapa de Restaurante Domingo Ceutí en la calle Isaac Peral, 2, Ceutí, Murcia"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Domingo Ceutí · Ceutí"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ver fotos en Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se habla con el restaurante por teléfono. La ficha de Google indica acceso, aseo y asientos adaptados para sillas de ruedas; si necesitas una mesa concreta o vas con niños, avisa al llamar."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Domingo Ceutí"
+		/>
+	</body>
+</html>

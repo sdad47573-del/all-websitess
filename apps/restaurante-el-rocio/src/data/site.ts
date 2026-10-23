@@ -8,17 +8,13 @@
  *   datos operativos de esta web.
  *
  * Lo que la web NO inventa: precios, carta cerrada ni servicios que la ficha no
- * publique. La carta se resume a partir de los platos que citan las reseñas.
+ * publique. La carta se resume a partir de los platos que se ven en las fotos de
+ * la ficha; las reseñas se citan tal cual, también la crítica.
  */
 
 export const BUSINESS = {
 	name: 'Restaurante "El Rocío"',
-	shortName: 'El Rocío',
 	mark: 'ER',
-	brandLine: 'Cocina española · Fortuna',
-	tagline: 'Restaurante de cocina española en Fortuna, Murcia',
-	summary:
-		'Restaurante "El Rocío" es un restaurante de cocina española en la Avenida Narciso Yepes, 22 (30620 Fortuna, Murcia). Abre de lunes a sábado, de 9:00 a 18:00, y cierra los domingos.',
 	street: 'Av. Narciso Yepes, 22',
 	city: 'Fortuna',
 	region: 'Murcia',
@@ -30,7 +26,6 @@ export const BUSINESS = {
 	rating: 4.4,
 	reviewsCount: 464,
 	priceRange: '€€',
-	categories: ['Cocina española', 'Restaurante', 'Arroces', 'Raciones'],
 	siteUrl: 'https://restaurante-el-rocio.vercel.app',
 	geo: { lat: 38.1842754, lng: -1.1260929 },
 	featureId: '0xd638f280253b527:0x46cd0bff789c1c99',
