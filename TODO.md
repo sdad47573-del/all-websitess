@@ -1,6 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Bar+El+Guapo/@38.0268646,-1.0667353,17z/data=!3m1!4b1!4m6!3m5!1s0xd639c97ab3c0993:0xd91d63eea503730c!8m2!3d38.0268646!4d-1.0667353!16s%2Fg%2F11xv78tdj?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Mes%C3%B3n+Lax/@38.0181159,-1.1063237,17z/data=!3m1!4b1!4m6!3m5!1s0xd6383b288f1cc85:0xd28fe7b7038d5047!8m2!3d38.0181159!4d-1.1063237!16s%2Fg%2F11dxdhc_s1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+la+Fragua/@40.1112973,-5.776451,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e3459771f3aad:0x848fa4c04b1d1c57!8m2!3d40.1112973!4d-5.776451!16s%2Fg%2F1td6tjlx?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
