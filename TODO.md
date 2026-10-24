@@ -1,10 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurante+MLC/@43.2363963,-1.9978974,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b1003d8a6e25:0xcea92d923416e196!8m2!3d43.2363963!4d-1.9978974!16s%2Fg%2F11xl0xd9mg?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Marcos+Jatetxea/@43.2974287,-1.8815223,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a893b6b74c8b:0x5e886c3b5dba5971!8m2!3d43.2974287!4d-1.8815223!16s%2Fg%2F1tj4ctbb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Antxeta+jatetxea+%7C+Recomendado/@43.2709732,-2.0489051,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b1209c093411:0x8407478c2bd8a536!8m2!3d43.2709732!4d-2.0489051!16s%2Fg%2F1td0v6d1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Bar+Restaurante+Juantxo+SL/@43.3230184,-1.9123003,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a5e2d42a7d45:0x80347790619df8d4!8m2!3d43.3230184!4d-1.9123003!16s%2Fg%2F1tdd6l5v?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 
