@@ -1,9 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-
-https://www.google.com/maps/place/Restaurante+Camping+Jaizkibel/@43.3663455,-1.8045277,17z/data=!3m1!4b1!4m6!3m5!1s0xd51099645af7e9d:0x5d473df018820db6!8m2!3d43.3663455!4d-1.8045277!16s%2Fg%2F11h541wzs9?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/BORDATXO/@43.2712369,-2.0498038,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b120f3804865:0x1fd16958ee470b44!8m2!3d43.2712369!4d-2.0498038!16s%2Fg%2F11c6cyhvpw?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+MLC/@43.2363963,-1.9978974,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b1003d8a6e25:0xcea92d923416e196!8m2!3d43.2363963!4d-1.9978974!16s%2Fg%2F11xl0xd9mg?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+Marcos+Jatetxea/@43.2974287,-1.8815223,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a893b6b74c8b:0x5e886c3b5dba5971!8m2!3d43.2974287!4d-1.8815223!16s%2Fg%2F1tj4ctbb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
