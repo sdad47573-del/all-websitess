@@ -82,8 +82,8 @@ export const SERVICIOS = [
 ];
 
 /**
- * Carta resumida de lo que nombran las reseñas de la ficha. Sin precios: la
- * ficha no publica ninguno.
+ * Carta resumida de lo que nombran las reseñas de la ficha y de lo que se ve en
+ * las fotos del propio perfil. Sin precios: la ficha no publica ninguno.
  */
 export const MENU = [
 	{
@@ -93,6 +93,27 @@ export const MENU = [
 			{ name: 'Sepia', note: '«extraordinaria», en palabras de la misma reseña' },
 			{ name: 'Pinchos', note: '«buenos pinchos», junto a un «excelente trato»' },
 			{ name: 'Raciones', note: 'para compartir en la terraza' },
+		],
+	},
+	{
+		title: 'De la brasa y el horno',
+		items: [
+			{
+				name: 'Asado con patatas panaderas',
+				note: 'con ensalada de tomate y cebolla, en las fotos del perfil',
+			},
+			{ name: 'Entrecot a la brasa', note: 'en las fotos del perfil' },
+			{ name: 'Chuleta a la brasa con pimientos verdes', note: 'en las fotos del perfil' },
+		],
+	},
+	{
+		title: 'Para la mesa',
+		items: [
+			{
+				name: 'Ensalada mixta',
+				note: 'con atún, espárragos, maíz y remolacha',
+			},
+			{ name: 'Patatas panaderas', note: 'el acompañamiento de los asados' },
 		],
 	},
 ];
