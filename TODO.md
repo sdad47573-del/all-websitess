@@ -1,8 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/%22Al+Mofrag%22+Terraza+%26+Restaurante/@39.8474539,-6.0306765,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e205e78bed893:0xd042366597855db2!8m2!3d39.8474539!4d-6.0306765!16s%2Fg%2F11c2092n_h?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+El+Mes%C3%B3n/@40.0666851,-6.6584064,17z/data=!3m1!4b1!4m6!3m5!1s0xd3de963557d0f07:0xf7cbf0e63300b39f!8m2!3d40.0666851!4d-6.6584064!16s%2Fg%2F12qfljf1t?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/D'PIN+PARRILLA,+PIZZAS+Y+RACIONES/@40.236821,-6.047444,17z/data=!3m1!4b1!4m6!3m5!1s0xd3e421f433f8845:0xaa6dd6ef8f0fa498!8m2!3d40.236821!4d-6.047444!16s%2Fg%2F11_sps8__?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Terraza+Cafe+Bar+Restaurante+Mor+Blanc/@40.0819152,-6.2493525,16.5z/data=!4m6!3m5!1s0xd3e0d928959929b:0x32deb2b53e7c2793!8m2!3d40.0815388!4d-6.2491926!16s%2Fg%2F11c2md1wsb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxOC4wIKXMDSoASAFQAw%3D%3D

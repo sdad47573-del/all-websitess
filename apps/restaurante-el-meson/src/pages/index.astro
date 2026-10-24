@@ -1,0 +1,298 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import comedor from '../assets/fotos/restaurante-el-meson-vertical-01.jpg';
+import flan from '../assets/fotos/restaurante-el-meson-vertical-02.jpg';
+import patatas from '../assets/fotos/restaurante-el-meson-apaisada-03.jpg';
+import ensalada from '../assets/fotos/restaurante-el-meson-vertical-04.jpg';
+import lagarto from '../assets/fotos/restaurante-el-meson-vertical-08.jpg';
+import entrecot from '../assets/fotos/restaurante-el-meson-vertical-06.jpg';
+import mesa from '../assets/fotos/restaurante-el-meson-vertical-10.jpg';
+import parrilla from '../assets/fotos/restaurante-el-meson-vista-7-07.jpg';
+import postres from '../assets/fotos/restaurante-el-meson-apaisada-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante El Mesón, parrilla y bar en la calle Camelias, 1 (Moraleja, Cáceres). Lagarto y carnes a la parrilla, ensalada de rulo, croquetas, pulpo y calamares. 4,4 en Google con 659 reseñas. Tel. 927 56 34 74.';
+
+const galeria = [
+	{
+		src: comedor,
+		alt: 'Comedor de Restaurante El Mesón con mesa larga de mantel negro, sillas blancas y barra al fondo',
+	},
+	{
+		src: mesa,
+		alt: 'Rincón del comedor de El Mesón en Moraleja con vigas de madera, pared de ladrillo y mesas de madera',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada de rulo de cabra en dados con frutos secos y vinagreta en Restaurante El Mesón',
+	},
+	{
+		src: lagarto,
+		alt: 'Lagarto a la parrilla cortado en tiras con un cuenco de salsa y patatas fritas al lado',
+	},
+	{
+		src: parrilla,
+		alt: 'Lagarto a la parrilla troceado con un cuenco de salsa en Restaurante El Mesón de Moraleja',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la parrilla con patatas panaderas y croquetas en sartén en El Mesón, Moraleja',
+	},
+	{
+		src: postres,
+		alt: 'Postres de El Mesón: tarta con helado y chocolate y flan con nata',
+	},
+	{
+		src: flan,
+		alt: 'Flan con caramelo y galleta servido en plato blanco en Restaurante El Mesón',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-meson`,
+	name: BUSINESS.name,
+	alternateName: ['El Mesón Moraleja', 'Restaurante El Mesón Moraleja', 'Bar El Mesón Moraleja'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 927 56 34 74',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Parrilla', 'Casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Moraleja' },
+		{ '@type': 'AdministrativeArea', name: 'Sierra de Gata' },
+		{ '@type': 'AdministrativeArea', name: 'Cáceres' },
+		{ '@type': 'AdministrativeArea', name: 'Extremadura' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Camareros geniales, educados y simpáticos , buena relación calidad -precio.',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Hemos pedido la ensalada de rulo, croquetas, pulpo, calamares y lagarto.',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El mesón', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante El Mesón · Parrilla en Moraleja';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7c2d1b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante El Mesón Moraleja, El Mesón Moraleja, parrilla Moraleja, comer en Moraleja, bar Moraleja Cáceres, lagarto a la parrilla, C. Camelias Moraleja, restaurantes Sierra de Gata"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante El Mesón · Parrilla en Moraleja"
+			ogDescription="Parrilla y bar en la calle Camelias, 1 (Moraleja): lagarto, carnes a la parrilla, ensalada de rulo, croquetas y raciones. 4,4 en Google con 659 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Entrecot a la parrilla con patatas y croquetas en Restaurante El Mesón, Moraleja"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#7c2d1b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34927563474"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[patatas]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Restaurante El Mesón"
+			subtitle="Parrilla y bar · Moraleja"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Camelias, 1 · Moraleja"
+				title="Parrilla y bar<br /><em>en Moraleja.</em>"
+				lede={`El Mesón es parrilla y bar en la calle Camelias, 1, de Moraleja (Cáceres), en el noroeste de la provincia. Lagarto y carnes a la parrilla, ensalada de rulo, croquetas, pulpo y calamares, con raciones para compartir. Reservas en el ${BUSINESS.phoneDisplay}.`}
+				image={patatas}
+				imageAlt="Sartén de patatas con queso fundido y bacon en Restaurante El Mesón, Moraleja"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Horario', html: 'Consultar por teléfono' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante El Mesón" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El mesón"
+				title="Mesa larga<br /><em>y parrilla.</em>"
+				paragraphs={[
+					'Restaurante El Mesón está en la calle Camelias, 1, de Moraleja (Cáceres), en el noroeste de la provincia, en la comarca de Sierra de Gata y a un paso de las Vegas del Alagón.',
+					'El comedor es de los de mesa larga: mantel negro, sillas blancas de metal, suelo de baldosa, vigas de madera y una estantería de botellas iluminada sobre la pared. Al fondo queda la barra con taburetes, y al otro lado del comedor una esquina con pared de ladrillo y mesas de madera.',
+					'La ficha de Google lo clasifica como parrilla y bar. Sus reseñas nombran la ensalada de rulo, las croquetas, el pulpo, los calamares y el lagarto, y coinciden en el trato del equipo y en la «buena relación calidad-precio».',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo resume así: «camareros geniales, educados y simpáticos, buena relación calidad-precio».`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del lagarto<br /><em>a las croquetas.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que nombran sus reseñas y lo que se ve en las fotos de sus platos."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin carta publicada, los platos cambian según el día. Llama al 927 56 34 74 para saber qué hay y cuándo abre: la ficha de Google no tiene horario."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El comedor<br /><em>y la parrilla.</em>"
+				description="Estas fotografías proceden del perfil de Restaurante El Mesón en Google Maps: el comedor de mesa larga, la ensalada de rulo, el lagarto a la parrilla y los postres."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos<br /><em>en la calle Camelias.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="La ficha de Google de El Mesón no tiene horario añadido, así que aquí no se inventa ninguno. Llama al 927 56 34 74 y te confirman los días y las horas de apertura."
+				mapTitle="Mapa de Restaurante El Mesón en la calle Camelias, 1, Moraleja (Cáceres)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante El Mesón · Moraleja"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva llamando al 927 56 34 74. La ficha de Google marca aseo adaptado para sillas de ruedas y asientos adaptados. Está en la calle Camelias, 1, de Moraleja, en la comarca de Sierra de Gata."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a El Mesón"
+		/>
+	</body>
+</html>
