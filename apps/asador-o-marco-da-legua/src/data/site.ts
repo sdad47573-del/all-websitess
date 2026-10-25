@@ -99,16 +99,52 @@ export const MENU = [
 		items: [
 			{ name: 'Churrasco', note: '«buenísimo», según una reseña' },
 			{ name: 'Chipirones a la plancha', note: 'citados en una reseña' },
+			{ name: 'Pulpo á feira', note: 'en las fotos del perfil' },
+			{ name: 'Zamburiñas a la plancha', note: 'en las fotos del perfil' },
 		],
 	},
 	{
-		title: 'Para picar y compartir',
+		title: 'Para compartir y postres',
 		items: [
-			{ name: 'Tapas', note: 'en las categorías de la ficha de Google' },
-			{ name: 'Pizza', note: '«enorme y buenisima», según una reseña' },
+			{ name: 'Tapas y raciones', note: 'en las categorías de la ficha de Google' },
+			{ name: 'Pizza', note: '«enorme y buenisima», según una reseña y en las fotos del perfil' },
 			{ name: 'Postres caseros', note: '«también muy ricos», según la misma reseña' },
+			{ name: 'Tabla de embutido con patatas', note: 'en las fotos del perfil' },
 		],
 	},
 ];
 
-export const FAQ: { q: string; a: string }[] = [];
+export const FAQ = [
+	{
+		q: '¿Dónde está Asador O Marco Da Legua?',
+		a: 'En Aldea Lagoas, 31, del 32135 Piñor (Ourense). El mapa de esta página lleva directo al asador y «Cómo llegar» abre las indicaciones en Google Maps.',
+	},
+	{
+		q: '¿Qué horario tiene?',
+		a: 'De jueves a domingo. Jueves y domingo abre de 10:30 a 24:00, el viernes de 10:30 a 0:30 y el sábado de 11:00 a 0:30. Cierra los lunes, martes y miércoles. Es el horario que publica su ficha de Google, así que conviene confirmarlo llamando antes.',
+	},
+	{
+		q: '¿Se puede reservar?',
+		a: 'La ficha de Google no ofrece reserva online. Para reservar mesa o encargar comida hay que llamar al 673 65 64 13.',
+	},
+	{
+		q: '¿Qué se puede comer?',
+		a: 'La ficha del asador lo resume así: «carnes a la brasa, cabrito y cordero en horno tradicional de leña». Sus reseñas citan el churrasco, los chipirones a la plancha, la pizza y los postres caseros, y en las fotos del perfil aparecen las zamburiñas, el pulpo á feira, los pimientos de Padrón y una tabla de embutido con patatas. La ficha no publica carta ni precios.',
+	},
+	{
+		q: '¿Hay comida para llevar?',
+		a: 'Sí. «Restaurante de comida para llevar» es una de las categorías con las que Google clasifica el local. Para encargar, llama al 673 65 64 13.',
+	},
+	{
+		q: '¿Tiene terraza?',
+		a: 'Sí. Las fotos del perfil muestran mesas y sillas de terraza en el jardín, bajo los árboles y con luces colgadas entre las ramas.',
+	},
+	{
+		q: '¿Es accesible para sillas de ruedas?',
+		a: 'Su ficha de Google marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados.',
+	},
+	{
+		q: '¿Qué valoración tiene en Google?',
+		a: '4,8 sobre 5 con 210 reseñas. Las publicadas destacan el churrasco, los chipirones, la pizza, los postres caseros y el trato del personal.',
+	},
+];

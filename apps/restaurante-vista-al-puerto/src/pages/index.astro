@@ -1,0 +1,314 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/restaurante-vista-al-puerto-apaisada-01.jpg';
+import entrecot from '../assets/fotos/restaurante-vista-al-puerto-apaisada-02.jpg';
+import pastaMarisco from '../assets/fotos/restaurante-vista-al-puerto-vertical-03.jpg';
+import parrillada from '../assets/fotos/restaurante-vista-al-puerto-vertical-04.jpg';
+import paella from '../assets/fotos/restaurante-vista-al-puerto-vertical-05.jpg';
+import terrazaSol from '../assets/fotos/restaurante-vista-al-puerto-apaisada-06.jpg';
+import salon from '../assets/fotos/restaurante-vista-al-puerto-apaisada-07.jpg';
+import pescado from '../assets/fotos/restaurante-vista-al-puerto-vertical-09.jpg';
+import ensalada from '../assets/fotos/restaurante-vista-al-puerto-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante Vista Al Puerto, en Carrer des Caló, 66 (Sant Agustí, Sant Josep de sa Talaia, Ibiza). Paellas, pescado a la plancha, carnes a la brasa y terraza bajo la parra. Tel. 871 11 02 79.';
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de Vista Al Puerto bajo una pérgola cubierta de parra, con mesas de mantel blanco y sillas de madera junto a pilares de piedra',
+	},
+	{
+		src: salon,
+		alt: 'Comedor cubierto de Vista Al Puerto con sillas de mimbre, barra de madera y el toldo naranja de la terraza al fondo',
+	},
+	{
+		src: terrazaSol,
+		alt: 'Terraza exterior de Vista Al Puerto con mesas redondas, sillas de mimbre y el toldo blanco sobre la calle',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco con carabineros, mejillones, almejas y limón servida en plato hondo',
+	},
+	{
+		src: pastaMarisco,
+		alt: 'Espaguetis con mejillones y langostinos junto a una cazuela de mejillones y una de gambas al ajillo',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado entero a la plancha sobre bandeja metálica con patatas paja y pimiento rojo',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la brasa cortado en tiras con patatas panadera, calabacín, champiñón y espárrago',
+	},
+	{
+		src: parrillada,
+		alt: 'Parrillada de carne para compartir con entrecot, costilla y patatas en una fuente blanca',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada César con escarola, picatostes, lascas de queso y tiras de pollo',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#vista-al-puerto`,
+	name: BUSINESS.name,
+	alternateName: ['Vista Al Puerto', 'Vista al Puerto Ibiza', 'Restaurante Vista Al Puerto Sant Agustí'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 871 11 02 79',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Mediterránea', 'Marisco'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sant Josep de sa Talaia' },
+		{ '@type': 'AdministrativeArea', name: 'Sant Agustí des Vedrà' },
+		{ '@type': 'AdministrativeArea', name: 'Ibiza' },
+		{ '@type': 'AdministrativeArea', name: 'Islas Baleares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '23:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Vista Al Puerto · Cocina española con terraza en Ibiza';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1c4f63" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Vista Al Puerto Ibiza, restaurante Sant Agustí, comer en Sant Agustí, paella Ibiza, restaurante con terraza Ibiza, Carrer des Caló, pescado a la plancha Ibiza, carnes a la brasa Ibiza, Sant Josep de sa Talaia"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Vista Al Puerto · Cocina española con terraza en Ibiza"
+			ogDescription="Paellas, pescado a la plancha, carnes a la brasa y una terraza bajo la parra en Sant Agustí (Ibiza). Carrer des Caló, 66. Tel. 871 11 02 79."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de Restaurante Vista Al Puerto bajo la parra, con mesas de mantel blanco"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1c4f63"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-IB"
+			postalCode={BUSINESS.postalCode}
+			phone="+34871110279"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Vista Al Puerto"
+			subtitle="Cocina española · Sant Agustí, Ibiza"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer des Caló, 66 · Sant Agustí"
+				title="A la sombra de la parra,<br /><em>frente al puerto.</em>"
+				lede={`Vista Al Puerto es un restaurante de cocina española en Carrer des Caló, 66, en Sant Agustí des Vedrà (Sant Josep de sa Talaia, Ibiza). Terraza cubierta por una pérgola de parra, mesas de mantel blanco y una carta de paellas, pescado a la plancha, carnes a la brasa, marisco y ensaladas. Abre todos los días de 12:00 a 23:30, salvo el martes. Teléfono: ${BUSINESS.phoneDisplay}.`}
+				image={terraza}
+				imageAlt="Terraza de Vista Al Puerto bajo una pérgola cubierta de parra, con mesas de mantel blanco y sillas de madera junto a pilares de piedra"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Cocina', html: 'Española · paellas, pescado y brasa' },
+					{ label: 'Horario', html: 'Todos los días · 12:00–23:30 · martes cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante Vista Al Puerto" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Mantel blanco<br /><em>y parra en el techo.</em>"
+				paragraphs={[
+					'Vista Al Puerto está en Carrer des Caló, 66, en Sant Agustí des Vedrà (Sant Josep de sa Talaia, Ibiza), a un paso del puerto. Google lo clasifica como restaurante de cocina española. La terraza es lo primero que se ve: una pérgola cubierta de parra, pilares de piedra, mesas con mantel blanco y sillas de madera con el respaldo de rejilla.',
+					'Junto a esa terraza hay una segunda zona cubierta, con toldo, sillas de mimbre y una barra de madera al fondo, y una terraza exterior con mesas redondas que da a la calle. Abre todos los días de 12:00 a 23:30; el martes cierra.',
+					'En las fotos del perfil aparecen la paella de marisco con carabineros, mejillones y almejas; el pescado entero a la plancha con patatas paja; el entrecot y la parrillada de carne; los espaguetis con mejillones y langostinos; las gambas al ajillo en cazuela de barro; los mejillones y una ensalada César con picatostes y lascas de queso.',
+					'Sus reseñas hablan de la paella, los mejillones y el trato: «el camarero super buena gente y la paella increíble buena y buen precio», «todo estaba buenísimo (sobre todo los mejillones), buen ambiente y buen servicio» y «muy buen kebab, buen tamaño y salsa de yogur especiada deliciosa». Google le da 4,5 sobre 5 con 373 reseñas.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[1]}»`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Paella, brasa<br /><em>y pescado del día.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que aparece en las fotos del perfil y lo que citan sus reseñas."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados. Llama al 871 11 02 79 para reservar mesa, preguntar por la paella o por el pescado del día."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La terraza,<br /><em>la mesa y la brasa.</em>"
+				description="Estas fotografías proceden del perfil de Restaurante Vista Al Puerto en Google Maps: la terraza bajo la parra, el comedor cubierto, la paella de marisco, el pescado a la plancha, el entrecot, la parrillada, la pasta con marisco, los mejillones y la ensalada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Te esperamos<br /><em>en Sant Agustí.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google: todos los días de 12:00 a 23:30; martes cerrado. En temporada alta conviene llamar antes para mesa en la terraza."
+				mapTitle="Mapa de Restaurante Vista Al Puerto en Carrer des Caló, Sant Agustí (Ibiza)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Vista Al Puerto · Sant Agustí"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 871 11 02 79. La ficha de Google marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Vista Al Puerto"
+		/>
+	</body>
+</html>
