@@ -1,6 +1,6 @@
 import { writeFileSync } from 'node:fs';
 
-const FID = '0xd2f888119e8445d:0x53b7c87bb378cacd';
+const FID = '0xd2feefb59670def:0x711cd45fb042773c';
 
 const HEADERS = {
 	'user-agent':
@@ -26,7 +26,7 @@ for (let i = 0; i < 12; i++) {
 		await sleep(1500 + i * 1000);
 		continue;
 	}
-	const full = /Xestosa|lunes|reseñas/i.test(text);
+	const full = /Marco|Legua|lunes|reseñas/i.test(text);
 	if (text.startsWith(")]}'") && text.length > best) {
 		best = text.length;
 		bestText = text;
@@ -39,7 +39,7 @@ for (let i = 0; i < 12; i++) {
 }
 
 if (bestText) {
-	writeFileSync('scripts/tmp-xestosa.txt', bestText);
+	writeFileSync('scripts/tmp-marco.txt', bestText);
 	console.log('SAVED bytes:', best);
 } else {
 	console.log('no valid response');
