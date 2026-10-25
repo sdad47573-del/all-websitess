@@ -1,0 +1,321 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terrazaNoche from '../assets/fotos/restaurante-la-solera-apaisada-01.jpg';
+import paellaLangostinos from '../assets/fotos/restaurante-la-solera-vertical-02.jpg';
+import hamburguesa from '../assets/fotos/restaurante-la-solera-apaisada-03.jpg';
+import fritura from '../assets/fotos/restaurante-la-solera-apaisada-04.jpg';
+import fachada from '../assets/fotos/restaurante-la-solera-apaisada-05.jpg';
+import tortilla from '../assets/fotos/restaurante-la-solera-apaisada-06.jpg';
+import paella from '../assets/fotos/restaurante-la-solera-apaisada-07.jpg';
+import pulpo from '../assets/fotos/restaurante-la-solera-vertical-08.jpg';
+import sardinas from '../assets/fotos/restaurante-la-solera-cuadrada-09.jpg';
+import calamares from '../assets/fotos/restaurante-la-solera-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante La Solera, marisquería y cocina mediterránea en Plaça sa Tertúlia, 8 (Eivissa). Paellas, pulpo, sardinas y calamares en terraza, junto al puerto. Tel. 971 31 62 50.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de La Solera con dos toldos blancos, uno rotulado «PAELLA» y otro «La Solera», y mesas en la plaza',
+	},
+	{
+		src: terrazaNoche,
+		alt: 'Terraza de La Solera de noche, con lámparas de mimbre, mesas de madera y clientes cenando',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco en la paellera, con mejillones, langostinos y dos gajos de limón',
+	},
+	{
+		src: paellaLangostinos,
+		alt: 'Paella con langostinos y mejillones servida en plato hondo',
+	},
+	{
+		src: pulpo,
+		alt: 'Pulpo a la gallega con patata y pimentón en un plato blanco',
+	},
+	{
+		src: sardinas,
+		alt: 'Sardinas a la plancha con patatas fritas y un gajo de limón',
+	},
+	{
+		src: calamares,
+		alt: 'Calamares fritos con dos gajos de limón en un plato blanco',
+	},
+	{
+		src: fritura,
+		alt: 'Fritura de pescado con boquerones, calamares y langostinos, con limón',
+	},
+	{
+		src: tortilla,
+		alt: 'Tortilla de patatas con ensalada y calamares fritos delante',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa con bacon y queso junto a un cestillo de patatas fritas',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-solera`,
+	name: BUSINESS.name,
+	alternateName: ['La Solera', 'La Solera Ibiza', 'Restaurante La Solera Ibiza', 'La Solera Eivissa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 971 31 62 50',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Española', 'Marisco'],
+	areaServed: [
+		{ '@type': 'City', name: 'Eivissa' },
+		{ '@type': 'AdministrativeArea', name: 'Ibiza' },
+		{ '@type': 'AdministrativeArea', name: 'Islas Baleares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '12:00',
+			closes: '24:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'La Solera · Marisquería y paellas en el centro de Ibiza';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4a5a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Solera Ibiza, restaurante La Solera, marisquería Ibiza, paella Ibiza centro, comer paella Eivissa, Plaça sa Tertúlia, pulpo a la gallega Ibiza, restaurante junto al puerto Ibiza"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="La Solera · Marisquería y paellas en el centro de Ibiza"
+			ogDescription="Paellas, pulpo a la gallega, sardinas y calamares en Plaça sa Tertúlia, 8 (Eivissa), con terraza junto al puerto. Tel. 971 31 62 50."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de La Solera en la plaza, con los toldos blancos y mesas de madera"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f4a5a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-IB"
+			postalCode={BUSINESS.postalCode}
+			phone="+34971316250"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Solera"
+			subtitle="Marisquería · Eivissa"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Plaça sa Tertúlia, 8 · Eivissa"
+				title="Paella y marisco<br /><em>en la plaza.</em>"
+				lede={`La Solera es una marisquería de cocina mediterránea y española en Plaça sa Tertúlia, 8, en el centro de Eivissa, junto al puerto. Terraza bajo toldos blancos, mesas de madera y lámparas de mimbre para comer paellas, pulpo a la gallega, sardinas a la plancha, calamares y fritura de pescado. Google lo clasifica como restaurante mediterráneo, marisquería y restaurante de cocina española. Abre todos los días de 12:00 a 24:00. Teléfono: ${BUSINESS.phoneDisplay}.`}
+				image={fachada}
+				imageAlt="Fachada de La Solera con dos toldos blancos, uno rotulado «PAELLA» y otro «La Solera», y mesas en la plaza"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Cocina', html: 'Mediterránea · marisquería y paellas' },
+					{ label: 'Horario', html: 'Todos los días · 12:00–24:00' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante La Solera" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Toldo blanco,<br /><em>paella y plaza.</em>"
+				paragraphs={[
+					'La Solera está en Plaça sa Tertúlia, 8, en el centro de Eivissa, a un paso del puerto. Google lo clasifica como restaurante mediterráneo, marisquería y restaurante de cocina española. La terraza ocupa la plaza bajo dos toldos blancos: uno anuncia «PAELLA» y el otro lleva el nombre de la casa.',
+					'Dentro, el comedor es acristalado y luminoso, con lámparas de mimbre, mesas de madera y sillas de rejilla blanca. Por la noche la plaza se llena y la terraza se ilumina con las lámparas colgantes.',
+					'Abre todos los días de 12:00 a 24:00, sin día de cierre. En la mesa aparecen la paella de marisco con mejillones y langostinos, el pulpo a la gallega con patata y pimentón, las sardinas a la plancha con patatas, los calamares fritos, una fritura de pescado con boquerones y langostinos, la tortilla con ensalada y la hamburguesa con patatas.',
+					'Sus reseñas hablan de la paella y de la terraza: «muy buen sitio para venir a comer una buena paella, la de bogavante riquísima», «cerveza bien tirada y los pimientos del padrón buenísimos» y «volveremos sin duda». Google le da 4,2 sobre 5 con 909 reseñas.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[0]}»`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Arroces, pulpo<br /><em>y fritura.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que aparece en las fotos del perfil y lo que citan sus reseñas."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados. Llama al 971 31 62 50 para reservar mesa o preguntar por la paella y el pescado del día."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La plaza,<br /><em>la paellera y el mar.</em>"
+				description="Estas fotografías proceden del perfil de Restaurante La Solera en Google Maps: la fachada con los toldos, la terraza de noche, la paella de marisco, el pulpo a la gallega, las sardinas, los calamares, la fritura, la tortilla y la hamburguesa."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Te esperamos<br /><em>en sa Tertúlia.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google: todos los días de 12:00 a 24:00. En temporada alta conviene llamar antes para mesa en la terraza."
+				mapTitle="Mapa de Restaurante La Solera en Plaça sa Tertúlia, Eivissa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Solera · Eivissa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 971 31 62 50. La ficha de Google marca acceso para sillas de ruedas y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a La Solera"
+		/>
+	</body>
+</html>

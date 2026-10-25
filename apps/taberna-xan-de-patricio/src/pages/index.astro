@@ -1,0 +1,312 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import barra from '../assets/fotos/taberna-xan-de-patricio-apaisada-08.jpg';
+import fachada from '../assets/fotos/taberna-xan-de-patricio-apaisada-01.jpg';
+import raciones from '../assets/fotos/taberna-xan-de-patricio-apaisada-09.jpg';
+import comedor from '../assets/fotos/taberna-xan-de-patricio-vertical-02.jpg';
+import terraza from '../assets/fotos/taberna-xan-de-patricio-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Taberna Xan de Patricio, en Pob. Capilla 13 (Quintas, Agolada, Pontevedra). Comida casera, raciones y terraza. Tel. 646 29 37 19.';
+
+const title = 'Taberna Xan de Patricio · Comer en Agolada';
+
+const galeria = [
+	{
+		src: barra,
+		alt: 'Barra de la Taberna Xan de Patricio con botellas, cafetera y el techo de madera sobre paredes de piedra',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de piedra de la Taberna Xan de Patricio con ventanas de madera y las iniciales en la puerta',
+	},
+	{
+		src: raciones,
+		alt: 'Tomate con queso fresco y anchoas junto a una tortilla en la mesa de la taberna',
+	},
+	{
+		src: terraza,
+		alt: 'Terraza de la Taberna Xan de Patricio con mesas y un barril junto a la casa de piedra',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor de la Taberna Xan de Patricio con mesas de madera y paredes de piedra',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#xandepatricio`,
+	name: BUSINESS.name,
+	alternateName: ['Xan de Patricio', 'Taberna Xan de Patricio Agolada'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 646 29 37 19',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Gallega', 'Cocina casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Agolada' },
+		{ '@type': 'AdministrativeArea', name: 'Pontevedra' },
+		{ '@type': 'AdministrativeArea', name: 'Galicia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday'],
+			opens: '18:30',
+			closes: '23:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:30',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7a3b2a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Taberna Xan de Patricio, Xan de Patricio Agolada, taberna Agolada, bar Quintas, comer en Agolada, taberna con terraza Pontevedra, raciones Agolada"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Taberna Xan de Patricio · Comer en Agolada"
+			ogDescription="Comida casera, raciones y terraza en una casa de piedra de Quintas (Agolada, Pontevedra). Cierra los lunes. Tel. 646 29 37 19."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Barra de madera de la Taberna Xan de Patricio en Quintas, Agolada"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#7a3b2a"
+			street={BUSINESS.street}
+			city={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			region={BUSINESS.region}
+			geoRegion="ES-GA"
+			postalCode={BUSINESS.postalCode}
+			phone="+34646293719"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			preload={[barra]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="TABERNA XAN DE PATRICIO"
+			subtitle="Quintas · Agolada"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Pob. Capilla, 13 · Quintas, Agolada"
+				title="Piedra, barra<br /><em>y buena mesa.</em>"
+				lede={`Taberna Xan de Patricio es la taberna de Pob. Capilla, 13, en Quintas (Agolada, Pontevedra). Una casa de piedra con barra de madera, comedor y terraza, donde se come casero y se paga lo justo. Cierra los lunes. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={barra}
+				imageAlt="Barra de la Taberna Xan de Patricio con botellas, cafetera y el techo de madera sobre paredes de piedra"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'La casa', html: 'Casa de piedra · comedor y terraza' },
+					{ label: 'Horario', html: 'Ma–D desde las 12:30 · cierra lunes' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece la Taberna Xan de Patricio" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una taberna<br /><em>de piedra y madera.</em>"
+				paragraphs={[
+					'La Taberna Xan de Patricio está en Pob. Capilla, 13, en el 36528 Quintas (Agolada, Pontevedra). Es una casa de piedra con las ventanas y la puerta de madera, y el nombre escrito en las iniciales de la fachada. Google la clasifica como taberna y bar.',
+					'Dentro, la barra es de madera bajo un techo de vigas, con las paredes de piedra a la vista y las botellas alineadas en las estanterías. Fuera, junto a la casa, hay una terraza con mesas y un barril.',
+					'Cierra los lunes. El martes abre de 18:30 a 23:00 y de miércoles a domingo, de 12:30 a 23:00. Es el horario que publica su ficha de Google y puede cambiar, así que conviene confirmarlo por teléfono.',
+					'Sus reseñas hablan de «buen ambiente», «buen trato», «comida rica» y «precios asequibles», y repiten las ganas de volver. En las fotos del perfil aparecen una tabla de tomate con queso fresco y anchoas, una tortilla para compartir, la barra, el comedor y la terraza.',
+					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. La ficha marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados.`,
+				]}
+				note="La ficha de Google no publica carta ni precios: los platos de esta página son los que aparecen en sus fotos y los que citan las reseñas. La oferta cambia, así que conviene preguntar en la barra."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Raciones<br /><em>para compartir.</em>"
+				description="La ficha de Google no publica carta. Esto es lo que aparece en las fotos del local y lo que destacan sus reseñas; la oferta cambia cada día."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="No hay precios publicados en la ficha de Google. Se consultan en la barra o llamando al 646 29 37 19."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra,<br /><em>la mesa y la terraza.</em>"
+				description="Estas fotografías proceden del perfil de la Taberna Xan de Patricio en Google Maps: la barra, la fachada de piedra, el tomate con queso y anchoas, la tortilla, el comedor y la terraza."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Pob. Capilla, 13,<br /><em>en Quintas.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city} · ${BUSINESS.municipality}`,
+					'Pontevedra · Galicia',
+				]}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: cierra los lunes; el martes, de 18:30 a 23:00, y de miércoles a domingo, de 12:30 a 23:00. Puede cambiar, así que conviene llamar antes."
+				mapTitle="Mapa de la Taberna Xan de Patricio en Pob. Capilla, 13, Quintas (Agolada)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Taberna Xan de Patricio · Agolada"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 646 29 37 19. La ficha de Google marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados."
+			/>
+
+			<LocalFaq items={[...FAQ]} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}, ${BUSINESS.municipality}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Xan de Patricio"
+		/>
+	</body>
+</html>

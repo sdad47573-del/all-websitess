@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-el-limonero-apaisada-01.jpg';
+import arroz from '../assets/fotos/restaurante-el-limonero-apaisada-02.jpg';
+import paella from '../assets/fotos/restaurante-el-limonero-cuadrada-03.jpg';
+import noche from '../assets/fotos/restaurante-el-limonero-apaisada-04.jpg';
+import fideua from '../assets/fotos/restaurante-el-limonero-vertical-05.jpg';
+import piscina from '../assets/fotos/restaurante-el-limonero-apaisada-06.jpg';
+import desayuno from '../assets/fotos/restaurante-el-limonero-apaisada-07.jpg';
+import terrazaPiscina from '../assets/fotos/restaurante-el-limonero-apaisada-08.jpg';
+import bogavante from '../assets/fotos/restaurante-el-limonero-apaisada-09.jpg';
+import brunch from '../assets/fotos/restaurante-el-limonero-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante El Limonero, café-bar y restaurante en Carrer les Argelagues, 15 (Sant Josep de sa Talaia, Ibiza). Cocina mediterránea, arroces, marisco y desayunos junto a la piscina. Tel. 971 30 04 66.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de El Limonero con el toldo «Café · Bar El Limonero Restaurante» y limones dibujados, con mesas en la terraza',
+	},
+	{
+		src: noche,
+		alt: 'Terraza de El Limonero de noche, con sombrillas blancas, limoneros en maceta y el rótulo iluminado',
+	},
+	{
+		src: piscina,
+		alt: 'Piscina del complejo con sombrillas blancas, tumbonas y palmeras alrededor',
+	},
+	{
+		src: terrazaPiscina,
+		alt: 'Terraza de El Limonero junto a la piscina, con mesas y sombrillas blancas sobre suelo de baldosa',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco con mejillones, langostinos y gajos de limón servida en la paellera',
+	},
+	{
+		src: arroz,
+		alt: 'Arroz de marisco con langostinos, mejillones y almejas en una sartén',
+	},
+	{
+		src: fideua,
+		alt: 'Fideuá con langostinos y mejillones junto a la piscina, con una copa de sangría al lado',
+	},
+	{
+		src: bogavante,
+		alt: 'Bogavante con patatas, huevos fritos y pimiento en una sartén',
+	},
+	{
+		src: desayuno,
+		alt: 'Desayuno completo con huevos fritos, bacon, salchicha, alubias, hash brown, tostadas, tortitas y café',
+	},
+	{
+		src: brunch,
+		alt: 'Bagel con aguacate y salmón, crepes y huevos con salmón ahumado en la terraza',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-limonero`,
+	name: BUSINESS.name,
+	alternateName: ['El Limonero', 'Café Bar El Limonero', 'El Limonero Ibiza', 'El Limonero Sant Josep'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 971 30 04 66',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Española'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sant Josep de sa Talaia' },
+		{ '@type': 'AdministrativeArea', name: 'Ibiza' },
+		{ '@type': 'AdministrativeArea', name: 'Islas Baleares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'El Limonero · Café, bar y restaurante con piscina en Ibiza';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#5d6b3a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Public+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Limonero Ibiza, restaurante El Limonero, café bar Sant Josep de sa Talaia, comer junto a la piscina Ibiza, paella Ibiza, desayunos Ibiza, Carrer les Argelagues"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="El Limonero · Café, bar y restaurante con piscina en Ibiza"
+			ogDescription="Cocina mediterránea, arroces de marisco, bogavante y desayunos en la terraza junto a la piscina. Carrer les Argelagues, 15 (Ibiza). Tel. 971 30 04 66."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de El Limonero con sombrillas blancas junto a la piscina"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#5d6b3a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-IB"
+			postalCode={BUSINESS.postalCode}
+			phone="+34971300466"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Limonero"
+			subtitle="Café · bar · restaurante · Ibiza"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer les Argelagues, 15 · Sant Josep de sa Talaia"
+				title="Café, bar y mesa<br /><em>junto a la piscina.</em>"
+				lede={`El Limonero es un café-bar y restaurante en Carrer les Argelagues, 15, en Sant Josep de sa Talaia (Ibiza), dentro de un complejo con piscina. Toldo blanco, limones dibujados en el rótulo y una terraza con sombrillas donde se sirven desayunos completos, tortitas, crepes y bagels, además de paellas, arroces de marisco, fideuá y bogavante. Categorías de Google: restaurante, mediterráneo, cocina española, hotel y pista de tenis. La ficha no publica horario: consulta Google Maps. Teléfono: ${BUSINESS.phoneDisplay}.`}
+				image={fachada}
+				imageAlt="Fachada de El Limonero con el toldo «Café · Bar El Limonero Restaurante» y limones dibujados, con mesas en la terraza"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Cocina', html: 'Mediterránea · arroces y desayunos' },
+					{ label: 'Horario', html: 'No publicado en Google · consultar la ficha' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante El Limonero" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un limonero<br /><em>junto al agua.</em>"
+				paragraphs={[
+					'El Limonero está en Carrer les Argelagues, 15, en Sant Josep de sa Talaia (Ibiza), en un complejo con piscina, apartamentos y pista de tenis, según las categorías de su ficha de Google. El restaurante ocupa la planta baja, con un toldo blanco que anuncia «Café · Bar El Limonero Restaurante» y limones dibujados en los extremos.',
+					'La terraza se reparte entre la acera y la zona de la piscina, con sombrillas blancas, mesas de madera y sillas de mimbre. Al anochecer se encienden las luces y los limoneros en maceta marcan el camino hacia el comedor.',
+					'La cocina es mediterránea y española: en las fotos del perfil aparecen paellas y arroces de marisco con mejillones, langostinos y almejas, fideuá, bogavante con patatas y huevos, sangría, y desayunos completos con huevos, bacon, salchicha, alubias y tostadas, además de tortitas, crepes, bagels y huevos con salmón.',
+					'Sus reseñas destacan la comida casera, los precios y el trato: «comida casera, precios asequibles y buen trato por parte del personal» y «nos atendieron con muchísima calidez y nos hicieron sentir como en casa», además de la tarta de queso. Google le da 4,4 sobre 5 con 351 reseñas.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[2]}»`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Desayunos, arroces<br /><em>y marisco.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que aparece en las fotos del perfil y lo que citan sus reseñas."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados. Llama al 971 30 04 66 para reservar mesa o preguntar por los arroces y el marisco del día."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La piscina,<br /><em>la mesa y el limonero.</em>"
+				description="Estas fotografías proceden del perfil de Restaurante El Limonero en Google Maps: la fachada con el toldo, la terraza de noche, la piscina, la paella de marisco, el arroz, la fideuá, el bogavante, el desayuno completo y el brunch."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Te esperamos<br /><em>en El Limonero.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario (no publicado en Google)"
+				hoursNote="La ficha de Google de El Limonero no publica horario: no inventamos uno. Consulta el horario actualizado en su ficha de Google Maps antes de ir, sobre todo en temporada baja."
+				mapTitle="Mapa de Restaurante El Limonero en Carrer les Argelagues, Sant Josep de sa Talaia (Ibiza)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Limonero · Sant Josep de sa Talaia"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 971 30 04 66. La ficha de Google marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a El Limonero"
+		/>
+	</body>
+</html>
