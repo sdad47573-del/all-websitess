@@ -1,0 +1,325 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/esta-no-papo-cuadrada-01.jpg';
+import ameijoas from '../assets/fotos/esta-no-papo-vertical-02.jpg';
+import arrozMarisco from '../assets/fotos/esta-no-papo-panoramica-03.jpg';
+import bife from '../assets/fotos/esta-no-papo-apaisada-04.jpg';
+import dourada from '../assets/fotos/esta-no-papo-apaisada-05.jpg';
+import sardinhas from '../assets/fotos/esta-no-papo-vertical-06.jpg';
+import gambas from '../assets/fotos/esta-no-papo-apaisada-07.jpg';
+import polvo from '../assets/fotos/esta-no-papo-vertical-08.jpg';
+import arrozCamarao from '../assets/fotos/esta-no-papo-vista-9-09.jpg';
+import saladaPolvo from '../assets/fotos/esta-no-papo-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Está No Papo · Tasca de cozinha portuguesa em Alfama, Lisboa';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: ameijoas,
+		alt: 'Amêijoas abertas em azeite, alho e coentros num prato de borda azul',
+	},
+	{
+		src: arrozMarisco,
+		alt: 'Arroz de marisco com camarões, amêijoas e mexilhão num prato de barro',
+	},
+	{
+		src: bife,
+		alt: 'Bife à casa com ovo estrelado, batata frita, arroz e salada numa mesa de toalha de riscas',
+	},
+	{
+		src: dourada,
+		alt: 'Dourada grelhada com batata assada, cenoura e brócolos numa travessa de inox',
+	},
+	{
+		src: sardinhas,
+		alt: 'Sardinhas assadas com pimentos, tomate e batata a murro numa travessa de inox',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas ao alho numa frigideira de ferro, ao lado de uma sopa de legumes',
+	},
+	{
+		src: polvo,
+		alt: 'Polvo à lagareiro com batata a murro, brócolos e cenoura num prato de barro',
+	},
+	{
+		src: arrozCamarao,
+		alt: 'Arroz de camarão com coentros e limão num prato de barro',
+	},
+	{
+		src: saladaPolvo,
+		alt: 'Salada de polvo com tomate, cebola e coentros numa tigela de barro',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#esta-no-papo`,
+	name: BUSINESS.name,
+	alternateName: ['Está No Papo Lisboa', 'Esta No Papo', 'Restaurante Está No Papo'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 934 111 869',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cozinha portuguesa', 'Cozinha tradicional portuguesa', 'Peixe e marisco'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '12:30',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '12:30',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Anel de indução magnética de assistência',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#24467f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Caveat:wght@500;600&family=Public+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Está No Papo, Esta No Papo Lisboa, Rua de São Miguel 25, restaurante Alfama, tasca Alfama, comida portuguesa Lisboa, arroz de marisco Alfama, peixe grelhado Lisboa, comer em Alfama"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Tasca de cozinha portuguesa na Rua de São Miguel, 25, em Alfama. Peixe grelhado, arrozes de marisco e carne na brasa, todos os dias a partir das 12:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada cor-de-rosa da Está No Papo na Rua de São Miguel, em Alfama, com a ardósia do menu e a porta verde"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#24467f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Está No Papo"
+			subtitle="Tasca de Alfama · Lisboa"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Rua de São Miguel, 25 · Alfama, Lisboa"
+				title="Comida feita <br /><em>com coração.</em>"
+				lede="A Está No Papo é uma tasca de Alfama: peixe grelhado, arrozes de marisco e carne na brasa, servidos em mesas de toalha de flores, à porta da fachada cor-de-rosa. Tem 4,4 sobre 5 no Google com 492 críticas."
+				image={fachada}
+				imageAlt="Fachada cor-de-rosa da Está No Papo na Rua de São Miguel, com a ardósia do menu, a porta verde e duas mesas na rua"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,4</b> no Google · 492 críticas' },
+					{ label: 'Horário', html: '<b>12:30–23:30</b> todos os dias' },
+					{ label: 'Na brasa', html: '<b>Peixe</b>, arroz de marisco e carnes' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+				tag="Come in · we're open"
+			/>
+
+			<LocalChips label="O que oferece a Está No Papo" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma tasca cor-de-rosa <br /><em>em Alfama.</em>"
+				paragraphs={[
+					'A Está No Papo ocupa um rés-do-chão na Rua de São Miguel, 25, no coração de Alfama. A parede é cor-de-rosa, a porta é verde e, de cada lado, duas listas dizem o que há: peixe grelhado, arrozes de marisco e carne na brasa.',
+					'Lá dentro cabem poucas mesas, com toalhas de flores e pratos de borda azul. Na porta, alguém escreveu a giz: «food made with heart & service with smile» — comida feita com coração, serviço com sorriso. É a melhor apresentação da casa e não precisamos de inventar outra.',
+					'A Google classifica o espaço como restaurante de cozinha tradicional portuguesa. Tem 4,4 sobre 5 com 492 críticas, e quem lá come fala dos pratos, do preço e do atendimento: «pratos de muita qualidade, muito bons profissionais, o espaço simpático».',
+					'Há também entrega em casa: uma das críticas garante que «tanto no restaurante como na entrega em casa, a comida é sempre impecável». Esta página reúne os pratos que a casa escreve à porta e não publica preços que ela própria não divulga.',
+				]}
+				note="«Food made with heart & service with smile», lê-se na porta. É o melhor resumo que encontrámos."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A mesa"
+				title="A ardósia <br /><em>da rua.</em>"
+				description="As listas à porta resumem a cozinha da casa: peixe e marisco grelhados, arrozes cozinhados no tacho e carne na brasa. É por aí que se escolhe, sem carta de computador pelo meio."
+				cta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="As ardósias da casa não têm preços e a ficha de Google também não os publica. As críticas falam de «preço acessível»; confirma o valor do dia ao telefone ou à porta."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="O que sai <br /><em>da cozinha.</em>"
+				description="Nove fotografias do perfil da casa no Google Maps: o peixe na brasa, os arrozes de marisco e as mesas de toalha de flores da Está No Papo."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Uma mesa <br /><em>em Alfama.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="É o horário publicado na ficha de Google: todos os dias das 12:30 às 23:30, e ao domingo até às 23:00. Convém confirmá-lo antes de subir a rua."
+				mapTitle="Mapa da Está No Papo na Rua de São Miguel, 25, em Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Está No Papo · Rua de São Miguel"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Críticas no Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Não há reservas em linha publicadas: a casa recebe por ordem de chegada e a sala é pequena. Para grupos, liga antes. A ficha indica que não há estacionamento acessível nem anel de indução magnética, e não confirma lugares para pessoas em cadeiras de rodas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Como chegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário, carta e preços antes da visita."
+			ctaLabel="Ligar à Está No Papo"
+			navAriaLabel="Ligações da Está No Papo"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
