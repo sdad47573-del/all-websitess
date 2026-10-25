@@ -1,0 +1,361 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import espetadas from '../assets/fotos/restaurante-das-marias-apaisada-02.jpg';
+import carneGrelhada from '../assets/fotos/restaurante-das-marias-apaisada-03.jpg';
+import sopa from '../assets/fotos/restaurante-das-marias-apaisada-07.jpg';
+import peixe from '../assets/fotos/restaurante-das-marias-apaisada-09.jpg';
+import sala from '../assets/fotos/restaurante-das-marias-vertical-01.jpg';
+import chips from '../assets/fotos/restaurante-das-marias-vertical-04.jpg';
+import carta from '../assets/fotos/restaurante-das-marias-vertical-08.jpg';
+import sobremesas from '../assets/fotos/restaurante-das-marias-vista-5-05.jpg';
+import edificio from '../assets/fotos/restaurante-das-marias-vista-6-06.jpg';
+import carneBatata from '../assets/fotos/restaurante-das-marias-vista-10-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Das Marias · Comida portuguesa perto do aeroporto, Lisboa';
+const description =
+	'Restaurante Das Marias, na Rua Cidade de Tete, 31, em Lisboa, perto do aeroporto. Prato do dia, grelhados, peixe e vegetariano, todos os dias ao almoço.';
+
+const galeria = [
+	{
+		src: peixe,
+		alt: 'Peixe grelhado com brócolos, batata a murro e limão num prato branco, sobre uma mesa posta',
+	},
+	{
+		src: carta,
+		alt: 'Carta verde do Restaurante Das Marias com o prato do dia, os grelhados, o peixe e os pratos vegetarianos',
+	},
+	{
+		src: sala,
+		alt: 'Sala do Das Marias com mesas de tampo escuro, cadeiras verdes, chão de mosaico e vitrine ao fundo',
+	},
+	{
+		src: carneGrelhada,
+		alt: 'Carne grelhada com batata frita, salada, limão e chouriço num prato de metal',
+	},
+	{
+		src: sopa,
+		alt: 'Tigela de sopa verde servida com azeitonas e um copo de vinho branco, sobre toalha de vime',
+	},
+	{
+		src: carneBatata,
+		alt: 'Carne de porco com batata e azeitonas pretas num prato branco, com coentros por cima',
+	},
+	{
+		src: chips,
+		alt: 'Travessa de metal com batata frita às rodelas e cebola caramelizada, com azeitonas e vinho ao lado',
+	},
+	{
+		src: sobremesas,
+		alt: 'Pudim com caramelo num prato e uma mousse de chocolate num copo de plástico',
+	},
+	{
+		src: edificio,
+		alt: 'Edifício branco e verde onde fica o Restaurante Das Marias, com o letreiro na fachada',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta do Restaurante Das Marias',
+	inLanguage: 'pt-PT',
+	url: `${BUSINESS.siteUrl}/#carta`,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#das-marias`,
+	name: 'Restaurante Das Marias',
+	alternateName: ['Das Marias', 'Restaurante Das Marias Lisboa', 'Das Marias Encarnação'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 938 073 520',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Cozinha portuguesa'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '09:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '18:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday', 'Sunday'],
+			opens: '09:00',
+			closes: '15:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada acessível a pessoas em cadeiras de rodas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares para pessoas em cadeiras de rodas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#143b26" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name="Restaurante Das Marias"
+			description={description}
+			keywords="Restaurante Das Marias, Das Marias Lisboa, restaurante perto do aeroporto de Lisboa, comida portuguesa Encarnação, prato do dia Lisboa, grelhados Lisboa, Rua Cidade de Tete"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida tradicional portuguesa na Rua Cidade de Tete, 31, perto do aeroporto. Prato do dia por 9 €, grelhados, peixe e vegetariano."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Espetadas do Restaurante Das Marias com arroz e batata frita"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author="Restaurante Das Marias"
+			themeColor="#143b26"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[espetadas]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Das Marias"
+			subtitle="Comida portuguesa · Lisboa"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Rua Cidade de Tete, 31 · Encarnação, Lisboa"
+				title="Comida de casa, <br /><em>perto do aeroporto.</em>"
+				lede="O Das Marias está na Rua Cidade de Tete, 31, na Encarnação, a poucos minutos do aeroporto. Comida tradicional portuguesa: prato do dia com sopa, bebida, sobremesa e café por 9 €, grelhados, peixe e pratos vegetarianos. Tem 4,5 sobre 5 no Google com 236 críticas."
+				image={espetadas}
+				imageAlt="Espetadas de carne na grelha com batata frita e arroz, servidas em travessa de metal"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> no Google · 236 críticas' },
+					{ label: 'Horário', html: '<b>09:00–15:00</b> · jantar seg–qui' },
+					{ label: 'Menu', html: '<b>9 €</b> com sopa, prato, bebida, sobremesa e café' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o Das Marias" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma tasca de bairro <br /><em>à saída do aeroporto.</em>"
+				paragraphs={[
+					'O Das Marias fica na Rua Cidade de Tete, 31, na Encarnação, num edifício branco com faixas verdes e o letreiro do restaurante na esquina. É a poucos minutos do Aeroporto Humberto Delgado, e uma das críticas nota isso mesmo: «o Restaurante é perto do aeroporto, comida deliciosa, ótimo atendimento».',
+					'Lá dentro, a sala é ampla e simples: mesas de tampo escuro, cadeiras verdes, chão de mosaico e uma vitrine de pastelaria junto ao balcão. As mesas estão postas com toalhas de vime, azeitonas e pão, como numa tasca de bairro.',
+					'A cozinha é portuguesa, como a casa se descreve na ficha de Google: «comida tradicional portuguesa». A carta verde que está nas mesas tem o prato do dia com sopa, prato principal, bebida, sobremesa e café, grelhados de vaca e frango, peixe grelhado e pratos vegetarianos e veganos.',
+					'Pelos pratos que se vêem nas fotografias e nas críticas passam as espetadas com arroz e batata, a carne de porco à alentejana, o arroz de tomate com peixe espada, o peixe grelhado com legumes e as sobremesas da casa, do pudim à mousse de chocolate.',
+				]}
+				note="4,5 sobre 5 com 236 críticas no Google. Uma delas, sobre o menu: «Preço muito acessível (menu sopa + prato + bebida + sobremesa + café 9eur)»."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A carta"
+				title="O prato do dia <br /><em>e a grelha.</em>"
+				description="A carta que a casa tem nas mesas: prato do dia com tudo incluído, grelhados ao momento, peixe, omelete de cogumelos e hambúrguer vegano."
+				cta={{ label: `Ligar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Preços copiados da carta da casa. O prato do dia custa 9 euros (10 no dia de peixe) e inclui sopa, prato principal, bebida, sobremesa e café. Os pratos que só aparecem nas fotografias e nas críticas — espetadas, carne à alentejana, arroz de tomate com peixe espada e peixe grelhado com legumes — estão sem preço. Confirma a carta no restaurante."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil do Das Marias no Google Maps: o peixe grelhado, a carta verde, a sala, a carne na grelha, a sopa, as espetadas, as sobremesas e o edifício."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="À mesa, <br /><em>na Encarnação.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias das 09:00 às 15:00; de segunda a quinta também abre ao jantar, das 18:00 às 21:00. À sexta, sábado e domingo só serve almoço. Convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Restaurante Das Marias na Rua Cidade de Tete, 31, em Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Das Marias · Rua Cidade de Tete"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Críticas no Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="A casa não tem página de reservas online: o contacto publicado na ficha é o telefone. A ficha assinala entrada, lugares e estacionamento acessíveis a pessoas em cadeiras de rodas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Restaurante Das Marias"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias do perfil do estabelecimento em Google Maps. Carta e preços da carta da casa; confirma horário e valores antes da visita."
+			ctaLabel="Ligar ao Das Marias"
+			navAriaLabel="Ligações do Das Marias"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

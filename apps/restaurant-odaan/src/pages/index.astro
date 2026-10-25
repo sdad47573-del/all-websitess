@@ -1,0 +1,346 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mesaGrupo from '../assets/fotos/restaurant-odaan-apaisada-01.jpg';
+import grupoThali from '../assets/fotos/restaurant-odaan-apaisada-02.jpg';
+import cartaz from '../assets/fotos/restaurant-odaan-apaisada-05.jpg';
+import thaliCaril from '../assets/fotos/restaurant-odaan-apaisada-06.jpg';
+import naanCaril from '../assets/fotos/restaurant-odaan-apaisada-09.jpg';
+import momo from '../assets/fotos/restaurant-odaan-vertical-03.jpg';
+import thaliCarne from '../assets/fotos/restaurant-odaan-vertical-04.jpg';
+import panipuri from '../assets/fotos/restaurant-odaan-vertical-07.jpg';
+import thaliFrango from '../assets/fotos/restaurant-odaan-vertical-08.jpg';
+import naan from '../assets/fotos/restaurant-odaan-vista-10-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'ODAAN · Nepalês e indiano na Mouraria, Lisboa';
+const description =
+	'Restaurant ODAAN, cozinha nepalesa e indiana no Beco dos Cavaleiros, 7, na Mouraria, Lisboa. Momo, thali, panipuri e caris, de sexta a terça, das 11:00 às 23:00.';
+
+const galeria = [
+	{
+		src: mesaGrupo,
+		alt: 'Sala do ODAAN com uma mesa comprida de toalha estampada, vários clientes sentados e canecas de cerveja',
+	},
+	{
+		src: momo,
+		alt: 'Momo ao vapor dispostos em círculo num prato, com uma taça de jhol ao centro e molho de malagueta ao lado',
+	},
+	{
+		src: thaliCarne,
+		alt: 'Thali de metal com arroz basmati, caril de carne, dal, legumes, espinafres, papad e chutney',
+	},
+	{
+		src: grupoThali,
+		alt: 'Clientes a partilhar vários thali e tigelas de metal numa mesa, com uma parede de bambu ao fundo',
+	},
+	{
+		src: panipuri,
+		alt: 'Panipuri em prato de cerâmica azul e branca, com uma taça de água de tamarindo ao centro',
+	},
+	{
+		src: naanCaril,
+		alt: 'Cesta de naan de alho, uma tigela de caril de frango e arroz frito e basmati numa mesa do restaurante',
+	},
+	{
+		src: thaliFrango,
+		alt: 'Thali servido em prato de folha verde, com arroz, frango grelhado, legumes e molho',
+	},
+	{
+		src: thaliCaril,
+		alt: 'Thali com dal, arroz basmati, legumes, espinafres e carne, ao lado de uma tigela de butter chicken',
+	},
+	{
+		src: naan,
+		alt: 'Naan recheado de queijo cortado em triângulos numa cesta de vime forrada com papel',
+	},
+	{
+		src: cartaz,
+		alt: 'Cartaz da casa com a frase «Indian & Nepalese Food» e uma montagem de fotografias de thali e momo',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Pratos do ODAAN',
+	inLanguage: 'pt-PT',
+	url: `${BUSINESS.siteUrl}/#carta`,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#odaan`,
+	name: 'Restaurant ODAAN',
+	alternateName: [
+		'ODAAN',
+		'ODAAN Nepalese & Indian',
+		'Restaurant Odaan Lisbon',
+		'Odaan Nepalese Indian',
+	],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.tripadvisor],
+	telephone: '+351 920 102 037',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Cozinha nepalesa', 'Cozinha indiana'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#142a1c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Jost:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name="Restaurant ODAAN"
+			description={description}
+			keywords="ODAAN, Restaurant ODAAN, restaurante nepalês Lisboa, comida indiana Mouraria, momo Lisboa, thali nepalês, panipuri, Beco dos Cavaleiros, restaurante perto do Martim Moniz"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha nepalesa e indiana no Beco dos Cavaleiros, 7, loja 11, na Mouraria. Momo, thali, panipuri e caris, de sexta a terça, das 11:00 às 23:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Thali do Restaurant ODAAN com arroz, caril, dal e legumes"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author="Restaurant ODAAN"
+			themeColor="#142a1c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[thaliCaril]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="ODAAN"
+			subtitle="Nepalês · Mouraria"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Beco dos Cavaleiros, 7 · Mouraria, Lisboa"
+				title="Momo, thali e caris <br /><em>na Mouraria.</em>"
+				lede="O ODAAN está no Beco dos Cavaleiros, 7, loja 11, uma travessa da Rua dos Cavaleiros, na Mouraria. Cozinha nepalesa e indiana: momo, thali, panipuri, butter chicken e pão do tandoor, de sexta-feira a terça-feira, das 11:00 às 23:00. Tem 4,8 sobre 5 no Google com 2.917 críticas."
+				image={thaliCaril}
+				imageAlt="Thali do ODAAN com dal, arroz basmati, legumes, espinafres e carne, ao lado de uma tigela de butter chicken"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> no Google · 2.917 críticas' },
+					{ label: 'Horário', html: '<b>11:00–23:00</b> · fecha quarta e quinta' },
+					{ label: 'Especialidade', html: '<b>Momo</b> e thali nepaleses' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o ODAAN" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Cozinha do Nepal <br /><em>num beco da Mouraria.</em>"
+				paragraphs={[
+					'O ODAAN fica no Beco dos Cavaleiros, 7, loja 11, uma travessa estreita da Rua dos Cavaleiros, na Mouraria, entre o Martim Moniz e o Intendente. É uma casa de bairro, sem aparato, onde se entra para comer bem e sair com a conta leve.',
+					'As fotografias do perfil mostram a sala de paredes amarelas com roda-pé escuro, uma parede forrada de bambu, toalhas de mesa estampadas e tabuleiros de latão. Ao fundo, mesas compridas onde se juntam grupos a partilhar travessas e canecas de cerveja.',
+					'A cozinha é nepalesa e indiana. Nas mesas vê-se momo ao vapor com o caldo à parte, thali com arroz basmati, dal, legumes e caril, panipuri, butter chicken, naan de alho e de queijo e arroz frito. É a comida de que falam as críticas: «um ótimo restaurante de cozinha nepalesa», «comida deliciosa, preços ótimos e atendimento perfeito».',
+					'A casa não publica carta com preços em linha, por isso esta página mostra os pratos sem valores. O Tripadvisor coloca-a na faixa de preço mais baixa e assinala opções vegetarianas, veganas e sem glúten.',
+				]}
+				note="4,8 sobre 5 com 2.917 críticas no Google e 4,9 sobre 5 no Tripadvisor. Uma das críticas: «Recheio muito bom, molho muito bom mas a massa dos momes não era incrivel»."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'ODAAN no Tripadvisor', href: MAPS.tripadvisor, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A carta"
+				title="O que se come <br /><em>no ODAAN.</em>"
+				description="A casa não publica a carta em linha. Estes são os pratos que aparecem nas fotografias do perfil de Google Maps e que as críticas citam: momo, thali, panipuri, butter chicken, naan e arrozes."
+				cta={{ label: `Ligar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sem preços: a casa não os publica em linha e esta página não inventa valores. O Tripadvisor indica a faixa de preço € e as críticas falam de «preços ótimos». Confirma pratos e valores no restaurante."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Dez fotografias <br /><em>da casa.</em>"
+				description="As dez fotografias do perfil do ODAAN no Google Maps: a sala com as mesas compridas, o momo com jhol, os thali, o panipuri, o butter chicken, o naan e o cartaz da casa."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="À mesa, <br /><em>na Mouraria.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: de sexta-feira a terça-feira, das 11:00 às 23:00. Fecha à quarta e à quinta. Convém confirmá-lo antes de ir, sobretudo em feriados."
+				mapTitle="Mapa do Restaurant ODAAN no Beco dos Cavaleiros, 7, em Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="ODAAN · Beco dos Cavaleiros"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'ODAAN no Tripadvisor', href: MAPS.tripadvisor, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="A casa não tem página de reservas online: o contacto publicado na ficha é o telefone. Fica numa travessa pedonal da Mouraria, a poucos minutos a pé do Martim Moniz; a ficha indica que não tem entrada nem estacionamento acessíveis."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Restaurant ODAAN"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Tripadvisor ↗', href: MAPS.tripadvisor, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias do perfil do estabelecimento em Google Maps. A casa não publica carta com preços; confirma pratos, horário e valores antes da visita."
+			ctaLabel="Ligar ao ODAAN"
+			navAriaLabel="Ligações do ODAAN"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

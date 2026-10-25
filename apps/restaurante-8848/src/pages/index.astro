@@ -1,0 +1,332 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-8848-cuadrada-01.jpg';
+import esplanada from '../assets/fotos/restaurante-8848-vista-4-04.jpg';
+import bitoque from '../assets/fotos/restaurante-8848-apaisada-09.jpg';
+import massaOmelete from '../assets/fotos/restaurante-8848-apaisada-06.jpg';
+import bar from '../assets/fotos/restaurante-8848-vertical-07.jpg';
+import sala from '../assets/fotos/restaurante-8848-vertical-10.jpg';
+import ementa from '../assets/fotos/restaurante-8848-vertical-05.jpg';
+import panipuri from '../assets/fotos/restaurante-8848-cuadrada-03.jpg';
+import bolinhos from '../assets/fotos/restaurante-8848-vista-8-08.jpg';
+import donuts from '../assets/fotos/restaurante-8848-vertical-02.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = '8848 · Pasta, risotto e snacks em Benfica, Lisboa';
+const description =
+	'8848 Restaurante e Snack Bar, na Estrada de Benfica, 554B, em Lisboa. Pasta, risotto, bitoque, gyoza e panipuri, todos os dias das 11:00 às 23:30.';
+
+const galeria = [
+	{
+		src: bitoque,
+		alt: 'Bitoque com batata frita, salada e ovo a cavalo, e um prato de arroz, numa mesa de toalha azul',
+	},
+	{
+		src: esplanada,
+		alt: 'Entrada do 8848 com a ementa na vitrine, mesas e cadeiras cor de laranja na calçada e tapete verde',
+	},
+	{
+		src: sala,
+		alt: 'Sala do 8848 com mesas de toalha azul estampada, cadeiras laranja e a porta aberta para a rua',
+	},
+	{
+		src: bar,
+		alt: 'Balcão do bar do 8848 com garrafas, máquina de café e um televisor ligado ao fundo',
+	},
+	{
+		src: massaOmelete,
+		alt: 'Prato de esparguete e omelete numa mesa de toalha azul, com uma garrafa de Super Bock ao lado',
+	},
+	{
+		src: ementa,
+		alt: 'Ementa do 8848 na rua, com os preços da pasta, do risotto, do bitoque e do gyoza',
+	},
+	{
+		src: panipuri,
+		alt: 'Sete panipuri recheados de batata e cobertos de salsa e noodles crocantes, num prato branco',
+	},
+	{
+		src: bolinhos,
+		alt: 'Dois bolinhos fritos dourados num prato branco com molho, sobre uma toalha branca',
+	},
+	{
+		src: donuts,
+		alt: 'Donuts numa vitrine de pastelaria, com latas de bebida por baixo',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Ementa do 8848',
+	inLanguage: 'pt-PT',
+	url: `${BUSINESS.siteUrl}/#carta`,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#8848`,
+	name: '8848 Restaurante e Snack Bar',
+	alternateName: ['8848', '8848 Benfica', 'Restaurante 8848 Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 920 183 182',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Cozinha italiana', 'Cozinha nepalesa', 'Petiscos portugueses'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '23:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#102c1d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name="8848 Restaurante e Snack Bar"
+			description={description}
+			keywords="8848 restaurante, 8848 snack bar, Estrada de Benfica, restaurante Benfica Lisboa, pasta Benfica, risotto Lisboa, bitoque Benfica, gyoza Lisboa, comida nepalesa Benfica"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pasta, risotto, bitoque, gyoza e panipuri na Estrada de Benfica, 554B, em Lisboa. Todos os dias das 11:00 às 23:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada do 8848 Restaurante e Snack Bar na Estrada de Benfica, em Lisboa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author="8848 Restaurante e Snack Bar"
+			themeColor="#102c1d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="8848"
+			subtitle="Restaurante e snack bar"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Estrada de Benfica, 554B · Lisboa"
+				title="Pasta, risotto <br /><em>e bitoque.</em>"
+				lede="O 8848 é um restaurante e snack bar na Estrada de Benfica, 554B, em Benfica. Na ementa da rua: pasta e risotto italianos, bitoque português, gyoza nepaleses e panipuri. Abre todos os dias, das 11:00 às 23:30, e tem 4,8 sobre 5 no Google."
+				image={fachada}
+				imageAlt="Fachada do 8848 Restaurante e Snack Bar na Estrada de Benfica, com a ementa na vitrine e mesas laranja na rua"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> no Google · 24 críticas' },
+					{ label: 'Horário', html: '<b>11:00–23:30</b> todos os dias' },
+					{ label: 'Preços', html: '<b>Bitoque 5 €</b> · pasta desde 5,50 €' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o 8848" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma esplanada <br /><em>na Estrada de Benfica.</em>"
+				paragraphs={[
+					'O 8848 fica na Estrada de Benfica, 554B, em Benfica, com a porta aberta para a calçada. Lá fora há mesas e cadeiras cor de laranja sobre um tapete verde, ao lado da vitrine onde está exposta a ementa com os preços.',
+					'Dentro, a sala é simples: mesas de toalha azul estampada, cadeiras laranja, um tapete vermelho e, ao fundo, o balcão do bar com garrafas, máquina de café e um televisor ligado. É o género de snack bar de bairro onde se almoça depressa e se fica a conversar.',
+					'A cozinha junta três coisas: pasta e risotto italianos, o bitoque português com batata frita, arroz, salada e ovo a cavalo, e gyoza nepaleses ao vapor, dez por dose, além de panipuri e outros petiscos. O número do nome é o da altitude do Everest, e a fachada junta a bandeira de Itália à do Nepal.',
+					'As críticas do Google elogiam a comida nepalesa, o risotto e as massas, o atendimento e o preço. Uma delas diz: «Ótimo restaurante, comida Nepalesa muito boa, o dono é muito simpático».',
+				]}
+				note="4,8 sobre 5 com 24 críticas no Google. Os preços da ementa da rua vão dos 4 euros dos dez gyoza aos 6,50 euros da pasta e do risotto."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A carta"
+				title="Da pasta <br /><em>ao bitoque.</em>"
+				description="A ementa que a casa expõe na rua, com os preços em euros e IVA incluído: pasta, risotto, bitoque e gyoza, mais os petiscos que aparecem nas fotografias da fachada."
+				cta={{ label: `Ligar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Preços copiados da ementa exposta pela casa na Estrada de Benfica (em euros, IVA incluído). Os petiscos sem preço no quadro — mozzarella, panipuri e folhado de queijo — aparecem sem valor. Confirma a ementa no restaurante antes de contar com estes valores."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil do 8848 no Google Maps: a fachada com a esplanada, a sala, o bar, o bitoque, a pasta, a ementa da rua, o panipuri e a vitrine dos doces."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="À mesa, <br /><em>em Benfica.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias, das 11:00 às 23:30, sem dia de fecho. Convém confirmá-lo antes de ir, sobretudo em feriados."
+				mapTitle="Mapa do 8848 Restaurante e Snack Bar na Estrada de Benfica, 554B, em Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="8848 · Estrada de Benfica"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Críticas no Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="A casa não tem página de reservas online: o contacto publicado na ficha é o telefone. Tem mesas na calçada, à porta, e a ficha de Google não publica dados de acessibilidade."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="8848 Restaurante e Snack Bar"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias do perfil do estabelecimento em Google Maps. Carta e preços da ementa exposta pela casa; confirma horário e valores antes da visita."
+			ctaLabel="Ligar ao 8848"
+			navAriaLabel="Ligações do 8848"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
