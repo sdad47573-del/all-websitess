@@ -1,6 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Yak+%26+Yeti+(Lisbon)/@38.7148918,-9.1315854,17z/data=!3m1!4b1!4m6!3m5!1s0xd193389cb80abb3:0xe44f7441aecfc7e3!8m2!3d38.7148918!4d-9.1315854!16s%2Fg%2F11bxg9zv__?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurant+ODAAN+(Nepalese+%26+Indian+)/@38.7166648,-9.134534,17z/data=!3m1!4b1!4m6!3m5!1s0xd193358d8f45b45:0x100a3f4f1553a14e!8m2!3d38.7166648!4d-9.134534!16s%2Fg%2F11rqsy_hr_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/8848+Restaurante+e+Snack+Bar/@38.7508626,-9.1988931,17z/data=!3m1!4b1!4m6!3m5!1s0xd1ecda1b5a759cb:0x3f775d016dcf1f70!8m2!3d38.7508626!4d-9.1988931!16s%2Fg%2F11t608hy5t?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
