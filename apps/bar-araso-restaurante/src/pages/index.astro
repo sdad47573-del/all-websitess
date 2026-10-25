@@ -1,0 +1,316 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import barra from '../assets/fotos/bar-araso-restaurante-vertical-01.jpg';
+import exterior from '../assets/fotos/bar-araso-restaurante-apaisada-03.jpg';
+import carta from '../assets/fotos/bar-araso-restaurante-vertical-06.jpg';
+import espaguetis from '../assets/fotos/bar-araso-restaurante-apaisada-04.jpg';
+import crema from '../assets/fotos/bar-araso-restaurante-apaisada-09.jpg';
+import pollo from '../assets/fotos/bar-araso-restaurante-apaisada-10.jpg';
+import guiso from '../assets/fotos/bar-araso-restaurante-cuadrada-05.jpg';
+import churrasco from '../assets/fotos/bar-araso-restaurante-vertical-08.jpg';
+import postre from '../assets/fotos/bar-araso-restaurante-cuadrada-02.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Bar Araso Restaurante, en Erregeoiana Kalea 3 (Irun). Menú del día casero, platos combinados, bocadillos y pinchos. Cierra fines de semana. Tel. 943 58 06 69.';
+
+const title = 'Bar Araso Restaurante · Menú del día en Irun';
+
+const galeria = [
+	{
+		src: barra,
+		alt: 'Barra del Bar Araso con la cafetera, la vitrina de pintxos y las estanterías de botellas',
+	},
+	{
+		src: carta,
+		alt: 'Carta del Bar Araso Taberna con bocadillos, raciones, platos combinados, pintxos y ensaladas',
+	},
+	{
+		src: espaguetis,
+		alt: 'Espaguetis con gambas y ajo servidos en un plato del Bar Araso',
+	},
+	{
+		src: pollo,
+		alt: 'Muslo de pollo guisado con patatas fritas y pimientos del piquillo en el Bar Araso',
+	},
+	{
+		src: exterior,
+		alt: 'Fachada del Tanatorio Araso con la terraza del bar en la entrada',
+	},
+	{
+		src: crema,
+		alt: 'Crema de calabaza con pan tostado servida en el Bar Araso',
+	},
+	{
+		src: guiso,
+		alt: 'Carne guisada con puré de patata en un plato del Bar Araso',
+	},
+	{
+		src: churrasco,
+		alt: 'Churrasco de ternera con patatas y croquetas en el Bar Araso',
+	},
+	{
+		src: postre,
+		alt: 'Postre de helado de menta con nata y frutos rojos del Bar Araso',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#araso`,
+	name: BUSINESS.name,
+	alternateName: ['Araso', 'Bar Araso', 'Bar Araso Taberna', 'Bar Araso Irun'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 943 58 06 69',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Vasca', 'Española', 'Cocina casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Irun' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '17:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#26485c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bar Araso Restaurante, Bar Araso Taberna, bar Irun, menú del día Irun, comida casera Irun, platos combinados Irun, bocadillos Irun, Tanatorio Araso"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Bar Araso Restaurante · Menú del día en Irun"
+			ogDescription="Menú del día casero, platos combinados, bocadillos, raciones y pinchos en Erregeoiana Kalea 3 (Irun). Cierra fines de semana. Tel. 943 58 06 69."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Barra del Bar Araso Restaurante en Erregeoiana Kalea, 3, Irun"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#26485c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone="+34943580669"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.city}
+			preload={[barra]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="BAR ARASO RESTAURANTE"
+			subtitle="Erregeoiana · Irun"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Erregeoiana Kalea, 3 · Irun"
+				title="Comida casera,<br /><em>menú y barra.</em>"
+				lede={`Bar Araso Restaurante está en Erregeoiana Kalea, 3, en el 20305 Irun (Gipuzkoa), en el edificio del Tanatorio Araso. Abre a las 7:00 para el desayuno y sirve menú del día casero, platos combinados, bocadillos, raciones y pinchos hasta las 17:00. Cierra fines de semana. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={barra}
+				imageAlt="Barra del Bar Araso con la cafetera, la vitrina de pintxos y las estanterías de botellas"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Menú', html: 'Casero · raciones grandes' },
+					{ label: 'Horario', html: 'L–V de 7:00 a 17:00 · fin de semana cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Bar Araso Restaurante" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="El menú del día,<br /><em>sin prisa.</em>"
+				paragraphs={[
+					'Bar Araso Restaurante está en Erregeoiana Kalea, 3, en el 20305 Irun (Gipuzkoa), en el edificio del Tanatorio Araso. Google lo clasifica como restaurante y su descripción lo presenta con desayunos, variedad de pinchos, platos combinados, bocadillos y menú del día.',
+					'Abre de lunes a viernes, de 7:00 a 17:00, y cierra sábados y domingos. La jornada empieza con el desayuno y el café y sigue con la comida, con un menú casero que sus reseñas describen como «muy rico» y con «raciones grandes».',
+					'La carta que aparece en sus fotos pone precios a todo: platos combinados de lomo, pechuga, churrasco y cachopo entre 12,00 y 13,25 €, bocadillos entre 6,50 y 8,00 €, raciones como rabas, croquetas o bravas entre 6,00 y 8,00 €, pintxos entre 3,00 y 3,50 € y ensaladas de tomate y mixta entre 9,50 y 10,00 €.',
+					'En las fotos del perfil aparecen también los espaguetis con gambas, la crema de calabaza, el pollo guisado con patatas y pimientos, la carne guisada con puré, el churrasco con patatas y croquetas y un postre de helado con nata y frutos rojos. La tarta de queso queda citada en las reseñas.',
+					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. La ficha marca acceso para sillas de ruedas, aparcamiento adaptado y asientos adaptados.`,
+				]}
+				note="La ficha de Google no publica la carta: los platos y los precios de esta página son los que aparecen en la carta y en las fotos del propio establecimiento. El menú del día cambia cada jornada."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Menú, combinados<br /><em>y barra.</em>"
+				description="La ficha de Google no publica carta. Estos platos y precios son los de la carta que aparece en sus fotos, completados con lo que citan las reseñas y su descripción."
+				cta={{ label: `Preguntar el menú: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="Precios de la carta fotografiada en el propio bar. El menú del día no tiene precio publicado en la ficha de Google; se consulta llamando al 943 58 06 69."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra,<br /><em>la carta y los platos.</em>"
+				description="Estas fotografías proceden del perfil de Bar Araso Restaurante en Google Maps: la barra, la carta, el exterior con la terraza, los espaguetis, la crema de calabaza, el pollo, la carne guisada, el churrasco y el postre."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Erregeoiana Kalea, 3,<br /><em>en Irun.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Gipuzkoa · País Vasco',
+				]}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: de lunes a viernes, de 7:00 a 17:00, y cerrado sábados y domingos. Sigue la jornada laboral, así que puede cambiar en festivos; conviene llamar antes."
+				mapTitle="Mapa de Bar Araso Restaurante en Erregeoiana Kalea, 3, Irun"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bar Araso Restaurante · Irun"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 943 58 06 69. El bar está en el edificio del Tanatorio Araso, con terraza en la entrada; la ficha marca acceso para sillas de ruedas, aparcamiento adaptado y asientos adaptados."
+			/>
+
+			<LocalFaq items={[...FAQ]} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Araso"
+		/>
+	</body>
+</html>
