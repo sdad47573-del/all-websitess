@@ -1,0 +1,320 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import peixe from '../assets/fotos/tasca-do-beco-vertical-01.jpg';
+import prato from '../assets/fotos/tasca-do-beco-apaisada-02.jpg';
+import fachada from '../assets/fotos/tasca-do-beco-apaisada-04.jpg';
+import noite from '../assets/fotos/tasca-do-beco-vertical-03.jpg';
+import ardosia from '../assets/fotos/tasca-do-beco-vertical-05.jpg';
+
+import { BUFFET, BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'A Tasca do Béco · peixe na brasa em Arroios, Lisboa';
+const description =
+	'Tasca de bairro na Calçada de Sant\'Ana, 139, em Lisboa: peixe grelhado na brasa, prato do dia e opções veganas a preços de tasca. 4,7 no Google com 15 críticas.';
+
+const galeria = [
+	{
+		src: prato,
+		alt: 'Prato de dourada grelhada com batatas e brócolos numa mesa de toalha de papel, com cerveja e cesto de pão',
+	},
+	{
+		src: fachada,
+		alt: 'Porta verde da tasca na Calçada de Sant\'Ana, com o número 139 pintado por cima da entrada',
+	},
+	{
+		src: noite,
+		alt: 'Jarro de água, copo de vinho e cesto de pão sobre a mesa, com a calçada iluminada ao fundo',
+	},
+	{
+		src: ardosia,
+		alt: 'Ardósia manuscrita na porta com o prato do dia, os grelhados, os bitoques e a secção vegan com preços',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#tasca-do-beco`,
+	name: BUSINESS.name,
+	alternateName: ['A Tasca do Beco', 'Tasca do Béco Lisboa', 'Traditional restaurant'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	priceRange: '10–20 €',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cozinha portuguesa', 'Peixe grelhado', 'Tasca de bairro'],
+	acceptsReservations: 'False',
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+		author: { '@type': 'Person', name: review.author.split(',')[0] },
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A tasca', href: '#tasca' },
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A ardósia', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4034" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="A Tasca do Béco, A Tasca do Beco, Traditional restaurant Lisboa, tasca Arroios, peixe grelhado Lisboa, Calçada de Sant'Ana, comer barato Lisboa, tasca de bairro"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Peixe na brasa, prato do dia e opções veganas na Calçada de Sant'Ana, 139 · Arroios, Lisboa."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Prato de dourada grelhada com batatas e brócolos numa mesa da tasca"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f4034"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[peixe]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="A Tasca do Béco"
+			subtitle="Peixe na brasa · Arroios"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			cta={{ label: 'Como chegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Calçada de Sant'Ana, 139 · Arroios"
+				title="Peixe na brasa, <br /><em>sem cerimónia.</em>"
+				lede="Uma tasca de bairro na Calçada de Sant'Ana, em Lisboa. Grelhador aceso, prato do dia escrito à mão na porta e porções que não deixam ninguém com fome."
+				image={peixe}
+				imageAlt="Peixe grelhado inteiro com batatas e limão num prato branco, com salada de tomate ao lado"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions, external: true }}
+				secondaryCta={{ label: 'Ficha no Google Maps', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> no Google · 15 críticas' },
+					{ label: 'Peixe', html: '<b>12–14 €</b> grelhado na brasa' },
+					{ label: 'Pratos', html: '<b>10 €</b> carnes, bitoques e vegan' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+				tag="Prato do dia 10 €"
+			/>
+
+			<LocalChips label="O que se come em A Tasca do Béco" items={SERVICOS} />
+
+			<section class="buffet" id="tasca" aria-labelledby="tasca-title">
+				<div class="wrap">
+					<div class="buffet-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Como funciona</p>
+							<h2 id="tasca-title">Entrar, sentar, <br /><em>comer bem.</em></h2>
+						</div>
+						<p>
+							Não há carta impressa nem serviço de sala complicado: a ementa do dia está
+							escrita à mão na ardósia da porta, ao lado do número 139.
+						</p>
+					</div>
+					<div class="buffet-grid">
+						{
+							BUFFET.map((item) => (
+								<article class="buffet-card">
+									<span class="buffet-num" aria-hidden="true">{item.icon}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalAbout
+				label="A casa"
+				title="Uma porta verde <br /><em>na Calçada de Sant'Ana.</em>"
+				paragraphs={[
+					'A Tasca do Béco fica na Calçada de Sant\'Ana, 139, em Arroios. A fachada é de azulejo lavado, a porta é verde, gradeada, e por cima está pintado o número da casa. Lá dentro, a sala é pequena e as mesas estão cobertas com toalhas de papel.',
+					'É uma tasca de bairro no sentido antigo da palavra: quem entra é tratado pelo nome, a televisão passa o futebol e os reformados da zona ocupam as mesas ao almoço, como se estivessem em casa. As críticas no Google dizem-no em várias línguas.',
+					'A cozinha é portuguesa e simples. O grelhador é o centro da casa: dourada, robalo e salmão saem inteiros, com batata cozida e legumes. Há também carnes na brasa, bitoques, alheiras, sopa do dia e um prato do dia que muda consoante o que houver.',
+					'Na ficha de Google Maps o restaurante aparece com o nome genérico «Traditional restaurant». Na porta, o letreiro e a ardósia dizem outra coisa: A Tasca do Béco. É o mesmo sítio, com o mesmo grelhador.',
+				]}
+				note="Tem 4,7 sobre 5 com 15 críticas no Google. Uma delas diz: «Restaurante tradicional que serve a comida em fontes abundantes. Muito sabroso.»"
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A ardósia"
+				title="O que está <br /><em>escrito na porta.</em>"
+				description="Esta é a ementa copiada da ardósia que a casa pendura à entrada, fotografada a 8 de abril de 2026. O prato do dia muda todos os dias e os preços acompanham o mercado."
+				cta={{ label: 'Ver a ficha no Google', href: MAPS.place }}
+				groups={MENU}
+				note="Preços copiados da ardósia da porta; a casa não publica carta nem site. Nas carnes e nos pratos do dia a ardósia tem três colunas (meia dose, dose e dose dupla), de onde vem o intervalo de 9 € a 18 €. Confirma os valores no local."
+			/>
+
+			<section class="voices" aria-labelledby="voices-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Quem já comeu aqui</p>
+					<h2 id="voices-title">O que dizem <em>as críticas.</em></h2>
+					<div class="voice-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="voice">
+									<blockquote>{review.text}</blockquote>
+									<figcaption>{review.author} · {review.rating}/5</figcaption>
+								</figure>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Quatro fotografias <br /><em>da tasca.</em>"
+				description="As fotografias publicadas no perfil da casa em Google Maps: o peixe que sai do grelhador, a porta verde na calçada, a mesa ao fim da noite e a ardósia com os preços."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Subir a calçada <br /><em>até ao 139.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário da casa"
+				hoursNote="A ficha de Google não publica horário e a casa não tem site nem telefone públicos. Antes de subir a Calçada de Sant'Ana, abre a ficha no Google Maps e confirma se está aberta — é a única informação em tempo real que existe."
+				mapTitle="Mapa de A Tasca do Béco na Calçada de Sant'Ana, 139, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="A Tasca do Béco · Arroios"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha e críticas', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: 'Ver a ficha no Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="Não há reservas em linha nem telefone publicado: é chegar, entrar e esperar por uma mesa. Perto ficam o metro de Martim Moniz, o Miradouro do Torel e o Campo dos Mártires da Pátria, por isso a calçada também se sobe a pé."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Como chegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário, carta e preços antes da visita."
+			ctaLabel="Como chegar à tasca"
+			navAriaLabel="Ligações de A Tasca do Béco"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,0 +1,371 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-nu-bitoq-vertical-01.jpg';
+import panela from '../assets/fotos/restaurante-nu-bitoq-apaisada-07.jpg';
+import mesa from '../assets/fotos/restaurante-nu-bitoq-apaisada-06.jpg';
+import cocktails from '../assets/fotos/restaurante-nu-bitoq-apaisada-10.jpg';
+import picanha from '../assets/fotos/restaurante-nu-bitoq-cuadrada-03.jpg';
+import cerveja from '../assets/fotos/restaurante-nu-bitoq-cuadrada-04.jpg';
+import closeup from '../assets/fotos/restaurante-nu-bitoq-vertical-02.jpg';
+import portobello from '../assets/fotos/restaurante-nu-bitoq-vertical-05.jpg';
+import morango from '../assets/fotos/restaurante-nu-bitoq-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, PASSOS, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Nu Bitoq · bitoques em Amora, Seixal';
+const description =
+	'Restaurante de especialidade em bitoques em Amora, Seixal: treze versões em frigideira, entradas e cocktails. Praceta 5 de Outubro, 9. Reservas pelo 934 718 760.';
+
+const galeria = [
+	{
+		src: panela,
+		alt: 'Bitoque numa frigideira de inox com batata frita e ovo estrelado, numa mesa de esplanada',
+	},
+	{
+		src: closeup,
+		alt: 'Bitoque com presunto, ovo estrelado, batata frita e molho cremoso visto de perto',
+	},
+	{
+		src: morango,
+		alt: 'Cocktail de morango com hortelã e um cesto de pão ao lado, sobre a toalha',
+	},
+	{
+		src: mesa,
+		alt: 'Mesa posta com cesto de pão, dois cocktails verdes e um prato com pão barrado',
+	},
+	{
+		src: cerveja,
+		alt: 'Bitoque com batata frita, ovo e arroz numa frigideira, com uma cerveja ao lado',
+	},
+	{
+		src: picanha,
+		alt: 'Carne fatiada com ovo estrelado, batata em rodelas e molho verde na frigideira',
+	},
+	{
+		src: portobello,
+		alt: 'Cogumelo portobello com ovo e molho cremoso, acompanhado de batata-doce frita',
+	},
+	{
+		src: cocktails,
+		alt: 'Três cocktails em copos altos com lima e canudos, na esplanada à noite',
+	},
+];
+
+const dayNames = [
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday',
+	'Sunday',
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#nu-bitoq`,
+	name: BUSINESS.name,
+	alternateName: ['Nu Bitoq Amora', 'RESTAURANTE NU BITOQ', 'Nu Bitoque'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 934 718 760',
+	priceRange: '15–25 €',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Bitoques', 'Cozinha portuguesa', 'Cozinha de autor'],
+	acceptsReservations: BUSINESS.phoneHref,
+	areaServed: [
+		{ '@type': 'City', name: 'Amora' },
+		{ '@type': 'City', name: 'Seixal' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Setúbal' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: dayNames.slice(1),
+			opens: '12:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '19:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares para pessoas em cadeiras de rodas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#141311" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Nu Bitoq, Nu Bitoq Amora, restaurante Amora, bitoques Amora, bitoque Seixal, restaurante Seixal, bitoque de alcatra, comer em Amora, Praceta 5 de Outubro"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Treze bitoques em frigideira, entradas e cocktails na Praceta 5 de Outubro, 9 · Amora. Reservas pelo 934 718 760."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada do Nu Bitoq à noite, com o letreiro iluminado sobre a porta e plantas às portas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#141311"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-15"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Amora"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Nu Bitoq"
+			subtitle="Bitoques · Amora"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Praceta 5 de Outubro, 9 · Amora"
+				title="O bitoque <br /><em>é a especialidade.</em>"
+				lede="Um restaurante que só faz uma coisa — e faz treze versões dela. Bitoques servidos na frigideira, com ovo, batata e arroz, numa sala laranja em Amora, no Seixal."
+				image={fachada}
+				imageAlt="Fachada do Nu Bitoq à noite, com o letreiro NU BITOQ iluminado sobre a porta e duas plantas grandes"
+				primaryCta={{ label: `Reservar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> no Google · 371 críticas' },
+					{ label: 'Almoço', html: '<b>12:00–15:00</b> de terça a domingo' },
+					{ label: 'Jantar', html: '<b>19:00–23:00</b> de terça a sábado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que se come no Nu Bitoq" items={SERVICOS} />
+
+			<section class="passos" id="tasca" aria-labelledby="passos-title">
+				<div class="wrap">
+					<div class="passos-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Como funciona</p>
+							<h2 id="passos-title">Escolhe, prova, <br /><em>repara no molho.</em></h2>
+						</div>
+						<p>
+							A casa define-se como especialista em bitoques «diferenciados, únicos e
+							exclusivos». O que muda entre eles não é o pão nem o ovo: é o molho.
+						</p>
+					</div>
+					<div class="passos-grid">
+						{
+							PASSOS.map((item) => (
+								<article class="passo">
+									<span class="passo-num" aria-hidden="true">{item.icon}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalAbout
+				label="A casa"
+				title="Uma sala laranja <br /><em>em Amora.</em>"
+				paragraphs={[
+					'O Nu Bitoq fica na Praceta 5 de Outubro, 9, no Bairro dos Corticeiros, em Amora (Seixal). A fachada tem um letreiro luminoso em maiúsculas e, à noite, é o que se vê primeiro quando se chega à praça.',
+					'Lá dentro, as paredes são laranja, as mesas de madeira e há uma esplanada coberta. A sala é descontraída: cocktails coloridos, cestos de pão de vime, toalhas de papel e bitoques que chegam à mesa dentro da frigideira.',
+					'A especialidade está no nome. A carta tem treze bitoques, todos com ovo, batata e arroz, e todos diferentes no molho e no corte: alcatra, lombo, lombo de javali, salmão, atum, frango e bife de beringela. Passam pelo holandês, pelo caril, pelo teriyaki, pelo molho de francesinha e pelo piso de ervas.',
+					'Completa-se com entradas para partilhar — ovos mexidos, pica-pau, gambas — e com cocktails. As reservas fazem-se por telefone e a casa também entrega através do Uber Eats.',
+				]}
+				note="Tem 4,5 sobre 5 com 371 críticas no Google. Uma delas diz: «Pratos muito variados, abrindo um vasto leque de opções para todos os gostos.»"
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true },
+					{ label: `Reservar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A carta"
+				title="Treze bitoques <br /><em>e mais uns quantos.</em>"
+				description="A carta segue o menu que a casa publica para entrega. Os bitoques vêm sempre com ovo, batata e arroz; o que muda é o corte e o molho."
+				cta={{ label: `Reservar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Preços copiados do menu de entrega do Nu Bitoq (Uber Eats) em outubro de 2026. No salão podem ser diferentes e a carta muda com as edições especiais da casa; confirma por telefone antes de contar com um prato."
+			/>
+
+			<section class="voices" aria-labelledby="voices-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Quem já comeu aqui</p>
+					<h2 id="voices-title">O que dizem <em>as críticas.</em></h2>
+					<div class="voice-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="voice">
+									<blockquote>{review.text}</blockquote>
+									<figcaption>Crítica no Google · {review.rating}/5</figcaption>
+								</figure>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Oito fotografias <br /><em>da casa.</em>"
+				description="As fotografias publicadas no perfil do Nu Bitoq em Google Maps: os bitoques na frigideira, as entradas, os cocktails e a fachada iluminada à noite."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Reservar mesa <br /><em>em Amora.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Seixal, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário da casa"
+				hoursNote="Horário publicado na ficha de Google: fecha à segunda-feira, ao domingo só abre ao almoço e de terça a sábado serve almoço e jantar. Confirma em feriados."
+				mapTitle="Mapa do Nu Bitoq na Praceta 5 de Outubro, 9, Amora"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Nu Bitoq · Amora"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Críticas no Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: `Reservar pelo ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="As reservas fazem-se por telefone, incluindo para grupos e menus fechados. A ficha de Google indica lugares para pessoas em cadeiras de rodas. Para comer em casa, a casa está no Uber Eats."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Como chegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário, carta e preços antes da visita."
+			ctaLabel="Ligar ao Nu Bitoq"
+			navAriaLabel="Ligações do Nu Bitoq"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
