@@ -1,0 +1,368 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/sant-jordi-restaurante-fachada.jpg';
+
+const business = {
+	name: 'Sant Jordi Restaurante',
+	brand: 'Sant Jordi',
+	tagline: 'Restaurante mediterráneo en L’Alcora',
+	street: 'Carrer Mossen Juli Vilar, 2',
+	city: 'L’Alcora',
+	region: 'Comunitat Valenciana',
+	postalCode: '12110',
+	phone: '964 36 22 00',
+	latitude: 40.0706978,
+	longitude: -0.2073817,
+	rating: 4.8,
+	reviewsCount: 8,
+	site: 'https://sant-jordi-restaurante.vercel.app',
+};
+
+// Identificadores públicos de la ficha de Google Maps del local.
+const cid = '0xd5fe40ce2efdc1d:0xf8f1f325ddfb2a60';
+const cidDecimal = '17938386134756960864';
+const placeId = 'ChIJHdzv4gzkXw0RYCr73SXz8fg';
+
+const mapsUrl =
+	'https://www.google.com/maps/place/Sant+Jordi+Restaurante/@40.0706978,-0.2073817,17z/data=!3m1!4b1!4m6!3m5!1s0xd5fe40ce2efdc1d:0xf8f1f325ddfb2a60!8m2!3d40.0706978!4d-0.2073817!16s%2Fg%2F1q5bmpc_x?authuser=0&hl=es&entry=ttu';
+const cidUrl = `https://www.google.com/maps?cid=${cidDecimal}`;
+const reviewsUrl = `https://search.google.com/local/reviews?placeid=${placeId}&q=Sant+Jordi+Restaurante+L%27Alcora&hl=es&gl=ES`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&hl=es&output=embed`;
+const phoneHref = 'tel:+34964362200';
+
+const description =
+	'Sant Jordi Restaurante, restaurante mediterráneo en el centro de L’Alcora (Castellón). Abre todos los días de 9:30 a 0:30. Teléfono 964 36 22 00.';
+
+const servicios = [
+	'Restaurante mediterráneo',
+	'Cocina mediterránea',
+	'Abierto todos los días',
+	'De 9:30 a 0:30',
+	'En el centro de L’Alcora',
+	'L’Alcora, capital de la cerámica',
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está Sant Jordi Restaurante?',
+		a: 'En el Carrer Mossen Juli Vilar, 2, 12110 L’Alcora (Castellón), en el centro del municipio. Desde esta página puedes abrir Google Maps y trazar la ruta hasta la puerta con el botón «Cómo llegar».',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'La ficha de Google marca apertura todos los días, de 9:30 a 0:30. Es un horario largo, de los que cubren desayuno, comida y cena, pero conviene confirmarlo por teléfono antes de desplazarse, sobre todo en festivos.',
+	},
+	{
+		q: '¿Qué tipo de cocina hace?',
+		a: 'Google lo clasifica como restaurante mediterráneo. No tiene carta publicada en la ficha, así que esta web no reproduce platos que no se puedan comprobar: el menú del día y la carta se consultan directamente en el local o llamando al 964 36 22 00.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'No hay reserva online ni formulario en esta web: se reserva llamando al 964 36 22 00. Si vais en grupo o queréis una mesa concreta, lo mejor es llamar con antelación.',
+	},
+	{
+		q: '¿Esta es la web oficial del restaurante?',
+		a: 'No. Es una web informativa elaborada con los datos públicos de su ficha de Google Maps, porque el restaurante no tiene una web propia publicada. Por eso no hay reservas online ni carrito: todo se gestiona por teléfono o en el local.',
+	},
+	{
+		q: '¿Por qué no hay galería ni carta en esta web?',
+		a: 'Porque la ficha de Google del restaurante no tiene fotos propias publicadas ni una carta que se pueda consultar, y aquí no se inventan ni se copian de otros sitios. La imagen de la fachada es una vista de Google Street View. Si el titular facilita fotos o la carta, se añaden a la galería y a la carta.',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${business.site}/#restaurante`,
+	name: business.name,
+	alternateName: ['Sant Jordi', 'Sant Jordi L’Alcora', 'Restaurante Sant Jordi Alcora'],
+	slogan: business.tagline,
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 964 36 22 00',
+	priceRange: '€€',
+	currenciesAccepted: 'EUR',
+	acceptsReservations: 'True',
+	servesCuisine: ['Cocina mediterránea', 'Restaurante'],
+	areaServed: [
+		{ '@type': 'City', name: 'L’Alcora' },
+		{ '@type': 'AdministrativeArea', name: 'Alcalatén' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: "L'Alcora",
+		addressRegion: business.region,
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	hasGoogleReviews: reviewsUrl,
+	sameAs: [cidUrl],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: cid },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '09:30',
+			closes: '00:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: business.rating,
+		reviewCount: business.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Datos', href: '#datos' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>Sant Jordi Restaurante · L’Alcora</title>
+		<meta name="theme-color" content="#14416b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={business.name}
+			description={description}
+			keywords="Sant Jordi Restaurante, restaurante L'Alcora, restaurante mediterráneo L'Alcora, comer en L'Alcora, Carrer Mossen Juli Vilar 2, restaurante Castellón Alcalatén, teléfono Sant Jordi L'Alcora, restaurante abierto todos los días L'Alcora"
+			canonical={`${business.site}/`}
+			site={business.site}
+			ogTitle="Sant Jordi Restaurante · L’Alcora"
+			ogDescription="Restaurante mediterráneo en el centro de L’Alcora. Abre todos los días de 9:30 a 0:30. Teléfono 964 36 22 00."
+			ogImage={`${business.site}/og.jpg`}
+			ogImageAlt="Esquina de Sant Jordi Restaurante con su cartel azul en L’Alcora"
+			ogImageWidth={1024}
+			ogImageHeight={538}
+			author={business.name}
+			themeColor="#14416b"
+			street={business.street}
+			city={business.city}
+			region={business.region}
+			geoRegion="ES-VC"
+			postalCode={business.postalCode}
+			phone={business.phone}
+			latitude={business.latitude}
+			longitude={business.longitude}
+			placeName="L’Alcora, Castellón"
+			preload={[fachada]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark="SJ"
+			name={business.brand}
+			subtitle="Restaurante · L’Alcora"
+			phone={business.phone}
+			phoneHref={phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Carrer Mossen Juli Vilar, 2 · L’Alcora</p>
+					<h1 id="hero-title">Sant Jordi<br /><em>Restaurante</em><br />en L’Alcora.</h1>
+					<p class="hero-lede">
+						Restaurante mediterráneo en el centro de L’Alcora, la capital de la cerámica de Castellón.
+						Abre todos los días, de 9:30 a 0:30, y atiende por teléfono en el 964 36 22 00. Su ficha de
+						Google le da un 4,8 sobre 5.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={phoneHref}>Llamar 964 36 22 00</a>
+						<a class="button button-ghost" href={mapsUrl} target="_blank" rel="noreferrer">
+							Ver la ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>4,8</b> en Google (8 reseñas)</li>
+						<li>Cocina <b>mediterránea</b></li>
+						<li>Todos los días, <b>9:30 – 0:30</b></li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<Image
+						src={fachada}
+						alt="Esquina del edificio de Sant Jordi Restaurante con el cartel azul del restaurante y la placa de la calle, L’Alcora"
+						widths={[520, 760, 1024]}
+						sizes="(max-width: 980px) 92vw, 46vw"
+						format="avif"
+						quality={72}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<figcaption>
+						<span>Fachada en Google Street View</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en el mapa ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<LocalChips label="Qué ofrece Sant Jordi Restaurante" items={servicios} />
+
+			<LocalAbout
+				label="Restaurante mediterráneo en L’Alcora"
+				title="En el centro<br />de la capital<br /><em>de la cerámica.</em>"
+				paragraphs={[
+					'Sant Jordi Restaurante está en el Carrer Mossen Juli Vilar, 2, en pleno casco de L’Alcora, un municipio de la comarca del Alcalatén conocido en toda España por su industria cerámica: aquí se fabrican azulejos y pavimentos que acaban en fachadas de medio mundo.',
+					'La ficha de Google lo clasifica como restaurante mediterráneo y marca apertura todos los días, de 9:30 a 0:30, con un horario que cubre desde el café de la mañana hasta la última mesa de la noche. Para comer o cenar, lo más directo es llamar al 964 36 22 00.',
+					'Esta web reúne lo que se puede comprobar: dirección, teléfono, horario, categoría y nota media. No hay carta ni galería de platos porque el restaurante no las tiene publicadas en Google, y aquí no se inventan platos ni se copian fotos de otros sitios: la única imagen es la fachada, tomada de Google Street View.',
+				]}
+				note="La ficha reúne por ahora 8 reseñas, con una nota media de 4,8 sobre 5. Es una ficha joven y sin fotos propias publicadas: si eres el titular y quieres completarla, desde el propio panel de Google puedes añadir imágenes, carta y servicios, y nos los puedes pasar para incorporarlos a la web."
+				links={[
+					{ label: 'Leer reseñas en Google', href: reviewsUrl, external: true },
+					{ label: 'Ficha del restaurante', href: cidUrl, external: true },
+					{ label: 'Cómo llegar', href: directionsUrl, external: true },
+				]}
+			/>
+
+			<section class="section-pad" id="datos" aria-labelledby="datos-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Información práctica</p>
+					<h2 id="datos-title">Lo que conviene saber<br /><em>antes de ir.</em></h2>
+					<dl class="info-grid">
+						<div class="info-card">
+							<dt>Dirección</dt>
+							<dd>
+								Carrer Mossen Juli Vilar, 2<br />
+								12110 L’Alcora (Castellón)
+								<small>En el centro del municipio</small>
+							</dd>
+						</div>
+						<div class="info-card">
+							<dt>Teléfono</dt>
+							<dd>
+								<a href={phoneHref}>964 36 22 00</a>
+								<small>Reservas y consultas por teléfono</small>
+							</dd>
+						</div>
+						<div class="info-card">
+							<dt>Horario</dt>
+							<dd>
+								Todos los días<br />
+								9:30 – 0:30
+								<small>Según la ficha de Google</small>
+							</dd>
+						</div>
+						<div class="info-card">
+							<dt>Cocina</dt>
+							<dd>
+								Restaurante mediterráneo
+								<small>Sin carta publicada: se consulta en el local</small>
+							</dd>
+						</div>
+					</dl>
+					<p class="about-links">
+						<a href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar en Google Maps ↗</a>
+						<a href={reviewsUrl} target="_blank" rel="noreferrer">Ver las 8 reseñas ↗</a>
+					</p>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow="Carrer Mossen Juli Vilar, 2 · 12110 L’Alcora"
+				title="Nos vemos<br /><em>en Sant Jordi.</em>"
+				addressLines={[
+					business.street,
+					`${business.postalCode} ${business.city}`,
+					'Castellón, España',
+				]}
+				hoursCaption="Horario de la ficha de Google"
+				hours={[
+					{ day: 'Lunes', value: '9:30 – 0:30' },
+					{ day: 'Martes', value: '9:30 – 0:30' },
+					{ day: 'Miércoles', value: '9:30 – 0:30' },
+					{ day: 'Jueves', value: '9:30 – 0:30' },
+					{ day: 'Viernes', value: '9:30 – 0:30' },
+					{ day: 'Sábado', value: '9:30 – 0:30' },
+					{ day: 'Domingo', value: '9:30 – 0:30' },
+				]}
+				hoursNote="Horario publicado en la ficha de Google: todos los días, de 9:30 a 0:30. Al ser un horario tan amplio conviene confirmarlo por teléfono antes de ir, sobre todo en festivos y en la semana de las fiestas de la cerámica."
+				mapTitle="Mapa de Sant Jordi Restaurante en el Carrer Mossen Juli Vilar, 2, L’Alcora"
+				mapEmbedUrl={mapEmbedUrl}
+				mapLabel="Sant Jordi Restaurante · L’Alcora"
+				mapHref={cidUrl}
+				links={[
+					{ label: 'Cómo llegar', href: directionsUrl, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: mapsUrl, external: true },
+				]}
+				contactLink={{ label: `+34 ${business.phone}`, href: phoneHref }}
+				reserveNote="Las reservas se hacen por teléfono, en el 964 36 22 00: no hay reserva online ni formulario en esta web. Como no hay carta publicada, aprovecha la llamada para preguntar por el menú del día y por la disponibilidad de mesas."
+			/>
+
+			<LocalFaq items={faqs} />
+		</main>
+
+		<LocalFooter
+			mark="SJ"
+			name={business.name}
+			address={`${business.street} · ${business.postalCode} ${business.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: mapsUrl, external: true },
+				{ label: 'Reseñas ↗', href: reviewsUrl, external: true },
+				{ label: business.phone, href: phoneHref },
+			]}
+			phone={business.phone}
+			phoneHref={phoneHref}
+			legal="Web informativa elaborada con datos públicos de la ficha de Google Maps del restaurante, con una imagen de fachada de Google Street View. No es la web oficial ni publica carta ni precios; confirma horarios y disponibilidad por teléfono."
+			ctaLabel="Llamar a Sant Jordi"
+		/>
+	</body>
+</html>
