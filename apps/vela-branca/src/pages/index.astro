@@ -1,0 +1,347 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/vela-branca-apaisada-01.jpg';
+import rua from '../assets/fotos/vela-branca-vertical-02.jpg';
+import mariscada from '../assets/fotos/vela-branca-vertical-03.jpg';
+import paella from '../assets/fotos/vela-branca-vista-4-04.jpg';
+import sardinhas from '../assets/fotos/vela-branca-apaisada-05.jpg';
+import bar from '../assets/fotos/vela-branca-vertical-06.jpg';
+import sala from '../assets/fotos/vela-branca-vertical-07.jpg';
+import mesaMarisco from '../assets/fotos/vela-branca-vertical-08.jpg';
+import gambas from '../assets/fotos/vela-branca-vertical-09.jpg';
+import polvo from '../assets/fotos/vela-branca-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Vela Branca · Peixe e marisco na Baixa, em Lisboa';
+const description =
+	'Vela Branca, cozinha portuguesa e marisqueira na Rua dos Correeiros, 112, na Baixa de Lisboa. Peixe fresco, paella de marisco e sardinhas, das 12:00 às 23:00.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada do Vela Branca à noite na Rua dos Correeiros, com o toldo «Near Me · Vela Branca», a porta aberta e as lousas do dia',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco com camarão e mexilhão numa travessa de ferro, sobre uma mesa vermelha',
+	},
+	{
+		src: sardinhas,
+		alt: 'Quatro sardinhas grelhadas com batata assada, salada e tomate num prato branco',
+	},
+	{
+		src: mariscada,
+		alt: 'Travessa de marisco com amêijoas, mexilhões e peixe grelhado, com batata e brócolos',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas ao alho num tacho escuro, com molho de azeite e coentros',
+	},
+	{
+		src: polvo,
+		alt: 'Polvo à lagareiro com batata e azeite, com dois copos de vinho branco ao fundo',
+	},
+	{
+		src: sala,
+		alt: 'Sala do Vela Branca com arco de pedra, parede de molduras e plantas penduradas',
+	},
+	{
+		src: bar,
+		alt: 'Interior do restaurante com arco de pedra, balcão de madeira e candeeiros pendentes',
+	},
+	{
+		src: mesaMarisco,
+		alt: 'Mesa com mexilhões à marinera, paella em travessa e salada, na esplanada',
+	},
+	{
+		src: rua,
+		alt: 'Rua dos Correeiros com gente a passar e as mesas do restaurante na calçada',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta do Vela Branca',
+	inLanguage: 'pt-PT',
+	url: MAPS.menu,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#vela-branca`,
+	name: BUSINESS.name,
+	alternateName: ['Near Me Vela Branca', 'Vela Branca Lisboa', 'Restaurante Vela Branca'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.thefork],
+	telephone: '+351 920 038 770',
+	currenciesAccepted: 'EUR',
+	priceRange: '€€',
+	servesCuisine: ['Cozinha portuguesa', 'Marisco', 'Peixe na grelha'],
+	acceptsReservations: MAPS.thefork,
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0d2a3c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Vela Branca, Near Me Vela Branca, restaurante Rua dos Correeiros, marisqueira Lisboa, peixe fresco Baixa, paella de marisco Lisboa, sardinhas grelhadas, restaurante Baixa Chiado, comer perto da Rua Augusta"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha portuguesa e marisco na Rua dos Correeiros, 112, na Baixa. Sardinhas, polvo, bacalhau e paella, todos os dias das 12:00 às 23:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada do Vela Branca na Rua dos Correeiros, em Lisboa, com o toldo do restaurante"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#0d2a3c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Vela Branca"
+			subtitle="Peixe e marisco · Baixa"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="R. dos Correeiros, 112 · Baixa, Lisboa"
+				title="Peixe na grelha, <br /><em>marisco na mesa.</em>"
+				lede={`O Vela Branca está na Rua dos Correeiros, 112, na Baixa, entre a Rua Augusta e o Chiado. Cozinha portuguesa de marisqueira: sardinhas, polvo, bacalhau, arroz de marisco e paella, todos os dias das 12:00 às 23:00. Tem 4,6 sobre 5 no Google com ${BUSINESS.reviewsCount.toLocaleString('pt-PT')} críticas.`}
+				image={fachada}
+				imageAlt="Fachada do Vela Branca na Rua dos Correeiros, com o toldo do restaurante e as lousas do dia"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> no Google · 2.436 críticas' },
+					{ label: 'Horário', html: '<b>12:00–23:00</b> todos os dias' },
+					{ label: 'Mesas', html: '<b>Na rua</b>, no coração da Baixa' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o Vela Branca" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma marisqueira <br /><em>na Rua dos Correeiros.</em>"
+				paragraphs={[
+					'O Vela Branca fica na Rua dos Correeiros, 112, uma das ruas que ligam a Rua Augusta à Baixa. O toldo escuro com o nome — «Near Me · Vela Branca» — cobre a porta, e ao lado ficam as lousas do dia escritas à mão. Há mesas na calçada e uma sala interior de pedra.',
+					'Lá dentro, a casa tem arcos antigos, paredes com molduras e plantas penduradas, e um balcão de madeira com garrafas. É um restaurante de bairro no meio da zona mais percorrida da cidade — e as críticas notam isso: «lugar aconchegante, diferente dos restaurantes pega turista da Rua Augusta».',
+					'A cozinha é portuguesa, com a marisqueira como bandeira. A descrição que o próprio espaço assina na ficha de Google destaca a paella de marisco e as sardinhas grelhadas, e fala de ingredientes frescos e locais.',
+					'A ficha não publica carta nem preços, e a casa não tem site próprio. Os pratos desta página são os que a casa descreve, que aparecem nas fotografias do perfil e que se repetem nas críticas; os valores só aparecem quando estão publicados na carta do TheFork.',
+				]}
+				note="4,6 sobre 5 com 2.436 críticas no Google. Uma delas: «Boa comida, preços bons, condizentes com a região»."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Reservar no TheFork', href: MAPS.thefork, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A carta"
+				title="Do mar <br /><em>para a mesa.</em>"
+				description="A ficha de Google não publica carta. Estes pratos são os que a casa descreve, que aparecem nas fotografias do perfil e que se repetem nas críticas; os dois únicos preços mostrados são os que a casa publica no TheFork."
+				cta={{ label: `Ligar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="A carta completa, com preços, está na página da casa no TheFork, onde o preço médio indicado é de 24 euros. As batatas fritas (3,90 €) e a salada mista (4,90 €) são os únicos valores publicados que esta página cita."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Dez fotografias <br /><em>da casa.</em>"
+				description="As dez fotografias do perfil do Vela Branca no Google Maps: a fachada à noite, a rua, a sala de pedra, a paella, as sardinhas, o polvo, as gambas e a mariscada."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="À mesa, <br /><em>na Baixa.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias, das 12:00 às 23:00, sem dia de fecho. Convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Vela Branca na Rua dos Correeiros, 112, em Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Vela Branca · Rua dos Correeiros"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Reservar no TheFork', href: MAPS.thefork, external: true, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Carta no TheFork', href: MAPS.menu, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Reservas pelo telefone ou na página do TheFork. As mesas na rua ficam na Rua dos Correeiros, à porta do restaurante; a ficha indica apenas que a casa não tem estacionamento acessível."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Reservar ↗', href: MAPS.thefork, external: true },
+				{ label: 'Carta ↗', href: MAPS.menu, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Carta e preços da casa publicados no TheFork; confirma horário e valores antes da visita."
+			ctaLabel="Ligar ao Vela Branca"
+			navAriaLabel="Ligações do Vela Branca"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
