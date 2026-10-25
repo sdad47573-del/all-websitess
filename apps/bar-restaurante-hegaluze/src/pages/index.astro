@@ -1,0 +1,288 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/bar-restaurante-hegaluze-vertical-01.jpg';
+import comedor from '../assets/fotos/bar-restaurante-hegaluze-vertical-02.jpg';
+import calamares from '../assets/fotos/bar-restaurante-hegaluze-apaisada-03.jpg';
+import merluza from '../assets/fotos/bar-restaurante-hegaluze-vertical-04.jpg';
+import postres from '../assets/fotos/bar-restaurante-hegaluze-vertical-05.jpg';
+import gambas from '../assets/fotos/bar-restaurante-hegaluze-vertical-06.jpg';
+import mariscada from '../assets/fotos/bar-restaurante-hegaluze-vertical-07.jpg';
+import arrozNegro from '../assets/fotos/bar-restaurante-hegaluze-vertical-08.jpg';
+import fachada from '../assets/fotos/bar-restaurante-hegaluze-vertical-09.jpg';
+import boquerones from '../assets/fotos/bar-restaurante-hegaluze-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Bar Restaurante Hegaluze, bar restaurante en Donibane Kalea, 132, Pasai Donibane (Gipuzkoa). Bocatas, pescados y trato familiar, con 4,7 sobre 5 en Google. Teléfono 943 34 05 74.';
+
+const galeria = [
+	{
+		src: interior,
+		alt: 'Comedor de piedra de Hegaluze con un timón y un ancla en la pared y mesas de madera',
+	},
+	{
+		src: comedor,
+		alt: 'Vista del comedor de Hegaluze con el cuadro del velero, el timón y las mesas puestas',
+	},
+	{
+		src: calamares,
+		alt: 'Calamarcitos a la plancha con patatas y salsa sobre un plato blanco',
+	},
+	{
+		src: merluza,
+		alt: 'Merluza a la plancha con pimientos rojos y verdes y patatas en un plato ovalado',
+	},
+	{
+		src: postres,
+		alt: 'Dos postres de Hegaluze: tarta con nata y yogur con mermelada de frutos rojos',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas al ajillo en una cazuela de barro con una cesta de pan al fondo',
+	},
+	{
+		src: mariscada,
+		alt: 'Merluza con mejillones y patatas junto a un arroz negro y pimientos en la mesa',
+	},
+	{
+		src: arrozNegro,
+		alt: 'Arroz negro con una bola de arroz blanco y merluza al fondo sobre el mantel rosa',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Bar Restaurante Hegaluze en la calle empedrada de Pasai Donibane',
+	},
+	{
+		src: boquerones,
+		alt: 'Boquerones fritos en un plato rectangular con sopa y pan en la mesa de Hegaluze',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#hegaluze`,
+	name: BUSINESS.name,
+	alternateName: ['Hegaluze', 'Bar Hegaluze', 'Restaurante Hegaluze', 'Hegaluze Pasai Donibane'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: `+34 ${BUSINESS.phone}`,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Bocatas', 'Pescados y mariscos'],
+	areaServed: [
+		{ '@type': 'City', name: 'Pasai Donibane' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La barra', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Bar Restaurante Hegaluze · Bar en Pasai Donibane (Gipuzkoa)';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1e4c59" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Gloock&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bar Restaurante Hegaluze, Hegaluze Pasai Donibane, bar restaurante Pasaia, comer en Pasai Donibane, bocatas Pasai Donibane, restaurante Donibane Kalea, Hegaluze Gipuzkoa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Bar restaurante en Donibane Kalea, 132 (Pasai Donibane). Bocatas, pescados y trato familiar, con 4,7 sobre 5 en Google. Teléfono 943 34 05 74."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Comedor de piedra de Bar Restaurante Hegaluze con timón y ancla"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1e4c59"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Pasai Donibane, Gipuzkoa"
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Hegaluze"
+			subtitle="Bar restaurante · Pasaia"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Donibane Kalea, 132 · Pasai Donibane"
+				title="La mesa de <br /><em>Hegaluze.</em>"
+				lede={`Bar Restaurante Hegaluze está en Donibane Kalea, 132, en Pasai Donibane (Gipuzkoa). Un bar restaurante de piedra y madera, con 4,7 sobre 5 en Google y 46 reseñas que destacan los bocatas y el trato familiar. Sus fotos muestran pescados, mariscos y postres. La ficha no publica horario, así que lo más directo es llamar al ${BUSINESS.phone} antes de ir.`}
+				image={interior}
+				imageAlt="Comedor de piedra de Hegaluze con un timón y un ancla en la pared y mesas de madera"
+				primaryCta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 46 reseñas' },
+					{ label: 'Contacto', html: `<b>${BUSINESS.phone}</b> teléfono directo` },
+					{ label: 'La casa', html: '<b>Pescado</b> y bocatas' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Bar Restaurante Hegaluze" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Piedra, madera <br /><em>y buena mesa.</em>"
+				paragraphs={[
+					'Bar Restaurante Hegaluze está en Donibane Kalea, 132, en Pasai Donibane (Gipuzkoa): un local de paredes de piedra, vigas de madera y mesas vestidas con manteles rosas, con un timón y un ancla de barco colgados en la pared.',
+					'Google lo clasifica como bar restaurante y le da 4,7 sobre 5 con 46 reseñas. Su ficha publica el teléfono 943 34 05 74, pero no un horario, una carta, precios ni una web propia, así que esta web no inventa nada de eso.',
+					'Sus reseñas hablan de los bocatas («muy buenos», dice una) y sobre todo del trato: «familia y camareros geniales» e «impresionante lugar». Las fotos de su perfil muestran además pescados, mariscos y postres de la casa.',
+					'Para comer hay que llamar antes: el horario no está publicado en Google y el teléfono es el único canal de contacto que aparece en la ficha.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo resume así: «Muy buenos los bocatas que nos comimos, sin duda volveremos».`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La barra"
+				title="Bocatas <br /><em>y trato familiar.</em>"
+				description="La ficha de Google no publica carta ni precios y el local no tiene web propia. Esto es lo que citan sus reseñas y la categoría con la que Google lo clasifica."
+				cta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados ni carta en la ficha. Para saber qué hay hoy, lo más directo es llamar al 943 34 05 74."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la casa.</em>"
+				description="Las diez fotografías publicadas en el perfil de Bar Restaurante Hegaluze en Google Maps: el comedor, la fachada y la mesa."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a Pasai Donibane <br /><em>a su mesa.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, `${BUSINESS.regionName}, España`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote={`Google no publica el horario de Hegaluze. Llama al ${BUSINESS.phone} para confirmar cuándo abre antes de acercarte.`}
+				mapTitle="Mapa de Bar Restaurante Hegaluze en Donibane Kalea, 132, Pasai Donibane (Gipuzkoa)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bar Restaurante Hegaluze · Pasai Donibane"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="El teléfono 943 34 05 74 es el único canal de contacto que publica la ficha de Google: no hay correo, reserva online ni web propia. La ficha tampoco publica horario ni datos de terraza o accesibilidad."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar a Hegaluze"
+		/>
+	</body>
+</html>

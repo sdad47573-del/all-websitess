@@ -1,0 +1,334 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-habibi-panoramica-01.jpg';
+import shawarma from '../assets/fotos/restaurante-habibi-vertical-02.jpg';
+import mesaCaril from '../assets/fotos/restaurante-habibi-panoramica-03.jpg';
+import shawarmaPrato from '../assets/fotos/restaurante-habibi-vertical-04.jpg';
+import mesaKabsah from '../assets/fotos/restaurante-habibi-vista-5-05.jpg';
+import kabsah from '../assets/fotos/restaurante-habibi-apaisada-06.jpg';
+import batatas from '../assets/fotos/restaurante-habibi-vertical-07.jpg';
+import kabsahFatayer from '../assets/fotos/restaurante-habibi-vertical-08.jpg';
+import fatteh from '../assets/fotos/restaurante-habibi-vertical-09.jpg';
+import doce from '../assets/fotos/restaurante-habibi-cuadrada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Habibi · Cozinha síria e shawarma halal em Lisboa';
+const description =
+	'Restaurante Habibi, cozinha síria e shawarma halal na Rua Cavaleiro de Oliveira, 39D, em Lisboa. Aberto das 12:00 às 22:30, exceto à segunda.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada do Restaurante Habibi com o toldo negro, o letreiro de comida do Médio Oriente e shawarma, e as mesas na calçada',
+	},
+	{
+		src: shawarma,
+		alt: 'Prato de shawarma com pão sírio, batatas fritas, pickles e molho de alho',
+	},
+	{
+		src: mesaCaril,
+		alt: 'Mesa do Habibi com um caril de carne, arroz, hommus, salada e pão sírio',
+	},
+	{
+		src: shawarmaPrato,
+		alt: 'Shawarma em pão sírio com tiras de cenoura, pickles, pepino e molho de alho',
+	},
+	{
+		src: mesaKabsah,
+		alt: 'Mesa posta no Habibi com kabsah de borrego, hommus, tabbouleh, sopa e kibbeh',
+	},
+	{
+		src: kabsah,
+		alt: 'Kabsah de arroz amarelo com carne de borrego, castanha de caju e molho de tomate picante',
+	},
+	{
+		src: batatas,
+		alt: 'Batatas fritas com pão sírio, salada e molho de alho num prato fundo',
+	},
+	{
+		src: kabsahFatayer,
+		alt: 'Kabsah de borrego com fatayer, labneh, folhas de videira e salada',
+	},
+	{
+		src: fatteh,
+		alt: 'Fatteh com pão estaladiço, iogurte, carne picada e amêndoas laminadas',
+	},
+	{
+		src: doce,
+		alt: 'Dois doces halawet al-jbn cobertos de pistácio num prato azul',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta do Restaurante Habibi',
+	inLanguage: 'pt-PT',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			offers: {
+				'@type': 'Offer',
+				price: item.price?.replace(' €', '').replace(',', '.'),
+				priceCurrency: 'EUR',
+			},
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#habibi`,
+	name: BUSINESS.name,
+	alternateName: ['Habibi', 'Habibi Lisboa', 'Restaurante Habibi Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.ubereats, MAPS.bolt],
+	telephone: '+351 21 813 1655',
+	currenciesAccepted: 'EUR',
+	priceRange: '€€',
+	servesCuisine: ['Cozinha síria', 'Cozinha do Médio Oriente', 'Shawarma', 'Falafel', 'Cozinha halal'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '22:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2a1a18" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Jost:wght@300;400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Habibi, Habibi Lisboa, shawarma Lisboa, comida síria Lisboa, falafel Lisboa, restaurante halal Lisboa, Cavaleiro de Oliveira, kabsah, hommus"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha síria e shawarma halal na Rua Cavaleiro de Oliveira, 39D, em Lisboa. Aberto das 12:00 às 22:30, exceto à segunda. 4,9 no Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada do Restaurante Habibi em Lisboa, com o toldo negro e as mesas na calçada"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2a1a18"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[mesaKabsah]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Habibi"
+			subtitle="Cozinha síria · Lisboa"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="R. Cavaleiro de Oliveira, 39D · Lisboa"
+				title="Cozinha síria, <br /><em>feita na hora.</em>"
+				lede={`O Habibi é uma casa síria na Rua Cavaleiro de Oliveira, 39D, em Lisboa. Shawarma halal, falafel, hommus e fatteh, do meio-dia às 22:30. Tem 4,9 sobre 5 no Google com ${BUSINESS.reviewsCount.toLocaleString('pt-PT')} críticas.`}
+				image={mesaKabsah}
+				imageAlt="Mesa posta no Habibi com kabsah de borrego, hommus, tabbouleh, sopa e kibbeh"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,9</b> no Google · 1.586 críticas' },
+					{ label: 'Horário', html: '<b>12:00–22:30</b> de terça a domingo' },
+					{ label: 'Fecha', html: '<b>Segunda-feira</b> encerrado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o Restaurante Habibi" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma cozinha síria <br /><em>de todos os dias.</em>"
+				paragraphs={[
+					'O Habibi está na Rua Cavaleiro de Oliveira, 39D, numa porta de vidro com toldo negro onde se lê «Restaurante Habibi — comida do Médio Oriente & shawarma». Lá fora ficam as mesas na calçada; lá dentro, a chapa do shawarma e uma sala pequena, de paredes claras.',
+					'A descrição que o próprio espaço assina na ficha de Google é a definição mais direta do que se come aqui: «comida de Médio Oriente e shawarma (halal)», publicada em português, em árabe e em inglês. A Google classifica a casa como restaurante sírio, restaurante halal e também restaurante vegetariano.',
+					'As críticas repetem três coisas: os preços, a comida preparada na hora e os menus que juntam entradas e prato. «Restaurante com bons preços, comida deliciosa e preparada na hora», escreve um dos autores das 1.586 críticas; outro destaca «opções de menu variadas e com ótimo preço».',
+					'A ficha não publica carta. A que está nesta página é a do menu de entrega da própria casa no Uber Eats e no Bolt Food, com os preços desses menus: na sala podem ser outros e a oferta muda ao longo do ano.',
+				]}
+				note="4,9 sobre 5 com 1.586 críticas no Google. A ficha assinala ainda a etiqueta Brunch e a classificação de restaurante familiar."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A carta"
+				title="Shawarma, falafel <br /><em>e menus.</em>"
+				description="A carta do menu de entrega da casa, com os preços publicados nesse menu. Na sala os valores podem ser diferentes; confirma ao telefone."
+				cta={{ label: `Ligar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="A ficha de Google não publica carta. Esta é a do menu de entrega no Uber Eats e no Bolt Food, que sai da mesma cozinha da Rua Cavaleiro de Oliveira."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Dez fotografias <br /><em>da casa.</em>"
+				description="As dez fotografias do perfil do Habibi no Google Maps: a fachada com o toldo negro, as mesas na calçada, o shawarma, os menus de kabsah, o fatteh e os doces."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Comer na <br /><em>Cavaleiro de Oliveira.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: de terça a domingo, das 12:00 às 22:30. À segunda-feira está encerrado. Convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Restaurante Habibi na Rua Cavaleiro de Oliveira, 39D, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Habibi · Cavaleiro de Oliveira"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Uber Eats', href: MAPS.ubereats, external: true },
+					{ label: 'Bolt Food', href: MAPS.bolt, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="A ficha de Google não tem reservas online: para marcar mesa, liga para o 21 813 1655. Para comer em casa, a casa tem menu próprio no Uber Eats e no Bolt Food."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Uber Eats ↗', href: MAPS.ubereats, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Carta e preços do menu de entrega da casa; confirma horário e valores antes da visita."
+			ctaLabel="Ligar ao Habibi"
+			navAriaLabel="Ligações do Restaurante Habibi"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -8,9 +8,33 @@ export interface Props {
 	phoneHref: string;
 	legal: string;
 	ctaLabel: string;
+	/** Permite traducir el pie en webs de otros idiomas sin tocar el resto. */
+	navAriaLabel?: string;
+	legalLinks?: { label: string; href: string }[];
+	creditLabel?: string;
+	creditName?: string;
+	creditHref?: string;
 }
 
-const { mark, name, address, links, phone, phoneHref, legal, ctaLabel } = Astro.props;
+const {
+	mark,
+	name,
+	address,
+	links,
+	phone,
+	phoneHref,
+	legal,
+	ctaLabel,
+	navAriaLabel = 'Enlaces del restaurante',
+	legalLinks = [
+		{ label: 'Aviso legal', href: '/aviso-legal' },
+		{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+		{ label: 'Cookies', href: '/aviso-legal#cookies' },
+	],
+	creditLabel = 'Web creada por',
+	creditName = 'Sur Digital',
+	creditHref = 'https://sur-digital.vercel.app/',
+} = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -24,7 +48,7 @@ const year = new Date().getFullYear();
 					<small>{address}</small>
 				</p>
 			</div>
-			<nav aria-label="Enlaces del restaurante">
+			<nav aria-label={navAriaLabel}>
 				{
 					links.map((link) => (
 						<a
@@ -42,14 +66,20 @@ const year = new Date().getFullYear();
 			© {year} {name} · {legal}
 		</small>
 		<nav class="legal-links" aria-label="Información legal">
-			<a href="/aviso-legal">Aviso legal</a>
-			<a href="/aviso-legal#privacidad">Privacidad</a>
-			<a href="/aviso-legal#cookies">Cookies</a>
+			{
+				legalLinks.map((link) => (
+					<a href={link.href}>{link.label}</a>
+				))
+			}
 		</nav>
 		<p class="credit">
-			<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+			<small>{creditLabel} <a href={creditHref} rel="noopener">{creditName}</a></small>
 		</p>
 	</div>
 </footer>
 
-<a class="mobile-call" href={phoneHref}>{ctaLabel} <span>{phone}</span></a>
+{
+	phone && (
+		<a class="mobile-call" href={phoneHref}>{ctaLabel} <span>{phone}</span></a>
+	)
+}

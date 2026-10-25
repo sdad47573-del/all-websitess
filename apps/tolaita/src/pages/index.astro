@@ -1,0 +1,325 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import carne from '../assets/fotos/tolaita-apaisada-01.jpg';
+import pollo from '../assets/fotos/tolaita-vertical-02.jpg';
+import cafe from '../assets/fotos/tolaita-vertical-03.jpg';
+import vistas from '../assets/fotos/tolaita-apaisada-04.jpg';
+import pista from '../assets/fotos/tolaita-apaisada-05.jpg';
+import bacalao from '../assets/fotos/tolaita-vertical-06.jpg';
+import combinado from '../assets/fotos/tolaita-apaisada-07.jpg';
+import porche from '../assets/fotos/tolaita-apaisada-08.jpg';
+import bacalaoDetalle from '../assets/fotos/tolaita-vertical-09.jpg';
+import fachada from '../assets/fotos/tolaita-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Tolaita, bar restaurante en Rafael Pikabea Hiribidea, 11, Elizalde (Gipuzkoa). Platos combinados, risotto y terraza, con 4,6 sobre 5 en Google. Teléfono 943 01 47 02.';
+
+const galeria = [
+	{
+		src: carne,
+		alt: 'Carne guisada desmenuzada sobre una cama de lechuga y tomate en un plato blanco',
+	},
+	{
+		src: pollo,
+		alt: 'Pollo asado con patatas fritas y ensalada en un plato combinado de Tolaita',
+	},
+	{
+		src: cafe,
+		alt: 'Café con leche en vaso sobre la mesa de la terraza de Tolaita',
+	},
+	{
+		src: vistas,
+		alt: 'Vistas desde la terraza de Tolaita al campo de fútbol y las casas de Elizalde',
+	},
+	{
+		src: pista,
+		alt: 'Explanada y pista deportiva junto a la terraza de Tolaita',
+	},
+	{
+		src: bacalao,
+		alt: 'Bacalao con pimientos y cebolla frita en salsa de tomate',
+	},
+	{
+		src: combinado,
+		alt: 'Plato combinado con huevos fritos, jamón y patatas fritas en Tolaita',
+	},
+	{
+		src: porche,
+		alt: 'Porche de la terraza de Tolaita con bancos y vistas a la zona de juegos',
+	},
+	{
+		src: bacalaoDetalle,
+		alt: 'Lomo de bacalao con pimientos verdes y cebolla crujiente en salsa roja',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Tolaita Ostatua en los soportales de Rafael Pikabea Hiribidea',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#tolaita`,
+	name: BUSINESS.name,
+	alternateName: ['Tolaita Ostatua', 'Bar Tolaita', 'Restaurante Tolaita', 'Tolaita Elizalde'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: `+34 ${BUSINESS.phone}`,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Platos combinados', 'Cocina de bar'],
+	areaServed: [
+		{ '@type': 'City', name: 'Elizalde' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Sunday'],
+			opens: '09:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Thursday'],
+			opens: '09:00',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '09:00',
+			closes: '23:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La barra', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Tolaita · Bar restaurante y terraza en Elizalde (Gipuzkoa)';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3f4a2e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Gloock&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Tolaita, Tolaita Ostatua, bar restaurante Elizalde, comer en Elizalde, platos combinados Elizalde, bar con terraza Gipuzkoa, Tolaita Rafael Pikabea Hiribidea"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Bar restaurante en Rafael Pikabea Hiribidea, 11 (Elizalde). Platos combinados, risotto y terraza, con 4,6 sobre 5 en Google. Teléfono 943 01 47 02."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Tolaita Ostatua en los soportales de Elizalde"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#3f4a2e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Elizalde, Gipuzkoa"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Tolaita"
+			subtitle="Bar jatetxea · Elizalde"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Rafael Pikabea Hiribidea, 11 · Elizalde"
+				title="Bar, jatetxe <br /><em>y terraza.</em>"
+				lede={`Tolaita es un bar restaurante (Bar-Jatetxe) en Rafael Pikabea Hiribidea, 11, en Elizalde (Gipuzkoa). Platos combinados, risotto y una terraza con vistas a la pista deportiva, con 4,6 sobre 5 en Google y 221 reseñas. Cierra los martes: para venir o reservar, llama al ${BUSINESS.phone}.`}
+				image={fachada}
+				imageAlt="Fachada de Tolaita Ostatua en los soportales de Rafael Pikabea Hiribidea"
+				primaryCta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 221 reseñas' },
+					{ label: 'Contacto', html: `<b>${BUSINESS.phone}</b> teléfono directo` },
+					{ label: 'Horario', html: '<b>Martes</b> cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Tolaita" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un bar de barrio <br /><em>con terraza.</em>"
+				paragraphs={[
+					'Tolaita está en los soportales de Rafael Pikabea Hiribidea, 11, en Elizalde (Gipuzkoa): un bar-jatetxe de barrio con terraza, mesas de madera y vistas a la pista deportiva y la zona de juegos.',
+					'Google lo clasifica como bar restaurante y bar, y le da 4,6 sobre 5 con 221 reseñas. Su ficha publica teléfono y horario, pero no una carta, precios, correo ni una web propia, así que esta web no inventa nada de eso.',
+					'Sus reseñas hablan de los platos combinados y del risotto («buenísimo») y, sobre todo, del servicio: «magnífica atención» y unos camareros «súper agradables y rápidos». Las fotos de su perfil muestran además bacalao, pollo, carne y café en la terraza.',
+					'Abre todos los días menos los martes: lunes y domingo de 9:00 a 21:00; miércoles y jueves hasta las 22:00; y viernes y sábado hasta las 23:30.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo resume así: «Pedimos platos combinados y rissotto y buenísimo».`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La barra"
+				title="Platos combinados <br /><em>y risotto.</em>"
+				description="La ficha de Google no publica carta ni precios y el local no tiene web propia. Esto es lo que citan sus reseñas y la descripción que publica el propio bar."
+				cta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados ni carta en la ficha. Para saber qué hay hoy, lo más directo es llamar al 943 01 47 02."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la casa.</em>"
+				description="Las diez fotografías publicadas en el perfil de Tolaita en Google Maps: la terraza, el porche, la fachada y sus platos."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a Elizalde <br /><em>a la terraza.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, `${BUSINESS.regionName}, España`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario de la ficha de Google: lunes y domingo de 9:00 a 21:00; miércoles y jueves de 9:00 a 22:00; viernes y sábado de 9:00 a 23:30. Los martes cierra."
+				mapTitle="Mapa de Tolaita en Rafael Pikabea Hiribidea, 11, Elizalde (Gipuzkoa)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Tolaita · Elizalde"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="El teléfono 943 01 47 02 es el único canal de contacto que publica la ficha de Google: no hay correo, reserva online ni web propia. La ficha marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar a Tolaita"
+		/>
+	</body>
+</html>

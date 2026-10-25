@@ -1,0 +1,307 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import solomillo from '../assets/fotos/txiriboga-taberna-vertical-01.jpg';
+import fachada from '../assets/fotos/txiriboga-taberna-vertical-02.jpg';
+import pulpo from '../assets/fotos/txiriboga-taberna-apaisada-03.jpg';
+import mousse from '../assets/fotos/txiriboga-taberna-vertical-04.jpg';
+import ensalada from '../assets/fotos/txiriboga-taberna-vertical-05.jpg';
+import carne from '../assets/fotos/txiriboga-taberna-vertical-06.jpg';
+import torrija from '../assets/fotos/txiriboga-taberna-vertical-07.jpg';
+import pan from '../assets/fotos/txiriboga-taberna-vertical-08.jpg';
+import pescado from '../assets/fotos/txiriboga-taberna-apaisada-09.jpg';
+import guiso from '../assets/fotos/txiriboga-taberna-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Txiriboga Taberna, taberna y bar en Irazu Kalea, 6 (20170 Usurbil, Gipuzkoa). Cocina de producto local, carta, platos combinados y raciones, con pan hecho en casa. 4,5 sobre 5 en Google con 108 reseñas.';
+
+const galeria = [
+	{
+		src: pan,
+		alt: 'Panes caseros recién horneados sobre una rejilla',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de piedra de Txiriboga Taberna con el rótulo en la puerta y una barrica en la calle',
+	},
+	{
+		src: torrija,
+		alt: 'Torrija caramelizada con helado de chocolate',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado al horno con patatas panadera en un plato blanco',
+	},
+	{
+		src: carne,
+		alt: 'Carne a la plancha con cebolla caramelizada y guindillas',
+	},
+	{
+		src: solomillo,
+		alt: 'Carne con setas y salsa en un plato blanco',
+	},
+	{
+		src: mousse,
+		alt: 'Mousse de chocolate en un tarro de cristal con galleta desmenuzada',
+	},
+	{
+		src: guiso,
+		alt: 'Carne en salsa con patatas fritas',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada de lechuga con vinagreta y queso en un plato rectangular',
+	},
+	{
+		src: pulpo,
+		alt: 'Pulpo a la brasa con salsa y brotes en un plato blanco',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BarOrPub',
+	'@id': `${BUSINESS.siteUrl}/#txiriboga`,
+	name: BUSINESS.name,
+	alternateName: ['Txiriboga', 'Txiriboga Usurbil', 'Taberna Txiriboga', 'Bar Txiriboga'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: `+34 ${BUSINESS.phone}`,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina de producto local', 'Platos combinados', 'Raciones'],
+	areaServed: [
+		{ '@type': 'City', name: 'Usurbil' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Txiriboga Taberna · Taberna y bar en Usurbil';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2f3a2a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Karla:wght@300..700&family=Young+Serif&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Txiriboga Taberna, Txiriboga Usurbil, taberna Usurbil, bar Usurbil, comer en Usurbil, platos combinados Usurbil, pintxos Usurbil, pan casero, restaurante Gipuzkoa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Taberna en Irazu Kalea, 6 (Usurbil). Cocina de producto local, carta, platos combinados y raciones, pan hecho en casa. 4,5 sobre 5 en Google con 108 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pulpo a la brasa con salsa y brotes en un plato blanco"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2f3a2a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Usurbil, Gipuzkoa"
+			preload={[pulpo]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Txiriboga"
+			subtitle="Taberna · Usurbil"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Irazu Kalea, 6 · Usurbil"
+				title="Taberna, cocina <br /><em>y pan de casa.</em>"
+				lede={`Txiriboga Taberna está en Irazu Kalea, 6, en Usurbil. Su ficha describe cocina de producto local, carta, platos combinados y raciones, con pan hecho en casa, y Google le da 4,5 sobre 5 con 108 reseñas. Abre de miércoles a domingo; las comidas y cenas van del viernes por la noche al domingo al mediodía.`}
+				image={pulpo}
+				imageAlt="Pulpo a la brasa con salsa y brotes en un plato blanco"
+				primaryCta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 108 reseñas' },
+					{ label: 'La casa', html: '<b>Cocina local</b> y pan casero' },
+					{ label: 'Horario', html: '<b>Lunes y martes</b> cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Txiriboga Taberna" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Producto local <br /><em>y pan de casa.</em>"
+				paragraphs={[
+					'En el número 6 de Irazu Kalea está Txiriboga Taberna, una taberna y bar que Google puntúa con 4,5 sobre 5 a partir de 108 reseñas.',
+					'Su ficha publica una descripción del propio local, en euskera y castellano: cocina de producto local, carta, platos combinados o raciones, y pan hecho en casa.',
+					'Las comidas y cenas van del viernes por la noche al domingo al mediodía. La taberna abre de miércoles a domingo, de 11:00 a 23:00; los lunes y los martes cierra.',
+					'Las reseñas destacan los pintxos, el trato del personal y postres como la torrija y la mousse de chocolate. La ficha no publica precios ni carta completa, así que esta web no los inventa.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. La ficha marca acceso para sillas de ruedas y asientos adaptados.`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que publica <br /><em>la taberna.</em>"
+				description="La ficha no incluye la carta completa ni los precios. Esto es lo que describe el propio local, más lo que citan sus reseñas."
+				cta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay carta ni precios publicados en Google. Para saber qué hay hoy, lo más directo es llamar al 943 21 88 40."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la taberna.</em>"
+				description="Las diez fotografías publicadas en el perfil de Txiriboga Taberna en Google Maps: la fachada, la cocina, el pan y los postres."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a Usurbil <br /><em>a picar algo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, `${BUSINESS.regionName}, España`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario de la ficha de Google: de miércoles a domingo de 11:00 a 23:00; lunes y martes cierra. La descripción del local concreta que las comidas y cenas son del viernes por la noche al domingo al mediodía."
+				mapTitle="Mapa de Txiriboga Taberna en Irazu Kalea, 6, Usurbil"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Txiriboga Taberna · Usurbil"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="El teléfono 943 21 88 40 es el único canal de contacto que publica la ficha de Google: no hay correo ni web propia. Llama antes para confirmar mesa y horario de cocina."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar a Txiriboga"
+		/>
+	</body>
+</html>

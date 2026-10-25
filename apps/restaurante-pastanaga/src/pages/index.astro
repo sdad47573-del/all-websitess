@@ -1,0 +1,319 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import esplanada from '../assets/fotos/restaurante-pastanaga-vertical-01.jpg';
+import carne from '../assets/fotos/restaurante-pastanaga-vertical-02.jpg';
+import noite from '../assets/fotos/restaurante-pastanaga-apaisada-03.jpg';
+import mesa from '../assets/fotos/restaurante-pastanaga-apaisada-04.jpg';
+import travessa from '../assets/fotos/restaurante-pastanaga-vertical-05.jpg';
+import atum from '../assets/fotos/restaurante-pastanaga-apaisada-06.jpg';
+import molho from '../assets/fotos/restaurante-pastanaga-apaisada-07.jpg';
+import caril from '../assets/fotos/restaurante-pastanaga-vista-9-09.jpg';
+import beringela from '../assets/fotos/restaurante-pastanaga-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Pastanaga · Cozinha portuguesa na Travessa dos Pescadores';
+const description =
+	'Restaurante Pastanaga, cozinha portuguesa na Travessa dos Pescadores, 27, em Lisboa. Jantares de segunda a domingo, exceto terça, e reservas pelo 932 910 125.';
+
+const galeria = [
+	{
+		src: esplanada,
+		alt: 'Esplanada do Pastanaga na Travessa dos Pescadores, com guarda-sóis e a porta laranja da casa',
+	},
+	{
+		src: noite,
+		alt: 'Mesa posta ao anoitecer na Travessa dos Pescadores, com guardanapos laranja e plantas',
+	},
+	{
+		src: mesa,
+		alt: 'Gambas ao alho, queijo batido com tomate e carne desfiada com arroz numa mesa do Pastanaga',
+	},
+	{
+		src: travessa,
+		alt: 'Travessa dos Pescadores cheia de gente nas esplanadas ao fim do dia',
+	},
+	{
+		src: atum,
+		alt: 'Atum grelhado fatiado com lima e salada num prato branco',
+	},
+	{
+		src: molho,
+		alt: 'Carne com molho cremoso e cogumelos num prato fundo',
+	},
+	{
+		src: carne,
+		alt: 'Carne desfiada sobre puré de batata num prato branco',
+	},
+	{
+		src: caril,
+		alt: 'Frango com caril e arroz acompanhado de salada',
+	},
+	{
+		src: beringela,
+		alt: 'Beringelas assadas com queijo fresco e rebentos num prato branco',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#pastanaga`,
+	name: BUSINESS.name,
+	alternateName: ['Pastanaga', 'Pastanaga Lisboa', 'Restaurante Pastanaga Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 932 910 125',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cozinha portuguesa', 'Cozinha tradicional portuguesa'],
+	acceptsReservations: 'https://thefork.pt/restaurante/pastanaga-r728295',
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '18:00',
+			closes: '23:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares para pessoas em cadeiras de rodas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3b4a33" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Pastanaga, Pastanaga Lisboa, Travessa dos Pescadores, restaurante cozinha portuguesa Lisboa, jantar Lisboa, comida da Ana, reservar Pastanaga, restaurante Bairro Alto"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha portuguesa na Travessa dos Pescadores, 27, em Lisboa. Jantares de segunda a domingo, exceto terça, com reservas pelo 932 910 125."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Esplanada do Restaurante Pastanaga com a porta laranja da casa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#3b4a33"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[esplanada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Pastanaga"
+			subtitle="Cozinha portuguesa · Lisboa"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Travessa dos Pescadores, 27 · Lisboa"
+				title="A comida da Ana, <br /><em>na travessa.</em>"
+				lede={`O Pastanaga é uma casa de cozinha portuguesa na Travessa dos Pescadores, 27, em Lisboa. O próprio espaço resume a proposta numa frase — «a comida da Ana: diferente, única» — e a sala é pequena, com esplanada na travessa. Tem 4,8 sobre 5 no Google com 925 críticas.`}
+				image={esplanada}
+				imageAlt="Esplanada do Pastanaga na Travessa dos Pescadores, com guarda-sóis e a porta laranja da casa"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> no Google · 925 críticas' },
+					{ label: 'Jantar', html: '<b>18:00–23:30</b> de segunda a domingo' },
+					{ label: 'Fecha', html: '<b>Terça-feira</b> encerrado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o Restaurante Pastanaga" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma travessa <br /><em>com nome de cenoura.</em>"
+				paragraphs={[
+					'O Pastanaga ocupa um rés-do-chão numa travessa estreita de Lisboa, a Travessa dos Pescadores, 27. A porta é laranja, há mesas na rua e, lá dentro, a sala é pequena: toalhas claras, velas e uma decoração que as críticas fazem questão de elogiar.',
+					'A cozinha é de matriz portuguesa, e a Google classifica a casa como restaurante de cozinha tradicional portuguesa. A descrição que o próprio espaço assina na ficha é curta e pessoal: «a comida da Ana: diferente, única. Experimenta.»',
+					'Quem já jantou aqui fala do acolhimento, do ambiente e do serviço — «boa experiência, ambiente acolhedor e serviço simpático» —, e a sala costuma encher. A ficha de Google recomenda reservar, por isso o telefone e a página de reservas são o caminho mais direto.',
+					'A ficha não publica carta completa nem preços, e o site indicado (pastanaga.pt) abre um espaço com acesso restrito. Esta página reúne apenas o que está publicado: morada, horário, telefone, fotografias e críticas, sem inventar valores.',
+				]}
+				note="Tem 4,8 sobre 5 com 925 críticas no Google. Uma delas diz: «Simplesmente excelente, o acolhimento, o espaço, a decoração, a comida»."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A mesa"
+				title="Pratos que <br /><em>se repetem.</em>"
+				description="A ficha de Google não publica carta nem preços. Estes são os pratos que se repetem nas críticas e nas listas públicas da casa; a oferta muda com o mercado."
+				cta={{ label: `Reservar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Não há carta nem preços publicados na ficha. Para saber o que há hoje, o mais direto é ligar para o 932 910 125 ou reservar pelo TheFork."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As nove fotografias publicadas no perfil do Restaurante Pastanaga em Google Maps: a esplanada na travessa, a sala ao anoitecer e os pratos que saem da cozinha."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Jantar na <br /><em>Travessa dos Pescadores.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias das 18:00 às 23:30, exceto à terça-feira, que fecha. Convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Restaurante Pastanaga na Travessa dos Pescadores, 27, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Pastanaga · Travessa dos Pescadores"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Reservar no TheFork', href: MAPS.reserve, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Reservas por telefone ou pela página do restaurante no TheFork; a ficha de Google recomenda reservar. O espaço tem lugares para pessoas em cadeiras de rodas, mas não tem estacionamento acessível."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>jantar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Reservar ↗', href: MAPS.reserve, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário, carta e preços antes da visita."
+			ctaLabel="Ligar ao Pastanaga"
+			navAriaLabel="Ligações do Restaurante Pastanaga"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,0 +1,338 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-da-se-apaisada-10.jpg';
+import salaLuzes from '../assets/fotos/restaurante-da-se-vertical-01.jpg';
+import sangriaPaella from '../assets/fotos/restaurante-da-se-vertical-02.jpg';
+import interiorAzul from '../assets/fotos/restaurante-da-se-vertical-03.jpg';
+import pratosMesa from '../assets/fotos/restaurante-da-se-apaisada-04.jpg';
+import esplanadaSardinhas from '../assets/fotos/restaurante-da-se-vertical-05.jpg';
+import salaAzulejo from '../assets/fotos/restaurante-da-se-apaisada-06.jpg';
+import paella from '../assets/fotos/restaurante-da-se-vertical-07.jpg';
+import sardinhas from '../assets/fotos/restaurante-da-se-vertical-08.jpg';
+import sardinhasSalada from '../assets/fotos/restaurante-da-se-apaisada-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Restaurante da Sé · Cozinha portuguesa em Alfama';
+const description =
+	'Restaurante da Sé, cozinha portuguesa na Cruzes da Sé, 31A, em Alfama, Lisboa. Aberto todos os dias das 10:30 às 23:30, com esplanada e reservas online.';
+
+const galeria = [
+	{
+		src: esplanadaSardinhas,
+		alt: 'Mesa de toalha de xadrez na esplanada com sardinhas grelhadas, salada, bacalhau gratinado e pastéis de bacalhau',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco em travessa de ferro sobre toalha de xadrez azul, com uma jarra de sangria ao lado',
+	},
+	{
+		src: salaLuzes,
+		alt: 'Sala do Restaurante da Sé com candeeiros suspensos, prateleira de vinhos e mesas postas',
+	},
+	{
+		src: sardinhasSalada,
+		alt: 'Quatro sardinhas assadas com batata cozida, salada, cebola roxa e limão',
+	},
+	{
+		src: salaAzulejo,
+		alt: 'Sala do restaurante com parede de azulejo, garrafas de vinho ao fundo e candeeiros de vime',
+	},
+	{
+		src: pratosMesa,
+		alt: 'Conjunto de pratos da casa vistos de cima: peixe grelhado, camarões, esparguete, bife e saladas',
+	},
+	{
+		src: sardinhas,
+		alt: 'Sardinhas grelhadas com batata cozida, limão, azeitonas e salsa',
+	},
+	{
+		src: interiorAzul,
+		alt: 'Sala do restaurante iluminada de azul e laranja, com mesas de tampo amarelo e candeeiros esféricos',
+	},
+	{
+		src: sangriaPaella,
+		alt: 'Paella amarela em travessa de ferro, com um copo de sangria e uma jarra de água na mesa',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada do Restaurante da Sé em Alfama, com os toldos de «Comida Portuguesa» e «Restaurante da Sé» e as mesas na calçada',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta do Restaurante da Sé',
+	inLanguage: 'pt-PT',
+	url: MAPS.menu,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#da-se`,
+	name: BUSINESS.name,
+	alternateName: ['Restaurante da Se', 'da Sé Lisboa', 'Restaurante da Sé Alfama'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.thefork],
+	telephone: '+351 21 886 2886',
+	currenciesAccepted: 'EUR',
+	priceRange: '€€',
+	servesCuisine: ['Cozinha portuguesa', 'Cozinha europeia', 'Peixe e marisco'],
+	acceptsReservations: MAPS.reserve,
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:30',
+			closes: '23:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares para pessoas em cadeiras de rodas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#16293f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante da Sé, restaurante Alfama, comer junto à Sé de Lisboa, comida portuguesa Lisboa, sardinhas assadas Alfama, arroz de marisco, paella Lisboa, Cruzes da Sé, reservar restaurante Alfama"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha portuguesa na Cruzes da Sé, 31A, em Alfama. Sardinhas na grelha, arroz de marisco e esplanada junto à catedral. Aberto todos os dias, das 10:30 às 23:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Esplanada do Restaurante da Sé em Alfama, com os toldos da casa e as mesas na calçada"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#16293f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Restaurante da Sé"
+			subtitle="Cozinha portuguesa · Alfama"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Cruzes da Sé, 31A · Alfama"
+				title="Comida portuguesa <br /><em>aos pés da Sé.</em>"
+				lede={`O Restaurante da Sé está na Cruzes da Sé, 31A, a poucos passos da catedral, com esplanada debaixo das árvores e uma sala de azulejo. Sardinhas na grelha, arroz de marisco e paella, das 10:30 às 23:30. Tem 4,5 sobre 5 no Google com ${BUSINESS.reviewsCount.toLocaleString('pt-PT')} críticas.`}
+				image={fachada}
+				imageAlt="Esplanada do Restaurante da Sé em Alfama, com os toldos da casa e as mesas na calçada"
+				primaryCta={{ label: 'Reservar mesa', href: MAPS.reserve, external: true }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> no Google · 2.421 críticas' },
+					{ label: 'Horário', html: '<b>10:30–23:30</b> todos os dias' },
+					{ label: 'Mesas', html: '<b>Esplanada</b> na calçada, junto à Sé' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que oferece o Restaurante da Sé" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma casa de Alfama <br /><em>ao lado da catedral.</em>"
+				paragraphs={[
+					'O Restaurante da Sé fica na Cruzes da Sé, 31A, a poucos passos da catedral de Lisboa. A fachada é clara, com dois toldos esbranquiçados — «Comida Portuguesa» e «Restaurante da Sé» — e as mesas saem para a calçada, debaixo das árvores, com toalhas de xadrez.',
+					'Lá dentro, a sala tem parede de azulejo, candeeiros suspensos e uma prateleira de vinhos ao fundo. É uma casa de bairro que também é de passagem: quem sobe à Sé senta-se aqui a comer sardinhas na grelha, arroz de marisco ou uma paella em travessa de ferro.',
+					'A Google classifica a casa como restaurante de cozinha tradicional portuguesa e a ficha assinala a etiqueta Brunch. Nas plataformas públicas aparece também como cozinha europeia e italiana. O próprio espaço resume a ideia numa linha, em inglês: «Eat. Drink. Love.»',
+					'A ficha não publica carta. A casa mantém a carta com preços no TheFork, e esta página reúne apenas os pratos que se repetem nas críticas, nas fotografias do perfil e nos excertos públicos dessa carta — sem inventar valores nem pratos.',
+				]}
+				note="4,5 sobre 5 com 2.421 críticas no Google. Uma delas: «Sítio muito agradável, boa comida, excelente serviço»."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Carta no TheFork', href: MAPS.menu, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="Na mesa"
+				title="O que sai <br /><em>da cozinha.</em>"
+				description="A ficha de Google não publica carta. Estes são os pratos que se repetem nas críticas, nas fotografias da casa e nos excertos públicos da carta; a carta completa, com preços, está no TheFork."
+				cta={{ label: 'Reservar mesa', href: MAPS.reserve }}
+				groups={MENU}
+				note="A casa publica a carta com preços no TheFork: o preço médio é 19 € e dois dos valores que aí figuram são os pastéis de bacalhau (12,90 €) e a paella de marisco (20,90 €). Os restantes ficam na carta, que muda com o mercado."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Dez fotografias <br /><em>da casa.</em>"
+				description="As dez fotografias do perfil do Restaurante da Sé no Google Maps: a fachada e a esplanada em Alfama, a sala de azulejo, a paella, as sardinhas na grelha e o bacalhau gratinado."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="À mesa, <br /><em>em Alfama.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias, das 10:30 às 23:30, sem dia de fecho. Convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Restaurante da Sé na Cruzes da Sé, 31A, em Alfama, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante da Sé · Alfama"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Reservar no Resos', href: MAPS.reserve, external: true, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Carta no TheFork', href: MAPS.menu, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="As reservas fazem-se pela página do Resos, que é a que a ficha de Google indica, ou por telefone. A esplanada fica na calçada, debaixo das árvores, e a sala tem lugares para pessoas em cadeiras de rodas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Reservar ↗', href: MAPS.reserve, external: true },
+				{ label: 'Carta ↗', href: MAPS.menu, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Carta e preços publicados pela casa no TheFork; confirma horário e valores antes da visita."
+			ctaLabel="Ligar à Sé"
+			navAriaLabel="Ligações do Restaurante da Sé"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

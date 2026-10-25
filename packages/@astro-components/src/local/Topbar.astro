@@ -6,29 +6,61 @@ export interface Props {
 	mark: string;
 	name: string;
 	subtitle: string;
-	phone: string;
-	phoneHref: string;
+	phone?: string;
+	phoneHref?: string;
 	nav: { label: string; href: string }[];
+	/** Alternativa al teléfono para los locales que no publican ninguno. */
+	cta?: { label: string; href: string; external?: boolean };
+	/** Permite traducir los textos accesibles en webs de otros idiomas. */
+	homeLabel?: string;
+	navAriaLabel?: string;
 }
 
-const { mark, name, subtitle, phone, phoneHref, nav } = Astro.props;
+const {
+	mark,
+	name,
+	subtitle,
+	phone,
+	phoneHref,
+	nav,
+	cta,
+	homeLabel = 'inicio',
+	navAriaLabel = 'Navegación principal',
+} = Astro.props;
 ---
 
 <header class="topbar">
 	<div class="topbar-inner wrap">
-		<a class="brand" href="#inicio" aria-label={`${name}, inicio`}>
+		<a class="brand" href="#inicio" aria-label={`${name}, ${homeLabel}`}>
 			<span class="brand-mark" aria-hidden="true">{mark}</span>
 			<span class="brand-name">
 				{name}
 				<small>{subtitle}</small>
 			</span>
 		</a>
-		<nav aria-label="Navegación principal">
+		<nav aria-label={navAriaLabel}>
 			{nav.map((item) => <a href={item.href}>{item.label}</a>)}
 		</nav>
-		<a class="topbar-phone" href={phoneHref}>{phone}</a>
+		{
+			phone ? (
+				<a class="topbar-phone" href={phoneHref}>
+					{phone}
+				</a>
+			) : (
+				cta && (
+					<a
+						class="topbar-phone"
+						href={cta.href}
+						target={cta.external ? '_blank' : undefined}
+						rel={cta.external ? 'noreferrer' : undefined}
+					>
+						{cta.label}
+					</a>
+				)
+			)
+		}
 	</div>
-	<nav class="local-mobile-nav wrap" aria-label="Navegación móvil">
+	<nav class="local-mobile-nav wrap" aria-label={navAriaLabel}>
 		{nav.map((item) => <a href={item.href}>{item.label}</a>)}
 	</nav>
 </header>

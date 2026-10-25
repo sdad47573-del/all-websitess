@@ -30,7 +30,7 @@ export interface Props {
 	/** Código de la comunidad autónoma para `geo.region` (ISO 3166-2:ES). */
 	geoRegion?: string;
 	postalCode: string;
-	phone: string;
+	phone?: string;
 	latitude: number;
 	longitude: number;
 	placeName: string;
@@ -49,6 +49,10 @@ export interface Props {
 	preload?: ImageMetadata[];
 	/** Datos estructurados adicionales (Restaurant, FAQPage…). */
 	schemas: object[];
+	/** Idioma del Open Graph (por defecto, español de España). */
+	locale?: string;
+	/** País del Open Graph (por defecto, España). */
+	countryName?: string;
 }
 
 const {
@@ -78,6 +82,8 @@ const {
 	contact,
 	preload = [],
 	schemas,
+	locale = 'es_ES',
+	countryName = 'España',
 } = Astro.props;
 
 // Las imágenes importadas no traen `srcSet` hasta que se generan sus variantes,
@@ -119,7 +125,7 @@ const preloads = await Promise.all(
 
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />
-<meta property="og:locale" content="es_ES" />
+<meta property="og:locale" content={locale} />
 <meta property="og:site_name" content={name} />
 <meta property="og:title" content={ogTitle} />
 <meta property="og:description" content={ogDescription} />
@@ -132,8 +138,8 @@ const preloads = await Promise.all(
 <meta property="og:locality" content={city} />
 <meta property="og:region" content={region} />
 <meta property="og:postal-code" content={postalCode} />
-<meta property="og:country-name" content="España" />
-<meta property="og:phone_number" content={phone} />
+<meta property="og:country-name" content={countryName} />
+{phone && <meta property="og:phone_number" content={phone} />}
 <meta property="place:location:latitude" content={String(latitude)} />
 <meta property="place:location:longitude" content={String(longitude)} />
 

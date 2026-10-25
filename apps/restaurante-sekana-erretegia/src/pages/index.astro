@@ -1,0 +1,318 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import bogavantes from '../assets/fotos/restaurante-sekana-erretegia-cuadrada-01.jpg';
+import chuleton from '../assets/fotos/restaurante-sekana-erretegia-apaisada-02.jpg';
+import cochinillo from '../assets/fotos/restaurante-sekana-erretegia-apaisada-03.jpg';
+import pescado from '../assets/fotos/restaurante-sekana-erretegia-apaisada-04.jpg';
+import chuletonPatatas from '../assets/fotos/restaurante-sekana-erretegia-apaisada-05.jpg';
+import croquetas from '../assets/fotos/restaurante-sekana-erretegia-vertical-06.jpg';
+import rodaballo from '../assets/fotos/restaurante-sekana-erretegia-vertical-07.jpg';
+import gambas from '../assets/fotos/restaurante-sekana-erretegia-vertical-08.jpg';
+import postre from '../assets/fotos/restaurante-sekana-erretegia-vertical-09.jpg';
+import jamon from '../assets/fotos/restaurante-sekana-erretegia-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante Sekaña Erretegia, parrilla en Lugar Barrio Aginaga, 20 (20170 Aginaga, Gipuzkoa). Chuleta, costilla y cochinillo por encargo, con 4,6 sobre 5 en Google y 242 reseñas. Teléfono 943 36 27 73.';
+
+const galeria = [
+	{
+		src: cochinillo,
+		alt: 'Cochinillo asado entero en una bandeja, con una ensalada al lado',
+	},
+	{
+		src: bogavantes,
+		alt: 'Tres bogavantes sobre la parrilla, encima de las brasas',
+	},
+	{
+		src: chuletonPatatas,
+		alt: 'Chuletón con patatas paja y ensalada',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado al horno con ajos laminados y un poco de guindilla',
+	},
+	{
+		src: rodaballo,
+		alt: 'Rodaballo al horno con ajos y salsa',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas a la plancha con limón y mayonesa',
+	},
+	{
+		src: croquetas,
+		alt: 'Cuatro croquetas caseras en un plato rectangular',
+	},
+	{
+		src: jamon,
+		alt: 'Jamón ibérico cortado en lonchas en un plato rectangular',
+	},
+	{
+		src: postre,
+		alt: 'Postre con nata montada, café y virutas de chocolate',
+	},
+	{
+		src: chuleton,
+		alt: 'Chuletón a la parrilla con sal gruesa en un plato blanco',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#sekana-erretegia`,
+	name: BUSINESS.name,
+	alternateName: [
+		BUSINESS.alternateName,
+		'Restaurante Sekaña',
+		'Erretegia Sekaña',
+		'Parrilla Sekaña Aginaga',
+	],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: `+34 ${BUSINESS.phone}`,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Parrilla', 'Asados'],
+	knowsLanguage: [
+		{ '@type': 'Language', name: 'Español' },
+		{ '@type': 'Language', name: 'Euskera' },
+	],
+	areaServed: [
+		{ '@type': 'City', name: 'Aginaga' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Las reseñas', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante Sekaña Erretegia · Parrilla en Aginaga';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2b2320" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..700&family=Bitter:wght@400..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Sekaña Erretegia, Sekaña Erretegia, parrilla Aginaga, asador Aginaga, comer en Aginaga, chuleta Aginaga, cochinillo por encargo, restaurante Gipuzkoa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Parrilla en Lugar Barrio Aginaga, 20. Chuleta, costilla, cochinillo por encargo y postres caseros, con 4,6 sobre 5 en Google y 242 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Chuletón a la parrilla con sal gruesa en un plato blanco"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2b2320"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Aginaga, Gipuzkoa"
+			preload={[chuleton]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Sekaña Erretegia"
+			subtitle="Parrilla · Aginaga"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Lugar Barrio Aginaga, 20 · Aginaga"
+				title="La parrilla <br /><em>de Aginaga.</em>"
+				lede={`Restaurante Sekaña Erretegia es una parrilla en Lugar Barrio Aginaga, 20, en Aginaga (Gipuzkoa). Google le da 4,6 sobre 5 con 242 reseñas que hablan de chuleta, costilla, cochinillo por encargo y postres caseros. La ficha no publica horario, así que para venir lo más seguro es llamar al ${BUSINESS.phone}.`}
+				image={chuleton}
+				imageAlt="Chuletón a la parrilla con sal gruesa en un plato blanco"
+				primaryCta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 242 reseñas' },
+					{ label: 'La casa', html: '<b>Parrilla</b> y asados' },
+					{ label: 'Horario', html: '<b>No publicado</b> en Google' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante Sekaña Erretegia" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Fuego, parrilla <br /><em>y sobremesa.</em>"
+				paragraphs={[
+					'En el número 20 de Lugar Barrio Aginaga está Restaurante Sekaña Erretegia, una parrilla que Google puntúa con 4,6 sobre 5 a partir de 242 reseñas.',
+					'Su ficha no publica descripción, carta, precios, horario ni web propia, así que esta web no los inventa: reúne lo que sí consta —dirección, teléfono, accesibilidad e idiomas— y lo que cuentan sus opiniones.',
+					'Las reseñas destacadas hablan de chuleta, costilla y cochinillo; el cochinillo, por encargo. También citan los «buenos asados», los postres caseros, el pollo a la brasa y las ensaladas.',
+					'Las fotos del perfil muestran la parrilla con bogavantes, el chuletón con sal gruesa, el cochinillo entero, el rodaballo al horno, las gambas, las croquetas, el jamón y un postre con nata.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. La ficha marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados, y español y euskera como idiomas.`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="Lo que cuentan las reseñas"
+				title="Sin carta publicada, <br /><em>pero con pistas.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto no es un menú: es lo que dicen quienes han comido allí y lo que se ve en las fotos del perfil."
+				cta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados ni carta en la ficha. Para saber qué hay hoy —y si el cochinillo está disponible—, lo más directo es llamar al 943 36 27 73."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la parrilla.</em>"
+				description="Las diez fotografías publicadas en el perfil de Restaurante Sekaña Erretegia en Google Maps: la parrilla, los asados, el pescado y los postres."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a Aginaga <br /><em>a comer asado.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, `${BUSINESS.regionName}, España`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="La ficha de Google no publica horario: en su lugar aparece la opción de añadirlo. Antes de desplazarte hasta Aginaga, confirma el día y la hora por teléfono."
+				mapTitle="Mapa de Restaurante Sekaña Erretegia en Lugar Barrio Aginaga, 20, Aginaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Sekaña Erretegia · Aginaga"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="El teléfono 943 36 27 73 es el único canal de contacto que publica la ficha de Google: no hay correo ni web propia, y tampoco horario publicado. Llama antes para confirmar mesa y cochinillo."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar a Sekaña Erretegia"
+		/>
+	</body>
+</html>

@@ -1,22 +1,20 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Bar+Restaurante+Hegaluze/@43.3275084,-1.9202218,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a5c8400baebb:0x3aedd9e435200d29!8m2!3d43.3275084!4d-1.9202218!16s%2Fg%2F11fnx7hyt8?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Yak+%26+Yeti+(Lisbon)/@38.7148918,-9.1315854,17z/data=!3m1!4b1!4m6!3m5!1s0xd193389cb80abb3:0xe44f7441aecfc7e3!8m2!3d38.7148918!4d-9.1315854!16s%2Fg%2F11bxg9zv__?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Tolaita/@43.2990684,-1.8626133,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a8666c52f021:0x1d33d7781dd694cf!8m2!3d43.2990684!4d-1.8626133!16s%2Fg%2F11dfslmmp7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Restaurant+ODAAN+(Nepalese+%26+Indian+)/@38.7166648,-9.134534,17z/data=!3m1!4b1!4m6!3m5!1s0xd193358d8f45b45:0x100a3f4f1553a14e!8m2!3d38.7166648!4d-9.134534!16s%2Fg%2F11rqsy_hr_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Mapa+Verde/@43.3223871,-1.9741699,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a541991e47b9:0xb0f4b76896ab9213!8m2!3d43.3223871!4d-1.9741699!16s%2Fg%2F11c6rhltc6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/8848+Restaurante+e+Snack+Bar/@38.7508626,-9.1988931,17z/data=!3m1!4b1!4m6!3m5!1s0xd1ecda1b5a759cb:0x3f775d016dcf1f70!8m2!3d38.7508626!4d-9.1988931!16s%2Fg%2F11t608hy5t?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Restaurante+Bar+Tolosa/@43.2946317,-1.9667849,17z/data=!3m1!4b1!4m6!3m5!1s0xd51af9400000001:0xbc5a7be853f7f23c!8m2!3d43.2946317!4d-1.9667849!16s%2Fg%2F1hc2dp59l?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Restaurante+Das+Marias/@38.7639682,-9.1264268,17z/data=!3m1!4b1!4m6!3m5!1s0xd1933ce1376c1ab:0x28f266cb78a81325!8m2!3d38.7639682!4d-9.1264268!16s%2Fg%2F11pxnm5btj?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Bar+Lasarte/@43.3237451,-1.9838107,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a56aff91a545:0x987d6a87e9545758!8m2!3d43.3237451!4d-1.9838107!16s%2Fg%2F11n5yxdrrx?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/BaniGala+RESTAURANTE+Lisbon/@38.7194493,-9.1349246,17z/data=!3m1!4b1!4m6!3m5!1s0xd193387cb4fb8b3:0xa2ac2c072676766f!8m2!3d38.7194493!4d-9.1349246!16s%2Fg%2F11kq58hv2c?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Restaurante+Landetxe+Jatetxea+%7C+Oiartzun/@43.2997679,-1.861426,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a99df0d9677f:0x27fa09e5fedf5119!8m2!3d43.2997679!4d-1.861426!16s%2Fg%2F11khd09qbc?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Jardim+das+Cerejas/@38.7114464,-9.1403093,17z/data=!3m1!4b1!4m6!3m5!1s0xd19347f325a17d5:0x3ff841e4e402247b!8m2!3d38.7114464!4d-9.1403093!16s%2Fg%2F1tg36h6s?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Restaurante+Urumea+el+Kubano/@43.3087219,-1.9670989,17z/data=!3m1!4b1!4m6!3m5!1s0xd51aff33fce66d7:0x7040a80b3ec787b0!8m2!3d43.3087219!4d-1.9670989!16s%2Fg%2F1xgzd2v6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Traditional+restaurant/@38.7169532,-9.1387087,17z/data=!3m1!4b1!4m6!3m5!1s0xd1933750b3ac697:0x7dfa2dad140ae1ef!8m2!3d38.7169532!4d-9.1387087!16s%2Fg%2F11stv331vz?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Restaurante+Seka%C3%B1a+Erretegia/@43.2747958,-2.071319,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b72a0143a65b:0xf250c30def5ea53c!8m2!3d43.2747958!4d-2.071319!16s%2Fg%2F1th0crzm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/RESTAURANTE+NU+BITOQ/@38.6279678,-9.1123781,17z/data=!3m1!4b1!4m6!3m5!1s0xd194b1a373d50a1:0xa086164a9bb5747!8m2!3d38.6279678!4d-9.1123781!16s%2Fg%2F11ty4mf5tk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Txiriboga+Taberna/@43.2702172,-2.0501156,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b120e2f99723:0x8b324cea6f10b486!8m2!3d43.2702172!4d-2.0501156!16s%2Fg%2F11fzfdpq44?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Salsa/@38.7128014,-9.1291244,17z/data=!3m1!4b1!4m6!3m5!1s0xd19347674c49e7d:0xf7c26d8ec3010ac3!8m2!3d38.7128014!4d-9.1291244!16s%2Fg%2F11b7svhn52?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Itxaropena+1910/@43.3225195,-1.9854189,17z/data=!3m1!4b1!4m6!3m5!1s0xd51a54d831992a7:0x79ab5f2bdf0de516!8m2!3d43.3225195!4d-1.9854189!16s%2Fg%2F1tgnyjvr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Joxe+Mari+Taberna/@43.3118598,-2.0002208,17z/data=!3m1!4b1!4m6!3m5!1s0xd51b0082ceec065:0x9eec130ccea6b476!8m2!3d43.3118598!4d-2.0002208!16s%2Fg%2F1tf596fx?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Est%C3%A1+No+Papo/@38.7109465,-9.1293013,17z/data=!3m1!4b1!4m6!3m5!1s0xd19310041dfad15:0xb4a68d11c4fc2ef2!8m2!3d38.7109465!4d-9.1293013!16s%2Fg%2F1tfsp7s6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
