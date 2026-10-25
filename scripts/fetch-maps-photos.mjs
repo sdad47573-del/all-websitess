@@ -24,8 +24,18 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 
-// sharp se carga desde una app del monorepo: es la unica que lo trae en sus deps.
-const require = createRequire(resolve('apps/bar-el-anzuelo/package.json'));
+// sharp se carga desde la propia app que se procesa; si su node_modules aun no
+// existe, se recurre a una app del monorepo que lo declare en sus deps.
+const requireFor = (app) => {
+	for (const anchor of [`apps/${app}/package.json`, 'apps/bar-el-anzuelo/package.json']) {
+		try {
+			return createRequire(resolve(anchor));
+		} catch {
+			// Siguiente anclaje.
+		}
+	}
+	throw new Error('No hay sharp instalado en ninguna app del monorepo.');
+};
 
 const argv = process.argv.slice(2);
 const dry = argv.includes('--dry');
@@ -98,9 +108,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const isJpeg = (buffer) => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
 
 /** Devuelve el buffer tal cual si ya es JPEG, o reconvertido si viene en otro formato. */
-async function asJpeg(buffer) {
+async function asJpeg(buffer, app) {
 	if (isJpeg(buffer)) return buffer;
-	const sharp = require('sharp');
+	const sharp = requireFor(app)('sharp');
 	return sharp(buffer).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
 }
 
@@ -217,7 +227,7 @@ for (const app of apps) {
 			console.log(`  ${app}: HTTP ${res.status} al descargar ${name}`);
 			continue;
 		}
-		const buffer = await asJpeg(Buffer.from(await res.arrayBuffer()));
+		const buffer = await asJpeg(Buffer.from(await res.arrayBuffer()), app);
 		writeFileSync(target, buffer);
 		manifest[photo.id] = {
 			file: name,
