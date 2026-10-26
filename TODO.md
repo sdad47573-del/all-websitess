@@ -1,26 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurant+L'Horta,+Cuina+Conscient/@39.8209844,-0.2290967,17z/data=!3m1!4b1!4m6!3m5!1s0xd600dcd6be50d07:0xdfaa311805aba7b2!8m2!3d39.8209844!4d-0.2290967!16s%2Fg%2F11h77qcpy1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Casa+Ana/@39.9620054,-0.2448319,17z/data=!3m1!4b1!4m6!3m5!1s0xd600b34387d343d:0x77010cf344cdb74c!8m2!3d39.9620054!4d-0.2448319!16s%2Fg%2F11ghg2vbg0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+del+Bierzo+y+Galicia/@40.0557752,0.0767836,17z/data=!3m1!4b1!4m6!3m5!1s0x12a003fcfe34aba5:0xb9794027d84a7238!8m2!3d40.0557752!4d0.0767836!16s%2Fg%2F11bv382g_0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Entre+Amigos+Bar+Restaurante/@39.9758999,-0.064094,17z/data=!3m1!4b1!4m6!3m5!1s0xd60014fccb5b311:0x4e2606df3402823e!8m2!3d39.9758999!4d-0.064094!16s%2Fg%2F11k3xqgyj5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Hermanos+Zaf%C3%B3n/@39.9867858,-0.0590794,17z/data=!3m1!4b1!4m6!3m5!1s0xd5ffe19304f0a99:0xe85233b89e7f0c21!8m2!3d39.9867858!4d-0.0590794!16s%2Fg%2F1tmy6ctt?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/RESTAURANTE+CORPORE+SANO/@39.9792544,-0.0514062,17z/data=!3m1!4b1!4m6!3m5!1s0xd60009e783b0c8b:0x43eca4acb379bcac!8m2!3d39.9792544!4d-0.0514062!16s%2Fg%2F11c809cxdk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/L'Arrosseria+de+Nelo/@39.9842304,-0.0362978,17z/data=!3m1!4b1!4m6!3m5!1s0xd5ffe2ae452d635:0x48c91bd16d010df5!8m2!3d39.9842304!4d-0.0362978!16s%2Fg%2F1wnbzbch?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Pancho's+Restaurant/@39.9961313,-0.0352371,17z/data=!3m1!4b1!4m6!3m5!1s0xd5fffcc87bbe49d:0x3d3e684705e33fb2!8m2!3d39.9961313!4d-0.0352371!16s%2Fg%2F1z44b6m0q?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurant+-+Bar+Casa+Herminia/@40.102729,-0.0018279,17z/data=!3m1!4b1!4m6!3m5!1s0xd5ff88043460ea3:0x94b3a16339c50b38!8m2!3d40.102729!4d-0.0018279!16s%2Fg%2F1tfx6704?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Bar+Restaurante+El+Cant%C3%B3/@39.8977408,-0.1038519,17z/data=!3m1!4b1!4m6!3m5!1s0xd60042815296d83:0x96b2383f0b1f865!8m2!3d39.8977408!4d-0.1038519!16s%2Fg%2F11g03n6d95?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/La+Tasca/@40.0585697,-0.1357897,17z/data=!3m1!4b1!4m6!3m5!1s0xd5ffd02099b788b:0xbf1fd19179e4dfda!8m2!3d40.0585697!4d-0.1357897!16s%2Fg%2F11gznllq0y?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Cooperativa+Sierra+de+Espadan/@39.9135611,-0.4426775,17z/data=!3m1!4b1!4m6!3m5!1s0xd6077272736eb81:0xe7c1fb1655f380ce!8m2!3d39.9135611!4d-0.4426775!16s%2Fg%2F11gjw8k0_y?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Bar+Restaurante+El+Cant%C3%B3/@39.8977408,-0.1038519,17z/data=!3m1!4b1!4m6!3m5!1s0xd60042815296d83:0x96b2383f0b1f865!8m2!3d39.8977408!4d-0.1038519!16s%2Fg%2F11g03n6d95?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
