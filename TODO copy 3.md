@@ -1,14 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Hyderabadi+Restaurante/@38.7885343,-9.1822696,17z/data=!3m1!4b1!4m6!3m5!1s0xd1933b811370925:0x376d46117375fb61!8m2!3d38.7885343!4d-9.1822696!16s%2Fg%2F11v9vsvqrq?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Os+Gon%C3%A7alves/@38.7853217,-9.3248921,17z/data=!3m1!4b1!4m6!3m5!1s0xd1ed16e0921f813:0x54471894eb4baa4f!8m2!3d38.7853217!4d-9.3248921!16s%2Fg%2F11h0ykt1w6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Sabores+com+Som/@38.5220716,-8.8806005,17z/data=!3m1!4b1!4m6!3m5!1s0xd1943b8b3386757:0x5f7e5848c0032045!8m2!3d38.5220716!4d-8.8806005!16s%2Fg%2F11nn3wn6m2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Casa+Indiana/@38.7351664,-9.1399403,17z/data=!3m1!4b1!4m6!3m5!1s0xd1933a21ebee7bf:0x9fc41d4168229325!8m2!3d38.7351664!4d-9.1399403!16s%2Fg%2F11hcf1kj5k?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Celeiro+Do+Campo/@38.5227996,-8.8925642,17z/data=!3m1!4b1!4m6!3m5!1s0xd1943c71e270913:0x520bbd40d5d5314f!8m2!3d38.5227996!4d-8.8925642!16s%2Fg%2F11j3t578y2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+O+Telheiro/@38.9991947,-9.0821825,17z/data=!3m1!4b1!4m6!3m5!1s0xd18d6664a56c5d5:0x33216de27453cc96!8m2!3d38.9991947!4d-9.0821825!16s%2Fg%2F11dxd1fc2y?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Sushi+TOKYO+Ramen+Restaurant/@38.7253177,-9.1334658,17z/data=!3m1!4b1!4m6!3m5!1s0xd193390147ae1f9:0x9c3f3b05057abcc3!8m2!3d38.7253177!4d-9.1334658!16s%2Fg%2F1tdgljbb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
