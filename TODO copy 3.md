@@ -1,8 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurante+O+Telheiro/@38.9991947,-9.0821825,17z/data=!3m1!4b1!4m6!3m5!1s0xd18d6664a56c5d5:0x33216de27453cc96!8m2!3d38.9991947!4d-9.0821825!16s%2Fg%2F11dxd1fc2y?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Sushi+TOKYO+Ramen+Restaurant/@38.7253177,-9.1334658,17z/data=!3m1!4b1!4m6!3m5!1s0xd193390147ae1f9:0x9c3f3b05057abcc3!8m2!3d38.7253177!4d-9.1334658!16s%2Fg%2F1tdgljbb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Taberna+Portu/@36.7249717,-4.4434246,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7aade1b6fdd:0x6cb287be5afed6e1!8m2!3d36.7249717!4d-4.4434246!16s%2Fg%2F11ys9wx7c1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Sonar+Bangla/@38.7198882,-9.1349153,17z/data=!3m1!4b1!4m6!3m5!1s0xd193385f2218e11:0x62c35fdf5b0aa991!8m2!3d38.7198882!4d-9.1349153!16s%2Fg%2F11c1ww5j86?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
