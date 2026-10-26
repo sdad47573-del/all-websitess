@@ -1,0 +1,334 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fajitas from '../assets/fotos/tres-amigos-apaisada-09.jpg';
+import burrito from '../assets/fotos/tres-amigos-apaisada-02.jpg';
+import mesaFajitas from '../assets/fotos/tres-amigos-apaisada-04.jpg';
+import margaritasAtardecer from '../assets/fotos/tres-amigos-vertical-03.jpg';
+import mural from '../assets/fotos/tres-amigos-vertical-07.jpg';
+import barra from '../assets/fotos/tres-amigos-vertical-08.jpg';
+import enchilada from '../assets/fotos/tres-amigos-vertical-10.jpg';
+import margaritas from '../assets/fotos/tres-amigos-vertical-05.jpg';
+import postre from '../assets/fotos/tres-amigos-vertical-06.jpg';
+import entrada from '../assets/fotos/tres-amigos-vertical-01.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: margaritasAtardecer,
+		alt: 'Dos margaritas en copa, una roja y otra clásica, en la terraza de Tres Amigos al atardecer',
+	},
+	{
+		src: burrito,
+		alt: 'Burrito gratinado con queso, guacamole y salsa, con ensalada y tomate',
+	},
+	{
+		src: mesaFajitas,
+		alt: 'Fajitas humeantes en la plancha con cesta de tortillas y un plato de quesadillas al fondo',
+	},
+	{
+		src: mural,
+		alt: 'Mural de un guerrero azteca con penacho de plumas y un águila, sobre los bancos del comedor',
+	},
+	{
+		src: barra,
+		alt: 'Barra del cocktail bar con botellas iluminadas y el frente pintado de grecas mexicanas',
+	},
+	{
+		src: enchilada,
+		alt: 'Enchilada gratinada con frijoles negros, arroz, ensalada y guacamole en la terraza',
+	},
+	{
+		src: margaritas,
+		alt: 'Detalle de dos margaritas con hielo y piel de naranja sobre la barra de madera',
+	},
+	{
+		src: postre,
+		alt: 'Postre frito con crema de vainilla, chocolate, azúcar glas y hierbabuena',
+	},
+	{
+		src: entrada,
+		alt: 'Entrada del comedor con las puertas abiertas a la terraza y sombreros mexicanos en la pared',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: ['Tres Amigos', 'Três Amigos Costa da Caparica', 'Tres Amigos Caparica'],
+	slogan: 'Mexicanos y cócteles a dos pasos de la playa',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 395 2171',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mexicana', 'Cócteles', 'Tex-Mex'],
+	areaServed: [
+		{ '@type': 'City', name: 'Costa da Caparica' },
+		{ '@type': 'City', name: 'Almada' },
+		{ '@type': 'AdministrativeArea', name: 'Área Metropolitana de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday'],
+			opens: '14:00',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '14:00',
+			closes: '00:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '13:00',
+			closes: '00:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Tres Amigos · Mexicanos y cócteles en Costa da Caparica';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f5c4d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Rubik:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Tres Amigos, Tres Amigos Costa da Caparica, restaurante mexicano Costa da Caparica, cocktail bar Caparica, tacos Caparica, burritos Almada, margaritas Costa da Caparica, mexicano Almada, Av. Gen. Humberto Delgado 13A"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Tres Amigos · Mexicanos y cócteles en Costa da Caparica"
+			ogDescription="Tacos, burritos, fajitas y margaritas a dos pasos de la playa. De martes a sábado, con cocina hasta la noche. 4,5 en Google con 387 reseñas. Tel. 21 395 2171."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fajitas humeantes con cesta de tortillas y salsas en Tres Amigos, Costa da Caparica"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#1f5c4d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-15"
+			postalCode={BUSINESS.postalCode}
+			phone="+351213952171"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 21 395 2171',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fajitas]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Mexican restaurant & cocktail bar"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. Gen. Humberto Delgado, 13A · Costa da Caparica"
+				title="Mexicanos y cócteles<br /><em>junto a la playa.</em>"
+				lede="Tres Amigos es el mexicano de Costa da Caparica, en Almada: la marca que ya funcionaba en Lisboa y que abrió aquí, a un paso de la arena, con cocina mexicana y una barra de cócteles. Fajitas que llegan humeando a la mesa con su cesta de tortillas, burritos gratinados, quesadillas, frijoles negros y margaritas servidas en copa mientras el sol cae sobre el Atlántico."
+				image={fajitas}
+				imageAlt="Fajitas de pollo humeantes en la plancha con cesta de tortillas, guacamole, salsa y crema en Tres Amigos"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Mexicano & cocktails"
+				facts={[
+					{ label: 'Nota', html: '<b>4,5 en Google</b> con 387 reseñas' },
+					{ label: 'Martes a jueves', html: '<b>14:00 – 23:30</b>' },
+					{ label: 'Viernes y sábado', html: '<b>Hasta las 00:00</b>' },
+					{ label: 'Lunes y domingo', html: '<b>Cerrado</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Tres Amigos" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comedor de murales<br /><em>y barra de tequila.</em>"
+				paragraphs={[
+					'El restaurante está en la Av. Gen. Humberto Delgado, 13A, en la avenida que baja hacia la playa de Costa da Caparica, en el municipio de Almada. Tiene dos ambientes: el comedor, con las paredes verdes, bancos azules y un gran mural de un guerrero azteca con su águila, y la terraza de la entrada, con mesas de madera y el aire de la playa a pocos pasos.',
+					'La cocina es mexicana sin rodeos: las fajitas salen en la plancha de hierro, aún humeando, con la cesta de tortillas de harina y los tres cuencos de crema agria, salsa y guacamole; el burrito se gratina con queso por encima y se sirve con ensalada, y la enchilada llega con su montaña de frijoles negros, arroz y guacamole. De postre, el frito con crema y chocolate que aparece en las fotos.',
+					'Y luego está la barra, que es media casa: estanterías iluminadas llenas de botellas, el frente pintado de grecas y espirales, y una carta de cócteles que el propio local describe como «exotic cocktails». Las margaritas —también las de fresa— y las caipirinhas son lo que más repiten las reseñas, y la terraza al atardecer es el mejor sitio para tomarlas.',
+				]}
+				note="La ficha de Google no publica carta con precios ni web propia: solo el teléfono, el 21 395 2171. La valoración es de 4,5 sobre 5 con 387 reseñas, y la accesibilidad incluye entrada, aparcamiento y asientos adaptados. Esta web es la de la ficha de Costa da Caparica; la marca tiene además un restaurante en Lisboa."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Fajitas, tacos<br />y margaritas<br /><em>hasta la noche.</em>"
+				description="No hay carta publicada con precios en Google: estos son los platos y las bebidas que repiten las reseñas, los que anuncia el local y los que aparecen en las fotos de su perfil."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Tres Amigos no publica su carta en Google y esta web no inventa nombres ni precios. Hay opciones vegetarianas y servicio para llevar; para conocer la carta del día y el precio de los cócteles, llama al 21 395 2171."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La mesa,<br />la barra<br /><em>y el atardecer.</em>"
+				description="Estas fotografías proceden del perfil de Tres Amigos en Google Maps: las margaritas al atardecer, el burrito gratinado, la mesa con fajitas y quesadillas, el mural azteca del comedor, la barra de botellas, la enchilada con frijoles en la terraza, el detalle de las margaritas, el postre frito y la entrada abierta a la terraza."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Av. Gen. Humberto Delgado, 13A · 2825-286 Costa de Caparica"
+				title="Camino de la playa,<br /><em>hasta medianoche.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.municipality} · ${BUSINESS.region}`,
+				]}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Cierra lunes y domingo. De martes a jueves abre de 14:00 a 23:30, los viernes de 14:00 a 24:00 y los sábados de 13:00 a 24:00. En festivos el horario puede cambiar: si vas en una fecha señalada, llama antes al 21 395 2171."
+				mapTitle="Mapa de Tres Amigos en la Av. Gen. Humberto Delgado, 13A, Costa da Caparica"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Tres Amigos · Costa da Caparica"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 21 395 2171. La ficha marca acceso, aparcamiento y asientos adaptados para sillas de ruedas, y el local ofrece servicio para llevar y aparece en las plataformas de reparto de la zona. En verano y los fines de semana la avenida se llena: avisar antes evita esperas."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>brindar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Tres Amigos"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>

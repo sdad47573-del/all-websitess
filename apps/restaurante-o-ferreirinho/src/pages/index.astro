@@ -1,0 +1,312 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import bife from '../assets/fotos/restaurante-o-ferreirinho-vertical-07.jpg';
+import cozido from '../assets/fotos/restaurante-o-ferreirinho-apaisada-09.jpg';
+import peixe from '../assets/fotos/restaurante-o-ferreirinho-vertical-04.jpg';
+import marisco from '../assets/fotos/restaurante-o-ferreirinho-apaisada-02.jpg';
+import migas from '../assets/fotos/restaurante-o-ferreirinho-apaisada-03.jpg';
+import sobremesa from '../assets/fotos/restaurante-o-ferreirinho-vertical-01.jpg';
+import caracois from '../assets/fotos/restaurante-o-ferreirinho-apaisada-05.jpg';
+import guisado from '../assets/fotos/restaurante-o-ferreirinho-vertical-10.jpg';
+import pratosDoDia from '../assets/fotos/restaurante-o-ferreirinho-panoramica-08.jpg';
+import sopa from '../assets/fotos/restaurante-o-ferreirinho-apaisada-06.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: bife,
+		alt: 'Bife a la parrilla con patatas fritas, ensalada y un vaso de vino tinto en O Ferreirinho',
+	},
+	{
+		src: marisco,
+		alt: 'Arroz de marisco con gambas y mejillones, con cilantro por encima, servido en la cazuela',
+	},
+	{
+		src: migas,
+		alt: 'Migas con trozos de cerdo, chouriço y jamón sobre una fuente blanca',
+	},
+	{
+		src: sobremesa,
+		alt: 'Tarta de chocolate con galleta Lotus en la base y cobertura brillante, sobre un pie de pastelería',
+	},
+	{
+		src: guisado,
+		alt: 'Carne guisada en salsa oscura con arroz blanco, grelos y salsa fresca de tomate',
+	},
+	{
+		src: peixe,
+		alt: 'Pescado entero a la brasa con patatas asadas y grelos en una fuente, en O Ferreirinho',
+	},
+	{
+		src: caracois,
+		alt: 'Ració de caracóis en plato blanco con el cuenco de salsa amarilla al lado',
+	},
+	{
+		src: pratosDoDia,
+		alt: 'Tres platos de pratos do dia: pollo y costilla guisados, puré y alubias en salsa',
+	},
+	{
+		src: sopa,
+		alt: 'Cuenco de sopa con rodajas de chouriço, morcilla y berza en O Ferreirinho',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: [BUSINESS.name, 'Restaurante O Ferreirinho Bucelas', 'O Ferreirinho Loures'],
+	slogan: 'Comida casera a pie de la EN-116',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 934 802 421',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Portuguesa', 'Casera', 'Parrilla'],
+	areaServed: [
+		{ '@type': 'City', name: 'Bucelas' },
+		{ '@type': 'City', name: 'Loures' },
+		{ '@type': 'AdministrativeArea', name: 'Área Metropolitana de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '07:30',
+			closes: '21:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'O Ferreirinho · Comida casera en Bucelas (Loures)';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6d1f24" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="O Ferreirinho, Restaurante O Ferreirinho, restaurante Bucelas, comer en Bucelas, pratos do dia Bucelas, restaurante Loures, comida caseira Loures, N116 Bucelas, grelhados Bucelas, caracóis Bucelas, arroz de marisco Bucelas"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="O Ferreirinho · Comida casera en Bucelas"
+			ogDescription="Pratos do dia a 7,50 €, pescado a la brasa, bifes y arroz de marisco, de lunes a sábado. 4,3 en Google con 141 reseñas. Tel. 934 802 421."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bife a la parrilla con patatas fritas y vino tinto en O Ferreirinho, Bucelas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#6d1f24"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351934802421"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 934 802 421',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[cozido]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Restaurante · Bucelas"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="N116, 52 · Bucelas · Loures"
+				title="Comida casera<br /><em>a pie de la EN-116.</em>"
+				lede="O Ferreirinho es un restaurante de carretera en Bucelas, en el municipio de Loures: abre a las 7:30 para el café y sigue sirviendo hasta las 21:00, sin cerrar al mediodía. El menú de pratos do dia cuesta 7,50 €, y de la parrilla salen pescado entero, bifes con patatas fritas y sardinhas, con el Arinto de la tierra en la mesa de al lado."
+				image={cozido}
+				imageAlt="Cozido à portuguesa con carne hervida, grelos, col, patata y huevo en O Ferreirinho, Bucelas"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Cozinha caseira"
+				facts={[
+					{ label: 'Nota', html: '<b>4,3 en Google</b> con 141 reseñas' },
+					{ label: 'Entre semana', html: '<b>07:30 – 21:00</b>' },
+					{ label: 'Menú del día', html: '<b>7,50 €</b>' },
+					{ label: 'Domingo', html: '<b>Cerrado</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece O Ferreirinho" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un restaurante de carretera<br /><em>de los de siempre.</em>"
+				paragraphs={[
+					'El local está en la N116, 52, en la Estrada Nacional que sale de Bucelas hacia Chamboeira, con el aparcamiento al lado mismo de la puerta. Es una casa de comidas de siempre: manteles blancos, mesas juntas, servicio de cafetería desde primera hora y un comedor pequeño que se llena a la hora de comer.',
+					'La cocina es la de una tasca portuguesa: pratos do dia que cambian con la semana, como el cozido à portuguesa con grelos y col, las migas con trozos de cerdo y chouriço, o el guisado de pollo y costilla en tomate con judía verde. De la brasa salen el pescado entero con patata asada, el bife con patatas fritas y ensalada, las sardinhas y el choco, y en la cazuela llega el arroz de marisco con gambas y mejillones.',
+					'El menú semanal que anuncia el propio restaurante en su Facebook cuesta 7,50 € «tudo incluído»: plato, bebida y ensalada. Para acompañar, cerveza bien fría o una copa de Arinto, el blanco de Bucelas, y para terminar los postres de la casa y el café, que es una de las cosas que más repiten las reseñas.',
+				]}
+				note="La ficha de Google no publica carta con precios ni web propia: solo el teléfono, el 934 802 421. Los precios y el menú de la semana se anuncian en la página de Facebook «O Ferreirinho | Bucelas». La valoración es de 4,3 sobre 5 con 141 reseñas, y de accesibilidad solo consta el aseo adaptado."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pratos do dia,<br />brasa<br /><em>y cazuela.</em>"
+				description="El local no tiene carta publicada con precios: estos son los platos que anuncia en su Facebook y los que aparecen en las fotos de su perfil de Google Maps."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="O Ferreirinho no publica su carta en Google y esta web no inventa nombres ni precios. El menú del día que anuncia en Facebook cuesta 7,50 € e incluye plato, bebida y ensalada; los grelhados, el arroz de marisco y los caracóis se cobran aparte y se preguntan en el local o por teléfono, en el 934 802 421."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Lo que sale<br />de la cocina<br /><em>y de la brasa.</em>"
+				description="Estas fotografías proceden del perfil de O Ferreirinho en Google Maps: el bife con patatas fritas y vino tinto, el arroz de marisco, las migas con carnes, una tarta de chocolate, la carne guisada con arroz y grelos, el pescado a la brasa con patata asada, los caracóis, tres platos de pratos do dia y la sopa con chouriço."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="N116, 52 · 2670-674 Bucelas"
+				title="A pie de carretera,<br /><em>de 7:30 a 21:00.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.municipality} · ${BUSINESS.region}`,
+				]}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre de lunes a sábado de 07:30 a 21:00, sin cerrar al mediodía, y descansa los domingos. En festivos el horario puede cambiar: si vas en una fecha señalada, llama antes al 934 802 421."
+				mapTitle="Mapa de O Ferreirinho en la N116, 52, Bucelas"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="O Ferreirinho · Bucelas"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online ni reparto a domicilio: se llama al 934 802 421. El local ofrece servicio para llevar para recoger allí, y su ficha de Google marca el aseo adaptado para sillas de ruedas. Para grupos o fines de semana conviene avisar antes."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a O Ferreirinho"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>
