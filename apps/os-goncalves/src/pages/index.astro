@@ -1,0 +1,327 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/os-goncalves-apaisada-01.jpg';
+import bitoque from '../assets/fotos/os-goncalves-apaisada-02.jpg';
+import carneBrasa from '../assets/fotos/os-goncalves-vertical-03.jpg';
+import peixe from '../assets/fotos/os-goncalves-vertical-04.jpg';
+import arroz from '../assets/fotos/os-goncalves-vertical-05.jpg';
+import frango from '../assets/fotos/os-goncalves-vertical-06.jpg';
+import feijao from '../assets/fotos/os-goncalves-vertical-08.jpg';
+import tortilla from '../assets/fotos/os-goncalves-apaisada-09.jpg';
+import costelas from '../assets/fotos/os-goncalves-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante Os Gonçalves, cocina tradicional portuguesa en Rio de Mouro (Sintra): petiscos, pescado, carne y marisco fresco a la brasa de carbón, sin congelados. De 8:30 a 22:00, cierra los jueves. 4,4 en Google con 91 reseñas. Tel. 219 164 202.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de Os Gonçalves con el toldo «Restaurante - Snack-Bar» y el rótulo de SICAL, en la Avenida Infante Dom Henrique de Rio de Mouro',
+	},
+	{
+		src: bitoque,
+		alt: 'Bitoque de Os Gonçalves con huevo frito, patata frita, arroz, pan y azeitonas, junto a una jarra roja con el nombre del restaurante',
+	},
+	{
+		src: carneBrasa,
+		alt: 'Surtido de carnes a la brasa con patata frita y limón servido en Os Gonçalves',
+	},
+	{
+		src: peixe,
+		alt: 'Pescado entero a la brasa con patata cocida, brécol y limón en un plato de Os Gonçalves',
+	},
+	{
+		src: arroz,
+		alt: 'Arroz guisado con carne y chouriço, con perejil fresco, en Os Gonçalves',
+	},
+	{
+		src: frango,
+		alt: 'Pollo a la brasa con arroz, patata frita, tomate y lechuga en el plato de Os Gonçalves',
+	},
+	{
+		src: feijao,
+		alt: 'Guiso de judías con carne y chouriço, con perejil, servido en Os Gonçalves',
+	},
+	{
+		src: tortilla,
+		alt: 'Tortilla de la casa en porciones con una rosa de tomate, en Os Gonçalves',
+	},
+	{
+		src: costelas,
+		alt: 'Costillas de cerdo a la brasa con patata cocida y limón en Os Gonçalves',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Os Gonçalves', 'Os Goncalves', 'Restaurante Os Goncalves Rio de Mouro'],
+	slogan: 'Cocina tradicional portuguesa a la brasa de carbón',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 219 164 202',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Portuguesa', 'Cocina tradicional', 'Grelhados', 'Marisco'],
+	areaServed: [
+		{ '@type': 'City', name: 'Rio de Mouro' },
+		{ '@type': 'AdministrativeArea', name: 'Sintra' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: 'Lisboa',
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '22:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamiento accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos accesibles para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'WC accesible para sillas de ruedas',
+			value: true,
+		},
+		{ '@type': 'LocationFeatureSpecification', name: 'Acepta perros', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((body) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+		reviewBody: body,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La brasa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Os Gonçalves · Restaurante portugués en Rio de Mouro';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4235" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Os Gonçalves, restaurante Rio de Mouro, comer en Rio de Mouro, grelha a carvão Sintra, restaurante portugués Sintra, picanha Rio de Mouro, petiscos Sintra, Av. Infante Dom Henrique 32-A, snack-bar Rio de Mouro"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Os Gonçalves · Restaurante portugués en Rio de Mouro"
+			ogDescription="Petiscos, pescado, carne y marisco fresco a la brasa de carbón, sin congelados. De 8:30 a 22:00; jueves cerrado. 4,4 en Google con 91 reseñas. Tel. 219 164 202."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Os Gonçalves, restaurante y snack-bar en Rio de Mouro"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f4235"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351219164202"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.regionName}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 219 164 202',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Brasa de carvão · Rio de Mouro"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. Infante Dom Henrique, 32-A · Rio de Mouro, Sintra"
+				title="A brasa de carvão<br /><em>de Rio de Mouro.</em>"
+				lede="Os Gonçalves es un restaurante y snack-bar de cocina tradicional portuguesa en la Avenida Infante Dom Henrique: petiscos, pescado, carne y marisco fresco a la brasa de carbón, sin producto congelado. Abre de 8:30 a 22:00 y cierra los jueves."
+				image={fachada}
+				imageAlt="Fachada de Os Gonçalves, restaurante y snack-bar en Rio de Mouro (Sintra)"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Grelha a carvão"
+				facts={[
+					{ label: 'Nota', html: '<b>4,4 en Google</b> con 91 reseñas' },
+					{ label: 'Horario', html: '<b>8:30 – 22:00</b>' },
+					{ label: 'Jueves', html: '<b>Jueves cerrado</b>' },
+					{ label: 'Cocina', html: '<b>Tradicional portuguesa</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Os Gonçalves" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Tasca de barrio,<br /><em>brasa de verdade.</em>"
+				paragraphs={[
+					'En la Avenida Infante Dom Henrique, 32-A, en Rio de Mouro (Sintra), Os Gonçalves se anuncia en el toldo como «Restaurante - Snack-Bar», junto al rótulo de SICAL. Es una casa de barrio, de mantel de papel y jarra de barro con el nombre grabado, donde la parrilla ocupa el centro de todo.',
+					'El restaurante lo resume en su propia ficha: «Petiscos, Peixe, Carne e Mariscos frescos, todos os dias, Grelha a Carvão. Nao trabalhamos com material congelado». De ahí salen el pescado entero marcado por la brasa, el pollo, las costillas, la picanha y los guisos de feijão y arroz de la casa.',
+					'Las fotos del perfil enseñan el registro del local: platos generosos con arroz, patata frita o cocida, ensalada y limón; un bitoque con huevo frito; una tortilla servida en porciones; pão e azeitonas para empezar. Las reseñas insisten en la relación calidad-precio y en el trato del personal.',
+				]}
+				note="«Comi a picanha, o feijão é bem saboroso, e pessoal simpático», cuenta una reseña. Otra resume: «Comida muito saborosa, boa relação preço quantidade»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La brasa"
+				title="Grelha a carvão<br /><em>e cozinha de casa.</em>"
+				description="La ficha no publica carta: estos platos salen de las fotos del perfil y de las reseñas. Pescado y carne a la brasa, guisos de la casa y petiscos para empezar."
+				cta={{ label: `Preguntar el día: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Os Gonçalves no publica precios en Google y esta web no los inventa. Los platos cambian con la compra del día, así que confirma disponibilidad y precio en el 219 164 202. La ficha tampoco ofrece reserva ni pedido online."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada,<br />la brasa<br /><em>y los platos.</em>"
+				description="Estas fotografías proceden del perfil de Os Gonçalves en Google Maps: el toldo de la avenida, el bitoque con huevo, el pescado y las carnes de la parrilla, los guisos de feijão y arroz y la tortilla de la casa."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Av. Infante Dom Henrique, 32-A · 2635-366 Rio de Mouro"
+				title="En Rio de Mouro,<br /><em>de 8:30 a 22:00.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Sintra, Portugal']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre de lunes a miércoles y de viernes a domingo, de 8:30 a 22:00; el jueves cierra. La ficha avisa de que el horario puede cambiar en festivos, así que llama antes si vas en día señalado."
+				mapTitle="Mapa de Os Gonçalves en la Avenida Infante Dom Henrique, 32-A, Rio de Mouro (Sintra)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Os Gonçalves · Rio de Mouro"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 219 164 202. La ficha marca estacionamiento, entrada, asientos y WC accesibles para sillas de ruedas, y el atributo «Aceita cães»: si vas con perro, confirma al llamar dónde puede quedarse."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a Os Gonçalves"
+			creditLabel="Creado por"
+		/>
+	</body>
+</html>
