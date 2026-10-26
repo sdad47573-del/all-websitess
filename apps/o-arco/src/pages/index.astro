@@ -1,0 +1,324 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import peixePolvo from '../assets/fotos/o-arco-apaisada-07.jpg';
+import arrozMarisco from '../assets/fotos/o-arco-apaisada-03.jpg';
+import sardinhas from '../assets/fotos/o-arco-vertical-05.jpg';
+import gambas from '../assets/fotos/o-arco-vertical-09.jpg';
+import bitoque from '../assets/fotos/o-arco-vertical-08.jpg';
+import feijao from '../assets/fotos/o-arco-vertical-02.jpg';
+import entrada from '../assets/fotos/o-arco-vertical-01.jpg';
+import ruaDia from '../assets/fotos/o-arco-vertical-04.jpg';
+import ruaNoite from '../assets/fotos/o-arco-vertical-06.jpg';
+import esplanada from '../assets/fotos/o-arco-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'O Arco, restaurante portugués en la Rua de São Pedro 30 (1100-543 Lisboa, Alfama): sardinhas assadas, arroz de marisco, gambas ao alho y bitoque, en una tasca con mesas en la calle. 4,3 en Google con 356 reseñas. Tel. 21 886 3806.';
+
+const galeria = [
+	{
+		src: peixePolvo,
+		alt: 'Pescado y pulpo a la brasa con patatas cocidas, aceite y ensalada en O Arco, Alfama',
+	},
+	{
+		src: arrozMarisco,
+		alt: 'Olla de arroz de marisco con gambas, almejas y mejillones en O Arco, Lisboa',
+	},
+	{
+		src: sardinhas,
+		alt: 'Cuatro sardinhas assadas con patata cocida y ensalada en plato llano, en O Arco',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas ao alho en salsa de aceite y ajo con limón, servidas en fuente cuadrada',
+	},
+	{
+		src: bitoque,
+		alt: 'Bife com ovo: filete con huevo frito, patatas fritas y arroz en O Arco',
+	},
+	{
+		src: feijao,
+		alt: 'Feijão com abóbora, guiso de alubias blancas con calabaza, en cuenco de barro',
+	},
+	{
+		src: entrada,
+		alt: 'Entrada de O Arco: portal de piedra con la placa 30, puerta verde y sillas rojas',
+	},
+	{
+		src: ruaDia,
+		alt: 'Rua de São Pedro con el cartel de forja «Restaurante O Tino Arco» sobre la puerta',
+	},
+	{
+		src: ruaNoite,
+		alt: 'Callejuela empedrada de la Rua de São Pedro de noche, con las luces de los restaurantes',
+	},
+	{
+		src: esplanada,
+		alt: 'Mesas con mantel en la calle y clientes sentados en la esplanada de O Arco de noche',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Restaurante O Arco', 'O Tino Arco', 'Restaurante O Tino Arco'],
+	slogan: 'Cocina portuguesa de tasca en Alfama',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 886 3806',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Portuguesa', 'Marisco', 'Mediterránea'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Área Metropolitana de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '17:00',
+			closes: '00:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '17:00',
+			closes: '01:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '00:00',
+			closes: '00:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos accesibles para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'O Arco · Cocina portuguesa de tasca en Alfama, Lisboa';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#5a1f2a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="O Arco Lisboa, restaurante O Arco Alfama, Rua de São Pedro, Restaurante O Tino Arco, tasca Alfama, arroz de marisco Lisboa, sardinhas assadas Alfama, restaurante portugués Alfama, Santa Apolónia restaurante"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="O Arco · Cocina portuguesa de tasca en Alfama, Lisboa"
+			ogDescription="Sardinhas assadas, arroz de marisco, gambas ao alho y bitoque, con mesas en la calle. De lunes a sábado desde las 17:00. 4,3 en Google con 356 reseñas. Tel. 21 886 3806."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pescado y pulpo a la brasa con patatas en O Arco, Alfama"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#5a1f2a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351218863806"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.regionName}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 21 886 3806',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[peixePolvo]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Restaurante português · Alfama"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="R. de São Pedro, 30 · Alfama · Lisboa"
+				title="Una tasca de Alfama<br /><em>con la puerta de piedra.</em>"
+				lede="O Arco es una tasca portuguesa de toda la vida en la Rua de São Pedro, la callejuela empedrada que sube hacia el castillo de São Jorge. Dentro, una sala pequeña con mesas de mármol; fuera, mesas con mantel junto a la puerta. Sardinhas assadas, arroz de marisco, gambas ao alho y bitoque, sin carta publicada y con el cartel de forja que dice «Restaurante O Tino Arco»."
+				image={peixePolvo}
+				imageAlt="Pescado y pulpo a la brasa con patatas cocidas, aceite y ensalada en O Arco, Alfama"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Cocina portuguesa"
+				facts={[
+					{ label: 'Nota', html: '<b>4,3 en Google</b> con 356 reseñas' },
+					{ label: 'Entre semana', html: '<b>17:00 – 24:00</b>' },
+					{ label: 'Sábado', html: '<b>17:00 – 1:00</b>' },
+					{ label: 'Domingo', html: '<b>Cerrado</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece O Arco" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Alfama,<br /><em>cobijo y sardinhas.</em>"
+				paragraphs={[
+					'La Rua de São Pedro es una de esas calles de Alfama que suben hacia el castillo entre casas de azulejo, cuerdas de ropa y macetas. En el número 30, el restaurante se anuncia con un cartel de forja que dice «Restaurante O Tino Arco» y el dibujo de un arco; la puerta es un portal de piedra con la placa del número en el dintel y una lámpara amarilla encendida encima.',
+					'Se entra a una sala pequeña, de suelo de baldosa y mesas de mármol, con la barra y la cocina al fondo. Fuera, junto a la puerta, se monta la esplanada: mesas con mantel de cuadros o de flores, sillas de plástico y la luz de las farolas de la calle, que en las fotos nocturnas sale llena de gente cenando.',
+					'La cocina es la de una tasca portuguesa sin adornos: pescado y pulpo a la brasa con patatas cocidas y un hilo de aceite, sardinhas assadas en temporada, arroz de marisco servido en la olla con gambas, almejas y mejillones, gambas ao alho en cazuela y un bife com ovo con huevo frito, patatas y arroz. Y al principio, pan, aceitunas y aceite.',
+				]}
+				note="La ficha de Google no publica carta ni precios, y el restaurante tampoco tiene web propia: solo el teléfono. La valoración es de 4,3 sobre 5 con 356 reseñas, una nota alta para una tasca de barrio con pocas mesas."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Sardinhas,<br />marisco<br /><em>y bitoque.</em>"
+				description="No hay carta publicada con precios: estos son los platos que aparecen en las fotos del perfil del restaurante en Google Maps, agrupados como se piden en una tasca."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="En O Arco se pide de viva voz: la ficha no publica carta ni precios y esta web no los inventa. Lo que sí está a la vista en las fotos es el pescado y el marisco a la brasa, el arroz de marisco en la olla y el bife com ovo del menú del día. Pregunta por lo que haya fresco ese día al llamar al 21 886 3806."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La mesa,<br />la puerta<br /><em>y la calle.</em>"
+				description="Estas fotografías proceden del perfil de O Arco en Google Maps: el pescado y el pulpo a la brasa, el arroz de marisco en la olla, las sardinhas assadas, las gambas ao alho, el bife com ovo, el guiso de alubias con calabaza, la entrada con el arco de piedra y tres vistas de la Rua de São Pedro, de día y de noche."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="R. de São Pedro, 30 · 1100-543 Lisboa"
+				title="Subiendo<br /><em>hacia el castillo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Alfama · Lisboa']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre solo por la tarde: de lunes a viernes de 17:00 a 24:00 y el sábado de 17:00 a 1:00. El domingo cierra. En festivos la ficha avisa de que el horario podría cambiar, así que llama antes si vas en una fecha señalada."
+				mapTitle="Mapa de O Arco en la Rua de São Pedro, 30, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="O Arco · Alfama, Lisboa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 21 886 3806. La ficha marca asientos adaptados para sillas de ruedas, pero no confirma entrada ni aseo adaptados, y la calle es empedrada y con desnivel. Para llegar, lo más fácil es el metro de Santa Apolónia y subir andando."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a O Arco"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>

@@ -1,12 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Taberna+Portu/@36.7249717,-4.4434246,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7aade1b6fdd:0x6cb287be5afed6e1!8m2!3d36.7249717!4d-4.4434246!16s%2Fg%2F11ys9wx7c1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Sonar+Bangla/@38.7198882,-9.1349153,17z/data=!3m1!4b1!4m6!3m5!1s0xd193385f2218e11:0x62c35fdf5b0aa991!8m2!3d38.7198882!4d-9.1349153!16s%2Fg%2F11c1ww5j86?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/O+Arco/@38.7109588,-9.1289307,17z/data=!3m1!4b1!4m6!3m5!1s0xd193474280d4341:0xf09f3cd64e4e3633!8m2!3d38.7109588!4d-9.1289307!16s%2Fg%2F11df0fpx06?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Maki+magic+sushi+restaurante+%26+bar/@38.572039,-9.0402419,17z/data=!3m1!4b1!4m6!3m5!1s0xd19494b5382b5a9:0x364a4d7232e23ae7!8m2!3d38.572039!4d-9.0402419!16s%2Fg%2F11qfz4bz6r?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+O+Ferreirinho/@38.9082952,-9.1684023,17z/data=!3m1!4b1!4m6!3m5!1s0xd192b9a07f8c7c3:0xd42cb883c1f39e99!8m2!3d38.9082952!4d-9.1684023!16s%2Fg%2F11fj6xwg40?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+Costa+Vicentina/@38.7101335,-9.1369933,17z/data=!3m1!4b1!4m6!3m5!1s0xd193479a64b3ab5:0x785ccd230b910bc0!8m2!3d38.7101335!4d-9.1369933!16s%2Fg%2F11fylpqjww?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
