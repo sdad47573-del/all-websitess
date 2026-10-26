@@ -1,0 +1,318 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mural from '../assets/fotos/hyderabadi-restaurante-apaisada-05.jpg';
+import biryani from '../assets/fotos/hyderabadi-restaurante-apaisada-04.jpg';
+import buffet from '../assets/fotos/hyderabadi-restaurante-apaisada-10.jpg';
+import ensaladas from '../assets/fotos/hyderabadi-restaurante-apaisada-09.jpg';
+import comedor from '../assets/fotos/hyderabadi-restaurante-vertical-01.jpg';
+import dosa from '../assets/fotos/hyderabadi-restaurante-vista-6-06.jpg';
+import pizzaPorcion from '../assets/fotos/hyderabadi-restaurante-vertical-02.jpg';
+import pizzaEntera from '../assets/fotos/hyderabadi-restaurante-vertical-07.jpg';
+import halwa from '../assets/fotos/hyderabadi-restaurante-vertical-08.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Hyderabadi Restaurante, cocina hyderabadí en la R. Nampula 2, Odivelas (Lisboa): dum biryani, kebab y pizza, con opciones vegetarianas y catering. Abre todos los días de 11:00 a 23:00, hasta las 24:00 viernes y sábado. 4,6 en Google con 226 reseñas. Tel. 960 444 222.';
+
+const galeria = [
+	{
+		src: comedor,
+		alt: 'Comedor de Hyderabadi Restaurante con mesas vestidas de blanco, sillas negras y guirnaldas de globos',
+	},
+	{
+		src: biryani,
+		alt: 'Bandeja de dum biryani con arroz basmati, azafrán, cebolla frita y cilantro en Hyderabadi Restaurante',
+	},
+	{
+		src: dosa,
+		alt: 'Dosa crujiente con sambar y chutney de coco servido en bandeja de acero en Hyderabadi Restaurante',
+	},
+	{
+		src: pizzaEntera,
+		alt: 'Pizza recién horneada con pepperoni, olivas y pimiento verde en Hyderabadi Restaurante',
+	},
+	{
+		src: pizzaPorcion,
+		alt: 'Porción de pizza con maíz, pimiento verde y queso fundido en Hyderabadi Restaurante',
+	},
+	{
+		src: ensaladas,
+		alt: 'Boles de ensalada de tomate, cebolla, zanahoria y pepino en Hyderabadi Restaurante',
+	},
+	{
+		src: buffet,
+		alt: 'Mesa de buffet con bandejas de biryani, kebabs y ensaladas para un evento de Hyderabadi Restaurante',
+	},
+	{
+		src: halwa,
+		alt: 'Postre de zanahoria con almendras (gajar halwa) servido en cuenco en Hyderabadi Restaurante',
+	},
+	{
+		src: mural,
+		alt: 'Mural de Radha y Krishna en la pared del comedor de Hyderabadi Restaurante, con mesas y sillas de madera',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Hyderabadi', 'Hyderabadi Odivelas', 'Hyderabadi Restaurante Odivelas'],
+	slogan: 'Dum biryani, kebab y pizza de Hyderabad en Odivelas',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 960 444 222',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Hyderabadí', 'India', 'Biryani'],
+	areaServed: [
+		{ '@type': 'City', name: 'Odivelas' },
+		{ '@type': 'AdministrativeArea', name: 'Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '11:00',
+			closes: '23:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '11:00',
+			closes: '00:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos accesibles para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La cocina', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Hyderabadi Restaurante · Dum biryani y kebab en Odivelas';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4034" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Hyderabadi Restaurante Odivelas, biryani Odivelas, dum biryani Lisboa, restaurante indio Odivelas, kebab Odivelas, cocina hyderabadí Lisboa, catering indio Lisboa, R. Nampula 2, restaurante Odivelas"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Hyderabadi Restaurante · Dum biryani y kebab en Odivelas"
+			ogDescription="Dum biryani, kebab y pizza en Odivelas. Abre todos los días de 11:00 a 23:00, hasta las 24:00 viernes y sábado. 4,6 en Google con 226 reseñas. Tel. 960 444 222."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Mural de Radha y Krishna en el comedor de Hyderabadi Restaurante, Odivelas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f4034"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351960444222"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.regionName}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 960 444 222',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[mural]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Cocina hyderabadí · Odivelas"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="R. Nampula, 2 · Odivelas, Lisboa"
+				title="Biryani de Hyderabad,<br /><em>en Odivelas.</em>"
+				lede="Hyderabadi Restaurante es un comedor íntimo en Odivelas donde se come cocina de Hyderabad: dum biryani, kebab y pizza, con opciones vegetarianas y servicio de catering. Abre todos los días, de 11:00 a 23:00, y hasta medianoche los viernes y sábados."
+				image={mural}
+				imageAlt="Mural de Radha y Krishna en la pared del comedor de Hyderabadi Restaurante, con mesas y sillas de madera"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Hyderabadí"
+				facts={[
+					{ label: 'Nota', html: '<b>4,6 en Google</b> con 226 reseñas' },
+					{ label: 'Todos los días', html: '<b>11:00 – 23:00</b>' },
+					{ label: 'Viernes y sábado', html: '<b>Hasta las 24:00</b>' },
+					{ label: 'Cocina', html: '<b>Dum biryani</b> y kebab' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Hyderabadi Restaurante" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina de Hyderabad,<br /><em>sin atajos.</em>"
+				paragraphs={[
+					'Hyderabadi Restaurante está en la R. Nampula 2, en Odivelas, en el distrito de Lisboa. Es un comedor pequeño y cuidado: mesas vestidas de blanco, sillas negras, flores en el centro y un gran mural de Radha y Krishna presidiendo la sala. Al fondo queda la barra, con las bandejas del buffet y la cocina a la vista.',
+					'La cocina es la de Hyderabad, la ciudad del biryani: arroz basmati cocinado al dum con azafrán, cebolla frita y cilantro; kebab a la parrilla y platos bien especiados. El propio restaurante avisa de que la comida es picante, y ofrece opciones vegetarianas y no vegetarianas para que la mesa funcione para todos.',
+					'También hay pizza, que aparece en varias de las fotos del perfil, y postres de la casa como el halwa de zanahoria con almendras. Para fiestas y celebraciones ofrecen servicio de catering con menús vegetarianos y de carne. Lo resume su propia ficha: «Always remember good food makes you happy».',
+				]}
+				note="«Come dine with us & experience an authentic Hyderabadi Restaurante dum biryani Kebab and pizza in an intimate dining space», escribe el restaurante en su ficha de Google. Y añade: «the taste of Hyderabad, with spicy food that will pamper your taste buds»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La cocina"
+				title="Dum biryani,<br /><em>kebab y pizza.</em>"
+				description="La ficha no publica carta con precios: estos platos salen de la descripción que el propio restaurante escribe en Google y de las fotos de su perfil."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Hyderabadi Restaurante no publica precios en Google y esta web no los inventa. La cocina es especiada, así que si prefieres algo suave conviene decirlo al pedir. Llama al 960 444 222 para confirmar platos del día, opciones vegetarianas y disponibilidad para grupos."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El comedor,<br />el biryani<br /><em>y el buffet.</em>"
+				description="Estas fotografías proceden del perfil de Hyderabadi Restaurante en Google Maps: el comedor con el mural, la bandeja de dum biryani, el dosa con sambar, las pizzas, las ensaladas y la mesa de catering."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="R. Nampula, 2 · 2675-411 Odivelas"
+				title="En Odivelas,<br /><em>todos los días.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre todos los días de 11:00 a 23:00; los viernes y sábados alarga hasta medianoche. La ficha avisa de que el horario puede cambiar en festivos, así que llama antes si vas en día señalado."
+				mapTitle="Mapa de Hyderabadi Restaurante en la R. Nampula, 2, Odivelas (Lisboa)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Hyderabadi Restaurante · Odivelas"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 960 444 222. La ficha marca entrada y asientos accesibles para sillas de ruedas, pero no confirma aseo ni estacionamiento adaptados; para eso, llama antes. Si vais un grupo grande o queréis catering, avisad con antelación."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a Hyderabadi"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>
