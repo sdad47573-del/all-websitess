@@ -1,0 +1,377 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/restaurante-ludiente-apaisada-01.jpg';
+import guiso from '../assets/fotos/restaurante-ludiente-apaisada-02.jpg';
+import bocadillo from '../assets/fotos/restaurante-ludiente-apaisada-03.jpg';
+import calamares from '../assets/fotos/restaurante-ludiente-apaisada-04.jpg';
+import comedor from '../assets/fotos/restaurante-ludiente-apaisada-05.jpg';
+import chuleton from '../assets/fotos/restaurante-ludiente-vertical-06.jpg';
+import canelones from '../assets/fotos/restaurante-ludiente-vertical-07.jpg';
+import bocadilloPatatas from '../assets/fotos/restaurante-ludiente-apaisada-08.jpg';
+import ensalada from '../assets/fotos/restaurante-ludiente-apaisada-09.jpg';
+import parrilla from '../assets/fotos/restaurante-ludiente-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: chuleton,
+		alt: 'Chuletón a la brasa con patatas fritas y berenjena asada en Restaurante Ludiente',
+	},
+	{
+		src: bocadillo,
+		alt: 'Bocadillo gigante de longaniza en pan rústico sobre la mesa de la terraza',
+	},
+	{
+		src: parrilla,
+		alt: 'Mesa con chuletas a la brasa, patatas fritas, berenjena asada y ensalada',
+	},
+	{
+		src: canelones,
+		alt: 'Canelones caseros gratinados con langostino en Restaurante Ludiente',
+	},
+	{
+		src: calamares,
+		alt: 'Calamares rellenos con su salsa y vieiras en Restaurante Ludiente',
+	},
+	{
+		src: guiso,
+		alt: 'Guiso de carne con pimientos verdes en la sartén, en Restaurante Ludiente',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada con jamón curado y lascas de queso en Restaurante Ludiente',
+	},
+	{
+		src: bocadilloPatatas,
+		alt: 'Bocadillo enorme de carne con patatas gajo en Restaurante Ludiente',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor de Restaurante Ludiente con mesas de madera, mamparas y el cartel del local',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'BarOrPub'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Asador Ludiente', 'Bar Ludiente', 'Restaurante Asador Ludiente'],
+	slogan: 'Los sabores que te harán sentir bien',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.ownWebsite, 'https://www.facebook.com/BarLudiente/'],
+	telephone: '+34 643 74 21 61',
+	email: BUSINESS.email,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Parrilla', 'Casera', 'Bocadillos'],
+	areaServed: [
+		{ '@type': 'City', name: 'Ludiente' },
+		{ '@type': 'AdministrativeArea', name: 'Alto Mijares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Sunday'],
+			opens: '08:30',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '08:30',
+			closes: '01:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza exterior', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza interior', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Salón comedor', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((body) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+		reviewBody: body,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Los espacios', href: '#espacios' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const title = 'Restaurante Ludiente · Asador y bar en Ludiente (Castellón)';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2f4234" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Zilla+Slab:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Ludiente, asador Ludiente, bar Ludiente Castellón, carnes a la brasa Alto Mijares, bocadillos gigantes Ludiente, menú del día Ludiente, terraza Ludiente, Ctra. Argelita Ludiente"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante Ludiente · Asador y bar en Ludiente"
+			ogDescription="Carnes a la brasa, guisos caseros, bocadillos enormes y terraza con vistas al pueblo. 4,0 en Google con 338 reseñas. Tel. 643 74 21 61."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de Restaurante Ludiente con vistas a las montañas y al campanario del pueblo"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2f4234"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34643742161"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 643 74 21 61',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[terraza]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Asador y bar · Ludiente"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Ctra. de Argelita, 2 · Ludiente · Alto Mijares"
+				title="Carne a la brasa<br /><em>con vistas al pueblo.</em>"
+				lede="Restaurante Ludiente es el bar, asador y comedor de Ludiente: parrilla, guisos de cuchara, bocadillos enormes y una terraza que mira a las montañas del Alto Mijares. Un sitio de pueblo para parar sin prisa, comer bien y quedarse a la sobremesa."
+				image={terraza}
+				imageAlt="Terraza de Restaurante Ludiente con mesas, sillas y vistas al campanario y a las montañas"
+				primaryCta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Parrilla · Bar"
+				facts={[
+					{ label: 'Nota', html: '<b>4,0 en Google</b> con 338 reseñas' },
+					{ label: 'Viernes y sábado', html: '<b>Viernes y sábado</b> hasta la 01:00' },
+					{ label: 'Bocadillos', html: '<b>Bocadillos enormes</b>, de pan rústico' },
+					{ label: 'Terraza', html: '<b>Terraza</b> con vistas a la montaña' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Restaurante Ludiente" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El bar del pueblo,<br /><em>con la brasa encendida.</em>"
+				paragraphs={[
+					'Restaurante Ludiente está en la Carretera de Argelita, 2, a la entrada de Ludiente (Lludient), en el Alto Mijares. Es bar, asador y comedor a la vez: la barra para el café y la cerveza, dos terrazas —una exterior y otra interior— y un salón comedor amplio con mesas de madera y mamparas.',
+					'La cocina va de la parrilla al guiso: chuletón, chuletas de cordero, costillar y secreto ibérico, pero también calamares rellenos, canelones gratinados, ensaladas grandes y platos de cuchara. Y los bocadillos, que las reseñas describen directamente como enormes, con pan rústico y longaniza, pimientos o pollo a la parrilla.',
+					'En el comedor hay una exposición de cuadros en 3D con distintas texturas de un artista de la zona, dedicada a rostros y a personajes de la historia. La terraza trasera mira a los pinos y a las montañas que rodean el pueblo, y el restaurante es parada habitual de quien recorre las carreteras de curvas de la comarca.',
+				]}
+				note="«Todo buenísimo y súper atentos, las raciones y los bocadillos son enormes!», dice una reseña de Google. Otra: «Buena comida, buena atención, superamables los camareros y buenos precios». Como en todo bar de pueblo, en las horas punta la espera puede alargarse: mejor reservar los fines de semana."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Brasa,<br />bocadillos<br /><em>y comedor.</em>"
+				description="La ficha de Google no publica la carta con precios: estos platos salen de las fotos del perfil, de lo que citan las reseñas y de los espacios que presenta la web del restaurante."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Esta web no inventa precios ni una carta cerrada. Lo que hay cada día depende de la temporada y de lo que entre en cocina, así que llama al 643 74 21 61 para confirmar el menú, las raciones y el precio, sobre todo si venís en grupo."
+			/>
+
+			<section class="spaces section-pad" id="espacios" aria-labelledby="spaces-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Los espacios</p>
+					<div class="spaces-grid">
+						<div>
+							<h2 id="spaces-title">Bar, dos terrazas<br /><em>y salón comedor.</em></h2>
+							<p>
+								La web del restaurante presenta cuatro espacios: el bar, la terraza exterior, la
+								terraza interior y el salón comedor. En el comedor cuelga una exposición de
+								cuadros en 3D de un artista de la zona, con texturas y retratos de personajes
+								históricos.
+							</p>
+							<p>
+								La terraza de fuera es la que se ve en las fotos: mesas blancas, sillas de metal y
+								el campanario del pueblo delante, con la montaña de pinos detrás. Un sitio pensado
+								para el café de después de comer y para las tardes largas.
+							</p>
+							<div class="about-links">
+								<a class="simple-link" href={BUSINESS.phoneHref}>Llamar: {BUSINESS.phoneDisplay}</a>
+								<a class="simple-link" href={BUSINESS.ownWebsite} target="_blank" rel="noreferrer"
+									>Web del restaurante <span aria-hidden="true">↗</span></a
+								>
+								<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer"
+									>Ver fotos en Google <span aria-hidden="true">↗</span></a
+								>
+							</div>
+						</div>
+						<ul class="spaces-list">
+							<li>
+								<strong>Bar</strong>
+								<span>Café, cerveza y tapas desde primera hora de la mañana.</span>
+							</li>
+							<li>
+								<strong>Terraza exterior</strong>
+								<span>Mesas al aire libre con vistas al pueblo y a la montaña.</span>
+							</li>
+							<li>
+								<strong>Terraza interior</strong>
+								<span>Un segundo espacio cubierto, resguardado del sol.</span>
+							</li>
+							<li>
+								<strong>Salón comedor</strong>
+								<span>Mesas grandes para familias, grupos y celebraciones.</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La brasa,<br />los guisos<br /><em>y la terraza.</em>"
+				description="Estas fotografías proceden del perfil de Restaurante Ludiente en Google Maps: el chuletón con patatas, el bocadillo de la terraza, la mesa de parrilla, los canelones, los calamares rellenos, el guiso, la ensalada, el bocadillo con patatas y el comedor."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Ctra. de Argelita, 2 · 12123 Ludiente · Castellón"
+				title="En el Alto Mijares,<br /><em>camino de Argelita.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city} (Lludient)`, 'Castellón · Comunitat Valenciana']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Google marca de 08:30 a 22:00 de lunes a jueves y domingo, y hasta la 01:00 los viernes y sábados. La web del restaurante publica un horario más corto, así que llama al 643 74 21 61 antes de ir, especialmente en festivos."
+				mapTitle="Mapa de Restaurante Ludiente en la Carretera de Argelita, 2, Ludiente"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Ludiente · Ludiente"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 643 74 21 61, o por correo en barludiente2022@gmail.com. El local tiene acceso, aseo y asientos adaptados para sillas de ruedas. Los fines de semana y los festivos conviene reservar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a Restaurante Ludiente"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
