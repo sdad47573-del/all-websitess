@@ -106,6 +106,10 @@ export const faqs = [
 export const restaurantSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '06:00', closes: '15:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '06:00', closes: '18:00' },
+	],
 	'@id': `${business.site}/#restaurante`,
 	name: business.name,
 	alternateName: 'Bar Restaurante Hermanos Plazuelo',

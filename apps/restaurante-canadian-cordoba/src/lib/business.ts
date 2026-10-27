@@ -105,6 +105,9 @@ export const faqs = [
 export const restaurantSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '07:00', closes: '17:00' },
+	],
 	'@id': `${business.site}/#restaurante`,
 	name: business.name,
 	alternateName: business.alternateName,

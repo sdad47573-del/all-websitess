@@ -105,6 +105,10 @@ export const faqs = [
 export const restaurantSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '12:00', closes: '16:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Thursday', 'Friday', 'Saturday'], opens: '20:00', closes: '23:30' },
+	],
 	'@id': `${business.site}/#restaurante`,
 	name: business.name,
 	alternateName: 'Rincón Gallego Egabrense (Cabra)',

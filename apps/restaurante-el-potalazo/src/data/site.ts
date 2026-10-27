@@ -193,6 +193,8 @@ export const GALLERY = [
 export const SCHEMA = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	servesCuisine: ['Tapas'],
+	acceptsReservations: true,
 	'@id': `${BUSINESS.siteUrl}/`,
 	name: BUSINESS.name,
 	description: BUSINESS.summary,

@@ -99,6 +99,7 @@ export const faqs = [
 export const restaurantSchema = {
   '@context': 'https://schema.org',
   '@type': 'Restaurant',
+  sameAs: ['https://www.instagram.com/tabernaeltiodelatiza'],
   '@id': `${site.siteUrl}/#restaurante`,
   name: business.name,
   description:

@@ -103,6 +103,7 @@ export const faqs = [
 export const restaurantSchema = {
   '@context': 'https://schema.org',
   '@type': 'Restaurant',
+  sameAs: ['https://www.facebook.com/vinvinscocinafilipina/'],
   '@id': `${site.siteUrl}/#restaurante`,
   name: business.name,
   description:

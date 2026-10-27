@@ -28,6 +28,7 @@ export const facebookUrl = 'https://www.facebook.com/TabernaLang/';
 export const structuredData = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	acceptsReservations: true,
 	'@id': `${business.site}/#taberna`,
 	name: business.name,
 	description: 'Taberna de tapas y picoteo en Rincón de la Victoria, Málaga.',

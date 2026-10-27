@@ -6,6 +6,30 @@ const mapsUrl =
 
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{jpg,jpeg,png}', { eager: true });
 const galeria = Object.entries(fotos).map(([ruta, modulo]) => ({ ruta, src: modulo.default }));
+
+// Datos estructurados: solo lo que publica la propia página (nombre, ubicación por coordenadas
+// de su enlace de Maps, precio medio y fotos). No publica dirección, teléfono ni horario, así
+// que no se emiten.
+const siteUrl = 'https://restaurante-domingo-precio-medio.vercel.app';
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${siteUrl}/#restaurante`,
+	name: 'Restaurante Domingo',
+	description:
+		'Restaurante en la Región de Murcia con un precio medio de 30–50 €, con fotografías de su ficha pública de Google Maps.',
+	url: `${siteUrl}/`,
+	sameAs: [mapsUrl],
+	hasMap: mapsUrl,
+	image: `${siteUrl}/og.jpg`,
+	priceRange: '30–50 €',
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: 38.0931285,
+		longitude: -1.7870097,
+	},
+	areaServed: { '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+};
 ---
 
 <!doctype html>
@@ -92,6 +116,7 @@ const galeria = Object.entries(fotos).map(([ruta, modulo]) => ({ ruta, src: modu
 				color: var(--accent);
 			}
 		</style>
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
 	</head>
 	<body>
 		<header>

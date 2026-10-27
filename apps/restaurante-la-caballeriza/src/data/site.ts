@@ -90,6 +90,7 @@ export const faqs = [
 export const restaurantSchema = {
   '@context': 'https://schema.org',
   '@type': 'Restaurant',
+  acceptsReservations: true,
   '@id': `${site.siteUrl}/#restaurante`,
   name: business.name,
   description:

@@ -104,6 +104,7 @@ export const faqs = [
 export const restaurantSchema = {
   '@context': 'https://schema.org',
   '@type': 'Restaurant',
+  sameAs: ['https://www.instagram.com/entrecastillosrestaurante/', 'https://www.facebook.com/p/EntreCastillos-Restaurante-100091279454994/'],
   '@id': `${site.siteUrl}/#restaurante`,
   name: business.name,
   description:

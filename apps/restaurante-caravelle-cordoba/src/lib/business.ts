@@ -103,6 +103,10 @@ export const faqs = [
 export const restaurantSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '12:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '20:00', closes: '01:00' },
+	],
 	'@id': `${business.site}/#restaurante`,
 	name: business.name,
 	alternateName: 'Caravelle Córdoba',

@@ -24,6 +24,7 @@ export const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%
 export const restaurantSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	acceptsReservations: true,
 	'@id': `${business.site}/#restaurant`,
 	name: business.name,
 	description:

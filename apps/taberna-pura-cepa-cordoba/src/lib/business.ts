@@ -98,6 +98,11 @@ export const faqs = [
 export const restaurantSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Sunday'], opens: '12:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '08:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Thursday', 'Friday', 'Saturday'], opens: '20:00', closes: '24:00' },
+	],
 	'@id': `${business.site}/#taberna`,
 	name: business.name,
 	alternateName: 'Taberna Pura Cepa (Córdoba)',

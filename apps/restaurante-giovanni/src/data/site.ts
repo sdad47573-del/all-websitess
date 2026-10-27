@@ -236,6 +236,7 @@ export const GALLERY = [
 export const SCHEMA = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
+	acceptsReservations: true,
 	'@id': `${BUSINESS.siteUrl}/`,
 	name: BUSINESS.name,
 	description: BUSINESS.summary,
