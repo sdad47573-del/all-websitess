@@ -1,14 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurante+O+Ferreirinho/@38.9082952,-9.1684023,17z/data=!3m1!4b1!4m6!3m5!1s0xd192b9a07f8c7c3:0xd42cb883c1f39e99!8m2!3d38.9082952!4d-9.1684023!16s%2Fg%2F11fj6xwg40?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Costa+Vicentina/@38.7101335,-9.1369933,17z/data=!3m1!4b1!4m6!3m5!1s0xd193479a64b3ab5:0x785ccd230b910bc0!8m2!3d38.7101335!4d-9.1369933!16s%2Fg%2F11fylpqjww?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Namaste+%C3%8Dndia/@38.6975408,-9.1942415,17z/data=!3m1!4b1!4m6!3m5!1s0xd1ecb4deb08177b:0x7efaa350e12a0a08!8m2!3d38.6975408!4d-9.1942415!16s%2Fg%2F11cs5y6n7s?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Sushi+Rairakku/@38.7982589,-9.340078,17z/data=!3m1!4b1!4m6!3m5!1s0xd1ed03ed7a86783:0x73c5b10241700d3c!8m2!3d38.7982589!4d-9.340078!16s%2Fg%2F11c1w0fz39?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Tres+Amigos+Mexican+Restaurant+%26+Cocktailbar/@38.6389083,-9.2340896,17z/data=!3m1!4b1!4m6!3m5!1s0xd1ecbb46b823363:0xd2e00782b3d16eeb!8m2!3d38.6389083!4d-9.2340896!16s%2Fg%2F11t6ghw19d?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Aicha+African+food/@38.7156505,-9.1377199,17z/data=!3m1!4b1!4m6!3m5!1s0xd193317acbe1347:0x30f8830305d60d2e!8m2!3d38.7156505!4d-9.1377199!16s%2Fg%2F11h425tng2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Ks+Restaurante+e+Caf%C3%A9/@38.7940633,-9.1106505,17z/data=!3m1!4b1!4m6!3m5!1s0xd19331ddaa72e83:0x88b49196cf02a4b1!8m2!3d38.7940633!4d-9.1106505!16s%2Fg%2F11pcntfl5r?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D

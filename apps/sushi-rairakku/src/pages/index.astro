@@ -1,0 +1,328 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import bandeja from '../assets/fotos/sushi-rairakku-apaisada-02.jpg';
+import tabla from '../assets/fotos/sushi-rairakku-vertical-03.jpg';
+import fachada from '../assets/fotos/sushi-rairakku-apaisada-06.jpg';
+import pizarra from '../assets/fotos/sushi-rairakku-apaisada-05.jpg';
+import bufe from '../assets/fotos/sushi-rairakku-vertical-04.jpg';
+import mesa from '../assets/fotos/sushi-rairakku-vertical-07.jpg';
+import comedorDia from '../assets/fotos/sushi-rairakku-vertical-01.jpg';
+import chapa from '../assets/fotos/sushi-rairakku-vertical-09.jpg';
+import comedorNoche from '../assets/fotos/sushi-rairakku-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: tabla,
+		alt: 'Tabla redonda de madera con nigiri, sashimi, maki y dos temaki en su soporte, en Sushi Rairakku',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Sushi Rairakku con el rótulo rosa, toldos y farolillos rojos en Algueirão-Mem Martins',
+	},
+	{
+		src: pizarra,
+		alt: 'Pizarra negra con el logotipo de Sushi Rairakku y un dibujo de flor de cerezo',
+	},
+	{
+		src: bufe,
+		alt: 'Tabla de sushi para compartir junto a una bandeja de salteado chino y patatas fritas',
+	},
+	{
+		src: mesa,
+		alt: 'Mesa con soporte de temaki, plato de sashimi y nigiri, gambas a la plancha y tempura',
+	},
+	{
+		src: comedorDia,
+		alt: 'Comedor de Sushi Rairakku de día, con lámparas colgantes cálidas y mesas puestas junto al ventanal',
+	},
+	{
+		src: chapa,
+		alt: 'Gambas a la plancha con pimiento verde y cebolla sobre la chapa caliente',
+	},
+	{
+		src: comedorNoche,
+		alt: 'Comedor por la noche con cortinas, farolillos y una jarra de sangría en primer plano',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: ['Sushi Rairakku', 'Sushi Rairakku Algueirão', 'Rairakku Mem Martins'],
+	slogan: 'All you can eat à la carte',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 155 4222',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Japonesa', 'Sushi', 'Chinesa'],
+	areaServed: [
+		{ '@type': 'City', name: 'Algueirão-Mem Martins' },
+		{ '@type': 'City', name: 'Sintra' },
+		{ '@type': 'AdministrativeArea', name: 'Área Metropolitana de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '19:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Sushi Rairakku · Rodízio de sushi en Algueirão-Mem Martins';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f3d3a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Sushi Rairakku, sushi Algueirão, rodízio sushi Mem Martins, all you can eat sushi Sintra, restaurante japonês Algueirão-Mem Martins, sushi à la carte Sintra, temaki Mem Martins, restaurante chinês Algueirão, Praceta Serra de Baixo"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Sushi Rairakku · Rodízio de sushi en Algueirão-Mem Martins"
+			ogDescription="All you can eat à la carte con más de cien variedades de sushi, sashimi, tempura y cocina china. Dos turnos todos los días. 4,4 en Google con 1.427 reseñas. Tel. 21 155 4222."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de sushi con nigiri de salmón, sashimi y maki en Sushi Rairakku"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#1f3d3a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351211554222"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 21 155 4222',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[bandeja]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Japonês e chinês · Sintra"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Praceta Serra de Baixo, 1 R/C · Algueirão-Mem Martins"
+				title="Rodízio de sushi<br /><em>à la carte.</em>"
+				lede="Sushi Rairakku es el japonés de Algueirão-Mem Martins, en Sintra, y funciona con un formato que el propio local resume en su ficha: «all you can eat à la carte». Se pide plato a plato, tantas veces como quieras, de una lista con más de cien variedades entre sushi, sashimi, tempura y cocina china. Abre todos los días en dos turnos, mediodía y noche."
+				image={bandeja}
+				imageAlt="Bandeja de sushi de Sushi Rairakku con nigiri de salmón, sashimi de atún, maki y un hot roll"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="All you can eat"
+				facts={[
+					{ label: 'Nota', html: '<b>4,4 en Google</b> con 1.427 reseñas' },
+					{ label: 'Mediodía', html: '<b>12:00 – 15:00</b>' },
+					{ label: 'Cena', html: '<b>19:00 – 23:00</b>' },
+					{ label: 'Todos los días', html: '<b>Abierto</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Sushi Rairakku" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cien variedades,<br /><em>pedidas una a una.</em>"
+				paragraphs={[
+					'El restaurante está en la Praceta Serra de Baixo, 1 R/C, en pleno Algueirão-Mem Martins, en el municipio de Sintra, a pocos minutos de la estación de tren. La fachada es inconfundible: el rótulo rosa de Sushi Rairakku, los toldos con el teléfono bien visible y dos farolillos rojos flanqueando la puerta.',
+					'Dentro, el comedor es amplio y luminoso, con mesas blancas de mantel de rafia, sillas negras y lámparas colgantes de rejilla que dan una luz cálida; por la noche, las cortinas y los farolillos cambian el ambiente. En las mesas se ven las tablas de madera con el sushi montado en pisos, los soportes de temaki y, al lado, las bandejas de la parte china: salteados de carne con pimiento, gambas a la plancha en la chapa y tempura recién frita.',
+					'El formato es el que anuncia en su ficha, «all you can eat à la carte»: no hay bufé de bandejas, se pide a la carta y se repite tanto como se quiera. Su página de Facebook habla de más de cien variedades entre sushi, sashimi y tempura. Es un sitio pensado para ir en grupo y probar de todo, con servicio continuo a mediodía y por la noche.',
+				]}
+				note="La ficha de Google no publica carta con precios ni web propia: solo el teléfono, el 21 155 4222. La valoración es de 4,4 sobre 5 con 1.427 reseñas, y la accesibilidad está detallada al completo (entrada, aparcamiento, aseo y asientos adaptados)."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Sushi, wok<br />y tempura<br /><em>sin límite.</em>"
+				description="No hay carta publicada con precios en Google: estos son los apartados que anuncia el local en sus redes y los platos que aparecen en las fotos de su perfil."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sushi Rairakku no publica su carta en Google y esta web no inventa nombres ni precios. En sus redes ha anunciado el rodízio en torno a 13 € al mediodía y 16 € por la noche entre semana, con tarifa algo mayor los fines de semana. Confirma la tarifa del día al llamar al 21 155 4222."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Las tablas,<br />la chapa<br /><em>y el comedor.</em>"
+				description="Estas fotografías proceden del perfil de Sushi Rairakku en Google Maps: la tabla redonda con nigiri, sashimi, maki y temaki, la fachada con los farolillos, la pizarra del local, una mesa con el salteado chino al lado, el soporte de temaki con las gambas y la tempura, el comedor de día y de noche, y las gambas a la plancha en la chapa."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Praceta Serra de Baixo, 1 R/C · 2725-144 Algueirão-Mem Martins"
+				title="En Sintra,<br /><em>a dos turnos.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.municipality} · ${BUSINESS.region}`,
+				]}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre todos los días en dos turnos: comida de 12:00 a 15:00 y cena de 19:00 a 23:00. En festivos el horario puede cambiar: si vas en una fecha señalada, llama antes al 21 155 4222."
+				mapTitle="Mapa de Sushi Rairakku en la Praceta Serra de Baixo, 1, Algueirão-Mem Martins"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Sushi Rairakku · Algueirão"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 21 155 4222. La ficha marca acceso, aparcamiento, aseo y asientos adaptados para sillas de ruedas, y la zona es de aparcamiento fácil junto al local. Si vais en grupo o un fin de semana, avisar antes evita esperas en el turno."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>repetir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Sushi Rairakku"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>
