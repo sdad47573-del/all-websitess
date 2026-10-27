@@ -1,0 +1,336 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fideua from '../assets/fotos/la-tasca-vertical-02.jpg';
+import mariscada from '../assets/fotos/la-tasca-panoramica-01.jpg';
+import mariscadaCerca from '../assets/fotos/la-tasca-apaisada-03.jpg';
+import bocadillo from '../assets/fotos/la-tasca-apaisada-05.jpg';
+import parrillada from '../assets/fotos/la-tasca-apaisada-06.jpg';
+import pescado from '../assets/fotos/la-tasca-apaisada-08.jpg';
+import comedor from '../assets/fotos/la-tasca-apaisada-09.jpg';
+import pulpo from '../assets/fotos/la-tasca-vertical-04.jpg';
+import almuerzo from '../assets/fotos/la-tasca-vertical-07.jpg';
+import postre from '../assets/fotos/la-tasca-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: mariscada,
+		alt: 'Mariscada de La Tasca con langostinos, gambas, mejillones, almejas y calamares en una bandeja honda',
+	},
+	{
+		src: parrillada,
+		alt: 'Parrillada de costillas y pollo a la brasa con pimientos en una bandeja metálica',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor de La Tasca con mesas de madera, sillas altas y guirnaldas de luz, en plena celebración',
+	},
+	{
+		src: pulpo,
+		alt: 'Pulpo a la brasa sobre patata y pimentón, servido en un plato llano',
+	},
+	{
+		src: almuerzo,
+		alt: 'Plancha de almuerzo con huevos fritos, salchichas, pollo y pimientos',
+	},
+	{
+		src: mariscadaCerca,
+		alt: 'Detalle de la mariscada de La Tasca con anillas de calamar, cigalas y langostinos',
+	},
+	{
+		src: bocadillo,
+		alt: 'Bocadillo de bacon y queso con pan de barra en el plato de La Tasca',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado a la plancha con patatas y ensalada de remolacha en La Tasca',
+	},
+	{
+		src: postre,
+		alt: 'Copas de helado con nata y barquillo en la terraza de La Tasca',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['BarOrPub', 'Restaurant'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: ['La Tasca', 'Bar La Tasca', 'La Tasca Sant Joan de Moró'],
+	slogan: BUSINESS.tagline,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34623116045',
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	acceptsReservations: 'True',
+	servesCuisine: ['Cocina española', 'Cocina casera', 'Brasa', 'Marisco', 'Arroces'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sant Joan de Moró' },
+		{ '@type': 'AdministrativeArea', name: 'Plana Alta' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.province,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '08:30',
+			closes: '13:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday'],
+			opens: '08:30',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '24:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Galería', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'La Tasca · Bar restaurante en Sant Joan de Moró';
+const cita = REVIEWS[0];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#a44a26" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="La Tasca, bar Sant Joan de Moró, restaurante Sant Joan de Moró, menú diario Plana Alta, almuerzo a la brasa, parrillada, mariscada, fideuà, cocina casera Castellón, Àngel Pallarés 14"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="La Tasca · Bar restaurante en Sant Joan de Moró"
+			ogDescription="Cocina casera, menú diario de 9 € y almuerzo a la brasa por 5 €, con parrillada y mariscada. 4,4 en Google con 269 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fideuà de marisco en la paella de Bar Restaurante La Tasca, en Sant Joan de Moró"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#a44a26"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.province}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34623116045"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Sant Joan de Moró, Castelló"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 623 11 60 45',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fideua]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Bar restaurante · Sant Joan de Moró"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer d'Àngel Pallarés, 14 · Sant Joan de Moró"
+				title="La brasa encendida<br />y el menú<br /><em>en la pizarra.</em>"
+				lede="La Tasca es el bar restaurante de siempre en Sant Joan de Moró: cocina casera, menú diario de 9 €, almuerzo a la brasa por 5 € y una parrillada que se pide para compartir. Desde las ocho y media, con la cafetera y el fuego a punto."
+				image={fideua}
+				imageAlt="Fideuà de marisco con langostinos, gambas y mejillones en la paella de La Tasca"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Menú 9 €"
+				facts={[
+					{ label: 'Nota', html: '<b>4,4 en Google</b> con 269 reseñas' },
+					{ label: 'Menú diario', html: '<b>9 €</b>' },
+					{ label: 'Almuerzo a la brasa', html: '<b>5 €</b>' },
+					{ label: 'Viernes a domingo', html: '<b>hasta las 24:00</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Qué ofrece La Tasca" items={SERVICIOS} />
+
+			<LocalAbout
+				label="Bar restaurante familiar en la Plana Alta"
+				title="Cocina de casa,<br />brasa de verdad<br /><em>y mesa para todos.</em>"
+				paragraphs={[
+					'En el número 14 de la calle Àngel Pallarés, en pleno Sant Joan de Moró, La Tasca hace lo que se espera de un bar restaurante de pueblo: abrir a las ocho y media para el café y el almuerzo, tener el menú del día escrito y poner la brasa a punto para quien llega a comer. La ficha de Google lo define en una línea: «bar restaurante familiar, con comida casera y menú y almuerzos populares».',
+					'De la brasa salen la parrillada de costillas y pollo con pimientos, el pulpo y el almuerzo de media mañana, con huevos fritos, salchichas y pimientos sobre la plancha. De la cocina, la fideuà de marisco, la sepia con patatas y la ensalada de la casa. Y una vez por semana la casa invita a montaditos, jamón y morro de cerdo, como anuncia en su propia ficha.',
+					'Los precios que el restaurante publica son dos: 9 € el menú diario y 5 € el almuerzo a la brasa. El resto se consulta en la barra. El horario se alarga de viernes a domingo hasta medianoche, y en el comedor, con las mesas de madera y las sillas altas, cabe desde una comida de trabajo hasta una celebración con baile.',
+				]}
+				note="«Las raciones generosas a un precio razonable», dice una reseña. Otra recomienda «la sepia con patatas y una muy buena ensalada»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que sale<br /><em>de la brasa.</em>"
+				description="La ficha del restaurante publica el precio del menú diario y del almuerzo a la brasa; el resto de la carta sale de sus fotos y de sus reseñas. Es cocina casera de tasca: parrillada, mariscada, pulpo, fideuà, sepia con patatas y bocadillos."
+				cta={{ label: 'Preguntar el menú de hoy', href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Menú diario 9 € y almuerzo a la brasa 5 €, los dos precios que anuncia la ficha del establecimiento. Para el resto de platos y raciones, se pregunta en la barra o por teléfono en el 623 11 60 45."
+			/>
+
+			<section class="cita" aria-label="Opinión destacada en Google">
+				<div class="wrap">
+					<blockquote>
+						<p>“{cita.text}”</p>
+						<footer>Reseña en Google · {cita.rating} estrellas</footer>
+					</blockquote>
+					<div class="cita-nota">
+						<b>4,4</b>
+						269 reseñas en Google
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leerlas todas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La mariscada,<br />la brasa<br /><em>y el comedor.</em>"
+				description="Estas fotografías proceden del perfil de La Tasca en Google Maps: la mariscada y la parrillada, el pulpo a la brasa, la fideuà, el bocadillo de bacon y queso, el almuerzo de plancha, el pescado con patatas y ensalada, las copas de helado y el comedor lleno."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Carrer d'Àngel Pallarés, 14 · 12130 Sant Joan de Moró"
+				title="Te esperamos<br /><em>en la mesa.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castelló · Plana Alta']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Horario publicado en la ficha de Google: lunes de 8:30 a 13:30, de martes a jueves de 8:30 a 16:00 y de viernes a domingo de 8:30 a 24:00. En festivos como el Día de Todos los Santos puede cambiar: llama antes."
+				mapTitle="Mapa de Bar Restaurante La Tasca en la calle Àngel Pallarés, 14, Sant Joan de Moró"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Tasca · Sant Joan de Moró"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="Se reserva por teléfono, llamando al 623 11 60 45: no hay reserva online ni formulario en esta web. Para grupos y para los fines de semana, cuando el horario llega hasta medianoche, conviene llamar con tiempo."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>sentarse.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a La Tasca"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>

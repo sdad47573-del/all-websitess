@@ -129,16 +129,6 @@ export const MENU = [
 	},
 ];
 
-export const REVIEWS = [
-	{
-		text: 'Típico bar de almuerzos ciclistas, buen trato y excelente carajillo palmero.',
-		rating: 5,
-	},
-	{
-		text: 'Buen sitio para almorzar y trato exquisito por parte de las camareras.',
-		rating: 5,
-	},
-];
 
 export const FAQ = [
 	{
