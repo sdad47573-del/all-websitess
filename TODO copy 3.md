@@ -1,10 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Aicha+African+food/@38.7156505,-9.1377199,17z/data=!3m1!4b1!4m6!3m5!1s0xd193317acbe1347:0x30f8830305d60d2e!8m2!3d38.7156505!4d-9.1377199!16s%2Fg%2F11h425tng2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Ks+Restaurante+e+Caf%C3%A9/@38.7940633,-9.1106505,17z/data=!3m1!4b1!4m6!3m5!1s0xd19331ddaa72e83:0x88b49196cf02a4b1!8m2!3d38.7940633!4d-9.1106505!16s%2Fg%2F11pcntfl5r?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Bistek/@38.7631125,-9.0969726,17z/data=!3m1!4b1!4m6!3m5!1s0xd1931814a298081:0xd9e07d87c73e5265!8m2!3d38.7631125!4d-9.0969726!16s%2Fg%2F11b_3fknjs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+e+Pastelaria+Carmar/@38.7141896,-9.136537,17z/data=!3m1!4b1!4m6!3m5!1s0xd1933154b039e51:0xaea2b899df1e5a5d!8m2!3d38.7141896!4d-9.136537!16s%2Fg%2F11j1cgsf8k?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Taj+Indian+Cuisine/@38.5302311,-8.8772029,17z/data=!3m1!4b1!4m6!3m5!1s0xd1943b0b0e37373:0x53a2d547968ea36!8m2!3d38.5302311!4d-8.8772029!16s%2Fg%2F11kpgg7k32?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D

@@ -1,0 +1,303 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-bistek-apaisada-01.jpg';
+import bifeComOvo from '../assets/fotos/restaurante-bistek-apaisada-02.jpg';
+import bandejaPastelaria from '../assets/fotos/restaurante-bistek-vista-3-03.jpg';
+import sobremesa from '../assets/fotos/restaurante-bistek-apaisada-04.jpg';
+import cozido from '../assets/fotos/restaurante-bistek-vertical-05.jpg';
+import pequenoAlmoco from '../assets/fotos/restaurante-bistek-apaisada-07.jpg';
+import pratoNatas from '../assets/fotos/restaurante-bistek-vertical-09.jpg';
+import ingles from '../assets/fotos/restaurante-bistek-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICOS } from '../data/site';
+
+const title = 'Restaurante Bistek · Restaurante, padaria e loja em Lisboa';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: bifeComOvo,
+		alt: 'Bife grelhado com ovo estrelado, arroz, batata frita, cenoura ralada e limão num prato de borda azul',
+	},
+	{
+		src: bandejaPastelaria,
+		alt: 'Bandeja com dois folhados de fiambre e queijo, um pastel de nata e uma caneca de café com chocolate',
+	},
+	{
+		src: pequenoAlmoco,
+		alt: 'Bandeja de pequeno-almoço ao ar livre com croissants, pastéis de nata, galão e café, na esplanada',
+	},
+	{
+		src: cozido,
+		alt: 'Cozido de feijão com chouriço, morcela, entremeada e cenoura num prato branco, com azeitonas ao lado',
+	},
+	{
+		src: pratoNatas,
+		alt: 'Prato com carne em molho de natas e cogumelos, arroz e batata frita',
+	},
+	{
+		src: ingles,
+		alt: 'Pequeno-almoço inglês com ovos estrelados, bacon, salsichas, feijão, cogumelos e tomate grelhado',
+	},
+	{
+		src: sobremesa,
+		alt: 'Taça de sobremesa cremosa com migalhas e uma fatia de bolo de chocolate ao lado',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#bistek`,
+	name: BUSINESS.name,
+	alternateName: ['Bistek', 'Original Bistek', 'Restaurante Bistek Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 894 3216',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Grelhados', 'Marisco', 'Hambúrgueres'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Área Metropolitana de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:30',
+			closes: '19:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '08:00',
+			closes: '17:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares acessíveis a cadeiras de rodas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'O balcão', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2e2622" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Bistek, restaurante Lisboa, padaria Lisboa, pastelaria Lisboa, churrasqueira Lisboa, marisqueira Lisboa, queijaria Lisboa, loja de cerveja Lisboa, Av. do Mediterrâneo, pequeno-almoço Lisboa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Restaurante, padaria, pastelaria, churrasqueira, marisqueira e loja de cerveja na Av. do Mediterrâneo, em Lisboa. Tel. +351 21 894 3216."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada coral do Restaurante Bistek com a esplanada na avenida"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2e2622"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351218943216"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Bistek"
+			subtitle="Restaurante · Padaria · Lisboa"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Av. do Mediterrâneo · Lisboa"
+				title="Restaurante, padaria <br /><em>e loja.</em>"
+				lede={`O Restaurante Bistek está na Av. do Mediterrâneo, em Lisboa. A ficha de Google descreve-o em nove categorias ao mesmo tempo — restaurante, padaria, pastelaria, churrasqueira, marisqueira, hamburgueria, queijaria, cafetaria e loja de cerveja — e dá-lhe 3,8 sobre 5 com 339 críticas. Atende no ${BUSINESS.phoneDisplay}.`}
+				image={fachada}
+				imageAlt="Fachada do Restaurante Bistek com a faixa coral, o letreiro na vitrina e a esplanada com toldos brancos"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,8</b> no Google · 339 críticas' },
+					{ label: 'Horário', html: '<b>7:30–19:30</b> de segunda a sexta' },
+					{ label: 'Telefone', html: '<b>21 894 3216</b> na ficha de Google' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="Como a Google descreve o Restaurante Bistek" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Nove coisas <br /><em>debaixo do mesmo teto.</em>"
+				paragraphs={[
+					'O Restaurante Bistek fica na Av. do Mediterrâneo, em Lisboa, com o código postal 1990-155. A ficha de Google não publica o número de porta, por isso o mapa desta página aponta às coordenadas exatas do estabelecimento.',
+					'A fachada é de vidro do chão ao teto, com a faixa coral e o letreiro «Original Bistek Restaurante Padaria»; à porta, na avenida, ficam os toldos brancos da esplanada. A Google classifica a casa em nove categorias: restaurante, padaria, churrasqueira, loja de cerveja, pastelaria, queijaria, cafetaria, hamburgueria e marisqueira.',
+					'Abre cedo: às 7:30 de segunda a sexta, o que dá para o pequeno-almoço ao balcão ou na esplanada. Ao sábado abre às 8:00 e fecha às 17:00, e ao domingo descansa.',
+					'As fotografias do perfil mostram a casa em funcionamento: o bife com ovo estrelado, o pequeno-almoço servido na esplanada, a bandeja de pastelaria, o cozido com chouriço e morcela, os pratos com molho de natas e as sobremesas.',
+					'A ficha não publica site próprio, carta nem preços, e as críticas não estão disponíveis na consulta pública. Esta página fica-se pelo que a ficha diz — morada, categorias, horário, telefone, acessibilidade e fotografias.',
+				]}
+				note={`Tem ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 com ${BUSINESS.reviewsCount} críticas no Google. O telefone publicado na ficha é o ${BUSINESS.phoneDisplay}, e a casa indica lugares acessíveis a cadeiras de rodas.`}
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: `Ligar para ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="O balcão"
+				title="Do almoço <br /><em>à padaria.</em>"
+				description="A ficha de Google não publica carta nem preços, e a casa não tem site próprio. O que segue são as categorias com que a Google a descreve — do restaurante à queijaria — sem pratos, doses nem valores inventados."
+				cta={{ label: `Telefonar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`Não há carta nem preços publicados. Para saber o que há hoje, o caminho é ligar para o ${BUSINESS.phoneDisplay} ou passar pela avenida.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Sete fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil do Restaurante Bistek em Google Maps: a fachada com a esplanada, o bife com ovo estrelado, o pequeno-almoço ao ar livre, a bandeja de pastelaria, o cozido, o prato com molho de natas e a sobremesa."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Passa pela <br /><em>Av. do Mediterrâneo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: de segunda a sexta das 7:30 às 19:30, sábado das 8:00 às 17:00 e domingo fechado. A ficha não publica o número de porta, por isso o mapa aponta às coordenadas do estabelecimento."
+				mapTitle="Mapa do Restaurante Bistek na Av. do Mediterrâneo, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Bistek · Lisboa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Telefone: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				reserveNote="Reservas e encomendas pelo telefone, que é o único canal publicado na ficha. A casa indica lugares acessíveis a cadeiras de rodas e não menciona estacionamento adaptado, esplanada nem serviço de take-away — a esplanada com toldos aparece apenas nas fotografias do perfil."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário e oferta antes da visita."
+			ctaLabel="Ligar para o Restaurante Bistek"
+			navAriaLabel="Ligações do Restaurante Bistek"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
