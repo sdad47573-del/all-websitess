@@ -1,6 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Restaurant+-+Bar+Casa+Herminia/@40.102729,-0.0018279,17z/data=!3m1!4b1!4m6!3m5!1s0xd5ff88043460ea3:0x94b3a16339c50b38!8m2!3d40.102729!4d-0.0018279!16s%2Fg%2F1tfx6704?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Bar+Restaurante+El+Cant%C3%B3/@39.8977408,-0.1038519,17z/data=!3m1!4b1!4m6!3m5!1s0xd60042815296d83:0x96b2383f0b1f865!8m2!3d39.8977408!4d-0.1038519!16s%2Fg%2F11g03n6d95?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/La+Tasca/@40.0585697,-0.1357897,17z/data=!3m1!4b1!4m6!3m5!1s0xd5ffd02099b788b:0xbf1fd19179e4dfda!8m2!3d40.0585697!4d-0.1357897!16s%2Fg%2F11gznllq0y?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
