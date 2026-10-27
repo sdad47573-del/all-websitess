@@ -1,14 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/La+Alacena/@39.9670517,-0.2605443,17z/data=!3m1!4b1!4m6!3m5!1s0xd600a6241345ac3:0x93c98475276d638f!8m2!3d39.9670517!4d-0.2605443!16s%2Fg%2F11g6vm4by8?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Antic+-+Restaurante/@39.9783855,-0.0418767,17z/data=!3m1!4b1!4m6!3m5!1s0xd6000817d86e849:0xa952ca4bc7fc1b97!8m2!3d39.9783855!4d-0.0418767!16s%2Fg%2F11g6xb3szw?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Rac%C3%B3+de+Navarrete/@40.1469542,0.0340983,17z/data=!3m1!4b1!4m9!3m8!1s0x12a0087f1856b009:0xa4459e5603d604a4!5m2!4m1!1i2!8m2!3d40.1469542!4d0.0340983!16s%2Fg%2F1tmv078f?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Ludiente/@40.0870544,-0.369883,17z/data=!3m1!4b1!4m6!3m5!1s0xd5fdd261f0a3c85:0x57446b40e73a64bb!8m2!3d40.0870544!4d-0.369883!16s%2Fg%2F11ghdjx1rs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurante+Casa+Maria/@40.0519488,-0.1702011,17z/data=!3m1!4b1!4m6!3m5!1s0xd5fe36864c51eb9:0xc6073760c7b77bf!8m2!3d40.0519488!4d-0.1702011!16s%2Fg%2F11dxs9xdb5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Restaurante+El+Cortijo+de+S%C3%A1nchez/@39.9430906,-0.112608,17z/data=!3m1!4b1!4m6!3m5!1s0xd60070086f6ecd1:0x5018c08cde66337e!8m2!3d39.9430906!4d-0.112608!16s%2Fg%2F1tdzmx4q?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Bar+restaurante+El+Rinc%C3%B3n+de+la+Olivereta/@39.9331945,-0.1102545,17z/data=!3m1!4b1!4m6!3m5!1s0xd60073e0d44c8ef:0x83beefb63034624c!8m2!3d39.9331945!4d-0.1102545!16s%2Fg%2F11ghfnvpn0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
