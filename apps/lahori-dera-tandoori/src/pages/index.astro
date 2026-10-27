@@ -1,0 +1,302 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/lahori-dera-tandoori-apaisada-01.jpg';
+import prato from '../assets/fotos/lahori-dera-tandoori-vertical-03.jpg';
+import cartaEntradas from '../assets/fotos/lahori-dera-tandoori-vertical-04.jpg';
+import cozinha from '../assets/fotos/lahori-dera-tandoori-panoramica-05.jpg';
+import frangoTandoori from '../assets/fotos/lahori-dera-tandoori-vertical-06.jpg';
+import capaCarta from '../assets/fotos/lahori-dera-tandoori-vertical-07.jpg';
+import dal from '../assets/fotos/lahori-dera-tandoori-vertical-08.jpg';
+import naanArroz from '../assets/fotos/lahori-dera-tandoori-apaisada-09.jpg';
+import sala from '../assets/fotos/lahori-dera-tandoori-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICOS } from '../data/site';
+
+const title = 'Lahori Dera Tandoori · Cozinha indiana em Almada';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: sala,
+		alt: 'Sala do Lahori Dera com paredes de azulejo, mesas de toalha branca e vermelha, cadeiras de madeira e candeeiros de braços',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada do Lahori Dera com os letreiros vermelhos do restaurante tandoori e da pizzaria, e mesas na rua',
+	},
+	{
+		src: prato,
+		alt: 'Prato de arroz amarelo com legumes e uma tigela de caril ao lado',
+	},
+	{
+		src: cartaEntradas,
+		alt: 'Página de entradas da carta do Lahori Dera, com samosas, pakoras, tikka, seekh kebab, saladas e pães',
+	},
+	{
+		src: cozinha,
+		alt: 'Balcão e forno da casa, com um funcionário, o forno de tandoor e a carta luminosa de pizzas por cima',
+	},
+	{
+		src: capaCarta,
+		alt: 'Capa da carta do Lahori Dera com o selo 100% halal, os telefones e a morada no Laranjeiro',
+	},
+	{
+		src: dal,
+		alt: 'Tigela de dal com uma noz de manteiga e gengibre em juliana',
+	},
+	{
+		src: naanArroz,
+		alt: 'Cesto de naan cortado e prato de arroz amarelo numa mesa de toalha branca',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#lahori-dera`,
+	name: BUSINESS.name,
+	alternateName: ['Lahori Dera', 'Lahori Dera Almada', 'Lahori Dera Laranjeiro'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Indiana', 'Tandoori', 'Kebab', 'Pizza'],
+	areaServed: [
+		{ '@type': 'City', name: 'Almada' },
+		{ '@type': 'AdministrativeArea', name: 'Laranjeiro e Feijó' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '11:00',
+			closes: '23:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1c1412" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Mulish:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Lahori Dera Tandoori Restaurant Halal, Lahori Dera Almada, Lahori Dera Laranjeiro, restaurante indiano Almada, tandoori Almada, frango tandoori Laranjeiro, comer halal Almada, pizzaria Almada"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha indiana e tandoori no Largo Francisco Sanches, loja 2A, no Laranjeiro, Almada. Todos os dias das 11:00 às 23:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tabuleiro de frango tandoori do Lahori Dera"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1c1412"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-15"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Laranjeiro, Almada"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[frangoTandoori]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Lahori Dera"
+			subtitle="Tandoori · Laranjeiro"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Largo Francisco Sanches, loja 2A · Laranjeiro"
+				title="Cozinha indiana <br /><em>e tandoori.</em>"
+				lede={`O Lahori Dera Tandoori Restaurant Halal é um restaurante indiano no Largo Francisco Sanches, loja 2A, no Laranjeiro, em Almada. Abre todos os dias às 11:00 e fecha às 23:00, e a ficha de Google dá-lhe 3,9 sobre 5 com 499 críticas.`}
+				image={frangoTandoori}
+				imageAlt="Tabuleiro de metal com frango tandoori grelhado, cortado em pedaços e coberto de especiarias"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,9</b> no Google · 499 críticas' },
+					{ label: 'Horário', html: '<b>11:00–23:00</b> todos os dias' },
+					{ label: 'Telefone', html: `<b>${BUSINESS.phone}</b> contacto publicado` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que encontras no Lahori Dera Tandoori Restaurant Halal" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Tandoori, caris <br /><em>e churrasqueira.</em>"
+				paragraphs={[
+					'O Lahori Dera fica no Largo Francisco Sanches, loja 2A, no Laranjeiro, em Almada (2810-225). A fachada leva dois letreiros vermelhos: «Lahori Dera Tandoori Restaurante» e «Lahori Dera Pizzaria», com mesas e cadeiras na rua.',
+					'A Google classifica a casa como restaurante indiano e dá-lhe 3,9 sobre 5 com 499 críticas. A ficha publica o telefone +351 21 403 0626 e não indica site próprio. A capa da carta acrescenta os números +351 933 086 965 e +351 920 593 719, além do selo «100% HALAL».',
+					'As fotografias do perfil mostram a sala de paredes azulejadas, mesas de toalha branca e vermelha, cadeiras de madeira e candeeiros de braços, além do balcão com o forno de tandoor e a carta luminosa da pizzaria. À mesa aparecem frango tandoori, dal com manteiga e gengibre, arroz amarelo e naan.',
+					'O horário é contínuo: todos os dias, das 11:00 às 23:00. A ficha avisa que em feriados pode ser diferente. Não publica site próprio nem carta online, por isso os preços das fotografias não se apresentam como atuais.',
+				]}
+				note="A informação vem da ficha pública de Google Maps e das fotografias do perfil da casa. As cartas da galeria não estão datadas, por isso nenhum preço se apresenta como atual."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver a casa no Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A mesa"
+				title="Frango tandoori, <br /><em>dal e naan.</em>"
+				description="A ficha de Google não publica carta nem preços, e o restaurante não tem site próprio. O que segue vem das páginas de carta que a casa tem na sua galeria de fotografias e dos pratos que aparecem no perfil."
+				cta={{ label: 'Ver fotos no Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Não há carta oficial publicada. As fotografias das cartas mostram entradas desde 1,00 € e pratos até 7,50 €, além de pizzas a 4,50 €, mas não estão datadas e podem estar desatualizadas; confirma por telefone ou na ficha antes de contar com um prato ou um preço."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Oito fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil do Lahori Dera em Google Maps: a sala, a fachada, o frango tandoori, o dal, o naan e o arroz, a cozinha e duas páginas da carta."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Passa pelo <br /><em>Laranjeiro.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} Laranjeiro`, 'Almada, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias, das 11:00 às 23:00. A ficha assinala que em feriados pode ser diferente, por isso convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Lahori Dera Tandoori Restaurant Halal no Largo Francisco Sanches, Almada"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Lahori Dera · Laranjeiro"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Ligar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="O telefone é o único canal de contacto que publica a ficha; a capa da carta mostra ainda +351 933 086 965 e +351 920 593 719. Não há reservas nem encomendas em linha: a casa não tem site próprio nem plataforma de reservas associada. A ficha também não indica informação sobre esplanada, take-away ou acessibilidade."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário e oferta antes da visita."
+			ctaLabel="Ligar"
+			navAriaLabel="Ligações do Lahori Dera Tandoori Restaurant Halal"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
