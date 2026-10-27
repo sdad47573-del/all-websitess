@@ -1,0 +1,290 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import carne from '../assets/fotos/restaurant-los-arcos-apaisada-06.jpg';
+import barra from '../assets/fotos/restaurant-los-arcos-apaisada-01.jpg';
+import comedor from '../assets/fotos/restaurant-los-arcos-vertical-07.jpg';
+import bocadillos from '../assets/fotos/restaurant-los-arcos-vertical-10.jpg';
+import huevos from '../assets/fotos/restaurant-los-arcos-vertical-08.jpg';
+import mesa from '../assets/fotos/restaurant-los-arcos-apaisada-03.jpg';
+import cafe from '../assets/fotos/restaurant-los-arcos-vertical-04.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: barra,
+		alt: 'Barra de azulejos y comedor con vigas de madera de Los Arcos, en Sant Joan de Moró',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor rústico de Los Arcos con chimenea de piedra y mesas con mantel azul',
+	},
+	{
+		src: bocadillos,
+		alt: 'Bocadillos de lomo y de tortilla con olivas en la mesa de Los Arcos',
+	},
+	{
+		src: huevos,
+		alt: 'Huevos fritos con patatas en plato blanco en Los Arcos',
+	},
+	{
+		src: mesa,
+		alt: 'Ensalada de tomate y cebolla con patatas caseras y vino en la mesa de Los Arcos',
+	},
+	{
+		src: cafe,
+		alt: 'Café servido en vaso de barro con cuchara en Los Arcos',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'BarOrPub'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Los Arcos', 'Restaurante Los Arcos Sant Joan de Moró', 'Bar Los Arcos'],
+	slogan: BUSINESS.tagline,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 964 32 80 40',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Casera', 'Brasa'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sant Joan de Moró' },
+		{ '@type': 'AdministrativeArea', name: 'la Plana Alta' },
+		{ '@type': 'AdministrativeArea', name: 'Castellón' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Chimenea',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const title = 'Los Arcos · Brasa y menú del día en Sant Joan de Moró';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6b2233" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurant Los Arcos, Los Arcos Sant Joan de Moró, restaurante carnes a la brasa Castellón, menú del día Sant Joan de Moró, bar de tapas Plana Alta, Avinguda de Borriol 7"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Los Arcos · Carnes a la brasa en Sant Joan de Moró"
+			ogDescription="Comida casera, menú del día y carnes a la brasa a la salida de Sant Joan de Moró. 4,3 en Google con 180 reseñas. Tel. 964 32 80 40."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Carne a la brasa con patatas y verdura servida en Restaurant Los Arcos"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#6b2233"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34964328040"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 964 32 80 40',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[carne]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Brasa y tapas · Sant Joan de Moró"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Avinguda de Borriol, 7 · Sant Joan de Moró · Castellón"
+				title="Comida casera<br /><em>y brasa encendida.</em>"
+				lede="Los Arcos es el restaurante de la entrada de Sant Joan de Moró: barra de azulejos, comedor con chimenea de piedra y una parrilla que no se apaga. Menú del día, platos de cuchara, bocadillos para el almuerzo y postres de la casa."
+				image={carne}
+				imageAlt="Carne a la brasa con patatas y verdura servida en Restaurant Los Arcos"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Brasa · Menú del día"
+				facts={[
+					{ label: 'Nota', html: '<b>4,3 en Google</b> con 180 reseñas' },
+					{ label: 'Especialidad', html: '<b>Carne a la brasa</b> con patatas' },
+					{ label: 'Mediodía', html: '<b>Menú del día</b> y platos caseros' },
+					{ label: 'Postres', html: '<b>Caseros</b>, hechos en la casa' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Los Arcos" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El comedor de piedra<br /><em>y brasa.</em>"
+				paragraphs={[
+					'Los Arcos está en la Avinguda de Borriol, 7, a la salida de Sant Joan de Moró hacia Borriol, en la comarca de la Plana Alta. Es un restaurante de los de siempre: barra de azulejos, vigas de madera y un comedor rústico presidido por una gran chimenea de piedra.',
+					'La cocina es casera y generosa, con la brasa como protagonista. Las carnes salen a la parrilla con patatas y verdura, y a la mesa se suman huevos con patatas, bocadillos para el almuerzo y un menú del día que las reseñas describen como buena relación calidad precio. Los postres se hacen en la propia casa.',
+					'Google lo clasifica como bar de tapas y le da un 4,3 sobre 5 con 180 reseñas. La ficha marca asientos adaptados para sillas de ruedas, pero no publica horario, así que lo más práctico es llamar antes de acercarse.',
+				]}
+				note={`«${REVIEWS[0]}», resume una reseña de Google. Otra: «${REVIEWS[1]}». Y una tercera: «${REVIEWS[2]}».`}
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La mesa"
+				title="Brasa, huevos<br />y bocadillos<br /><em>de la casa.</em>"
+				description="La ficha de Google no publica la carta con precios. Estos son los platos que aparecen en las fotos del perfil y en las reseñas del restaurante."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="El menú del día cambia según lo que haya en la cocina y se consulta en la mesa. Si vais en grupo o queréis celebrar algo, llama antes al 964 32 80 40."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra,<br />el comedor<br /><em>y la mesa.</em>"
+				description="Estas fotografías proceden del perfil de Los Arcos en Google Maps: la barra de azulejos, el comedor con la chimenea, los bocadillos, los huevos con patatas, la mesa y el café de barro."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Avinguda de Borriol, 7 · 12130 Sant Joan de Moró · Castellón"
+				title="A la salida<br /><em>del pueblo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castellón · Comunitat Valenciana']}
+				hoursCaption="Servicios y horario"
+				hours={HOURS}
+				hoursNote="Google no publica el horario de Los Arcos. Las reseñas hablan de almuerzos y de menú del día, y de que han atendido a gente que llegaba tarde a comer. Llama al 964 32 80 40 para confirmar la hora."
+				mapTitle="Mapa de Restaurant Los Arcos en la Avinguda de Borriol, 7, Sant Joan de Moró"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Los Arcos · Sant Joan de Moró"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="Se reserva por teléfono, en el 964 32 80 40. La ficha marca asientos adaptados para sillas de ruedas. El comedor es limitado y se llena los fines de semana, así que para grupos conviene llamar con tiempo."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a Los Arcos"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
