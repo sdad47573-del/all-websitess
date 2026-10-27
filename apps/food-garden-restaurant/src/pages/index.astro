@@ -1,0 +1,307 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/food-garden-restaurant-apaisada-01.jpg';
+import jalebi from '../assets/fotos/food-garden-restaurant-cuadrada-02.jpg';
+import pratoBiryani from '../assets/fotos/food-garden-restaurant-vertical-03.jpg';
+import sala from '../assets/fotos/food-garden-restaurant-vertical-04.jpg';
+import rua from '../assets/fotos/food-garden-restaurant-apaisada-05.jpg';
+import cartaFrango from '../assets/fotos/food-garden-restaurant-vertical-06.jpg';
+import biryani from '../assets/fotos/food-garden-restaurant-vertical-07.jpg';
+import carta from '../assets/fotos/food-garden-restaurant-vertical-08.jpg';
+import salaEvento from '../assets/fotos/food-garden-restaurant-vertical-09.jpg';
+import mesa from '../assets/fotos/food-garden-restaurant-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICOS } from '../data/site';
+
+const title = 'Food Garden Restaurant · Cozinha bangladesí em Lisboa';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: mesa,
+		alt: 'Mesa posta com quatro pratos de biryani, frango frito, samosas, melancia e jalebi, com sumos de laranja e um jarro azul',
+	},
+	{
+		src: jalebi,
+		alt: 'Jalebi, doces em espiral cor de laranja, numa travessa de metal com bordo prateado',
+	},
+	{
+		src: pratoBiryani,
+		alt: 'Prato de biryani com frango frito, samosa, cebola frita, melancia e jalebi, sobre um menu bengali',
+	},
+	{
+		src: sala,
+		alt: 'Sala do Food Garden com teto rosa, paredes amarelas, mesas de toalha branca e o balcão de buffet ao fundo',
+	},
+	{
+		src: cartaFrango,
+		alt: 'Carta do Food Garden dedicada ao frango, com seis caris e os preços de 6,50 a 7,50 euros',
+	},
+	{
+		src: biryani,
+		alt: 'Prato de biryani de carne com uma colher, uma tigela de molho amarelo e arroz ao lado',
+	},
+	{
+		src: carta,
+		alt: 'Cartaz da carta do Food Garden com entradas, tikka masala, caris, biryani, pratos vegetarianos, sopa, pão, arroz e bebidas',
+	},
+	{
+		src: salaEvento,
+		alt: 'Sala do Food Garden com mesas compridas de toalhas floridas, cadeiras de madeira e um cartaz do Bangladesh Expat Rights Council',
+	},
+	{
+		src: rua,
+		alt: 'Fachada do Food Garden na R. do Benformoso, com o letreiro vermelho, a porta aberta e o cartaz da carta à entrada',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#food-garden`,
+	name: BUSINESS.name,
+	alternateName: ['Food Garden', 'Food Garden Lisboa', 'Food Garden Mouraria'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Bangladesí', 'Indiana', 'Sul-asiática'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Mouraria' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '08:00',
+			closes: '23:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1c3b2a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Nunito+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Food Garden Restaurant, Food Garden Lisboa, restaurante bangladesí Lisboa, comida indiana Mouraria, biryani Lisboa, caril de frango Lisboa, R. do Benformoso, restaurante halal Lisboa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha bangladesí e indiana na R. do Benformoso 115, na Mouraria. Aberto todos os dias das 8:00 às 23:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Letreiro vermelho do Food Garden Restaurant na R. do Benformoso"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1c3b2a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Mouraria, Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Food Garden"
+			subtitle="Bangladesí e indiana · Lisboa"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="R. do Benformoso 115 · Mouraria"
+				title="Cozinha bangladesí <br /><em>e indiana.</em>"
+				lede={`O Food Garden Restaurant é um restaurante bangladesí na R. do Benformoso 115, em Lisboa. Abre todos os dias às 8:00 e fecha às 23:30, e a ficha de Google dá-lhe 3,3 sobre 5 com 56 críticas.`}
+				image={fachada}
+				imageAlt="Letreiro vermelho do Food Garden com a inscrição «Grill and indian restaurant», a porta aberta e o cartaz da carta à entrada"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,3</b> no Google · 56 críticas' },
+					{ label: 'Horário', html: '<b>8:00–23:30</b> todos os dias' },
+					{ label: 'Telefone', html: `<b>${BUSINESS.phone}</b> contacto publicado` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que encontras no Food Garden Restaurant" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Um jardim de caris <br /><em>na Mouraria.</em>"
+				paragraphs={[
+					'O Food Garden Restaurant fica na R. do Benformoso 115, em Lisboa (1100-083), na Mouraria. A fachada é vermelha e leva o letreiro «Food Garden — Grill and indian restaurant», com o símbolo halal e a carta afixada junto à porta.',
+					'A Google classifica a casa como restaurante bangladesí e dá-lhe 3,3 sobre 5 com 56 críticas. A ficha publica o telefone +351 920 451 853 e não indica site próprio.',
+					'As fotografias do perfil mostram a sala com teto rosa, paredes amarelas e o balcão de buffet, mesas compridas com toalhas floridas e pratos de biryani com frango frito, samosas, melancia e jalebi. Também há duas cartas fotográficas: uma de caris de frango e outra com a carta completa.',
+					'O horário é contínuo: todos os dias, das 8:00 às 23:30. A ficha avisa que em feriados pode ser diferente. Não publica site próprio nem carta online, por isso os preços das fotografias não se apresentam como atuais.',
+				]}
+				note="A informação vem da ficha pública de Google Maps e das fotografias do perfil da casa. As cartas da galeria não estão datadas, por isso nenhum preço se apresenta como atual."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver a casa no Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A mesa"
+				title="Caris, biryani <br /><em>e naan.</em>"
+				description="A ficha de Google não publica carta nem preços, e o restaurante não tem site próprio. O que segue vem das duas cartas que a casa tem na sua galeria de fotografias e dos pratos que aparecem no perfil."
+				cta={{ label: 'Ver fotos no Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Não há carta oficial publicada. As fotografias das cartas mostram preços entre 1,50 € e 10,50 €, mas não estão datadas e podem estar desatualizadas; confirma por telefone ou na ficha antes de contar com um prato ou um preço."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil do Food Garden Restaurant em Google Maps: os pratos de biryani, o jalebi, as duas cartas, a sala, uma mesa de evento e a fachada na R. do Benformoso."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Passa pelo <br /><em>Benformoso.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: todos os dias, das 8:00 às 23:30. A ficha assinala que em feriados pode ser diferente, por isso convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Food Garden Restaurant na R. do Benformoso 115, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Food Garden · Mouraria"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Ligar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="O telefone é o único canal de contacto que publica a ficha. Não há reservas nem encomendas em linha: a casa não tem site próprio nem plataforma de reservas associada. A ficha também não indica informação sobre esplanada, take-away ou acessibilidade."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário e oferta antes da visita."
+			ctaLabel="Ligar"
+			navAriaLabel="Ligações do Food Garden Restaurant"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

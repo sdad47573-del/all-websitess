@@ -1,0 +1,295 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import sala from '../assets/fotos/la-botana-apaisada-01.jpg';
+import bar from '../assets/fotos/la-botana-vertical-02.jpg';
+import guacamole from '../assets/fotos/la-botana-vertical-03.jpg';
+import tacos from '../assets/fotos/la-botana-apaisada-04.jpg';
+import margarita from '../assets/fotos/la-botana-vertical-05.jpg';
+import burrito from '../assets/fotos/la-botana-apaisada-06.jpg';
+import mural from '../assets/fotos/la-botana-vertical-07.jpg';
+import calavera from '../assets/fotos/la-botana-vertical-08.jpg';
+import nachos from '../assets/fotos/la-botana-vertical-09.jpg';
+import tacosPlate from '../assets/fotos/la-botana-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICOS } from '../data/site';
+
+const title = 'La Botana · Restaurante mexicano em Lisboa';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: guacamole,
+		alt: 'Guacamole servido num molcajete de pedra com rodelas de jalapeño e palitos crocantes, ao lado de meio abacate e de uma garrafa de Corona Extra com lima',
+	},
+	{
+		src: tacos,
+		alt: 'Dois tacos de tortilha de milho com carne, ananás, cebola roxa, coentros e molho vermelho, num prato escuro, com uma quesadilla e uma tostada ao fundo',
+	},
+	{
+		src: nachos,
+		alt: 'Duas panelas de nachos gratinados com queijo, tomate, coentros e natas sobre bases de ráfia, com uma garrafa de cola e uma margarita na mesa',
+	},
+	{
+		src: burrito,
+		alt: 'Burrito cortado ao meio num prato escuro, com uma tigela de guacamole e outra de totopos de milho',
+	},
+	{
+		src: tacosPlate,
+		alt: 'Dois tacos de carne com ananás e coentros sobre um prato escuro, com um cubo de ananás cortado em forma de H',
+	},
+	{
+		src: margarita,
+		alt: 'Margarita em copete com bordo de sal e uma rodela de lima seca, sobre uma mesa de latão, com o banco corrido verde ao fundo',
+	},
+	{
+		src: sala,
+		alt: 'Sala da La Botana com lâmpadas de vime, plantas suspensas, mezanino de grade preta, balcão de metal canelado e um cato esculpido à esquerda',
+	},
+	{
+		src: bar,
+		alt: 'Bar da La Botana com mural de cores vivas, prateleiras de madeira com quadros e figuras, copos de barro vermelho e mesas brancas à frente',
+	},
+	{
+		src: mural,
+		alt: 'Mural da parede do bar com uma figura pré-hispânica amarela, um dragão verde e espirais vermelhas e azuis sobre fundo cor de rosa',
+	},
+	{
+		src: calavera,
+		alt: 'Mural de uma caveira do Dia dos Mortos com flores de cempasúchil numa parede da sala, com uma escada e material de montagem à frente',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-botana`,
+	name: BUSINESS.name,
+	alternateName: ['La Botana Lisboa', 'La Botana Duque de Loulé'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mexicana', 'Latino-americana'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Avenidas Novas' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3a1030" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,700;1,500;1,700&family=Outfit:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Botana, La Botana Lisboa, restaurante mexicano Lisboa, tacos Lisboa, guacamole Lisboa, burrito Lisboa, margaritas Lisboa, Av. Duque de Loulé"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha mexicana na Av. Duque de Loulé 1E, em Lisboa. Guacamole, tacos, burritos e margaritas, com 4,7 sobre 5 no Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Sala da La Botana com plantas suspensas, lâmpadas de vime e mezanino"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#3a1030"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Avenidas Novas, Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[sala]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Botana"
+			subtitle="Mexicano · Lisboa"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · Lisboa`}
+				title="Cozinha mexicana <br /><em>em Lisboa.</em>"
+				lede={`A La Botana é um restaurante mexicano na Av. Duque de Loulé 1E, em Lisboa, com uma sala em dois pisos cheia de plantas e murais. A ficha de Google dá-lhe 4,7 sobre 5 com 201 críticas, mas não publica horário: o telefone é a forma de o confirmar.`}
+				image={sala}
+				imageAlt="Sala da La Botana com mezanino, lâmpadas de vime, plantas suspensas e mesas de mármore"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> no Google · 201 críticas' },
+					{ label: 'Horário', html: '<b>Não publicado</b> na ficha de Google' },
+					{ label: 'Telefone', html: `<b>${BUSINESS.phone}</b> contacto publicado` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que encontras na La Botana" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Tacos, murais <br /><em>e margaritas.</em>"
+				paragraphs={[
+					'A La Botana fica na Av. Duque de Loulé 1E, em Lisboa (1050-085), a poucos minutos do Marquês de Pombal. A Google classifica a casa como restaurante mexicano e dá-lhe 4,7 sobre 5 com 201 críticas.',
+					'Por dentro há dois pisos: um mezanino com grade preta sobre a sala, lâmpadas de vime, plantas suspensas e chão de madeira. As mesas são de mármore e há um banco corrido de veludo verde encostado à parede.',
+					'No bar, a frente leva um padrão geométrico de losangos e a parede tem um mural de cores vivas com uma figura pré-hispânica e um dragão verde. Noutra parede da sala há uma caveira do Dia dos Mortos rodeada de flores de cempasúchil; as fotografias do perfil apanham-na ainda com uma escada e material de montagem à frente.',
+					'O que se serve vê-se nas fotografias: guacamole no molcajete com jalapeño, tacos de carne com ananás e cebola roxa, burrito com totopos, quesadilla, tostada e nachos gratinados, além de margaritas e cerveja. A ficha não publica carta, preços nem horário.',
+				]}
+				note="A informação vem da ficha pública de Google Maps e das fotografias do perfil da casa. A ficha não publica horário, carta nem site próprio, e esta página não inventa nenhum desses dados."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver a casa no Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A mesa"
+				title="Guacamole, tacos <br /><em>e burritos.</em>"
+				description="A ficha de Google não publica carta nem preços, e a casa não tem site próprio. O que segue é o que mostram as fotografias do perfil: os pratos e as bebidas que se vêem à mesa."
+				cta={{ label: 'Ver fotos no Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Não há carta publicada nem preços conhecidos. Se queres confirmar pratos, quantidades ou se está aberto, o telefone da ficha é o único canal publicado."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Dez fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil da La Botana em Google Maps: a sala e o mezanino, o bar, os murais e os pratos que saem da cozinha."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Passa pela <br /><em>Duque de Loulé.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="A ficha de Google não publica horário: mostra a opção «adicionar horário». Por isso esta página não indica horas — confirma-as por telefone antes de ir."
+				mapTitle="Mapa da La Botana na Av. Duque de Loulé 1E, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Botana · Lisboa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Ligar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="O telefone é o único canal de contacto que publica a ficha. Não há reservas nem encomendas em linha: a casa não tem site próprio nem plataforma de reservas associada. A ficha também não indica informação sobre esplanada, take-away ou acessibilidade."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário e oferta antes da visita."
+			ctaLabel="Ligar"
+			navAriaLabel="Ligações da La Botana"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

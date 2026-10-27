@@ -1,0 +1,306 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import salaMadeira from '../assets/fotos/sushibar-royal-restaurante-vertical-01.jpg';
+import pato from '../assets/fotos/sushibar-royal-restaurante-vertical-02.jpg';
+import cartazSushi from '../assets/fotos/sushibar-royal-restaurante-apaisada-03.jpg';
+import takeaway from '../assets/fotos/sushibar-royal-restaurante-vertical-04.jpg';
+import carta from '../assets/fotos/sushibar-royal-restaurante-vertical-05.jpg';
+import nigiri from '../assets/fotos/sushibar-royal-restaurante-vertical-06.jpg';
+import frangoAmendoas from '../assets/fotos/sushibar-royal-restaurante-cuadrada-07.jpg';
+import yakitori from '../assets/fotos/sushibar-royal-restaurante-vertical-08.jpg';
+import salaBiombo from '../assets/fotos/sushibar-royal-restaurante-vertical-09.jpg';
+import pratoSushi from '../assets/fotos/sushibar-royal-restaurante-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICOS } from '../data/site';
+
+const title = 'Sushibar Royal Restaurante · Alverca do Ribatejo';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: pratoSushi,
+		alt: 'Prato quadrado com uramaki crocante, maki de salmão, sashimi e nigiri, com uma planta decorativa ao centro',
+	},
+	{
+		src: salaMadeira,
+		alt: 'Sala do Sushibar Royal com mesas de madeira, cadeiras verdes, separadores de vidro gravado e guardanapos vermelhos',
+	},
+	{
+		src: cartazSushi,
+		alt: 'Cartaz com a grelha de peças de sushi do Sushibar Royal, numeradas de 1 a 72',
+	},
+	{
+		src: takeaway,
+		alt: 'Caixa de takeaway com nigiri de salmão, uramaki com sésamo e rolos crocantes, com molho de soja ao lado',
+	},
+	{
+		src: carta,
+		alt: 'Página da carta do Sushibar Royal com as entradas e os tepan yaki numerados de T1 a T18',
+	},
+	{
+		src: frangoAmendoas,
+		alt: 'Frango panado com amêndoas picadas numa caixa preta, sobre tiras de couve',
+	},
+	{
+		src: yakitori,
+		alt: 'Dois espetos de frango yakitori com molho teriyaki, cenoura e folhas verdes num prato branco',
+	},
+	{
+		src: salaBiombo,
+		alt: 'Sala com biombo de madeira entalhada, candeeiro de cristal, garrafeira ao fundo e cadeiras verdes',
+	},
+	{
+		src: pato,
+		alt: 'Pato crocante fatiado sobre tiras de couve, com cenoura e salsa num prato branco',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#sushibar-royal`,
+	name: BUSINESS.name,
+	alternateName: ['Sushibar Royal', 'Sushibar Royal Alverca', 'Royal Sushi Alverca'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pan-asiática', 'Japonesa', 'Sushi'],
+	areaServed: [
+		{ '@type': 'City', name: 'Alverca do Ribatejo' },
+		{ '@type': 'AdministrativeArea', name: 'Vila Franca de Xira' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '19:00',
+			closes: '23:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#12161a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Sushibar Royal Restaurante, Sushibar Royal Alverca, sushi Alverca, sushi Alverca do Ribatejo, restaurante pan-asiático Alverca, tepan yaki Alverca, takeaway sushi Alverca"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha pan-asiática e sushi na Av. 5 de Outubro 32, em Alverca do Ribatejo. De quarta a segunda, 12:00–15:00 e 19:00–23:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Prato de sushi e sashimi do Sushibar Royal Restaurante"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#12161a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Alverca do Ribatejo, Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[nigiri]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Sushibar Royal"
+			subtitle="Cozinha pan-asiática · Alverca"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Av. 5 de Outubro 32 · Alverca do Ribatejo"
+				title="Sushi e cozinha <br /><em>pan-asiática.</em>"
+				lede={`O Sushibar Royal Restaurante é um restaurante de cozinha pan-asiática na Av. 5 de Outubro 32, em Alverca do Ribatejo. Abre de quarta a segunda, das 12:00 às 15:00 e das 19:00 às 23:00, e fecha às terças. A ficha de Google dá-lhe 4,1 sobre 5 com 427 críticas.`}
+				image={nigiri}
+				imageAlt="Tabuleiro com oito peças de nigiri de salmão sobre folhas de alface"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,1</b> no Google · 427 críticas' },
+					{ label: 'Horário', html: '<b>12:00–15:00<br />19:00–23:00</b> qua–seg' },
+					{ label: 'Telefone', html: `<b>${BUSINESS.phone}</b> contacto publicado` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que encontras no Sushibar Royal Restaurante" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Uma sala de madeira <br /><em>e sushi ao centro.</em>"
+				paragraphs={[
+					'O Sushibar Royal Restaurante fica na Av. 5 de Outubro 32, em Alverca do Ribatejo (2615-063), no distrito de Lisboa. A sala tem mesas de madeira, cadeiras verdes, separadores de vidro gravado com bambus, um biombo de madeira entalhada e um candeeiro de cristal.',
+					'A Google classifica a casa como restaurante de cozinha pan-asiática e dá-lhe 4,1 sobre 5 com 427 críticas. A ficha publica o telefone +351 21 193 0735 e não indica site próprio.',
+					'As fotografias do perfil mostram nigiri de salmão, caixas de takeaway com uramaki e rolos crocantes, um prato de sushi e sashimi, pato crocante, frango panado com amêndoas e espetadas de frango. Há também duas fotografias da carta, com as entradas e os tepan yaki.',
+					'O serviço divide-se em almoço e jantar: das 12:00 às 15:00 e das 19:00 às 23:00, de quarta a segunda. À terça-feira fecha. A ficha avisa que em feriados o horário pode ser diferente, e não publica carta nem preços.',
+				]}
+				note="A informação vem da ficha pública de Google Maps e das fotografias do perfil da casa. A carta que aparece na galeria não está datada, por isso nenhum preço se apresenta como atual."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver a casa no Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="A mesa"
+				title="Sushi, tepan yaki <br /><em>e espetadas.</em>"
+				description="A ficha de Google não publica carta nem preços, e o restaurante não tem site próprio. O que segue são os pratos que aparecem nas fotografias do perfil da casa, incluindo as páginas de carta que a casa tem na sua galeria."
+				cta={{ label: 'Ver fotos no Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Não há carta oficial publicada. A fotografia da carta mostra preços desde 2,00 € (sopa de miso e arroz tepan yaki), mas não está datada e pode estar desatualizada; confirma por telefone ou na ficha antes de contar com um prato ou um preço."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As fotografias do perfil do Sushibar Royal Restaurante em Google Maps: o sushi e o sashimi, as caixas de takeaway, as cartas, as entradas e as duas salas."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Passa pela <br /><em>5 de Outubro.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: de quarta a segunda, das 12:00 às 15:00 e das 19:00 às 23:00; terça-feira fechado. Em feriados pode ser diferente, por isso convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Sushibar Royal Restaurante na Av. 5 de Outubro 32, Alverca do Ribatejo"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Sushibar Royal · Alverca"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Ligar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="O telefone é o único canal de contacto que publica a ficha. Não há reservas nem encomendas em linha: a casa não tem site próprio nem plataforma de reservas associada. A ficha também não indica informação sobre esplanada, take-away ou acessibilidade."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário e oferta antes da visita."
+			ctaLabel="Ligar"
+			navAriaLabel="Ligações do Sushibar Royal Restaurante"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
