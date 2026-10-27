@@ -1,0 +1,314 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import salon from '../assets/fotos/restaurante-salon-diamante-apaisada-01.jpg';
+import carne from '../assets/fotos/restaurante-salon-diamante-apaisada-03.jpg';
+import cumple from '../assets/fotos/restaurante-salon-diamante-apaisada-04.jpg';
+import huevos from '../assets/fotos/restaurante-salon-diamante-apaisada-07.jpg';
+import salsa from '../assets/fotos/restaurante-salon-diamante-apaisada-08.jpg';
+import ensaladilla from '../assets/fotos/restaurante-salon-diamante-apaisada-10.jpg';
+import entremes from '../assets/fotos/restaurante-salon-diamante-cuadrada-09.jpg';
+import celebracion from '../assets/fotos/restaurante-salon-diamante-vertical-02.jpg';
+import rollitos from '../assets/fotos/restaurante-salon-diamante-vertical-05.jpg';
+import interior from '../assets/fotos/restaurante-salon-diamante-vertical-06.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Restaurante Salón Diamante · Cocina valenciana en Onda';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: salon,
+		alt: 'Mesa del salón del Restaurante Salón Diamante preparada para un banquete, con mantel a rayas, sillas azul noche con marco dorado, centros de flores y carteles numerados',
+	},
+	{
+		src: interior,
+		alt: 'Comedor del Restaurante Salón Diamante con el logotipo del diamante en la pared, mesas de mármol, sillas doradas, candelabro y lámparas de pie',
+	},
+	{
+		src: cumple,
+		alt: 'Salón del Restaurante Salón Diamante decorado para un cumpleaños, con la pared de flores, los globos metálicos del 18 y la mesa de mármol en el centro',
+	},
+	{
+		src: carne,
+		alt: 'Dos platos de carne a la plancha con patatas fritas, pimientos y champiñones salteados, servidos en el Restaurante Salón Diamante',
+	},
+	{
+		src: huevos,
+		alt: 'Plato de huevos con jamón y pimentón sobre pan tostado, servido en un plato de porcelana con dos rebanadas de pan crujiente',
+	},
+	{
+		src: salsa,
+		alt: 'Plato de carne en salsa con patatas panadera y una concha con ensalada de tomate y cebolla, sobre mantel individual trenzado',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Ensaladilla rusa en tres porciones con mayonesa, gajos de naranja, lechuga y pan tostado, servida en un plato blanco',
+	},
+	{
+		src: entremes,
+		alt: 'Fuente de entremeses del Restaurante Salón Diamante con jamón en rosa, embutidos, quesos, aceitunas, ensaladilla y croqueta, sobre un mantel individual rojo',
+	},
+	{
+		src: rollitos,
+		alt: 'Plato con rollitos de carne, patatas panadera, ensalada de lombarda y una quenelle de salsa blanca, con pimentón espolvoreado',
+	},
+	{
+		src: celebracion,
+		alt: 'Ambiente de una celebración en el Restaurante Salón Diamante, con una clienta y un niño en primer plano y un centro de flores rojas al fondo',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante-salon-diamante`,
+	name: BUSINESS.name,
+	alternateName: ['Salón Diamante', 'Salón Diamante Onda', 'Restaurante Diamante Onda'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Valenciana', 'Española', 'De mercado'],
+	areaServed: [
+		{ '@type': 'City', name: 'Onda' },
+		{ '@type': 'AdministrativeArea', name: 'Plana Baixa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '18:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El salón', href: '#casa' },
+	{ label: 'La mesa', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#14243d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Figtree:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Salón Diamante, restaurante Onda, cocina valenciana Onda, almuerzos Onda, comedor para eventos Onda, bodas Onda, bautizos Onda, banquetes Castellón, C. Islas Baleares 7 Onda, restaurante polígono de Onda"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Almuerzos, comidas y todo tipo de eventos en el polígono de Onda (Castellón). C. Islas Baleares 7. 4,5 en Google con 188 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Salón del Restaurante Salón Diamante preparado para un banquete"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#14243d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion={BUSINESS.geoRegion}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="polígono de Onda, Castellón"
+			locale="es_ES"
+			countryName="España"
+			preload={[salon]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Salón Diamante"
+			subtitle="polígono de Onda · Castellón"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.district}`}
+				title="Almuerzos, comidas <br /><em>y celebraciones.</em>"
+				lede="El Restaurante Salón Diamante está en la calle Islas Baleares 7, en el polígono de Onda (Castellón). Abre de 8:00 a 18:00 de lunes a sábado y la ficha de Google le da 4,5 sobre 5 con 188 reseñas. En su propia descripción: almuerzos, comidas y todo tipo de eventos, bodas y bautizos."
+				image={salon}
+				imageAlt="Mesa del salón del Restaurante Salón Diamante preparada para un banquete, con sillas azul noche de marco dorado y centros de flores"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 188 reseñas' },
+					{ label: 'Horario', html: '<b>8–18</b> de lunes a sábado' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> contacto publicado` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Lo que encuentras en el Restaurante Salón Diamante" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El salón"
+				title="Cocina valenciana <br /><em>en el polígono.</em>"
+				paragraphs={[
+					'El Restaurante Salón Diamante está en la calle Islas Baleares 7, en el polígono de Onda (12200, Castellón). Google lo clasifica como restaurante de cocina valenciana, le da 4,5 sobre 5 con 188 reseñas y publica el teléfono +34 642 25 40 89 como único contacto.',
+					'Es la descripción que el propio local mantiene en su ficha la que resume la casa: «restaurante situado en el polígono de Onda, realizamos almuerzos, comidas, cualquier tipo de evento, bodas, bautizos, cumpleaños… etc». El salón se monta para banquetes, con sillas azul noche de marco dorado, mesas de mármol, centros de flores y lámparas de pie.',
+					'Google marca además el acceso para sillas de ruedas, el aparcamiento adaptado, el aseo adaptado y asientos adaptados, algo práctico en una zona de polígono a la que se llega en coche.',
+					'La ficha no publica carta ni precios, y tampoco web propia: muestra la opción de añadir un sitio web. Así que aquí no vas a encontrar una carta inventada. Lo que sí está es todo lo público: dirección, teléfono, horario, valoración, accesibilidad y las fotografías del perfil.',
+				]}
+				note="La información de esta página viene de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento. La ficha no publica carta, precios ni web propia, así que ninguna de esas cosas aparece aquí."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La mesa"
+				title="Del almuerzo <br /><em>al banquete.</em>"
+				description="La ficha de Google no publica carta ni precios, y el local no tiene web propia. Lo que sigue sale de la descripción del propio restaurante y de las reseñas destacadas de la ficha: no es una carta oficial."
+				cta={{ label: 'Ver fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="No hay carta publicada ni precios conocidos. Para el menú del día, una comida de empresa o un presupuesto de celebración, el teléfono de la ficha es el único canal publicado."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotografías <br /><em>del salón y la mesa.</em>"
+				description="Las fotografías del perfil del Restaurante Salón Diamante en Google Maps: el salón montado para un banquete, el comedor con el logotipo del diamante, una celebración y los platos que se sirven."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y procedentes del perfil del establecimiento en Google Maps. Si eres titular de alguna y quieres que la retiremos, escríbenos y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos <br /><em>en el polígono.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Castellón · Comunitat Valenciana',
+					'España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario publicado"
+				hoursNote="Horario de la ficha de Google: de 8:00 a 18:00 de lunes a sábado. El domingo aparece como cerrado y la ficha avisa de que en festivos el horario podría ser diferente, así que conviene confirmarlo antes de ir."
+				mapTitle="Mapa del Restaurante Salón Diamante en la calle Islas Baleares 7, Onda"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Salón Diamante · Onda"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="El teléfono es el único canal de contacto que publica la ficha. No hay reservas ni pedidos en línea: el local no tiene web propia ni plataforma asociada. Para comidas de grupo, bodas o bautizos conviene llamar con antelación. La ficha marca acceso, aparcamiento, aseo y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y oferta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces del Restaurante Salón Diamante"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
