@@ -1,0 +1,341 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import roscones from '../assets/fotos/panaderia-peinado-apaisada-05.jpg';
+import fachada from '../assets/fotos/panaderia-peinado-vertical-01.jpg';
+import coco from '../assets/fotos/panaderia-peinado-vertical-02.jpg';
+import canas from '../assets/fotos/panaderia-peinado-vertical-04.jpg';
+import mostrador from '../assets/fotos/panaderia-peinado-vertical-06.jpg';
+import napolitanas from '../assets/fotos/panaderia-peinado-vertical-07.jpg';
+import hogaza from '../assets/fotos/panaderia-peinado-vertical-09.jpg';
+import magdalenas from '../assets/fotos/panaderia-peinado-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Peinado · Cruz de Humilladero, Málaga';
+const description =
+	'Panadería Peinado, en Av. de Carlos Haya, 76 (Cruz de Humilladero, 29010 Málaga). Pan, bollería y pastelería artesanal. Abierto todos los días de 8:00 a 15:00. Teléfono 951 90 02 21.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#peinado`,
+	name: BUSINESS.name,
+	alternateName: ['Peinado', 'Panadería Peinado Málaga', 'Pastelería Peinado'],
+	description:
+		'Panadería y pastelería artesanal en Av. de Carlos Haya, 76 (Cruz de Humilladero, 29010 Málaga). Pan, bollería, magdalenas, roscones de Reyes y dulces de temporada.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34951900221',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de Panadería Peinado en la avenida de Carlos Haya, 76, con el rótulo negro y el toldo de rayas',
+	},
+	{
+		src: hogaza,
+		alt: 'Hogaza de pan de corteza gruesa recién hecha sobre la rejilla del obrador',
+	},
+	{
+		src: napolitanas,
+		alt: 'Napolitanas de chocolate en la bandeja del obrador, con el chocolate por encima',
+	},
+	{
+		src: canas,
+		alt: 'Bandeja de cañas de nata rellenas de nata, preparadas por el obrador',
+	},
+	{
+		src: mostrador,
+		alt: 'Mostrador con tartas, dulces de temporada y bandejas de bollería',
+	},
+	{
+		src: magdalenas,
+		alt: 'Magdalenas en cápsula de papel con azúcar por encima',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#43281a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Peinado, panadería Málaga, pastelería Cruz de Humilladero, bollería Carlos Haya, roscones de Reyes Málaga, magdalenas, pan artesanal, 29010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y pastelería artesanal en Carlos Haya, 76. Pan, bollería, magdalenas y roscones. Abierto todos los días de 8:00 a 15:00. 4,1 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Roscones de Reyes con fruta escarchada de Panadería Peinado, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#43281a"
+			phone="+34951900221"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[roscones]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. de Carlos Haya, 76 · Cruz de Humilladero"
+				title="Pan de cada día, <br /><em>dulces de siempre.</em>"
+				lede={`Panadería Peinado está en la avenida de Carlos Haya, 76, con la fachada negra y el rótulo que anuncia «Panadería Peinado · Pastelería». Dentro, el mostrador junta el pan recién hecho con la bollería y los dulces de temporada: napolitanas de chocolate, cañas de nata, magdalenas y roscones de Reyes. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={roscones}
+				imageAlt="Roscones de Reyes con fruta escarchada y azúcar en una bandeja"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,1</b> en Google · 51 reseñas' },
+					{ label: 'Horario', html: '<b>Todos los días</b> 8:00–15:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · bollería · pastelería"
+			/>
+
+			<LocalChips label="Lo que hay en Peinado" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un obrador <br /><em>de barrio.</em>"
+				paragraphs={[
+					'Panadería Peinado está en la avenida de Carlos Haya, 76, en Cruz de Humilladero. La fachada es negra, con el rótulo de la panadería y la pastelería sobre la puerta y un toldo de rayas que cubre el escaparate.',
+					'La ficha de Google la define como panadería y pastelería artesanal, y en las fotos del perfil se ve el trabajo del obrador: hogazas de corteza gruesa, bandejas de bollos de pan, napolitanas de chocolate y cañas de nata rellenas una a una.',
+					'El mostrador cambia con la temporada. Hay magdalenas en cápsula de papel, dulces de crema y coco, roscones de Reyes con fruta escarchada y tartas decoradas para Navidad y Halloween.',
+					'La ficha anuncia además un segundo local en la zona de Carranque, en la calle Pedro Gómez Chaix, 3. Abre todos los días de 8:00 a 15:00, también sábado y domingo. No publica carta, precios ni página web, así que aquí no encontrarás importes.',
+				]}
+				note="Sin carta ni precios publicados: el mostrador recoge solo lo que muestran las fotos del perfil y lo que anuncia la ficha de Google."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Obrador, mostrador <br />
+							<em>y barrio.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del obrador.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuenta la ficha de Google."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note={`La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo de la mañana. Para saber qué hay hoy, llama al ${BUSINESS.phone}.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Seis fotos de la ficha de Google Maps: la fachada, la hogaza, las napolitanas, las cañas de nata, el mostrador y las magdalenas."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Carlos Haya, <br /><em>número 76.</em>"
+				addressLines={[
+					BUSINESS.street,
+					BUSINESS.district,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería Peinado en la avenida de Carlos Haya, 76, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Peinado · Carlos Haya"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google indica acceso para sillas de ruedas y aparcamiento adaptado. No publica información sobre el mostrador o el aseo. El contacto es en el local o por teléfono."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a Peinado"
+			navAriaLabel="Enlaces de Panadería Peinado"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

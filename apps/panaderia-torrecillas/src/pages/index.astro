@@ -1,0 +1,365 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachadaNumero from '../assets/fotos/panaderia-torrecillas-apaisada-01.jpg';
+import fachada from '../assets/fotos/panaderia-torrecillas-apaisada-02.jpg';
+import estanterias from '../assets/fotos/panaderia-torrecillas-apaisada-03.jpg';
+import vitrina from '../assets/fotos/panaderia-torrecillas-apaisada-04.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	REVIEW_QUOTE,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Torrecillas · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería Torrecillas, en Av. del Arroyo de los Ángeles, 120 (Bailén-Miraflores, 29011 Málaga). Pan artesanal, confitería, bocatería y charcutería. Teléfono 951 99 41 95.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#torrecillas`,
+	name: BUSINESS.name,
+	alternateName: ['Panadería Torrecillas Málaga', 'Torrecillas Málaga'],
+	description:
+		'Panadería, confitería, bocatería y charcutería en Av. del Arroyo de los Ángeles, 120 (Bailén-Miraflores, 29011 Málaga). Pan artesanal y dulces de elaboración propia.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34951994195',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:30',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '08:00',
+			closes: '14:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: fachadaNumero,
+		alt: 'Fachada de la Panadería Torrecillas con el número 120 y el rótulo de panadería, confitería, bocatería y charcutería',
+	},
+	{
+		src: estanterias,
+		alt: 'Estanterías de madera con chapatas, barras vienas, molletes, pitifos y pan multi cereales',
+	},
+	{
+		src: vitrina,
+		alt: 'Mostrador de cristal con napolitanas, donuts, pasteles de chocolate y tartas',
+	},
+	{
+		src: fachada,
+		alt: 'Entrada de la panadería con el toldo rojo, el letrero de panadería y la puerta abierta',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#33452f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;1,400&family=Karla:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Torrecillas, panadería Málaga, panadería Bailén-Miraflores, pan artesanal Málaga, confitería Málaga, bocatería Málaga, Arroyo de los Ángeles, 29011"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan artesanal, confitería, bocatería y charcutería en Bailén-Miraflores. 4,7 sobre 5 con 57 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la Panadería Torrecillas en la avenida del Arroyo de los Ángeles, 120, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#33452f"
+			phone="+34951994195"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Torrecillas"
+			subtitle="Panadería · Confitería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. del Arroyo de los Ángeles, 120 · Bailén-Miraflores"
+				title="Pan del día, <br /><em>dulces de mostrador.</em>"
+				lede={`En la avenida del Arroyo de los Ángeles, 120, está la Panadería Torrecillas. El rótulo de la fachada anuncia panadería, confitería, bocatería y charcutería, todo de elaboración propia. Dentro, las estanterías de madera reúnen chapatas, barras vienas, molletes y pitifos, y el mostrador de cristal napolitanas, donuts, pasteles y tartas. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Entrada de la Panadería Torrecillas con el toldo rojo, el letrero de panadería y la puerta abierta"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 57 reseñas' },
+					{ label: 'Horario', html: '<b>L–V 7:30–15:00</b> · sábado hasta 14:30' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · dulces · bocadillos"
+			/>
+
+			<LocalChips label="Lo que hay en la panadería" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Panadería, confitería <br /><em>y bocatería.</em>"
+				paragraphs={[
+					'La Panadería Torrecillas está en la avenida del Arroyo de los Ángeles, 120, en Bailén-Miraflores, con el número bien visible junto a la puerta. El rótulo de la fachada lo dice todo: «Panadería - Confitería» y «Bocatería - Charcutería», con la indicación de elaboración propia junto al nombre de la casa.',
+					'Dentro, dos estanterías de madera ocupan la pared del fondo. En ellas se alinean chapatas, barras vienas, molletes, pitifos, malagueñas y pan multi cereales, con carteles que indican cada variedad. También hay pan por cuartos y medios kilos y pan envasado.',
+					'El mostrador de cristal reúne la parte dulce: napolitanas, donuts, pasteles de chocolate, porciones de tarta y dulces pequeños. Una reseña de Google cuenta que compraron «unos dulces de fresa, otro de coco y otro de fruta».',
+					'La ficha le da 4,7 sobre 5 con 57 reseñas. Abre de lunes a viernes de 7:30 a 15:00, el sábado de 8:00 a 14:30 y cierra el domingo. La ficha no publica carta, precios ni página web, así que aquí no encontrarás importes ni un menú inventado.',
+				]}
+				note={`«${REVIEW_QUOTE}» — reseña publicada en Google Maps.`}
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Horno, vitrina <br />
+							<em>y mostrador.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en las estanterías.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que anuncia el rótulo de la fachada."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día. Para saber qué hay o reservar algo, llama al 951 99 41 95."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: la fachada con el número 120, las estanterías de pan, el mostrador de dulces y la entrada."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow">
+								<span aria-hidden="true"></span> Lo que dicen
+							</p>
+							<h2 id="reviews-title">
+								Una reseña <br />
+								<em>de la ficha.</em>
+							</h2>
+						</div>
+						<p>
+							4,7 sobre 5 con 57 reseñas en Google. Esta cuenta una compra de dulces en el mostrador
+							de la panadería.
+						</p>
+					</div>
+					<div class="review-grid">						<figure class="review-card">
+							<blockquote>«{REVIEW_QUOTE}»</blockquote>
+							<figcaption>Reseña de Google Maps</figcaption>
+						</figure>
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 57 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el Arroyo <br /><em>de los Ángeles.</em>"
+				addressLines={[
+					BUSINESS.street,
+					BUSINESS.district,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería Torrecillas en la avenida del Arroyo de los Ángeles, 120, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Torrecillas · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha indica que el local tiene acceso para sillas de ruedas, pero no aparcamiento adaptado. No publica información sobre el mostrador o el aseo. El contacto es en el local o por teléfono."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a Torrecillas"
+			navAriaLabel="Enlaces de la Panadería Torrecillas"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

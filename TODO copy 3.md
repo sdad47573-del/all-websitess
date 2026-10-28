@@ -1,34 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Panader%C3%ADa+El+Ayo+-+Pasteler%C3%ADa/@36.7219588,-4.4401731,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70ac0c8df23:0x116cff4d64003aad!8m2!3d36.7219588!4d-4.4401731!16s%2Fg%2F11clw347fd?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Torrecillas/@36.73168,-4.4364769,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7a7d5dd014d:0x384c6641a98a4496!8m2!3d36.73168!4d-4.4364769!16s%2Fg%2F11b806w85j?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Horno+de+Paco+%E2%80%93+Panader%C3%ADa+y+Pasteler%C3%ADa+Artesanal+M%C3%A1laga/@36.7115054,-4.440794,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f74097c42de7:0xacb697bf82dbf764!8m2!3d36.7115054!4d-4.440794!16s%2Fg%2F11yp7gs7h7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/NUEVA+ESPERANZA+%7CPanader%C3%ADa/@36.7235776,-4.4434685,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70fd0e37545:0xd6ad0a252a43d6a8!8m2!3d36.7235776!4d-4.4434685!16s%2Fg%2F11kj7dynd7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+confiter%C3%ADa+El+Cautivo/@36.7248169,-4.4566425,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f715d02f4395:0x8c48b19c4381d89a!8m2!3d36.7248169!4d-4.4566425!16s%2Fg%2F11bxdn12d1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Peinado/@36.7226087,-4.4481104,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70d6cce3bc5:0x28b97608255750e3!8m2!3d36.7226087!4d-4.4481104!16s%2Fg%2F11fswdffng?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Nuestra+Se%C3%B1ora+de+la+Victoria/@36.7268686,-4.4200622,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7bf2d652861:0x78a227e539a4c2c4!8m2!3d36.7268686!4d-4.4200622!16s%2Fg%2F11bwh9zdvk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Boutique+de+La+Panader%C3%ADa+Tropicana+Pasteler%C3%ADa/@36.7229709,-4.4429194,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70b7231039d:0x3d9fbdf07cb6585d!8m2!3d36.7229709!4d-4.4429194!16s%2Fg%2F11cmg1dcww?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Hadavid+Teatinos/@36.7162716,-4.4649092,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f73eec18521b:0x57baf005d7a13ddb!8m2!3d36.7162716!4d-4.4649092!16s%2Fg%2F11x6p_0v1t?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+y+Confiter%C3%ADa+La+Esquinita/@36.7236365,-4.4360159,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f77cd4e5b533:0x4e6f40919dd9ba08!8m2!3d36.7236365!4d-4.4360159!16s%2Fg%2F11k4b70qw6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+los+Rubios/@36.7302735,-4.4373667,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7a7bfacb835:0x4682791700dbdb04!8m2!3d36.7302735!4d-4.4373667!16s%2Fg%2F1tg2m05s?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/OBRADOR+de+PANADER%C3%8DA+y+PASTELER%C3%8DA+(Florin+%26+Gabriel)/@36.7311665,-4.4370542,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7dea4581671:0xd2e81dbd389d9034!8m2!3d36.7311665!4d-4.4370542!16s%2Fg%2F11j8tc79vs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+-+confiter%C3%ADa+Elepan/@36.7334241,-4.4359827,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7a8f18282ad:0xf91e36da507b8e20!8m2!3d36.7334241!4d-4.4359827!16s%2Fg%2F11b6jbhzft?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Ilustre/@36.725652,-4.4289,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f79f2abc7e77:0x10c742416113821f!8m2!3d36.725652!4d-4.4289!16s%2Fg%2F11j1544b0c?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Hadavid+Ortega+y+Gasset/@36.7100405,-4.4517398,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7ebdd73918d:0xe8fbff33099d69f7!8m2!3d36.7100405!4d-4.4517398!16s%2Fg%2F11nvv4vcw1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Luz+De+Amor/@36.7081294,-4.4477767,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f76d60d291f9:0xc13227338a95f781!8m2!3d36.7081294!4d-4.4477767!16s%2Fg%2F11ytfdy05m?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panaderia+Don+miguel/@36.7113873,-4.4479378,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7feb556c65b:0x6cfca4e5002ed393!8m2!3d36.7113873!4d-4.4479378!16s%2Fg%2F11z3yllk98?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D

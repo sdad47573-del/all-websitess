@@ -1,71 +1,43 @@
-# Nueva Esperanza · Panadería
+# Nueva Esperanza — Panadería y confitería, Nueva Málaga
 
-Web informativa de una panadería y confitería de barrio en Bailén-Miraflores,
-construida con Astro sobre los componentes locales de `@astro-components`.
+Web estática en Astro para **NUEVA ESPERANZA | Panadería**, en la calle Magistrado Salvador Barbera, 5, local 3 (Nueva Málaga, Bailén-Miraflores, 29010 Málaga). Los textos están en español.
 
-- **Establecimiento:** NUEVA ESPERANZA |Panadería
-- **Dirección:** C. Magistrado Salvador Barberá, 5, Loc 3 · Bailén-Miraflores · 29010 Málaga
-- **Teléfono:** 662 47 27 68
-- **Google:** 4,1/5 con 23 reseñas · [ficha](https://www.google.com/maps/place/NUEVA+ESPERANZA+%7CPanader%C3%ADa/@36.7235776,-4.4434685,17z)
+## Contenido
 
-## Datos y criterio
+- Portada: hero, chips, «La casa», «Tres cosas de la casa», «La carta», galería con las fotos de Google Maps, horario con mapa, preguntas frecuentes y pie con el crédito de Sur Digital.
+- `src/data/site.ts`: todos los textos y datos del negocio en un único sitio.
+- `src/assets/fotos/`: la galería descargada del perfil de Google Maps, con su `.maps-manifest.json`.
+- `src/pages/aviso-legal.astro`: aviso legal, privacidad y cookies.
 
-Todo sale de la ficha pública de Google Maps (consulta de octubre de 2026):
-dirección, teléfono, valoración, reseñas, horario, accesibilidad, categorías,
-descripción del titular y fotografías del perfil.
+## Datos de la ficha de Google Maps
 
-La ficha **no publica carta ni precios**, así que la web no incluye importes. El
-mostrador recoge solo lo que enumera la descripción del propio establecimiento
-(pan artesanal horneado cada día, su «famoso pan cateto», dulces tradicionales y
-empanadas caseras), lo que citan las reseñas y lo que se ve en las fotos
-(bollos de cacao envasados, tartas, café y una mesa dentro del local).
+- Nombre: NUEVA ESPERANZA | Panadería
+- Dirección: C. Magistrado Salvador Barbera, 5, Loc 3 · Bailén-Miraflores · 29010 Málaga
+- Categorías: panadería, restaurante de comida rápida y comida a domicilio
+- Teléfono / WhatsApp: 662 47 27 68
+- Valoración: 4,1/5 con 23 reseñas
+- Horario: L–J 7:00–21:00 · V 7:30–20:30 · S–D 8:00–20:30
+- Accesibilidad: acceso y aseo adaptados sí; asientos adaptados no
+- Feature id: `0xd72f70fd0e37545:0xd6ad0a252a43d6a8`
+- Place ID: `ChIJRXXj0A_3cg0RqNZDKiUKrdY`
+- Instagram: [@nuevaesperanzapanaderia](https://www.instagram.com/nuevaesperanzapanaderia/)
+- Reparto: [Uber Eats](https://www.ubereats.com/es/store/panaderia-y-confiteria-nueva-esperanza/8nT_cxPVWDiGuIqMHejYtQ)
 
-La tarta de cumpleaños del perfil demuestra que se han preparado tartas
-encargadas, pero la ficha no publica un servicio de encargos: la web lo dice así
-en las preguntas frecuentes, sin prometer plazos ni precios. Tampoco se afirma
-reparto a domicilio aunque Google clasifique el local como «comida a domicilio»;
-se remite al teléfono.
+La ficha **no publica carta propia, precios de tienda ni web**. La carta reproduce el menú de Uber Eats del establecimiento (octubre de 2026), con su aviso de que los precios de tienda pueden ser distintos. La pizarra de la fachada anuncia pan de soja, olívica y sin gluten; la casa indica que elabora pan, dulces y bollería desde 1988 y ofrece dulces para eventos, encargos por WhatsApp y catering.
+
+El 1 de noviembre (Día de Todos los Santos) Google advierte de que el horario podría variar; se recuerda en la tabla y en las preguntas frecuentes.
 
 ## Fotos
 
-Las imágenes se descargaron de la galería del perfil:
+Las fotos del perfil se descargan con:
 
-```bash
+```sh
 node scripts/fetch-maps-photos.mjs nueva-esperanza-panaderia
 ```
 
-Son seis. La fachada nocturna se recortó por abajo para quitar la marca de agua
-de PhotoRoom y es la portada y el `og.jpg`; la galería usa cuatro: el café con
-tartaleta, dos tartas y los bollos de cacao. La sexta (un tarro de miel) se
-descarta porque no aporta nada del local.
-
-## Estructura
-
-```
-src/
-  data/site.ts        ficha, horario, reseñas, mostrador y FAQ
-  pages/index.astro   portada + JSON-LD (Bakery y FAQPage)
-  pages/aviso-legal.astro
-  styles/global.css   verde de rótulo, ámbar y noche de barrio
-  assets/fotos/       fotos de Google (AVIF en build)
-public/               favicon, robots.txt y og.jpg
-```
-
-## Comandos
-
-```bash
-bun run dev
-bun run build
-bun run preview
-bun run typecheck
-```
+y viven en `src/assets/fotos/`. La respuesta de Google devolvió seis fotos: la fachada, un café con tarta de merengue, un pastel de crema y galleta Lotus, una tarta de cumpleaños con nombre, bollos envasados de otra marca y un tarro de miel. Se usan las tres primeras; la tarta de cumpleaños no se publica por incluir un nombre y las otras dos son productos ajenos. El café con tarta se usa en la portada y genera `public/og.jpg` (1200 × 630).
 
 ## Pendiente antes de publicar
 
-- Completar en `/aviso-legal` el NIF/CIF, la razón social y el correo del titular.
-- Confirmar con el establecimiento horario, surtido, encargos de tartas y
-  reparto a domicilio.
-- El dominio previsto es `https://nueva-esperanza-panaderia.vercel.app` (está en
-  `astro.config.mjs`, `public/robots.txt` y `src/data/site.ts`).
-
-Web creada por [Sur Digital](https://sur-digital.vercel.app/).
+- NIF/CIF y razón social del titular en `src/pages/aviso-legal.astro`.
+- Confirmar horario, surtido, precios de tienda y accesibilidad con el establecimiento.

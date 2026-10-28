@@ -1,0 +1,270 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import calle from '../assets/fotos/panaderia-los-rubios-apaisada-01.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería los Rubios · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería los Rubios, en C. Carraca, 4 (Bailén-Miraflores, 29011 Málaga). Panadería y pastelería de barrio. Abre de lunes a viernes y domingo por la mañana. Teléfono 952 27 60 01.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#los-rubios`,
+	name: BUSINESS.name,
+	alternateName: ['Los Rubios', 'Panadería Los Rubios Málaga', 'Pastelería Los Rubios'],
+	description:
+		'Panadería y pastelería de barrio en C. Carraca, 4 (Bailén-Miraflores, 29011 Málaga). Pan y dulces, con horario de mañana.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34952276001',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:30',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Sunday',
+			opens: '07:30',
+			closes: '14:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2e1b31" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,300..700;1,300..600&family=Karla:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería los Rubios, panadería Málaga, pastelería Bailén-Miraflores, pan Carraca, dulces Málaga, 29011"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y pastelería de barrio en C. Carraca, 4, Bailén-Miraflores. Abre de lunes a viernes y domingo por la mañana. Teléfono 952 27 60 01."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vista de la calle Carraca con el rótulo de Panadería los Rubios en la esquina"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2e1b31"
+			phone="+34952276001"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[calle]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Carraca, 4 · Bailén-Miraflores"
+				title="La panadería <br /><em>de la esquina.</em>"
+				lede={`Panadería los Rubios está en la calle Carraca, 4, en Bailén-Miraflores. El local ocupa la esquina de un bloque de viviendas y el rótulo «Panadería · Pastelería» se ve desde la calle. Abre de lunes a viernes y también el domingo, siempre por la mañana, de 7:30 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={calle}
+				imageAlt="Vista de la calle Carraca con el rótulo de Panadería los Rubios en la esquina del edificio"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,6</b> en Google · 53 reseñas' },
+					{ label: 'Horario', html: '<b>L–V y D</b> 7:30–14:30' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Única foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · dulces · barrio"
+			/>
+
+			<LocalChips label="Lo que hay en Los Rubios" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pan y dulces <br /><em>de barrio.</em>"
+				paragraphs={[
+					'Panadería los Rubios está en la calle Carraca, 4, en Bailén-Miraflores (29011 Málaga). El local está en la esquina de un bloque de viviendas y el rótulo «Panadería · Pastelería» se ve desde la calle, como muestra la foto del perfil.',
+					'La ficha de Google la clasifica como panadería. Una de las reseñas habla de «muy buenos dulces y pan», y el rótulo del local anuncia panadería y pastelería. No hay más detalle público: la ficha no publica carta, surtido ni precios.',
+					'El horario es de mañana: de lunes a viernes y el domingo, de 7:30 a 14:30. El sábado cierra. Es un horario poco habitual, así que conviene confirmarlo por teléfono antes de acercarse.',
+					'La ficha tampoco publica página web, correo ni redes sociales, y la galería del perfil solo tiene una foto, una vista de la calle. Por eso esta web no muestra productos ni importes: el contacto es en el local o en el 952 27 60 01.',
+				]}
+				note="Sin carta, precios ni fotos de producto publicadas: la ficha de Google solo tiene una imagen de la calle y no describe el surtido."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Barrio, horno <br />
+							<em>y mostrador.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la calle Carraca, <br /><em>número 4.</em>"
+				addressLines={[
+					BUSINESS.street,
+					BUSINESS.district,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería los Rubios en la calle Carraca, 4, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Los Rubios · Carraca"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google no publica información sobre el acceso, el aparcamiento adaptado, el mostrador o el aseo, así que esta página no la afirma. El contacto es en el local o por teléfono."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y foto de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a Los Rubios"
+			navAriaLabel="Enlaces de Panadería los Rubios"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
