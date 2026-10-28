@@ -1,0 +1,366 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-el-ayo-pasteleria-apaisada-01.jpg';
+import bunuelos from '../assets/fotos/panaderia-el-ayo-pasteleria-apaisada-02.jpg';
+import vitrina from '../assets/fotos/panaderia-el-ayo-pasteleria-apaisada-03.jpg';
+import estanterias from '../assets/fotos/panaderia-el-ayo-pasteleria-apaisada-04.jpg';
+import pastaGlaseada from '../assets/fotos/panaderia-el-ayo-pasteleria-vertical-05.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	REVIEW_QUOTE,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería El Ayo - Pastelería · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería El Ayo - Pastelería, en C. Sondalezas, 2 (Bailén-Miraflores, 29010 Málaga). Pan, tartas, pasteles, bollería y empanadas. Encargos para celebraciones. Teléfono 636 76 09 70.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#el-ayo`,
+	name: BUSINESS.name,
+	alternateName: ['Panadería El Ayo', 'Pastelería El Ayo', 'El Ayo Málaga'],
+	description:
+		'Panadería y pastelería en C. Sondalezas, 2 (Bailén-Miraflores, 29010 Málaga). Pan, tartas, pasteles, bollería, empanadas y encargos para celebraciones.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.instagram],
+	telephone: '+34636760970',
+	email: BUSINESS.email,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:30',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '07:30',
+			closes: '14:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada roja de la Panadería El Ayo, con los rótulos de panadería y pastelería y el escaparate lleno de pan',
+	},
+	{
+		src: vitrina,
+		alt: 'Mostrador de cristal con tartas de fruta, porciones de tarta, pasteles de chocolate y bandejas de bollería',
+	},
+	{
+		src: estanterias,
+		alt: 'Estanterías de madera con hogazas, baguettes, barras y panecillos, y barras de pan envasadas',
+	},
+	{
+		src: bunuelos,
+		alt: 'Pasteles fritos rebozados de azúcar, apilados sobre un plato de papel',
+	},
+	{
+		src: pastaGlaseada,
+		alt: 'Pastel redondo con baño glaseado de color naranja sobre una servilleta de papel',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7a2e18" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Manrope:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería El Ayo, pastelería Málaga, panadería Bailén-Miraflores, panadería Sondalezas, tartas Málaga, encargos celebraciones Málaga, empanadas Málaga, 29010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan, tartas, pasteles, bollería y empanadas en Bailén-Miraflores. Encargos para celebraciones. 4,8 sobre 5 con 45 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada roja de la Panadería El Ayo en la calle Sondalezas, 2, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#7a2e18"
+			phone="+34636760970"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Ayo"
+			subtitle="Panadería · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Sondalezas, 2 · Bailén-Miraflores"
+				title="Pan del día, <br /><em>dulces de escaparate.</em>"
+				lede={`En la calle Sondalezas, 2, está la Panadería El Ayo. El rótulo rojo de la fachada anuncia panadería y pastelería, y el escaparate enseña tartas, bollería, empanadas y confitería. Dentro, las estanterías se llenan de hogazas, barras y panecillos, y el mostrador de cristal de tartas y pasteles. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada roja de la Panadería El Ayo, con los rótulos de panadería y pastelería y el escaparate lleno de pan"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> en Google · 45 reseñas' },
+					{ label: 'Horario', html: '<b>L–V hasta 20:00</b> · finde hasta 14:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · tartas · encargos"
+			/>
+
+			<LocalChips label="Lo que hay en la panadería" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="La panadería <br /><em>de la esquina.</em>"
+				paragraphs={[
+					'La Panadería El Ayo está en la calle Sondalezas, 2, en Bailén-Miraflores. La fachada es roja, con los rótulos de «Panadería» y «Pastelería» bien grandes y el nombre de El Ayo entre los dos. Es una panadería de barrio, de las que abren temprano y tienen el pan a mano.',
+					'El escaparate de cristal lleva rotulados los productos de la casa: pan, tartas, bollería, empanadas, confitería, roscos de reyes y buñuelos. Dentro, el mostrador de cristal muestra porciones de tarta, tartas de fruta, pasteles de chocolate y bandejas de dulces; las estanterías de madera, hogazas, barras, baguettes y panecillos.',
+					'La ficha de Google le da 4,8 sobre 5 con 45 reseñas. Una de ellas define el local como «una panadería de barrio de las de toda la vida en Bailén-Miraflores».',
+					'La casa anuncia además encargos para celebraciones en su perfil público. La ficha no publica carta ni precios, así que aquí no encontrarás importes: para saber qué hay cada día o encargar una tarta, lo mejor es llamar.',
+				]}
+				note={`«${REVIEW_QUOTE}» — reseña publicada en Google Maps.`}
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Perfil de Instagram', href: MAPS.instagram, external: true },
+					{ label: `Escribir a ${BUSINESS.email}`, href: `mailto:${BUSINESS.email}` },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Horno, vitrina <br />
+							<em>y encargos.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>a la vista.</em>"
+				description="Sin carta ni precios publicados: esto es lo que anuncian el escaparate, el perfil de la casa y las fotos del local."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día y según la temporada. Para saber qué hay o encargar algo, llama al 636 76 09 70."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Las cinco fotos de la ficha de Google Maps: la fachada, el mostrador de tartas, las estanterías de pan y dos dulces del obrador."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow">
+								<span aria-hidden="true"></span> Lo que dicen
+							</p>
+							<h2 id="reviews-title">
+								Una reseña <br />
+								<em>de la ficha.</em>
+							</h2>
+						</div>
+						<p>
+							4,8 sobre 5 con 45 reseñas en Google. Esta es la que resume el local: una panadería de
+							barrio, de las de toda la vida.
+						</p>
+					</div>
+					<div class="review-grid">						<figure class="review-card">
+							<blockquote>«{REVIEW_QUOTE}»</blockquote>
+							<figcaption>Reseña de Google Maps</figcaption>
+						</figure>
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 45 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Sondalezas, <br /><em>número 2.</em>"
+				addressLines={[
+					BUSINESS.street,
+					BUSINESS.district,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería El Ayo en la calle Sondalezas, 2, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Ayo · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha solo indica que no hay aparcamiento adaptado para sillas de ruedas; no publica información sobre la entrada ni el interior. El contacto es en el local, por teléfono o por correo electrónico."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Instagram ↗', href: MAPS.instagram, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a El Ayo"
+			navAriaLabel="Enlaces de la Panadería El Ayo"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,10 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Panader%C3%ADa+El+Ayo+-+Pasteler%C3%ADa/@36.7219588,-4.4401731,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70ac0c8df23:0x116cff4d64003aad!8m2!3d36.7219588!4d-4.4401731!16s%2Fg%2F11clw347fd?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Torrecillas/@36.73168,-4.4364769,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7a7d5dd014d:0x384c6641a98a4496!8m2!3d36.73168!4d-4.4364769!16s%2Fg%2F11b806w85j?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Horno+de+Paco+%E2%80%93+Panader%C3%ADa+y+Pasteler%C3%ADa+Artesanal+M%C3%A1laga/@36.7115054,-4.440794,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f74097c42de7:0xacb697bf82dbf764!8m2!3d36.7115054!4d-4.440794!16s%2Fg%2F11yp7gs7h7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/NUEVA+ESPERANZA+%7CPanader%C3%ADa/@36.7235776,-4.4434685,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70fd0e37545:0xd6ad0a252a43d6a8!8m2!3d36.7235776!4d-4.4434685!16s%2Fg%2F11kj7dynd7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panader%C3%ADa+confiter%C3%ADa+El+Cautivo/@36.7248169,-4.4566425,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f715d02f4395:0x8c48b19c4381d89a!8m2!3d36.7248169!4d-4.4566425!16s%2Fg%2F11bxdn12d1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
