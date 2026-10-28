@@ -19,6 +19,7 @@
 
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { regionCode } from './lib/geo-codes.mjs';
 
 const APPS_DIR = 'apps';
 const APPLY = process.argv.includes('--apply');
@@ -268,22 +269,10 @@ function ensureOgImage(info) {
 
 const siteUrl = (info) => (info.siteUrl ? info.siteUrl.replace(/\/$/, '') : '');
 
-// Códigos de provincia para el meta geo.region (ISO 3166-2:ES).
-const PROVINCE_CODES = {
-	almeria: 'ES-AL', badajoz: 'ES-BA', barcelona: 'ES-B', cadiz: 'ES-CA',
-	cordoba: 'ES-CO', granada: 'ES-GR', huelva: 'ES-H', jaen: 'ES-JA',
-	lleida: 'ES-L', madrid: 'ES-M', malaga: 'ES-MA', murcia: 'ES-MU',
-	navarra: 'ES-NA', ourense: 'ES-OR', pontevedra: 'ES-P', sevilla: 'ES-SE',
-	tarragona: 'ES-T', toledo: 'ES-TO', valencia: 'ES-V', valladolid: 'ES-VA',
-	vizcaya: 'ES-BI', asturias: 'ES-AS', lanzarote: 'ES-CN', gran_canaria: 'ES-CN',
-	tenerife: 'ES-CN', caceres: 'ES-CC', gipuzkoa: 'ES-SS', alava: 'ES-AR',
-};
-const provinceCode = (name) => {
-	if (!name) return null;
-	if (/^ES-[A-Z]{2}$/.test(name)) return name; // ya viene como código
-	const clean = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-	return PROVINCE_CODES[clean] ?? null;
-};
+// Códigos de provincia para el meta geo.region: la tabla vive en el componente
+// compartido (packages/@astro-components/src/local/geo-codes.ts), que es quien
+// emite la etiqueta en las webs que usan LocalSeo, para no tener dos listas.
+const provinceCode = (name) => regionCode(name);
 
 /** Metas de geolocalización: clave en SEO local y derivado de datos ya presentes. */
 function ensureGeoTags(info) {

@@ -8,6 +8,7 @@
  */
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { geoRegionCode } from './geo-codes';
 
 export interface Props {
 	name: string;
@@ -27,7 +28,12 @@ export interface Props {
 	street: string;
 	city: string;
 	region: string;
-	/** Código de la comunidad autónoma para `geo.region` (ISO 3166-2:ES). */
+	/**
+	 * Código ISO 3166-2 para `geo.region`. Solo hace falta si la web quiere
+	 * precisar más que su propia `region` (por ejemplo el código de provincia
+	 * cuando el negocio declara la comunidad). Si no se pasa o no es válido, se
+	 * deriva de `region`.
+	 */
 	geoRegion?: string;
 	postalCode: string;
 	phone?: string;
@@ -73,7 +79,7 @@ const {
 	street,
 	city,
 	region,
-	geoRegion = 'ES-AN',
+	geoRegion,
 	postalCode,
 	phone,
 	latitude,
@@ -85,6 +91,22 @@ const {
 	locale = 'es_ES',
 	countryName = 'España',
 } = Astro.props;
+
+// El código de `geo.region` sale de la región del negocio: mejor omitirlo que
+// anunciar una comunidad que no es la suya.
+const regionCode = geoRegionCode(geoRegion) ?? geoRegionCode(region);
+
+// El MIME del og:image sale de su extensión; si no se reconoce, mejor no declararlo.
+const ogImageType = /\.(jpe?g|png|svg|webp|avif|gif)(\?|$)/i.exec(ogImage)?.[1]?.toLowerCase();
+const OG_MIME: Record<string, string> = {
+	jpg: 'image/jpeg',
+	jpeg: 'image/jpeg',
+	png: 'image/png',
+	svg: 'image/svg+xml',
+	webp: 'image/webp',
+	avif: 'image/avif',
+	gif: 'image/gif',
+};
 
 // Las imágenes importadas no traen `srcSet` hasta que se generan sus variantes,
 // así que las producimos aquí para poder declararlas en el preload del hero.
@@ -109,7 +131,7 @@ const preloads = await Promise.all(
 {author && <meta name="author" content={author} />}
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 
-<meta name="geo.region" content={geoRegion} />
+{regionCode && <meta name="geo.region" content={regionCode} />}
 <meta name="geo.placename" content={placeName} />
 <meta name="geo.position" content={`${latitude};${longitude}`} />
 <meta name="ICBM" content={`${latitude}, ${longitude}`} />
@@ -131,6 +153,7 @@ const preloads = await Promise.all(
 <meta property="og:description" content={ogDescription} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
+{ogImageType && OG_MIME[ogImageType] && <meta property="og:image:type" content={OG_MIME[ogImageType]} />}
 <meta property="og:image:width" content={String(ogImageWidth)} />
 <meta property="og:image:height" content={String(ogImageHeight)} />
 <meta property="og:image:alt" content={ogImageAlt} />

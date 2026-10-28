@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import fachada from '../assets/fotos/restaurante-isla-cristina-apaisada-01.jpg';
 import paellaMarisco from '../assets/fotos/restaurante-isla-cristina-apaisada-02.jpg';
 import arrozMarisco from '../assets/fotos/restaurante-isla-cristina-vista-3-03.jpg';
@@ -23,6 +23,10 @@ const negocio = {
   longitude: -0.7184323,
   site: 'https://restaurante-isla-cristina-la-manga.vercel.app',
 };
+// La foto de la ficha va al `og:image`, pero las imágenes con hash del build no
+// sirven como URL fija: se genera una variante propia y se usa esa ruta.
+const ogImage = await getImage({ src: fachada, width: 1200, format: 'jpeg' });
+
 const mapsUrl = 'https://www.google.com/maps/place/Restaurante+Isla+Cristina/data=!4m7!3m6!1s0xd631863bbeaa8b3:0x25dc3282a6840f6!8m2!3d37.6507607!4d-0.7184323!16s%2Fg%2F11clwfvy5t!19sChIJs6jqu2MYYw0R9kBoKijDXQI?authuser=0&hl=es&g_ep=EgoyMDI2MTAwNi4wIJJjKgBIAVAD&rclk=1';
 const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${negocio.latitude}%2C${negocio.longitude}`;
 const phoneHref = 'tel:+34685746426';
@@ -66,6 +70,10 @@ const restaurantSchema = {
     <meta name="description" content={description} />
     <meta name="theme-color" content="#123c45" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="ES-MU" />
+    <meta name="geo.placename" content={`${negocio.locality}, ${negocio.region}`} />
+    <meta name="geo.position" content={`${negocio.latitude};${negocio.longitude}`} />
+    <meta name="ICBM" content={`${negocio.latitude}, ${negocio.longitude}`} />
     <link rel="canonical" href={`${negocio.site}/`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -78,7 +86,10 @@ const restaurantSchema = {
     <meta property="og:title" content="Restaurante Isla Cristina · La Manga" />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={`${negocio.site}/`} />
-    <meta property="og:image" content={`${negocio.site}/_astro/restaurante-isla-cristina-apaisada-01.jpg`} />
+    <meta property="og:image" content={`${negocio.site}${ogImage.src}`} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:alt" content="Fachada del Restaurante Isla Cristina, en la Gran Vía de la Manga" />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
   </head>
   <body>
