@@ -1,0 +1,634 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import interior from '../assets/fotos/panaderia-pasteleria-la-esperanza-apaisada-01.jpg';
+import dulces from '../assets/fotos/panaderia-pasteleria-la-esperanza-vertical-02.jpg';
+import calle from '../assets/fotos/panaderia-pasteleria-la-esperanza-vertical-03.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEW_QUOTE,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Pastelería La Esperanza · Cruz de Humilladero, Málaga';
+const description = BUSINESS.description;
+const ratingLabel = BUSINESS.rating.toFixed(1).replace('.', ',');
+
+const galeria = [
+	{
+		src: dulces,
+		alt: 'Bandeja de dulces redondos con crema y fruta confitada, espolvoreados con azúcar',
+		caption: 'La bandeja de dulces de la vitrina',
+		shape: 'tall',
+	},
+	{
+		src: calle,
+		alt: 'Calle del barrio con jacarandas en flor, bancos y coches aparcados junto a los comercios',
+		caption: 'La calle del local, con las jacarandas en flor',
+		shape: 'tall',
+	},
+	{
+		src: interior,
+		alt: 'Interior de la panadería con las estanterías de pan, la vitrina de dulces y las baldas de aceites, conservas y bebidas',
+		caption: 'El mostrador, las estanterías de pan y la despensa',
+		shape: 'wide',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#la-esperanza`,
+	name: BUSINESS.name,
+	alternateName: ['La Esperanza', 'Panadería La Esperanza', 'Pastelería La Esperanza Málaga'],
+	description:
+		'Panadería y pastelería en C. Virgen del Rocío, 70 (Cruz de Humilladero, 29007 Málaga): pan del día, bollería, dulces y despensa de barrio.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: REVIEW_QUOTE,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#mostrador' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#f8f4ea" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400&family=Albert+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Esperanza panadería, pastelería Cruz de Humilladero, panadería Virgen del Rocío 70, pan del día Málaga, dulces de vitrina Málaga, panadería 29007"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y pastelería en la calle Virgen del Rocío, 70, Cruz de Humilladero. Pan del día, bollería, dulces y despensa de barrio."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Interior de la Panadería Pastelería La Esperanza, con las estanterías de pan y la vitrina de dulces"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#f8f4ea"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería Pastelería La Esperanza, inicio">
+					<span class="brand-mark" aria-hidden="true">
+						LE
+					</span>
+					<span class="brand-name">
+						La Esperanza
+						<small>Panadería · Pastelería · Málaga</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Navegación principal">
+					{nav.map((item) => (
+						<a href={item.href}>{item.label}</a>
+					))}
+				</nav>
+				<a class="topbar-cta" href={MAPS.directions} target="_blank" rel="noreferrer">
+					Cómo llegar <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+			<nav class="mobile-nav wrap" aria-label="Navegación principal en móvil">
+				{nav.map((item) => (
+					<a href={item.href}>{item.label}</a>
+				))}
+			</nav>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Cruz de Humilladero · Málaga
+						</p>
+						<h1 id="hero-title">
+							La <em>Esperanza</em>
+							<small>Panadería · Pastelería · Virgen del Rocío, 70</small>
+						</h1>
+						<p class="hero-lede">
+							El pan de cada mañana, los dulces de la vitrina y la compra del día en una panadería
+							de barrio de Cruz de Humilladero. Sin web ni pedidos online: la Esperanza se visita en
+							persona.
+						</p>
+						<div class="hero-actions">
+							<a
+								class="button button-primary"
+								href={MAPS.directions}
+								target="_blank"
+								rel="noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ver la ficha en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<div class="hero-facts">
+							<div>
+								<span>Google</span>
+								<strong>{ratingLabel} / 5</strong>
+								<small>{BUSINESS.reviewsCount} reseñas</small>
+							</div>
+							<div>
+								<span>Horario</span>
+								<strong>8:00–21:00</strong>
+								<small>de lunes a viernes</small>
+							</div>
+							<div>
+								<span>La casa</span>
+								<strong>Pan y dulce</strong>
+								<small>y despensa de barrio</small>
+							</div>
+						</div>
+					</div>
+
+					<figure class="hero-photo">
+						<Image
+							src={interior}
+							alt="Interior de la panadería: estanterías llenas de barras y hogazas, vitrina de dulces y baldas con aceites, conservas y bebidas"
+							widths={[520, 760, 1100, 1500]}
+							sizes="(max-width: 980px) 92vw, 46vw"
+							format="avif"
+							quality={74}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<span class="hero-plaque" aria-hidden="true">
+							<span>Pan del día</span>
+							<span>Dulces de vitrina</span>
+							<span>Despensa</span>
+						</span>
+						<figcaption>
+							<span>Foto del perfil de Google Maps</span>
+							<a href={MAPS.place} target="_blank" rel="noreferrer">
+								Ver la ficha ↗
+							</a>
+						</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<div class="ribbon" aria-hidden="true">
+				<div class="ribbon-track">
+					<span>Pan del día</span>
+					<i></i>
+					<span>Pastelería</span>
+					<i></i>
+					<span>Dulces de vitrina</span>
+					<i></i>
+					<span>Despensa de barrio</span>
+					<i></i>
+					<span>Cruz de Humilladero</span>
+					<i></i>
+				</div>
+			</div>
+
+			<section class="facts" aria-label="Datos de la ficha">
+				<div class="wrap facts-grid">
+					<div class="fact">
+						<span class="fact-kicker">La ficha</span>
+						<strong>{ratingLabel} / 5</strong>
+						<p>{BUSINESS.reviewsCount} reseñas en Google.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El horario</span>
+						<strong>8:00–21:00</strong>
+						<p>Sábado y domingo, hasta las 15:00.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El mostrador</span>
+						<strong>Pan y dulce</strong>
+						<p>Bollería, pastelería y despensa.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El contacto</span>
+						<strong>Sin teléfono</strong>
+						<p>La ficha no publica teléfono ni web.</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-head">
+					<p class="section-label">
+						<span aria-hidden="true"></span> La casa
+					</p>
+					<h2 id="about-title">
+						Pan de barrio, <em>vitrina de dulces.</em>
+					</h2>
+					<p>
+						La Esperanza lleva el nombre completo en el rótulo: panadería y pastelería. En la calle
+						Virgen del Rocío, 70, el mostrador junta el pan del día con la bollería, los dulces y
+						una pequeña despensa.
+					</p>
+				</div>
+
+				<div class="highlights-grid">
+					{HIGHLIGHTS.map((item) => (
+						<article class="highlight">
+							<span class="highlight-number">{item.number}</span>
+							<div>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</div>
+						</article>
+					))}
+				</div>
+
+				<div class="about-foot">
+					<blockquote class="owner-quote">
+						<p>«{REVIEW_QUOTE}»</p>
+						<cite>Reseña de 5 estrellas en la ficha de Google</cite>
+					</blockquote>
+					<ul class="chips" aria-label="Lo que ofrece La Esperanza">
+						{SERVICIOS.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</div>
+			</section>
+
+			<section class="counter" id="mostrador" aria-labelledby="counter-title">
+				<div class="wrap">
+					<div class="counter-head">
+						<div>
+							<p class="section-label">
+								<span aria-hidden="true"></span> El mostrador
+							</p>
+							<h2 id="counter-title">
+								Del horno <em>a la despensa.</em>
+							</h2>
+						</div>
+						<p>
+							La ficha no publica carta ni precios. Esto es lo que aparece en las fotografías del
+							perfil y lo que citan las reseñas del establecimiento.
+						</p>
+					</div>
+
+					<div class="menu-grid">
+						{MENU.map((group) => (
+							<article class="menu-card">
+								<span class="menu-kicker">{group.kicker}</span>
+								<h3>{group.title}</h3>
+								<ul>
+									{group.items.map((item) => (
+										<li>
+											<strong>{item.name}</strong>
+											<span>{item.note}</span>
+										</li>
+									))}
+								</ul>
+							</article>
+						))}
+					</div>
+
+					<div class="counter-note">
+						<p>
+							<strong>Sin carta ni precios publicados.</strong> La ficha de Google tampoco publica
+							teléfono, así que la única forma de saber qué hay cada día es pasar por el mostrador.
+						</p>
+						<a
+							class="button button-primary"
+							href={MAPS.directions}
+							target="_blank"
+							rel="noreferrer"
+						>
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery wrap" id="fotos" aria-labelledby="gallery-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label">
+							<span aria-hidden="true"></span> La casa en fotos
+						</p>
+						<h2 id="gallery-title">
+							Tres vistas <em>del barrio.</em>
+						</h2>
+					</div>
+					<p>
+						Las tres fotografías del perfil de Google Maps: la bandeja de dulces, la calle con las
+						jacarandas en flor y el interior con el pan y la vitrina. Son imágenes del
+						establecimiento, no de un banco de fotos.
+					</p>
+				</div>
+
+				<div class="gallery-grid">
+					{galeria.map((photo) => (
+						<figure class={photo.shape}>
+							<Image
+								src={photo.src}
+								alt={photo.alt}
+								widths={[420, 640, 960, 1300]}
+								sizes="(max-width: 760px) 92vw, 46vw"
+								format="avif"
+								quality={72}
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>{photo.caption}</figcaption>
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes del perfil del establecimiento en Google Maps. Si eres titular de alguna y
+					quieres retirarla, escríbenos y la borramos.
+				</p>
+			</section>
+
+			<section class="reviews" aria-labelledby="reviews-title">
+				<div class="wrap reviews-grid">
+					<div class="reviews-score">
+						<span class="score-number">{ratingLabel}</span>
+						<span class="score-stars" role="img" aria-label="4,3 de 5 estrellas">
+							★★★★☆
+						</span>
+						<span class="score-count">{BUSINESS.reviewsCount} reseñas en Google</span>
+					</div>
+					<div class="reviews-copy">
+						<p class="section-label section-label-light">
+							<span aria-hidden="true"></span> Lo que dicen
+						</p>
+						<h2 id="reviews-title">
+							«Muy buen pan <em>y muy buenos dulces</em>»
+						</h2>
+						<div class="review-list">
+							{REVIEWS.map((item) => (
+								<figure>
+									<blockquote>«{item.text}»</blockquote>
+									<figcaption>{item.note}</figcaption>
+								</figure>
+							))}
+						</div>
+						<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer las 48 reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label">
+						<span aria-hidden="true"></span> Visítanos
+					</p>
+					<h2 id="visit-title">
+						En Virgen <em>del Rocío, 70.</em>
+					</h2>
+					<p class="address">
+						{BUSINESS.street}
+						<br />
+						{BUSINESS.district}
+						<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<table class="hours">
+						<caption>Horario de la ficha de Google</caption>
+						<tbody>
+							{HOURS.map((row) => (
+								<tr>
+									<th scope="row">{row.day}</th>
+									<td>{row.value}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+					<p class="hours-note">
+						Horario publicado por el establecimiento en Google, consultado el 28 de octubre de 2026.
+						En festivos puede cambiar: confirma antes de ir.
+					</p>
+
+					<div class="visit-note-block">
+						<span>Contacto</span>
+						<p>
+							La ficha no publica teléfono ni página web. Para cualquier consulta, lo directo es
+							acercarse al mostrador o escribir desde Google Maps.
+						</p>
+					</div>
+
+					<div class="visit-links">
+						<a
+							class="button button-primary"
+							href={MAPS.directions}
+							target="_blank"
+							rel="noreferrer"
+						>
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<p class="visit-note">
+						La ficha indica acceso para sillas de ruedas, pero no aparcamiento adaptado. No consta
+						reparto a domicilio ni venta online.
+					</p>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería Pastelería La Esperanza en la calle Virgen del Rocío, 70, Cruz de Humilladero, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen
+					></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Virgen del Rocío, 70
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label">
+					<span aria-hidden="true"></span> Preguntas frecuentes
+				</p>
+				<h2 id="faq-title">
+					Antes de <em>entrar.</em>
+				</h2>
+				<div class="faq-list">
+					{FAQ.map((item) => (
+						<details>
+							<summary>{item.q}</summary>
+							<p>{item.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">
+							LE
+						</span>
+						<p>
+							La Esperanza
+							<small>
+								Panadería · Pastelería · Virgen del Rocío, 70
+								<br />
+								{BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces de Panadería Pastelería La Esperanza">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">
+							Google Maps ↗
+						</a>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Reseñas ↗
+						</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar ↗
+						</a>
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos, valoración y fotografías del perfil
+					público de Google Maps, consultados en octubre de 2026. La ficha no publica teléfono, web,
+					carta ni precios.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/aviso-legal">Aviso legal</a>
+					<a href="/aviso-legal#privacidad">Privacidad</a>
+					<a href="/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>
+						Web creada por{' '}
+						<a href="https://sur-digital.vercel.app/" rel="noopener">
+							Sur Digital
+						</a>
+					</small>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

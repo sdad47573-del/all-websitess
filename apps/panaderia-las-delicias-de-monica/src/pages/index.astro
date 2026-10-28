@@ -1,0 +1,387 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import puesto from '../assets/fotos/panaderia-las-delicias-de-monica-apaisada-01.jpg';
+import eclairs from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-02.jpg';
+import rosas from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-03.jpg';
+import tartaRafa from '../assets/fotos/panaderia-las-delicias-de-monica-apaisada-04.jpg';
+import troncos from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-05.jpg';
+import croissants from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-06.jpg';
+import tartaletas from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-07.jpg';
+import tartasFruta from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-08.jpg';
+import cuadrados from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-09.jpg';
+import almendras from '../assets/fotos/panaderia-las-delicias-de-monica-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Las Delicias de Mónica · Panadería en Huelin';
+const description =
+	'Panadería Las Delicias de Mónica, en el Mercado de Huelin (C. la Hoz, 29002 Málaga). Pan, bollería, tartas de fruta y dulces por encargo. Teléfono 600 25 89 07.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#las-delicias-de-monica`,
+	name: BUSINESS.name,
+	alternateName: ['Las Delicias de Mónica', 'Panadería Las Delicias', 'Las Delicias Huelin'],
+	description:
+		'Puesto de panadería, pastelería y bollería en el Mercado de Huelin (C. la Hoz, 29002 Málaga). Pan, bollería, tartas de fruta y dulces por encargo.',
+	slogan: 'Sabores tradicionales con un toque de innovación',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34600258907',
+	servesCuisine: ['Panadería', 'Pastelería', 'Bollería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google feature id', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: eclairs,
+		alt: 'Éclairs bañados en chocolate rellenos de nata sobre una bandeja dorada, junto a croissants rellenos',
+	},
+	{
+		src: rosas,
+		alt: 'Pasteles rosas con glaseado y líneas de azúcar apilados en una bandeja',
+	},
+	{
+		src: tartaRafa,
+		alt: 'Tarta de fruta con fresa, kiwi y mandarina y una placa que dice «Feliz Cumple Rafa»',
+	},
+	{
+		src: troncos,
+		alt: 'Troncos de chocolate con nata envueltos en papel vegetal sobre bandejas doradas',
+	},
+	{
+		src: croissants,
+		alt: 'Croissants rellenos de crema pastelera cubiertos con caramelos de colores',
+	},
+	{
+		src: tartaletas,
+		alt: 'Tartaletas de fruta con kiwi y mandarina sobre nata',
+	},
+	{
+		src: tartasFruta,
+		alt: 'Tartas rectangulares de fruta con fresa, melocotón y kiwi, con hilo de fresa',
+	},
+	{
+		src: cuadrados,
+		alt: 'Cuadrados de chocolate con líneas de azúcar sobre una bandeja',
+	},
+	{
+		src: almendras,
+		alt: 'Triángulos de almendra con láminas tostadas en una bandeja',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fdf6e8" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..700&family=Prata&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Las Delicias de Mónica, panadería Mercado de Huelin, pastelería Huelin Málaga, bollería Málaga, tartas por encargo, tronco de navidad, C. la Hoz, 29002"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Las Delicias de Mónica · Panadería en el Mercado de Huelin"
+			ogDescription="Pan, bollería, tartas de fruta y dulces por encargo en el Mercado de Huelin. Abre de lunes a sábado de 8:00 a 15:00. 5 sobre 5 con 7 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Puesto de Las Delicias de Mónica en el Mercado de Huelin, con el rótulo de Panadería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#fdf6e8"
+			phone="+34600258907"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[puesto]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Las Delicias"
+			subtitle="Panadería · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Mercado de Huelin · C. la Hoz"
+				title="Dulces de mercado, <br /><em>hechos por Mónica.</em>"
+				lede={`Las Delicias de Mónica es un puesto de panadería, pastelería y bollería dentro del Mercado de Huelin. La ficha del negocio lo cuenta así: «sabores tradicionales con un toque de innovación», encargos de panadería, pastelería y bollería, y una sonrisa acogedora. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={puesto}
+				imageAlt="Puesto de Las Delicias de Mónica en el Mercado de Huelin, con el rótulo de Panadería y la vitrina llena de pan"
+				primaryCta={{ label: 'Llamar · 600 25 89 07', href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>5,0</b> en Google · 7 reseñas' },
+					{ label: 'Horario', html: '<b>L–S 8:00–15:00</b> · domingo cerrado' },
+					{ label: 'Puesto', html: '<b>Mercado de Huelin</b> · C. la Hoz' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver las fotos en Google"
+				tag="Mercado de Huelin"
+			/>
+
+			<LocalChips label="Lo que hay en el puesto" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un puesto <br /><em>en el mercado.</em>"
+				paragraphs={[
+					'Las Delicias de Mónica está dentro del Mercado de Huelin, en la calle la Hoz, en Carretera de Cádiz. Es un puesto de mercado con rótulo negro, paredes blancas y el horno a la vista; al lado se ve el puesto de Nicolás.',
+					'La descripción del negocio lo presenta como «un rincón encantador donde los sabores tradicionales se mezclan con un toque de innovación». Allí se hacen encargos de panadería, pastelería y bollería, y se atiende «con una sonrisa acogedora».',
+					'La vitrina junta el pan de cada día con la bollería y la pastelería: hogazas, barras, pan envasado, croissants rellenos de crema, éclairs de chocolate, pasteles rosas glaseados y tartaletas de fruta.',
+					'La pastelería también trabaja por encargo: en las fotos hay una tarta de fruta con una placa que dice «Feliz Cumple Rafa» y troncos de chocolate con nata. Una reseña de Google los elogia: «he comprado un tronco de navidad y es lo mejor que he probado».',
+				]}
+				note="5 sobre 5 con 7 reseñas en Google. La ficha indica acceso para sillas de ruedas, aparcamiento adaptado y aseo adaptado. No publica página web, correo ni redes sociales; el contacto es el teléfono y el propio puesto."
+				links={[
+					{ label: 'Llamar · 600 25 89 07', href: BUSINESS.phoneHref },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas del puesto</p>
+						<h2 id="three-title">El mercado, la vitrina <br /><em>y los encargos.</em></h2>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Pan, bollería <br /><em>y pastelería.</em>"
+				description="Sin carta ni precios publicados: esto es lo que enumera la descripción del negocio y lo que muestran las fotos del perfil."
+				cta={{ label: 'Llamar · 600 25 89 07', href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica una carta con precios, así que esta web no da importes. Las tartas y los troncos de las fotos son encargos de clientes y se muestran como ejemplo del trabajo de pastelería. Para saber qué hay ese día o encargar una tarta, llama al 600 25 89 07."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="El puesto <br /><em>por dentro.</em>"
+				description="Nueve fotos de la ficha de Google Maps: la vitrina, la bollería, las tartas de fruta y los dulces de chocolate."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
+							<h2 id="reviews-title">Dos reseñas <br /><em>de la ficha.</em></h2>
+						</div>
+						<p>
+							5 sobre 5 con 7 reseñas. Estas dos están publicadas en Google y hablan de
+							la calidad, del precio y del tronco de navidad.
+						</p>
+					</div>
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="review-card">
+									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
+										★★★★★
+									</span>
+									<blockquote>{review.text}</blockquote>
+									<figcaption>Reseña de Google Maps</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 7 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Dentro del <br /><em>Mercado de Huelin.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa del Mercado de Huelin, en la calle la Hoz, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Las Delicias · Mercado de Huelin"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google indica acceso para sillas de ruedas, aparcamiento adaptado y aseo adaptado. No publica web, correo ni canal de pedidos online: los encargos se hacen por teléfono o en el propio puesto."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, descripción, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y disponibilidad pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Llamar a Las Delicias"
+			navAriaLabel="Enlaces de Las Delicias de Mónica"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

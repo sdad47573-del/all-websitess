@@ -151,7 +151,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'Abre de martes a sábado de 8:00 a 22:00. El domingo la ficha marca de 8:00 a 3:00, y el lunes figura como cerrado. Conviene confirmar el horario antes de ir, sobre todo en festivos.',
+		a: 'Abre de martes a sábado de 8:00 a 22:00. El domingo la ficha marca de 8:00 a 3:00, y el lunes figura como cerrado. Para el domingo 1 de noviembre, Día de Todos los Santos, la ficha avisa de que el horario podría ser diferente.',
 	},
 	{
 		q: '¿Cierra los lunes?',
