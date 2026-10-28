@@ -16,7 +16,7 @@ https://el-gallu.netlify.app
 https://el-manjar-playa.vercel.app
 https://el-nido-aguilar.vercel.app
 https://el-pollito-lio.netlify.app
-https://111-coffee-and-bakery.netlify.app/
+https://1111-coffee-and-bakery.netlify.app/
 https://adrizale.netlify.app
 https://amorato-malaga.netlify.app/
 https://barberia-hair-cool.netlify.app
@@ -70,7 +70,7 @@ https://bar-albero-tapas.netlify.app
 https://bar-bermeotarrak.netlify.app
 https://bar-cafeteria-sebastian.netlify.app
 https://bar-de-esteban.netlify.app
-https://bar-el-anzuelo.netlify.app
+https://el-anzuelo-restaurante.netlify.app
 https://bar-pallares.netlify.app
 https://restaurante-sierra-alhamilla.netlify.app
 https://restaurante-ya-lo-sabes.netlify.app

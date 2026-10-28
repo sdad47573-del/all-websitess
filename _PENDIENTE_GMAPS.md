@@ -1,4 +1,4 @@
-https://111-coffee-and-bakery.netlify.app/
+https://1111-coffee-and-bakery.netlify.app/
 https://a-fuego-braseria.vercel.app/
 https://a-jalar.vercel.app/
 https://adrizale.netlify.app/
@@ -96,3 +96,5 @@ https://bar-venta-el-cruce.netlify.app
 https://carlos-troya.netlify.app
 https://floristeria-baraka.netlify.app
 https://casafran.netlify.app
+https://freiduria-el-anzuelo.netlify.app
+https://los-mena.netlify.app/

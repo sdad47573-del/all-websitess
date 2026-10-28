@@ -9,7 +9,6 @@ https://el-rincon-del-perlita.netlify.app/
 arregla el hero, no se ven los textos porque es del mismo color que el fondo
 https://clinica-dental-daniela-torres.netlify.app/
 
-https://bar-el-anzuelo.netlify.app/
 https://restaurante-las-rias.netlify.app/
 https://cafe-bar-la-carretera.netlify.app/
 
@@ -47,14 +46,10 @@ Casa Pino
 La Cala de Mijas · Málaga
 https://taberna-casa-pino.netlify.app/
 
-no existe, poner en sur digital la url bien
-https://bar-el-anzuelo.netlify.app/
-
 https://cafe-bar-la-carretera.netlify.app/
 https://restaurante-las-rias.netlify.app/
 
 desplegar de nuevo
-https://111-coffee-and-bakery.netlify.app/
 https://amorato-malaga.netlify.app/
 https://am-industria-del-estilo.netlify.app/
 https://la-primera-del-naranjo.netlify.app/

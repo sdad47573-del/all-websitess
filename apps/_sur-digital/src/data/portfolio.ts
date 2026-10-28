@@ -1,38 +1,87 @@
 import type { ImageMetadata } from 'astro';
+import street78Preview from '../assets/78-street-burguer-preview.jpg';
 import coffee111Preview from '../assets/111-coffee-and-bakery-preview.jpg';
 import aFuegoPreview from '../assets/a-fuego-braseria-preview.jpg';
 import aJalarPreview from '../assets/a-jalar-preview.jpg';
 import aStylePreview from '../assets/a-style-beauty-salon-preview.jpg';
+import tintaDeToroPreview from '../assets/abaceria-tinta-de-toro-preview.jpg';
+import actitudPreview from '../assets/actitud-centro-belleza-preview.jpg';
 import adrizalePreview from '../assets/adrizale-preview.jpg';
 import agustinPreview from '../assets/agustin-el-picoteo-preview.jpg';
+import alcaravanPreview from '../assets/alcaravan-gastroteca-preview.jpg';
+import alexflorPreview from '../assets/alexflor-preview.jpg';
+import alimentacionAsiaPreview from '../assets/alimentacion-asia-preview.jpg';
 import amIndustriaPreview from '../assets/am-industria-del-estilo-preview.jpg';
+import amaLekuPreview from '../assets/ama-leku-preview.jpg';
 import amoratoPreview from '../assets/amorato-malaga-preview.jpg';
+import amparoPreview from '../assets/amparo-aluche-preview.jpg';
+import anabelPreview from '../assets/anabel-vegara-estetica-preview.jpg';
 import arProfessionalPreview from '../assets/ar-professional-preview.jpg';
+import asadorCamiloPreview from '../assets/asador-de-camilo-preview.jpg';
 import asadorGranjaPreview from '../assets/asador-la-granja-preview.jpg';
 import autanaPreview from '../assets/autana-restaurant-preview.jpg';
 import bacchusPreview from '../assets/bacchus-terrace-preview.jpg';
+import barAlberoPreview from '../assets/bar-albero-tapas-preview.jpg';
+import barBermeoPreview from '../assets/bar-bermeotarrak-preview.jpg';
+import barSebastianPreview from '../assets/bar-cafeteria-sebastian-preview.jpg';
+import barEstebanPreview from '../assets/bar-de-esteban-preview.jpg';
 import granainosPreview from '../assets/bar-los-granainos-miguel-preview.jpg';
+import barPallaresPreview from '../assets/bar-pallares-preview.jpg';
+import laTapitaPreview from '../assets/bar-restaurante-la-tapita-preview.jpg';
+import barSeoanePreview from '../assets/bar-seoane-preview.jpg';
+import tabernaNewPreview from '../assets/bar-taberna-la-new-preview.jpg';
 import barberiaHairCoolPreview from '../assets/barberia-hair-cool-preview.jpg';
+import barberiaTeatinosPreview from '../assets/barberia-teatinos-preview.jpg';
+import guillermoValPreview from '../assets/barbershop-guillermo-val-preview.jpg';
+import medicinaBellezaPreview from '../assets/bbells-salon-belleza-preview.jpg';
 import benavraPreview from '../assets/benavra-preview.jpg';
+import senseoPreview from '../assets/bistrot-senseo-preview.jpg';
+import boabdilPreview from '../assets/boabdil-restaurante-preview.jpg';
+import bodegaFuentePreview from '../assets/bodega-la-fuente-preview.jpg';
+import bquartersPreview from '../assets/bquarters-preview.jpg';
+import laCarreteraPreview from '../assets/cafe-bar-la-carretera-preview.jpg';
 import carbikemotoPreview from '../assets/carbikemotor-preview.jpg';
+import joseLuisPreview from '../assets/carniceria-jose-luis-preview.jpg';
+import carolinaPreview from '../assets/carolina-centro-belleza-preview.jpg';
 import casaAlfonsoPreview from '../assets/casa-alfonso-teatinos-preview.jpg';
+import dentalTorresPreview from '../assets/clinica-dental-daniela-torres-preview.jpg';
 import comestiblesPepePreview from '../assets/comestibles-pepe-preview.jpg';
 import cuatroCaminosPreview from '../assets/cuatro-caminos-granada-preview.jpg';
+import aliBabaPreview from '../assets/cuevas-ali-baba-preview.jpg';
+import delitoSmashPreview from '../assets/delito-smash-preview.jpg';
+import aserraderoPreview from '../assets/el-aserradero-tharsis-preview.jpg';
+import chuletonPreview from '../assets/el-chuleton-preview.jpg';
 import destelloPreview from '../assets/el-destello-preview.jpg';
 import elGalluPreview from '../assets/el-gallu-preview.jpg';
+import garbanzoNegroPreview from '../assets/el-garbanzo-negro-preview.jpg';
 import manjarPlayaPreview from '../assets/el-manjar-playa-preview.jpg';
 import nidoAguilarPreview from '../assets/el-nido-aguilar-preview.jpg';
 import pollitoLioPreview from '../assets/el-pollito-lio-preview.jpg';
+import perlitaPreview from '../assets/el-rincon-del-perlita-preview.jpg';
+import terrazeoPreview from '../assets/el-terrazeo-del-guinda-preview.jpg';
 import tinglaoPreview from '../assets/el-tinglao-granada-preview.jpg';
+import anaMariaPreview from '../assets/floristeria-ana-maria-preview.jpg';
 import gastrobar1947Preview from '../assets/gastrobar-1947-teatinos-preview.jpg';
+import gigantesPreview from '../assets/gigantes-street-food-preview.jpg';
 import grandPerePreview from '../assets/grand-pere-preview.jpg';
+import gymKronoPreview from '../assets/gym-krono-preview.jpg';
+import laBenditaPreview from '../assets/la-bendita-restaurante-preview.jpg';
+import mimosaPreview from '../assets/la-mimosa-atelier-preview.jpg';
+import laNicobaPreview from '../assets/la-nicoba-preview.jpg';
 import naranjoPreview from '../assets/la-primera-del-naranjo-preview.jpg';
+import laTalegaPreview from '../assets/la-talega-preview.jpg';
 import merciNailsPreview from '../assets/merci-nails-preview.jpg';
 import mesonLuisPreview from '../assets/meson-luis-granada-preview.jpg';
+import elSotanoPreview from '../assets/restaurante-el-sotano-preview.jpg';
 import barbacanaPreview from '../assets/restaurante-la-barbacana-preview.jpg';
 import masiaPreview from '../assets/restaurante-la-masia-preview.jpg';
+import lasRiasPreview from '../assets/restaurante-las-rias-preview.jpg';
 import natursurPreview from '../assets/restaurante-natursur-preview.jpg';
+import newNaranjoPreview from '../assets/restaurante-new-naranjo-preview.jpg';
+import aParagemPreview from '../assets/restaurante-pizzaria-a-paragem-preview.jpg';
 import puertaAlhambraPreview from '../assets/restaurante-puerta-de-la-alhambra-preview.jpg';
+import sierraAlhamillaPreview from '../assets/restaurante-sierra-alhamilla-preview.jpg';
+import yaLoSabesPreview from '../assets/restaurante-ya-lo-sabes-preview.jpg';
 import rinconGallegoPreview from '../assets/rincon-gallego-egabrense-cabra-preview.jpg';
 import samiBeautyPreview from '../assets/sami-beauty-preview.jpg';
 import sazonTeatinosPreview from '../assets/sazon-teatinos-preview.jpg';
@@ -46,56 +95,6 @@ import puraCepaPreview from '../assets/taberna-pura-cepa-cordoba-preview.jpg';
 import talleresCaldadoPreview from '../assets/talleres-caldado-preview.jpg';
 import theBossPreview from '../assets/the-boss-restaurant-preview.jpg';
 import butibambaPreview from '../assets/venta-la-butibamba-preview.jpg';
-import barAlberoPreview from '../assets/bar-albero-tapas-preview.jpg';
-import barBermeoPreview from '../assets/bar-bermeotarrak-preview.jpg';
-import barSebastianPreview from '../assets/bar-cafeteria-sebastian-preview.jpg';
-import barEstebanPreview from '../assets/bar-de-esteban-preview.jpg';
-import barAnzueloPreview from '../assets/bar-el-anzuelo-preview.jpg';
-import barPallaresPreview from '../assets/bar-pallares-preview.jpg';
-import sierraAlhamillaPreview from '../assets/restaurante-sierra-alhamilla-preview.jpg';
-import yaLoSabesPreview from '../assets/restaurante-ya-lo-sabes-preview.jpg';
-import barSeoanePreview from '../assets/bar-seoane-preview.jpg';
-import dentalTorresPreview from '../assets/clinica-dental-daniela-torres-preview.jpg';
-import bodegaFuentePreview from '../assets/bodega-la-fuente-preview.jpg';
-import delitoSmashPreview from '../assets/delito-smash-preview.jpg';
-import aserraderoPreview from '../assets/el-aserradero-tharsis-preview.jpg';
-import tabernaNewPreview from '../assets/bar-taberna-la-new-preview.jpg';
-import elSotanoPreview from '../assets/restaurante-el-sotano-preview.jpg';
-import aliBabaPreview from '../assets/cuevas-ali-baba-preview.jpg';
-import newNaranjoPreview from '../assets/restaurante-new-naranjo-preview.jpg';
-import senseoPreview from '../assets/bistrot-senseo-preview.jpg';
-import boabdilPreview from '../assets/boabdil-restaurante-preview.jpg';
-import laCarreteraPreview from '../assets/cafe-bar-la-carretera-preview.jpg';
-import lasRiasPreview from '../assets/restaurante-las-rias-preview.jpg';
-import joseLuisPreview from '../assets/carniceria-jose-luis-preview.jpg';
-import laTapitaPreview from '../assets/bar-restaurante-la-tapita-preview.jpg';
-import aParagemPreview from '../assets/restaurante-pizzaria-a-paragem-preview.jpg';
-import tintaDeToroPreview from '../assets/abaceria-tinta-de-toro-preview.jpg';
-import actitudPreview from '../assets/actitud-centro-belleza-preview.jpg';
-import asadorCamiloPreview from '../assets/asador-de-camilo-preview.jpg';
-import laBenditaPreview from '../assets/la-bendita-restaurante-preview.jpg';
-import carolinaPreview from '../assets/carolina-centro-belleza-preview.jpg';
-import barberiaTeatinosPreview from '../assets/barberia-teatinos-preview.jpg';
-import bquartersPreview from '../assets/bquarters-preview.jpg';
-import guillermoValPreview from '../assets/barbershop-guillermo-val-preview.jpg';
-import medicinaBellezaPreview from '../assets/bbells-salon-belleza-preview.jpg';
-import perlitaPreview from '../assets/el-rincon-del-perlita-preview.jpg';
-import laTalegaPreview from '../assets/la-talega-preview.jpg';
-import gigantesPreview from '../assets/gigantes-street-food-preview.jpg';
-import chuletonPreview from '../assets/el-chuleton-preview.jpg';
-import laNicobaPreview from '../assets/la-nicoba-preview.jpg';
-import terrazeoPreview from '../assets/el-terrazeo-del-guinda-preview.jpg';
-import gymKronoPreview from '../assets/gym-krono-preview.jpg';
-import street78Preview from '../assets/78-street-burguer-preview.jpg';
-import mimosaPreview from '../assets/la-mimosa-atelier-preview.jpg';
-import alcaravanPreview from '../assets/alcaravan-gastroteca-preview.jpg';
-import alexflorPreview from '../assets/alexflor-preview.jpg';
-import alimentacionAsiaPreview from '../assets/alimentacion-asia-preview.jpg';
-import amparoPreview from '../assets/amparo-aluche-preview.jpg';
-import anaMariaPreview from '../assets/floristeria-ana-maria-preview.jpg';
-import anabelPreview from '../assets/anabel-vegara-estetica-preview.jpg';
-import amaLekuPreview from '../assets/ama-leku-preview.jpg';
-import garbanzoNegroPreview from '../assets/el-garbanzo-negro-preview.jpg';
 
 // Tipo explícito porque con `as const` cada elemento infería su propia forma y
 // `destacado` solo existía en los marcados, lo que rompía el destructuring.
@@ -125,7 +124,7 @@ export const PORTFOLIO: Project[] = [
 			'Cafetería y bakery en Teatinos: desayunos y meriendas con pitufos, bocadillos, bollería y una gran variedad de pan, además de tartas artesanales por encargo.',
 		tags: ['Bakery', 'Tartas por encargo', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://111-coffee-and-bakery.netlify.app',
+		url: 'https://1111-coffee-and-bakery.netlify.app',
 		preview: coffee111Preview,
 	},
 	{
@@ -688,17 +687,6 @@ export const PORTFOLIO: Project[] = [
 		preview: barEstebanPreview,
 	},
 	{
-		title: 'Bar El Anzuelo',
-		category: 'Restaurantes y bares',
-		sector: 'Restaurante de mariscos',
-		description:
-			'Cocina del mar en Málaga: pescados frescos, mariscos y moluscos, con reservas en el 686 29 89 29.',
-		tags: ['Pescados frescos', 'Málaga'],
-		accent: 'bg-accent/15 text-neutral',
-		url: 'https://bar-el-anzuelo.netlify.app',
-		preview: barAnzueloPreview,
-	},
-	{
 		title: 'Bar Pallares',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
@@ -713,8 +701,7 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante Sierra Alhamilla',
 		category: 'Restaurantes y bares',
 		sector: 'Tapas y cocina andaluza',
-		description:
-			'Tapas y cocina andaluza en Pechina (Almería), con 4,5★ y 942 reseñas en Google.',
+		description: 'Tapas y cocina andaluza en Pechina (Almería), con 4,5★ y 942 reseñas en Google.',
 		tags: ['Cocina andaluza', 'Pechina'],
 		accent: 'bg-primary/15 text-primary',
 		url: 'https://restaurante-sierra-alhamilla.netlify.app',
@@ -724,8 +711,7 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante Ya Lo Sabes',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
-		description:
-			'Bar restaurante en el Paseo de España de Jaén, con 4,4★ y 729 reseñas en Google.',
+		description: 'Bar restaurante en el Paseo de España de Jaén, con 4,4★ y 729 reseñas en Google.',
 		tags: ['Bar restaurante', 'Jaén'],
 		accent: 'bg-neutral/15 text-neutral',
 		url: 'https://restaurante-ya-lo-sabes.netlify.app',
@@ -768,8 +754,7 @@ export const PORTFOLIO: Project[] = [
 		title: 'Delito Smash',
 		category: 'Restaurantes y bares',
 		sector: 'Hamburguesería',
-		description:
-			'Hamburguesería en Isla Cristina, con 4,8★ en Google. Cenas de 21:00 a 24:00.',
+		description: 'Hamburguesería en Isla Cristina, con 4,8★ en Google. Cenas de 21:00 a 24:00.',
 		tags: ['Smash burgers', 'Isla Cristina'],
 		accent: 'bg-secondary/15 text-neutral',
 		url: 'https://delito-smash.netlify.app',
@@ -800,8 +785,7 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante El Sótano',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante con zona infantil',
-		description:
-			'Restaurante con zona infantil en Jaén, con 4,4★ y 588 reseñas en Google.',
+		description: 'Restaurante con zona infantil en Jaén, con 4,4★ y 588 reseñas en Google.',
 		tags: ['Zona infantil', 'Jaén'],
 		accent: 'bg-primary/15 text-primary',
 		url: 'https://restaurante-el-sotano.netlify.app',
@@ -865,8 +849,7 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante Las Rías',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
-		description:
-			'Restaurante de cocina española con pescados, mariscos y menú del día.',
+		description: 'Restaurante de cocina española con pescados, mariscos y menú del día.',
 		tags: ['Pescados y mariscos', 'Menú del día'],
 		accent: 'bg-accent/15 text-neutral',
 		url: 'https://restaurante-las-rias.netlify.app',
@@ -1118,8 +1101,7 @@ export const PORTFOLIO: Project[] = [
 		title: 'Alexflor',
 		category: 'Comercio',
 		sector: 'Floristería',
-		description:
-			'Floristería en Málaga con ramos personalizados, plantas y entrega a domicilio.',
+		description: 'Floristería en Málaga con ramos personalizados, plantas y entrega a domicilio.',
 		tags: ['Floristería', 'Málaga', 'Plantas'],
 		accent: 'bg-secondary/15 text-neutral',
 		url: 'https://alexflor.netlify.app',
