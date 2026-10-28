@@ -1,9 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-
-https://www.google.com/maps/place/Obrador+panader%C3%ADa+y+confiter%C3%ADa+Martos+y+P%C3%A9rez+(MayPe)/@36.7111759,-4.4420733,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7776c213cb7:0x7e4e390110fee931!8m2!3d36.7111759!4d-4.4420733!16s%2Fg%2F1thn6w9m?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+y+Confiter%C3%ADa+La+Esquinita/@36.7236365,-4.4360159,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f77cd4e5b533:0x4e6f40919dd9ba08!8m2!3d36.7236365!4d-4.4360159!16s%2Fg%2F11k4b70qw6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Panader%C3%ADa+Santa+Ana+Colombiana/@36.728935,-4.4424789,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f708e9ad79b9:0x5f3d1cb01a017d53!8m2!3d36.728935!4d-4.4424789!16s%2Fg%2F1tj34h1h?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panaderia+las+delicias+de+M%C3%B3nica/@36.702994,-4.4381767,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f779b07b5b51:0xe5a21a6760029671!8m2!3d36.702994!4d-4.4381767!16s%2Fg%2F11yp9v0xht?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
