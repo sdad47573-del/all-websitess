@@ -1,0 +1,383 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/delta-panaderia-apaisada-03.jpg';
+import fachadaNoche from '../assets/fotos/delta-panaderia-vertical-01.jpg';
+import quesadas from '../assets/fotos/delta-panaderia-vertical-02.jpg';
+import obrador from '../assets/fotos/delta-panaderia-vertical-04.jpg';
+import fachada from '../assets/fotos/delta-panaderia-vista-5-05.jpg';
+import nevera from '../assets/fotos/delta-panaderia-vertical-06.jpg';
+import despensa from '../assets/fotos/delta-panaderia-vertical-07.jpg';
+import escaparate from '../assets/fotos/delta-panaderia-vertical-08.jpg';
+import rotulo from '../assets/fotos/delta-panaderia-apaisada-09.jpg';
+import caja from '../assets/fotos/delta-panaderia-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Delta Panadería · Bailén-Miraflores, Málaga';
+const description =
+	'Delta Panadería, en C. Blas de Lezo, 3, Loc 1 (Bailén-Miraflores, 29011 Málaga). Pan tradicional, especialidades integrales, tartas y despensa. 4,9/5 en Google. Teléfono 641 52 64 04.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#delta`,
+	name: BUSINESS.name,
+	alternateName: ['Delta', 'Delta Panadería Málaga', 'Panadería Delta'],
+	description:
+		'Panadería con obrador en C. Blas de Lezo, 3, local 1 (Bailén-Miraflores, 29011 Málaga). Pan tradicional, especialidades integrales, productos de temporada, tartas y despensa.',
+	slogan: 'Todo lo que hacemos, lo hacemos para servir',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34641526404',
+	servesCuisine: ['Panadería', 'Pastelería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '06:30',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '22:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de Delta Panadería con el rótulo negro y blanco, el escaparate y las estanterías del interior',
+	},
+	{
+		src: obrador,
+		alt: 'Horno Nerone con bandejas de barras y bolas de pan recién horneadas',
+	},
+	{
+		src: quesadas,
+		alt: 'Dos quesadas en su bandeja dorada sobre el mostrador',
+	},
+	{
+		src: nevera,
+		alt: 'Nevera vertical con latas, botellas y zumos, junto al horno pequeño',
+	},
+	{
+		src: despensa,
+		alt: 'Estanterías con conservas, aceite, zumos, galletas y productos de despensa',
+	},
+	{
+		src: fachadaNoche,
+		alt: 'Rótulo de Delta Panadería de noche, sobre la entrada al pasaje cubierto',
+	},
+	{
+		src: escaparate,
+		alt: 'Escaparate del local con el cartel «La tarta de la madre de Cris, de venta aquí»',
+	},
+	{ src: rotulo, alt: 'Detalle del rótulo de Delta Panadería con la persiana bajada' },
+	{ src: caja, alt: 'Caja roja y blanca de La tarta de la madre de Cris' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#f8f2e7" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Instrument+Serif:ital@0;1&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Delta Panadería, panadería Málaga, Bailén-Miraflores, Blas de Lezo 3, 29011, pan tradicional, tarta de queso, la tarta de la madre de Cris"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan tradicional, integrales, tartas y despensa en Bailén-Miraflores. Abre de 6:30 a 22:00. 4,9 sobre 5 con 42 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vitrina de tartas de Delta Panadería, con quesadas, tartas de queso y tartas de fruta"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#f8f2e7"
+			phone="+34641526404"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Delta"
+			subtitle="Panadería · Obrador"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Blas de Lezo, 3 · Bailén-Miraflores"
+				title="Pan del día, <br /><em>tartas y despensa.</em>"
+				lede={`Delta Panadería lo dice en su propia ficha: «todo lo que hacemos, lo hacemos para servir». En el obrador salen panes tradicionales, especialidades integrales y productos de temporada; delante hay vitrina de tartas y una despensa con refrescos y productos de uso diario. Abre de lunes a viernes de 6:30 a 22:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={vitrina}
+				imageAlt="Vitrina de Delta Panadería con quesadas, tartas de queso, tartas de fruta y el cartel de La tarta de la madre de Cris"
+				primaryCta={{ label: 'Llamar · 641 52 64 04', href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,9</b> en Google · 42 reseñas' },
+					{ label: 'Horario', html: '<b>L–V 6:30–22:00</b> · fin de semana 8:00–22:00' },
+					{ label: 'Teléfono', html: '<b>641 52 64 04</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver las fotos en Google"
+				tag="Obrador y despensa"
+			/>
+
+			<LocalChips label="Lo que hay en la panadería" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una panadería <br /><em>que también es tienda.</em>"
+				paragraphs={[
+					'Delta Panadería está en el número 3 de la calle Blas de Lezo, local 1, en Bailén-Miraflores, dentro de un pasaje cubierto. La ficha de Google resume su idea en una frase que el propio negocio cita: «todo lo que hacemos, lo hacemos para servir».',
+					'La descripción habla de «calidad, tradición y cercanía» y de una gama que incluye «panes tradicionales, especialidades integrales y productos de temporada». Cada producto, dice, «es seleccionado con dedicación» para que el cliente encuentre variedad.',
+					'En el obrador se ve el horno Nerone con bandejas de barras y bolas recién hechas. Delante, la vitrina de tartas: quesadas, tartas de queso doradas, tartas de fruta individuales y el cartel de «La tarta de la madre de Cris», que se vende aquí.',
+					'Y luego está la despensa: nevera de refrescos, zumos, galletas, cacao, conservas y aceite. Es una panadería de barrio que también resuelve la compra del día. Abre de lunes a viernes de 6:30 a 22:00 y el fin de semana de 8:00 a 22:00.',
+				]}
+				note="4,9 sobre 5 con 42 reseñas en Google. Las tres que se citan en esta página son las destacadas de la ficha y todas son de cinco estrellas. La ficha de Google indica además acceso para sillas de ruedas y aseo adaptado."
+				links={[
+					{ label: 'Llamar · 641 52 64 04', href: BUSINESS.phoneHref },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
+						<h2 id="three-title">Horno, vitrina <br /><em>y despensa.</em></h2>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que se ve <br /><em>en el local.</em>"
+				description="Sin carta ni precios publicados: esto es lo que enumera la descripción del negocio y lo que muestran las fotos del perfil."
+				cta={{ label: 'Llamar · 641 52 64 04', href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. «La tarta de la madre de Cris» aparece en el cartel de la vitrina como producto de venta en el local; no es una elaboración propia que esta página pueda atribuir a Delta. Para saber qué hay ese día, llama al 641 52 64 04."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="El local, <br /><em>por dentro y por fuera.</em>"
+				description="Nueve fotos de la ficha de Google Maps: la fachada de día y de noche, el obrador, la vitrina de tartas, la nevera y las estanterías de despensa."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
+							<h2 id="reviews-title">Tres reseñas <br /><em>de la ficha.</em></h2>
+						</div>
+						<p>
+							4,9 sobre 5 con 42 reseñas. Estas tres están publicadas en Google y hablan
+							de los dulces, del esfuerzo del equipo y del barrio.
+						</p>
+					</div>
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="review-card">
+									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
+										★★★★★
+									</span>
+									<blockquote>{review.text}</blockquote>
+									<figcaption>Reseña de Google Maps</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 42 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Blas <br /><em>de Lezo, 3.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Delta Panadería en la calle Blas de Lezo, 3, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Delta · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google indica acceso para sillas de ruedas y aseo adaptado. No publica web, correo ni canal de pedidos online, así que el contacto es en el local o por teléfono."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, descripción, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y disponibilidad pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Llamar a Delta Panadería"
+			navAriaLabel="Enlaces de Delta Panadería"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

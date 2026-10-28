@@ -1,0 +1,338 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import { LocalAbout, LocalFaq, LocalFooter, LocalSeo, LocalTopbar, LocalVisit } from '@astro-components';
+
+import calle from '../assets/fotos/panaderia-el-cipres-calle-01.jpg';
+
+import { BUSINESS, CONSTA, FAQ, HOURS, HOURS_NOTE, MAPS } from '../data/site';
+
+const title = 'Panadería El Ciprés · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería El Ciprés, en C. del Ciprés, 20 (Bailén-Miraflores, 29010 Málaga). Abre de lunes a viernes de 9:00 a 21:00. Teléfono 646 85 16 79. 5 sobre 5 en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#el-cipres`,
+	name: BUSINESS.name,
+	alternateName: ['El Ciprés', 'Panadería El Ciprés Málaga', 'Panadería C. del Ciprés'],
+	description:
+		'Panadería en C. del Ciprés, 20 (Bailén-Miraflores, 29010 Málaga). Abre de lunes a viernes de 9:00 a 21:00, sábados de 9:00 a 15:00 y domingos de 11:00 a 13:30.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34646851679',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '09:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Sunday',
+			opens: '11:00',
+			closes: '13:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La calle', href: '#calle' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#f5f0e4" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Archivo:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería El Ciprés, panadería Málaga, Bailén-Miraflores, calle del Ciprés 20, 29010, panadería de barrio"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería de barrio en la calle del Ciprés, 20, Bailén-Miraflores. De lunes a viernes de 9:00 a 21:00. Teléfono 646 85 16 79."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tarjeta de la Panadería El Ciprés, en la calle del Ciprés, 20, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#f5f0e4"
+			phone="+34646851679"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Ciprés"
+			subtitle="Panadería · Málaga"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> C. del Ciprés, 20 · Bailén-Miraflores</p>
+					<h1 id="hero-title">Panadería El Ciprés, <br /><em>en el número 20.</em></h1>
+					<p class="hero-lede">
+						Una panadería de barrio en la calle del Ciprés, a un paso del Camino de Suárez.
+						La ficha de Google la clasifica como panadería y publica su horario y su
+						teléfono; no publica carta, precios ni fotos del local, así que esta página no
+						los inventa. Abre de lunes a viernes de 9:00 a 21:00.
+						{BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google, con una
+						reseña.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={BUSINESS.phoneHref}>
+							Llamar · {BUSINESS.phone}
+						</a>
+						<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>5,0</b> en Google · 1 reseña</li>
+						<li><b>L–V 9:00–21:00</b> · sábado y domingo, mañana</li>
+						<li><b>646 85 16 79</b> · sin web publicada</li>
+					</ul>
+				</div>
+
+				<div class="hero-art">
+					<div class="poster">
+						<svg class="poster-motif" viewBox="0 0 120 160" aria-hidden="true" focusable="false">
+							<path
+								d="M60 12c9 14 14 26 14 40 0 16-6 30-14 52-8-22-14-36-14-52 0-14 5-26 14-40Z"
+								fill="currentColor"
+								opacity="0.5"
+							/>
+							<path d="M60 30v72" stroke="currentColor" stroke-width="2" opacity="0.35" />
+							<path
+								d="M22 132c14-9 26-13 38-13s24 4 38 13"
+								stroke="currentColor"
+								stroke-width="2"
+								fill="none"
+								opacity="0.5"
+							/>
+							<circle cx="60" cy="119" r="5" fill="currentColor" opacity="0.55" />
+						</svg>
+						<p class="poster-kicker">Panadería</p>
+						<p class="poster-name">El Ciprés</p>
+						<p class="poster-place">C. del Ciprés, 20 · 29010 Málaga</p>
+						<p class="poster-hours">L–V 9:00–21:00 · S 9:00–15:00 · D 11:00–13:30</p>
+						<p class="poster-phone"><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></p>
+					</div>
+					<p class="hero-art-note">
+						Cartel con los datos publicados en la ficha de Google. El local no tiene fotos
+						propias en esa ficha.
+					</p>
+				</div>
+			</section>
+
+			<LocalAbout
+				label="La casa"
+				title="Lo que consta <br /><em>y lo que no.</em>"
+				paragraphs={[
+					'La Panadería El Ciprés está en el número 20 de la calle del Ciprés, en Bailén-Miraflores, a pocos metros del cruce con el Camino de Suárez. Es una zona de portales, árboles y comercios de barrio.',
+					'Su ficha de Google es corta: la clasifica como panadería, da el horario y el teléfono, y suma una única reseña de cinco estrellas. No incluye descripción del negocio, ni carta, ni precios, ni fotografías del local.',
+					'Por eso esta web no enseña producto, precios ni «especialidades de la casa». No hay una fuente pública que los respalde y aquí no se inventan. Lo que sí se puede hacer es llamar, preguntar qué hay hoy y acercarse al número 20.',
+					'El horario es amplio de lunes a viernes —de 9:00 a 21:00—, con sábados de 9:00 a 15:00 y domingos de 11:00 a 13:30. El teléfono directo es el 646 85 16 79, el que publica la propia ficha.',
+				]}
+				note="Ficha de Google consultada en octubre de 2026: 5 sobre 5 con 1 reseña, sin texto público. La única imagen disponible del entorno es una vista de Street View que está identificada como tal más abajo."
+				links={[
+					{ label: 'Llamar · 646 85 16 79', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="consta section-pad" aria-labelledby="consta-title">
+				<div class="wrap">
+					<div class="consta-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Tres datos con fuente</p>
+						<h2 id="consta-title">Sin relleno, <br /><em>solo lo publicado.</em></h2>
+					</div>
+					<div class="consta-grid">
+						{
+							CONSTA.map((item, index) => (
+								<article class="consta-card">
+									<span class="consta-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="calle section-pad" id="calle" aria-labelledby="calle-title">
+				<div class="wrap calle-grid">
+					<figure class="calle-photo">
+						<Image
+							src={calle}
+							alt="Vista de la calle del Ciprés, en Bailén-Miraflores, con los edificios y los árboles de la acera"
+							widths={[480, 720, 1000]}
+							sizes="(max-width: 980px) 92vw, 55vw"
+							format="avif"
+							quality={68}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>
+							C. del Ciprés, a la altura del número 20 · Google Street View, 15 de julio de
+							2026 · <a href={MAPS.streetView} target="_blank" rel="noreferrer">abrir en Street View ↗</a>
+						</figcaption>
+					</figure>
+					<div class="calle-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> La calle</p>
+						<h2 id="calle-title">Bailén-Miraflores, <br /><em>a pie de portal.</em></h2>
+						<p>
+							La calle del Ciprés arranca en el Camino de Suárez y sigue entre edificios de
+							viviendas y arbolado de acera. Es una calle de barrio, con comercios de
+							proximidad, y en la vista de Street View los coches aparecen estacionados en
+							línea. El número 20 queda cerca del cruce.
+						</p>
+						<p>
+							Como el establecimiento no tiene fotos en su ficha de Google, esta es la
+							única imagen disponible del entorno. Está hecha por Google y aquí se muestra
+							identificada como Street View, sin hacerla pasar por el local.
+						</p>
+						<div class="calle-links">
+							<a class="simple-link" href={MAPS.streetView} target="_blank" rel="noreferrer">
+								Abrir Street View ↗
+							</a>
+							<a class="simple-link" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la calle <br /><em>del Ciprés.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería El Ciprés en la calle del Ciprés, 20, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Ciprés · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google no publica accesibilidad, aparcamiento ni métodos de pago, así que esta web no los afirma. Tampoco hay web, correo ni canal de pedidos: el contacto es por teléfono o en el propio local."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Street View ↗', href: MAPS.streetView, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos y horario de la ficha pública de Google Maps, consultada en octubre de 2026. La vista de la calle es de Google Street View (15 de julio de 2026). Horario y disponibilidad pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Llamar a El Ciprés"
+			navAriaLabel="Enlaces de la Panadería El Ciprés"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,0 +1,292 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-dulce-capricho-fachada-01.jpg';
+import esquina from '../assets/fotos/panaderia-dulce-capricho-esquina-02.jpg';
+import avenida from '../assets/fotos/panaderia-dulce-capricho-avenida-03.jpg';
+
+import { BUSINESS, CONSTA, FAQ, HOURS, HOURS_NOTE, MAPS } from '../data/site';
+
+const title = 'Panadería Pastelería Dulce Capricho · Miraflores, Málaga';
+const description =
+	'Panadería Pastelería Dulce Capricho, en Av. Miraflores de los Ángeles (Bailén-Miraflores, 29011 Málaga). Panadería y pastelería con horario partido. 5/5 en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#dulce-capricho`,
+	name: BUSINESS.name,
+	alternateName: ['Dulce Capricho', 'Panadería Dulce Capricho', 'Pastelería Dulce Capricho'],
+	description:
+		'Panadería y pastelería en Av. Miraflores de los Ángeles (Bailén-Miraflores, 29011 Málaga). De lunes a viernes de 8:00 a 15:00 y de 17:00 a 20:00; fines de semana de 8:30 a 14:00.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '17:00',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '14:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La fachada', href: '#fachada' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: esquina,
+		alt: 'Esquina de la Avenida Miraflores de los Ángeles con la fachada de Dulce Capricho y la peluquería de al lado',
+	},
+	{
+		src: avenida,
+		alt: 'Avenida Miraflores de los Ángeles con los bloques de viviendas, los comercios y los coches aparcados',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de la Panadería Pastelería Dulce Capricho, con el rótulo y la puerta abierta',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fbf4e9" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=Jost:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Dulce Capricho, panadería Málaga, pastelería Bailén-Miraflores, Avenida Miraflores de los Ángeles, 29011, panadería de barrio"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y pastelería en la Avenida Miraflores de los Ángeles. De lunes a viernes de 8:00 a 15:00 y de 17:00 a 20:00. 5 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la Panadería Pastelería Dulce Capricho en la Avenida Miraflores de los Ángeles, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#fbf4e9"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Dulce Capricho"
+			subtitle="Panadería · Pastelería"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. Miraflores de los Ángeles · Bailén-Miraflores"
+				title="Pan y pastelería, <br /><em>en Miraflores.</em>"
+				lede={`La fachada de Dulce Capricho lo dice en dos carteles: «PANADERÍA» sobre la puerta y «PASTELERÍA» al lado. Es un local de barrio en la Avenida Miraflores de los Ángeles, con vitrinas a la acera y la puerta abierta. Abre de lunes a viernes de 8:00 a 15:00 y de 17:00 a 20:00, y el fin de semana por la mañana. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google, con una reseña.`}
+				image={fachada}
+				imageAlt="Fachada de la Panadería Pastelería Dulce Capricho, con el rótulo, la puerta abierta y las vitrinas"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver la fachada en Street View', href: MAPS.streetView, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>5,0</b> en Google · 1 reseña' },
+					{ label: 'Horario', html: '<b>L–V 8:00–15:00</b> y 17:00–20:00' },
+					{ label: 'Fin de semana', html: '<b>8:30–14:00</b> · sábado y domingo' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de Google Street View · 19 de julio de 2026"
+				galleryLinkLabel="Abrir el panorama"
+				tag="Panadería · Pastelería"
+			/>
+
+			<LocalAbout
+				label="La casa"
+				title="Un local de barrio <br /><em>con dos rótulos.</em>"
+				paragraphs={[
+					'Dulce Capricho está en la Avenida Miraflores de los Ángeles, en Bailén-Miraflores. La ficha de Google la clasifica como panadería y le da una valoración de 5 sobre 5 con una única reseña; no publica número de portal, teléfono, descripción ni carta.',
+					'La fachada sí se ve en Google Street View, y de ahí sale lo que cuenta esta página: el cartel sobre la puerta dice «PANADERÍA Dulce Capricho PASTELERÍA», con un toldo negro que repite «PANADERÍA». A los lados, dos vitrinas con productos envasados; al lado, la barbería de rayas azules y rojas de la Peluquería Ángel.',
+					'El local ocupa una esquina con acera de losetas rojizas y blancas. La puerta de doble hoja aparece abierta en la imagen, con el interior en penumbra y las estanterías al fondo.',
+					'El horario de la ficha tiene dos tramos de lunes a viernes —de 8:00 a 15:00 y de 17:00 a 20:00— y uno solo el sábado y el domingo, de 8:30 a 14:00. No hay teléfono ni web publicados, así que el trato es en el propio mostrador.',
+				]}
+				note="Ficha de Google consultada en octubre de 2026: 5 sobre 5 con 1 reseña, sin texto público. La ficha no tiene fotos del negocio; las imágenes de esta web son vistas de Street View identificadas como tales."
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="consta section-pad" id="fachada" aria-labelledby="consta-title">
+				<div class="wrap">
+					<div class="consta-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Lo que se ve en la fachada</p>
+						<h2 id="consta-title">Tres detalles <br /><em>de la imagen.</em></h2>
+					</div>
+					<div class="consta-grid">
+						{
+							CONSTA.map((item, index) => (
+								<article class="consta-card">
+									<span class="consta-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+					<p class="consta-note">
+						Todos los detalles están tomados de la vista de Google Street View del 19 de
+						julio de 2026. No se describen productos, precios ni servicios que no consten
+						en la ficha o en la propia imagen.
+					</p>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La fachada <br /><em>y la avenida.</em>"
+				description="Tres vistas de Google Street View: la fachada de frente, la esquina con la peluquería y la avenida con los bloques de viviendas."
+				images={galeria}
+				cta={{ label: 'Abrir en Street View', href: MAPS.streetView }}
+				note="Imágenes de Google Street View del 19 de julio de 2026, el panorama que enlaza la ficha del establecimiento. La ficha de Google no tiene fotos propias del negocio."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Miraflores <br /><em>de los Ángeles.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería Pastelería Dulce Capricho en la Avenida Miraflores de los Ángeles, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Dulce Capricho · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Street View', href: MAPS.streetView, external: true },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Ver la ficha en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="La ficha no publica teléfono, web, accesibilidad ni métodos de pago, así que esta página no los afirma. El contacto es en el propio local, en la esquina de la avenida."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Street View ↗', href: MAPS.streetView, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos y horario de la ficha pública de Google Maps, consultada en octubre de 2026. Imágenes de Google Street View (19 de julio de 2026). Horario y disponibilidad pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Cómo llegar a Dulce Capricho"
+			navAriaLabel="Enlaces de la Panadería Pastelería Dulce Capricho"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

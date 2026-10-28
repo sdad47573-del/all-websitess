@@ -1,0 +1,359 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-la-casadiya-vista-1-01.jpg';
+import cartaDesayunos from '../assets/fotos/panaderia-la-casadiya-vertical-02.jpg';
+import cartaMarroqui from '../assets/fotos/panaderia-la-casadiya-vertical-04.jpg';
+import corazon from '../assets/fotos/panaderia-la-casadiya-vertical-05.jpg';
+import cartaPortada from '../assets/fotos/panaderia-la-casadiya-vertical-07.jpg';
+import mazapan from '../assets/fotos/panaderia-la-casadiya-vertical-08.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería La Casadiya · pan artesano y sabores marroquíes en Málaga';
+const description =
+	'Panadería La Casadiya, en Cam. de Suárez, 29 (Bailén-Miraflores, 29010 Málaga). Pan artesano, bollería, tartas, msemen, pastela y café, todos los días de 7:30 a 22:00. 4,8/5 en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#casadiya`,
+	name: BUSINESS.name,
+	alternateName: ['La Casadiya', 'La Casadiya Málaga', 'Panadería La Casadiya Málaga'],
+	description:
+		'Panadería y pastelería artesanal en Cam. de Suárez, 29 (Bailén-Miraflores, 29010 Málaga). Pan recién horneado, bollería, tartas, especialidades marroquíes, café y zumos naturales.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34851841842',
+	servesCuisine: ['Panadería', 'Pastelería', 'Cocina marroquí'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	hasMenu: `${BUSINESS.siteUrl}/#carta`,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '07:30',
+			closes: '22:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: cartaPortada,
+		alt: 'Portada de la carta de La Casadiya, con el nombre y una foto de la bollería',
+	},
+	{
+		src: cartaDesayunos,
+		alt: 'Carta de desayunos y bebidas de La Casadiya, con combos, café y zumos',
+	},
+	{
+		src: cartaMarroqui,
+		alt: 'Carta de sabores marroquíes y salado de La Casadiya, con msemen, pastela y sándwiches',
+	},
+	{
+		src: corazon,
+		alt: 'Corazón de mousse roja cubierto de terciopelo y brillo, en su caja',
+	},
+	{
+		src: mazapan,
+		alt: 'Dos figuras de mazapán, una tostada y otra pintada de rojo y verde',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fbf3e4" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Sora:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería La Casadiya, panadería Málaga, pastelería Bailén-Miraflores, msemen Málaga, pastela, pan artesano, Camino de Suárez, 29010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan artesano, bollería y sabores marroquíes en Bailén-Miraflores, todos los días de 7:30 a 22:00. 4,8 sobre 5 con 24 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la Panadería La Casadiya en el Camino de Suárez, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#fbf3e4"
+			phone="+34851841842"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Casadiya"
+			subtitle="Panadería · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Cam. de Suárez, 29 · Bailén-Miraflores"
+				title="Pan artesano <br /><em>y sabores de Marruecos.</em>"
+				lede={`La fachada de La Casadiya lo resume en cuatro palabras: pan artesano, bollería, pastelería y productos marroquíes. Dentro, el obrador hornea cada día y la barra sirve café, zumo de naranja natural y combos de desayuno desde 3,00 €. Abre todos los días, de 7:30 a 22:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de la Panadería La Casadiya en el Camino de Suárez, con el rótulo dorado y las estanterías de pan"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> en Google · 24 reseñas' },
+					{ label: 'Horario', html: '<b>Todos los días</b> · 7:30–22:00' },
+					{ label: 'Teléfono', html: '<b>851 841 842</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver las fotos en Google"
+				tag="Abierto todos los días"
+			/>
+
+			<LocalChips label="Lo que hay en La Casadiya" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un obrador <br /><em>con dos orillas.</em>"
+				paragraphs={[
+					'La Casadiya está en el Camino de Suárez, 29, en Bailén-Miraflores. La fachada, de mármol claro y letras doradas, anuncia pan artesano, bollería, pastelería, productos marroquíes y café. Al lado de la puerta, dos olivos en macetas blancas y un felpudo que dice «Bienvenidos».',
+					'Según la descripción del propio negocio, es una panadería y pastelería artesanal donde «tradición, sabor y calidad se encuentran cada día»: pan recién horneado, croissants, pasteles, tartas, donuts y especialidades marroquíes, además de opciones saladas, sándwiches y platos preparados.',
+					'La carta lo confirma. Hay msemen, baghrir, harcha, chebakia, briouat, cuernos de gacela, ghriba, fekkas y baklava, y también pastela, quiche, empanadas y sándwiches. Para beber, café de máquina, té marroquí y zumo de naranja natural.',
+					'El local se describe como «un espacio moderno y acogedor», pensado para desayunar, merendar o llevarse el pan del día. Abre todos los días de 7:30 a 22:00, así que sirve tanto el primer café como la merienda.',
+				]}
+				note="4,8 sobre 5 con 24 reseñas en Google. Las tres que se citan son las destacadas de la ficha y todas son de cinco estrellas."
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
+						<h2 id="three-title">Horno, vitrina <br /><em>y barra.</em></h2>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Precios <br /><em>de la casa.</em>"
+				description="Una selección de la carta que el propio negocio fotografió para su ficha de Google: desayunos, obrador marroquí, salado y bebidas."
+				cta={{ label: 'Ver la carta en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="Precios copiados de las tres cartas publicadas en la ficha de Google, en octubre de 2026; pueden cambiar. La carta completa, con todos los platos y bebidas, está en las fotos de esa misma ficha."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa <br /><em>y su carta.</em>"
+				description="Cinco imágenes de la ficha de Google Maps: la fachada, la portada de la carta, las páginas de desayunos y de sabores marroquíes, y dos piezas de pastelería."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
+							<h2 id="reviews-title">Tres reseñas <br /><em>de la ficha.</em></h2>
+						</div>
+						<p>
+							4,8 sobre 5 con 24 reseñas. Estas tres están publicadas en Google y hablan
+							de la variedad, de la comida y del trato.
+						</p>
+					</div>
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="review-card">
+									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
+										★★★★★
+									</span>
+									<blockquote>{review.text}</blockquote>
+									<figcaption>Reseña de Google Maps</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 24 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el Camino <br /><em>de Suárez.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería La Casadiya en el Camino de Suárez, 29, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Casadiya · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google no publica página web ni información de accesibilidad; el teléfono es el que el local rotula en su fachada. No se aceptan pedidos online desde esta página."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, carta, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Precios, horario y disponibilidad pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Llamar a La Casadiya"
+			navAriaLabel="Enlaces de la Panadería La Casadiya"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
