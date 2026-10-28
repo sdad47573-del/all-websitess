@@ -1,0 +1,300 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalFaq,
+	LocalFooter,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import { BUSINESS, FAQ, HOURS, MAPS, REVIEWS } from '../data/site';
+
+const title = 'Boutique De La Panadería · Bailén-Miraflores, Málaga';
+const description =
+	'Boutique De La Panadería, en Cam. San Alberto, 19, Bailén-Miraflores (29010 Málaga). Panadería abierta 24 horas según Google, con 3,9 sobre 5 y 15 reseñas.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#boutique-panaderia`,
+	name: BUSINESS.name,
+	alternateName: ['Boutique de la Panadería Málaga', 'Boutique Panadería Bailén-Miraflores'],
+	description:
+		'Panadería en Cam. San Alberto, 19 (Bailén-Miraflores, 29010 Málaga). La ficha de Google la marca como abierta 24 horas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '00:00',
+			closes: '23:59',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#191512" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Boutique De La Panaderia, panadería Málaga, panadería Bailén-Miraflores, panadería 24 horas Málaga, pan rústico Málaga, Camino San Alberto 19"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería en el Camino San Alberto, 19, Bailén-Miraflores. La ficha de Google la marca como abierta 24 horas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Rótulo tipográfico de Boutique De La Panadería sobre fondo negro"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#191512"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Boutique"
+			subtitle="Panadería · Bailén-Miraflores"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Cam. San Alberto, 19 · Bailén-Miraflores</p>
+						<h1 id="hero-title">La boutique <br /><em>del pan.</em></h1>
+						<p class="hero-lede">
+							Una panadería de barrio en Bailén-Miraflores, en el Camino San Alberto, 19.
+							La ficha de Google la marca como abierta 24 horas y le da 3,9 sobre 5 con
+							15 reseñas. No publica teléfono, carta ni fotos del interior.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha y reseñas <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<p class="hero-note">
+							<span>Sin teléfono publicado.</span> La atención es en el propio
+							establecimiento; el horario es el que anuncia Google.
+						</p>
+					</div>
+
+					<aside class="hero-card" aria-label="Datos publicados de Boutique De La Panaderia">
+						<span class="card-kicker">Panadería</span>
+						<strong class="card-title">Boutique</strong>
+						<span class="card-sub">de la Panadería</span>
+						<span class="card-hours">24<small>h</small></span>
+						<dl class="card-data">
+							<div>
+								<dt>Dirección</dt>
+								<dd>Cam. San Alberto, 19<br />29010 Málaga</dd>
+							</div>
+							<div>
+								<dt>Google</dt>
+								<dd>3,9 / 5 · 15 reseñas</dd>
+							</div>
+							<div>
+								<dt>Horario</dt>
+								<dd>Abierto 24 horas, según la ficha</dd>
+							</div>
+						</dl>
+						<a class="card-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ver en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</aside>
+				</div>
+				<div class="checker" aria-hidden="true"></div>
+			</section>
+
+			<LocalAbout
+				label="La casa"
+				title="Una panadería <br /><em>de barrio.</em>"
+				paragraphs={[
+					'Boutique De La Panaderia está en el Camino San Alberto, 19, en Bailén-Miraflores (29010 Málaga). Google la clasifica como panadería y la ficha marca «Abierto 24 horas» todos los días.',
+					'La ficha es muy escueta: no publica teléfono, web, carta, precios ni fotografías del interior. Las reseñas visibles hablan de la atención, de los productos y del pan rústico.',
+					'Esta página no inventa una historia ni un catálogo. Reúne la dirección, el horario que publica Google, la valoración y las reseñas, y enlaza la ficha para consultar cualquier cambio.',
+					'El local está en una zona de viviendas y comercios de barrio. Para llegar, el mapa de «Visítanos» abre la ubicación exacta y las indicaciones se lanzan desde Google Maps.',
+				]}
+				note="3,9 sobre 5 con 15 reseñas en Google. Dos de ellas: «Buena atención y buenos productos» y «El pan rústica está buenísimo»."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
+							<h2 id="reviews-title">Dos reseñas <br /><em>de la ficha.</em></h2>
+						</div>
+						<p>
+							La media es 3,9 sobre 5 con 15 reseñas. Estas son dos de las opiniones de
+							cinco estrellas publicadas en Google; puedes leer el resto en la ficha.
+						</p>
+					</div>
+
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="review-card">
+									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
+										★★★★★
+									</span>
+									<blockquote>{review.text}</blockquote>
+									<figcaption>Reseña de Google Maps</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 15 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Bailén-Miraflores, <br /><em>a cualquier hora.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote="La ficha marca «Abierto 24 horas» todos los días. Es el horario publicado, no una confirmación del establecimiento: conviene comprobarlo antes de ir, sobre todo de madrugada."
+				mapTitle="Mapa de Boutique De La Panaderia en el Camino San Alberto, 19, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Boutique · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Reseñas en Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
+				reserveNote="Sin teléfono ni web publicados: la atención es en el propio establecimiento. La ficha solo indica que no hay aparcamiento adaptado para sillas de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos y reseñas de la ficha pública de Google Maps. La ficha no publica teléfono, carta, precios ni fotografías."
+			ctaLabel="Cómo llegar a la Boutique"
+			navAriaLabel="Enlaces de Boutique De La Panaderia"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,0 +1,333 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-01.jpg';
+import vitrinaBolleria from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-02.jpg';
+import vitrinaTartas from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-03.jpg';
+import vitrinaDulces from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-04.jpg';
+import tartasBolleria from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-05.jpg';
+import fantasmas from '../assets/fotos/panaderia-confiteria-cristo-rey-vertical-06.jpg';
+import tartaHojaldre from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-07.jpg';
+import vitrinaTrenzas from '../assets/fotos/panaderia-confiteria-cristo-rey-apaisada-08.jpg';
+import tartaCumple from '../assets/fotos/panaderia-confiteria-cristo-rey-vista-9-09.jpg';
+import escaparate from '../assets/fotos/panaderia-confiteria-cristo-rey-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería Confitería Cristo Rey · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería Confitería Cristo Rey, en la Rotonda de Suárez, 1 (Bailén-Miraflores, 29011 Málaga). Pan artesano, bollería, empanadas, dulces y pasteles, con cafetería. Abre todos los días de 8:00 a 22:00. Teléfono 635 38 40 85.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de la Panadería Confitería Cristo Rey en la Rotonda de Suárez, con el rótulo negro y dorado y el escaparate iluminado',
+	},
+	{
+		src: vitrinaBolleria,
+		alt: 'Mostrador con bandejas de trenzas, napolitanas, palmeras y pastas de la panadería',
+	},
+	{
+		src: vitrinaTartas,
+		alt: 'Vitrina de tartas y pasteles con nata, chocolate y fruta',
+	},
+	{
+		src: vitrinaDulces,
+		alt: 'Vitrina de dulces con bombones, tartas y huevos de chocolate',
+	},
+	{
+		src: tartasBolleria,
+		alt: 'Tartas de cumpleaños y bandejas de bollería en el escaparate de la confitería',
+	},
+	{
+		src: fantasmas,
+		alt: 'Fantasmas de chocolate blanco y negro en el escaparate de Halloween',
+	},
+	{
+		src: tartaHojaldre,
+		alt: 'Tarta de hojaldre con relleno de mermelada y coco rallado sobre un plato rojo',
+	},
+	{
+		src: vitrinaTrenzas,
+		alt: 'Vitrina con tartas, pasteles y trenzas de bollería',
+	},
+	{
+		src: tartaCumple,
+		alt: 'Tarta de cumpleaños con las velas 53 y detalles de chocolate',
+	},
+	{
+		src: escaparate,
+		alt: 'Escaparate nocturno de la confitería decorado con globos y corazones rojos',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#cristo-rey`,
+	name: BUSINESS.name,
+	alternateName: ['Cristo Rey', 'Panadería Cristo Rey Málaga', 'Confitería Cristo Rey'],
+	description:
+		'Panadería y confitería en la Rotonda de Suárez, 1 (Bailén-Miraflores, 29011 Málaga). Pan artesano, bollería, empanadas, dulces y pasteles, con cafetería.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 635 38 40 85',
+	currenciesAccepted: 'EUR',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '08:00',
+			closes: '22:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2a1c14" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Confitería Cristo Rey, panadería Málaga, confitería Bailén-Miraflores, pan artesano Málaga, empanadas Málaga, pasteles Málaga, cafetería Bailén-Miraflores, Rotonda de Suárez"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan artesano, bollería, empanadas, dulces y pasteles en la Rotonda de Suárez, 1, en Bailén-Miraflores (Málaga). Todos los días de 8:00 a 22:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la Panadería Confitería Cristo Rey en la Rotonda de Suárez, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2a1c14"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Cristo Rey"
+			subtitle="Panadería · Confitería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Rotonda de Suárez, 1 · Bailén-Miraflores, Málaga"
+				title="Pan del día, <br /><em>dulces de siempre.</em>"
+				lede={`La Panadería Confitería Cristo Rey está en la Rotonda de Suárez, 1, en Bailén-Miraflores. Pan artesano, bollería, empanadas, dulces y pasteles, con cafetería, todos los días de 8:00 a 22:00. Tiene ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google con ${BUSINESS.reviewsCount} reseñas.`}
+				image={fachada}
+				imageAlt="Fachada de la Panadería Confitería Cristo Rey en la Rotonda de Suárez, con el rótulo negro y dorado y el escaparate iluminado"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,3</b> en Google · 75 reseñas' },
+					{ label: 'Horario', html: '<b>8:00–22:00</b> todos los días' },
+					{ label: 'Barrio', html: '<b>Bailén-Miraflores</b>, Málaga' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Abierto de 8:00 a 22:00"
+			/>
+
+			<LocalChips label="Lo que ofrece la Panadería Confitería Cristo Rey" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una panadería <br /><em>de barrio.</em>"
+				paragraphs={[
+					'La Panadería Confitería Cristo Rey está en la Rotonda de Suárez, 1, en Bailén-Miraflores, con el rótulo negro y dorado sobre el escaparate. Es panadería y cafetería, y abre todos los días de 8:00 a 22:00.',
+					'En el mostrador se ven bandejas de bollería, trenzas, napolitanas, palmeras y pastas, junto a vitrinas de tartas y pasteles. En temporada, el escaparate se llena de dulces y figuras de chocolate. Las reseñas de la ficha hablan del pan artesano, de los dulces, de los pasteles y de las empanadas de atún, pollo y cebolla.',
+					'El local tiene acceso para sillas de ruedas, aunque la ficha no indica aparcamiento adaptado. La atención es de barrio: una reseña la resume como «excelente trato» y otra destaca que están «muy atentos a lo que necesites».',
+					'Esta página no publica carta ni precios porque la ficha de Google no los recoge y la panadería no tiene web propia. Lo que se cita aquí son los productos que aparecen en las reseñas y en las fotografías del perfil.',
+				]}
+				note="4,3 sobre 5 con 75 reseñas en Google. Una de ellas: «Buenísimos sus dulces y muy atentos a lo que necesites»."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Pan, dulces <br /><em>y empanadas.</em>"
+				description="La ficha de Google no publica carta ni precios. Estos productos son los que aparecen en las reseñas de la ficha y en las fotografías del perfil."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin precios publicados: la panadería no tiene web ni carta online en su ficha. Para saber qué hay cada día —y a qué precio—, lo mejor es llamar al 635 38 40 85 o pasarse por el mostrador."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos del perfil de Google Maps"
+				title="Diez fotos <br /><em>del obrador.</em>"
+				description="Las fotografías del perfil de Cristo Rey en Google Maps: la fachada, los mostradores de bollería y pasteles, las vitrinas de dulces y los escaparates de temporada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y procedentes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="A la vuelta <br /><em>de la rotonda.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días, de 8:00 a 22:00, sin día de cierre. Conviene confirmarlo antes de ir, sobre todo en festivos."
+				mapTitle="Mapa de la Panadería Confitería Cristo Rey en la Rotonda de Suárez, 1, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Cristo Rey · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="La panadería no tiene web propia ni pedidos online: se atiende en el mostrador y por teléfono. La ficha indica acceso para sillas de ruedas y ningún aparcamiento adaptado."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos y fotografías de la ficha pública de Google Maps. Sin carta ni precios publicados por el establecimiento."
+			ctaLabel="Llamar a Cristo Rey"
+			navAriaLabel="Enlaces de la Panadería Confitería Cristo Rey"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

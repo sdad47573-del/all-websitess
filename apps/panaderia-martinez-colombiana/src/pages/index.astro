@@ -1,0 +1,378 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/panaderia-martinez-colombiana-apaisada-01.jpg';
+import panesQueso from '../assets/fotos/panaderia-martinez-colombiana-vertical-02.jpg';
+import tartas from '../assets/fotos/panaderia-martinez-colombiana-vertical-03.jpg';
+import bollos from '../assets/fotos/panaderia-martinez-colombiana-vertical-04.jpg';
+import despensa from '../assets/fotos/panaderia-martinez-colombiana-apaisada-05.jpg';
+import nevera from '../assets/fotos/panaderia-martinez-colombiana-apaisada-06.jpg';
+import empanadas from '../assets/fotos/panaderia-martinez-colombiana-vertical-07.jpg';
+import roscas from '../assets/fotos/panaderia-martinez-colombiana-vertical-08.jpg';
+import bandeja from '../assets/fotos/panaderia-martinez-colombiana-vertical-09.jpg';
+import berlinas from '../assets/fotos/panaderia-martinez-colombiana-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	REVIEWS,
+} from '../data/site';
+
+const title = 'Panadería Martínez Colombiana · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería Martínez Colombiana, en C. Martínez de la Rosa, 116 (Bailén-Miraflores, 29010 Málaga). Pan de queso, empanadas, bollería y productos colombianos. Todos los días desde las 8:00. Teléfono 658 27 16 05.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#martinez`,
+	name: BUSINESS.name,
+	alternateName: ['Panadería Martínez', 'Martínez Colombiana', 'Panadería Colombiana Martínez'],
+	description:
+		'Panadería colombiana en C. Martínez de la Rosa, 116 (Bailén-Miraflores, 29010 Málaga). Pan de queso, empanadas, bollería, tartas y productos colombianos envasados.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34658271605',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Monday',
+			opens: '08:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Tuesday',
+			opens: '08:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Sunday',
+			opens: '08:00',
+			closes: '19:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: interior,
+		alt: 'Interior de la panadería Martínez Colombiana, con las estanterías de pan y la vitrina del mostrador',
+	},
+	{ src: panesQueso, alt: 'Tres hogazas alargadas con costra de queso recién horneadas en una bandeja' },
+	{ src: tartas, alt: 'Dos tartas de colores, una roja y otra amarilla, sobre platos en el mostrador' },
+	{ src: bollos, alt: 'Bandeja de bollos redondos rebozados de azúcar junto a fritos y bizcochos envasados' },
+	{ src: despensa, alt: 'Estantería con productos colombianos envasados detrás del cristal' },
+	{ src: nevera, alt: 'Nevera con refrescos, aguas de coco y quesos envasados' },
+	{ src: empanadas, alt: 'Empanadas fritas en una bandeja de horno' },
+	{ src: roscas, alt: 'Roscas de pan envasadas en bolsas de plástico' },
+	{ src: bandeja, alt: 'Bandeja de bollos rellenos recién sacados del horno' },
+	{ src: berlinas, alt: 'Vitrina con berlinas y donuts rebozados de azúcar, algunos con chocolate' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4a3a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Anton&family=Karla:ital,wght@0,300..700;1,300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Martínez Colombiana, panadería colombiana Málaga, pan de queso Málaga, empanadas colombianas Bailén-Miraflores, panadería Martínez de la Rosa, productos colombianos 29010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan de queso, empanadas, bollería, tartas y productos colombianos en Bailén-Miraflores. Todos los días desde las 8:00. 3,9 sobre 5 con 18 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Interior de la Panadería Martínez Colombiana en la calle Martínez de la Rosa, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1f4a3a"
+			phone="+34658271605"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Martínez"
+			subtitle="Panadería colombiana"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Martínez de la Rosa, 116 · Bailén-Miraflores"
+				title="Pan colombiano, <br /><em>de barrio.</em>"
+				lede={`Martínez está en la calle Martínez de la Rosa, 116, en Bailén-Miraflores. Una panadería colombiana con vitrina de bollería, empanadas, pan de queso y una despensa de productos del país. Abre todos los días desde las 8:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={interior}
+				imageAlt="Interior de la panadería Martínez Colombiana, con estanterías de pan y la vitrina del mostrador"
+				primaryCta={{ label: 'Llamar · 658 27 16 05', href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,9</b> en Google · 18 reseñas' },
+					{ label: 'Apertura', html: '<b>8:00</b> todos los días' },
+					{ label: 'Barrio', html: '<b>Bailén-Miraflores</b> · 29010' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver todas las fotos"
+				tag="Abierto todos los días"
+			/>
+
+			<section class="ticker" aria-label="Lo que hay en la panadería">
+				<div class="wrap ticker-inner">
+					<span>Pan de queso</span>
+					<span aria-hidden="true">◆</span>
+					<span>Empanadas</span>
+					<span aria-hidden="true">◆</span>
+					<span>Bollería y tartas</span>
+					<span aria-hidden="true">◆</span>
+					<span>Productos colombianos</span>
+				</div>
+			</section>
+
+			<LocalAbout
+				label="La casa"
+				title="Un mostrador <br /><em>colombiano.</em>"
+				paragraphs={[
+					'La Panadería Martínez Colombiana está en la calle Martínez de la Rosa, 116, en Bailén-Miraflores. Es un local de barrio con las estanterías de pan a la vista y una vitrina corrida en la que se van poniendo la bollería, las tartas y los fritos.',
+					'La ficha de Google no publica una descripción del negocio ni una carta. Lo que sí hay son las fotos del perfil: bandejas de panes con queso recién horneados, empanadas fritas, roscas de pan en bolsa, bollos rebozados de azúcar, berlinas con chocolate y tartas de colores.',
+					'Al fondo, la despensa: estanterías con galletas y productos colombianos envasados y una nevera con refrescos, aguas de coco y quesos. Es lo que se ve en las fotos, no un catálogo inventado.',
+					'Abre todos los días desde las 8:00, con cierre a las 21:00 de lunes a sábado y a las 19:00 el domingo. El martes cierra antes, a las 17:00. Para encargos o dudas, el teléfono de la ficha es el 658 27 16 05.',
+				]}
+				note="3,9 sobre 5 con 18 reseñas en Google. La media incluye opiniones de todo tipo; en esta página se citan tres, también la de una estrella."
+				links={[
+					{ label: 'Llamar · 658 27 16 05', href: BUSINESS.phoneHref },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="notes section-pad" aria-labelledby="notes-title">
+				<div class="wrap notes-grid">
+					<div class="notes-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas que se ven</p>
+						<h2 id="notes-title">Del horno <br /><em>a la vitrina.</em></h2>
+					</div>
+					<div class="notes-list">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="note-row">
+									<span class="note-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<div>
+										<h3>{item.title}</h3>
+										<p>{item.text}</p>
+									</div>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del perfil y lo que citan las reseñas. La disponibilidad cambia según el día."
+				cta={{ label: 'Llamar · 658 27 16 05', href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note="La ficha de Google no recoge carta, precios ni métodos de pago, así que esta web no publica importes. Para saber qué hay ese día, llama al 658 27 16 05 o pásate por el mostrador."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La panadería, <br /><em>por dentro.</em>"
+				description="Diez fotos de la ficha de Google Maps: el interior, el pan de queso, las empanadas, la bollería, las tartas, la despensa y la nevera."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div class="reviews-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
+							<h2 id="reviews-title">Tres reseñas, <br /><em>sin filtro.</em></h2>
+						</div>
+						<p>
+							3,9 sobre 5 con 18 reseñas. Estas tres están publicadas en Google: dos de
+							cinco estrellas y una de una estrella. El resto, en la ficha.
+						</p>
+					</div>
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class:list={['review-card', review.rating === 1 && 'review-card-low']}>
+									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
+										{'★'.repeat(review.rating)}
+										<span class="stars-empty">{'★'.repeat(5 - review.rating)}</span>
+									</span>
+									<blockquote>{review.text}</blockquote>
+									<figcaption>
+										{review.rating === 1 ? 'Reseña de 1 estrella' : 'Reseña de 5 estrellas'}
+										· Google Maps
+									</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 18 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Martínez <br /><em>de la Rosa.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería Martínez Colombiana en la calle Martínez de la Rosa, 116, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Martínez · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: '658 27 16 05', href: BUSINESS.phoneHref }}
+				reserveNote="La ficha no publica información sobre accesibilidad ni aparcamiento; si necesitas un acceso concreto, llama antes. Los encargos se atienden en el propio mostrador o por teléfono."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y disponibilidad pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a Martínez"
+			navAriaLabel="Enlaces de Panadería Martínez Colombiana"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
