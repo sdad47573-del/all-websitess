@@ -1,0 +1,347 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-confiteria-elepan-apaisada-01.jpg';
+import roscones from '../assets/fotos/panaderia-confiteria-elepan-apaisada-02.jpg';
+import vitrina from '../assets/fotos/panaderia-confiteria-elepan-apaisada-04.jpg';
+import tienda from '../assets/fotos/panaderia-confiteria-elepan-apaisada-05.jpg';
+import estanterias from '../assets/fotos/panaderia-confiteria-elepan-apaisada-09.jpg';
+import tartaNavidad from '../assets/fotos/panaderia-confiteria-elepan-vertical-03.jpg';
+import tronco from '../assets/fotos/panaderia-confiteria-elepan-vertical-06.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería confitería Elepan · Palma-Palmilla, Málaga';
+const description =
+	'Panadería - confitería Elepan, en C. la Defensa, 4 (Palma-Palmilla, 29011 Málaga). Pan, dulces, helados y productos de tienda. Teléfono 627 84 42 51. 4,2 sobre 5 en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#elepan`,
+	name: BUSINESS.name,
+	alternateName: ['Elepan', 'Panadería Elepan Málaga', 'Confitería Elepan Palma-Palmilla'],
+	description:
+		'Panadería, confitería y tienda en C. la Defensa, 4 (Palma-Palmilla, 29011 Málaga). Pan, bollería, pastelería, roscones de Reyes, helados y productos envasados.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34627844251',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '17:00',
+			closes: '20:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: roscones,
+		alt: 'Roscones de Reyes con nata y fruta escarchada en la bandeja del local',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de pasteles con napolitanas, brazos de gitano, pasteles de nata y tarta de chocolate',
+	},
+	{
+		src: tienda,
+		alt: 'Interior de la tienda con estanterías de productos, vitrina y decoración de Navidad',
+	},
+	{
+		src: tartaNavidad,
+		alt: 'Tarta helada rectangular decorada con motivos navideños',
+	},
+	{
+		src: tronco,
+		alt: 'Tronco de Navidad de nata y chocolate con decoración navideña',
+	},
+	{
+		src: estanterias,
+		alt: 'Estantería con vinos, conservas, dulces y productos envasados de la tienda',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#501d2d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..600&family=Public+Sans:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería confitería Elepan, panadería Málaga, confitería Palma-Palmilla, roscones de Reyes, troncos de Navidad, helados, 29011"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería, confitería y tienda en la calle la Defensa, 4. Pan, dulces, roscones, helados y productos envasados. 4,2 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada roja de Panadería confitería Elepan en la calle la Defensa, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#501d2d"
+			phone="+34627844251"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Confitería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. la Defensa, 4 · Palma-Palmilla"
+				title="Pan, dulces <br /><em>y tienda de barrio.</em>"
+				lede={`Elepan está en la calle la Defensa, 4, con la fachada roja y el rótulo que anuncia «Panadería elepan Confitería». Dentro, la vitrina se llena de napolitanas, brazos de gitano y pasteles de nata, y las estanterías suman vinos, conservas, dulces y helados. En temporada hay roscones de Reyes y troncos de Navidad. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada roja de Panadería confitería Elepan con el rótulo y el escaparate"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,2</b> en Google · 65 reseñas' },
+					{ label: 'Horario', html: '<b>L–J 8:00–15:00</b> y 17:00–20:30' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · dulces · tienda"
+			/>
+
+			<LocalChips label="Lo que hay en Elepan" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Panadería, confitería <br /><em>y algo más.</em>"
+				paragraphs={[
+					'Panadería - confitería Elepan está en la calle la Defensa, 4, en Palma-Palmilla. La fachada es roja, con el rótulo «Panadería elepan Confitería», un toldo azul y un escaparate lleno de carteles de tartas y helados.',
+					'Dentro, el local mezcla panadería y tienda: la vitrina con napolitanas, brazos de gitano, pasteles de nata y tartas, y estanterías con vinos, conservas, dulces, aperitivos y una nevera de helados.',
+					'En las fotos del perfil también aparecen los dulces de temporada: roscones de Reyes con nata y fruta escarchada, troncos de Navidad decorados y tartas heladas de la campaña.',
+					'Las reseñas de Google hablan del buen trato, del pan fresco del día y de que, «además de pan y dulces, tiene otras cosas». Abre de lunes a jueves de 8:00 a 15:00 y de 17:00 a 20:30; de viernes a domingo, solo por la mañana. La ficha no publica carta ni precios, así que aquí no encontrarás importes.',
+				]}
+				note="Sin carta ni precios publicados: el mostrador recoge solo lo que muestran las fotos del perfil y lo que cuentan las reseñas. Algunos carteles de las fotos llevan precio, pero no se reproduce ninguno."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Vitrina, horno <br />
+							<em>y estantería.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note={`La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día y con la temporada. Para encargos, llama al ${BUSINESS.phone}.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Seis fotos de la ficha de Google Maps: los roscones, la vitrina de pasteles, el interior de la tienda, una tarta de Navidad, un tronco y las estanterías."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la Defensa, <br /><em>número 4.</em>"
+				addressLines={[
+					BUSINESS.street,
+					BUSINESS.district,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+				]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería confitería Elepan en la calle la Defensa, 4, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Elepan · Palma-Palmilla"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google marca aparcamiento adaptado para sillas de ruedas, pero no publica información sobre el acceso, el mostrador o el aseo. El contacto es en el local o por teléfono."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a Elepan"
+			navAriaLabel="Enlaces de Panadería confitería Elepan"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
