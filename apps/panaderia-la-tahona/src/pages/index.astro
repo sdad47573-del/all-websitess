@@ -1,0 +1,474 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import baguettes from '../assets/fotos/panaderia-la-tahona-vertical-01.jpg';
+import hogazas from '../assets/fotos/panaderia-la-tahona-apaisada-02.jpg';
+import redes from '../assets/fotos/panaderia-la-tahona-vertical-04.jpg';
+import panMesa from '../assets/fotos/panaderia-la-tahona-vista-5-05.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería La Tahona · Pan artesanal en Cruz de Humilladero, Málaga';
+const description =
+	'Panadería La Tahona en C. de Alozaina, 19 (Cruz de Humilladero, 29006 Málaga): panadería y pastelería artesanal de elaboración propia desde 1986. 4,7 sobre 5 en Google. Horario, mapa y teléfono.';
+const ratingLabel = BUSINESS.rating.toFixed(1).replace('.', ',');
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#la-tahona`,
+	name: BUSINESS.name,
+	alternateName: ['La Tahona', 'La Tahona 1986'],
+	description:
+		'Panadería y pastelería artesanal en la calle Alozaina, 29006 Málaga, con elaboración propia desde 1986. La ficha de Google le da 4,7 sobre 5 con 45 reseñas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	telephone: `+34${BUSINESS.phone.replace(/\s/g, '')}`,
+	foundingDate: String(BUSINESS.since),
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+			],
+			opens: '07:30',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Galería', href: '#galeria' },
+	{ label: 'Horario', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const shots = [
+	{
+		src: panMesa,
+		alt: 'Dos hogazas pequeñas de miga clara con harina en la costra, sobre una mesa de madera con espigas de trigo',
+		caption: 'Pan de la casa',
+	},
+	{
+		src: hogazas,
+		alt: 'Hogaza larga de semillas vista desde arriba, sobre una mesa de tono oscuro junto a su envoltorio',
+		caption: 'Hogaza con semillas',
+	},
+	{
+		src: redes,
+		alt: 'Tarjeta de La Tahona con sus perfiles de Instagram y Facebook y el teléfono de la tienda',
+		caption: 'Sus perfiles',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3d4a2b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería La Tahona, La Tahona Málaga, panadería Cruz de Humilladero, pan artesanal 29006, pastelería Alozaina, panadería de barrio Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y pastelería artesanal en el C. de Alozaina, 29006 Málaga, con elaboración propia desde 1986. 4,7 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pan artesanal de Panadería La Tahona en Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#3d4a2b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[baguettes]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería La Tahona, inicio">
+					<span class="brand-mark" aria-hidden="true">T</span>
+					<span class="brand-name">
+						Panadería La Tahona
+						<small>Desde 1986 · Málaga</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Cruz de Humilladero · 29006 Málaga</p>
+						<h1 id="hero-title">La Tahona <em>Pan artesanal desde 1986</em></h1>
+						<p class="hero-lede">
+							Panadería y pastelería artesanal en la calle Alozaina, 19, con gran variedad de
+							productos de elaboración propia. La ficha de Google le da 4,7 sobre 5 con 45
+							reseñas y publica su teléfono, el 635 61 75 66.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href={BUSINESS.phoneHref}> Llamar al {BUSINESS.phone}</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<b>{ratingLabel} / 5</b>
+								{BUSINESS.reviewsCount} reseñas en Google
+							</li>
+							<li>
+								<b>L–S 7:30–14:30</b>
+								Domingo 8:00–15:00
+							</li>
+							<li>
+								<b>Alozaina, 19</b>
+								Cruz de Humilladero, {BUSINESS.city}
+							</li>
+						</ul>
+					</div>
+
+					<figure class="hero-photo">
+						<Image
+							src={baguettes}
+							alt="Cuatro baguettes recién horneadas en una caja de madera con un paño blanco y espigas de trigo"
+							widths={[480, 760, 1200]}
+							sizes="(max-width: 980px) 92vw, 46vw"
+							format="avif"
+							quality={74}
+							priority
+							decoding="async"
+						/>
+						<figcaption>
+							<span>Fotos del perfil de Google Maps de la casa</span>
+							<a href={MAPS.place} target="_blank" rel="noreferrer">Ver ficha ↗</a>
+						</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que publica la ficha de Google">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+				<div class="about-grid">
+					<h2 id="about-title">Obrador propio <em>en la calle Alozaina.</em></h2>
+					<div class="about-copy">
+						<p>
+							La Tahona es una panadería y pastelería artesanal del C. de Alozaina, número 19,
+							en el barrio de Cruz de Humilladero. Google la clasifica como panadería y le da
+							4,7 sobre 5 con 45 reseñas.
+						</p>
+						<p>
+							La casa se describe en su ficha como un obrador con gran variedad de productos de
+							elaboración propia, y sitúa su origen en 1986: casi cuatro décadas horneando pan
+							en el mismo barrio.
+						</p>
+						<p>
+							El horario es de mañana: de lunes a sábado abre de 7:30 a 14:30 y los domingos
+							de 8:00 a 15:00, sin turno de tarde. La ficha no publica lista de productos ni
+							precios, así que esta página no los afirma.
+						</p>
+						<p>
+							Para cualquier consulta está el teléfono de la tienda, el {BUSINESS.phone}. El 1
+							de noviembre Google advierte de que el horario podría variar.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="three" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
+							<h2 id="three-title">Lo que sí <em>se sabe.</em></h2>
+						</div>
+						<p>
+							Todo lo que sigue sale de la ficha pública de Google Maps: sin carta ni precios
+							publicados, esto es lo que la página puede afirmar.
+						</p>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery wrap" id="galeria" aria-labelledby="gallery-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Galería</p>
+						<h2 id="gallery-title">La casa, <em>en fotos.</em></h2>
+					</div>
+					<p>
+						Imágenes de la galería del perfil de Google Maps de La Tahona: las baguettes de la
+						caja, el pan sobre la mesa y la tarjeta de la casa. Se muestran como información del
+						local.
+					</p>
+				</div>
+
+				<div class="gallery-grid gallery-grid--few">
+					{
+						shots.map((shot) => (
+							<figure class="shot">
+								<Image
+									src={shot.src}
+									alt={shot.alt}
+									widths={[420, 680, 1024]}
+									sizes="(max-width: 700px) 92vw, (max-width: 980px) 46vw, 30vw"
+									format="avif"
+									quality={72}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{shot.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+
+				<p class="gallery-note">
+					Fotografías descargadas de la galería pública de Google Maps (octubre de 2026) e
+					incluidas como información del establecimiento. La ficha incluye además una tarjeta de
+					horario anterior que no se muestra, porque los horarios que anuncia ya no coinciden con
+					los publicados en Google.
+				</p>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-figure" aria-hidden="true">
+						<span class="rating-number">{ratingLabel}</span>
+						<span class="rating-max">/ 5</span>
+					</div>
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que dice Google</p>
+						<h2 id="rating-title">Cuarenta y cinco reseñas, <em>casi cinco estrellas.</em></h2>
+						<p>
+							La ficha tiene una media de 4,7 sobre 5 con 45 reseñas. Aquí solo se reproduce la
+							valoración publicada: las opiniones completas se leen en Google Maps.
+						</p>
+						<div class="rating-actions">
+							<span class="stars stars-large" role="img" aria-label="4,7 de 5 estrellas"
+								>★★★★★</span
+							>
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Leer las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Visítanos</p>
+					<h2 id="visit-title">En la calle <em>Alozaina.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<table class="hours">
+						<caption>Horario publicado en Google</caption>
+						<tbody>
+							{HOURS.map((row) => (
+								<tr>
+									<th scope="row">{row.day}</th>
+									<td>{row.value}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+					<p class="hours-note">{HOURS_NOTE}</p>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={BUSINESS.phoneHref}> Llamar al {BUSINESS.phone}</a>
+					</div>
+					<p class="visit-note">
+						La ficha solo publica horario de mañana. No hay página web ni pedido online: cualquier
+						consulta se hace por teléfono o en la propia tienda.
+					</p>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería La Tahona en la calle Alozaina, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Alozaina, 19 · 29006
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>pasar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">T</span>
+						<p>
+							Panadería La Tahona
+							<small>
+								Panadería · Pastelería artesanal<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces de la panadería">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Reseñas ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos y valoración de la ficha pública
+					de Google Maps, consultada en octubre de 2026. Las fotografías proceden de la galería
+					del perfil del establecimiento en Google Maps. La web no publica carta ni precios porque
+					la ficha no los incluye.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/aviso-legal">Aviso legal</a>
+					<a href="/aviso-legal#privacidad">Privacidad</a>
+					<a href="/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small
+						>Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a>
+						· sur-digital.vercel.app</small
+					>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

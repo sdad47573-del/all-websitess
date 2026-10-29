@@ -1,0 +1,574 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import fachada from '../assets/fotos/tropicana-pasteleria-panoramica-01.jpg';
+import vitrina from '../assets/fotos/tropicana-pasteleria-vertical-02.jpg';
+import esquina from '../assets/fotos/tropicana-pasteleria-panoramica-05.jpg';
+import dosDulces from '../assets/fotos/tropicana-pasteleria-vertical-03.jpg';
+import chocolate from '../assets/fotos/tropicana-pasteleria-vertical-07.jpg';
+import jengibre from '../assets/fotos/tropicana-pasteleria-vertical-08.jpg';
+import avenida from '../assets/fotos/tropicana-pasteleria-apaisada-04.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Tropicana Pastelería · Teatinos, Málaga';
+const description =
+	'Tropicana Pastelería en la calle Nuzas, 22 (Teatinos-Universidad, 29010 Málaga): dulces tradicionales, bollería y pan. Abierta todos los días de la semana.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#tropicana`,
+	name: BUSINESS.name,
+	alternateName: ['Tropicana', 'Pastelería Tropicana Málaga', 'Boutique de la Panadería Tropicana'],
+	description:
+		'Pastelería y panadería en la calle Nuzas, 22, Teatinos-Universidad (29010 Málaga). Dulces tradicionales, bollería y pan, abierta todos los días.',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34697563066',
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '19:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	servesCuisine: 'Pastelería tradicional y panadería',
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Horario', href: '#horario' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Dónde está', href: '#visitanos' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#4a1f28" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Tropicana Pastelería Málaga, pastelería Teatinos, panadería calle Nuzas, dulces tradicionales Málaga, bollería Teatinos 29010, boutique de la panadería"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Dulces tradicionales, bollería y pan en la calle Nuzas, 22. Abierta todos los días."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada roja de Tropicana Pastelería con los rótulos de pastelería y boutique de la panadería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#4a1f28"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Tropicana Pastelería, inicio">
+					<span class="brand-mark" aria-hidden="true">T</span>
+					<span class="brand-name">
+						Tropicana Pastelería
+						<small>Teatinos · Málaga</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone} <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Teatinos-Universidad · 29010 Málaga</p>
+						<h1 id="hero-title">Tropicana<em>Pastelería · Boutique de la panadería</em></h1>
+						<p class="hero-lede">
+							Una pastelería de barrio en la calle Nuzas, con el rótulo de casa de toda la vida y
+							los toldos de rayas sobre la fachada roja. Dulces tradicionales, bollería y pan, de
+							8:00 a 20:00.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href="#horario">Ver el horario</a>
+						</div>
+						<dl class="hero-facts">
+							<div>
+								<dt>Abre</dt>
+								<dd>8:00</dd>
+							</div>
+							<div>
+								<dt>Abierta</dt>
+								<dd>Los 7 días</dd>
+							</div>
+							<div>
+								<dt>Valoración</dt>
+								<dd>4,4 · 52 reseñas</dd>
+							</div>
+						</dl>
+					</div>
+
+					<figure class="hero-media">
+						<div class="hero-photo">
+							<Image
+								src={fachada}
+								alt="La fachada roja de Tropicana Pastelería en la calle Nuzas, con los rótulos de pastelería y boutique de la panadería y los toldos de rayas"
+								widths={[480, 720, 1024, 1400]}
+								sizes="(max-width: 900px) 92vw, 50vw"
+								format="avif"
+								quality={74}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figcaption>
+							<span>La fachada, en la calle Nuzas</span>
+							<span>Foto de la ficha de Google</span>
+						</figcaption>
+						<span class="hero-seal" aria-hidden="true">
+							<strong>4,4</strong>
+							<small>52 reseñas<br />en Google</small>
+						</span>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que publica la ficha de Google">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Dulces de siempre en una <em>esquina de Teatinos.</em></h2>
+						<p>
+							Tropicana Pastelería está en la calle Nuzas, 22, en el barrio de Teatinos-Universidad.
+							La fachada roja conserva el rótulo de pastelería junto al de «Boutique de la
+							Panadería», que es la descripción que el propio negocio escribe en Google.
+						</p>
+						<p>
+							La ficha la clasifica a la vez como panadería y pastelería. No publica carta, surtido
+							completo ni precios, pero las reseñas de sus clientes hablan de dulces, repostería y
+							pastelería tradicional, y repiten el buen trato en el mostrador.
+						</p>
+						<p>
+							En la galería se ven las galletas decoradas de la vitrina y los dulces envueltos para
+							llevar, además de la fachada y la esquina del local junto a la avenida.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#fotos">Ver las fotos</a>
+						</div>
+					</div>
+
+					<figure class="about-media">
+						<Image
+							src={vitrina}
+							alt="Bandeja de galletas de jengibre decoradas con glaseado dentro de la vitrina"
+							widths={[400, 640, 900]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Las galletas de la vitrina</figcaption>
+					</figure>
+				</div>
+
+				<ul class="highlights">
+					{
+						HIGHLIGHTS.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">De ocho a ocho, <em>todos los días.</em></h2>
+						<p class="hours-lede">
+							La ficha publica horario de lunes a domingo, sin ningún día de cierre: de 8:00 a
+							20:00 entre semana y de 8:00 a 19:00 el sábado y el domingo.
+						</p>
+						<p class="hours-note">
+							<strong>Ojo con los festivos.</strong> {HORARIO_AVISO}
+						</p>
+						<a class="hours-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Comprobar en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="hours-table-wrap">
+						<table class="hours-table">
+							<caption class="visually-hidden">
+								Horario publicado en la ficha de Google
+							</caption>
+							<tbody>
+								{
+									HORARIO.map((row) => (
+										<tr>
+											<th scope="row">{row.dia}</th>
+											<td>{row.horas}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+						<p class="hours-foot">
+							Horario publicado en la ficha pública de Google, consultada en octubre de 2026.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="fotos wrap" id="fotos" aria-labelledby="fotos-title">
+				<div class="fotos-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos</p>
+						<h2 id="fotos-title">La vitrina <em>y la fachada.</em></h2>
+					</div>
+					<p>
+						Las imágenes salen de la galería de la ficha de Google: la fachada, la esquina del
+						local y los dulces de la vitrina. No hay fotos del obrador ni de la sala.
+					</p>
+				</div>
+
+				<div class="fotos-grid">
+					<figure class="foto foto-wide">
+						<Image
+							src={esquina}
+							alt="La esquina del local en la avenida, con el toldo de rayas y el cartel de la pastelería"
+							widths={[560, 800, 1120]}
+							sizes="(max-width: 900px) 92vw, 58vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La esquina, junto a la avenida</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={dosDulces}
+							alt="Dos dulces sobre papel de la pastelería: uno con glaseado rosa y otro cubierto de chocolate"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Dos dulces para llevar</figcaption>
+					</figure>
+					<figure class="foto foto-portrait">
+						<Image
+							src={jengibre}
+							alt="Una galleta de jengibre con lazo verde y botones rojos sobre fondo gris"
+							widths={[360, 540, 760]}
+							sizes="(max-width: 900px) 92vw, 26vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Galleta de jengibre</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={chocolate}
+							alt="Dos pasteles redondos bañados en chocolate sobre el papel de Tropicana Pastelería"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Bañados de chocolate</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={avenida}
+							alt="La fachada de Tropicana Pastelería vista desde la acera, con una palmera y la avenida al fondo"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La fachada desde la acera</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">Cuatro y cuatro, <em>con 52 reseñas.</em></h2>
+						<p>
+							La ficha de Google tiene una valoración de 4,4 sobre 5 con 52 reseñas en el momento
+							de consultarla (octubre de 2026). El estado actualizado y las opiniones completas se
+							ven en Google Maps.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<div class="rating-actions">
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="rating-figure">
+						<div class="rating-symbol" aria-hidden="true">
+							<span class="rating-value">4,4</span>
+							<span class="rating-stars">★★★★☆</span>
+						</div>
+						<p class="rating-caption">
+							valoración media<br />
+							con 52 reseñas publicadas
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En la calle <em>Nuzas, 22.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<p class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</p>
+
+					<p class="hours-note">
+						<strong>El teléfono es el que publica la ficha.</strong> No consta página web ni perfil
+						social del negocio, así que esta página no enlaza ninguno.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Acceso</span>
+							Google marca el acceso para sillas de ruedas.
+						</li>
+						<li>
+							<span>Aparcamiento</span>
+							La ficha indica que no hay aparcamiento adaptado.
+						</li>
+						<li>
+							<span>Plus Code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Tropicana Pastelería en la calle Nuzas, 22, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> C. Nuzas, 22
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>entrar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">T</span>
+						<p>
+							Tropicana Pastelería
+							<small>
+								Pastelería y panadería<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={BUSINESS.phoneHref}>Llamar</a>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos y fotografías de la ficha pública de
+					Google Maps, consultada en octubre de 2026. La web no publica carta ni precios porque la
+					ficha no los incluye.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/aviso-legal">Aviso legal</a>
+					<a href="/aviso-legal#privacidad">Privacidad</a>
+					<a href="/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small
+						>Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a>
+						· sur-digital.vercel.app</small
+					>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>
