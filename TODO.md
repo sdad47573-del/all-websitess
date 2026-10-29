@@ -1,10 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Panader%C3%ADa+La+Paz-+Horno+de+le%C3%B1a/@37.9314156,-4.6752266,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce1088fcaab49:0x51fdc07bbce17bea!8m2!3d37.9314156!4d-4.6752266!16s%2Fg%2F11c0ppv4x2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Pan+Nuestro+De+Cada+D%C3%ADa/@37.8985662,-4.77426,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf740837ecff:0x4a0fc1f31d646583!8m2!3d37.8985662!4d-4.77426!16s%2Fg%2F11cns9p048?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Tropicana+Pasteler%C3%ADa/@36.7309051,-4.469115,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f73aade77037:0xdedd9b98fad3b8c0!8m2!3d36.7309051!4d-4.469115!16s%2Fg%2F1ttpcnf_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Panader%C3%ADa+La+Miguita/@37.891186,-4.763633,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf849bf36a5d:0x887d65d83ff8f30b!8m2!3d37.891186!4d-4.763633!16s%2Fg%2F11bzzyfjbh?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Pasteler%C3%ADa+El+Brillante/@37.8972607,-4.7821585,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf6ddfd073a5:0xb38aaeedf4f09a48!8m2!3d37.8972607!4d-4.7821585!16s%2Fg%2F11yvn43xl?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
