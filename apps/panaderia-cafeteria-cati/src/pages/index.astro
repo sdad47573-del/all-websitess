@@ -1,0 +1,374 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-cafeteria-cati-apaisada-09.jpg';
+import cafe from '../assets/fotos/panaderia-cafeteria-cati-vertical-08.jpg';
+import vitrina from '../assets/fotos/panaderia-cafeteria-cati-apaisada-06.jpg';
+import mesas from '../assets/fotos/panaderia-cafeteria-cati-apaisada-03.jpg';
+import tienda from '../assets/fotos/panaderia-cafeteria-cati-apaisada-04.jpg';
+import escaparate from '../assets/fotos/panaderia-cafeteria-cati-vista-2-02.jpg';
+import noche from '../assets/fotos/panaderia-cafeteria-cati-apaisada-01.jpg';
+import interior from '../assets/fotos/panaderia-cafeteria-cati-apaisada-05.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería cafetería Cati · Desde 1960 en Aben Mazarra, Córdoba';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#cati`,
+	name: BUSINESS.name,
+	alternateName: ['Cafetería Cati', 'Panadería Cati Córdoba', 'Cafetería Panadería Cati'],
+	description:
+		'Panadería, confitería y cafetería de barrio en la calle Aben Mazarra, 37 (Nte. Sierra, 14006 Córdoba), desde 1960. Pan del día, desayunos, confitería, ultramarinos y droguería.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 655 19 88 13',
+	email: BUSINESS.email,
+	foundingDate: '1960',
+	founder: { '@type': 'Person', name: BUSINESS.owner },
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '06:30',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '17:30',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '07:15',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '07:15',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '17:30',
+			closes: '21:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: vitrina,
+		alt: 'Vitrina de Cati con barras y hogazas de pan, y bolsas de picos y reges',
+	},
+	{
+		src: cafe,
+		alt: 'Taza de café con leche con un sobre de Catunambú en el plato',
+	},
+	{
+		src: mesas,
+		alt: 'Mesas y sillas de la cafetería junto a la vitrina y el árbol de la entrada',
+	},
+	{
+		src: noche,
+		alt: 'Fachada de la esquina de Cati al anochecer, con los toldos de panadería y droguería',
+	},
+	{
+		src: tienda,
+		alt: 'Entrada del local con la puerta automática, estanterías de alimentación y el cartel de huevos',
+	},
+	{
+		src: escaparate,
+		alt: 'Escaparate nocturno de la panadería con las estanterías de conservas y bebidas',
+	},
+	{
+		src: interior,
+		alt: 'Interior de Cati con mesas, la vitrina de pan y las estanterías de ultramarinos',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3b2a24" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..500&family=Outfit:wght@300;400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Cati Córdoba, panadería Aben Mazarra, cafetería Nte. Sierra, desayunos Córdoba 14006, panadería desde 1960 Córdoba, confitería Cati, ultramarinos Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería, confitería y cafetería de barrio desde 1960, en la calle Aben Mazarra, 37 (Nte. Sierra, 14006 Córdoba). Pan del día, desayunos, ultramarinos y droguería. De 6:30 a 15:00 y de 17:30 a 21:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la esquina de Panadería cafetería Cati, con los toldos de panadería, confitería y alimentación"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#3b2a24"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Cafetería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Nte. Sierra · 14006 Córdoba"
+				title="La esquina <br /><em>de Cati.</em>"
+				lede={`Panadería, confitería y cafetería en la calle Aben Mazarra, 37, esquina con Nte. Sierra. Desde 1960, la misma casa despacha pan, dulces, café y ultramarinos: los toldos lo dicen —panadería, confitería, alimentación, ultramarinos y droguería—. Abre a las 6:30 de lunes a viernes. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google y teléfono: ${BUSINESS.phone}.`}
+				image={fachada}
+				imageAlt="Fachada de la esquina de Panadería cafetería Cati, con el rótulo, los toldos y la placa de la calle Aben Mazarra"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 41 reseñas' },
+					{ label: 'Horario', html: '<b>L–V</b> 6:30–15:00 y 17:30–21:00' },
+					{ label: 'Teléfono', html: '<b>655 19 88 13</b>' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Desde 1960"
+			/>
+
+			<LocalChips label="Lo que hay en Cati" items={SERVICIOS} />
+
+			<section class="toldos" aria-label="Lo que anuncian los toldos de la esquina">
+				<div class="wrap">
+					<ul>
+						{SERVICIOS.map((servicio) => <li>{servicio}</li>)}
+					</ul>
+				</div>
+			</section>
+
+			<LocalAbout
+				label="La casa"
+				title="Una casa <br /><em>de 1960.</em>"
+				paragraphs={[
+					'Cati está en la esquina de la calle Aben Mazarra, 37, en la zona de Nte. Sierra (14006). La ficha de Google escribe la dirección como «Nte. Sierra» y no da número; el 37 y el nombre de la vía aparecen en la tarjeta del local y en la placa de la esquina.',
+					'La casa funciona desde 1960. La tarjeta la presenta como «Cafetería Cati Panadería», con Francisco Sierra Torres al frente, y los toldos de la fachada reparten el negocio en panadería, confitería, alimentación, ultramarinos y droguería.',
+					'Dentro hay mesas para desayunar y una vitrina con barras, hogazas y bolsas de picos y reges. Las fotos enseñan también las estanterías de conservas y bebidas, el congelador, el cartel de huevos de granja y la puerta automática de la entrada.',
+					'Las reseñas hablan de la tostada y del café: «Gran trato y gran tostada, muy ricas», «calidad en los productos y un trato casi familiar» y «un buen sitio para desayunar». Son 4,7 sobre 5 con 41 opiniones. Abre a las 6:30 de lunes a viernes y también el domingo en dos turnos.',
+				]}
+				note="La ficha de Google no publica carta, precios, métodos de pago ni reparto. La tarjeta del local añade un segundo teléfono (660 715 022) y un correo (francosisierra7@hotmail.com); esta web los cita tal cual, sin sustituir el teléfono de la ficha."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Escribir un correo', href: `mailto:${BUSINESS.email}` },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Esquina, horno <br />
+							<em>y barrio.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en la esquina.</em>"
+				description="Sin precios publicados: lo que cuentan los toldos, la vitrina y las fotos del perfil de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica carta ni precios, así que esta web no indica importes. Los pedidos y las consultas se atienden en el local o por teléfono; aquí no se puede comprar."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="Cati, <br /><em>por dentro.</em>"
+				description="Siete fotos de la galería de Google Maps: la vitrina, el café, las mesas, la tienda y la esquina de noche."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow="Nte. Sierra · 14006 Córdoba"
+				title="Aben Mazarra, <br /><em>37.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería cafetería Cati en la calle Aben Mazarra, 37, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Cati · Aben Mazarra, 37"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Abrir en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{
+					label: `Llamar al ${BUSINESS.phone}`,
+					href: BUSINESS.phoneHref,
+					external: true,
+				}}
+				reserveNote={`La ficha de Google publica la calle sin número; el 37 sale de la tarjeta del local y de la placa de la esquina. La tarjeta añade el ${BUSINESS.cardPhone} y el correo ${BUSINESS.email}. La ficha marca acceso para sillas de ruedas y que no hay aparcamiento accesible; no publica datos del aseo ni métodos de pago.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district}, ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, y datos de la tarjeta del propio local, consultados en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Cati"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

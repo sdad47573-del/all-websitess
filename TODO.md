@@ -1,10 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Panader%C3%ADa+Tradici%C3%B3n+Cordobesa+S+L/@37.9037719,-4.7234296,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce00cb5fe1823:0x5bc3182d7adaa5a3!8m2!3d37.9037719!4d-4.7234296!16s%2Fg%2F1q5bpg2fz?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+cafeter%C3%ADa+Cati/@37.8985944,-4.7742529,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdfcaeff2a0ad:0xe4bc7aa1be577256!8m2!3d37.8985944!4d-4.7742529!16s%2Fg%2F11hz_51bm5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Horno+panader%C3%ADa+confiteria/@37.8947672,-4.7536916,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf16a36afc35:0xe347e9970fb6e690!8m2!3d37.8947672!4d-4.7536916!16s%2Fg%2F11ft9gn0_x?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Panaderia+Pasteleria+Suarez/@37.8827936,-4.7830999,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf000e9b3d21:0xba02b069e2f1e370!8m2!3d37.8827936!4d-4.7830999!16s%2Fg%2F11ld1ctjp5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panaderia+Y+Confiteria+Loli/@37.9312086,-4.6755917,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce1088407180b:0xd910fea5287f2b3a!8m2!3d37.9312086!4d-4.6755917!16s%2Fg%2F11bzrp7qtr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
@@ -44,5 +38,3 @@ https://www.google.com/maps/place/Confiter%C3%ADa+Panader%C3%ADa+Helader%C3%ADa+
 https://www.google.com/maps/place/Panader%C3%ADa-Confiter%C3%ADa+La+Palmera/@37.88536,-4.7764405,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf3c47407c25:0x9b3ce099bcf06257!8m2!3d37.88536!4d-4.7764405!16s%2Fg%2F11nn1vk_t8?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panader%C3%ADa+cafeter%C3%ADa+Suarez/@37.882498,-4.7832049,17z/data=!4m6!3m5!1s0xd6cdf003d561463:0x9b3f35dc4782eb24!8m2!3d37.882498!4d-4.7832049!16s%2Fg%2F11yg49hfj3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+Pineda/@36.7297689,-4.4158456,20z/data=!4m6!3m5!1s0xd72f7c6ffcada2b:0x3f1a7252ecd3331f!8m2!3d36.7297689!4d-4.4155749!16s%2Fg%2F11bycl34bg?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
