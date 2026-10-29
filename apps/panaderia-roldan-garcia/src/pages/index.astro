@@ -1,0 +1,627 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import vitrina from '../assets/fotos/panaderia-roldan-garcia-vertical-05.jpg';
+import salón from '../assets/fotos/panaderia-roldan-garcia-vertical-01.jpg';
+import tartas from '../assets/fotos/panaderia-roldan-garcia-vertical-03.jpg';
+import mural from '../assets/fotos/panaderia-roldan-garcia-vertical-04.jpg';
+import barra from '../assets/fotos/panaderia-roldan-garcia-vertical-06.jpg';
+import merienda from '../assets/fotos/panaderia-roldan-garcia-vertical-07.jpg';
+import tortilla from '../assets/fotos/panaderia-roldan-garcia-vertical-08.jpg';
+import cafe from '../assets/fotos/panaderia-roldan-garcia-cuadrada-09.jpg';
+import chocolate from '../assets/fotos/panaderia-roldan-garcia-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, MENU_GROUPS, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería Roldán García · Dulces en el Gran Capitán';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#roldan-garcia`,
+	name: BUSINESS.name,
+	alternateName: ['Roldán García Córdoba', 'Panadería Gran Capitán', 'Panadería Roldán García Centro'],
+	description:
+		'Panadería con salón en la avenida del Gran Capitán, 17 (Centro, 14008 Córdoba). Dulces, tartas, bollería y café de lunes a viernes por la mañana.',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34957490176',
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Panadería', 'Dulces', 'Cafetería'],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '14:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#mostrador' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const stats = [
+	{ label: 'Abre', value: '9:00' },
+	{ label: 'L–V hasta', value: '14:30' },
+	{ label: 'Valoración', value: '4 · 70 reseñas' },
+];
+
+const galeria = [
+	{
+		src: mural,
+		alt: 'El salón del local con un gran mural floral, banqueta gris y sillas verdes de terciopelo',
+		caption: 'El salón, al fondo',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+	{
+		src: merienda,
+		alt: 'Una mesa con napolitana, un pastel de chocolate, un dulce relleno, café y un vaso de ColaCao',
+		caption: 'La merienda en la mesa',
+		className: 'foto foto-wide',
+		sizes: '(max-width: 900px) 92vw, 58vw',
+		widths: [560, 800, 1120],
+	},
+	{
+		src: barra,
+		alt: 'La barra junto al ventanal, con taburetes altos y lámparas colgantes',
+		caption: 'La barra y el ventanal',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+	{
+		src: tortilla,
+		alt: 'Un plato de tortilla de patatas con pan y una botella de Nestea sobre la mesa',
+		caption: 'Tortilla y pan',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+	{
+		src: cafe,
+		alt: 'Un café solo en taza de Roldán sobre la mesa, junto a la carta del local',
+		caption: 'El café de la casa',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+	{
+		src: chocolate,
+		alt: 'Una taza de chocolate caliente con cuchara sobre un plato blanco',
+		caption: 'Chocolate caliente',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#141a23" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Roldán García Córdoba, panadería Gran Capitán, dulces Centro Córdoba, cafetería Gran Capitán, tartas Córdoba 14008, panadería Roldán García"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y salón en la avenida del Gran Capitán, 17: dulces, tartas, bollería y café. L–V 9:00–14:30; fines de semana cerrado."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La vitrina de dulces de Panadería Roldán García, con tartas y bollería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#141a23"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería Roldán García, inicio">
+					<span class="brand-mark" aria-hidden="true">RG</span>
+					<span class="brand-name">
+						Roldán García
+						<small>Panadería · Gran Capitán, Córdoba</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone} <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Av. del Gran Capitán, 17 · 14008 Córdoba</p>
+						<h1 id="hero-title">Dulces de siempre,<br /><em>en el Gran Capitán.</em></h1>
+						<p class="hero-lede">
+							Una panadería con salón en plena avenida del Gran Capitán. Vitrina de tartas y
+							bollería, café y mesas para sentarse, de lunes a viernes por la mañana.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href="#mostrador">Ver el mostrador</a>
+						</div>
+						<dl class="hero-facts">
+							{
+								stats.map((stat) => (
+									<div>
+										<dt>{stat.label}</dt>
+										<dd>{stat.value}</dd>
+									</div>
+								))
+							}
+						</dl>
+					</div>
+
+					<figure class="hero-media">
+						<div class="hero-photo">
+							<Image
+								src={vitrina}
+								alt="La vitrina de bollería de Roldán García con donuts, napolitanas y pasteles de chocolate glaseados"
+								widths={[480, 720, 1024, 1400]}
+								sizes="(max-width: 900px) 92vw, 46vw"
+								format="avif"
+								quality={74}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figcaption>
+							<span>La vitrina de dulces</span>
+							<span>Foto de la ficha de Google</span>
+						</figcaption>
+						<span class="hero-seal" aria-hidden="true">
+							<strong>4</strong>
+							<small>70 reseñas<br />en Google</small>
+						</span>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que ofrece la casa">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<figure class="about-media">
+						<Image
+							src={salón}
+							alt="El interior del local con la barra de taburetes, el mostrador iluminado y el suelo de mosaico"
+							widths={[400, 640, 900]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La barra y el salón</figcaption>
+					</figure>
+
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Una panadería con salón <em>en pleno Centro.</em></h2>
+						<p>
+							Roldán García está en el número 17 de la avenida del Gran Capitán, a un paso del
+							centro histórico. No es solo un mostrador: la galería muestra un salón amplio, una
+							barra con taburetes, mesas y un gran mural floral al fondo.
+						</p>
+						<p>
+							En la vitrina se alinean tartas, porciones de tarta de queso, napolitanas, donuts y
+							pasteles de chocolate. Las reseñas destacan sobre todo los dulces: «de los mejores
+							que he probado en Córdoba».
+						</p>
+						<p>
+							El horario es de mañana: de lunes a viernes de 9:00 a 14:30. Sábado y domingo
+							permanece cerrado, según la ficha de Google.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#fotos">Ver las fotos</a>
+						</div>
+					</div>
+				</div>
+
+				<ul class="highlights">
+					{
+						HIGHLIGHTS.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="menu" id="mostrador" aria-labelledby="menu-title">
+				<div class="wrap menu-grid">
+					<div class="menu-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> El mostrador</p>
+						<h2 id="menu-title">Del obrador <em>a la mesa.</em></h2>
+						<p class="menu-lede">
+							La ficha no publica carta ni precios. Lo que sigue sale de su categoría, de las
+							reseñas y de lo que se ve en las fotos de la galería.
+						</p>
+
+						<div class="menu-groups">
+							{
+								MENU_GROUPS.map((group) => (
+									<div class="menu-group">
+										<h3>{group.title}</h3>
+										<ul>
+											{group.items.map((item) => (
+												<li>
+													<strong>{item.name}</strong>
+													<span>{item.note}</span>
+												</li>
+											))}
+										</ul>
+									</div>
+								))
+							}
+						</div>
+
+						<p class="menu-note">
+							Sin precios en la web: la ficha no los publica. Para consultar el surtido del día,
+							llama al <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.
+						</p>
+					</div>
+
+					<figure class="menu-media">
+						<Image
+							src={tartas}
+							alt="La vitrina de tartas con porciones de tarta de queso, pasteles de chocolate y una tarta entera glaseada"
+							widths={[480, 720, 1000]}
+							sizes="(max-width: 900px) 92vw, 45vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Las tartas de la vitrina</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">Solo mañanas, <em>de lunes a viernes.</em></h2>
+						<p class="hours-lede">
+							La ficha publica un único turno entre semana, de 9:00 a 14:30, y cierra el fin de
+							semana. Es una panadería de mañana, para el desayuno y la merienda temprana.
+						</p>
+						<p class="hours-note">
+							<strong>Ojo con los festivos.</strong> {HOURS_NOTE}
+						</p>
+						<a class="hours-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Comprobar en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="hours-table-wrap">
+						<table class="hours-table">
+							<caption class="visually-hidden">Horario publicado en la ficha de Google</caption>
+							<tbody>
+								{
+									HOURS.map((row) => (
+										<tr>
+											<th scope="row">{row.day}</th>
+											<td class:list={{ closed: 'closed' in row && row.closed }}>{row.value}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+						<p class="hours-foot">
+							Horario publicado en la ficha pública de Google, consultada en octubre de 2026.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="fotos wrap" id="fotos" aria-labelledby="fotos-title">
+				<div class="fotos-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos</p>
+						<h2 id="fotos-title">La vitrina <em>y el salón.</em></h2>
+					</div>
+					<p>
+						Seis fotos de la galería pública de Google Maps: el salón, la barra, la merienda, la
+						tortilla, el café y el chocolate caliente.
+					</p>
+				</div>
+
+				<div class="fotos-grid">
+					{
+						galeria.map((photo) => (
+							<figure class={photo.className}>
+								<Image
+									src={photo.src}
+									alt={photo.alt}
+									widths={photo.widths}
+									sizes={photo.sizes}
+									format="avif"
+									quality={72}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{photo.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">Cuatro sobre cinco, <em>con setenta reseñas.</em></h2>
+						<p>
+							La ficha tiene 4 sobre 5 con 70 reseñas en el momento de consultarla (octubre de
+							2026). Los dulces y la calidad se llevan las mejores palabras; también hay alguna
+							crítica con el trato, que se reproduce aquí.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)}{' '}
+											<small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<div class="rating-actions">
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="rating-figure">
+						<div class="rating-symbol" aria-hidden="true">
+							<span class="rating-value">4,0</span>
+							<span class="rating-stars">★★★★☆</span>
+						</div>
+						<p class="rating-caption">
+							valoración media<br />
+							con 70 reseñas publicadas
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En el Gran <em>Capitán, 17.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<p class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</p>
+
+					<p class="hours-note">
+						<strong>El teléfono es el que publica la ficha.</strong> No consta página web ni perfil
+						social del negocio, así que esta página no enlaza ninguno.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Acceso</span>
+							Google marca el acceso para sillas de ruedas.
+						</li>
+						<li>
+							<span>Aparcamiento</span>
+							La ficha indica que no hay aparcamiento adaptado.
+						</li>
+						<li>
+							<span>Horario</span>
+							L–V de 9:00 a 14:30; sábado y domingo cerrado.
+						</li>
+						<li>
+							<span>Plus Code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería Roldán García en la avenida del Gran Capitán, 17, Córdoba"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Gran Capitán, 17
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>entrar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">RG</span>
+						<p>
+							Panadería Roldán García
+							<small>
+								Dulces, tartas y café<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={BUSINESS.phoneHref}>Llamar</a>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos, reseñas y fotografías de la ficha
+					pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/aviso-legal">Aviso legal</a>
+					<a href="/aviso-legal#privacidad">Privacidad</a>
+					<a href="/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>
+						Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+						sur-digital.vercel.app
+					</small>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

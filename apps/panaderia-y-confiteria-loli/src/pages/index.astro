@@ -1,0 +1,612 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import fachada from '../assets/fotos/panaderia-y-confiteria-loli-vertical-01.jpg';
+import tartaChocolate from '../assets/fotos/panaderia-y-confiteria-loli-apaisada-02.jpg';
+import tartaAzucar from '../assets/fotos/panaderia-y-confiteria-loli-vista-3-03.jpg';
+import tartaMickey from '../assets/fotos/panaderia-y-confiteria-loli-apaisada-04.jpg';
+import tartaHalloween from '../assets/fotos/panaderia-y-confiteria-loli-vertical-05.jpg';
+import tartaAlcolea from '../assets/fotos/panaderia-y-confiteria-loli-vertical-06.jpg';
+import tartaFoto from '../assets/fotos/panaderia-y-confiteria-loli-apaisada-07.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, MENU_GROUPS, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería y Confitería Loli · Carretera de Madrid, Córdoba';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#loli`,
+	name: BUSINESS.name,
+	alternateName: ['Panaderia Y Confiteria Loli', 'Confitería Loli Córdoba', 'Panadería Loli Carretera de Madrid'],
+	description:
+		'Panadería y confitería en la carretera de Madrid, 28 (14610 Córdoba): tartas, bizcochos, empanadas, dulces y tartas personalizadas por encargo.',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34625410743',
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Panadería', 'Confitería'],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '06:00',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '07:00',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '09:00',
+			closes: '14:30',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#mostrador' },
+	{ label: 'Horario', href: '#horario' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: tartaChocolate,
+		alt: 'Tarta redonda grande con hilos de chocolate en forma de rejilla, ya cortada en porciones sobre un plato',
+		caption: 'La tarta de chocolate de la vitrina',
+		className: 'foto foto-wide',
+		sizes: '(max-width: 900px) 92vw, 58vw',
+		widths: [560, 800, 1120],
+	},
+	{
+		src: tartaMickey,
+		alt: 'Tarta rectangular de cumpleaños con una lámina de Mickey Mouse, crema blanca y galletas en las esquinas',
+		caption: 'Tarta personalizada de cumpleaños',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+	{
+		src: tartaAlcolea,
+		alt: 'Tarta rectangular con el escudo del U.D. Alcolea Los Ángeles y el nombre Yeral en azul',
+		caption: 'Una tarta con escudo de equipo',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+	{
+		src: tartaFoto,
+		alt: 'Tarta rectangular decorada con una foto impresa y crema blanca, con adornos rosas en los bordes',
+		caption: 'Tarta con foto, por encargo',
+		className: 'foto',
+		sizes: '(max-width: 900px) 92vw, 27vw',
+		widths: [340, 520, 760],
+	},
+];
+
+const stats = [
+	{ label: 'Abre', value: '6:00' },
+	{ label: 'L–V hasta', value: '14:30' },
+	{ label: 'Valoración', value: '4,5 · 80 reseñas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#34251b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería y Confitería Loli Córdoba, panadería carretera de Madrid, confitería 14610, tartas personalizadas Córdoba, bizcochos tradicionales Córdoba, empanadas Córdoba, encargar tartas Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y confitería en la carretera de Madrid, 28: tartas, bizcochos, empanadas y tartas personalizadas por encargo. L–V 6:00–14:30, sábado 7:00–14:30 y domingo 9:00–14:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de Panadería y Confitería Loli en la carretera de Madrid, con su rótulo y el escaparate de tartas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#34251b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería y Confitería Loli, inicio">
+					<span class="brand-mark" aria-hidden="true">L</span>
+					<span class="brand-name">
+						Loli
+						<small>Panadería y confitería · Córdoba</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone} <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Ctra. de Madrid, 28 · 14610 Córdoba</p>
+						<h1 id="hero-title">Dulces de siempre,<br /><em>tartas para celebrar.</em></h1>
+						<p class="hero-lede">
+							Panadería y confitería de barrio en la carretera de Madrid. Abre a las seis de la
+							mañana con bizcochos y empanadas recién hechos, y prepara tartas personalizadas para
+							cumpleaños y celebraciones.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href="#mostrador">Ver el mostrador</a>
+						</div>
+						<dl class="hero-facts">
+							{
+								stats.map((stat) => (
+									<div>
+										<dt>{stat.label}</dt>
+										<dd>{stat.value}</dd>
+									</div>
+								))
+							}
+						</dl>
+					</div>
+
+					<figure class="hero-media">
+						<div class="hero-photo">
+							<Image
+								src={fachada}
+								alt="La fachada de Panadería y Confitería Loli en la carretera de Madrid, con el rótulo azul, el toldo y el escaparate lleno de tartas"
+								widths={[480, 720, 1024, 1400]}
+								sizes="(max-width: 900px) 92vw, 46vw"
+								format="avif"
+								quality={74}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figcaption>
+							<span>El rótulo de la carretera de Madrid</span>
+							<span>Foto de la ficha de Google</span>
+						</figcaption>
+						<span class="hero-seal" aria-hidden="true">
+							<strong>4,5</strong>
+							<small>80 reseñas<br />en Google</small>
+						</span>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que hace la casa">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Una confitería de barrio <em>con el horno encendido.</em></h2>
+						<p>
+							Loli está en la carretera de Madrid, 28, con el escaparate a pie de calle. El rótulo
+							azul, el toldo de rayas y las bandejas de tartas detrás del cristal son la primera
+							impresión del local.
+						</p>
+						<p>
+							La ficha de Google la clasifica como panadería y el nombre añade confitería. Las
+							reseñas hablan de tartas, bizcochos, tortas, empanadas y dulces, y de los encargos de
+							pasteles que salen del obrador.
+						</p>
+						<p>
+							Abre a las 6:00 de lunes a viernes, a las 7:00 el sábado y a las 9:00 el domingo,
+							siempre hasta las 14:30. Es una confitería de mañana, para el desayuno y para recoger
+							el encargo.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#fotos">Ver las fotos</a>
+						</div>
+					</div>
+
+					<figure class="about-media">
+						<Image
+							src={tartaAzucar}
+							alt="Una torta redonda cubierta de azúcar, con el borde trenzado, sobre una bandeja de horno"
+							widths={[400, 640, 900]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La torta de azúcar, recién hecha</figcaption>
+					</figure>
+				</div>
+
+				<ul class="highlights">
+					{
+						HIGHLIGHTS.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="menu" id="mostrador" aria-labelledby="menu-title">
+				<div class="wrap menu-grid">
+					<div class="menu-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> El mostrador</p>
+						<h2 id="menu-title">Tartas, bizcochos <em>y encargos.</em></h2>
+						<p class="menu-lede">
+							La ficha no publica carta ni precios. Lo que sigue sale de su nombre, de las reseñas
+							y de lo que se ve en las fotos de la galería.
+						</p>
+
+						<div class="menu-groups">
+							{
+								MENU_GROUPS.map((group) => (
+									<div class="menu-group">
+										<h3>{group.title}</h3>
+										<ul>
+											{group.items.map((item) => (
+												<li>
+													<strong>{item.name}</strong>
+													<span>{item.note}</span>
+												</li>
+											))}
+										</ul>
+									</div>
+								))
+							}
+						</div>
+
+						<p class="menu-note">
+							Sin precios en la web: la ficha no los publica. Para encargar una tarta, llama al{' '}
+							<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.
+						</p>
+					</div>
+
+					<figure class="menu-media">
+						<Image
+							src={tartaHalloween}
+							alt="Tarta rectangular decorada con motivos de Halloween, flores naranjas y el nombre Laura escrito con chocolate"
+							widths={[480, 720, 1000]}
+							sizes="(max-width: 900px) 92vw, 45vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Una tarta temática, hecha por encargo</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">De seis a dos y media, <em>también domingo.</em></h2>
+						<p class="hours-lede">
+							La ficha publica horario de mañana los siete días de la semana, con apertura más
+							temprana entre semana. Abre a las 6:00 de lunes a viernes, a las 7:00 el sábado y a
+							las 9:00 el domingo; todo cierra a las 14:30.
+						</p>
+						<p class="hours-note">
+							<strong>Ojo con los festivos.</strong> {HOURS_NOTE}
+						</p>
+						<a class="hours-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Comprobar en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="hours-table-wrap">
+						<table class="hours-table">
+							<caption class="visually-hidden">Horario publicado en la ficha de Google</caption>
+							<tbody>
+								{
+									HOURS.map((row) => (
+										<tr>
+											<th scope="row">{row.day}</th>
+											<td>{row.value}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+						<p class="hours-foot">
+							Horario publicado en la ficha pública de Google, consultada en octubre de 2026.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="fotos wrap" id="fotos" aria-labelledby="fotos-title">
+				<div class="fotos-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos</p>
+						<h2 id="fotos-title">La vitrina <em>y los encargos.</em></h2>
+					</div>
+					<p>
+						Cuatro fotos de la galería pública de Google Maps: la tarta de chocolate del mostrador y
+						varias tartas personalizadas que salieron del obrador.
+					</p>
+				</div>
+
+				<div class="fotos-grid">
+					{
+						galeria.map((photo) => (
+							<figure class={photo.className}>
+								<Image
+									src={photo.src}
+									alt={photo.alt}
+									widths={photo.widths}
+									sizes={photo.sizes}
+									format="avif"
+									quality={72}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{photo.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">Cuatro y medio, <em>entre ochenta reseñas.</em></h2>
+						<p>
+							La ficha tiene 4,5 sobre 5 con 80 reseñas en el momento de consultarla (octubre de
+							2026). Las opiniones destacan los dulces, las tartas y los bizcochos de recetas
+							tradicionales, y los encargos de pasteles.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)}{' '}
+											<small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<div class="rating-actions">
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="rating-figure">
+						<div class="rating-symbol" aria-hidden="true">
+							<span class="rating-value">4,5</span>
+							<span class="rating-stars">★★★★☆</span>
+						</div>
+						<p class="rating-caption">
+							valoración media<br />
+							con 80 reseñas publicadas
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En la carretera <em>de Madrid, 28.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<p class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</p>
+
+					<p class="hours-note">
+						<strong>El teléfono es el que publica la ficha.</strong> No consta página web ni perfil
+						social del negocio, así que esta página no enlaza ninguno.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Horario</span>
+							L–V 6:00–14:30; sábado 7:00–14:30; domingo 9:00–14:30.
+						</li>
+						<li>
+							<span>Acceso</span>
+							La ficha no publica datos de accesibilidad, así que no se afirman.
+						</li>
+						<li>
+							<span>Encargos</span>
+							Por teléfono, en el {BUSINESS.phone}. La ficha no detalla plazos.
+						</li>
+						<li>
+							<span>Plus Code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería y Confitería Loli en la carretera de Madrid, 28, Córdoba"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Ctra. de Madrid, 28
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>pasar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">L</span>
+						<p>
+							Panadería y Confitería Loli
+							<small>
+								Tartas, bizcochos y encargos<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={BUSINESS.phoneHref}>Llamar</a>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos, reseñas y fotografías de la ficha
+					pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/aviso-legal">Aviso legal</a>
+					<a href="/aviso-legal#privacidad">Privacidad</a>
+					<a href="/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>
+						Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+						sur-digital.vercel.app
+					</small>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

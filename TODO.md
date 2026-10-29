@@ -1,12 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Panaderia+Y+Confiteria+Loli/@37.9312086,-4.6755917,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce1088407180b:0xd910fea5287f2b3a!8m2!3d37.9312086!4d-4.6755917!16s%2Fg%2F11bzrp7qtr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/La+Cosecha+-+Panader%C3%ADa/@37.8971392,-4.7769757,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf57393787d5:0x57f63f8fb70e5f35!8m2!3d37.8971392!4d-4.7769757!16s%2Fg%2F11vcm__l03?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Rold%C3%A1n+Garc%C3%ADa/@37.8895144,-4.7830596,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf6442c6ffa5:0x30de6f2a4b5e074a!8m2!3d37.8895144!4d-4.7830596!16s%2Fg%2F1z44bm5vb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panaderia+Roc%C3%ADo/@37.8963752,-4.7590902,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf9a77549231:0x184b8e0597171034!8m2!3d37.8963752!4d-4.7590902!16s%2Fg%2F11kjmh86hw?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Panader%C3%ADa+La+Paz-+Horno+de+le%C3%B1a/@37.9314156,-4.6752266,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce1088fcaab49:0x51fdc07bbce17bea!8m2!3d37.9314156!4d-4.6752266!16s%2Fg%2F11c0ppv4x2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/El+Pan+Nuestro+De+Cada+D%C3%ADa/@37.8985662,-4.77426,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf740837ecff:0x4a0fc1f31d646583!8m2!3d37.8985662!4d-4.77426!16s%2Fg%2F11cns9p048?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
