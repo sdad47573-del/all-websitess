@@ -1,6 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Horno+de+la+Cruz/@37.9037615,-4.7607527,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdfa2645d4087:0xe6f27f812a34f1c3!8m2!3d37.9037615!4d-4.7607527!16s%2Fg%2F1vfp4_7x?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Panader%C3%ADa+Tradici%C3%B3n+Cordobesa+S+L/@37.9037719,-4.7234296,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce00cb5fe1823:0x5bc3182d7adaa5a3!8m2!3d37.9037719!4d-4.7234296!16s%2Fg%2F1q5bpg2fz?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panader%C3%ADa+cafeter%C3%ADa+Cati/@37.8985944,-4.7742529,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdfcaeff2a0ad:0xe4bc7aa1be577256!8m2!3d37.8985944!4d-4.7742529!16s%2Fg%2F11hz_51bm5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
