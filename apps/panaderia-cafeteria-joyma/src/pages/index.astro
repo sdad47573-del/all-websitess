@@ -1,0 +1,328 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-cafeteria-joyma-apaisada-01.jpg';
+import mollete from '../assets/fotos/panaderia-cafeteria-joyma-apaisada-09.jpg';
+import cafeLeche from '../assets/fotos/panaderia-cafeteria-joyma-apaisada-02.jpg';
+import interior from '../assets/fotos/panaderia-cafeteria-joyma-apaisada-04.jpg';
+import atardecer from '../assets/fotos/panaderia-cafeteria-joyma-vertical-05.jpg';
+import cafes from '../assets/fotos/panaderia-cafeteria-joyma-apaisada-06.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Cafetería Joyma · Desayunos y pan de leña en Córdoba';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#joyma`,
+	name: BUSINESS.name,
+	alternateName: ['Joyma Córdoba', 'Panadería Joyma', 'Cafetería Joyma Córdoba'],
+	description:
+		'Panadería y cafetería en el Sureste de Córdoba: desayunos, teleras, barras, molletes, pan de horno de leña y migas por encargo.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 618 34 96 15',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '06:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: mollete,
+		alt: 'Mollete tostado con tomate rallado, jamón y aceite de oliva servido en un plato',
+	},
+	{
+		src: cafeLeche,
+		alt: 'Café con leche en vaso sobre la barra roja, con la máquina de café al fondo',
+	},
+	{
+		src: interior,
+		alt: 'Interior de Joyma con la barra roja, paredes de ladrillo y la máquina de café',
+	},
+	{
+		src: atardecer,
+		alt: 'Fachada de Joyma al atardecer, con el rótulo de cafetería y pastelería y mesas blancas en la acera',
+	},
+	{
+		src: cafes,
+		alt: 'Dos cafés, solo y con leche, sobre la mesa de madera junto a la ventana',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#24406b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Joyma Córdoba, panadería cafetería Sureste Córdoba, desayunos Córdoba, pan de horno de leña Córdoba, migas por encargo, teleras, molletes 14010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y cafetería en el Sureste de Córdoba que abre a las 6:00: desayunos, teleras, barras, molletes, pan de horno de leña y migas por encargo. De lunes a viernes de 6:00 a 15:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Panadería Cafetería Joyma con su rótulo y la terraza en la acera"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#24406b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Cafetería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Sureste · 14010 Córdoba"
+				title="Joyma, <br /><em>pan y desayunos.</em>"
+				lede={`En la calle Periodista José Luis de Córdoba, en el Sureste de Córdoba, con el rótulo de panadería y cafetería sobre el toldo. Abre a las 6:00 para los desayunos: café, tostadas y molletes con tomate y jamón, además de teleras, barras, molletes, pan de horno de leña y migas por encargo. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de Panadería Cafetería Joyma con su rótulo, el toldo y la terraza con mesas en la acera"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 57 reseñas' },
+					{ label: 'Horario', html: '<b>L–V</b> 6:00–15:00' },
+					{ label: 'Teléfono', html: '<b>618 34 96 15</b>' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Desde las 6:00 · Terraza"
+			/>
+
+			<LocalChips label="Lo que hay en Joyma" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un horno <br /><em>que madruga.</em>"
+				paragraphs={[
+					'Joyma está en la calle Periodista José Luis de Córdoba, en el distrito Sureste de Córdoba (14010). La ficha de Google la clasifica como panadería y publica un teléfono propio, el 618 34 96 15.',
+					'La descripción del negocio en Google lo resume así: «Abrimos bien temprano ofreciendo riquísimos desayunos. También ofrecemos teleras, barras, molletes, pan elaborado en horno de leña y migas por encargo».',
+					'En las fotos del perfil se ven la fachada con el toldo y las mesas en la acera, la barra roja del interior con la máquina de café, cafés servidos en vaso y un mollete tostado con tomate, jamón y aceite.',
+					'Las reseñas hablan de eso mismo: «café muy rico y la tostada bien de tamaño», «un sitio perfecto para desayunar, Jose siempre simpático para los demás» y «recomendable, buen trato y productos». Son 57 opiniones y 4,6 sobre 5.',
+				]}
+				note="La ficha de Google no publica web propia, correo, redes, carta ni precios. Lo que se cuenta aquí sale de la ficha, de la descripción del negocio, de las reseñas y de las fotos de su galería. Esta web no indica importes."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Temprano, <br />
+							<em>leña y terraza.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del horno.</em>"
+				description="Lo que anuncia la descripción del negocio en Google y lo que muestran las reseñas y las fotos. Sin precios publicados."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica carta ni precios, así que esta web no indica importes. El surtido puede cambiar de un día a otro; los encargos se consultan en el local o por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="Joyma, <br /><em>en las fotos.</em>"
+				description="Cinco fotos de la ficha de Google Maps: el desayuno, los cafés, la barra y la fachada."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el <br /><em>Sureste.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería Cafetería Joyma en el Sureste de Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Panadería Cafetería Joyma · Periodista José Luis de Córdoba"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Abrir en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{
+					label: `Llamar al ${BUSINESS.phone}`,
+					href: BUSINESS.phoneHref,
+					external: true,
+				}}
+				reserveNote="La ficha de Google marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados, pero no aparcamiento accesible. Tampoco detalla encargos ni reparto, así que conviene llamar antes de ir."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district}, ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Panadería Cafetería Joyma"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

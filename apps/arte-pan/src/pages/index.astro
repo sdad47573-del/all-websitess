@@ -1,0 +1,327 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/arte-pan-vertical-01.jpg';
+import desayuno from '../assets/fotos/arte-pan-vertical-02.jpg';
+import esquina from '../assets/fotos/arte-pan-vertical-03.jpg';
+import pizarra from '../assets/fotos/arte-pan-vertical-04.jpg';
+import terraza from '../assets/fotos/arte-pan-vertical-05.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Arte Pan · Panadería, café y desayunos en Córdoba';
+const description =
+	'Arte Pan, panadería y café en la Avenida del Aeropuerto, 11 (Poniente Sur, 14004 Córdoba). Pan, dulces, tostadas, bocadillos y terraza. De lunes a viernes de 8:00 a 20:00.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#artepan`,
+	name: BUSINESS.name,
+	alternateName: ['Artepan', 'Arte Pan Córdoba', 'Café Pan Arte Pan'],
+	description:
+		'Panadería y café en Poniente Sur (14004 Córdoba). Pan, dulces, tostadas, bocadillos y terraza, con pan sin gluten y leche sin lactosa.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '09:00',
+			closes: '14:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: desayuno,
+		alt: 'Tostadas con tomate y aguacate, café con leche y zumo de naranja en una mesa de Arte Pan',
+	},
+	{
+		src: pizarra,
+		alt: 'Pizarra de la entrada de Arte Pan con el pan sin gluten, el pan de pasas y nueces, los gofres y los bocadillos',
+	},
+	{
+		src: terraza,
+		alt: 'Terraza de Arte Pan con mesas y sillas rojas en la acera de la Avenida del Aeropuerto',
+	},
+	{
+		src: esquina,
+		alt: 'Fachada de Arte Pan con el rótulo de café, pan, dulces y bocadillos y el horario de invierno en la pizarra',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#24455c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Arte Pan, panadería Córdoba, café Córdoba, desayunos Poniente Sur, bocadillos Córdoba, pan sin gluten Córdoba, 14004"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan, dulces, tostadas y bocadillos en la Avenida del Aeropuerto, 11 (14004 Córdoba). Terraza y pan sin gluten. De lunes a viernes de 8:00 a 20:00. 4,6 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tostadas con tomate y aguacate, café con leche y zumo de naranja en Arte Pan"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#24455c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Café · Pan · Dulces"
+			nav={nav}
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Poniente Sur · 14004 Córdoba"
+				title="Café, pan <br /><em>y bocadillos.</em>"
+				lede={`Arte Pan está en la Avenida del Aeropuerto, 11, en Poniente Sur. El rótulo de la fachada lo anuncia tal cual: «Arte Pan · Café-Pan-Dulces-Bocadillos». Dentro hay mostrador de pan y dulces, y en la acera, una terraza con mesas rojas. Abre de lunes a viernes de 8:00 a 20:00 y los sábados de 9:00 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de Arte Pan con el rótulo rojo de café, pan, dulces y bocadillos y el toldo azul"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 21 reseñas' },
+					{ label: 'Horario', html: '<b>L–V</b> 8:00–20:00 · <b>S</b> 9:00–14:30' },
+					{ label: 'Zona', html: '<b>Poniente Sur</b> · 14004' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Café · pan · bocadillos"
+			/>
+
+			<LocalChips label="Lo que hay en Arte Pan" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Panadería, café <br /><em>y terraza.</em>"
+				paragraphs={[
+					'Arte Pan está en la Avenida del Aeropuerto, 11, en Poniente Sur (14004 Córdoba). El rótulo de la fachada resume el negocio: «Arte Pan · Café-Pan-Dulces-Bocadillos», con toldo azul y carteles de hamburguesa y bocadillos en los cristales.',
+					'Dentro hay un mostrador de pan y vitrinas con dulces, y una barra con taburetes rojos. En la acera, delante del local, hay una terraza con mesas y sillas rojas donde tomar el café.',
+					'La pizarra de la entrada cuenta lo que hay: «variedad en tostadas», leche sin lactosa, pan sin gluten, pan de pasas y nueces, pan de limón «y mucho más», gofres y bocadillos. En las fotos del perfil se ven tostadas con tomate y aguacate, café con leche y zumo de naranja.',
+					'Abre de lunes a viernes de 8:00 a 20:00 y los sábados de 9:00 a 14:30; el domingo cierra. La ficha no publica teléfono, web propia, redes ni precios, así que aquí no encontrarás importes.',
+				]}
+				note="La ficha de Google solo publica la categoría «Panadería», la dirección y el horario. El surtido de esta página sale de la pizarra de la entrada, del rótulo de la fachada, de los carteles y de las fotos del perfil, sin precios."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Café, pan <br />
+							<em>y mostrador.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en la barra.</em>"
+				description="Sin carta ni precios publicados: esto es lo que anuncian la pizarra y el rótulo del local, lo que muestran las fotos y lo que cuentan las reseñas."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. Los carteles de la fachada muestran hamburguesa y bocadillos, pero los precios cambian."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: el desayuno, la pizarra de la entrada, la terraza y la fachada con el horario."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la Avenida <br /><em>del Aeropuerto.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Arte Pan en la Avenida del Aeropuerto, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Arte Pan · Poniente Sur"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="La ficha de Google no publica teléfono, web ni redes: el contacto es en el local. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el aseo ni sobre las mesas. En la fachada hay una pizarra con un «horario de invierno» distinto del de la ficha, así que confirma antes de ir."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Arte Pan"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

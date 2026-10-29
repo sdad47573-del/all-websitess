@@ -1,0 +1,340 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import pasillo from '../assets/fotos/panaderia-ramoni-vertical-01.jpg';
+import bebidas from '../assets/fotos/panaderia-ramoni-vertical-02.jpg';
+import mostrador from '../assets/fotos/panaderia-ramoni-vertical-03.jpg';
+import limpieza from '../assets/fotos/panaderia-ramoni-vertical-04.jpg';
+import fruta from '../assets/fotos/panaderia-ramoni-vertical-06.jpg';
+import verduras from '../assets/fotos/panaderia-ramoni-vertical-08.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Ramoni · Tienda de barrio en el Sureste de Córdoba';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#ramoni`,
+	name: BUSINESS.name,
+	alternateName: ['Ramoni Córdoba', 'Panadería Ramoni Córdoba', 'Tienda Ramoni'],
+	description:
+		'Tienda de barrio en el Sureste de Córdoba con pan y bollería, fruta y verdura, charcutería y productos de despensa.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 957 25 35 96',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '18:00',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday', 'Sunday'],
+			opens: '09:00',
+			closes: '14:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: bebidas,
+		alt: 'Estanterías de bebidas, conservas y licores junto a cajas de fruta en Panadería Ramoni',
+	},
+	{
+		src: mostrador,
+		alt: 'Mostrador acristalado de charcutería y refrigerados con embutidos, quesos y latas',
+	},
+	{
+		src: fruta,
+		alt: 'Estantería de fruta con manzanas, plátanos, uvas y carteles de precio',
+	},
+	{
+		src: limpieza,
+		alt: 'Estantería de productos de limpieza y droguería de pared a pared',
+	},
+	{
+		src: verduras,
+		alt: 'Cajas de tomates, berenjenas, calabacines y alcachofas en el suelo de la tienda',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4636" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Karla:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Ramoni, panadería Sureste Córdoba, tienda de barrio Córdoba, frutería 14010, San Martín de Porres Córdoba, pan Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Tienda de barrio en el Sureste de Córdoba (14010): pan y bollería, fruta y verdura, charcutería y despensa. De lunes a jueves en dos turnos; de viernes a domingo de 9:00 a 14:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pasillo de Panadería Ramoni con cajas de fruta y verdura y estanterías de pan"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1f4636"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[pasillo]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Tienda"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Sureste · 14010 Córdoba"
+				title="Ramoni, <br /><em>la tienda de barrio.</em>"
+				lede={`En el número 4 de la calle San Martín de Porres, en el Sureste de Córdoba, hay una tienda que Google clasifica como panadería. En las fotos de su ficha se ven bolsas de pan y bollería, pero también los cajones de fruta y verdura, el mostrador de charcutería y las estanterías de despensa y limpieza. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas, y teléfono propio: ${BUSINESS.phone}.`}
+				image={pasillo}
+				imageAlt="Pasillo de Panadería Ramoni con cajas de fruta y verdura a un lado y estanterías de pan y bollería al otro"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 23 reseñas' },
+					{ label: 'Horario', html: '<b>L–J</b> 8:00–15:00 y 18:00–20:00' },
+					{ label: 'Teléfono', html: '<b>957 25 35 96</b>' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · fruta · despensa"
+			/>
+
+			<LocalChips label="Lo que hay en Ramoni" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una tienda <br /><em>de barrio.</em>"
+				paragraphs={[
+					'Panadería Ramoni está en el número 4 de la calle San Martín de Porres, en el distrito Sureste de Córdoba (14010). La ficha de Google le da teléfono propio, 957 25 35 96, y la clasifica como panadería.',
+					'En las fotos de su perfil se ven bolsas de pan y bollería en las estanterías. Al mismo tiempo, esas fotos muestran una tienda de barrio: cajones de fruta y verdura en la entrada, un mostrador acristalado de charcutería y refrigerados, y baldas de conservas, bebidas y productos de limpieza.',
+					'Las reseñas hablan sobre todo del trato y de los precios: «muy buen servicio y muy buenos productos, cariño y mucha simpatía», «la amabilidad y precios económicos y limpieza» y «totalmente recomendable». Son 23 opiniones y 4,7 sobre 5.',
+					'El horario parte el día: de lunes a jueves abre de 8:00 a 15:00 y vuelve por la tarde, de 18:00 a 20:00; de viernes a domingo se queda en la mañana, de 9:00 a 14:00.',
+				]}
+				note="La ficha de Google no publica descripción, web propia, correo, redes, carta ni precios. Lo que se cuenta aquí sale de la ficha y de las fotos de su galería. Los carteles de precio que aparecen en las fotos cambian, así que esta web no repite importes."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Pan, fruta <br />
+							<em>y despensa.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en las estanterías.</em>"
+				description="Sin precios publicados: esto es lo que muestran las fotos del perfil y lo que cuenta la ficha de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica carta ni precios, así que esta web no indica importes: los carteles que se ven en las fotos son solo orientativos. El surtido puede cambiar de un día a otro."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La tienda, <br /><em>por dentro.</em>"
+				description="Cinco fotos de la ficha de Google Maps: el pasillo, el mostrador, la fruta y las estanterías."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el <br /><em>Sureste.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería Ramoni en el Sureste de Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Panadería Ramoni · San Martín de Porres, 4"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Abrir en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{
+					label: `Llamar al ${BUSINESS.phone}`,
+					href: BUSINESS.phoneHref,
+					external: true,
+				}}
+				reserveNote="La ficha de Google publica la calle, el número y el teléfono, pero no datos de accesibilidad del local: solo indica que no hay aparcamiento accesible para sillas de ruedas. Para cualquier duda, llama antes de ir."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district}, ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Panadería Ramoni"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

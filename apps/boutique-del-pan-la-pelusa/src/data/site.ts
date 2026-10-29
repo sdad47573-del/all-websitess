@@ -1,16 +1,18 @@
 /**
- * Datos de Boutique del Pan la Pelusa C.B. — Plaza Basconia, 1, 1ºE
- * (Bailén-Miraflores, 29010 Málaga).
+ * Datos de Boutique del Pan la Pelusa C.B. — Plaza Basconia, 1, 1ºE,
+ * Bailén-Miraflores, 29010 Málaga.
  *
  * Fuentes públicas:
  * - Ficha de Google Maps aportada: Boutique del Pan la Pelusa C.B.,
  *   36.7227785,-4.4371933, feature 0xd72f7a0428e59a5:0x3b6e75d15f271808.
- * - Nombre, dirección, categoría, teléfono, valoración, horario, accesibilidad,
- *   reseñas y galería: ficha pública de Google consultada en octubre de 2026.
+ * - Categoría, valoración, reseñas, horario, teléfono y accesibilidad: ficha
+ *   pública de Google (octubre de 2026).
+ * - Fotos: galería del perfil de Google Maps del establecimiento.
  *
- * Lo que la ficha NO publica: descripción del negocio, página web, redes
- * sociales, carta ni precios. La web no inventa ninguno de esos datos; el surtido
- * que se cita es el que nombran las reseñas de la propia ficha.
+ * Lo que la web NO inventa: la ficha no publica web, correo, redes, carta ni
+ * precios. El mapa y las indicaciones llevan al punto exacto. El mostrador
+ * recoge solo lo que muestran las fotos y lo que cuentan las reseñas, sin
+ * importes.
  */
 
 export const BUSINESS = {
@@ -23,17 +25,19 @@ export const BUSINESS = {
 	region: 'Andalucía',
 	postalCode: '29010',
 	country: 'ES',
+	phone: '952 61 45 99',
+	phoneHref: 'tel:+34952614599',
+	rating: 4.3,
+	reviewsCount: 20,
 	siteUrl: 'https://boutique-del-pan-la-pelusa.vercel.app',
 	geo: { lat: 36.7227785, lng: -4.4371933 },
 	featureId: '0xd72f7a0428e59a5:0x3b6e75d15f271808',
 	placeId: 'ChIJpVmOQqD3cg0RCBgnX9F1bjs',
-	plusCode: '8C8QPHF7+44',
 	googleCategory: 'Panadería',
-	phone: '952 61 45 99',
-	phoneHref: 'tel:+34952614599',
-	tagline: 'El pan de siempre en Bailén-Miraflores',
+	tagline: 'Panadería de barrio en Bailén-Miraflores',
 	description:
-		'Boutique del Pan la Pelusa C.B., en la Plaza Basconia, 1 (Bailén-Miraflores, 29010 Málaga). Panadería de barrio con pan y empanadas, según las reseñas de su ficha de Google.',
+		'Boutique del Pan la Pelusa C.B., panadería en la Plaza Basconia, 1 (Bailén-Miraflores, 29010 Málaga). Pan, bollería y empanadas. Abierta de lunes a sábado de 8:30 a 14:30 y los domingos de 8:30 a 14:00. 4,3 sobre 5 en Google.',
+	hoursSummary: 'L–S 8:30–14:30 · Dom 8:30–14:00',
 };
 
 export const MAPS = {
@@ -46,93 +50,120 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=36.7227785,-4.4371933',
 };
 
-/** Valoración publicada en la ficha (octubre de 2026). */
-export const RATING = {
-	value: 4.3,
-	count: 20,
-	label: '4,3',
-};
-
-/**
- * Horario que publica la ficha. Abre solo por la mañana todos los días; el
- * domingo cierra media hora antes.
- */
-export const HORARIO = [
-	{ dia: 'Lunes', horas: '8:30–14:30' },
-	{ dia: 'Martes', horas: '8:30–14:30' },
-	{ dia: 'Miércoles', horas: '8:30–14:30' },
-	{ dia: 'Jueves', horas: '8:30–14:30' },
-	{ dia: 'Viernes', horas: '8:30–14:30' },
-	{ dia: 'Sábado', horas: '8:30–14:30' },
-	{ dia: 'Domingo', horas: '8:30–14:00' },
+/** Horario publicado en la ficha de Google. */
+export const HOURS = [
+	{ day: 'Lunes a sábado', value: '8:30–14:30' },
+	{ day: 'Domingo', value: '8:30–14:00' },
 ];
 
-/** Aviso que acompaña al horario en la ficha. */
-export const HORARIO_AVISO =
-	'La ficha avisa de que el Día de Todos los Santos el horario podría ser diferente. El horario puede cambiar sin previo aviso; confírmalo en Google antes de desplazarte.';
+export const HOURS_NOTE =
+	'Horario de la ficha de Google: de lunes a sábado hasta las 14:30 y los domingos hasta las 14:00. El cartel de la puerta que aparece en las fotos indica horarios algo distintos, así que conviene confirmarlo antes de ir. El 1 de noviembre (Día de Todos los Santos) Google advierte además de que podría variar.';
 
-/** Lo que la ficha permite afirmar del local. */
 export const SERVICIOS = [
-	'Panadería de barrio',
+	'Panadería',
 	'Pan del día',
 	'Empanadas',
-	'Abierta los 7 días',
-	'Acceso para sillas de ruedas',
+	'Bollería',
+	'Dulces',
+	'Atención telefónica',
 ];
 
 export const HIGHLIGHTS = [
 	{
-		title: 'El pan, lo primero',
-		text: 'Las reseñas de la ficha repiten el pan: «pan exquisito y de buenísima calidad» y «el pan buenísimo». Es lo que más se valora del local.',
+		title: 'Pan de barrio',
+		text: 'La ficha de Google clasifica el negocio como panadería. Las reseñas hablan de un «pan exquisito y de buenísima calidad».',
 	},
 	{
-		title: 'Empanadas',
-		text: 'Una de las opiniones publicadas recomienda probar «sus estupendas empanadas». La ficha no detalla el resto del surtido ni los precios.',
+		title: 'Las empanadas',
+		text: 'Una de las reseñas lo tiene claro: «Probad sus estupendas empanadas». Se venden en el mostrador, junto al pan.',
 	},
 	{
-		title: 'Horario de mañanas',
-		text: 'Abre todos los días de 8:30 a 14:30, y el domingo hasta las 14:00. No publica turno de tarde ni día de cierre.',
+		title: 'Abierta los domingos',
+		text: 'Abre de lunes a sábado de 8:30 a 14:30 y los domingos de 8:30 a 14:00, en jornada de mañana.',
 	},
 ];
 
-/** Reseñas destacadas, tal como aparecen publicadas en la ficha. */
-export const RESENAS = [
-	{ texto: 'Probad sus estupendas empanadas.', valor: 4 },
-	{ texto: 'Muy buen trato y el pan buenísimo.', valor: 5 },
-	{ texto: 'Pan exquisito y de buenísima calidad.', valor: 5 },
+export const MENU_GROUPS = [
+	{
+		title: 'El pan',
+		items: [
+			{
+				name: 'Pan del día',
+				note: 'Barras y piezas de pan en el mostrador, mientras dura la mañana.',
+			},
+			{
+				name: 'Pan para llevar',
+				note: 'La ficha no publica variedades ni precios: el surtido cambia cada día.',
+			},
+		],
+	},
+	{
+		title: 'El mostrador',
+		items: [
+			{
+				name: 'Empanadas',
+				note: '«Probad sus estupendas empanadas», dice una reseña de Google.',
+			},
+			{
+				name: 'Bollería y dulces',
+				note: 'Piezas de bollería y dulces junto al pan, según las fotos del local.',
+			},
+		],
+	},
+	{
+		title: 'Para casa',
+		items: [
+			{
+				name: 'Consultas y encargos',
+				note: 'La ficha publica el teléfono 952 61 45 99: las consultas se atienden en el mostrador o por teléfono.',
+			},
+			{
+				name: 'Roscones y dulces de temporada',
+				note: 'En las fotos del perfil aparece un roscón de Reyes con frutas escarchadas.',
+			},
+		],
+	},
 ];
 
 export const FAQ = [
 	{
 		q: '¿Dónde está Boutique del Pan la Pelusa?',
-		a: 'En la Plaza Basconia, 1, 1ºE, en el barrio de Bailén-Miraflores (29010 Málaga). El mapa de esta página abre las coordenadas exactas y el botón «Cómo llegar» lanza la ruta en Google Maps.',
+		a: 'En la Plaza Basconia, 1, 1ºE, en Bailén-Miraflores (29010 Málaga). El mapa de esta página abre el punto exacto y «Cómo llegar» lanza las indicaciones en Google Maps.',
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'La ficha publica: de lunes a sábado de 8:30 a 14:30, y el domingo de 8:30 a 14:00. No figura ningún día de cierre ni turno de tarde. En el Día de Todos los Santos la propia ficha avisa de que el horario podría ser distinto.',
+		a: 'Abre de lunes a sábado de 8:30 a 14:30 y los domingos de 8:30 a 14:00, según la ficha de Google. El cartel de la puerta que aparece en las fotos indica horarios algo distintos, así que conviene confirmarlo antes de ir. El 1 de noviembre (Día de Todos los Santos) el horario podría variar.',
 	},
 	{
-		q: '¿Abre los domingos?',
-		a: 'Sí. Según el horario publicado en Google, el domingo abre de 8:30 a 14:00.',
-	},
-	{
-		q: '¿Se puede llamar por teléfono?',
-		a: 'Sí. El teléfono que publica la ficha es el 952 61 45 99, y esta página lo enlaza para llamar directamente desde el móvil.',
+		q: '¿Cómo se puede contactar?',
+		a: 'La ficha de Google publica el teléfono 952 61 45 99. No indica página web, correo ni redes sociales, así que la web y los encargos se gestionan en el propio local o por teléfono.',
 	},
 	{
 		q: '¿Qué se puede comprar?',
-		a: 'La ficha la clasifica como panadería. Las reseñas hablan del pan y de las empanadas; no publica carta completa ni precios, así que esta página no los detalla.',
+		a: 'Pan, bollería, dulces y empanadas. Google clasifica el negocio como panadería. La ficha no publica carta ni precios, así que esta web no los indica.',
+	},
+	{
+		q: '¿Venden empanadas?',
+		a: 'Sí. Una de las reseñas de Google dice: «Probad sus estupendas empanadas». La ficha no detalla sabores ni precios; se pregunta en el mostrador.',
 	},
 	{
 		q: '¿Es accesible?',
-		a: 'Google marca el acceso para sillas de ruedas, pero indica que no hay aparcamiento adaptado. No publica más datos sobre el interior ni los aseos.',
+		a: 'La ficha de Google marca acceso para sillas de ruedas, pero indica que no hay aparcamiento adaptado. No publica información sobre el mostrador o el aseo, así que esta página no la afirma.',
 	},
 	{
 		q: '¿Qué valoración tiene?',
-		a: 'La ficha tiene una valoración de 4,3 sobre 5 con 20 reseñas en el momento de consultarla (octubre de 2026). El estado actualizado y las reseñas completas se ven en Google Maps.',
+		a: 'Tiene 4,3 sobre 5 con 20 reseñas en Google. Las reseñas destacadas hablan del trato, del pan y de las empanadas.',
 	},
 	{
-		q: '¿Tiene página web o redes sociales?',
-		a: 'No consta. La ficha pública no enlaza página web ni perfiles sociales, y esta página no enlaza nada que no aparezca en ella.',
+		q: '¿Se puede pagar con tarjeta?',
+		a: 'La ficha pública no indica los métodos de pago, así que esta página no los afirma. Lo mejor es preguntar en el mostrador.',
+	},
+	{
+		q: '¿Hay entrega a domicilio?',
+		a: 'La ficha de Google no publica servicio de entrega ni ninguna plataforma de reparto asociada. La compra se hace en el local.',
+	},
+	{
+		q: '¿Abre por la tarde?',
+		a: 'No. El horario publicado en Google termina a las 14:30 de lunes a sábado y a las 14:00 los domingos. Es una panadería de jornada de mañana.',
 	},
 ];

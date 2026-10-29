@@ -1,0 +1,329 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import obrador from '../assets/fotos/la-tahona-de-carmen-apaisada-02.jpg';
+import sala from '../assets/fotos/la-tahona-de-carmen-apaisada-01.jpg';
+import vitrina from '../assets/fotos/la-tahona-de-carmen-apaisada-03.jpg';
+import desayuno from '../assets/fotos/la-tahona-de-carmen-apaisada-06.jpg';
+import panAceite from '../assets/fotos/la-tahona-de-carmen-vista-8-08.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'La tahona de Carmen · Pan artesanal y desayunos en Córdoba';
+const description =
+	"La tahona de Carmen, en la calle Eugenio d'Ors (Centro, 14007 Córdoba). Pan artesanal, bollería, dulces y desayunos con café. De lunes a viernes de 8:00 a 14:30 y sábados y domingos de 8:30 a 14:00.";
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#carmen`,
+	name: BUSINESS.name,
+	alternateName: ['Tahona de Carmen', 'Panadería La tahona de Carmen', 'La tahona de Carmen Córdoba'],
+	description:
+		"Panadería y tahona en la calle Eugenio d'Ors (Centro, 14007 Córdoba), con pan artesanal, bollería, dulces y desayunos.",
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34957946749',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '14:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: sala,
+		alt: 'Sala de La tahona de Carmen con mesas y sillas de madera junto al ventanal de la calle',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de madera con objetos antiguos y menaje de colección en la pared del local',
+	},
+	{
+		src: desayuno,
+		alt: 'Desayuno servido en la mesa: tostada con manteca y dos cafés con el sobre de Café Zaídín',
+	},
+	{
+		src: panAceite,
+		alt: 'Pan de aceite grande recién hecho sobre la bandeja del obrador',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#533247" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La tahona de Carmen, tahona Córdoba, pan artesanal Córdoba, desayunos Córdoba, Eugenio d'Ors, panadería Centro Córdoba, 14007"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan artesanal, bollería, dulces y desayunos con café en la calle Eugenio d'Ors (14007 Córdoba). Abre todos los días por la mañana. 4,6 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Interior de La tahona de Carmen con el rótulo OBRADOR ARTESANO y las vitrinas de bollería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#533247"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[obrador]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Desayunos"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Centro · 14007 Córdoba"
+				title="La tahona <br /><em>de Carmen.</em>"
+				lede={`En la calle Eugenio d'Ors hay una tahona con mesas de madera, vitrinas de bollería y un cartel de «OBRADOR ARTESANO» al fondo. Se viene a por el pan y a desayunar: café, tostadas y dulces. Abre todos los días por la mañana, de 8:00 a 14:30 de lunes a viernes y de 8:30 a 14:00 sábados y domingos. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={obrador}
+				imageAlt="Interior de La tahona de Carmen con el rótulo OBRADOR ARTESANO, las vitrinas y las mesas de madera"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 102 reseñas' },
+					{ label: 'Horario', html: '<b>Todos los días</b> desde las 8:00' },
+					{ label: 'Zona', html: '<b>Centro</b> · 14007' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · dulces · desayunos"
+			/>
+
+			<LocalChips label="Lo que hay en La tahona" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pan artesanal <br /><em>y mesas para el café.</em>"
+				paragraphs={[
+					"La tahona de Carmen está en la calle Eugenio d'Ors, en el distrito Centro de Córdoba (14007). No es solo un mostrador: dentro hay una sala con mesas y sillas de madera junto al ventanal, vitrinas de bollería y un cartel de «OBRADOR ARTESANO» presidiendo el fondo.",
+					'En las fotos del perfil se ven la sala, los desayunos servidos en la mesa —tostada con manteca y café con el sobre de Café Zaídín—, pan de aceite recién hecho en la bandeja del obrador y una vitrina de madera con objetos antiguos y menaje de colección.',
+					'Las reseñas hablan de lo mismo: «pan artesanal, estupenda bollería y dulces», «pan magnifico, el personal amable y cercanos, un buen lugar» y «el camarero muy agradable y el desayuno muy rico».',
+					'El horario es de mañana: de lunes a viernes de 8:00 a 14:30, y sábados y domingos de 8:30 a 14:00.',
+				]}
+				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta, precios ni métodos de pago. El surtido que se describe aquí es el que muestran las fotos del perfil y lo que cuentan las reseñas."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Llamar al 957 94 67 49', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Pan, dulces <br />
+							<em>y desayuno.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del obrador.</em>"
+				description="Sin precios publicados: esto es lo que muestran las fotos del perfil y lo que cuentan las reseñas de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica carta ni precios, así que esta web no indica importes. Para desayunar hay mesas y servicio de mesa; para el pan y los dulces, mostrador."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La tahona, <br /><em>por dentro.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: la sala, la vitrina de objetos, un desayuno y el pan de aceite."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Eugenio <br /><em>d'Ors.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de La tahona de Carmen en la calle Eugenio d'Ors, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La tahona de Carmen · Centro"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="El teléfono de la ficha es el 957 94 67 49. No publica web propia ni redes. Indica acceso para sillas de ruedas, pero no aparcamiento accesible; del aseo y el mostrador no dice nada, así que esta página no lo afirma."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de La tahona de Carmen"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

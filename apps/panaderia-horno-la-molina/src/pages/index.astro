@@ -1,0 +1,328 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mostrador from '../assets/fotos/panaderia-horno-la-molina-apaisada-10.jpg';
+import fachada from '../assets/fotos/panaderia-horno-la-molina-vertical-01.jpg';
+import vitrina from '../assets/fotos/panaderia-horno-la-molina-apaisada-04.jpg';
+import tartas from '../assets/fotos/panaderia-horno-la-molina-vertical-08.jpg';
+import cafe from '../assets/fotos/panaderia-horno-la-molina-vertical-05.jpg';
+import smoothies from '../assets/fotos/panaderia-horno-la-molina-vertical-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Horno La Molina · Levante, Córdoba';
+const description =
+	'Panadería Horno La Molina, en la Avenida del 28 de Febrero, 34 (Levante, 14007 Córdoba). Pan, bollos, pastelería, café y smoothies. Abierta todos los días de 7:00 a 19:00.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#lamolina`,
+	name: BUSINESS.name,
+	alternateName: ['Horno La Molina', 'La Molina', 'Panadería La Molina Córdoba'],
+	description:
+		'Obrador tradicional en Levante (14007 Córdoba). Pan, bollos, pastelería y dulces, con café y smoothies naturales.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34957433269',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '07:00',
+			closes: '19:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de Horno La Molina con el rótulo morado y el dibujo del molino, y bolsas de pan en el escaparate',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de La Molina con pasteles, bizcochos y bandejas de bollería',
+	},
+	{
+		src: tartas,
+		alt: 'Tartas de chocolate y de nata y bandejas de pasteles en la vitrina de La Molina',
+	},
+	{
+		src: cafe,
+		alt: 'Café con leche y un bollo espolvoreado con azúcar en una mesa de La Molina',
+	},
+	{
+		src: smoothies,
+		alt: 'Carta de smoothies naturales de La Molina, con combinaciones de fruta',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#4a2b52" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..700;1,400..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Horno La Molina, panadería Córdoba, obrador tradicional, pan de telera, pastelería Córdoba, Levante, 14007"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan, bollos, pastelería, café y smoothies en la Avenida del 28 de Febrero, 34 (14007 Córdoba). Abierta todos los días de 7:00 a 19:00. 4,5 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Mostrador de Horno La Molina con cestas de pan, bollos y panes en bolsas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#4a2b52"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[mostrador]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Horno · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Levante · 14007 Córdoba"
+				title="Pan, bollos <br /><em>y pastelería de siempre.</em>"
+				lede={`La Molina está en la Avenida del 28 de Febrero, 34, en Levante, con el rótulo «Horno La Molina» y el dibujo del molino sobre la puerta. Dentro hay un mostrador con cestas y bolsas de pan, un expositor de bollos y una vitrina de tartas y pasteles. También hay mesas para tomar café y una carta de smoothies naturales. Abre todos los días de 7:00 a 19:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={mostrador}
+				imageAlt="Mostrador de Horno La Molina con cestas de pan, bandejas de bollos y panes en bolsas"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 322 reseñas' },
+					{ label: 'Horario', html: '<b>Todos los días</b> 7:00–19:00' },
+					{ label: 'Zona', html: '<b>Levante</b> · 14007' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · bollos · pastelería"
+			/>
+
+			<LocalChips label="Lo que hay en La Molina" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un obrador <br /><em>de barrio.</em>"
+				paragraphs={[
+					'La Molina está en la Avenida del 28 de Febrero, 34, en Levante (14007 Córdoba). El rótulo de la fachada dice «Horno La Molina», con el dibujo de un molino, y el escaparate enseña las bolsas de pan.',
+					'Dentro, el local tiene mostrador de mármol con cestas de pan y bandejas de bollos, un expositor con panes en bolsas y una vitrina de tartas y pasteles: bizcochos, tartas de chocolate y de nata, pasteles de yema y hojaldres.',
+					'También hay mesas para sentarse. En las fotos del perfil se ve un café con leche con un bollo espolvoreado de azúcar, y la carta de smoothies naturales «hechos al momento», con combinaciones de fruta.',
+					'Las reseñas lo describen como «obrador tradicional, con pan y pastelería de siempre y con trato exquisito», y destacan «los bollos más grandes de pan de telera para bocadillo». Abre todos los días de 7:00 a 19:00.',
+				]}
+				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta ni precios. La carta de smoothies que aparece en las fotos lleva importes, pero cambian, así que esta web no los repite."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Llamar al 957 43 32 69', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Obrador, <br />
+							<em>vitrina y mesas.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. El surtido de la vitrina cambia a lo largo del día: el obrador abre a las 7:00."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Cinco fotos de la ficha de Google Maps: la fachada, la vitrina, las tartas, el café y la carta de smoothies."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la Avenida <br /><em>del 28 de Febrero.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería Horno La Molina en la Avenida del 28 de Febrero, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Horno La Molina · Levante"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="El teléfono de la ficha es el 957 43 32 69. No publica web propia ni redes. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el mostrador ni el aseo. Para tartas o encargos, conviene llamar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Panadería Horno La Molina"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
