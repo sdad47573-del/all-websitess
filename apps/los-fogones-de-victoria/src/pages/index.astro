@@ -1,0 +1,407 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import pollo from '../assets/fotos/los-fogones-de-victoria-apaisada-01.jpg';
+import collage from '../assets/fotos/los-fogones-de-victoria-vertical-02.jpg';
+import tortillaTabla from '../assets/fotos/los-fogones-de-victoria-vertical-03.jpg';
+import tortillaBambu from '../assets/fotos/los-fogones-de-victoria-apaisada-04.jpg';
+import tallarines from '../assets/fotos/los-fogones-de-victoria-vertical-05.jpg';
+import arroz from '../assets/fotos/los-fogones-de-victoria-vertical-06.jpg';
+import carne from '../assets/fotos/los-fogones-de-victoria-vertical-07.jpg';
+import eventos from '../assets/fotos/los-fogones-de-victoria-apaisada-09.jpg';
+import tarrina from '../assets/fotos/los-fogones-de-victoria-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Los fogones de Victoria · Comida casera para llevar en Málaga';
+const description =
+	'Los fogones de Victoria, comida casera para llevar y a domicilio en C. Juan Muñoz Herrera, 42 (Carretera de Cádiz, 29004 Málaga). Cuchareo, pasta, pescaito, bocadillos, comidas morunas y menús para eventos.';
+
+const galeria = [
+	{
+		src: pollo,
+		alt: 'Bandeja de cuartos de pollo asado con patatas panadera y su jugo',
+	},
+	{
+		src: tortillaTabla,
+		alt: 'Tortilla de patatas dorada en una tabla redonda de madera, con una pizarra al fondo',
+	},
+	{
+		src: tallarines,
+		alt: 'Tarrina de tallarines al pil pil con langostinos, ajo y perejil',
+	},
+	{
+		src: arroz,
+		alt: 'Cazo de arroz con pollo desmenuzado y una cuchara de servir',
+	},
+	{
+		src: carne,
+		alt: 'Tarrina con carne en salsa de curry, patatas y pimiento verde frito',
+	},
+	{
+		src: tarrina,
+		alt: 'Tarrina de guiso de carne con pimiento rojo, con el sello «de siempre by Victoria» en la tapa',
+	},
+	{
+		src: eventos,
+		alt: 'Mesa de canapés para un evento: masa filo con pollo, croquetas, empanadillas y pinchos',
+	},
+	{
+		src: collage,
+		alt: 'Dos detalles de la vitrina: una bandeja de panecillos recién hechos y un bizcocho espolvoreado con azúcar glas',
+	},
+	{
+		src: tortillaBambu,
+		alt: 'Otra vista de la tortilla de patatas sobre una tabla de bambú, en la encimera de la cocina',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Los fogones de Victoria',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#los-fogones-de-victoria`,
+	name: BUSINESS.name,
+	alternateName: ['Los fogones de Victoria Málaga', 'Fogones de Victoria', 'Comida casera Victoria'],
+	description:
+		'Comida casera para llevar y a domicilio en la calle Juan Muñoz Herrera, 42 (Carretera de Cádiz, 29004 Málaga). Cuchareo, pasta, ensaladas, pescaito, bocadillos, comidas morunas y menús para eventos.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34744256735',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Cocina andaluza', 'Cocina árabe'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '09:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2d1f2a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito+Sans:wght@400;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Los fogones de Victoria Málaga, comida casera Málaga, comida para llevar Carretera de Cádiz, cuchareo Málaga, tallarines al pil pil, paella mixta Málaga, comidas morunas, catering Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar y a domicilio en Juan Muñoz Herrera, 42. Cuchareo, pasta, pescaito, comidas morunas y menús para eventos."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de pollo asado con patatas de Los fogones de Victoria"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#2d1f2a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[pollo]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Los fogones de Victoria"
+			subtitle="Comida casera · Carretera de Cádiz"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Juan Muñoz Herrera, 42 · Carretera de Cádiz"
+				title="Comida de casa, <br /><em>hecha por Victoria.</em>"
+				lede={`Cuchareo, pasta, ensaladas, pescaito y comidas morunas, para llevar o a domicilio. Los fogones de Victoria cocina como en casa y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={pollo}
+				imageAlt="Bandeja de cuartos de pollo asado con patatas panadera"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:00–16:00</b> · todos los días' },
+					{ label: 'Cierra', html: '<b>Miércoles</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar y a domicilio"
+			/>
+
+			<LocalChips label="Lo que ofrece Los fogones de Victoria" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Los fogones <br /><em>de Victoria.</em>"
+				paragraphs={[
+					'En la calle Juan Muñoz Herrera, 42, hay una cocina que trabaja como las de antes. Los fogones de Victoria es comida casera para llevar: cuchareo y platos que no son de cuchara, pasta, ensaladas, pescaito y bocadillo de calamares, con las salsas hechas en casa.',
+					'La descripción de la ficha lo cuenta con sus propias palabras: también hacen «comidas morunas», eventos adaptados a cada cliente y menús personalizados con presupuesto a medida.',
+					'En las fotos aparece el día a día: pollo asado con patatas, tortilla de patatas en la tabla, tallarines al pil pil con langostinos, arroz con pollo, carne en salsa y las tarrinas con el sello «de siempre by Victoria» que salen para llevar.',
+					'Abre de 9:00 a 16:00 de lunes a martes y de jueves a domingo; el miércoles descansa. Tiene 5,0 sobre 5 con 18 reseñas, y las tres publicadas insisten en lo mismo: casero, buen trato y buen precio.',
+				]}
+				note="La ficha no publica carta, precios, web ni redes sociales; solo el teléfono. Los platos que se citan son los que aparecen en las fotografías del local, en su descripción y en las reseñas."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+					{ label: 'Llamar al 744 25 67 35', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que sale <br /><em>de los fogones.</em>"
+				description="Lo que nombran la descripción del negocio, las reseñas y las fotos del local. Sin carta cerrada ni precios inventados: el menú se consulta por teléfono."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha de Google no incluye carta ni precios. Para saber qué hay hoy, cuánto cuesta y si queda pollo o tortilla, llama al 744 25 67 35 antes de acercarte."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La cocina <br /><em>y las tarrinas.</em>"
+				description="Nueve fotografías del perfil de Los fogones de Victoria: el pollo asado, la tortilla, los tallarines al pil pil, el arroz, la carne en salsa, los canapés de un evento y la vitrina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Cinco <em>estrellas.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							Tiene 5,0 sobre 5 con 18 valoraciones, y las tres que publica la ficha dan cinco
+							estrellas. Hablan de los tallarines al pil pil, la paella, el trato y el precio:
+							<a href={MAPS.reviews} target="_blank" rel="noreferrer">el resto se lee en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Carretera <br /><em>de Cádiz.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 9:00 a 16:00 de lunes a martes y de jueves a domingo; miércoles cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Los fogones de Victoria en la calle Juan Muñoz Herrera, 42, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Juan Muñoz Herrera, 42"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Para encargar, llama al 744 25 67 35. Google marca acceso, aparcamiento y asientos adaptados; no hay aseo adaptado ni bucle magnético. La ficha no detalla zonas ni horarios de reparto."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario, descripción y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma horario y disponibilidad antes de encargar."
+			ctaLabel="Llamar a Los fogones de Victoria"
+			navAriaLabel="Enlaces de Los fogones de Victoria"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

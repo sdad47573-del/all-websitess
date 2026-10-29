@@ -1,0 +1,427 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-01.jpg';
+import caliente from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-02.jpg';
+import albondigas from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-03.jpg';
+import arroz from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-04.jpg';
+import bandejas from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-05.jpg';
+import fachada from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-06.jpg';
+import guisos from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-08.jpg';
+import asador from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-09.jpg';
+import vitrinaDos from '../assets/fotos/fogon-de-rafael-de-suarez-apaisada-10.jpg';
+import patatas from '../assets/fotos/fogon-de-rafael-de-suarez-vertical-07.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Fogón de Rafael de Suárez · Asador de pollos en Málaga';
+const description =
+	'Fogón de Rafael de Suárez, asador de pollos en Cam. de Suárez, 58 (Bailén-Miraflores, 29010 Málaga). Pollo asado, patatas, croquetas y raciones de comida casera.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de ladrillo del Fogón de Rafael, con el cartel de madera «Asador de pollos El Fogón de Rafael desde 1976» y el número 58',
+	},
+	{
+		src: asador,
+		alt: 'El asador giratorio del local con pollos dorados, dentro de la cocina',
+	},
+	{
+		src: bandejas,
+		alt: 'Tres envases de aluminio con patatas, arroz con gambas y pollo asado, junto a un plato con pollo y patatas',
+	},
+	{
+		src: patatas,
+		alt: 'Primer plano de patatas caseras en trozos, doradas, en una bandeja',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina del local con sándwiches envasados, tarrinas de comida preparada y refrescos',
+	},
+	{
+		src: caliente,
+		alt: 'Vitrina caliente con bandejas de estofado, patatas, pasta, salchichas y pollo',
+	},
+	{
+		src: albondigas,
+		alt: 'Bandejas de albóndigas en salsa y croquetas dentro de la vitrina',
+	},
+	{
+		src: arroz,
+		alt: 'Un plato de arroz con gambas y guisantes',
+	},
+	{
+		src: guisos,
+		alt: 'Otra vista de la vitrina, con bandejas de guiso, patatas y empanadas',
+	},
+	{
+		src: vitrinaDos,
+		alt: 'La vitrina con panes envasados, tarrinas de comida preparada y refrescos junto al mostrador',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta del Fogón de Rafael',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#fogon-de-rafael`,
+	name: BUSINESS.name,
+	alternateName: ['El Fogón de Rafael', 'Fogón de Rafael Málaga', 'Asador de pollos El Fogón de Rafael'],
+	description:
+		'Asador de pollos en el Camino de Suárez, 58 (Bailén-Miraflores, 29010 Málaga). Pollo asado, patatas, croquetas y raciones de comida preparada en la vitrina.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34952308093',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Comida casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '09:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Amigable con la comunidad LGBTQ+',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visitar', href: '#visitanos' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2a211c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Public+Sans:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Fogón de Rafael de Suárez, asador de pollos Málaga, pollo asado Camino de Suárez, comida casera Bailén-Miraflores, croquetas Málaga, raciones de comida Málaga, pollo asado 29010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Asador de pollos en el Camino de Suárez, 58. Pollo asado, patatas caseras, croquetas y raciones de comida preparada, de lunes a domingo a mediodía."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de ladrillo del Fogón de Rafael con el cartel de asador de pollos, en Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#2a211c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Fogón de Rafael"
+			subtitle="Asador de pollos · Málaga"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Cam. de Suárez, 58 · Bailén-Miraflores"
+				title="Asador de pollos <br /><em>desde 1976.</em>"
+				lede={`El rótulo de madera de la fachada lleva desde 1976 anunciando lo mismo: pollo asado en el Camino de Suárez. En la vitrina hay patatas caseras, croquetas, guisos, albóndigas y raciones para completar la mesa. Abre de 9:00 a 16:00, con el martes cerrado, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de ladrillo del Fogón de Rafael con el cartel de madera del asador de pollos y el número 58"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:00–16:00</b> · martes cerrado' },
+					{ label: 'Desde', html: '<b>1976</b> · asador de barrio' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pollo asado y vitrina"
+			/>
+
+			<LocalChips label="Lo que ofrece El Fogón de Rafael" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un asador de barrio <br /><em>en el Camino de Suárez.</em>"
+				paragraphs={[
+					'El Fogón de Rafael de Suárez está en el número 58 del Camino de Suárez, en Bailén-Miraflores. La fachada de ladrillo, la puerta abierta y el cartel de madera —«Asador de pollos El Fogón de Rafael desde 1976»— lo sitúan entre los asadores de siempre del barrio.',
+					'Dentro, el asador giratorio y una vitrina larga con bandejas: pollo asado, patatas caseras, croquetas, albóndigas en salsa, guisos, empanadas, arroces y raciones de comida preparada. También hay panes envasados y refrescos, para llevar la comida completa.',
+					'La ficha de Google lo clasifica como restaurante especializado en pollo, sin más descripción ni carta publicada. Lo que se sabe del surtido es lo que cuentan las reseñas y lo que muestran las fotos del propio local.',
+					'Las opiniones están divididas: hay quien destaca «el pollo asado muy muy buen sabor» y «las raciones de comida increíbles», y quien se queja de piezas secas o del día anterior. Esta página recoge las dos caras; la media publicada es 4,1 sobre 5 con 183 reseñas.',
+				]}
+				note="La ficha no publica carta, precios, página web ni redes sociales. Esta web solo cita las preparaciones que aparecen en las reseñas y en las fotos del local, y enlaza el teléfono de la propia ficha."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="Lo que hay"
+				title="Pollo, patatas <br /><em>y vitrina.</em>"
+				description="Sin carta publicada: esto es lo que nombran las reseñas de Google y lo que se ve en las fotos del mostrador."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha de Google no incluye carta ni precios, así que esta página no inventa valores. Para saber qué hay hoy, qué incluye cada ración y cuánto cuesta, hay que llamar al teléfono del local."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, el asador <br /><em>y la vitrina.</em>"
+				description="Diez fotografías del perfil del Fogón de Rafael en Google Maps: la fachada con el cartel de 1976, el asador giratorio, las bandejas de pollo, las patatas caseras y la vitrina de comida preparada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="notas" id="resenas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">4,1 sobre 5, <br /><em>con matices.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★☆</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<p class="notas-copy">
+							La media de 183 opiniones es 4,1. Hay elogios claros al sabor del pollo y a las
+							raciones, y también quejas por piezas secas o pollo del día anterior. Se muestran
+							las dos para que la nota no engañe a nadie.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas ↗
+						</a>
+					</div>
+
+					<div>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							Las citas se reproducen tal como están publicadas en la ficha. La valoración y el
+							número de reseñas corresponden a octubre de 2026 y cambian con el tiempo.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Bailén-<br /><em>Miraflores.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 9:00 a 16:00 de lunes, miércoles, jueves, viernes, sábado y domingo; el martes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa del Fogón de Rafael de Suárez en el Camino de Suárez, 58, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Cam. de Suárez, 58"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas online ni página web. Google marca el acceso para sillas de ruedas, pero no hay aparcamiento adaptado ni asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma disponibilidad, precios y horario antes de la visita."
+			ctaLabel="Llamar al Fogón de Rafael"
+			navAriaLabel="Enlaces del Fogón de Rafael"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
