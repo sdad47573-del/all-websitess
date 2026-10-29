@@ -1,8 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Luz+De+Amor/@36.7081294,-4.4477767,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f76d60d291f9:0xc13227338a95f781!8m2!3d36.7081294!4d-4.4477767!16s%2Fg%2F11ytfdy05m?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panaderia+Don+miguel/@36.7113873,-4.4479378,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7feb556c65b:0x6cfca4e5002ed393!8m2!3d36.7113873!4d-4.4479378!16s%2Fg%2F11z3yllk98?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Panader%C3%ADa+La+Tahona/@36.7096727,-4.4487527,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f77aa9803b3b:0xd41639583aa27567!8m2!3d36.7096727!4d-4.4487527!16s%2Fg%2F11cnr_ssnb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panader%C3%ADa+Pasteler%C3%ADa+Peinado/@36.717434,-4.4403996,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f775bad87339:0xd9cd900a8641fbd5!8m2!3d36.717434!4d-4.4403996!16s%2Fg%2F1tdcsw_7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
