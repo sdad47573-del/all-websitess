@@ -1,0 +1,321 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-nuestra-senora-del-rocio-vertical-07.jpg';
+import rotulo from '../assets/fotos/panaderia-nuestra-senora-del-rocio-apaisada-10.jpg';
+import vitrina from '../assets/fotos/panaderia-nuestra-senora-del-rocio-apaisada-08.jpg';
+import bolleria from '../assets/fotos/panaderia-nuestra-senora-del-rocio-vertical-06.jpg';
+import tarta from '../assets/fotos/panaderia-nuestra-senora-del-rocio-apaisada-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Nuestra Señora del Rocío · Cañada Real Soriana, Córdoba';
+const description =
+	'Panadería Nuestra Señora del Rocío, en la Cañada Real Soriana, 244 (14710 Córdoba). Pan, bollería, dulces y tartas. Abre todos los días: de 6:30 a 15:00 de lunes a viernes y de 7:00 a 14:30 sábados y domingos.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#rocio`,
+	name: BUSINESS.name,
+	alternateName: ['Ntra. Sra. del Rocío', 'Panadería Ntra. Sra. del Rocío', 'Panadería del Rocío Córdoba'],
+	description:
+		'Panadería en la Cañada Real Soriana, 244 (14710 Córdoba), con pan, bollería, dulces y tartas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34957458595',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '06:30',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '07:00',
+			closes: '14:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: rotulo,
+		alt: 'Rótulo de Panadería Ntra. Sra. Del Rocío sobre la puerta del local, con el número 244',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina del local con una tarta de manzana y una tarta de chocolate cortada en porciones',
+	},
+	{
+		src: bolleria,
+		alt: 'Bollos de chocolate y una bolsa de pan con el nombre del obrador sobre la mesa',
+	},
+	{
+		src: tarta,
+		alt: 'Tarta de cumpleaños de chocolate decorada con nata rosa y azul y el número 5',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#8a3a2b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Nuestra Señora del Rocío, panadería Córdoba, Cañada Real Soriana, pan artesano Córdoba, tartas Córdoba, 14710"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan, bollería, dulces y tartas en la Cañada Real Soriana, 244 (14710 Córdoba). Abre todos los días, de 6:30 a 15:00 de lunes a viernes. 4,5 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vitrina de Panadería Nuestra Señora del Rocío con tartas de manzana y de chocolate"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#8a3a2b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Obrador"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Cañada Real Soriana · 14710 Córdoba"
+				title="Panadería <br /><em>del Rocío.</em>"
+				lede={`En la Cañada Real Soriana, 244, hay un obrador de barrio con el rótulo verde de «Panadería Ntra. Sra. Del Rocío». Dentro, pan recién hecho, bollería de chocolate, dulces y tartas de encargo. Abre todos los días: de 6:30 a 15:00 de lunes a viernes y de 7:00 a 14:30 sábados y domingos. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de Panadería Nuestra Señora del Rocío, con el toldo rojo de PANADERIA y el rótulo verde sobre la puerta"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 457 reseñas' },
+					{ label: 'Horario', html: '<b>Todos los días</b> desde las 6:30' },
+					{ label: 'Zona', html: '<b>Cañada Real</b> · 14710' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · bollería · tartas"
+			/>
+
+			<LocalChips label="Lo que hay en el obrador" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un obrador <br /><em>de cada día.</em>"
+				paragraphs={[
+					'La panadería está en la Cañada Real Soriana, 244 (14710 Córdoba), con la fachada encalada, el zócalo amarillo y un toldo rojo que anuncia «PANADERIA» sobre la puerta. El rótulo pequeño, en verde, es el del nombre completo: «Ntra. Sra. Del Rocío».',
+					'Dentro hay pan del día, bollería y una vitrina con tartas y dulces. En las fotos del perfil se ven barras recién hechas, canutillos y tartaletas en bandeja, bollos bañados de chocolate y tartas de cumpleaños con dedicatoria escrita a mano.',
+					'Abre todos los días y cierra a mediodía, así que el pan se compra por la mañana. Los sábados y los domingos abre a las 7:00 y cierra a las 14:30; de lunes a viernes empieza a las 6:30 y aguanta hasta las 15:00.',
+					'Las reseñas de Google lo resumen bien: «el pan buenísimo y los dulces y pasteles también», «fabrican las mejores tartas que he probado en mi vida y a un precio inmejorable» y «muy buena calidad y buen trato».',
+				]}
+				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta ni precios. El surtido que se describe aquí es el que muestran las fotos del perfil y lo que cuentan las reseñas."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Llamar al 957 45 85 95', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Pan, tartas <br />
+							<em>y trato de barrio.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del obrador.</em>"
+				description="Sin precios publicados: esto es lo que muestran las fotos del perfil y lo que cuentan las reseñas de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. Para tartas o encargos, lo mejor es llamar al 957 45 85 95 y preguntar con antelación."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="El obrador, <br /><em>por dentro.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: el rótulo, la vitrina, la bollería y una tarta de cumpleaños."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow="Cañada Real Soriana · 14710 Córdoba"
+				title="En la Cañada <br /><em>Real Soriana.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería Nuestra Señora del Rocío en la Cañada Real Soriana, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Panadería Nuestra Señora del Rocío · Córdoba"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="El teléfono de la ficha es el 957 45 85 95. No publica web propia ni redes. Indica acceso para sillas de ruedas; no informa sobre el aparcamiento adaptado, el mostrador ni el aseo, así que esta página no lo afirma. Para tartas o encargos, conviene llamar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Panadería Nuestra Señora del Rocío"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

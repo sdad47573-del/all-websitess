@@ -1,0 +1,335 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mostrador from '../assets/fotos/horno-de-lena-la-tradicion-panoramica-04.jpg';
+import fachada from '../assets/fotos/horno-de-lena-la-tradicion-vertical-01.jpg';
+import tarta from '../assets/fotos/horno-de-lena-la-tradicion-vertical-02.jpg';
+import vitrina from '../assets/fotos/horno-de-lena-la-tradicion-panoramica-06.jpg';
+import barras from '../assets/fotos/horno-de-lena-la-tradicion-vertical-08.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Horno de Leña La Tradición · Panadería en Córdoba';
+const description =
+	'Horno de Leña La Tradición, panadería en la Plaza de Vista Alegre, 4 (Poniente Sur, 14004 Córdoba). Pan de masa madre y harinas ecológicas, dulces y tartas. Desde 1913.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#latradicion`,
+	name: BUSINESS.name,
+	alternateName: ['La Tradición', 'Horno de Leña La Tradición Córdoba', 'Panadería La Tradición'],
+	description:
+		'Panadería de horno de leña en Poniente Sur (14004 Córdoba). Pan de masa madre y harinas ecológicas, bollería, dulces y tartas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34644204873',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '16:30',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '09:00',
+			closes: '14:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de La Tradición con el rótulo de horno de leña y los vinilos de masa madre en el escaparate',
+	},
+	{
+		src: tarta,
+		alt: 'Tarta redonda con crema, fruta confitada y frutos secos, sobre una bandeja dorada',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de La Tradición con bollería, dulces y panes en las bandejas',
+	},
+	{
+		src: barras,
+		alt: 'Dos barras de pan de corteza rústica y harina espolvoreada sobre una tabla de madera',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6b2f24" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..700;1,400..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Horno de Leña La Tradición, panadería Córdoba, pan de masa madre Córdoba, horno de leña, harinas ecológicas, Vista Alegre, 14004"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan de masa madre y harinas ecológicas, bollería, dulces y tartas en la Plaza de Vista Alegre, 4 (14004 Córdoba). Horno de leña desde 1913. 4,6 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Mostrador de La Tradición con panes de masa madre y bollería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#6b2f24"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[mostrador]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Horno de leña · Desde 1913"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Poniente Sur · 14004 Córdoba"
+				title="Pan de masa madre <br /><em>de horno de leña.</em>"
+				lede={`La Tradición está en la Plaza de Vista Alegre, 4, en Poniente Sur. El rótulo de la fachada anuncia «La Tradición · Horno de leña · Desde 1913», y el escaparate lo repite en vinilos: «masa madre», «harinas ecológicas», «pan de verdad». Dentro hay un mostrador con los panes del día y una vitrina con bollería y dulces. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={mostrador}
+				imageAlt="Mostrador de La Tradición con panes de masa madre, hogazas y bollería bajo la vitrina"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 39 reseñas' },
+					{ label: 'Horario', html: '<b>L–V</b> 9:00–14:30 y 16:30–20:00' },
+					{ label: 'Zona', html: '<b>Poniente Sur</b> · 14004' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Masa madre · horno de leña"
+			/>
+
+			<LocalChips label="Lo que hay en La Tradición" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un obrador <br /><em>desde 1913.</em>"
+				paragraphs={[
+					'La Tradición está en la Plaza de Vista Alegre, 4, en Poniente Sur (14004 Córdoba). El rótulo de la fachada pone «La Tradición · Horno de leña · Desde 1913», y los vinilos del escaparate lo completan: masa madre, harinas ecológicas y «pan de verdad».',
+					'La carta de panes del local explica cómo trabajan: masa madre de cultivo propio, fermentaciones de entre 20 y 48 horas, harinas ecológicas de la campiña de Córdoba y panes en formato de 1 kg. El surtido rota por días, con variedades como leváin, semillas, centeno, espelta, multicereales, triticordeum, monococcum o focaccia de pimiento.',
+					'Junto al pan hay vitrina de bollería y dulces. En las fotos del perfil se ven tartas de crema con fruta confitada y frutos secos. Las reseñas lo cuentan a su manera: «el mejor pan que recuerdo haber probado en mi vida», «los molletes son un espectáculo y los dulces también» y «muy bueno lo que pedí, palmera de chocolate y un trozo de tarta».',
+					'Abre de lunes a viernes de 9:00 a 14:30 y de 16:30 a 20:00, y los sábados solo por la mañana. La ficha publica el teléfono, pero no web propia, redes, carta con precios ni reparto.',
+				]}
+				note="Los carteles de la fachada marcan un horario algo distinto del que figura en la ficha de Google: esta web usa el de la ficha y lo advierte en el apartado de horario. La carta de panes del local incluye precios, pero cambian, así que aquí no se repiten."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Llamar al 644 20 48 73', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Masa madre, <br />
+							<em>leña y vitrina.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del horno.</em>"
+				description="Sin precios publicados: esto es lo que explican la carta de panes del local y los carteles de la fachada, lo que muestran las fotos y lo que cuentan las reseñas."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. El pan rota por días: si buscas una variedad concreta, conviene llamar antes."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="El obrador, <br /><em>por dentro.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: la fachada, una tarta, la vitrina de bollería y dos barras de pan."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la Plaza <br /><em>de Vista Alegre.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Horno de Leña La Tradición en la Plaza de Vista Alegre, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Horno de Leña La Tradición · Poniente Sur"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="El teléfono de la ficha es el 644 20 48 73. No publica web propia ni redes. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el mostrador ni el aseo. Para encargos de pan o de dulces, conviene llamar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Horno de Leña La Tradición"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

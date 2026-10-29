@@ -1,0 +1,335 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import cesta from '../assets/fotos/panaderia-artesana-de-villarrubia-apaisada-05.jpg';
+import trenzas from '../assets/fotos/panaderia-artesana-de-villarrubia-vista-6-06.jpg';
+import escaparate from '../assets/fotos/panaderia-artesana-de-villarrubia-apaisada-03.jpg';
+import tartaSergio from '../assets/fotos/panaderia-artesana-de-villarrubia-apaisada-07.jpg';
+import tartaCorazon from '../assets/fotos/panaderia-artesana-de-villarrubia-vertical-08.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería Artesana de Villarrubia · Pan, dulces y tartas';
+const description =
+	'Panadería Artesana de Villarrubia, en la calle Guadalquivir, 1 (14710 Córdoba). Pan artesano, dulces, tortas de aceite, recortes, empanadas y tartas por encargo. Abre a las 7:00 todos los días menos el domingo.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#villarrubia`,
+	name: BUSINESS.name,
+	alternateName: [
+		'Artesana de Villarrubia',
+		'Panadería Artesana Villarrubia',
+		'Panadería de Villarrubia',
+	],
+	description:
+		'Panadería artesana en la calle Guadalquivir, 1 (Villarrubia, 14710 Córdoba), con pan, dulces, tortas de aceite, recortes, empanadas y tartas por encargo.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34957327171',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Monday',
+			opens: '07:00',
+			closes: '13:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '01:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '07:00',
+			closes: '02:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: escaparate,
+		alt: 'Mesa de panes artesanos grandes de Villarrubia delante de una iglesia, con el cartel de la panadería',
+	},
+	{
+		src: trenzas,
+		alt: 'Trenzas de pan recién hechas sobre la bandeja del obrador',
+	},
+	{
+		src: tartaSergio,
+		alt: 'Tarta de cumpleaños de chocolate con una imagen de Star Wars y el nombre Sergio',
+	},
+	{
+		src: tartaCorazon,
+		alt: 'Tarta de corazón con cobertura roja, el mensaje «Te quiero» y una rosa de azúcar',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3d4a2e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Artesana de Villarrubia, panadería Villarrubia, pan artesano Córdoba, tortas de aceite, recortes, tartas por encargo, tartas de cumpleaños, 14710"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan artesano, dulces, tortas de aceite, recortes, empanadas y tartas por encargo en Guadalquivir, 1 (14710 Córdoba). Abre a las 7:00 todos los días menos el domingo. 4,6 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Cesta de panes artesanos de la Panadería Artesana de Villarrubia"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#3d4a2e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[cesta]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Pastelería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Villarrubia · 14710 Córdoba"
+				title="Pan artesano <br /><em>de Villarrubia.</em>"
+				lede={`En la calle Guadalquivir, 1, hay una panadería con obrador propio que abre a las 7:00 todos los días menos el domingo. Pan artesano, dulces, tortas de aceite, recortes y empanadas, además de tartas por encargo: en las fotos del perfil hay cumpleaños, bautizos y hasta un corazón con «Te quiero». De martes a sábado echa el cierre de madrugada. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={cesta}
+				imageAlt="Cesta con panes artesanos variados de la Panadería Artesana de Villarrubia"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 111 reseñas' },
+					{ label: 'Horario', html: '<b>7:00</b> · cierre de madrugada' },
+					{ label: 'Zona', html: '<b>Villarrubia</b> · 14710' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · dulces · tartas"
+			/>
+
+			<LocalChips label="Lo que hay en el obrador" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un obrador <br /><em>con nombre propio.</em>"
+				paragraphs={[
+					'La Panadería Artesana de Villarrubia está en la calle Guadalquivir, 1 (14710 Córdoba). Es una panadería con obrador propio: el pan se hace allí y sale a la venta el mismo día.',
+					'En las fotos del perfil se ven la cesta con panes de todas las formas, las trenzas recién hechas sobre la bandeja y una mesa de panes grandes montada en la calle, con el cartel de «Panadería Artesana de Villarrubia, S.A.» delante de una iglesia.',
+					'La pastelería es la otra mitad de la casa: tartas rectangulares cubiertas de fruta, tartas de bautizo con el nombre escrito a mano, tartas de cumpleaños con imagen —una de Star Wars para Sergio— y una tarta de corazón con «Te quiero».',
+					'Las reseñas hablan de lo mismo: «las mejores tortas de aceite, recortes, empanadas...», «buen pan y buenos dulces y buena atención, sí señor» y «he comprado la tarta de cumpleaños para los peques y muy buena calidad/precio».',
+					'El horario llama la atención: abre a las 7:00, pero de martes a viernes cierra a la 1:30 de la madrugada y el sábado a las 2:30. El lunes cierra antes, a las 13:30, y el domingo descansa.',
+				]}
+				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta, precios ni métodos de pago. El surtido que se describe aquí es el que muestran las fotos del perfil y lo que cuentan las reseñas."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Llamar al 957 32 71 71', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Pan, dulces <br />
+							<em>y tartas de encargo.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del obrador.</em>"
+				description="Sin precios publicados: esto es lo que muestran las fotos del perfil y lo que cuentan las reseñas de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica carta ni precios, así que esta web no indica importes. Las tartas y las empanadas se encargan en el local o por teléfono, con antelación."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="Del obrador <br /><em>a la mesa.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: los panes de la calle, las trenzas y dos tartas de encargo."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la calle <br /><em>Guadalquivir.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería Artesana de Villarrubia en la calle Guadalquivir, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Panadería Artesana de Villarrubia"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="El teléfono de la ficha es el 957 32 71 71. La ficha no enlaza web propia, correo ni redes; tampoco publica métodos de pago. Solo indica que no hay aparcamiento accesible, así que esta página no afirma nada sobre el acceso, el aseo ni los asientos. Para tartas o empanadas, conviene llamar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de la Panadería Artesana de Villarrubia"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

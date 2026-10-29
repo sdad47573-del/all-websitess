@@ -1,0 +1,332 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/la-tahona-de-albolafia-panoramica-05.jpg';
+import pasteles from '../assets/fotos/la-tahona-de-albolafia-panoramica-01.jpg';
+import surtido from '../assets/fotos/la-tahona-de-albolafia-panoramica-06.jpg';
+import bandeja from '../assets/fotos/la-tahona-de-albolafia-vertical-07.jpg';
+import cumple from '../assets/fotos/la-tahona-de-albolafia-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'La Tahona de Albolafia · Panadería en Córdoba';
+const description =
+	'La Tahona de Albolafia, panadería y pastelería en la calle María la Talegona, 7 (Poniente Norte, 14005 Córdoba). Pan, palmeras, tartas y bollería, todos los días.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#albolafia`,
+	name: BUSINESS.name,
+	alternateName: ['La Tahona', 'Tahona de Albolafia', 'Panadería La Tahona de Albolafia'],
+	description:
+		'Panadería y pastelería en Poniente Norte (14005 Córdoba), con pan, palmeras de chocolate, bollería, tartas y tartas personalizadas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '15:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '17:00',
+			closes: '21:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const galeria = [
+	{
+		src: pasteles,
+		alt: 'Vitrina de La Tahona de Albolafia con palmeras, tartas de queso, pasteles de nata y bandejas de dulces',
+	},
+	{
+		src: surtido,
+		alt: 'Vitrina con bandejas de pasteles, tartas de manzana, bombones de nata y hojaldres',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja de pasteles variados cortados en porciones, con nata, chocolate y fresa',
+	},
+	{
+		src: cumple,
+		alt: 'Tarta de cumpleaños con lámina de dibujos animados y la palabra «Felicidades» escrita a mano',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2b4a3f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300..700;1,300..600&family=Source+Sans+3:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Tahona de Albolafia, panadería Córdoba, pastelería Córdoba, palmeras de chocolate, tartas personalizadas, Poniente Norte, 14005"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan, palmeras, bollería, tartas y tartas personalizadas en la calle María la Talegona, 7 (14005 Córdoba). Abierta todos los días de 8:30 a 15:30 y de 17:00 a 21:00. 4,3 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vitrina de La Tahona de Albolafia con tartas, pasteles y bollería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2b4a3f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Pastelería"
+			nav={nav}
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Poniente Norte · 14005 Córdoba"
+				title="Pan y pastelería <br /><em>de barrio.</em>"
+				lede={`La Tahona de Albolafia está en la calle María la Talegona, 7, en Poniente Norte. La ficha de Google la clasifica como panadería y pastelería, y sus vitrinas lo confirman: palmeras bañadas de chocolate, bandejas de pasteles variados, tartas de nata y de queso, bollería y tartas de cumpleaños. Abre todos los días de 8:30 a 15:30 y de 17:00 a 21:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={vitrina}
+				imageAlt="Vitrina de La Tahona de Albolafia con bandejas de pasteles, bombones de nata y tartas"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,3</b> en Google · 11 reseñas' },
+					{ label: 'Horario', html: '<b>Todos los días</b> 8:30–15:30 y 17:00–21:00' },
+					{ label: 'Zona', html: '<b>Poniente Norte</b> · 14005' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · pastelería · tartas"
+			/>
+
+			<LocalChips label="Lo que hay en La Tahona" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una tahona <br /><em>de barrio.</em>"
+				paragraphs={[
+					'La Tahona de Albolafia está en la calle María la Talegona, 7, en Poniente Norte (14005 Córdoba). La ficha de Google la clasifica a la vez como panadería y pastelería.',
+					'Las fotos del perfil enseñan las vitrinas por dentro: palmeras bañadas de chocolate, bandejas de pasteles variados con nata, chocolate, fresa y crema, tartas de queso y de fruta, hojaldres y bombones de nata.',
+					'También aparecen tartas de encargo: una con lámina de dibujos animados y la palabra «Felicidades» escrita a mano, y otra redonda cubierta de chocolate y nata con avellanas.',
+					'Las reseñas hablan de «excelente pan y dulces», de que el pan es «muy bueno» y de la atención: «gente muy amable y simpática, con un trato muy educado y respetuoso». Abre todos los días de 8:30 a 15:30 y de 17:00 a 21:00.',
+				]}
+				note="La ficha de Google publica las categorías, la dirección y el horario, pero no teléfono, web, carta ni precios. Las etiquetas de las vitrinas llevan importes, pero cambian, así que esta web no los repite."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Pan, vitrina <br />
+							<em>y tartas por encargo.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
+				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
+				groups={MENU_GROUPS}
+				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. El surtido de la vitrina cambia a lo largo del día: la tahona abre a las 8:30."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: tres de las vitrinas y una tarta de cumpleaños."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En María <br /><em>la Talegona.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de La Tahona de Albolafia en la calle María la Talegona, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Tahona de Albolafia · Poniente Norte"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="La ficha de Google no publica teléfono, web ni redes: el contacto es en la tienda. Indica que no hay acceso para sillas de ruedas, ni aparcamiento, aseo o asientos adaptados. Para encargos de tartas, hay que preguntar en el mostrador."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de La Tahona de Albolafia"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

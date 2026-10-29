@@ -1,0 +1,285 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/el-buen-gusto-panaderia-panoramica-01.jpg';
+import terraza from '../assets/fotos/el-buen-gusto-panaderia-vertical-02.jpg';
+import flan from '../assets/fotos/el-buen-gusto-panaderia-vertical-05.jpg';
+import pasta from '../assets/fotos/el-buen-gusto-panaderia-vertical-03.jpg';
+import carne from '../assets/fotos/el-buen-gusto-panaderia-vertical-04.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS } from '../data/site';
+
+const title = '«El Buen Gusto» Panadería · Panadería de barrio en Poniente Sur, Córdoba';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#el-buen-gusto`,
+	name: BUSINESS.name,
+	alternateName: ['El Buen Gusto Panadería Córdoba', 'Panadería El Buen Gusto'],
+	description:
+		'Panadería de barrio en la calle Naranjal de Almagro, Poniente Sur (14004 Córdoba).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Mesa de la terraza con dos postres bañados en caramelo y nata, junto a la acera',
+	},
+	{
+		src: flan,
+		alt: 'Flan con nata y caramelo servido en un plato blanco en la terraza del local',
+	},
+	{
+		src: pasta,
+		alt: 'Plato de pasta con tomate y queso rallado servido en la mesa de la terraza',
+	},
+	{
+		src: carne,
+		alt: 'Plato de carne con patatas y pimientos servido en la terraza del local',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7c3f1d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400..700;1,400..700&family=Rubik:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Buen Gusto Panadería Córdoba, panadería Poniente Sur, panadería 14004, Naranjal de Almagro, panadería de barrio Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería de barrio en la calle Naranjal de Almagro, Poniente Sur (14004 Córdoba), con el rótulo de panadería en la fachada y mesas en la acera. 4,7 sobre 5 con 7 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de «El Buen Gusto» Panadería en una esquina de Poniente Sur, con los rótulos del local y mesas en la acera"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#7c3f1d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: '',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Panadería · Poniente Sur"
+			nav={nav}
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Poniente Sur · 14004 Córdoba"
+				title="El Buen Gusto, <br /><em>panadería de barrio.</em>"
+				lede={`En la esquina de la calle Naranjal de Almagro, en Poniente Sur (14004), con el rótulo de «Panadería» en la fachada y mesas en la acera. Google la clasifica como panadería y le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas. La ficha no publica horario, teléfono ni catálogo, así que esta web no los inventa: el mapa abre el punto exacto y «Cómo llegar» lanza las indicaciones.`}
+				image={fachada}
+				imageAlt="Fachada de «El Buen Gusto» Panadería en una esquina de Poniente Sur, con los rótulos del local y mesas en la acera"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 7 reseñas' },
+					{ label: 'Horario', html: '<b>No publicado</b> en Google' },
+					{ label: 'Zona', html: '<b>Poniente Sur</b> · 14004' },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Panadería · Esquina con terraza"
+			/>
+
+			<LocalAbout
+				label="La casa"
+				title="Una panadería <br /><em>de esquina.</em>"
+				paragraphs={[
+					'«El Buen Gusto» Panadería está en la calle Naranjal de Almagro, en el distrito Poniente Sur de Córdoba (14004). La ficha de Google no publica el número, solo la calle y las coordenadas, así que el mapa de esta página abre el punto exacto.',
+					'En la fachada se lee «Panadería» junto a los rótulos de cafetería, y el local ocupa la esquina. En las fotos del perfil también aparecen mesas y sillas en la acera, con clientes sentados y platos servidos en la terraza.',
+					'Google la clasifica como panadería y le da 4,7 sobre 5 con 7 reseñas. En esta consulta la ficha muestra la nota media, pero no los textos de las opiniones, así que aquí no se citan.',
+					'La ficha tampoco tiene horario, teléfono ni web cargados: en Google Maps aparecen las opciones de añadirlos. Esta web no rellena esos huecos; para confirmar la apertura, lo mejor es consultar la ficha o pasarse por el local.',
+				]}
+				note="La información de esta página sale de la ficha pública de Google y de las fotos de su galería, consultadas en octubre de 2026. No se han inventado horarios, teléfono, carta ni precios: la propia ficha indica que esos datos faltan."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							La esquina, <br />
+							<em>el rótulo y la terraza.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="El local, <br /><em>en las fotos.</em>"
+				description="Cuatro fotos de la ficha de Google Maps: la terraza, los postres y los platos servidos en sus mesas."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026. Son las fotos del perfil del local, no un catálogo de la panadería."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Poniente <br /><em>Sur.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario no publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de «El Buen Gusto» Panadería en Poniente Sur, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="«El Buen Gusto» Panadería · Naranjal de Almagro"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Abrir en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Ver la ficha en Google ↗', href: MAPS.place, external: true }}
+				reserveNote="La ficha de Google no publica teléfono ni horario, y solo indica que no hay aparcamiento adaptado para sillas de ruedas. No hay más datos de contacto ni de accesibilidad, así que conviene confirmarlo antes de ir."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district}, ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, valoración y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. La ficha no publica horario, teléfono ni catálogo; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de «El Buen Gusto» Panadería"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
