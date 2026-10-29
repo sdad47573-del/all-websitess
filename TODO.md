@@ -45,8 +45,6 @@ https://www.google.com/maps/place/Confiter%C3%ADa+Panader%C3%ADa+Helader%C3%ADa+
 https://www.google.com/maps/place/Panader%C3%ADa-Confiter%C3%ADa+La+Palmera/@37.88536,-4.7764405,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf3c47407c25:0x9b3ce099bcf06257!8m2!3d37.88536!4d-4.7764405!16s%2Fg%2F11nn1vk_t8?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Panader%C3%ADa+cafeter%C3%ADa+Suarez/@37.882498,-4.7832049,17z/data=!4m6!3m5!1s0xd6cdf003d561463:0x9b3f35dc4782eb24!8m2!3d37.882498!4d-4.7832049!16s%2Fg%2F11yg49hfj3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-<<<<<<< HEAD
-=======
 
 https://www.google.com/maps/place/GOAT+M%C3%81LAGA/@36.7042465,-4.4405426,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f79995497399:0x33f9381f5f7c58ac!8m2!3d36.7042465!4d-4.4405426!16s%2Fg%2F11ptvgg6z0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
@@ -135,4 +133,3 @@ https://www.google.com/maps/place/Hamburgueser%C3%ADa+y+Asador+de+Pollos+Padilla
 https://www.google.com/maps/place/Pollos+Pineda/@36.7374079,-4.4799283,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f72b332c1339:0x9adfcbbf8bcef896!8m2!3d36.7374079!4d-4.4799283!16s%2Fg%2F11b7jxxg0f?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/El+Jard%C3%ADn+de+la+Abad%C3%ADa+Comida+casera/@36.7062204,-4.4354665,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7cf6d978787:0x148dbc008bf30c62!8m2!3d36.7062204!4d-4.4354665!16s%2Fg%2F11rgqgbkmf?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
->>>>>>> d53763d3a497548a2fba3b202f9a9d732987cf86
