@@ -1,30 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Panader%C3%ADa+La+Miguita/@37.891186,-4.763633,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf849bf36a5d:0x887d65d83ff8f30b!8m2!3d37.891186!4d-4.763633!16s%2Fg%2F11bzzyfjbh?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Pasteler%C3%ADa+El+Brillante/@37.8972607,-4.7821585,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf6ddfd073a5:0xb38aaeedf4f09a48!8m2!3d37.8972607!4d-4.7821585!16s%2Fg%2F11yvn43xl?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+UHERPAN+S.C.A./@37.9046672,-4.724677,17z/data=!3m1!4b1!4m6!3m5!1s0xd6ce14759f1605b:0x1469dbd90e16a3a8!8m2!3d37.9046672!4d-4.724677!16s%2Fg%2F11k_nkdx9f?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Fripan/@37.8460464,-4.7989501,17z/data=!3m1!4b1!4m6!3m5!1s0xd6d20da626f051f:0x7f9a3c2d76d538ef!8m2!3d37.8460464!4d-4.7989501!16s%2Fg%2F1q5br86w0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Confiter%C3%ADa+Miguel/@37.8591815,-4.7825141,17z/data=!4m6!3m5!1s0xd6d20ecf4fafd95:0x7431f1084085a956!8m2!3d37.8591815!4d-4.7825141!16s%2Fg%2F1tdlwmfb?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Churrer%C3%ADa-confiter%C3%ADa-panader%C3%ADa+Juan/@37.8917444,-4.7993319,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf454c16f41f:0xbb7d4e3e8da456fb!8m2!3d37.8917444!4d-4.7993319!16s%2Fg%2F11hbkcpfb0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Carmelitas/@37.8640164,-4.7740626,17z/data=!4m6!3m5!1s0xd6cd8a876ca4137:0x74cfa8c9f69183c8!8m2!3d37.8640164!4d-4.7740626!16s%2Fg%2F1z44bddwt?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/La+Chaty+Panader%C3%ADa/@37.8985867,-4.7567156,17z/data=!4m6!3m5!1s0xd6cdf972d1854e7:0x357a3547056f995e!8m2!3d37.8985867!4d-4.7567156!16s%2Fg%2F11g6lvgt70?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+Manuela+Mart%C3%ADn+Vargas/@37.8772419,-4.7910638,17z/data=!4m6!3m5!1s0xd6d20a19592b05d:0xac75868f8304f985!8m2!3d37.8772419!4d-4.7910638!16s%2Fg%2F1tcv7nwx?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Confiter%C3%ADa+Panader%C3%ADa+Helader%C3%ADa+Rochel/@37.8811979,-4.7967506,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf680c4a6e8b:0x80d24f50e52ddd2d!8m2!3d37.8811979!4d-4.7967506!16s%2Fg%2F11rqch78l3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa-Confiter%C3%ADa+La+Palmera/@37.88536,-4.7764405,17z/data=!3m1!4b1!4m6!3m5!1s0xd6cdf3c47407c25:0x9b3ce099bcf06257!8m2!3d37.88536!4d-4.7764405!16s%2Fg%2F11nn1vk_t8?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Panader%C3%ADa+cafeter%C3%ADa+Suarez/@37.882498,-4.7832049,17z/data=!4m6!3m5!1s0xd6cdf003d561463:0x9b3f35dc4782eb24!8m2!3d37.882498!4d-4.7832049!16s%2Fg%2F11yg49hfj3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/GOAT+M%C3%81LAGA/@36.7042465,-4.4405426,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f79995497399:0x33f9381f5f7c58ac!8m2!3d36.7042465!4d-4.4405426!16s%2Fg%2F11ptvgg6z0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Asador+el+Torcal/@36.6986743,-4.4481823,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f9d7e3e8741d:0x3286078a76c4164c!8m2!3d36.6986743!4d-4.4481823!16s%2Fg%2F11c6dg4xq4?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Limos+Asador+de+Pollos+y+Comidas+Caseras/@36.6974343,-4.4470931,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f93b56df1fd9:0x3082c231b88782e8!8m2!3d36.6974343!4d-4.4470931!16s%2Fg%2F11ldvy727v?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D

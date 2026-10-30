@@ -1,0 +1,340 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/pasteleria-el-brillante-panoramica-01.jpg';
+import esquina from '../assets/fotos/pasteleria-el-brillante-vertical-03.jpg';
+import napolitanas from '../assets/fotos/pasteleria-el-brillante-apaisada-02.jpg';
+import mano from '../assets/fotos/pasteleria-el-brillante-vertical-04.jpg';
+import migasTaper from '../assets/fotos/pasteleria-el-brillante-vertical-05.jpg';
+import tarta from '../assets/fotos/pasteleria-el-brillante-apaisada-06.jpg';
+import sarten from '../assets/fotos/pasteleria-el-brillante-vista-7-07.jpg';
+import panecillos from '../assets/fotos/pasteleria-el-brillante-vertical-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Pastelería El Brillante · napolitanas, pan y tartas en Córdoba';
+const description =
+	'Pastelería El Brillante, en C. la Palmera, 17 (Norte Sierra, 14006 Córdoba). Pastelería y panadería de obrador: napolitanas de chocolate, panecillos, migas y tartas por encargo. Todos los días de 8:00 a 14:30. 4,5/5 en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#brillante`,
+	name: BUSINESS.name,
+	alternateName: ['El Brillante', 'Pastelería El Brillante Córdoba', 'Panadería El Brillante'],
+	description:
+		'Pastelería y panadería en C. la Palmera, 17 (Norte Sierra, 14006 Córdoba). Napolitanas de chocolate, panecillos, migas y tartas por encargo, todos los días de 8:00 a 14:30.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34957271440',
+	servesCuisine: ['Pastelería', 'Panadería', 'Bollería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '08:00',
+			closes: '14:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Horario', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const galeria = [
+	{
+		src: esquina,
+		alt: 'Esquina de la pastelería El Brillante en la calle La Palmera, con la fachada blanca y el rótulo de panadería',
+	},
+	{
+		src: napolitanas,
+		alt: 'Bandeja de napolitanas y barras de hojaldre cubiertas de chocolate sobre el papel de El Brillante',
+	},
+	{
+		src: mano,
+		alt: 'Una napolitana de chocolate en la mano delante del rótulo azul de El Brillante',
+	},
+	{
+		src: tarta,
+		alt: 'Tarta rectangular con merengue, fruta escarchada y guindas sobre papel de la pastelería',
+	},
+	{
+		src: migasTaper,
+		alt: 'Táper de migas con chorizo y ajos preparado para llevar',
+	},
+	{
+		src: sarten,
+		alt: 'Sartén grande llena de migas recién hechas con chorizo y ajos',
+	},
+	{
+		src: panecillos,
+		alt: 'Bandeja dorada de panecillos recién horneados con corte en cruz',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fbf6ec" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Pastelería El Brillante, pastelería Córdoba, panadería Córdoba, napolitanas de chocolate, migas, tartas nupciales, Norte Sierra, calle La Palmera, 14006"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Napolitanas de chocolate, panecillos, migas y tartas por encargo en C. la Palmera, 17, todos los días de 8:00 a 14:30. 4,5 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Fachada de la Pastelería El Brillante en la calle La Palmera, Córdoba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#fbf6ec"
+			phone="+34957271440"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Brillante"
+			subtitle="Pastelería · Panadería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. la Palmera, 17 · Norte Sierra · Córdoba"
+				title="Chocolate, pan <br /><em>y tartas.</em>"
+				lede={`El Brillante es una pastelería y panadería de barrio en la calle La Palmera, en Norte Sierra. En el mostrador hay napolitanas de chocolate y bandejas de panecillos; también se venden migas preparadas y tartas por encargo. Abre todos los días, de 8:00 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de la Pastelería El Brillante con el rótulo azul y la vitrina del local"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Dirección', html: `<b>${BUSINESS.street}</b> · ${BUSINESS.district}` },
+					{ label: 'Horario', html: '<b>Todos los días</b> · 8:00–14:30' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver las fotos en Google"
+				tag="Abierto los domingos"
+			/>
+
+			<LocalChips label="Lo que hay en El Brillante" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una pastelería <br /><em>de esquina.</em>"
+				paragraphs={[
+					'El Brillante está en el número 17 de la calle La Palmera, en el barrio Norte Sierra. La fachada es blanca, con el nombre en letras azules, y el rótulo de «panadería» cuelga sobre la esquina. Al lado queda una tienda de barrio y un árbol que tapa parte del escaparate.',
+					'Dentro, la vitrina y las bandejas mandan. Las fotos de la ficha son casi todas de chocolate: napolitanas y barras de hojaldre cubiertas, brillantes, recién bañadas. También hay bandejas de panecillos redondos con el corte en cruz, todavía calientes.',
+					'No todo es dulce. El Brillante vende migas preparadas, con chorizo y ajos, en la sartén grande y en táper para llevar. Y hace tartas: la ficha la clasifica como «pastelería especializada en tartas nupciales», y en su galería aparece una tarta rectangular con merengue, fruta escarchada y guindas.',
+					'El papel de envolver lleva el nombre de la casa y el teléfono, y en él se lee «panadería»: es un negocio de obrador de los de siempre, con pastelería y pan en el mismo mostrador. Abre todos los días, domingo incluido, de 8:00 a 14:30.',
+				]}
+				note="La ficha de Google no publica carta, precios ni página web propia. Los precios se consultan en el mostrador. La información de tartas nupciales es la categoría con la que el propio negocio figura en Google."
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas del obrador</p>
+							<h2 id="three-title">La vitrina <br /><em>y la sartén.</em></h2>
+						</div>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La vitrina <br /><em>y el obrador.</em>"
+				description="Siete imágenes de la ficha de Google Maps: la esquina de la tienda, las napolitanas de chocolate, una tarta con merengue, las migas y una bandeja de panecillos."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<section class="rating-band" aria-labelledby="rating-title">
+				<div class="wrap rating-inner">
+					<div class="rating-score">
+						<strong>4,5</strong>
+						<div>
+							<span class="rating-stars" role="img" aria-label="4,5 de 5 estrellas">★★★★★</span>
+							<p id="rating-title" style="margin:0;font-size:.78rem">42 reseñas en Google Maps</p>
+						</div>
+					</div>
+					<p class="rating-copy">
+						La nota de la ficha es 4,5 sobre 5 con 42 reseñas. Esta página no reproduce sus
+						textos: se leen enteros, con autor y fecha, en el enlace a Google.
+					</p>
+					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 42 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la calle <br /><em>La Palmera.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Pastelería El Brillante en la calle La Palmera, 17, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Brillante · Norte Sierra"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google no publica web propia ni datos de accesibilidad del local (solo indica que no hay aparcamiento adaptado). Los encargos de tartas se hablan por teléfono o en el mostrador: esta página no gestiona pedidos."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario, productos y precios pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Llamar a El Brillante"
+			navAriaLabel="Enlaces de la Pastelería El Brillante"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

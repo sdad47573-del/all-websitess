@@ -1,0 +1,249 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería cafetería Suarez · Plaza de la Trinidad, Córdoba';
+const description =
+	'Panadería cafetería Suarez, en la plaza de la Trinidad (Centro, 14003 Córdoba). La ficha de Google no publica teléfono, horario, fotos ni reseñas: aquí solo está lo que consta.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['CafeOrCoffeeShop', 'Bakery'],
+	'@id': `${BUSINESS.siteUrl}/#suarez`,
+	name: BUSINESS.name,
+	alternateName: ['Suarez Córdoba', 'Panadería Suarez', 'Cafetería Suarez'],
+	description:
+		'Panadería y cafetería en la plaza de la Trinidad, Centro (14003 Córdoba).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	servesCuisine: ['Cafetería', 'Panadería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Dónde', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fbf6ec" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Outfit:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería cafetería Suarez, panadería Córdoba, cafetería Córdoba, plaza de la Trinidad, Centro, 14003"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y cafetería en la plaza de la Trinidad, Centro de Córdoba. La ficha de Google no publica teléfono, horario, fotos ni reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Cartel de la Panadería cafetería Suarez en Córdoba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#fbf6ec"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Suarez"
+			subtitle="Panadería · Cafetería"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Pl. de la Trinidad · Centro · 14003</p>
+					<h1 id="hero-title">Pan y café <br /><em>en la Trinidad.</em></h1>
+					<p class="hero-lede">
+						Suarez se anuncia como panadería y cafetería en la plaza de la Trinidad, en
+						el Centro de Córdoba. Google la registra con una sola categoría,
+						«Cafetería», y su ficha no publica teléfono, horario, fotos ni reseñas: aquí
+						no vas a encontrar nada de eso inventado, solo la dirección y el acceso.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={MAPS.directions}>Cómo llegar</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ver la ficha en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>{BUSINESS.street}</b> · {BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</li>
+						<li><b>Horario</b> · no publicado en Google</li>
+						<li><b>Teléfono</b> · no publicado en Google</li>
+					</ul>
+				</div>
+
+				<aside class="hero-card" aria-label="Datos del establecimiento">
+					<span class="hero-card-mark" aria-hidden="true">{BUSINESS.mark}</span>
+					<p class="hero-card-name">Panadería <em>cafetería</em> Suarez</p>
+					<dl>
+						<div><dt>Dirección</dt><dd>{BUSINESS.street}</dd></div>
+						<div><dt>Barrio</dt><dd>{BUSINESS.district} · {BUSINESS.postalCode}</dd></div>
+						<div><dt>Horario</dt><dd>No publicado</dd></div>
+						<div><dt>Teléfono</dt><dd>No publicado</dd></div>
+						<div><dt>Google</dt><dd>Sin reseñas · a la fecha</dd></div>
+						<div><dt>Acceso</dt><dd>Para sillas de ruedas</dd></div>
+					</dl>
+					<a class="hero-card-link" href={MAPS.place} target="_blank" rel="noreferrer">
+						Abrir la ficha en Google Maps ↗
+					</a>
+				</aside>
+			</section>
+
+			<LocalChips label="Lo que consta en la ficha" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un local <br /><em>de plaza.</em>"
+				paragraphs={[
+					'La ficha de Google registra este negocio con un nombre compuesto, «Panadería cafetería Suarez», y una única categoría: «Cafetería». Está en la plaza de la Trinidad, en el Centro de Córdoba (14003), sin número de portal publicado.',
+					'La plaza es una de las más antiguas de la ciudad, con la iglesia de la Trinidad y sus torres a un lado. Es una ubicación de paso, con gente del barrio y visitantes a cualquier hora del día, aunque la ficha no dice nada del local por dentro.',
+					'De los datos prácticos, la ficha publica muy poco: dirección y que hay acceso para sillas de ruedas. No hay teléfono, ni horario, ni web propia, ni descripción, ni carta con precios. Tampoco tiene fotos ni reseñas en el momento de crear esta web.',
+					'Por eso esta página es corta a propósito: recoge lo que consta, explica lo que falta y no rellena los huecos con datos de otros locales de la plaza. Si necesitas saber si está abierto, la única forma fiable es pasarse.',
+				]}
+				note="Sin teléfono y sin horario publicados no hay manera de confirmar la apertura a distancia. Esta página no ofrece un número inventado ni un horario copiado de otro negocio."
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas que sí constan</p>
+						<h2 id="three-title">La plaza, el nombre <br /><em>y lo que falta.</em></h2>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la plaza <br /><em>de la Trinidad.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería cafetería Suarez en la plaza de la Trinidad, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Suarez · Plaza de la Trinidad"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
+				reserveNote="La ficha de Google no publica teléfono, horario, carta, precios ni web propia; de accesibilidad solo indica que hay acceso para sillas de ruedas. Esta página no gestiona pedidos ni encargos."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>acercarse.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos de la ficha pública de Google Maps, consultada en octubre de 2026. La ficha no publica teléfono, horario, fotos ni reseñas. Horario y disponibilidad pueden cambiar; no hay canal publicado para confirmarlos."
+			ctaLabel="Cómo llegar"
+			navAriaLabel="Enlaces de Panadería cafetería Suarez"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
