@@ -1,0 +1,411 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/como-en-casa-comida-casera-apaisada-01.jpg';
+import empanadas from '../assets/fotos/como-en-casa-comida-casera-vertical-02.jpg';
+import tortilla from '../assets/fotos/como-en-casa-comida-casera-apaisada-03.jpg';
+import paella from '../assets/fotos/como-en-casa-comida-casera-vertical-04.jpg';
+import ensaladilla from '../assets/fotos/como-en-casa-comida-casera-vista-5-05.jpg';
+import tartaQueso from '../assets/fotos/como-en-casa-comida-casera-vista-6-06.jpg';
+import arrozLeche from '../assets/fotos/como-en-casa-comida-casera-vista-7-07.jpg';
+import ensalada from '../assets/fotos/como-en-casa-comida-casera-vertical-08.jpg';
+import ensaladaPasta from '../assets/fotos/como-en-casa-comida-casera-vista-9-09.jpg';
+import berenjenas from '../assets/fotos/como-en-casa-comida-casera-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Como en Casa · Comida casera para llevar en Alcalá';
+const description =
+	'Como en Casa, en C. Jorge Luis Borges, 15 (28806 Alcalá de Henares). Menú diario, raciones y comida casera para llevar. Martes a domingo, de 10:30 a 16:00.';
+
+const galeria = [
+	{
+		src: interior,
+		alt: 'El interior de Como en Casa con la vitrina verde, la pizarra de precios y la cocinera detrás del mostrador',
+	},
+	{
+		src: empanadas,
+		alt: 'Dos empanadas grandes recién horneadas en bandejas de aluminio',
+	},
+	{
+		src: tortilla,
+		alt: 'Una tortilla de patatas dorada en un plato morado',
+	},
+	{
+		src: paella,
+		alt: 'Dos paelleras de paella de marisco con gambas y mejillones',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Bandejas de ensaladilla rusa con patata, zanahoria, guisantes y mayonesa',
+	},
+	{
+		src: tartaQueso,
+		alt: 'Un trozo de tarta de queso con base de galleta y cobertura de frutos rojos',
+	},
+	{
+		src: arrozLeche,
+		alt: 'Varios envases de arroz con leche espolvoreado con canela',
+	},
+	{
+		src: ensalada,
+		alt: 'Una ensalada mixta con atún, huevo cocido, tomate y aceitunas',
+	},
+	{
+		src: ensaladaPasta,
+		alt: 'Una ensalada de pasta con atún, maíz, huevo, tomate y pimiento',
+	},
+	{
+		src: berenjenas,
+		alt: 'Berenjenas rellenas gratinadas con queso en una bandeja',
+	},
+];
+
+const precioNumerico = (price) => price?.replace(/[^\d,]/g, '').replace(',', '.');
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Como en Casa',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: precioNumerico(item.price),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#como-en-casa`,
+	name: BUSINESS.fullName,
+	alternateName: ['Como en Casa', 'Como En Casa Alcalá de Henares', 'Comida casera para llevar'],
+	description:
+		'Negocio familiar de comida casera para llevar en la calle Jorge Luis Borges, 15 (28806 Alcalá de Henares). Menú diario, raciones de fin de semana, bocadillos y hamburguesas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.website, BUSINESS.instagram, BUSINESS.facebook],
+	telephone: '+34678332950',
+	email: 'felicia49radu@gmail.com',
+	currenciesAccepted: 'EUR',
+	paymentAccepted: 'Efectivo, tarjeta, Bizum',
+	servesCuisine: ['Comida casera', 'Cocina española', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Alcalá de Henares' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad de Madrid' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:30',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#245332" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&family=Gloock&family=Kalam:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Como en Casa Alcalá de Henares, comida casera para llevar, menú del día Alcalá, raciones Jorge Luis Borges, comida para llevar 28806, bocadillos Alcalá"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Menú diario, raciones de fin de semana y comida casera para llevar en Jorge Luis Borges, 15, Alcalá de Henares. De martes a domingo, 10:30–16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Paella de marisco de Como en Casa, en Alcalá de Henares"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#245332"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Alcalá de Henares"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Como en Casa"
+			subtitle="Comida casera · Alcalá"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Jorge Luis Borges, 15 · Alcalá de Henares"
+				title="La comida de casa, <br /><em>para llevar.</em>"
+				lede={`Como en Casa es un negocio familiar de Alcalá de Henares que cocina platos caseros para llevar desde 2017. De martes a viernes el menú diario cuesta 7,50 €, con tres primeros, tres segundos y media barra de pan; los fines de semana mandan las raciones. Abre de martes a domingo, de 10:30 a 16:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={interior}
+				imageAlt="El interior de Como en Casa con la vitrina verde, la pizarra de precios y la cocinera detrás del mostrador"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Pedir por WhatsApp', href: BUSINESS.whatsappHref, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:30–16:00</b> · martes a domingo' },
+					{ label: 'Menú', html: '<b>7,50 €</b> · de martes a viernes' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida casera"
+			/>
+
+			<LocalChips label="Lo que ofrece Como en Casa" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un negocio familiar <br /><em>de barrio.</em>"
+				paragraphs={[
+					'Como en Casa está en la calle Jorge Luis Borges, 15, en Alcalá de Henares. Abrió en 2017 como negocio familiar y desde entonces prepara comida casera para llevar en un local pequeño, con la vitrina verde, la pizarra de las raciones y el asador al fondo.',
+					'De martes a viernes el menú diario cuesta 7,50 €: tres primeros y tres segundos a elegir, más media barra de pan. La casa publica cada día los menús en Facebook e Instagram. Los sábados y domingos cambia el ritmo y la vitrina se llena de raciones para compartir.',
+					'La pizarra repasa las raciones: pimientos asados, ensaladilla rusa, pisto manchego, tortilla de patatas, calamares, cazón adobado, alitas de pollo, magro con tomate, ragout de ternera, pollo al ajillo, paella y pollo asado. La vitrina añade empanadas, ensaladas, tortilla y postres como la tarta de queso o el arroz con leche.',
+					`Los vecinos le dan ${RATING.label} sobre 5 con ${RATING.count} reseñas. «El cachopo estaba muy rico y venia con patatas, son bastante rápidos atendiendo», cuenta una; «hemos probado el menú del día, algunas raciones y la paella», resume otra.`,
+				]}
+				note="La ficha no publica una carta completa ni datos de accesibilidad o reparto. Los precios de las raciones son los de la pizarra que aparece en las fotos del perfil de Google (octubre de 2026) y pueden variar. El menú diario de la web actual son 7,50 €; una foto de la pizarra marca 5,50 €, un precio anterior o de otra fórmula. Confirma siempre por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se lleva la gente</p>
+					<h2 id="highlights-title">Menú, raciones <br /><em>y encargos.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que hay <br /><em>en la pizarra.</em>"
+				description="El menú diario y los precios de bocadillos y hamburguesas salen de la web del local. Las raciones y sus importes son los de la pizarra de las fotos del perfil. La carta cambia a diario."
+				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="El menú diario son 7,50 € de martes a viernes (tres primeros, tres segundos y media barra). Los platos de cada día no se publican aquí porque cambian: se consultan en las redes del local o por teléfono. Los precios de las raciones proceden de la pizarra fotografiada en octubre de 2026 y pueden haber cambiado. La pizarra marca el menú a 5,50 €, pero la web actual lo anuncia a 7,50 €."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina, la pizarra <br /><em>y los platos.</em>"
+				description="Diez fotografías del perfil de Como en Casa en Google Maps: el interior con la vitrina y la pizarra, las empanadas, la tortilla, las paellas, la ensaladilla, los postres, las ensaladas y las berenjenas gratinadas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 217 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,7 con 217 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí elogian el cachopo, la rapidez, el menú del día, las raciones y la
+							paella. Son las que destaca la ficha; hay muchas más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>217 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Alcalá, <br /><em>Jorge Luis Borges.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.postalCode, BUSINESS.district]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha y en la web del local: de 10:30 a 16:00, de martes a domingo, con el lunes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Como en Casa en la calle Jorge Luis Borges, 15, Alcalá de Henares"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Jorge Luis Borges, 15 · Alcalá"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Web del local', href: BUSINESS.website, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Pedidos por teléfono (${BUSINESS.phone} o ${BUSINESS.secondPhone}), WhatsApp (${BUSINESS.whatsapp}) o en el propio local. La ficha y la web no publican reparto a domicilio ni datos de accesibilidad; pregunta al hacer el pedido si necesitas entrega.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Instagram ↗', href: BUSINESS.instagram, external: true },
+				{ label: 'Facebook ↗', href: BUSINESS.facebook, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps y de la web del local, consultadas en octubre de 2026. Confirma menú, precios y horario antes de la visita."
+			ctaLabel="Llamar a Como en Casa"
+			navAriaLabel="Enlaces de Como en Casa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

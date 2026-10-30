@@ -1,0 +1,404 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/gastronomia-razonable-apaisada-01.jpg';
+import croquetasVitrina from '../assets/fotos/gastronomia-razonable-vertical-02.jpg';
+import bandejas from '../assets/fotos/gastronomia-razonable-vertical-03.jpg';
+import cartel from '../assets/fotos/gastronomia-razonable-apaisada-04.jpg';
+import empanadas from '../assets/fotos/gastronomia-razonable-apaisada-05.jpg';
+import croquetasEtiquetas from '../assets/fotos/gastronomia-razonable-apaisada-06.jpg';
+import bandejasBacon from '../assets/fotos/gastronomia-razonable-vertical-07.jpg';
+import torreznos from '../assets/fotos/gastronomia-razonable-vertical-09.jpg';
+import fachada from '../assets/fotos/gastronomia-razonable-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Gastronomía Razonable · Asador y croquetería en Móstoles';
+const description =
+	'Gastronomía Razonable, en C. Andrómeda, 48 (28938 Móstoles). Asador de pollos, croquetería, arrocería y comida casera para llevar. Jueves a lunes, 9:30–16:30.';
+
+const galeria = [
+	{
+		src: interior,
+		alt: 'El interior de Gastronomía Razonable con la vitrina, las bandejas de comida casera y la pizarra de precios',
+	},
+	{
+		src: croquetasVitrina,
+		alt: 'La vitrina de croquetas caseras con etiquetas de jamón y queso, boletus, ropa vieja y otras variedades',
+	},
+	{
+		src: bandejas,
+		alt: 'Bandejas de comida preparada con guisos y cremas en la vitrina de Gastronomía Razonable',
+	},
+	{
+		src: cartel,
+		alt: 'El cartel de Gastronomía Razonable con la croquetería, la gastronomía casera y los precios',
+	},
+	{
+		src: empanadas,
+		alt: 'Empanadas y empanadillas caseras en la vitrina, junto a bandejas de guisos',
+	},
+	{
+		src: croquetasEtiquetas,
+		alt: 'Bandejas de croquetas con etiquetas de sabores y precios en la vitrina',
+	},
+	{
+		src: bandejasBacon,
+		alt: 'Bandejas de patatas con bacon y arroces preparados para llevar',
+	},
+	{
+		src: torreznos,
+		alt: 'Una torre de torreznos de Atienza crujientes en la vitrina, con la etiqueta de precio',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de ladrillo de Gastronomía Razonable en la calle Andrómeda, con el rótulo rojo y negro',
+	},
+];
+
+const precioNumerico = (price) => price?.replace(/[^\d,]/g, '').replace(',', '.');
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Gastronomía Razonable',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: precioNumerico(item.price),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#gastronomia-razonable`,
+	name: BUSINESS.fullName,
+	alternateName: ['Gastronomía Razonable', 'Gastronomia Razonable Móstoles', 'Asador de Pollos Gastronomía Razonable'],
+	description:
+		'Asador de pollos, croquetería, arrocería y comida casera para llevar en la calle Andrómeda, 48 (28938 Móstoles, Madrid).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34912390271',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Asador', 'Arroces', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Móstoles' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad de Madrid' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '09:30',
+			closes: '16:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7f171b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Public+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Gastronomía Razonable Móstoles, asador de pollos Andrómeda, croquetería Móstoles, comida casera para llevar 28938, paella Móstoles, croquetas caseras"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Asador de pollos, croquetería, arrocería y comida casera para llevar en Andrómeda, 48, Móstoles. Jueves a lunes, 9:30–16:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Torreznos de Atienza en la vitrina de Gastronomía Razonable"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#7f171b"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Móstoles"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Gastronomía Razonable"
+			subtitle="Asador · Croquetería · Móstoles"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Andrómeda, 48 · Móstoles, Madrid"
+				title="Asador, croquetería <br /><em>y comida casera.</em>"
+				lede={`Gastronomía Razonable es una casa de comida para llevar en Andrómeda 48, en Móstoles. Asa pollos, fríe croquetas caseras de 23 sabores y llena la vitrina de guisos, empanadas, arroces y postres. Abre de jueves a lunes, de 9:30 a 16:30, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={interior}
+				imageAlt="El interior de Gastronomía Razonable con la vitrina, las bandejas de comida casera y la pizarra de precios"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:30–16:30</b> · jueves a lunes' },
+					{ label: 'Croquetería', html: '<b>6 uds.</b> · 4,50 €' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Gastronomía Razonable" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una vitrina <br /><em>que no para.</em>"
+				paragraphs={[
+					'Gastronomía Razonable está en la calle Andrómeda, 48, en Móstoles. El rótulo negro y rojo anuncia asador de pollos, croquetería, arrocería y comida casera para llevar; dentro, la vitrina ocupa casi toda la sala y las bandejas se apilan detrás del cristal.',
+					'La croquetería es la seña de la casa: croquetas hechas a mano, seis unidades por 4,50 €, con 23 sabores que se pueden combinar. Van del jamón, el pollo o el rabo de toro al cabrales con plátano, el pulpo a la gallega, la morcilla ibérica o el salmón ahumado con Philadelphia.',
+					'En la vitrina y en el cartel aparecen la ensaladilla, la tortilla de patata, la empanada de pollo o atún, el pisto, las migas, las albóndigas, el rabo de toro, los callos, la fabada, la carrillada y los platos de pollo. La carta cambia cada semana. Los domingos hay paella por raciones y el arroz con bogavante se pide para dos o más.',
+					`Los vecinos le dan ${RATING.label} sobre 5 con ${RATING.count} reseñas. «El pollo y las patatas buenisimos, pero sin duda lo mejor son las croquetas», cuenta una; «ayer pedimos croquetas, migas, pisto y filetes rusos con tomate», resume otra.`,
+				]}
+				note="La ficha no publica carta, web ni precios del pollo asado. Los importes de esta página son los del cartel y las etiquetas de la vitrina fotografiados en octubre de 2026, y los platos varían cada semana. Los torreznos llevan 2,50 €/ud. en el cartel y 3,00 €/ud. en la etiqueta de la vitrina. Confirma siempre por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que sale de la cocina</p>
+					<h2 id="highlights-title">Croqueta, asador <br /><em>y vitrina.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Los precios salen del cartel y de las etiquetas del local que aparecen en las fotos del perfil. La croquetería se pide por seis unidades; los guisos y platos cambian cada semana."
+				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios vistos en el cartel y la vitrina del local en las fotos del perfil de Google (octubre de 2026). La carta varía cada semana. El pollo asado no lleva precio en las fotos. La paella se sirve los domingos y por encargo con un mínimo de cuatro personas; el arroz con bogavante, para dos o más. Los torreznos aparecen a 2,50 €/ud. en el cartel y a 3,00 €/ud. en la vitrina. Confirma disponibilidad y precio por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina, las croquetas <br /><em>y el local.</em>"
+				description="Nueve fotografías del perfil de Gastronomía Razonable en Google Maps: el interior, la vitrina de croquetas, las bandejas de comida casera, las empanadas, los torreznos, el cartel y la fachada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 507 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,7 con 507 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí elogian el pollo, las patatas y, sobre todo, las croquetas. Son las
+							que destaca la ficha; hay muchas más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>507 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Móstoles, <br /><em>Andrómeda 48.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.postalCode, BUSINESS.district]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 9:30 a 16:30, de jueves a lunes. Martes y miércoles cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Gastronomía Razonable en la calle Andrómeda, 48, Móstoles"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Andrómeda, 48 · Móstoles"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono o en el local. La ficha no publica web, pedido online ni reparto a domicilio, y solo marca que no hay aparcamiento ni asientos adaptados. Pregunta al llamar si necesitas entrega o alguna condición concreta."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps; carta y precios del cartel y la vitrina del local, consultados en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Gastronomía Razonable"
+			navAriaLabel="Enlaces de Gastronomía Razonable"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

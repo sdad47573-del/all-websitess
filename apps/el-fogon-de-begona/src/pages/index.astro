@@ -1,0 +1,420 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/el-fogon-de-begona-apaisada-04.jpg';
+import vitrina from '../assets/fotos/el-fogon-de-begona-apaisada-03.jpg';
+import vitrinaDos from '../assets/fotos/el-fogon-de-begona-apaisada-05.jpg';
+import vitrinaTres from '../assets/fotos/el-fogon-de-begona-apaisada-06.jpg';
+import pizarraMenu from '../assets/fotos/el-fogon-de-begona-apaisada-08.jpg';
+import rotulo from '../assets/fotos/el-fogon-de-begona-vertical-01.jpg';
+import paellas from '../assets/fotos/el-fogon-de-begona-vertical-02.jpg';
+import pizarraDia from '../assets/fotos/el-fogon-de-begona-vertical-07.jpg';
+import cartelTortillas from '../assets/fotos/el-fogon-de-begona-vertical-09.jpg';
+import mural from '../assets/fotos/el-fogon-de-begona-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'El Fogón de Begoña · Comida casera en San Blas-Canillejas';
+const description =
+	'El Fogón de Begoña, en C. de Lucas Mallada, 3 (San Blas-Canillejas, 28037 Madrid). Comida casera, pollo asado y menú del día. De 10:00 a 16:30 y de 19:00 a 22:00.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de ladrillo de El Fogón de Begoña con el mural de la granja, el toldo y el rótulo de comida casera',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina de El Fogón de Begoña con bandejas de sopa, pollo a la gallega, ensaladas y guisos',
+	},
+	{
+		src: vitrinaDos,
+		alt: 'Otra vitrina con bandejas de rabo de toro, guisos y postres de El Fogón de Begoña',
+	},
+	{
+		src: vitrinaTres,
+		alt: 'Bandejas de jamón asado, rabo de toro, callos y codillo en la vitrina de El Fogón de Begoña',
+	},
+	{
+		src: pizarraMenu,
+		alt: 'La pizarra del menú del día con primeros, segundos, especialidades y bocadillos',
+	},
+	{
+		src: rotulo,
+		alt: 'El rótulo verde de El Fogón de Bego con «Comida para llevar y a domicilio»',
+	},
+	{
+		src: paellas,
+		alt: 'Tres paellas de El Fogón de Begoña: marinera, arroz negro y mixta',
+	},
+	{
+		src: pizarraDia,
+		alt: 'Las pizarras de platos del día, grupos A y B, con ensaladas, primeros y segundos',
+	},
+	{
+		src: cartelTortillas,
+		alt: 'El cartel de tortillas rellenas de El Fogón de Begoña',
+	},
+	{
+		src: mural,
+		alt: 'El mural de la granja en la fachada de El Fogón de Begoña',
+	},
+];
+
+const precioNumerico = (price) => price?.replace(/[^\d,]/g, '').replace(',', '.');
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de El Fogón de Begoña',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: precioNumerico(item.price),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-fogon-de-begona`,
+	name: BUSINESS.fullName,
+	alternateName: ['El Fogón de Begoña', 'El Fogón de Bego', 'El Fogón de Begoña Madrid'],
+	description:
+		'Establecimiento de comida casera para llevar y a domicilio en la calle de Lucas Mallada, 3 (San Blas-Canillejas, 28037 Madrid). Menú del día, pollo asado, paellas y tortillas rellenas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34910815801',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pollo asado', 'Arroces', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'San Blas-Canillejas' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	amenityFeature: {
+		'@type': 'LocationFeatureSpecification',
+		name: 'Acceso para sillas de ruedas',
+		value: true,
+	},
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '16:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '19:00',
+			closes: '22:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4d3a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Bree+Serif&family=Nunito+Sans:wght@400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Fogón de Begoña Madrid, comida casera San Blas, pollo asado Lucas Mallada, menú del día San Blas-Canillejas, tortillas rellenas Madrid, comida para llevar 28037"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera, pollo asado, paellas y tortillas rellenas en Lucas Mallada, 3, San Blas-Canillejas. Menú del día por 8,50 €."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tres paellas de El Fogón de Begoña: marinera, arroz negro y mixta"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1f4d3a"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="San Blas-Canillejas"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Fogón de Begoña"
+			subtitle="Comida casera · San Blas"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. de Lucas Mallada, 3 · San Blas-Canillejas, Madrid"
+				title="El fogón <br /><em>de cada día.</em>"
+				lede={`El Fogón de Begoña es una casa de comidas en Lucas Mallada, 3, en San Blas-Canillejas. El menú del día cuesta 8,50 €, el pollo asado 8,50 € y la vitrina se llena de guisos, ensaladas, paellas y tortillas rellenas. Abre todos los días menos el miércoles, de 10:00 a 16:30 y de 19:00 a 22:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de ladrillo de El Fogón de Begoña con el mural de la granja, el toldo y el rótulo de comida casera"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–16:30 · 19:00–22:00</b> · miércoles cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · y a domicilio' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida casera"
+			/>
+
+			<LocalChips label="Lo que ofrece El Fogón de Begoña" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El local"
+				title="Un fogón <br /><em>de barrio.</em>"
+				paragraphs={[
+					'El Fogón de Begoña está en la calle de Lucas Mallada, 3, en San Blas-Canillejas. La fachada de ladrillo está pintada con un mural de granja —gallinas, vaca, granero— y el rótulo verde lo anuncia: «El Fogón de Bego · Comida para llevar y a domicilio».',
+					'Dentro esperan la vitrina y las pizarras. En las bandejas aparecen sopa de cocido, pollo a la gallega, rabo de toro, callos a la madrileña, codillo, jamón asado y guisos del día; en la pared, el menú del día, los platos del día y las especialidades.',
+					'El cartel de la tortilla añade otra sección: La Mixta, La Baconcheese, La Serranita, La Campesina, La Noruega, Las Italianas y La Tuya, con los ingredientes que elijas. La pizarra del menú marca 8,50 € por primero, segundo y postre.',
+					`Las reseñas hablan de raciones generosas y de la variedad de la casa: «Las raciones y el bocata muy abundantes» y «hemos probado pollos, croquetas y ahora arroces». La ficha le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, abre de lunes a domingo salvo el miércoles y el teléfono es el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica el menú de cada día, una carta completa ni las condiciones del reparto. Los platos y precios de esta página son los de las pizarras y carteles de las fotos del perfil de Google, consultadas en octubre de 2026. El menú cambia: confírmalo por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que sale del fogón</p>
+					<h2 id="highlights-title">Menú, asador <br /><em>y vitrina.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que hay <br /><em>en la pizarra.</em>"
+				description="La ficha de Google no publica una carta. Esta lista sale de las pizarras del local y de la vitrina que aparecen en las fotos del perfil: menú del día, asador, platos del día y ensaladas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios vistos en las pizarras y carteles del local en las fotos del perfil de Google (octubre de 2026). El menú del día son 8,50 € (primero, segundo y postre) y cambia cada jornada. El pollo asado son 8,50 € y el medio 5,30 €. Confirma disponibilidad y precio por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la vitrina <br /><em>y las paellas.</em>"
+				description="Diez fotografías del perfil de El Fogón de Begoña en Google Maps: la fachada con el mural, las vitrinas, el rótulo, las paellas, las pizarras del día y el cartel de tortillas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 220 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,7 con 220 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí elogian las raciones, los bocatas, el pollo, las croquetas y los
+							arroces. Son las que destaca la ficha; hay muchas más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>220 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En San Blas, <br /><em>Lucas Mallada.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 10:00 a 16:30 y de 19:00 a 22:00, de lunes a martes y de jueves a domingo, con el miércoles cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de El Fogón de Begoña en la calle de Lucas Mallada, 3, San Blas-Canillejas, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Lucas Mallada, 3 · San Blas"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. El rótulo anuncia reparto a domicilio, pero la ficha no detalla zona ni condiciones. La ficha sí marca acceso para sillas de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma menú, precios y horario antes de la visita."
+			ctaLabel="Llamar a El Fogón de Begoña"
+			navAriaLabel="Enlaces de El Fogón de Begoña"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

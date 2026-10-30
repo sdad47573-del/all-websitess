@@ -1,0 +1,384 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/que-comemos-hoy-cuadrada-01.jpg';
+import pollo from '../assets/fotos/que-comemos-hoy-apaisada-02.jpg';
+import calle from '../assets/fotos/que-comemos-hoy-cuadrada-03.jpg';
+import pizarra from '../assets/fotos/que-comemos-hoy-apaisada-07.jpg';
+import rotulo from '../assets/fotos/que-comemos-hoy-vertical-05.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Que Comemos Hoy · Pollo asado y comida casera en Carabanchel';
+const description =
+	'Que Comemos Hoy, en C. de Antonio de Leyva, 20 (Carabanchel, 28019 Madrid). Pollo asado y comida casera para llevar, de martes a domingo, de 10:00 a 15:30.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de ladrillo de Que Comemos Hoy en Antonio de Leyva, 20, con el toldo amarillo de comida casera para llevar',
+	},
+	{
+		src: pollo,
+		alt: 'Medio pollo asado de Que Comemos Hoy servido en un plato con su jugo',
+	},
+	{
+		src: calle,
+		alt: 'La calle Antonio de Leyva con la fachada de Que Comemos Hoy y el toldo amarillo',
+	},
+	{
+		src: pizarra,
+		alt: 'La pizarra de precios de Que Comemos Hoy con pollo asado, guisos, ensaladas y postres',
+	},
+	{
+		src: rotulo,
+		alt: 'El rótulo «Qué comemos hoy?» y el toldo de comida casera para llevar sobre la fachada de ladrillo',
+	},
+];
+
+const precioNumerico = (price) => price?.replace(/[^\d,]/g, '').replace(',', '.');
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Que Comemos Hoy',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: precioNumerico(item.price),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#que-comemos-hoy`,
+	name: BUSINESS.name,
+	alternateName: ['Que Comemos Hoy Madrid', 'Que Comemos Hoy Carabanchel', 'Qué comemos hoy'],
+	description:
+		'Restaurante especializado en pollo asado y comida casera para llevar en la calle de Antonio de Leyva, 20 (Carabanchel, 28019 Madrid).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34915697709',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pollo asado', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Carabanchel' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '15:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#9e3f2c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Figtree:wght@400;500;700&family=Lora:ital,wght@0,400..700;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Que Comemos Hoy Madrid, pollo asado Carabanchel, comida casera Antonio de Leyva, comida para llevar 28019, pollo asado Madrid, Que Comemos Hoy Carabanchel"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado y comida casera para llevar en Antonio de Leyva, 20, Carabanchel. De martes a domingo, de 10:00 a 15:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Medio pollo asado de Que Comemos Hoy en un plato"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#9e3f2c"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Carabanchel"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Que Comemos Hoy"
+			subtitle="Pollo asado · Carabanchel"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. de Antonio de Leyva, 20 · Carabanchel, Madrid"
+				title="Pollo asado <br /><em>y comida de casa.</em>"
+				lede={`Que Comemos Hoy es una casa de comidas para llevar en Antonio de Leyva, en Carabanchel. El pollo asado es la especialidad, y la pizarra del local añade guisos, croquetas, empanada casera, ensaladas, paella y postres. Abre de martes a domingo, de 10:00 a 15:30, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de ladrillo de Que Comemos Hoy en Antonio de Leyva, 20, con el toldo amarillo de comida casera para llevar"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–15:30</b> · lunes cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · pollo asado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Que Comemos Hoy" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pollo asado <br /><em>y pizarra de cada día.</em>"
+				paragraphs={[
+					'Que Comemos Hoy está en la calle de Antonio de Leyva, 20, en Carabanchel. La fachada es de ladrillo y el toldo amarillo lo dice sin rodeos: «Comida casera para llevar». Sobre la persiana, el rótulo pregunta «¿Qué comemos hoy?».',
+					'La pizarra del local es la carta. El pollo asado cuesta 7 € y el medio 4 €; alrededor hay albóndigas, ternera en salsa, pastel de carne, berenjenas rellenas, lasaña, bacalao con tomate, croquetas, empanada casera, empanadillas, boquerones fritos, ensaladas, paella, macarrones y postres.',
+					'Las reseñas hablan de comida casera y de trato: «Belén es genial, muy simpática. La comida casera, muy rica y a precios contenidos», «el pollo asado esta buenisimo, como todo lo que hacen» y «buen trato y servicio de la dueña».',
+					`La ficha de Google lo clasifica como restaurante especializado en pollo y le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de martes a domingo, de 10:00 a 15:30, y cierra el lunes. El teléfono que publica es el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica menú del día, unidades ni datos de accesibilidad. Los platos y precios de esta página son los de la pizarra del local en las fotos del perfil de Google, consultadas en octubre de 2026. La pizarra mezcla importes por unidad y por kilo: confirma el precio y la cantidad al pedir."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que sale del horno</p>
+					<h2 id="highlights-title">Asador, guisos <br /><em>y trato de barrio.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que dice <br /><em>la pizarra.</em>"
+				description="La ficha de Google no publica una carta. Esta lista sale de la pizarra del local que aparece en la foto del perfil: pollo asado, guisos, fritos, ensaladas y postres."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios vistos en la pizarra del local en la foto del perfil de Google (octubre de 2026). El pollo asado son 7 € y el medio 4 €; el redondo de ternera marca 28 €/kilo. El resto de importes se muestran tal como aparecen, sin convertir: pregunta en el local si se cobran al peso."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, el pollo <br /><em>y la pizarra.</em>"
+				description="Cinco fotografías del perfil de Que Comemos Hoy en Google Maps: la fachada de ladrillo, el pollo asado, la calle, la pizarra de precios y el toldo de comida casera."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 76 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,7 con 76 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí elogian el pollo asado, la comida casera, los precios y el trato
+							de la dueña. Son las que destaca la ficha; hay más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>76 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Carabanchel, <br /><em>Antonio de Leyva.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de martes a domingo, de 10:00 a 15:30, con el lunes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Que Comemos Hoy en la calle de Antonio de Leyva, 20, Carabanchel, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Antonio de Leyva, 20 · Carabanchel"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. Tampoco publica acceso adaptado y marca que no hay aparcamiento ni asientos adaptados, así que conviene llamar antes si necesitas silla de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma platos, precios y horario antes de la visita."
+			ctaLabel="Llamar a Que Comemos Hoy"
+			navAriaLabel="Enlaces de Que Comemos Hoy"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

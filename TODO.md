@@ -1,22 +1,6 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
 https://www.google.com/maps/place/La+Casa+del+Pollo/@40.352458,-3.681235,17z/data=!3m1!4b1!4m6!3m5!1s0xd4226bfdf8fa9af:0x82520dcf4af10f5f!8m2!3d40.352458!4d-3.681235!16s%2Fg%2F1hc7_gx_9?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Buen+Gusto+-+Comida+para+llevar/@40.43482,-3.6761776,17z/data=!3m1!4b1!4m6!3m5!1s0xd4228c7680963e3:0x91d288a6d34ea1c5!8m2!3d40.43482!4d-3.6761776!16s%2Fg%2F11cmfz9dtr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Tiempo+de+Comer/@40.4414231,-3.6775185,17z/data=!3m1!4b1!4m6!3m5!1s0xd42290f7707f5ad:0x2ddb9488f9350744!8m2!3d40.4414231!4d-3.6775185!16s%2Fg%2F11sbhpqw_w?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Que+Comemos+Hoy/@40.3946437,-3.7158675,17z/data=!3m1!4b1!4m6!3m5!1s0xd4227c70077f325:0x7285e756b08d1d58!8m2!3d40.3946437!4d-3.7158675!16s%2Fg%2F1tctyvz2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Fog%C3%B3n+de+Bego%C3%B1a+S.L./@40.4300222,-3.6150241,17z/data=!3m1!4b1!4m6!3m5!1s0xd422f9bc43afe75:0xd53e86cac5c2d29f!8m2!3d40.4300222!4d-3.6150241!16s%2Fg%2F11cn67f919?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+Delicias+roly/@40.3919529,-3.7128939,17z/data=!3m1!4b1!4m6!3m5!1s0xd4227b7fedf705f:0xce4f45034f10e99b!8m2!3d40.3919529!4d-3.7128939!16s%2Fg%2F1z44b15c_?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Como+en+Casa+-+Comida+casera+para+llevar/@40.49502,-3.3736737,17z/data=!3m1!4b1!4m6!3m5!1s0xd42497a1a4a06d5:0x54b9b5324d7e9aa3!8m2!3d40.49502!4d-3.3736737!16s%2Fg%2F11hb38bdbl?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Comida+para+llevar+Mesoamerica/@40.3726127,-3.7528003,17z/data=!3m1!4b1!4m6!3m5!1s0xd418900011bc573:0xfa02c70454ea3486!8m2!3d40.3726127!4d-3.7528003!16s%2Fg%2F11y41gjxk2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Gastronomia+Razonable,+Asador+De+Pollos,+Croqueter%C3%ADa,+Arrocer%C3%ADa,+Comida+Casera+Para+Llevar/@40.312041,-3.8612735,17z/data=!3m1!4b1!4m6!3m5!1s0xd418c33e905fda3:0x973bee9e6a6fd513!8m2!3d40.312041!4d-3.8612735!16s%2Fg%2F11c37t0kb7?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Sabores+del+Hogar+%7C+Comida+Casera+para+llevar+by+Dani/@40.4348287,-3.7154037,17z/data=!3m1!4b1!4m6!3m5!1s0xd42290d269393a9:0xc1776e5031cb6532!8m2!3d40.4348287!4d-3.7154037!16s%2Fg%2F11lj2xs74c?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Ofog%C3%B3n+Galego+Comida+para+llevar/@40.3447721,-3.7729959,17z/data=!3m1!4b1!4m6!3m5!1s0xd41893cabaab87f:0xd0b5658401a35aab!8m2!3d40.3447721!4d-3.7729959!16s%2Fg%2F11mv636d5l?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D

@@ -1,0 +1,422 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/comida-para-llevar-mesoamerica-apaisada-01.jpg';
+import tacosPlato from '../assets/fotos/comida-para-llevar-mesoamerica-vista-2-02.jpg';
+import cartel from '../assets/fotos/comida-para-llevar-mesoamerica-vertical-03.jpg';
+import flautas from '../assets/fotos/comida-para-llevar-mesoamerica-apaisada-04.jpg';
+import pupusa from '../assets/fotos/comida-para-llevar-mesoamerica-vertical-05.jpg';
+import fachadaNoche from '../assets/fotos/comida-para-llevar-mesoamerica-vertical-06.jpg';
+import pizarra from '../assets/fotos/comida-para-llevar-mesoamerica-vertical-07.jpg';
+import tacosCarton from '../assets/fotos/comida-para-llevar-mesoamerica-vertical-09.jpg';
+import birria from '../assets/fotos/comida-para-llevar-mesoamerica-vista-10-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Mesoamérica · Tacos, pupusas y baleadas en Carabanchel';
+const description =
+	'Mesoamérica, en C. de Joaquín Turina, 23 (Carabanchel, 28044 Madrid). Tacos, pupusas, baleadas y pollo con tajadas para llevar. Martes a domingo.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de Mesoamérica en la calle Joaquín Turina con el rótulo de madera y el cartel de tacos y pupusas',
+	},
+	{
+		src: tacosPlato,
+		alt: 'Dos tacos de pollo con cilantro, cebolla, salsa verde y limón en un plato blanco',
+	},
+	{
+		src: flautas,
+		alt: 'Una orden de tacos flauta con cilantro, cebolla y limón en una caja para llevar',
+	},
+	{
+		src: pupusa,
+		alt: 'Una pupusa recién hecha envuelta en papel de aluminio',
+	},
+	{
+		src: cartel,
+		alt: 'El cartel naranja de Mesoamérica con tacos, pupusas, baleadas, pollo con tajadas y el horario',
+	},
+	{
+		src: pizarra,
+		alt: 'La pizarra de precios del local con los tacos, las pupusas y las baleadas',
+	},
+	{
+		src: tacosCarton,
+		alt: 'Dos tacos de pollo con cilantro y cebolla en un envase de cartón',
+	},
+	{
+		src: birria,
+		alt: 'Dos tacos de birria con cebolla morada encurtida y limón en un plato',
+	},
+	{
+		src: fachadaNoche,
+		alt: 'La fachada de Mesoamérica iluminada de noche, con el rótulo y el neón verde',
+	},
+];
+
+const precioNumerico = (price) => price?.replace(/[^\d,]/g, '').replace(',', '.');
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Mesoamérica',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: precioNumerico(item.price),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#mesoamerica`,
+	name: BUSINESS.fullName,
+	alternateName: ['Mesoamérica', 'Mesoamerica Carabanchel', 'Comida para llevar Mesoamérica'],
+	description:
+		'Casa de comida para llevar en la calle Joaquín Turina, 23 (28044 Carabanchel, Madrid). Tacos, pupusas, baleadas y pollo con tajadas por encargo.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.facebook],
+	telephone: '+34643642685',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mexicana', 'Hondureña', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Carabanchel' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday'],
+			opens: '13:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday'],
+			opens: '18:30',
+			closes: '22:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday', 'Sunday'],
+			opens: '13:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday', 'Sunday'],
+			opens: '19:00',
+			closes: '23:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#16463f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Pacifico&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Mesoamérica Carabanchel, tacos Joaquín Turina, pupusas Madrid, baleadas Carabanchel, comida para llevar 28044, pollo con tajadas Madrid"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Tacos, pupusas, baleadas y pollo con tajadas por encargo en Joaquín Turina, 23, Carabanchel. Pedidos en el 643 64 26 85."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tacos flauta de Mesoamérica en una caja para llevar"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#16463f"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Carabanchel"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Mesoamérica"
+			subtitle="Comida para llevar · Carabanchel"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. de Joaquín Turina, 23 · Carabanchel, Madrid"
+				title="Tacos, pupusas <br /><em>y baleadas.</em>"
+				lede={`Mesoamérica es una casa de comida para llevar en Joaquín Turina 23, en Carabanchel. Prepara tacos mexicanos, pupusas, baleadas y pollo con tajadas por encargo. Abre de martes a domingo en dos turnos, con la noche desde las 18:30 o las 19:00 según el día, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de Mesoamérica en la calle Joaquín Turina con el rótulo de madera y el cartel de tacos y pupusas"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>13:00–16:00</b> · y noche desde 18:30/19:00' },
+					{ label: 'Pedidos', html: `<b>${BUSINESS.phone}</b> · para llevar` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Mesoamérica" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="México y Honduras <br /><em>en una vitrina.</em>"
+				paragraphs={[
+					'Mesoamérica ocupa un bajo en la calle Joaquín Turina, 23, en Carabanchel. El rótulo de madera y el neón verde del escaparate anuncian «Comida para llevar»; dentro, la pizarra naranja despliega tacos, pupusas y baleadas.',
+					'La cocina mezcla la taquería mexicana con la cocina hondureña: tacos de pastor, pollo, tinga, cochinita pibil, arrachera y birria; pupusas de queso, frijol, chicharrón o loroco; y baleadas sencillas, de pollo, huevo y aguacate, chorizo o con todo.',
+					'También se encargan platos para grupos: pollo con tajadas, tacos flauta por orden de cinco, pupusas de pollo y quesadillas de pollo. La ficha no publica web ni una carta completa; el teléfono 643 64 26 85 es el canal principal para pedir.',
+					`Los vecinos le dan ${RATING.label} sobre 5 con ${RATING.count} reseñas. «He probado los tacos flautas muy ricos y las pupusas revuelta también muy ricas», cuenta una; «la comida super buena, buenos precios, puntuales y las empleadas super amables», resume otra.`,
+				]}
+				note="La ficha de Google no publica horario, carta ni precios: el horario y los importes de esta página son los del cartel y la pizarra que aparecen en las fotos del perfil (octubre de 2026). Las pupusas y los platos por encargo no llevan precio en el cartel. Confirma siempre por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se pide</p>
+					<h2 id="highlights-title">Tacos, pupusas <br /><em>y encargos.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que hay <br /><em>en la pizarra.</em>"
+				description="Los precios salen del cartel y de la pizarra del local que aparecen en las fotos del perfil. Los tacos se piden sueltos; las pupusas y los encargos se consultan por teléfono."
+				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios vistos en el cartel y la pizarra del local en las fotos del perfil de Google (octubre de 2026). El taco de birria, las pupusas y los platos por encargo no llevan precio en el cartel. La ficha no publica horario ni carta: confirma disponibilidad, precio y horario por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, los tacos <br /><em>y la pizarra.</em>"
+				description="Nueve fotografías del perfil de Mesoamérica en Google Maps: la fachada de día y de noche, los tacos, las flautas, la pupusa, la birria, el cartel y la pizarra de precios."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 110 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,7 con 110 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí elogian los tacos flautas, las pupusas, los precios y la atención.
+							Son las que destaca la ficha; hay muchas más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>110 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Carabanchel, <br /><em>Joaquín Turina.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.postalCode, BUSINESS.district]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario del cartel"
+				hoursNote={`El cartel del local marca dos turnos: de 13:00 a 16:00 y por la noche, con cierre a las 22:30 de martes a jueves y a las 23:00 de viernes a domingo. El lunes cierra. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Mesoamérica en la calle Joaquín Turina, 23, Carabanchel, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Joaquín Turina, 23 · Carabanchel"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Facebook del local', href: BUSINESS.facebook, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono. La ficha y el cartel no publican reparto a domicilio, pedido online ni datos de accesibilidad; del local solo consta que no hay aparcamiento adaptado. Pregunta al llamar si necesitas entrega."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Facebook ↗', href: BUSINESS.facebook, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, valoración y fotografías de la ficha pública de Google Maps; carta y horario del cartel del local, consultados en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Mesoamérica"
+			navAriaLabel="Enlaces de Mesoamérica"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
