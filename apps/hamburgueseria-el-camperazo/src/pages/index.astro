@@ -1,0 +1,302 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/hamburgueseria-el-camperazo-apaisada-01.jpg';
+import campero from '../assets/fotos/hamburgueseria-el-camperazo-apaisada-02.jpg';
+import patatas from '../assets/fotos/hamburgueseria-el-camperazo-apaisada-03.jpg';
+import pizza from '../assets/fotos/hamburgueseria-el-camperazo-apaisada-04.jpg';
+import cartaPizzas from '../assets/fotos/hamburgueseria-el-camperazo-vertical-05.jpg';
+import tarjeta from '../assets/fotos/hamburgueseria-el-camperazo-vertical-06.jpg';
+import tamano from '../assets/fotos/hamburgueseria-el-camperazo-vertical-07.jpg';
+import hamburguesa from '../assets/fotos/hamburgueseria-el-camperazo-vertical-08.jpg';
+import pizarra from '../assets/fotos/hamburgueseria-el-camperazo-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Hamburguesería El Camperazo · Camperos y pizzas en Puerto de la Torre';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de El Camperazo en la esquina de Mora y Cabrera, con el rótulo naranja, la persiana metálica y el cartel de venta de hielo',
+	},
+	{
+		src: pizza,
+		alt: 'Pizza con gambas, anchoas, champiñones y rodajas de tomate en su caja, junto al cartel del Día del Camperazo',
+	},
+	{
+		src: patatas,
+		alt: 'Patatas fritas cubiertas de queso fundido y bacon en una bandeja de aluminio',
+	},
+	{
+		src: tamano,
+		alt: 'Campero sobre papel de estraza, tapado a medias por dos manos para mostrar lo que ocupa',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa abierta sobre papel de periódico, con carne a la plancha, queso, huevo y bacon',
+	},
+	{
+		src: pizarra,
+		alt: 'Pizarra verde de El Camperazo con los supercamperos, superbocatas y superhamburguesas y el precio de cada uno',
+	},
+	{
+		src: cartaPizzas,
+		alt: 'Carta de pizzas y varios del local, con las quince pizzas, las raciones y las bebidas y sus precios',
+	},
+	{
+		src: tarjeta,
+		alt: 'Tarjeta de El Camperazo con el logo, los dos teléfonos de pedidos, el código QR y la dirección',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#hamburgueseria-el-camperazo`,
+	name: BUSINESS.fullName,
+	alternateName: ['El Camperazo', 'Hamburguesería El Camperazo Puerto de la Torre'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	priceRange: BUSINESS.priceRange,
+	servesCuisine: ['Hamburguesas', 'Pizzas', 'Bocadillos', 'Camperos'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Puerto de la Torre' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '20:00',
+			closes: '23:59',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: false },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: false },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#16120f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="El Camperazo, Hamburguesería El Camperazo, camperos Málaga, hamburguesas Puerto de la Torre, pizzas Puerto de la Torre, C. Mora y Cabrera 38, bocatas Málaga, patatas con queso Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Camperos desde 3,00 €, pizzas desde 9,00 € y raciones para compartir en Puerto de la Torre. De jueves a domingo, 20:00–24:00. 3,8 sobre 5 con 485 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Campero de El Camperazo cortado en dos sobre papel de estraza"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#16120f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Puerto de la Torre, Málaga"
+			preload={[campero]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Camperazo"
+			subtitle="Hamburguesería · Puerto de la Torre"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
+				title="Camperos <br /><em>potentes.</em>"
+				lede={`En la esquina de Mora y Cabrera, 38, en Puerto de la Torre. Camperos de 3,00 € a 4,50 €, bocatas, hamburguesas, pizzas de 9,00 € y raciones para picar. Abre de jueves a domingo de 20:00 a 24:00 y la ficha de Google le da 3,8 sobre 5 con 485 reseñas.`}
+				image={campero}
+				imageAlt="Campero de El Camperazo cortado en dos mitades, con lechuga, tomate, mahonesa y carne a la plancha"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,8</b> en Google · 485 reseñas' },
+					{ label: 'Horario', html: '<b>20:00–24:00</b><br />Jueves a domingo' },
+					{ label: 'Campero', html: '<b>desde 3,00 €</b><br />Pizzas desde 9,00 €' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de Hamburguesería El Camperazo" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Hamburguesería <br /><em>de esquina.</em>"
+				paragraphs={[
+					'El Camperazo está en la esquina de la calle Mora y Cabrera, 38, en Puerto de la Torre, con el rótulo naranja sobre la persiana y las sillas de barrio en la acera. Google lo clasifica como restaurante y hamburguesería, y le da 3,8 sobre 5 con 485 reseñas.',
+					'La especialidad son los camperos: pan de plancha, carne, lechuga, tomate y mahonesa, desde 3,00 € el normal hasta 4,50 € el camperazo con pollo, bacon, doble queso, gouda y huevo. La carta sigue con bocatas, hamburguesas de pollo, ternera o buey, pizzas de 9,00 € y raciones para compartir.',
+					'Las fotos del perfil lo enseñan tal cual: el campero cortado en dos, las patatas cubiertas de queso y bacon, la hamburguesa con huevo y bacon, la pizza de gambas y anchoas y las pizarras con los precios a la vista. También la tarjeta con los dos teléfonos de pedidos.',
+					'Abre solo de noche, de jueves a domingo de 20:00 a 24:00; de lunes a miércoles está cerrado. Los jueves hay Día del Camperazo: el cartel de la casa anuncia que pides la cena y te llevan la bebida. La ficha no marca accesibilidad: no consta aparcamiento, aseo ni asientos adaptados.',
+				]}
+				note="La información sale de la ficha pública de Google Maps, de las pizarras y carteles fotografiados en el perfil del local y de las reseñas. No hay web oficial: si algo cambia, manda lo que digan en el bar o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Carta y precios <br /><em>a la vista.</em>"
+				description="Copiada de las pizarras y carteles del local fotografiados en Google Maps: supercamperos, superbocatas, superhamburguesas, pizzas, raciones y bebidas."
+				cta={{ label: 'Ver las cartas en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Los precios son los que aparecen en las cartas del local y pueden haber cambiado. Antes de un pedido grande o de una celebración, llama y confirma lo que hay esa noche."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Ocho fotos <br /><em>de la casa.</em>"
+				description="Las fotografías del perfil de El Camperazo en Google Maps: la esquina del local, el campero, la pizza, las patatas, la hamburguesa y las cartas con los precios."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>la esquina.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Málaga, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: jueves, viernes, sábado y domingo de 20:00 a 24:00. Lunes, martes y miércoles cerrado. En festivos puede cambiar; el día de Todos los Santos, por ejemplo, la ficha avisa de que el horario podría ser distinto."
+				mapTitle="Mapa de Hamburguesería El Camperazo en la calle Mora y Cabrera 38, Puerto de la Torre, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Camperazo · Puerto de la Torre"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote={`No hay reservas ni pedidos en línea en esta página. Para mesa o para encargar, llama: la tarjeta del local da el ${BUSINESS.phone} y el ${BUSINESS.ordersPhone}. El reparto a domicilio no consta como servicio en la ficha de Google, así que pregunta al hacer el pedido.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Hamburguesería El Camperazo"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

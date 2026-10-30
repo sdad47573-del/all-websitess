@@ -1,0 +1,408 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachadaNoche from '../assets/fotos/hoy-cocino-yo-apaisada-01.jpg';
+import tarrinas from '../assets/fotos/hoy-cocino-yo-vertical-02.jpg';
+import vitrina from '../assets/fotos/hoy-cocino-yo-apaisada-03.jpg';
+import fachadaDia from '../assets/fotos/hoy-cocino-yo-apaisada-04.jpg';
+import pollo from '../assets/fotos/hoy-cocino-yo-vertical-05.jpg';
+import interiorCliente from '../assets/fotos/hoy-cocino-yo-apaisada-06.jpg';
+import ensaladaGarbanzos from '../assets/fotos/hoy-cocino-yo-cuadrada-07.jpg';
+import ensaladilla from '../assets/fotos/hoy-cocino-yo-cuadrada-08.jpg';
+import interiorCocina from '../assets/fotos/hoy-cocino-yo-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Hoy cocino yo! · Comida casera para llevar en Málaga-Este';
+const description =
+	'Hoy cocino yo!, comida casera para llevar y a domicilio en C. Fernando Camino, 11 (Málaga-Este, 29016 Málaga). Conos de pescado frito, pollo asado, bocadillos, ensaladas y platos del día.';
+
+const galeria = [
+	{
+		src: fachadaNoche,
+		alt: 'La fachada de Hoy cocino yo! de noche, con el rótulo en neón y la vitrina iluminada junto a la calle',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina del local con empanadas, empanadillas, bocadillos, tartas y tarrinas de ensalada',
+	},
+	{
+		src: tarrinas,
+		alt: 'Tarrinas de ensalada con tomate, queso fresco, garbanzos y pepino, y ensaladilla con huevo',
+	},
+	{
+		src: pollo,
+		alt: 'Cuartos de pollo asado dorados en una bandeja de aluminio',
+	},
+	{
+		src: ensaladaGarbanzos,
+		alt: 'Ensalada de garbanzos con tomate, pepino, queso fresco y cebolla morada en un bol de cartón',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Ensaladilla rusa con patata, atún, aceitunas, huevo cocido y pimiento en un bol de cartón',
+	},
+	{
+		src: fachadaDia,
+		alt: 'La fachada de Hoy cocino yo! de día, con el rótulo negro y una clienta entrando en el local',
+	},
+	{
+		src: interiorCliente,
+		alt: 'Una clienta en la vitrina del local, con los cocineros al fondo y las lámparas amarillas',
+	},
+	{
+		src: interiorCocina,
+		alt: 'El interior de Hoy cocino yo! con la vitrina, los cocineros, la máquina de refrescos y el techo de hexágonos',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Hoy cocino yo!',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#hoy-cocino-yo`,
+	name: BUSINESS.name,
+	alternateName: ['Hoy cocino yo Málaga', 'Hoy Cocino Yo takeaway', 'Comida casera Fernando Camino'],
+	description:
+		'Comida casera para llevar y a domicilio en la calle Fernando Camino, 11 (Málaga-Este, 29016 Málaga). Conos de pescado frito, bocadillos, pollo asado, ensaladas y platos del día.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34673183255',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pescado frito', 'Comida para llevar'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '10:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f3d34" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Hoy cocino yo Málaga, comida para llevar Málaga-Este, comida casera Málaga, conos de pescado frito, bocadillos Málaga, pollo asado Málaga, ensaladas para llevar, comida a domicilio Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar y a domicilio en Fernando Camino, 11. Conos de pescado frito, bocadillos, pollo asado, ensaladas y platos del día."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada iluminada de Hoy cocino yo! en Málaga-Este"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#1f3d34"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachadaNoche]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Hoy cocino yo!"
+			subtitle="Comida casera para llevar · Málaga-Este"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Fernando Camino, 11 · Málaga-Este"
+				title="Comida casera, <br /><em>hoy sin cocinar.</em>"
+				lede={`Conos de pescado frito, bocadillos, pollo asado, ensaladas y platos del día preparados con ingredientes frescos. Hoy cocino yo! tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachadaNoche}
+				imageAlt="Fachada de Hoy cocino yo! de noche, con el rótulo en neón y la vitrina iluminada"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–21:00</b> · L a V' },
+					{ label: 'Fin de semana', html: '<b>10:00–16:00</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar y a domicilio"
+			/>
+
+			<LocalChips label="Lo que ofrece Hoy cocino yo!" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una vitrina <br /><em>y una cocina.</em>"
+				paragraphs={[
+					'En la calle Fernando Camino, 11, en Málaga-Este, hay una tienda de comida con el rótulo en neón y una vitrina que se llena cada mañana. Hoy cocino yo! es cocina casera para llevar, preparada el mismo día con ingredientes frescos.',
+					'La especialidad son los conos de pescado recién frito y los bocadillos con sabor, según la descripción del propio negocio. Google lo clasifica como restaurante de comida para llevar y como comida a domicilio.',
+					'En la vitrina caben más cosas: empanadas y empanadillas, tartas, pollo asado en bandeja y tarrinas de ensalada preparadas para salir. Las opiniones añaden pulpo, paella, ensaladas variadas y patatas fritas hechas al momento.',
+					'Abre de 10:00 a 21:00 de lunes a viernes y hasta las 16:00 los fines de semana. Tiene 4,6 sobre 5 con 214 reseñas; las publicadas hablan de raciones generosas, comida casera y buen precio.',
+				]}
+				note="La ficha no publica carta, precios, web ni redes sociales; solo el teléfono. Los platos citados son los que aparecen en su descripción, en las reseñas y en las fotografías del local."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+					{ label: 'Llamar al 673 18 32 55', href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Lo que nombran la descripción del negocio, las reseñas y las fotos del local. Sin carta cerrada ni precios inventados: el día se consulta por teléfono."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha de Google no incluye carta ni precios. Para saber qué hay hoy, cuánto cuesta y si quedan conos o pollo, llama al 673 18 32 55 antes de acercarte."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada <br /><em>y la vitrina.</em>"
+				description="Nueve fotografías del perfil de Hoy cocino yo!: la fachada de día y de noche, la vitrina con empanadas y bocadillos, el pollo asado, las tarrinas de ensalada y el interior."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Raciones <em>generosas.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							La media es 4,6 sobre 5 con 214 valoraciones. Las tres opiniones publicadas hablan de
+							comida casera, raciones generosas, ensaladas variadas y patatas recién hechas:
+							<a href={MAPS.reviews} target="_blank" rel="noreferrer">el resto se lee en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Málaga-<br /><em>Este.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de lunes a viernes, de 10:00 a 21:00; sábados y domingos, de 10:00 a 16:00. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Hoy cocino yo! en la calle Fernando Camino, 11, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Fernando Camino, 11"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Para encargar, llama al 673 18 32 55. Google marca acceso para sillas de ruedas y no publica aparcamiento ni asientos adaptados. Tampoco detalla zonas ni horarios de reparto."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario, descripción y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma horario y disponibilidad antes de encargar."
+			ctaLabel="Llamar a Hoy cocino yo!"
+			navAriaLabel="Enlaces de Hoy cocino yo!"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

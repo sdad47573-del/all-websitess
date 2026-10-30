@@ -1,0 +1,404 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/kebab-andromeda-panoramica-01.jpg';
+import techo from '../assets/fotos/kebab-andromeda-apaisada-02.jpg';
+import bandejaHamburguesas from '../assets/fotos/kebab-andromeda-apaisada-03.jpg';
+import barra from '../assets/fotos/kebab-andromeda-vertical-04.jpg';
+import bandejaSalsas from '../assets/fotos/kebab-andromeda-apaisada-05.jpg';
+import cartelPrecios from '../assets/fotos/kebab-andromeda-apaisada-06.jpg';
+import fachada from '../assets/fotos/kebab-andromeda-vertical-07.jpg';
+import asador from '../assets/fotos/kebab-andromeda-vertical-08.jpg';
+import vitrina from '../assets/fotos/kebab-andromeda-vertical-09.jpg';
+import rollo from '../assets/fotos/kebab-andromeda-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Kebab Andrómeda · Kebab y pizza turca en Teatinos, Málaga';
+const description =
+	'Kebab Andrómeda, kebab, pizza turca y hamburguesas en C. Andrómeda, 15, local 2 (Teatinos-Universidad, 29010 Málaga). Abierto todos los días de 13:00 a 16:00 y de 20:00 a 1:00.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de Kebab Andrómeda de noche, con el rótulo negro y rojo y el cartel de precios iluminado junto a la puerta',
+	},
+	{
+		src: interior,
+		alt: 'Interior de Kebab Andrómeda: mesas de madera clara, sillas turquesa, la barra con la vitrina y los asadores al fondo, junto al ventanal a la calle',
+	},
+	{
+		src: asador,
+		alt: 'Un pincho de pollo en el asador giratorio, con la carne ya cortada en la bandeja y otra pieza asándose al lado',
+	},
+	{
+		src: barra,
+		alt: 'La barra de Kebab Andrómeda con la vitrina de verduras, dos asadores de pollo y el cartel de precios en la parte superior',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina de la barra con tomate, lechuga, cebolla y champiñones, y los botes de salsa de yogur, kétchup y mostaza',
+	},
+	{
+		src: cartelPrecios,
+		alt: 'El cartel de precios del local con los rollos, hamburguesas, hot dog y el sultán, cada uno con su precio',
+	},
+	{
+		src: bandejaSalsas,
+		alt: 'Bandeja de aluminio con patatas, carne de kebab y salsa de yogur y picante por encima',
+	},
+	{
+		src: rollo,
+		alt: 'Un rollo de kebab abierto en pan de dürüm con carne, cebolla morada y pepinillos, junto a una alita frita y una Coca-Cola',
+	},
+	{
+		src: bandejaHamburguesas,
+		alt: 'Bandeja con dos hamburguesas, dos raciones de patatas fritas, Aquarius y Coca-Cola, sobre una mesa con la carta del local',
+	},
+	{
+		src: techo,
+		alt: 'Techo del local con lámparas de mimbre, el aire acondicionado y una pantalla de televisión sobre la pared de madera',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Kebab Andrómeda',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#kebab-andromeda`,
+	name: BUSINESS.name,
+	alternateName: ['Kebab Andromeda Málaga', 'Kebab Andrómeda Teatinos', 'Hamburguesería Andrómeda'],
+	description:
+		'Kebab, pizza turca y hamburguesas en la calle Andrómeda, 15, local 2 (Teatinos-Universidad, 29010 Málaga). Abierto todos los días en dos turnos, con salsa de yogur y picante.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina turca', 'Kebab', 'Comida rápida'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '13:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '20:00',
+			closes: '01:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#131a2e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Kebab Andrómeda Málaga, kebab Teatinos, pizza turca Málaga, hamburguesería Teatinos, kebab cerca de la universidad, comida turca Málaga, kebab a domicilio Teatinos"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Kebab, pizza turca, rollos y hamburguesas en Teatinos. Abierto todos los días de 13:00 a 16:00 y de 20:00 a 1:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja con dos hamburguesas, patatas fritas y refrescos de Kebab Andrómeda"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#131a2e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Kebab Andrómeda"
+			subtitle="Kebab y pizza turca · Teatinos"
+			nav={nav}
+			cta={{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Andrómeda, 15, local 2 · Teatinos-Universidad"
+				title="Kebab y pizza turca <br /><em>en Teatinos.</em>"
+				lede={`Kebab Andrómeda abre todos los días junto al campus: rollos de kebab y dürüm, hamburguesas, pizza turca y salsa de yogur o picante. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="Fachada de Kebab Andrómeda de noche, con el rótulo negro y rojo y el cartel de precios iluminado"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>13:00–16:00</b> · <b>20:00–1:00</b>' },
+					{ label: 'Abierto', html: '<b>Todos los días</b> · sin cierre' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Abierto hasta la 1:00"
+			/>
+
+			<LocalChips label="Lo que ofrece Kebab Andrómeda" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una barra, <br /><em>dos asadores.</em>"
+				paragraphs={[
+					'Kebab Andrómeda está en la calle Andrómeda, 15, local 2, en Teatinos-Universidad, a un paso del campus. La fachada de noche, con el rótulo negro y rojo y el cartel de precios iluminado, es la primera pista: aquí se viene a comer rápido y bien.',
+					'La ficha de Google lo resume con una frase: «la auténtica comida turca con un toque diferente». Google lo clasifica a la vez como restaurante de comida rápida y restaurante turco.',
+					'En la barra hay dos asadores giratorios —pollo y carne— y una vitrina con tomate, lechuga, cebolla, champiñones y los botes de salsa de yogur y picante. El pan se calienta al momento y el rollo se monta delante de quien espera.',
+					'El local abre todos los días en dos turnos, de 13:00 a 16:00 y de 20:00 a 1:00, y tiene 4,7 sobre 5 con 669 reseñas. Las opiniones repiten tres cosas: limpieza, rapidez y buen trato.',
+				]}
+				note="La ficha no publica teléfono, página web ni redes sociales, así que esta web no inventa un número de contacto. Los nombres y precios de la carta salen del cartel que se ve en las fotos del local; pueden cambiar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del cartel <br /><em>de la casa.</em>"
+				description="Los productos y precios del panel que aparece en las fotos del local. La pizza turca, que no está en ese panel, la citan las reseñas."
+				cta={{ label: 'Ver el cartel en Google', href: MAPS.place }}
+				groups={MENU}
+				note="Precios copiados del cartel fotografiado en el perfil de Google de octubre de 2026: casi todos los rollos y hamburguesas incluyen patatas y bebida. La ficha no publica una carta propia ni un teléfono, así que confirma en el local antes de pedir."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada <br /><em>y la barra.</em>"
+				description="Diez fotografías del perfil de Kebab Andrómeda: la fachada de noche, el interior, los asadores, la vitrina de verduras, el cartel de precios y varios pedidos."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">4,7 <em>de 5.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							Las tres reseñas que acompañan a esta ficha hablan de limpieza, rapidez, trato y
+							precio. No hay opiniones negativas publicadas en el momento de consultarla, pero la
+							nota es 4,7 y no 5: <a href={MAPS.reviews} target="_blank" rel="noreferrer"
+								>el resto se lee en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la calle <br /><em>Andrómeda.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: dos turnos todos los días, de 13:00 a 16:00 y de 20:00 a 1:00, sin día de cierre. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Kebab Andrómeda en la calle Andrómeda, 15, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Andrómeda, 15 · local 2"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: 'Abrir la ficha en Google Maps ↗', href: MAPS.place, external: true }}
+				reserveNote="No hay reservas ni pedidos online: la ficha no publica teléfono ni página web, así que la vía es ir al local. Google marca acceso para sillas de ruedas y aseo adaptado, y no publica datos de aparcamiento adaptado."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario, carta y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Kebab Andrómeda"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
