@@ -1,0 +1,425 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mesa from '../assets/fotos/limos-asador-de-pollos-apaisada-04.jpg';
+import cartelMenus from '../assets/fotos/limos-asador-de-pollos-apaisada-01.jpg';
+import pastela from '../assets/fotos/limos-asador-de-pollos-apaisada-02.jpg';
+import vitrina from '../assets/fotos/limos-asador-de-pollos-apaisada-03.jpg';
+import hamburguesas from '../assets/fotos/limos-asador-de-pollos-apaisada-05.jpg';
+import fachada from '../assets/fotos/limos-asador-de-pollos-apaisada-07.jpg';
+import postres from '../assets/fotos/limos-asador-de-pollos-apaisada-10.jpg';
+import catering from '../assets/fotos/limos-asador-de-pollos-vertical-06.jpg';
+import ensalada from '../assets/fotos/limos-asador-de-pollos-vertical-08.jpg';
+import asador from '../assets/fotos/limos-asador-de-pollos-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Limos Asador de Pollos y Comidas Caseras · Málaga';
+const description =
+	'Limos Asador de Pollos y Comidas Caseras, en C. Frigiliana, 15 (Carretera de Cádiz, Málaga). Pollos asados, patatas, croquetas, ensaladillas y postres. Menús desde 8 €.';
+
+const galeria = [
+	{
+		src: asador,
+		alt: 'El asador giratorio de Limos con varios pollos dorándose a la brasa',
+	},
+	{
+		src: cartelMenus,
+		alt: 'El interior del local con el cartel de los menús 1, 2 y 3 y sus precios, la nevera de refrescos y la estantería del pan',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de Limos con el rótulo de Asador de Pollos y Comidas Caseras, el teléfono y los perfiles de Facebook e Instagram',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina del mostrador con ensaladilla, ensalada campera, albóndigas en salsa, salchichas y empanada',
+	},
+	{
+		src: pastela,
+		alt: 'Bandejas de pastela de pollo cortada en porciones y adornada con banderitas de España',
+	},
+	{
+		src: hamburguesas,
+		alt: 'Bandeja de mini hamburguesas con pan de sésamo y lechuga preparadas para encargos',
+	},
+	{
+		src: ensalada,
+		alt: 'Cuencos de ensalada con langostinos, maíz, palitos de cangrejo y tomate cherry',
+	},
+	{
+		src: catering,
+		alt: 'Mesa de catering con bandejas de fritos y bocadillos preparados para una celebración',
+	},
+	{
+		src: postres,
+		alt: 'La vitrina de postres con natillas a 1,30 euros y una tarta casera',
+	},
+	{
+		src: mesa,
+		alt: 'Una mesa con pollo asado, patatas, ensaladilla, pan y refrescos de un pedido de Limos',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Limos',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#limos`,
+	name: BUSINESS.name,
+	alternateName: ['Limos Málaga', 'Limos Asador de Pollos', 'Asador de Pollos Limos'],
+	description:
+		'Asador de pollos y comida casera para llevar en la calle Frigiliana, 15, Carretera de Cádiz (29003 Málaga). Pollos asados, patatas, croquetas, ensaladillas y postres.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34687028444',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Pollo asado', 'Comida casera', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Monday',
+			opens: '09:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:30',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#191411" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Manrope:wght@400;500;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Limos Asador de Pollos, pollos asados Málaga, comida casera Carretera de Cádiz, pollo asado para llevar Málaga, pastela de pollo Limos, croquetas Málaga, ensaladilla, menú pollo asado, asador calle Frigiliana"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados, patatas, croquetas, ensaladillas y postres en la calle Frigiliana, 15, Carretera de Cádiz. Menús desde 8 €."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Un pedido de Limos con pollo asado, patatas, ensaladilla y pan"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#191411"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[mesa]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Limos"
+			subtitle="Pollos asados · Carretera de Cádiz"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Frigiliana, 15 · Carretera de Cádiz, Málaga"
+				title="Pollo asado <br /><em>y comida de casa.</em>"
+				lede={`Limos lleva el rótulo de asador de pollos y comidas caseras bien visible en la calle Frigiliana. En el asador giran los pollos, en la vitrina esperan la ensaladilla, la ensalada campera y las albóndigas, y el cartel de la pared anuncia tres menús desde 8 €. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={mesa}
+				imageAlt="Una mesa con pollo asado, patatas, ensaladilla, pan y refrescos de un pedido de Limos"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>X–D 12:30–16:00</b> · lunes 9:00–17:00' },
+					{ label: 'Menús', html: '<b>Desde 8 €</b> · para llevar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Menú 1 · 8,00 €"
+			/>
+
+			<LocalChips label="Lo que ofrece Limos" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un asador de pollos <br /><em>con vitrina y menús.</em>"
+				paragraphs={[
+					'Limos Asador de Pollos y Comidas Caseras está en la calle Frigiliana, 15, en la Carretera de Cádiz. La fachada blanca, el rótulo con el logo del pollo y las palabras «Asador de Pollos · Comidas Caseras» se ven desde la acera; en la puerta, una pizarra anuncia la tortilla de patatas, la pastela de pollo y la ensalada mixta.',
+					'La ficha de Google lo clasifica como pollería y como restaurante de comida para llevar. Su descripción lo resume así: «Todos los días variedad de comidas, pollos asados, patatas, croquetas, ensaladillas, postres...». Abre el lunes de 9:00 a 17:00 y de miércoles a domingo de 12:30 a 16:00; el martes cierra.',
+					'Dentro, el cartel de la pared detalla tres menús: el 1 por 8 € (medio pollo, viena, media de patatas y bebida), el 2 por 15,50 € (pollo entero, barra de pan, patatas y bebidas) y el 3 por 32 € (dos pollos, dos barras, dos patatas, ensalada y bebidas). En la vitrina se leen la ensalada campera a 3,50 €, las albóndigas en salsa a 4,50 € y las natillas a 1,30 €.',
+					'Google le da 4,7 sobre 5 con 83 reseñas. Una de ellas lo resume en una frase: «El pollo, la pastela todo buenisimo y baratito». La ficha marca además el acceso para sillas de ruedas y el aparcamiento adaptado. El rótulo de la fachada muestra el teléfono 687 028 444 y los perfiles de Facebook e Instagram con el nombre limosasadorcomidasycatering.',
+				]}
+				note="La ficha no publica página web ni carta completa. Los platos y precios de esta página son los que aparecen en el cartel, la vitrina y la pizarra del propio local en las fotos de Google. Conviene confirmarlos por teléfono antes de encargar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se cocina</p>
+					<h2 id="highlights-title">Asador, vitrina <br /><em>y menús de casa.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Menús, vitrina <br /><em>y pizarra.</em>"
+				description="La ficha de Google no publica carta. Esto es lo que se lee en el cartel de los menús, en la vitrina y en la pizarra del local, más lo que nombran la descripción del negocio y las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Los precios son los del cartel de menús, la vitrina y la pizarra fotografiados en el perfil de Google del local, consultados en octubre de 2026: menús de 8, 15,50 y 32 €, ensalada campera 3,50 €, albóndigas en salsa 4,50 € y natillas 1,30 €. La carta cambia con el día; confírmala por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El asador <br /><em>y la vitrina.</em>"
+				description="Diez fotografías del perfil de Limos en Google Maps: el asador giratorio, la fachada, el cartel de los menús, la vitrina de comida casera y algunos de sus platos."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 83 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,7 con 83 opiniones. Las
+							reseñas destacadas hablan del pollo, de la pastela y del precio; aquí se reproducen
+							tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>83 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Carretera de Cádiz, <br /><em>calle Frigiliana.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: lunes de 9:00 a 17:00, de miércoles a domingo de 12:30 a 16:00 y el martes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Limos Asador de Pollos y Comidas Caseras en la calle Frigiliana, 15, Carretera de Cádiz, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Frigiliana, 15 · Carretera de Cádiz"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y encargos por teléfono: la ficha no publica reservas ni pedidos online. Google marca el acceso para sillas de ruedas y el aparcamiento adaptado. El local está en la Carretera de Cádiz, con paradas de autobús y el metro a pocos minutos."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Limos"
+			navAriaLabel="Enlaces de Limos"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

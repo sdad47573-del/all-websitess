@@ -1,0 +1,407 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/el-menu-apaisada-06.jpg';
+import pescado from '../assets/fotos/el-menu-apaisada-03.jpg';
+import fachada from '../assets/fotos/el-menu-apaisada-01.jpg';
+import calle from '../assets/fotos/el-menu-apaisada-07.jpg';
+import horno from '../assets/fotos/el-menu-vertical-02.jpg';
+import migas from '../assets/fotos/el-menu-vertical-04.jpg';
+import borrachuelos from '../assets/fotos/el-menu-vertical-05.jpg';
+import gratinados from '../assets/fotos/el-menu-vertical-09.jpg';
+import interior from '../assets/fotos/el-menu-panoramica-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'El Menú · Asador de pollos y comidas para llevar en Málaga';
+const description =
+	'El Menú, en la calle Sondalezas, 14 (Bailén-Miraflores, 29010 Málaga). Asador de pollos y comidas caseras para llevar, con raciones generosas, de martes a domingo de 11:00 a 16:00.';
+
+const galeria = [
+	{
+		src: pescado,
+		alt: 'Doradas enteras al horno con hierbas sobre patatas panadera en una bandeja',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de El Menú con bandejas de estofado, albóndigas, pollo en salsa y guisos del día',
+	},
+	{
+		src: horno,
+		alt: 'Horno asador de El Menú con pollos enteros asándose en los pinchos',
+	},
+	{
+		src: migas,
+		alt: 'Sartén grande de migas con chorizo, ajos y trozos de pan dorado',
+	},
+	{
+		src: gratinados,
+		alt: 'Redondos rebozados cubiertos de queso fundido y tomate troceado en una bandeja',
+	},
+	{
+		src: borrachuelos,
+		alt: 'Borrachuelos de azúcar de El Menú en tarrinas con la etiqueta del obrador',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de El Menú con el cartel de asador de pollos y comidas para llevar en la calle Sondalezas',
+	},
+	{
+		src: interior,
+		alt: 'Interior de El Menú con la barra, la vitrina, el horno y las estanterías del local',
+	},
+	{
+		src: calle,
+		alt: 'El Menú visto desde la calle Sondalezas, con el cartel del teléfono sobre la puerta',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de El Menú',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-menu`,
+	name: BUSINESS.name,
+	alternateName: ['El Menu Málaga', 'Asador de pollos El Menú'],
+	description:
+		'Asador de pollos y casa de comidas caseras para llevar en la calle Sondalezas, 14, Bailén-Miraflores (29010 Málaga).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34952305253',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pollo asado', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1d2419" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;700;800&family=Young+Serif&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Menú Málaga, asador de pollos Málaga, comida casera Bailén-Miraflores, comidas para llevar Sondalezas, pollo asado Málaga, menú del día Málaga, migas, fideuá, tortilla"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Asador de pollos y comidas caseras para llevar en la calle Sondalezas, 14. De martes a domingo, de 11:00 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vitrina de El Menú con bandejas de guisos y pollo"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1d2419"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Menú"
+			subtitle="Asador de pollos · Para llevar"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Sondalezas, 14 · Bailén-Miraflores"
+				title="El menú de cada día, <br /><em>hecho en casa.</em>"
+				lede={`El Menú es una casa de comidas de Bailén-Miraflores especializada en pollo asado. En su vitrina se ven los guisos del día, el pescado al horno y los redondos gratinados; las reseñas destacan la tortilla, la fideuá y las raciones generosas. Abre de martes a domingo, de 11:00 a 16:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={vitrina}
+				imageAlt="Vitrina de El Menú con bandejas de estofado, albóndigas, pollo en salsa y guisos del día"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:00–16:00</b> · martes a domingo' },
+					{ label: 'La casa', html: '<b>Pollo asado</b> · comidas para llevar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comidas para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece El Menú" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un asador de barrio <br /><em>con menú del día.</em>"
+				paragraphs={[
+					'El Menú está en la calle Sondalezas, 14, en Bailén-Miraflores. El cartel de la fachada lo presenta como «Asador de pollos El Menú. Comidas para llevar», y esa es la doble promesa del local: el pollo del horno y una cocina casera para llevar a casa.',
+					'Dentro, la vitrina manda. En sus bandejas aparecen el estofado, las albóndigas en salsa, el pollo en salsa roja, el pollo con pimientos y los guisos del día. En la cocina, el horno asador mantiene los pollos enteros en los pinchos y la sartén de migas con chorizo se sirve recién hecha.',
+					'La ficha de Google lo clasifica como restaurante especializado en pollo y le da 4,5 sobre 5 con 267 reseñas. Una de ellas habla de «buena comida casera, buenas raciones y buenos precios, rapidez en atender»; otra destaca los «sabores auténticos y bien elaborados»; y una tercera recomienda «la tortilla y la fideuá».',
+					'El local abre de martes a domingo, de 11:00 a 16:00, y descansa los lunes. El teléfono que publica la ficha es el 952 30 52 53. Google marca el acceso para sillas de ruedas, pero no hay aparcamiento adaptado ni asientos adaptados.',
+				]}
+				note="La ficha no publica carta, precios ni página web. Los platos que se citan aquí son los que aparecen en la galería del perfil de Google y los que nombran las reseñas; el menú y el precio del día se consultan en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se cocina</p>
+					<h2 id="highlights-title">Casero, generoso <br /><em>y para llevar.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">0{index + 1}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="La ficha de Google no publica carta ni precios. Esta lista reúne los platos que aparecen en las fotos del local y los que nombran las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la galería del perfil de Google del local, consultada en octubre de 2026, y los que nombran las reseñas. La comida del día cambia: confírmala por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina, el horno <br /><em>y la fachada.</em>"
+				description="Nueve fotografías del perfil de El Menú en Google Maps: la vitrina de guisos, el horno asador, el pescado al horno, las migas, los gratinados, los dulces y el local en la calle Sondalezas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,5 sobre 5, <em>con 267 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,5 con 267 opiniones.
+							Las reseñas destacadas hablan de la comida casera, de las raciones, del precio y
+							de la rapidez; aquí se reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,5</strong>
+						<span>★★★★★</span>
+						<small>267 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Sondalezas, 14, <br /><em>Bailén-Miraflores.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de martes a domingo, de 11:00 a 16:00; lunes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de El Menú en la calle Sondalezas, 14, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Sondalezas, 14"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. El cartel del local anuncia «comidas para llevar». Google marca el acceso para sillas de ruedas, pero no hay aparcamiento adaptado ni asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a El Menú"
+			navAriaLabel="Enlaces de El Menú"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

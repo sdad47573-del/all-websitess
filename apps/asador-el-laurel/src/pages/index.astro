@@ -1,0 +1,402 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import lasana from '../assets/fotos/asador-el-laurel-vertical-02.jpg';
+import fachada from '../assets/fotos/asador-el-laurel-apaisada-01.jpg';
+import albondigas from '../assets/fotos/asador-el-laurel-apaisada-03.jpg';
+import espaguetis from '../assets/fotos/asador-el-laurel-apaisada-04.jpg';
+import arroz from '../assets/fotos/asador-el-laurel-apaisada-06.jpg';
+import pescado from '../assets/fotos/asador-el-laurel-apaisada-07.jpg';
+import vitrina from '../assets/fotos/asador-el-laurel-apaisada-08.jpg';
+import ensaladilla from '../assets/fotos/asador-el-laurel-apaisada-10.jpg';
+import empanadas from '../assets/fotos/asador-el-laurel-cuadrada-05.jpg';
+import fiambreras from '../assets/fotos/asador-el-laurel-panoramica-09.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'El Laurel · Asador de pollos y comida para llevar en Málaga';
+const description =
+	'El Laurel, en la calle Almogía, 14 (Cruz de Humilladero, 29007 Málaga). Asador de pollos y comida casera para llevar, con raciones generosas, de miércoles a lunes de 12:30 a 16:00.';
+
+const galeria = [
+	{
+		src: lasana,
+		alt: 'Lasaña de pollo gratinada en una bandeja de aluminio, recién sacada del horno',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de El Laurel con bandejas de carne rebozada, pasta, ensaladilla y guisos',
+	},
+	{
+		src: arroz,
+		alt: 'Paella de arroz con gambas y pimientos en una paellera',
+	},
+	{
+		src: albondigas,
+		alt: 'Bandeja de albóndigas en salsa de tomate naranja',
+	},
+	{
+		src: espaguetis,
+		alt: 'Bandeja de espaguetis con gambas y salsa',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado al horno con patatas, pimientos y cebolla en una bandeja',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Ensaladilla rusa con gambas, palitos de cangrejo, tomate y huevo',
+	},
+	{
+		src: empanadas,
+		alt: 'Porciones cuadradas de masa horneada y dorada en una bandeja',
+	},
+	{
+		src: fiambreras,
+		alt: 'Comida para llevar en fiambreras: pollo en salsa, patatas fritas y pimientos asados',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de El Laurel',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-laurel`,
+	name: BUSINESS.fullName,
+	alternateName: ['El Laurel', 'Asador El Laurel Málaga', 'Asador de pollos El Laurel'],
+	description:
+		'Asador de pollos y comida casera para llevar en la calle Almogía, 14, Cruz de Humilladero (29007 Málaga).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34615300263',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pollo asado', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:30',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#163b2d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Laurel Málaga, asador de pollos Málaga, comida para llevar Cruz de Humilladero, pollo asado Almogía, lasaña de pollo, migas, ensaladilla rusa, arroz con gambas"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Asador de pollos y comida casera para llevar en la calle Almogía, 14. De miércoles a lunes, de 12:30 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de El Laurel, asador de pollos y comida para llevar en Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#163b2d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Laurel"
+			subtitle="Asador de pollos · Para llevar"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Almogía, 14 · Cruz de Humilladero"
+				title="Pollo asado y comida casera <br /><em>para llevar.</em>"
+				lede={`El Laurel es el asador de pollos de la calle Almogía, en Cruz de Humilladero. En su vitrina se ven las albóndigas, el arroz con gambas, el pescado al horno y la ensaladilla rusa; las reseñas destacan las migas, la lasaña de pollo y las raciones generosas. Abre de miércoles a lunes, de 12:30 a 16:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="Fachada blanca de El Laurel en la calle Almogía, con el cartel de asador de pollos y comida para llevar"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>12:30–16:00</b> · miércoles a lunes' },
+					{ label: 'La casa', html: '<b>Pollo asado</b> · comida para llevar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Asador de pollos"
+			/>
+
+			<LocalChips label="Lo que ofrece El Laurel" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un asador de barrio <br /><em>con vitrina de guisos.</em>"
+				paragraphs={[
+					'El Laurel está en la calle Almogía, 14, en Cruz de Humilladero. Su fachada blanca y su toldo de rayas anuncian lo que hay dentro: «Asador de pollos. Comida para llevar. El Laurel». El nombre completo del negocio lo dice todo: pollo asado y cocina casera para comer en casa.',
+					'La vitrina es el centro del local. En sus bandejas se ven la carne rebozada, la pasta, las albóndigas en salsa, el arroz con gambas, el pescado al horno con patatas y la ensaladilla rusa. También hay fiambreras preparadas con pollo en salsa, patatas fritas y pimientos asados.',
+					'La ficha de Google lo clasifica como restaurante especializado en pollo y le da 4,7 sobre 5 con 169 reseñas. Una destaca «la lasaña de pollo y la ensaladilla rusa»; otra habla de «comida casera muy buena, trato muy agradable y simpáticos y raciones generosas»; y una tercera sentencia: «Las migas son las mejores que he probado en mi vida».',
+					'El local abre de miércoles a lunes, de 12:30 a 16:00, y descansa los martes. El teléfono que publica la ficha es el 615 30 02 63. Google marca el acceso para sillas de ruedas, pero no hay asientos adaptados.',
+				]}
+				note="La ficha no publica carta, precios ni página web. Los platos que se citan aquí son los que aparecen en la galería del perfil de Google y los que nombran las reseñas; el menú y el precio del día se consultan en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se cocina</p>
+					<h2 id="highlights-title">El pollo, las migas <br /><em>y la vitrina.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item) => (
+								<li>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="La vitrina <br /><em>del mediodía.</em>"
+				description="La ficha de Google no publica carta ni precios. Esta lista reúne los platos que aparecen en las fotos del local y los que nombran las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la galería del perfil de Google del local, consultada en octubre de 2026, y los que nombran las reseñas. La comida del día cambia: confírmala por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la vitrina <br /><em>y las fiambreras.</em>"
+				description="Nueve fotografías del perfil de El Laurel en Google Maps: la lasaña de pollo, la vitrina de guisos, el arroz con gambas, las albóndigas, los espaguetis, el pescado al horno, la ensaladilla y la comida para llevar."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 169 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,7 con 169 opiniones.
+							Las reseñas destacadas hablan de las migas, de la comida casera, de las raciones y
+							del trato; aquí se reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>169 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Almogía, 14, <br /><em>Cruz de Humilladero.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de miércoles a lunes, de 12:30 a 16:00; martes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de El Laurel en la calle Almogía, 14, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Almogía, 14"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. El nombre del negocio incluye «comida para llevar». Google marca el acceso para sillas de ruedas, pero no hay asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a El Laurel"
+			navAriaLabel="Enlaces de El Laurel"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

@@ -1,0 +1,392 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/casa-carlos-comida-casera-apaisada-10.jpg';
+import fachada from '../assets/fotos/casa-carlos-comida-casera-apaisada-01.jpg';
+import albondigas from '../assets/fotos/casa-carlos-comida-casera-vertical-09.jpg';
+import carne from '../assets/fotos/casa-carlos-comida-casera-vertical-08.jpg';
+import pimientos from '../assets/fotos/casa-carlos-comida-casera-vertical-02.jpg';
+import bocadillo from '../assets/fotos/casa-carlos-comida-casera-vertical-04.jpg';
+import tortilla from '../assets/fotos/casa-carlos-comida-casera-vertical-05.jpg';
+import ensalada from '../assets/fotos/casa-carlos-comida-casera-vertical-06.jpg';
+import ensaladilla from '../assets/fotos/casa-carlos-comida-casera-vertical-07.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Casa Carlos · Comida casera en Puerto de la Torre, Málaga';
+const description =
+	'Casa Carlos, en C. Filigrana, 1 (Puerto de la Torre, 29591 Málaga). Comida casera para llevar con raciones abundantes: croquetas, tortilla, guisos y ensaladas. De lunes a viernes y domingos, de 11:00 a 16:00.';
+
+const galeria = [
+	{
+		src: vitrina,
+		alt: 'La vitrina de Casa Carlos con bandejas de croquetas, empanadillas y ensaladilla rusa',
+	},
+	{
+		src: albondigas,
+		alt: 'Cazuela de barro con albóndigas en salsa de tomate',
+	},
+	{
+		src: carne,
+		alt: 'Un plato de carne guisada en salsa con patatas fritas',
+	},
+	{
+		src: pimientos,
+		alt: 'Pimientos del piquillo rellenos con salsa amarilla y lechuga en un plato',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Ensaladilla rusa con naranja, aceitunas y cebolleta en una bandeja',
+	},
+	{
+		src: tortilla,
+		alt: 'Una tortilla de patatas entera en un plato dorado',
+	},
+	{
+		src: bocadillo,
+		alt: 'Un bocadillo de tortilla con pimientos y atún cortado por la mitad',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada mixta con atún, zanahoria rallada, huevo duro y tomate',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada negra de Casa Carlos con el rótulo de comidas caseras para llevar y el teléfono',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Casa Carlos',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#casa-carlos`,
+	name: BUSINESS.name,
+	alternateName: ['Casa Carlos - Comida casera', 'Casa Carlos Puerto de la Torre', 'Casa Carlos Málaga'],
+	description:
+		'Restaurante de comida casera para llevar en la calle Filigrana, 1, Puerto de la Torre (29591 Málaga). Raciones abundantes y buena relación calidad/precio.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34633208161',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Puerto de la Torre' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'],
+			opens: '11:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#191411" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Manrope:wght@400;500;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Casa Carlos, comida casera Puerto de la Torre, comida casera para llevar Málaga, croquetas, tortilla de patatas, albóndigas, ensaladilla rusa, raciones abundantes, Filigrana"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera con raciones abundantes en la calle Filigrana, 1, Puerto de la Torre. De lunes a viernes y domingos, de 11:00 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La vitrina de Casa Carlos con croquetas, empanadillas y ensaladilla"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#191411"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Puerto de la Torre"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Casa Carlos"
+			subtitle="Comida casera · Puerto de la Torre"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Filigrana, 1 · Puerto de la Torre, Málaga"
+				title="Comida casera <br /><em>de las de siempre.</em>"
+				lede={`Casa Carlos es un local de comidas caseras para llevar en la calle Filigrana. En la vitrina esperan las croquetas, las empanadillas, la tortilla de patatas y la ensaladilla rusa, y en la cocina salen los guisos del día, las albóndigas y la carne en salsa. Abre de lunes a viernes y los domingos, de 11:00 a 16:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={vitrina}
+				imageAlt="La vitrina de Casa Carlos con bandejas de croquetas, empanadillas y ensaladilla rusa"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:00–16:00</b> · sábado cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · comida casera' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida casera para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Casa Carlos" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina de casa <br /><em>en la calle Filigrana.</em>"
+				paragraphs={[
+					'Casa Carlos está en la calle Filigrana, 1, en Puerto de la Torre. El local tiene la fachada negra y la persiana rosa, con el rótulo que lo dice todo: «Casa Carlos · Comidas caseras para llevar · TlF 633 20 81 61».',
+					'Dentro manda la vitrina: bandejas de croquetas, empanadillas, ensaladilla rusa y tortilla de patatas. En la cocina se preparan además albóndigas en salsa, carne guisada con patatas fritas, pimientos del piquillo rellenos y ensalada mixta.',
+					'La ficha de Google no publica descripción ni carta, pero las reseñas dejan claro el perfil de la casa: «Comida casera exquisita y buena relación calidad/precio», «raciones abundantes» y «trato super amable».',
+					'Google le da 5,0 sobre 5 con 26 reseñas. Abre de lunes a viernes y el domingo, de 11:00 a 16:00, y cierra el sábado. El teléfono que publica la ficha es el 633 20 81 61.',
+				]}
+				note="La ficha no publica carta ni precios. Los platos de esta página son los que aparecen en las fotos del perfil de Google y los que nombran las reseñas. La comida del día se consulta por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se cocina</p>
+					<h2 id="highlights-title">Vitrina, guisos <br /><em>y raciones de casa.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que se ve en las fotos del local y lo que nombran las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la galería del perfil de Google del local, consultada en octubre de 2026. La comida del día cambia: confírmala por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina <br /><em>y los guisos.</em>"
+				description="Nueve fotografías del perfil de Casa Carlos en Google Maps: la fachada, la vitrina, las croquetas, las albóndigas, la carne guisada, los pimientos rellenos, la tortilla y las ensaladas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">5,0 sobre 5, <em>con 26 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 5,0 con 26 opiniones. Las
+							reseñas destacadas hablan de la comida, de las raciones, del precio y del trato; aquí
+							se reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>5,0</strong>
+						<span>★★★★★</span>
+						<small>26 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Puerto de la Torre, <br /><em>calle Filigrana.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de lunes a viernes y el domingo, de 11:00 a 16:00, con el sábado cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Casa Carlos en la calle Filigrana, 1, Puerto de la Torre, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Filigrana, 1 · Puerto de la Torre"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. La ficha tampoco publica datos de accesibilidad, así que conviene llamar antes si necesitas acceso para silla de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Casa Carlos"
+			navAriaLabel="Enlaces de Casa Carlos"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

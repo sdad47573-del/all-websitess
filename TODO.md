@@ -1,34 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Asador+el+Torcal/@36.6986743,-4.4481823,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f9d7e3e8741d:0x3286078a76c4164c!8m2!3d36.6986743!4d-4.4481823!16s%2Fg%2F11c6dg4xq4?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Limos+Asador+de+Pollos+y+Comidas+Caseras/@36.6974343,-4.4470931,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f93b56df1fd9:0x3082c231b88782e8!8m2!3d36.6974343!4d-4.4470931!16s%2Fg%2F11ldvy727v?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+carril+del+conde/@36.6954379,-4.4534835,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f999425603b7:0x5a75c705d5a4fa65!8m2!3d36.6954379!4d-4.4534835!16s%2Fg%2F11hzv44ltr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/ASADOR+DON+CARB%C3%93N/@36.7319859,-4.4631077,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f738c37f14a9:0xe536fd53797e32fb!8m2!3d36.7319859!4d-4.4631077!16s%2Fg%2F11t5y5ljfm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+De+Pollos+Rosa+La+Colonia+Santa+In%C3%A9s./@36.7250021,-4.4681361,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7398bc10b3f:0x9c3f4c20bc04a969!8m2!3d36.7250021!4d-4.4681361!16s%2Fg%2F11fxwnhln3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+O'Napulitan/@36.7355024,-4.4808437,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f1005a9aa7e3:0x376c2b5f1e18a46b!8m2!3d36.7355024!4d-4.4808437!16s%2Fg%2F11zgvfw9t0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Casa+Carlos+-+Comida+casera/@36.735966,-4.4800953,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f10c2802a0cb:0xddefddeff36d48f0!8m2!3d36.735966!4d-4.4800953!16s%2Fg%2F11fshmhlsr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/CLAPIS+COMIDA+ITALIANA+TEATINOS/@36.7230851,-4.477041,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7d4df1c1f59:0xa68ea6cf4bfa971d!8m2!3d36.7230851!4d-4.477041!16s%2Fg%2F11xvcmg8fr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+Fuente+De+Colores/@36.7197018,-4.4607396,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f739aaaaaaab:0x7f20ee4ef085198d!8m2!3d36.7197018!4d-4.4607396!16s%2Fg%2F11dxkz03bs?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/ASADOR+DE+POLLOS+DANI/@36.7239388,-4.4920974,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f755c3404c93:0x82019eea5048fff2!8m2!3d36.7239388!4d-4.4920974!16s%2Fg%2F11zdc6bhbm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Men%C3%BA/@36.7234439,-4.4410394,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70a5592e397:0xd50f06518fa64fb0!8m2!3d36.7234439!4d-4.4410394!16s%2Fg%2F1tdgr59g?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+de+pollos+y+comida+para+llevar+%22El+Laurel%22/@36.717033,-4.4545256,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f76b862bbe7d:0x44c951e83162bd81!8m2!3d36.717033!4d-4.4545256!16s%2Fg%2F11byz79s11?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Cinecom+Santa+In%C3%A9s/@36.7261514,-4.466569,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f73bc4504d55:0x7130e2d24cf5f186!8m2!3d36.7261514!4d-4.466569!16s%2Fg%2F11cm0fgs8h?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/La+Casita+Del+Pollo+Asado+Comidas+Caseras%2Fdlunch/@36.7243082,-4.443062,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70b90d92597:0xf5e491840c4f36f9!8m2!3d36.7243082!4d-4.443062!16s%2Fg%2F11cmg1ctvc?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Parcero+Teatinos/@36.7247586,-4.4618363,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f77f6fc81a43:0x9e8823844ea174ae!8m2!3d36.7247586!4d-4.4618363!16s%2Fg%2F11tf0_drc6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Asador+De+Pollos+Y+Comida+Casera+francis/@36.7217259,-4.4456258,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f70cc40a78d7:0xa0a1c90c9e368700!8m2!3d36.7217259!4d-4.4456258!16s%2Fg%2F11dyqx_k3z?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/La+Fiambrera+(Comida+para+llevar)/@36.7239791,-4.4323158,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f71c3de91645:0x4add50e481e7fe1a!8m2!3d36.7239791!4d-4.4323158!16s%2Fg%2F11y4yl92mz?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D

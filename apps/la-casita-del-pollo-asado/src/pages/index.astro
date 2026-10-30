@@ -1,0 +1,349 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import cocina from '../assets/fotos/la-casita-del-pollo-asado-vertical-01.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'La Casita del Pollo Asado · Comida casera para llevar en Málaga';
+const description =
+	'La Casita del Pollo Asado, en la calle Tomás Escalonilla, 4 (Bailén-Miraflores, 29010 Málaga). Comida casera para llevar, pollo asado y especialidades árabes, de 11:00 a 15:45.';
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de La Casita del Pollo Asado',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-casita`,
+	name: BUSINESS.name,
+	alternateName: ['La Casita Del Pollo Asado', "D'Lunch", 'D’Lunch Málaga'],
+	description:
+		'Asador de pollos y comida casera para llevar en la calle Tomás Escalonilla, 4, Bailén-Miraflores (29010 Málaga). Especialidades árabes.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34744707339',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pollo asado', 'Cocina árabe', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '15:45',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2b211b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gloock&family=Public+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Casita del Pollo Asado, D'Lunch Málaga, pollo asado Bailén-Miraflores, comida casera para llevar Málaga, especialidades árabes, Tomás Escalonilla, menú del día"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar, pollo asado y especialidades árabes en la calle Tomás Escalonilla, 4. De 11:00 a 15:45."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Horno asador de La Casita del Pollo Asado con pollos y el cartel de menús"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2b211b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[cocina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Casita"
+			subtitle="Pollo asado · Comida casera"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Tomás Escalonilla, 4 · Bailén-Miraflores"
+				title="El pollo de siempre, <br /><em>hecho en casa.</em>"
+				lede={`La Casita del Pollo Asado es un asador de comida casera para llevar en Bailén-Miraflores. La ficha lo describe como «comida para llevar casera de calidad» y especialidades árabes; en el cartel del local aparecen el pollo y medio asado, el menú de dos pollos, las patatas y la ensalada. Abre de 11:00 a 15:45, cierra los jueves, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={cocina}
+				imageAlt="Cocina de La Casita del Pollo Asado con el horno de pollos, la freidora y el cartel de menús y precios"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:00–15:45</b> · jueves cerrado' },
+					{ label: 'La casa', html: '<b>Pollo asado</b> · comida para llevar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver en Google Maps"
+				tag="Comida para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece La Casita del Pollo Asado" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una casita de pollo <br /><em>en el barrio.</em>"
+				paragraphs={[
+					'La Casita del Pollo Asado está en la calle Tomás Escalonilla, 4, en Bailén-Miraflores. La ficha de Google explica que el negocio cambió de nombre manteniendo al mismo propietario y que ahora se denomina D’Lunch; la dirección y el teléfono siguen siendo los mismos.',
+					'La descripción del negocio es clara: «Somos un establecimiento de comida para llevar casera de calidad y venta al público rápida. Vengan a disfrutar de nuestra comida casera y especialidades árabes». El cartel de la cocina anuncia el pollo y medio asado con patatas y ensalada, y el menú de dos pollos con patatas y refresco.',
+					'La ficha de Google le da 4,6 sobre 5 con 25 reseñas. Una recuerda que antes iba mucho y que «estaba muy bien los menús y el pollo buenísimo»; otra destaca la «excelente atención al público y buena comida».',
+					'El local abre de 11:00 a 15:45 de lunes a miércoles, viernes, sábado y domingo, y cierra los jueves. El teléfono que publica la ficha es el 744 70 73 39. Google marca el acceso para sillas de ruedas.',
+				]}
+				note="La ficha no publica carta, precios ni página web. Los platos que se citan aquí son los que anuncia el cartel del local en la foto del perfil de Google, consultado en octubre de 2026, y los que nombran la descripción y las reseñas."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="quote-strip" aria-label="Descripción del negocio en Google">
+				<div class="wrap">
+					<p class="quote-mark" aria-hidden="true">“</p>
+					<blockquote>
+						Comida para llevar casera de calidad y venta al público rápida. Vengan a disfrutar de
+						nuestra comida casera y especialidades árabes.
+					</blockquote>
+					<p class="quote-source">Descripción del negocio en Google</p>
+				</div>
+			</section>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se cocina</p>
+					<h2 id="highlights-title">Pollo, menús <br /><em>y especialidades árabes.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item) => (
+								<li>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="El cartel <br /><em>de la casa.</em>"
+				description="La ficha de Google no publica carta ni precios. Esta lista reúne lo que anuncia el cartel del local en la foto y lo que nombran la descripción del negocio y las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en el cartel del local en la foto del perfil de Google, consultada en octubre de 2026, y los que nombran la descripción y las reseñas. El menú del día cambia: confírmalo por teléfono."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,6 sobre 5, <em>con 25 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,6 con 25 opiniones.
+							Las reseñas destacadas hablan del pollo, de los menús y de la atención; aquí se
+							reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,6</strong>
+						<span>★★★★★</span>
+						<small>25 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Tomás Escalonilla, 4, <br /><em>Bailén-Miraflores.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 11:00 a 15:45 de lunes a miércoles, viernes, sábado y domingo; jueves cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de La Casita del Pollo Asado en la calle Tomás Escalonilla, 4, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Tomás Escalonilla, 4"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. La descripción del negocio se presenta como comida para llevar casera. Google marca el acceso para sillas de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a La Casita"
+			navAriaLabel="Enlaces de La Casita del Pollo Asado"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
