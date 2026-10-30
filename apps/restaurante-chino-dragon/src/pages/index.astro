@@ -1,0 +1,340 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import comedor from '../assets/fotos/restaurante-chino-dragon-apaisada-01.jpg';
+import tallarines from '../assets/fotos/restaurante-chino-dragon-apaisada-02.jpg';
+import arrozGambas from '../assets/fotos/restaurante-chino-dragon-apaisada-03.jpg';
+import ternera from '../assets/fotos/restaurante-chino-dragon-apaisada-04.jpg';
+import rollo from '../assets/fotos/restaurante-chino-dragon-apaisada-05.jpg';
+import cartaMenu from '../assets/fotos/restaurante-chino-dragon-vertical-06.jpg';
+import mesaCompartir from '../assets/fotos/restaurante-chino-dragon-apaisada-07.jpg';
+import pollo from '../assets/fotos/restaurante-chino-dragon-apaisada-08.jpg';
+import comedor2 from '../assets/fotos/restaurante-chino-dragon-apaisada-09.jpg';
+import salteado from '../assets/fotos/restaurante-chino-dragon-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Restaurante Chino Dragón · Cocina china en Teatinos, Málaga';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: tallarines,
+		alt: 'Plato de tallarines fritos con tiras de carne, col y salsa brillante, servido en un plato ovalado de borde rojo y blanco',
+	},
+	{
+		src: arrozGambas,
+		alt: 'Arroz frito tres delicias con huevo, jamón, guisantes y zanahoria, junto a gambas rebozadas con salsa agridulce',
+	},
+	{
+		src: mesaCompartir,
+		alt: 'Mesa con un cestillo de galletas de gambas, arroz frito, pollo agridulce con pimiento y piña, tallarines y un rollo de primavera',
+	},
+	{
+		src: ternera,
+		alt: 'Ternera con setas y bambú en salsa oscura, servida en un plato ovalado con borde de dragón rojo',
+	},
+	{
+		src: pollo,
+		alt: 'Pollo con setas, bambú y zanahoria salteado al wok en un plato de borde rojo decorado',
+	},
+	{
+		src: salteado,
+		alt: 'Salteado de col, pimiento verde y tiras de carne con salsa, en primer plano sobre la mesa',
+	},
+	{
+		src: rollo,
+		alt: 'Rollo de primavera abierto con el tenedor, con el relleno de col y salsa agridulce por encima',
+	},
+	{
+		src: cartaMenu,
+		alt: 'Carta del menú del día del Restaurante Chino Dragón, con el precio de 8,75 euros y los platos a elegir',
+	},
+	{
+		src: comedor2,
+		alt: 'Comedor del restaurante con mesas vestidas de blanco y dorado, sillas rojas, ventilador y biombos al fondo',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante-chino-dragon`,
+	name: BUSINESS.name,
+	alternateName: ['Dragón Teatinos', 'Chino Dragón Málaga', 'Restaurante Dragón'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['China', 'Asiática'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Teatinos-Universidad' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '12:30',
+			closes: '16:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '20:00',
+			closes: '24:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+	],
+	hasMenu: {
+		'@type': 'Menu',
+		name: 'Menú del día',
+		hasMenuSection: {
+			'@type': 'MenuSection',
+			name: 'Menú del día',
+			hasMenuItem: MENU[0].items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.note,
+			})),
+		},
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17120f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Chino Dragón, chino Teatinos Málaga, restaurante chino Málaga, C. Andrómeda 24, menú del día Málaga, comida china para llevar Teatinos, arroz tres delicias Málaga, pollo agridulce Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cocina china en la calle Andrómeda 24, Teatinos-Universidad. Menú del día de 8,75 € y horario partido todos los días: 12:30–16:30 y 20:00–24:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Comedor del Restaurante Chino Dragón, con lámpara de cristal y mesas con servilletas rojas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#17120f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Teatinos, Málaga"
+			preload={[comedor]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Dragón"
+			subtitle="Cocina china · Teatinos"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
+				title="El dragón de <br /><em>Teatinos.</em>"
+				lede={`El Restaurante Chino Dragón está en la calle Andrómeda 24, en Teatinos-Universidad, a un paso del campus. Abre todos los días con horario partido, de 12:30 a 16:30 y de 20:00 a 24:00, y su menú del día cuesta 8,75 €. La ficha de Google le da 3,6 sobre 5 con 398 reseñas.`}
+				image={comedor}
+				imageAlt="Comedor del Restaurante Chino Dragón con lámpara de cristal, mesas de madera oscura con servilletas rojas, biombos de madera y espejos grabados con paisajes"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,6</b> en Google · 398 reseñas' },
+					{ label: 'Horario', html: '<b>12:30–16:30</b><br />20:00–24:00, todos los días' },
+					{ label: 'Menú del día', html: '<b>8,75 €</b> con postre y bebida' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas del Restaurante Chino Dragón" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina china <br /><em>de barrio.</em>"
+				paragraphs={[
+					'El Dragón es un restaurante chino de los de siempre, en la calle Andrómeda 24, dentro del barrio de Teatinos-Universidad y a pocos minutos del campus universitario. Google lo clasifica como restaurante chino y le da 3,6 sobre 5 con 398 reseñas.',
+					'Por dentro hay dos comedores amplios, con lámpara de cristal, mesas de madera oscura o vestidas de blanco y dorado, sillas de terciopelo rojo, biombos de madera y espejos grabados con paisajes. La ficha marca acceso para sillas de ruedas y asientos adaptados.',
+					'En la mesa se reconoce la carta de toda la vida: arroz frito y tallarines tres delicias, rollos de primavera, gambas rebozadas, ternera con setas y bambú, pollo con almendras, cerdo agridulce y galletas de gambas para picar.',
+					'El menú del día, tal y como aparece en la carta fotografiada en la ficha de Google, cuesta 8,75 € y llega completo: primero, arroz o tallarines, plato principal, postre y bebida. La casa también mantiene carta de reparto en Uber Eats y un directorio local anuncia servicio a domicilio con pedido mínimo de 11 €.',
+				]}
+				note="La información sale de la ficha pública de Google Maps, de las fotografías del perfil del restaurante y de la carta que la propia casa publica en su reparto. No hay web oficial: si algo cambia, manda lo que digan en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Menú del día <br /><em>y wok.</em>"
+				description="El menú del día está copiado de la carta que la casa tiene expuesta y que aparece fotografiada en su ficha de Google. Alrededor, los platos de siempre que se ven en las mesas del comedor."
+				cta={{ label: 'Ver la carta fotografiada', href: MAPS.place }}
+				groups={MENU}
+				note="El menú del día cuesta 8,75 € y cambiar de plato tiene un suplemento de 1,25 €, según la carta fotografiada. Los precios y la disponibilidad pueden cambiar: confirma por teléfono antes de contar con un plato concreto."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve fotos <br /><em>de la casa.</em>"
+				description="Las fotografías del perfil del Restaurante Chino Dragón en Google Maps: el comedor, el menú del día y los platos que salen de la cocina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven al <br /><em>Andrómeda.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Málaga, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días, comida de 12:30 a 16:30 y cena de 20:00 a 24:00. La ficha avisa de que en festivos puede cambiar; llama antes si vas en día señalado."
+				mapTitle="Mapa del Restaurante Chino Dragón en la calle Andrómeda 24, Teatinos, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Dragón · Teatinos"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. La ficha no publica un sistema de reservas, así que el teléfono es el canal directo para mesa o para recoger. La casa también tiene carta en Uber Eats y un directorio local le atribuye un segundo número, 652 331 781."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces del Restaurante Chino Dragón"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/hamburgueseria-asador-padilla-apaisada-01.jpg';
+import pollo from '../assets/fotos/hamburgueseria-asador-padilla-apaisada-02.jpg';
+import polloPatatas from '../assets/fotos/hamburgueseria-asador-padilla-apaisada-03.jpg';
+import albondigas from '../assets/fotos/hamburgueseria-asador-padilla-vertical-04.jpg';
+import arrozGambas from '../assets/fotos/hamburgueseria-asador-padilla-vertical-05.jpg';
+import arrozMarisco from '../assets/fotos/hamburgueseria-asador-padilla-vertical-06.jpg';
+import croquetas from '../assets/fotos/hamburgueseria-asador-padilla-vertical-07.jpg';
+import potaje from '../assets/fotos/hamburgueseria-asador-padilla-vertical-08.jpg';
+import cartel from '../assets/fotos/hamburgueseria-asador-padilla-vertical-09.jpg';
+import ensalada from '../assets/fotos/hamburgueseria-asador-padilla-vista-10-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Hamburguesería y Asador de Pollos Padilla · Pollo asado en Palma-Palmilla';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de noche del Padilla, con el rótulo de hamburguesería y asador, la persiana metálica y el cartel de la carta junto a la puerta',
+	},
+	{
+		src: polloPatatas,
+		alt: 'Pollo asado dorado con patatas panadera y una ensalada de pimientos al fondo',
+	},
+	{
+		src: albondigas,
+		alt: 'Albóndigas en salsa marrón con patatas fritas en un plato ovalado blanco',
+	},
+	{
+		src: croquetas,
+		alt: 'Diez croquetas caseras recién fritas en un plato blanco',
+	},
+	{
+		src: potaje,
+		alt: 'Potaje de garbanzos con chorizo y morcilla en un plato hondo blanco',
+	},
+	{
+		src: arrozGambas,
+		alt: 'Arroz amarillo con gambas y medio limón en un plato verde',
+	},
+	{
+		src: arrozMarisco,
+		alt: 'Arroz con marisco, calamar y almejas en un plato blanco con limón',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada de tomate, maíz, cebolla y queso junto a una cerveza Alhambra y la carta del local',
+	},
+	{
+		src: cartel,
+		alt: 'Cartel de Padilla con el horario de 10:00 a 16:30 y de 20:00 a 00:00 y el reparto a domicilio con Glovo',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#asador-padilla`,
+	name: BUSINESS.fullName,
+	alternateName: ['Asador Padilla', 'Padilla Málaga', 'Hamburguesería Padilla'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Hamburguesas', 'Casera', 'Frituras', 'Cordero'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Palma-Palmilla' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '16:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '20:00',
+			closes: '23:59',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#241a13" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Asador Padilla, Hamburguesería Padilla, pollo asado Málaga, camperos Málaga, Av. del Doctor Marañón 47, Palma-Palmilla, comida casera Málaga, croquetas Málaga, reparto Glovo Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados, camperos, hamburguesas y comidas caseras en Palma-Palmilla. Dos turnos todos los días y reparto a domicilio con Glovo. 4,2 sobre 5 con 217 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Mesa del Asador Padilla con el pollo asado troceado, tortilla de patatas y raciones"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#241a13"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Palma-Palmilla, Málaga"
+			preload={[pollo]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Asador Padilla"
+			subtitle="Pollo asado · camperos · Palma-Palmilla"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
+				title="Pollo asado <br /><em>y camperos.</em>"
+				lede={`Asador y hamburguesería en la avenida del Doctor Marañón 47, Palma-Palmilla. Pollos asados con patatas panadera, camperos, hamburguesas, arroces y comida casera, con reparto a domicilio por Glovo. Abre todos los días en dos turnos y la ficha de Google le da 4,2 sobre 5 con 217 reseñas.`}
+				image={pollo}
+				imageAlt="Mesa del Padilla con el pollo asado troceado en una fuente, tortilla de patatas, aros de cebolla y otras raciones"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,2</b> en Google · 217 reseñas' },
+					{ label: 'Horario', html: '<b>10:00–16:30</b><br />y 20:00–00:00' },
+					{ label: 'Reparto', html: '<b>Glovo</b><br />pedido mínimo 10,00 €' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas del Asador Padilla" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pollo de asador <br /><em>y cocina de casa.</em>"
+				paragraphs={[
+					'El Padilla está en la avenida del Doctor Marañón 47, en Palma-Palmilla, con el rótulo de hamburguesería y asador en la fachada y la persiana metálica a pie de calle. Google lo clasifica como restaurante especializado en pollo, pollería, hamburguesería, asador de cordero y bar de tapas, y le da 4,2 sobre 5 con 217 reseñas.',
+					'La casa se define en su ficha como «especialidad en comidas caseras, pollos asados y los más deliciosos camperos de Málaga», y el cartel de la pared añade las frituras. El pollo sale del asador con patatas panadera, y a su alrededor hay albóndigas en salsa, potaje de garbanzos con chorizo, tortilla de patatas, croquetas, arroces con gambas o marisco y ensaladas.',
+					'Las fotos del perfil lo muestran sin adornos: el pollo troceado en la fuente con la tortilla y los aros de cebolla, el plato de albóndigas con patatas fritas, el arroz amarillo con gambas, las croquetas recién fritas y el potaje de cuchara.',
+					'El cartel de la puerta anuncia dos turnos, de 10:00 a 16:30 y de 20:00 a 00:00, y reparto a domicilio con Glovo desde 10,00 €. La ficha de Google mantiene el miércoles cerrado, así que si vienes ese día o en festivo, llama antes. La ficha marca acceso para sillas de ruedas, pero no aparcamiento adaptado.',
+				]}
+				note="La información sale de la ficha pública de Google Maps, del cartel del local y de las fotografías del perfil. No hay web oficial ni carta con precios publicada: si algo cambia, manda lo que digan en el bar o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo, camperos <br /><em>y cuchara.</em>"
+				description="La ficha no publica carta. Estos son los platos que la casa anuncia, los que repiten las reseñas y los que aparecen en las fotografías del perfil."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="No hay carta oficial publicada ni precios del local, así que esta lista es orientativa: sirve para reconocer lo que se cocina aquí, no para cerrar una cuenta. El único importe que consta es el pedido mínimo de 10,00 € para el reparto. Para saber qué hay ese día, llama al asador."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve fotos <br /><em>de la casa.</em>"
+				description="Las fotografías del perfil del Padilla en Google Maps: la fachada, el pollo asado, los guisos, los arroces, las croquetas y el cartel con el horario."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>Palma-Palmilla.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Málaga, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="El cartel del propio local anuncia dos turnos, de 10:00 a 16:30 y de 20:00 a 00:00, abierto de lunes a domingo. La ficha de Google mantiene el miércoles cerrado y un horario continuado de 10:00 a 24:00: si vienes en miércoles o en festivo, llama antes de salir."
+				mapTitle="Mapa de Hamburguesería y Asador de Pollos Padilla en la avenida del Doctor Marañón 47, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Padilla · Palma-Palmilla"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. La ficha no publica un sistema de reservas ni una web propia, así que el teléfono es el canal directo para mesa o encargo. Para el reparto, el local anuncia Glovo con un pedido mínimo de 10,00 €."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y disponibilidad antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Hamburguesería y Asador de Pollos Padilla"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

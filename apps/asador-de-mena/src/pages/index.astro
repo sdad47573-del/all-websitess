@@ -1,0 +1,305 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/asador-de-mena-apaisada-01.jpg';
+import pollos from '../assets/fotos/asador-de-mena-vertical-02.jpg';
+import fachadaCarteles from '../assets/fotos/asador-de-mena-apaisada-03.jpg';
+import albondigas from '../assets/fotos/asador-de-mena-apaisada-04.jpg';
+import ensalada from '../assets/fotos/asador-de-mena-vertical-05.jpg';
+import estofadoCerdo from '../assets/fotos/asador-de-mena-vertical-06.jpg';
+import potaje from '../assets/fotos/asador-de-mena-vertical-07.jpg';
+import bunuelos from '../assets/fotos/asador-de-mena-vertical-08.jpg';
+import estofadoPatatas from '../assets/fotos/asador-de-mena-vertical-09.jpg';
+import arrozPasas from '../assets/fotos/asador-de-mena-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Asador de Mena · Pollo asado y comida casera en Málaga';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: pollos,
+		alt: 'Pollos enteros asándose en las bandejas del horno del asador, con la piel dorada',
+	},
+	{
+		src: albondigas,
+		alt: 'Dos albóndigas grandes en salsa amarilla con tomate y verdura, en un plato de borde azul y dorado',
+	},
+	{
+		src: potaje,
+		alt: 'Potaje de garbanzos con patata, chorizo y morcilla en un plato hondo de borde azul',
+	},
+	{
+		src: estofadoPatatas,
+		alt: 'Estofado de cerdo en salsa sobre una cama de patatas fritas, en un plato blanco',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada de papas con atún, tomate, aceitunas y cebolla en un plato blanco',
+	},
+	{
+		src: arrozPasas,
+		alt: 'Arroz con pasas y huevo revuelto en un plato hondo con borde azul',
+	},
+	{
+		src: bunuelos,
+		alt: 'Buñuelos fritos espolvoreados con azúcar glas en un plato blanco',
+	},
+	{
+		src: estofadoCerdo,
+		alt: 'Estofado de cerdo con ajos en salsa marrón, servido en un plato hondo con borde azul',
+	},
+	{
+		src: fachadaCarteles,
+		alt: 'Fachada del Asador de Mena con el letrero artesanal y los carteles de cinta de lomo y estofado de cerdo en el escaparate',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#asador-de-mena`,
+	name: BUSINESS.name,
+	alternateName: ['Asador Mena', 'Asador de Mena Málaga', 'Pollo asado Mena'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Comida casera', 'Andaluza'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito Centro' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	takeaway: true,
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '13:30',
+			closes: '15:45',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17120f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Asador de Mena, pollo asado Málaga, comida casera Málaga, C. Huerta del Obispo 25, asador Distrito Centro, pollo asado para llevar Málaga, menú del día Málaga, albóndigas Málaga, estofado de cerdo Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado y comida casera en la calle Huerta del Obispo 25, Distrito Centro. De martes a domingo, de 13:30 a 15:45. 4,6 sobre 5 con 105 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada del Asador de Mena con el letrero artesanal en la calle Huerta del Obispo"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#17120f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Distrito Centro, Málaga"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Asador de Mena"
+			subtitle="Pollo asado · comida casera"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
+				title="Pollo asado <br /><em>de siempre.</em>"
+				lede={`El Asador de Mena está en la calle Huerta del Obispo 25, en el Distrito Centro de Málaga. Abre de martes a domingo, solo para comer, de 13:30 a 15:45: pollo asado en el horno, guisos de cuchara y comida casera para llevar. La ficha de Google le da 4,6 sobre 5 con 105 reseñas.`}
+				image={fachada}
+				imageAlt="Fachada del Asador de Mena con el letrero artesanal, la puerta abierta y el cartel de cerrado los lunes"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 105 reseñas' },
+					{ label: 'Horario', html: '<b>13:30–15:45</b><br />Martes a domingo · lunes cerrado' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> encargos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas del Asador de Mena" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="La cocina <br /><em>de casa.</em>"
+				paragraphs={[
+					'El Asador de Mena es una casa pequeña de la calle Huerta del Obispo 25, en el Distrito Centro de Málaga, con el letrero pintado a mano sobre la puerta y el olor del horno de pollos saliendo a la calle. Google lo clasifica como restaurante de comida para llevar y pollería.',
+					'La propia casa lo cuenta en su ficha: «Nuestro deseo es que el cliente recuerde sabores de su niñez, las comidas que tenían en sus casas, que les hacían sus madres, abuelas... Intentamos que todo sea lo más tradicional posible».',
+					'Las fotos del perfil enseñan las bandejas de pollos dorándose en el horno, albóndigas en salsa, potaje de garbanzos con chorizo, estofado de cerdo con patatas, ensalada de papas con atún, arroz con pasas, buñuelos con azúcar y el escaparate con los carteles de cinta de lomo, arroz con leche, flan y tocino de cielo.',
+					'El servicio es de comidas: de 13:30 a 15:45, de martes a domingo, con el lunes cerrado. La ficha marca acceso para sillas de ruedas, pero no asientos adaptados ni aparcamiento adaptado.',
+				]}
+				note="La información sale de la ficha pública de Google Maps, de la descripción que publica el propio asador y de las fotografías de su perfil. No hay web oficial: si algo cambia, manda lo que digan en el mostrador o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo, guisos <br /><em>y postres.</em>"
+				description="El pollo asado y los menús salen de la carta de reparto de la casa. Los guisos y los postres, de lo que se anuncia en el escaparate y de lo que aparece en las fotos del perfil."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Los precios del pollo y de los menús 1, 2 y 3 son los de la plataforma de reparto y pueden no coincidir con los del mostrador. El resto de la carta cambia según el día y la temporada: llama antes si buscas un plato concreto."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve fotos <br /><em>de la casa.</em>"
+				description="Las fotografías del perfil del Asador de Mena en Google Maps: el horno de pollos, los guisos, los postres y la fachada con sus carteles."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a la <br /><em>Huerta del Obispo.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Málaga, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: solo comidas, de 13:30 a 15:45, de martes a domingo. El lunes figura cerrado y no hay servicio de cenas. En festivos puede cambiar; llama antes si vas en día señalado."
+				mapTitle="Mapa del Asador de Mena en la calle Huerta del Obispo 25, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Asador de Mena"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. La ficha no publica un sistema de reservas ni una web propia, así que el teléfono es el canal directo para encargar pollo, preguntar por el guiso del día o reservar mesa."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces del Asador de Mena"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

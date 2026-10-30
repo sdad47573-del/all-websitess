@@ -1,0 +1,306 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import cuscus from '../assets/fotos/asador-de-pollos-nora-apaisada-02.jpg';
+import vitrinaDulces from '../assets/fotos/asador-de-pollos-nora-panoramica-01.jpg';
+import pastelaPorcion from '../assets/fotos/asador-de-pollos-nora-apaisada-03.jpg';
+import polloGarbanzos from '../assets/fotos/asador-de-pollos-nora-cuadrada-04.jpg';
+import tartas from '../assets/fotos/asador-de-pollos-nora-apaisada-05.jpg';
+import pastelaGrande from '../assets/fotos/asador-de-pollos-nora-apaisada-06.jpg';
+import pescado from '../assets/fotos/asador-de-pollos-nora-apaisada-07.jpg';
+import pastelaPescado from '../assets/fotos/asador-de-pollos-nora-apaisada-08.jpg';
+import bollitos from '../assets/fotos/asador-de-pollos-nora-panoramica-09.jpg';
+import fritos from '../assets/fotos/asador-de-pollos-nora-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Asador de pollos Nora · Pollo asado y comida árabe en Málaga';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: vitrinaDulces,
+		alt: 'Vitrina de dulces árabes del asador con tartas, petit fours y pastelitos bajo campanas de cristal',
+	},
+	{
+		src: pastelaPorcion,
+		alt: 'Porción de pastela de carne cortada, con el hojaldre crujiente y el relleno a la vista',
+	},
+	{
+		src: polloGarbanzos,
+		alt: 'Pollo asado en salsa con cebolla, garbanzos y perejil fresco',
+	},
+	{
+		src: pastelaGrande,
+		alt: 'Pastela redonda entera en una bandeja de aluminio, recién hecha',
+	},
+	{
+		src: pescado,
+		alt: 'Bandeja de lomos de pescado al horno con hierbas sobre pimiento rojo',
+	},
+	{
+		src: pastelaPescado,
+		alt: 'Pastela de pescado decorada con langostinos y rodajas de limón',
+	},
+	{
+		src: bollitos,
+		alt: 'Bollitos de almendra con pétalos de rosa en la bandeja del mostrador',
+	},
+	{
+		src: fritos,
+		alt: 'Empanadillas fritas y doradas apiladas en una bandeja de acero',
+	},
+	{
+		src: tartas,
+		alt: 'Bandeja de tartas y pastelitos empaquetados en la vitrina del local',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#asador-de-pollos-nora`,
+	name: BUSINESS.fullName,
+	alternateName: ['Asador Nora', 'Nora comida árabe', 'Pollo asado Nora Málaga'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Árabe', 'Halal', 'Andaluza', 'Pollo asado'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Cruz de Humilladero' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	takeaway: true,
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday', opens: '11:00', closes: '16:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '11:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Wednesday', opens: '09:00', closes: '17:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '11:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '11:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '11:00', closes: '16:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday', opens: '11:00', closes: '16:30' },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17120f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Asador de pollos Nora, comida árabe Málaga, pollo asado Málaga, Av. de Carlos Haya 63, Cruz de Humilladero, cuscús Málaga, pastela Málaga, comida halal Málaga, dulces árabes Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado, cuscús, pastela y dulces árabes en la avenida de Carlos Haya 63, Cruz de Humilladero. Comida halal y andaluza. 4,6 sobre 5 con 96 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de cuscús con verduras, garbanzos y pasas del Asador de pollos Nora"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#17120f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Cruz de Humilladero, Málaga"
+			preload={[cuscus]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Asador Nora"
+			subtitle="Pollo asado · comida árabe"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
+				title="Pollo asado <br /><em>y cocina árabe.</em>"
+				lede={`El Asador de pollos Nora está en la avenida de Carlos Haya 63, en Cruz de Humilladero. Es pollo asado y comida árabe halal con toque andaluz: cuscús, pastela, tajín, albóndigas y dulces de la casa. Abre todos los días, con horario de comidas que cambia según el día, y la ficha de Google le da 4,6 sobre 5 con 96 reseñas.`}
+				image={cuscus}
+				imageAlt="Bandeja grande de cuscús con verduras, garbanzos, pasas y carne, junto a cuencos de caldo y especias"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> en Google · 96 reseñas' },
+					{ label: 'Horario', html: '<b>11:00–16:00</b><br />Miércoles desde las 9:00 · finde hasta las 16:30' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> encargos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas del Asador de pollos Nora" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cuscús, pastela <br /><em>y pollo de horno.</em>"
+				paragraphs={[
+					'El Asador de pollos Nora está en la avenida de Carlos Haya 63, en Cruz de Humilladero, con el horno de pollos y una vitrina de dulces árabes en el mostrador. Google lo clasifica como restaurante y le da 4,6 sobre 5 con 96 reseñas.',
+					'La propia casa define su cocina en la ficha: «comida halal y andaluza con un toque especial de la dueña: pastela, cuscús, dulces y mucho más». Es una mezcla de recetas de casa con el pollo asado de toda la vida.',
+					'Las fotos del perfil lo confirman: la bandeja de cuscús con verduras, garbanzos y pasas, las pastelas de carne y de pescado, el pollo con garbanzos y cebolla, el pescado al horno con pimientos, las empanadillas fritas y las bandejas de dulces con almendra y pétalos de rosa.',
+					'El horario es de comidas y cambia según el día: el miércoles abre antes, de 9:00 a 17:00, y el resto de días va de las 11:00 a las 16:00 o 16:30. La ficha marca acceso para sillas de ruedas y no publica más datos de accesibilidad.',
+				]}
+				note="La información sale de la ficha pública de Google Maps, de la descripción que publica el propio asador y de las fotografías de su perfil. No hay web oficial ni carta con precios: si algo cambia, manda lo que digan en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Cuscús, pastela <br /><em>y dulces.</em>"
+				description="La ficha no publica carta ni precios. Estos son los platos que la casa anuncia, los que piden las reseñas y los que aparecen en las fotografías del perfil."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="No hay carta oficial publicada ni precios del local, así que esta lista es orientativa: sirve para reconocer los platos de la casa, no para cerrar una cuenta. Para saber qué hay ese día, llama al restaurante."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve fotos <br /><em>de la casa.</em>"
+				description="Las fotografías del perfil del Asador de pollos Nora en Google Maps: el cuscús, las pastelas, el pollo, el pescado y los dulces del mostrador."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>Carlos Haya.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Málaga, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: lunes de 11:00 a 16:30, martes, jueves y viernes de 11:00 a 16:00, miércoles de 9:00 a 17:00 y sábado y domingo de 11:00 a 16:30. En festivos puede cambiar."
+				mapTitle="Mapa del Asador de pollos Nora en la avenida de Carlos Haya 63, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Nora · Carlos Haya"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. La ficha no publica un sistema de reservas ni una web propia, así que el teléfono es el canal directo para mesa, para encargar pollo o para preguntar por los platos del día."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces del Asador de pollos Nora"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
