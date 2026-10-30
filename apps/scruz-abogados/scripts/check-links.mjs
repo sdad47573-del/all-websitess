@@ -58,7 +58,7 @@ for (const p of pages) {
 			pageSet.has(clean) ||
 			fileSet.has(asFile) ||
 			fileSet.has(`${asFile}/index.html`) ||
-			/\.[a-z0-9]{2,5}$/i.test(clean);
+			/\.[a-z0-9]+$/i.test(clean);
 		if (!ok) broken.push(`${p} -> ${h}`);
 	}
 }
@@ -169,9 +169,32 @@ for (const post of BLOG_POSTS) {
 console.log(`Artículos con kicker desalineado de su categoría: ${kickerMismatch.length}`);
 for (const k of kickerMismatch) console.log(' ', k);
 
-if (broken.length > 0 || invalid > 0 || hiddenFaq.length > 0 || kickerMismatch.length > 0) {
+// ── Enlaces internos con la barra final ──
+// El sitio se sirve con `trailingSlash: 'always'`. Un enlace a `/foo` responde
+// 308 hacia `/foo/`: Google lo registra como «página con redirección» y gasta
+// rastreo en una URL que nunca es la canónica. Este check impide que vuelvan a
+// colarse enlaces de directorio sin la barra.
+const missingSlash = [];
+for (const p of pages) {
+	const html = fs.readFileSync(p, 'utf8');
+	for (const m of html.matchAll(/href="(\/[^"#?]*)(?:[#?][^"]*)?"/g)) {
+		const pathname = m[1];
+		if (pathname.endsWith('/') || /\.[a-z0-9]+$/i.test(pathname)) continue;
+		missingSlash.push(`${p} -> ${m[0].slice(6, -1)}`);
+	}
+}
+console.log(`Enlaces internos sin barra final: ${missingSlash.length}`);
+for (const m of [...new Set(missingSlash)].slice(0, 40)) console.log(' ', m);
+
+if (
+	broken.length > 0 ||
+	invalid > 0 ||
+	hiddenFaq.length > 0 ||
+	kickerMismatch.length > 0 ||
+	missingSlash.length > 0
+) {
 	console.error(
-		`\n✖ QA falló: ${broken.length} enlaces rotos, ${invalid} JSON-LD inválidos, ${hiddenFaq.length} FAQ ocultas, ${kickerMismatch.length} kickers desalineados`,
+		`\n✖ QA falló: ${broken.length} enlaces rotos, ${invalid} JSON-LD inválidos, ${hiddenFaq.length} FAQ ocultas, ${kickerMismatch.length} kickers desalineados, ${missingSlash.length} enlaces sin barra final`,
 	);
 	process.exitCode = 1;
 } else {

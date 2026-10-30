@@ -164,6 +164,7 @@ export default defineConfig({
 		resolve: {
 			alias: {
 				'@assets': assetsDir,
+				'@astro-icons': path.resolve(__dirname, 'src/@astro-icons'),
 				'@': path.resolve('./src'),
 			},
 		},
