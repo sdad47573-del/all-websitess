@@ -1,0 +1,604 @@
+---
+import '../styles/global.css';
+import { LocalSeo } from '@astro-components';
+import { Image } from 'astro:assets';
+
+import bandeja from '../assets/fotos/asador-cazuela-filomena-vertical-01.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+} from '../data/site';
+
+const title = 'Asador Cazuela Filomena · Pollo asado y menú del día en Palma-Palmilla';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#asador-cazuela-filomena`,
+	name: BUSINESS.fullName,
+	alternateName: ['Cazuela Filomena', 'Asador Filomena', 'Filomena Málaga'],
+	description:
+		'Asador de pollos en C. Guadalbullón, 18 (Palma-Palmilla, 29011 Málaga): pollo asado, pollo en salsa a la pimienta, cazuelas y menú del día, de martes a domingo de 10:00 a 15:30.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34639201565',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Pollo asado', 'Comida casera', 'Menú del día'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '15:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((resena) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: resena.valor, bestRating: 5 },
+		reviewBody: resena.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'La foto', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#4c5d3a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Asador Cazuela Filomena Málaga, pollo asado Palma-Palmilla, pollo en salsa a la pimienta Málaga, menú del día Guadalbullón, asador de pollos 29011, comida casera Palma-Palmilla, cazuelas Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado, pollo en salsa a la pimienta y menú del día en Guadalbullón, 18. De martes a domingo, de 10:00 a 15:30. 4,7 sobre 5 con 17 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de aluminio con medio pollo asado en su jugo y una cuchara"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#4c5d3a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[bandeja]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<div class="topline">
+			<div class="wrap topline-inner">
+				<p>Guadalbullón, 18 · Palma-Palmilla</p>
+				<p class="topline-hours">Martes a domingo · 10:00–15:30</p>
+				<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
+		</div>
+
+		<header class="site-header" id="inicio">
+			<div class="wrap header-inner">
+				<a class="brand" href="#inicio" aria-label="Asador Cazuela Filomena, inicio">
+					<span class="brand-stamp" aria-hidden="true">F</span>
+					<span class="brand-name">Asador de pollos <strong>Cazuela Filomena</strong></span>
+				</a>
+				<nav class="site-nav" aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="header-call" href={BUSINESS.phoneHref}>
+					<span aria-hidden="true">☎</span> {BUSINESS.phone}
+				</a>
+			</div>
+			<nav class="mobile-nav wrap" aria-label="Navegación principal en móvil">
+				{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+			</nav>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Palma-Palmilla · Málaga</p>
+						<h1 id="hero-title">Pollo asado y cazuelas <em>a mediodía.</em></h1>
+						<p class="hero-lede">
+							El asador de Guadalbullón, 18: <strong>pollo asado</strong>, pollo en salsa a la
+							pimienta, cazuelas y menú del día. Abre de martes a domingo, de 10:00 a 15:30, y los
+							lunes descansa.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-primary" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+							<a class="btn btn-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<strong>{RATING.label} / 5</strong>
+								<span>{RATING.count} reseñas en Google</span>
+							</li>
+							<li>
+								<strong>10:00–15:30</strong>
+								<span>martes a domingo</span>
+							</li>
+							<li>
+								<strong>Guadalbullón, 18</strong>
+								<span>Palma-Palmilla · 29011</span>
+							</li>
+						</ul>
+					</div>
+
+					<figure class="hero-figure">
+						<div class="hero-arch">
+							<Image
+								src={bandeja}
+								alt="Bandeja de aluminio con medio pollo asado en su jugo, con una cuchara y la tapa detrás"
+								widths={[360, 540, 720]}
+								sizes="(max-width: 880px) 78vw, 36vw"
+								loading="eager"
+								fetchpriority="high"
+							/>
+						</div>
+						<span class="hero-sticker" aria-hidden="true">
+							<small>Hecho al</small>
+							<strong>mediodía</strong>
+						</span>
+						<figcaption class="hero-caption">
+							Pollo asado en su jugo <span>La única foto pública de la ficha</span>
+						</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<div class="marquee" aria-hidden="true">
+				<div class="marquee-track">
+					<span>Pollo asado</span><span>·</span><span>Salsa a la pimienta</span><span>·</span><span>Menú del día</span><span>·</span><span>Cazuelas</span><span>·</span><span>Palma-Palmilla</span><span>·</span>
+					<span>Pollo asado</span><span>·</span><span>Salsa a la pimienta</span><span>·</span><span>Menú del día</span><span>·</span><span>Cazuelas</span><span>·</span><span>Palma-Palmilla</span><span>·</span>
+				</div>
+			</div>
+
+			<section class="about" id="casa" aria-labelledby="about-title">
+				<div class="wrap">
+					<div class="about-grid">
+						<div class="about-intro">
+							<p class="eyebrow">01 — La casa</p>
+							<h2 id="about-title">Un asador <em>de barrio.</em></h2>
+							<div class="about-copy">
+								<p>
+									Filomena es uno de esos asadores de pollos que se conocen por el boca a boca:
+									un local sencillo en la calle Guadalbullón, en Palma-Palmilla, con la cocina
+									abierta al mediodía y el pollo recién hecho.
+								</p>
+								<p>
+									La ficha de Google la clasifica como restaurante y la valora con 4,7 sobre 5
+									entre 17 reseñas. Casi todas mencionan lo mismo: el trato cercano, el precio
+									del menú y el pollo en salsa a la pimienta.
+								</p>
+								<p>
+									No hay carta publicada ni página web propia. Lo que se ve aquí es lo que
+									aparece en la ficha: la dirección, el teléfono, el horario y las opiniones de
+									quien ha comido allí.
+								</p>
+							</div>
+							<blockquote class="about-quote">
+								<p>«Soy fan de su pollo en salsa a la pimienta!»</p>
+								<cite>Reseña publicada en Google</cite>
+							</blockquote>
+						</div>
+
+						<aside class="cartel" aria-label="Datos del asador">
+							<span class="cartel-mark" aria-hidden="true">F</span>
+							<h3>Asador de pollos<br />Cazuela Filomena</h3>
+							<p>
+								Pollo asado, cazuelas y menú del día en el barrio. Para comer allí o para
+								llevar, se pregunta en el mostrador.
+							</p>
+							<a class="cartel-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+							<span class="cartel-meta">
+								C. Guadalbullón, 18 · Palma-Palmilla<br />
+								Martes a domingo · 10:00–15:30<br />
+								Lunes cerrado
+							</span>
+						</aside>
+					</div>
+
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-number" aria-hidden="true">0{index + 1}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<section class="carta" id="carta" aria-labelledby="carta-title">
+				<div class="wrap">
+					<header class="section-head">
+						<div>
+							<p class="eyebrow">02 — La carta</p>
+							<h2 id="carta-title">Lo que se pide <em>en Filomena.</em></h2>
+						</div>
+						<p>
+							La ficha de Google no publica carta ni precios. Aquí solo aparecen las familias de
+							platos que nombran las reseñas y el propio nombre del asador.
+						</p>
+					</header>
+
+					<div class="carta-grid">
+						<div class="menu-groups">
+							{
+								MENU.map((group) => (
+									<div class="menu-group">
+										<h3>{group.title}</h3>
+										<ul>
+											{group.items.map((item) => (
+												<li class="menu-item">
+													<h4>{item.name}</h4>
+													<p>{item.note}</p>
+												</li>
+											))}
+										</ul>
+									</div>
+								))
+							}
+							<p class="menu-note">
+								Los nombres salen de las reseñas publicadas en la ficha de Google; el menú
+								concreto del día y los precios se consultan en el local o por teléfono.
+							</p>
+						</div>
+
+						<aside class="carta-card" aria-labelledby="carta-card-title">
+							<p class="card-kicker">Para pedir</p>
+							<h3 id="carta-card-title">El menú de hoy <em>se pregunta.</em></h3>
+							<p>
+								Como en todo asador de barrio, lo que hay cambia con el día. Llama antes de
+								salir para saber si queda pollo y qué lleva el menú.
+							</p>
+							<a class="card-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+							<p class="card-note">
+								C. Guadalbullón, 18 · Palma-Palmilla, Málaga. La ficha no publica accesibilidad ni
+								carta: confirma ambos por teléfono.
+							</p>
+						</aside>
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery" id="galeria" aria-labelledby="gallery-title">
+				<div class="wrap">
+					<header class="section-head section-head-light">
+						<div>
+							<p class="eyebrow">03 — La foto</p>
+							<h2 id="gallery-title">Una bandeja <em>y un pollo.</em></h2>
+						</div>
+						<p>
+							La ficha de Google solo tiene una foto pública del local. Es esta, y no hay más: no
+							inventamos una galería que no existe.
+						</p>
+					</header>
+
+					<div class="foto-sola">
+						<figure>
+							<Image
+								src={bandeja}
+								alt="Bandeja de aluminio con medio pollo asado bañado en su jugo y una cuchara de servir"
+								widths={[420, 640, 900]}
+								sizes="(max-width: 980px) 92vw, 36vw"
+							/>
+							<figcaption>Pollo asado, en la bandeja</figcaption>
+						</figure>
+						<div class="foto-sola-copy">
+							<h3>Lo que se ve</h3>
+							<p>
+								Medio pollo asado, con la piel tostada y el jugo de la bandeja, servido con
+								cuchara. Es la imagen que el propio local ha subido a su perfil de Google.
+							</p>
+							<p>
+								<strong>Para ver más, hay que ir.</strong> La ficha no tiene fotos del comedor ni
+								de la fachada, y las demás imágenes de la página son las que publicaron quienes
+								compraron allí.
+							</p>
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ver la ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+
+					<p class="gallery-credit">
+						Fotografía del perfil público de {BUSINESS.fullName} en Google Maps, consultado en
+						octubre de 2026.
+					</p>
+				</div>
+			</section>
+
+			<section class="reviews" aria-labelledby="reviews-title">
+				<div class="wrap reviews-grid">
+					<div class="rating-block">
+						<p class="eyebrow">04 — En Google</p>
+						<p class="big-rating">{RATING.label}</p>
+						<p class="stars" aria-label={`${RATING.label} de 5 estrellas`}>
+							<span aria-hidden="true">★★★★★</span>
+						</p>
+						<p class="rating-count">{RATING.count} reseñas en Google</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="review-list">
+						<h2 id="reviews-title" class="visually-hidden">Reseñas de Asador Cazuela Filomena</h2>
+						{
+							RESENAS.map((resena, index) => (
+								<blockquote class:list={['review', { 'review-lead': index === 0 }]}>
+									<p>«{resena.texto}»</p>
+									<footer>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+										</span>
+										<cite>Reseña publicada en Google</cite>
+									</footer>
+								</blockquote>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="visit" id="visitanos" aria-labelledby="visit-title">
+				<div class="wrap">
+					<header class="section-head">
+						<div>
+							<p class="eyebrow">05 — Visitar</p>
+							<h2 id="visit-title">Guadalbullón, 18. <em>Al mediodía.</em></h2>
+						</div>
+						<p>
+							En Palma-Palmilla, al norte de Málaga. La cocina abre a las 10:00 y cierra a las
+							15:30; el lunes no hay servicio.
+						</p>
+					</header>
+
+					<div class="visit-grid">
+						<div class="visit-info">
+							<div class="visit-block">
+								<h3>Horario</h3>
+								<table>
+									<caption class="visually-hidden">Horario de Asador Cazuela Filomena</caption>
+									<tbody>
+										{
+											HORARIO.map((row) => (
+												<tr class:list={{ closed: row.closed }}>
+													<th scope="row">{row.dia}</th>
+													<td>{row.horas}</td>
+												</tr>
+											))
+										}
+									</tbody>
+								</table>
+								<p class="notice">{HORARIO_AVISO}</p>
+							</div>
+
+							<div class="visit-block">
+								<h3>Dónde</h3>
+								<address>
+									<strong>{BUSINESS.street}</strong><br />
+									{BUSINESS.district}<br />
+									{BUSINESS.postalCode} {BUSINESS.city}
+								</address>
+								<p class="visit-links">
+									<a href={MAPS.directions} target="_blank" rel="noreferrer">
+										Cómo llegar <span aria-hidden="true">↗</span>
+									</a>
+									<a href={MAPS.streetView} target="_blank" rel="noreferrer">
+										Vista de la calle <span aria-hidden="true">↗</span>
+									</a>
+								</p>
+							</div>
+
+							<div class="visit-block">
+								<h3>Contacto</h3>
+								<p class="visit-phone">
+									<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+								</p>
+								<p>
+									Es el único teléfono que publica la ficha de Google. No consta web ni
+									perfiles sociales.
+								</p>
+							</div>
+
+							<div class="visit-block">
+								<h3>Accesibilidad</h3>
+								<p>
+									La ficha no publica atributos de accesibilidad, así que esta web no afirma
+									nada. Si necesitas acceso adaptado, pregunta al local antes de ir.
+								</p>
+							</div>
+						</div>
+
+						<div class="map-column">
+							<div class="map-frame">
+								<iframe
+									title="Mapa de Asador Cazuela Filomena en C. Guadalbullón, 18, Málaga"
+									src={MAPS.embed}
+									loading="lazy"
+									referrerpolicy="no-referrer-when-downgrade"
+									allowfullscreen
+								></iframe>
+							</div>
+							<p class="map-caption">
+								<span>Guadalbullón, 18 · 29011 Málaga</span>
+								<a href={MAPS.place} target="_blank" rel="noreferrer">
+									Abrir en Google Maps <span aria-hidden="true">↗</span>
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap faq-grid">
+					<div class="faq-intro">
+						<p class="eyebrow">06 — Preguntas</p>
+						<h2 id="faq-title">Antes de <em>pasar.</em></h2>
+						<p>
+							Lo que la ficha pública permite responder y lo que hay que confirmar por teléfono.
+							Sin cartas, precios ni accesibilidad inventados.
+						</p>
+						<a class="simple-link" href={BUSINESS.phoneHref}>
+							Llamar al {BUSINESS.phone} <span aria-hidden="true">→</span>
+						</a>
+					</div>
+					<div class="faq-list">
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-top">
+					<div class="footer-brand">
+						<span class="brand-stamp brand-stamp-light" aria-hidden="true">F</span>
+						<p>
+							Cazuela Filomena
+							<small>Asador de pollos<br />Palma-Palmilla · Málaga</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del asador">
+						<h2>La casa</h2>
+						{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+					<div class="footer-contact">
+						<h2>Contacto</h2>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<p>{BUSINESS.street}<br />{BUSINESS.postalCode} {BUSINESS.city}</p>
+						<a class="footer-map" href={MAPS.place} target="_blank" rel="noreferrer">
+							Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="footer-bottom">
+					<p>
+						© {year} {BUSINESS.name} · Datos, reseñas y fotografías de la ficha pública de Google
+						Maps, consultada en octubre de 2026. Confirma horario y menú antes de la visita.
+					</p>
+					<nav class="footer-legal" aria-label="Información legal">
+						<a href="/aviso-legal">Aviso legal</a>
+						<a href="/aviso-legal#privacidad">Privacidad</a>
+						<a href="/aviso-legal#cookies">Cookies</a>
+					</nav>
+					<p class="credit">
+						Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+						<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Llamar a Filomena <span>{BUSINESS.phone}</span>
+		</a>
+	</body>
+</html>
