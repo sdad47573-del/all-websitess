@@ -1,9 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/Sora+Tilde/@36.7182189,-4.4311978,17z/data=!3m1!4b1!4m6!3m5!1s0xd72f7310c7d0dbf:0xdea97bc4c69b7d9!8m2!3d36.7182189!4d-4.4311978!16s%2Fg%2F11ybrtmz4d?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Asador+D'casa+Comida+Casera+Para+Llevar/@40.4410866,-3.6440484,17z/data=!3m1!4b1!4m6!3m5!1s0xd422f3dc5a51cdd:0xfa04c69fce03be41!8m2!3d40.4410866!4d-3.6440484!16s%2Fg%2F11c1rf5zn5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Al+paladar+con+sabor/@40.4206035,-3.6261145,17z/data=!3m1!4b1!4m6!3m5!1s0xd422f72462a11c3:0xf9d9ae2b44b801ee!8m2!3d40.4206035!4d-3.6261145!16s%2Fg%2F11y0qg1np5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/El+Cielo/@40.4123415,-3.6957058,17z/data=!3m1!4b1!4m6!3m5!1s0xd422629ce881633:0x63bbabd0e44c556d!8m2!3d40.4123415!4d-3.6957058!16s%2Fg%2F1ptxfnbl5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
