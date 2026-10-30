@@ -1,0 +1,393 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/buen-gusto-comida-para-llevar-apaisada-01.jpg';
+import vitrina from '../assets/fotos/buen-gusto-comida-para-llevar-vertical-05.jpg';
+import pollos from '../assets/fotos/buen-gusto-comida-para-llevar-apaisada-07.jpg';
+import cartelMenu from '../assets/fotos/buen-gusto-comida-para-llevar-vertical-09.jpg';
+import ofertas from '../assets/fotos/buen-gusto-comida-para-llevar-apaisada-03.jpg';
+import polloBandeja from '../assets/fotos/buen-gusto-comida-para-llevar-apaisada-10.jpg';
+import polloAsador from '../assets/fotos/buen-gusto-comida-para-llevar-cuadrada-06.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Buen Gusto · Pollo asado y comida para llevar en Madrid';
+const description =
+	'Buen Gusto, en Diego de León, 59 (Salamanca, 28006 Madrid). Pollo asado y comida preparada para llevar, con menú completo. De lunes a sábado, de 9:00 a 16:00.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada azul de Buen Gusto en Diego de León, 59, con los rótulos de pollos asados y comida preparada',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina de Buen Gusto con bandejas de primeros, guisos y pollo asado',
+	},
+	{
+		src: pollos,
+		alt: 'Pollos asados en la vitrina de Buen Gusto junto al cartel de 5,25 €',
+	},
+	{
+		src: cartelMenu,
+		alt: 'El cartel «Elija su comida» de Buen Gusto con el menú de 7,25 €',
+	},
+	{
+		src: ofertas,
+		alt: 'La pizarra de ofertas de Buen Gusto con ocho combinaciones a 12 €',
+	},
+	{
+		src: polloBandeja,
+		alt: 'Un pollo asado de Buen Gusto en una bandeja de aluminio para llevar',
+	},
+	{
+		src: polloAsador,
+		alt: 'Un pollo asado ensartado en el asador de Buen Gusto',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Buen Gusto',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: '12.00',
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#buen-gusto`,
+	name: BUSINESS.fullName,
+	alternateName: ['Buen Gusto Madrid', 'Buen Gusto Salamanca', 'Buen Gusto Diego de León'],
+	description:
+		'Establecimiento de comida preparada para llevar en la calle de Diego de León, 59 (Salamanca, 28006 Madrid). Pollo asado, menú completo y ofertas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34913440956',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Pollo asado', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Salamanca' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '09:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#173f8f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Buen Gusto Madrid, comida para llevar Salamanca, pollos asados Diego de León, comida preparada Madrid, menú del día Salamanca, pollo asado Madrid, Buen Gusto Diego de León"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado y comida preparada para llevar en Diego de León, 59. Menú completo y ofertas a 12 €. De lunes a sábado, de 9:00 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pollos asados en la vitrina de Buen Gusto, en Diego de León, 59"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#173f8f"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Salamanca"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Buen Gusto"
+			subtitle="Comida para llevar · Salamanca"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Calle de Diego de León, 59 · Salamanca, Madrid"
+				title="Pollo asado <br /><em>y comida de casa.</em>"
+				lede={`Buen Gusto es una tienda de comida preparada para llevar en Diego de León. En la vitrina esperan los pollos asados y las bandejas de primeros y segundos, y el cartel del local propone un menú de primero, segundo, postre y bebida por 7,25 €. Abre de lunes a sábado, de 9:00 a 16:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada azul de Buen Gusto en Diego de León, 59, con los rótulos de pollos asados y comida preparada"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:00–16:00</b> · domingo cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · comida preparada' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Buen Gusto" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El local"
+				title="Comida preparada <br /><em>en Diego de León.</em>"
+				paragraphs={[
+					'Buen Gusto está en la calle de Diego de León, 59, en el distrito de Salamanca. La fachada es azul y blanca, con el rótulo bien visible: «Pollos asados · Buen Gusto · Comida preparada».',
+					'Dentro manda la vitrina. En las bandejas se ven primeros como macarrones, paella, menestra, judías verdes o ensalada campera, y segundos como albóndigas, canelones, croquetas o empanadillas. El pollo asado es lo que anuncia la casa y lo que aparece en el escaparate.',
+					'El cartel «Elija su comida» propone un menú completo por 7,25 €: primer plato, segundo, postre y bebida. La pizarra de la pared añade ocho ofertas a 12 € que combinan pollo asado, tortilla, croquetas, empanadillas, paella, pasta, arroz, patatas y postres.',
+					`La ficha de Google lo clasifica como establecimiento de comida preparada y le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de lunes a sábado, de 9:00 a 16:00, y cierra el domingo. El teléfono que publica es el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica carta oficial, precios ni datos de accesibilidad. Los platos, el menú y las ofertas de esta página son los que aparecen en los carteles de las fotos del perfil de Google, consultadas en octubre de 2026. Confirma precios y disponibilidad por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que sale de la cocina</p>
+					<h2 id="highlights-title">Asador, vitrina <br /><em>y menú del día.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que hay <br /><em>en el mostrador.</em>"
+				description="La ficha de Google no publica una carta. Esta lista sale del cartel «Elija su comida» y de la pizarra de ofertas que aparecen en las fotos del local."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios vistos en las fotos del perfil de Google (octubre de 2026): menú de primero, segundo, postre y bebida por 7,25 €, con 0,25 € de suplemento de cubiertos, y ocho ofertas a 12 €. La ficha no publica la carta completa ni los platos de cada día; confírmalos por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la vitrina <br /><em>y el pollo asado.</em>"
+				description="Siete fotografías del perfil de Buen Gusto en Google Maps: la fachada, la vitrina, los pollos asados, el cartel del menú, la pizarra de ofertas y el pollo listo para llevar."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,5 sobre 5, <em>con 236 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,5 con 236 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí hablan del pollo asado, de la variedad y de los precios. También
+							hay alguna queja por la espera con los encargos, así que conviene llamar con
+							tiempo si el pedido es grande.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,5</strong>
+						<span>★★★★☆</span>
+						<small>236 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Salamanca, <br /><em>Diego de León.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de lunes a sábado, de 9:00 a 16:00, con el domingo cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Buen Gusto en la calle de Diego de León, 59, Salamanca, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Diego de León, 59 · Salamanca"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. Tampoco publica datos de accesibilidad, así que conviene llamar antes si necesitas acceso para silla de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Buen Gusto"
+			navAriaLabel="Enlaces de Buen Gusto"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
