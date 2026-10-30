@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+
+const MAPS_URL =
+  'https://www.google.com/maps/place/La+Cocina+De+Ambros%C3%ADa+Madrid/@40.4365507,-3.7008726,17z/data=!3m1!4b1!4m6!3m5!1s0xd422999932bf86f:0xfe60a269286f6884!8m2!3d40.4365507!4d-3.7008726!16s%2Fg%2F11h1l1bc0s?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D';
+
+const photoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.jpg', {
+  eager: true,
+});
+const photos = Object.keys(photoModules)
+  .sort()
+  .map((path) => photoModules[path].default);
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>La Cocina De Ambrosía Madrid</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        color: #1f2937;
+        background: #fafafa;
+      }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+      .gallery img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+      }
+      footer {
+        border-top: 1px solid #e5e7eb;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+      footer a {
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>La Cocina De Ambrosía Madrid</h1>
+      <p><a href={MAPS_URL} rel="noopener">Ver en Google Maps</a></p>
+      <section class="gallery">
+        {photos.map((photo) => <Image src={photo} alt="La Cocina De Ambrosía Madrid" loading="lazy" />)}
+      </section>
+    </main>
+    <footer>
+      <p>Web creada por <a href="https://sur-digital.vercel.app" rel="noopener">Sur Digital</a></p>
+    </footer>
+  </body>
+</html>

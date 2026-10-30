@@ -1,15 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-
-https://www.google.com/maps/place/El+Cielo/@40.4123415,-3.6957058,17z/data=!3m1!4b1!4m6!3m5!1s0xd422629ce881633:0x63bbabd0e44c556d!8m2!3d40.4123415!4d-3.6957058!16s%2Fg%2F1ptxfnbl5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Mama+Conchi/@40.3858894,-3.6420046,17z/data=!3m1!4b1!4m6!3m5!1s0xd4225e94dd0d0fd:0x8fc9d72f78e7c2e9!8m2!3d40.3858894!4d-3.6420046!16s%2Fg%2F11h056t8tk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/El+Delantal+Comida+Para+Llevar/@40.4134372,-3.7172769,17z/data=!3m1!4b1!4m6!3m5!1s0xd42287613c06d11:0x5b35e9eb617492a!8m2!3d40.4134372!4d-3.7172769!16s%2Fg%2F11c6f2zg5g?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/La+Cocina+De+Ambros%C3%ADa+Madrid/@40.4365507,-3.7008726,17z/data=!3m1!4b1!4m6!3m5!1s0xd422999932bf86f:0xfe60a269286f6884!8m2!3d40.4365507!4d-3.7008726!16s%2Fg%2F11h1l1bc0s?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/T%C3%A1chira+Food+-+(Solo+para+llevar+o+Domicilio)/@40.3654186,-3.7621602,17z/data=!3m1!4b1!4m6!3m5!1s0xd4189002523e297:0x9ecf6e403a5f312b!8m2!3d40.3654186!4d-3.7621602!16s%2Fg%2F11zgm1xnhz?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/La+Casa+del+Pollo/@40.352458,-3.681235,17z/data=!3m1!4b1!4m6!3m5!1s0xd4226bfdf8fa9af:0x82520dcf4af10f5f!8m2!3d40.352458!4d-3.681235!16s%2Fg%2F1hc7_gx_9?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Buen+Gusto+-+Comida+para+llevar/@40.43482,-3.6761776,17z/data=!3m1!4b1!4m6!3m5!1s0xd4228c7680963e3:0x91d288a6d34ea1c5!8m2!3d40.43482!4d-3.6761776!16s%2Fg%2F11cmfz9dtr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
