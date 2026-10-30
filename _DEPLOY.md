@@ -9,6 +9,8 @@ https://a-gusto-el-macizo.netlify.app
 https://el-anzuelo-restaurante.netlify.app/ // imagenes en el hero y abajo
 https://bar-dona-jimena.netlify.app
 https://tapas-a-bocados.netlify.app
+https://a-retoral-tapas-y-brasas.netlify.app
+https://a-roda-restaurante.netlify.app
 
 sur
 https://bistrot-senseo.netlify.app/
@@ -30,3 +32,28 @@ https://bar-de-esteban.netlify.app/
 https://bar-cafeteria-sebastian.netlify.app/
 https://bar-bermeotarrak.netlify.app/
 https://bar-albero-tapas.netlify.app/
+
+misko
+https://los-mena.netlify.app/
+https://gym-krono.netlify.app/
+https://el-terrazeo-del-guinda.netlify.app/
+https://la-nicoba.netlify.app/
+https://el-chuleton.netlify.app/
+https://gigantes-street-food.netlify.app/
+https://la-talega.netlify.app/
+https://el-rincon-del-perlita.netlify.app/
+https://restaurante-pizzaria-a-paragem.netlify.app/
+https://aguatapa-cadiz.netlify.app
+https://al-mofrag.netlify.app
+https://ars-floristeria.netlify.app
+https://bar-araso-restaurante.netlify.app/
+https://alsara-express-los-tilos.netlify.app
+https://ares-flors.netlify.app
+https://bar-el-teide.netlify.app
+https://alsara-express-los-tilos.netlify.app/
+https://ares-flors.netlify.app/
+https://bar-el-teide.netlify.app/
+
+////
+
+https://antolin-floristeria.netlify.app
