@@ -1,13 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/m'encanta+comidas+para+llevar/@37.4203893,-6.1135301,17z/data=!3m1!4b1!4m6!3m5!1s0xd12145ee56401d9:0xb3cc17e6a60cae79!8m2!3d37.4203893!4d-6.1135301!16s%2Fg%2F11b70k465w?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Desav%C3%ADo+El+Abuelo+Curro/@37.3183206,-6.0616604,17z/data=!4m6!3m5!1s0xd12132acf87959b:0x790da9771032e4ed!8m2!3d37.3183206!4d-6.0616604!16s%2Fg%2F11rvf__x3c?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-
-https://www.google.com/maps/place/Ruota+arroces+y+comida+para+llevar/@37.3663888,-6.0720765,17z/data=!4m6!3m5!1s0xd126d08fc28f1d3:0x2a4d718f2696a128!8m2!3d37.3663888!4d-6.0720765!16s%2Fg%2F11ry2yj7s0?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Pollos+a+Domicilio+%22El+Portugu%C3%A9s%22/@37.3985396,-5.9195082,17z/data=!4m6!3m5!1s0xd126f004639fa43:0xf058bf1e88f57053!8m2!3d37.3985396!4d-5.9195082!16s%2Fg%2F11z630b4bl?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/El+Chef+a+Casa+El+Punto*/@37.3560645,-5.9844716,17z/data=!4m6!3m5!1s0xd126dd5966e1fa5:0x14067191aa178d06!8m2!3d37.3560645!4d-5.9844716!16s%2Fg%2F11gvf13jw6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Don+Pollo/@37.3617984,-5.9677116,17z/data=!4m6!3m5!1s0xd126e89f4a6b563:0x2b33cb67cc2234a1!8m2!3d37.3617984!4d-5.9677116!16s%2Fg%2F11bzz1v9jd?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
