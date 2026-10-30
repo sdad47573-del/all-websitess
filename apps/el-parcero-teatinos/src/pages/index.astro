@@ -1,0 +1,397 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import papas from '../assets/fotos/el-parcero-teatinos-apaisada-05.jpg';
+import fachada from '../assets/fotos/el-parcero-teatinos-apaisada-01.jpg';
+import comiendo from '../assets/fotos/el-parcero-teatinos-vertical-02.jpg';
+import arepa from '../assets/fotos/el-parcero-teatinos-vertical-03.jpg';
+import chicharron from '../assets/fotos/el-parcero-teatinos-vertical-04.jpg';
+import papasQueso from '../assets/fotos/el-parcero-teatinos-vertical-06.jpg';
+import arepaGuac from '../assets/fotos/el-parcero-teatinos-vertical-07.jpg';
+import papasClose from '../assets/fotos/el-parcero-teatinos-vertical-08.jpg';
+import nevera from '../assets/fotos/el-parcero-teatinos-vertical-09.jpg';
+import barra from '../assets/fotos/el-parcero-teatinos-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'El Parcero Teatinos · Restaurante colombiano en Málaga';
+const description =
+	'El Parcero Teatinos, en Carril del Capitán, 9 (Teatinos-Universidad, 29010 Málaga). Restaurante 100% colombiano, con hamburguesas Angus, chicharrón y domicilios, de miércoles a domingo de 20:00 a 23:00.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de El Parcero Teatinos con el cartel amarillo de comida colombiana y la terraza',
+	},
+	{
+		src: arepaGuac,
+		alt: 'Arepa con carne desmechada, guacamole, queso rallado y salsas en un plato de papel',
+	},
+	{
+		src: chicharron,
+		alt: 'Bandeja de chicharrón en tiras sobre patatas fritas con salsa',
+	},
+	{
+		src: arepa,
+		alt: 'Primer plano de una arepa con guacamole, queso fundido y salsas en una caja de cartón',
+	},
+	{
+		src: papasQueso,
+		alt: 'Patatas cargadas con queso rallado, chicharrón y salsas en una bandeja de aluminio',
+	},
+	{
+		src: papasClose,
+		alt: 'Detalle de las papas con chicharrón, queso rallado y salsa de la casa',
+	},
+	{
+		src: nevera,
+		alt: 'Nevera de El Parcero con bebidas colombianas Postobón, Hit y Coca-Cola',
+	},
+	{
+		src: barra,
+		alt: 'Barra de El Parcero con el cartel «Autentic colombian food» y personal preparando pedidos',
+	},
+	{
+		src: comiendo,
+		alt: 'Cliente comiendo una arepa de El Parcero en una caja de cartón',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de El Parcero Teatinos',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-parcero`,
+	name: BUSINESS.name,
+	alternateName: ['El Parcero', 'El Parcero Málaga', 'Restaurante colombiano El Parcero'],
+	description:
+		'Restaurante 100% colombiano en Carril del Capitán, 9, Teatinos-Universidad (29010 Málaga). Hamburguesas Angus, chicharrón, arepas y domicilios.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.website],
+	telephone: '+34627621696',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina colombiana', 'Hamburguesas', 'Comida colombiana'],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '20:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#101a33" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Titan+One&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Parcero Teatinos, restaurante colombiano Málaga, comida colombiana Teatinos, hamburguesas Angus Málaga, chicharrón, arepas, domicilios Carril del Capitán"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Restaurante 100% colombiano en Carril del Capitán, 9. Hamburguesas Angus, chicharrón, arepas y domicilios. De miércoles a domingo."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Papas con chicharrón y salsa de El Parcero Teatinos"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#101a33"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[papas]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Parcero"
+			subtitle="Comida colombiana · Teatinos"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carril del Capitán, 9 · Teatinos"
+				title="Comida colombiana <br /><em>en Teatinos.</em>"
+				lede={`El Parcero Teatinos es el restaurante colombiano de Carril del Capitán. La ficha lo presenta como «Restaurante 100% Colombiano»; en su galería aparecen las papas con chicharrón, las arepas con guacamole y queso, las hamburguesas Angus y las bebidas colombianas. Cena de miércoles a domingo, de 20:00 a 23:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={papas}
+				imageAlt="Plato de papas con chicharrón y carne desmechada bañado en salsas, junto a una bebida colombiana"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>20:00–23:00</b> · miércoles a domingo' },
+					{ label: 'La casa', html: '<b>100% colombiano</b> · domicilios' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="100% colombiano"
+			/>
+
+			<LocalChips label="Lo que ofrece El Parcero Teatinos" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una esquina de Colombia <br /><em>en Málaga.</em>"
+				paragraphs={[
+					'El Parcero Teatinos está en Carril del Capitán, 9, en Teatinos-Universidad. La fachada amarilla lo anuncia como «El Parcero · Comida Colombiana» y, en la esquina del cartel, añade «Domicilios» con el teléfono 627 62 16 96.',
+					'La ficha de Google lo describe en cuatro palabras: «Restaurante 100% Colombiano». En la galería del local aparecen las papas cargadas con chicharrón, queso rallado y salsas, las arepas con guacamole y carne desmechada, las hamburguesas y una nevera con bebidas colombianas como Postobón y Hit.',
+					'La ficha le da 4,6 sobre 5 con 244 reseñas. Una cuenta que pidieron «unas hamburguesas angus que estaban deliciosas»; otra destaca «excelente servicio, comida deliciosa, la atención super»; y una tercera resume: «comida exquisita, servicio excelente, precios muy asequibles».',
+					'El local cena de miércoles a domingo, de 20:00 a 23:00, y cierra lunes y martes. El teléfono que publica la ficha es el 627 62 16 96. Google marca el acceso para sillas de ruedas.',
+				]}
+				note="La ficha no publica carta ni precios. Los platos que se citan aquí son los que aparecen en la galería del perfil de Google, consultado en octubre de 2026, y los que nombran las reseñas. La carta y los precios se consultan en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se sirve</p>
+					<h2 id="highlights-title">Chicharrón, arepas <br /><em>y hamburguesas.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item) => (
+								<li>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que sale <br /><em>de la cocina.</em>"
+				description="La ficha de Google no publica carta ni precios. Esta lista reúne los platos que aparecen en las fotos del local y los que nombran las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la galería del perfil de Google del local, consultada en octubre de 2026, y los que nombran las reseñas. La carta y la disponibilidad se confirman por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, las arepas <br /><em>y las papas.</em>"
+				description="Nueve fotografías del perfil de El Parcero Teatinos en Google Maps: la fachada, las arepas con guacamole, el chicharrón, las papas cargadas, la barra y las bebidas colombianas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,6 sobre 5, <em>con 244 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,6 con 244 opiniones.
+							Las reseñas destacadas hablan de las hamburguesas, del servicio, de la atención y
+							de los precios; aquí se reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,6</strong>
+						<span>★★★★★</span>
+						<small>244 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Carril del Capitán, 9, <br /><em>Teatinos.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de miércoles a domingo, de 20:00 a 23:00; lunes y martes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de El Parcero Teatinos en Carril del Capitán, 9, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Carril del Capitán, 9"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online. El cartel de la fachada anuncia domicilios en el 627 62 16 96. Google marca el acceso para sillas de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Enlaces del local ↗', href: BUSINESS.website, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a El Parcero"
+			navAriaLabel="Enlaces de El Parcero Teatinos"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

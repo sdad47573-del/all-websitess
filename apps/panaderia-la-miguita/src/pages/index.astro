@@ -1,0 +1,328 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mostrador from '../assets/fotos/panaderia-la-miguita-apaisada-01.jpg';
+import puesto from '../assets/fotos/panaderia-la-miguita-vertical-10.jpg';
+import rotulo from '../assets/fotos/panaderia-la-miguita-vertical-05.jpg';
+import dulces from '../assets/fotos/panaderia-la-miguita-vertical-02.jpg';
+import rosco from '../assets/fotos/panaderia-la-miguita-apaisada-04.jpg';
+import estanteria from '../assets/fotos/panaderia-la-miguita-apaisada-03.jpg';
+import mostradorLado from '../assets/fotos/panaderia-la-miguita-vertical-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería La Miguita · pan y bollería en el Mercado del Marrubial, Córdoba';
+const description =
+	'Panadería La Miguita, puesto nº 17 del Mercado del Marrubial (Av. de Jesús Rescatado, 1, 14010 Córdoba). Pan del día, barras, teleras y bollería, de lunes a sábado de 8:30 a 14:00. 5,0/5 en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#miguita`,
+	name: BUSINESS.name,
+	alternateName: ['La Miguita', 'Panadería La Miguita Córdoba'],
+	description:
+		'Panadería en el puesto nº 17 del Mercado del Marrubial (Av. de Jesús Rescatado, 1, 14010 Córdoba). Pan del día, barras, teleras y bollería, de lunes a sábado de 8:30 a 14:00.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34658394831',
+	servesCuisine: ['Panadería', 'Bollería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'Av. de Jesús Rescatado, 1 (Mercado del Marrubial, puesto nº 17)',
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:30',
+			closes: '14:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El puesto', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Horario', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const galeria = [
+	{
+		src: puesto,
+		alt: 'Fachada del puesto de la Panadería La Miguita en el Mercado del Marrubial, con el rótulo blanco de letras negras',
+	},
+	{
+		src: rotulo,
+		alt: 'Rótulo «Panadería La Miguita» visto en diagonal sobre el mostrador del puesto',
+	},
+	{
+		src: dulces,
+		alt: 'Bolsa de bollería envasada de la marca Cristi con roscones glaseados y napolitanas de chocolate',
+	},
+	{
+		src: rosco,
+		alt: 'Roscón de Reyes con nata, fruta escarchada y azúcar en su caja de cartón',
+	},
+	{
+		src: estanteria,
+		alt: 'Estanterías del puesto con galletas, chocolates, conservas y una huevera llena de huevos',
+	},
+	{
+		src: mostradorLado,
+		alt: 'Pasillo del mercado junto al puesto, con las estanterías de bollería y la vitrina de pan',
+	},
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#f7f0e3" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería La Miguita, panadería Córdoba, Mercado del Marrubial, puesto 17, pan del día, bollería Córdoba, Av. de Jesús Rescatado, 14010"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan del día, barras, teleras y bollería en el puesto nº 17 del Mercado del Marrubial, de lunes a sábado de 8:30 a 14:00. 5,0 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Puesto de la Panadería La Miguita en el Mercado del Marrubial, Córdoba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#f7f0e3"
+			phone="+34658394831"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[mostrador]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Miguita"
+			subtitle="Panadería · Mercado del Marrubial"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Mercado del Marrubial · puesto nº 17 · Córdoba"
+				title="Pan del día <br /><em>en el Marrubial.</em>"
+				lede={`La Miguita es un puesto de panadería dentro del Mercado del Marrubial, en la Av. de Jesús Rescatado. Del mostrador salen barras y teleras; en las estanterías hay pan y bollería envasados, dulces, huevos y conservas. Abre de lunes a sábado de 8:30 a 14:00 y cierra los domingos. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={mostrador}
+				imageAlt="Mostrador de la Panadería La Miguita con las estanterías de pan y los carteles de oferta"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Dirección', html: '<b>Mercado del Marrubial</b> · puesto 17' },
+					{ label: 'Horario', html: '<b>L–S</b> · 8:30–14:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver las fotos en Google"
+				tag="Domingo cerrado"
+			/>
+
+			<LocalChips label="Lo que hay en La Miguita" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El puesto"
+				title="Un mostrador <br /><em>con toldo de mercado.</em>"
+				paragraphs={[
+					'La Miguita está en el puesto nº 17 del Mercado del Marrubial, con entrada por la Av. de Jesús Rescatado, 1, en el barrio de Levante. El rótulo blanco —letras negras, una barra de pan, un cesto, una espiga— se ve desde el pasillo; debajo, el mostrador de madera y una vitrina con los dulces.',
+					'En el mostrador se apilan barras y teleras, con los carteles de oferta colgados entre los panes. Las estanterías del puesto mezclan el pan envasado con la bollería de siempre: roscones glaseados, napolitanas de chocolate, palmeras. También hay cajas de bombones, conservas, galletas, refrescos y una huevera con huevos.',
+					'Las fotos de la ficha dejan ver un puesto de barrio, sin escaparate: se compra al momento y se lleva. En una de ellas aparece un roscón de Reyes con nata y fruta escarchada, de los que se encargan por temporada.',
+					'El horario publicado en Google es de lunes a sábado, de 8:30 a 14:00, con el domingo cerrado. En la pared hay un cartel de Bizum, así que el pago con el móvil está disponible.',
+				]}
+				note="La ficha de Google no publica carta, precios ni página web propia. Esta página no los inventa: los precios están en los carteles del mostrador y los productos cambian con el día."
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas del puesto</p>
+							<h2 id="three-title">Pan, vitrina <br /><em>y mercado.</em></h2>
+						</div>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="El puesto <br /><em>por dentro.</em>"
+				description="Seis imágenes de la ficha de Google Maps: la fachada del puesto, el rótulo, la bollería envasada, un roscón de Reyes y las estanterías del mostrador."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026. Las dos fotos de grupo que aparecen en esa galería no se usan en esta página."
+			/>
+
+			<section class="rating-band" aria-labelledby="rating-title">
+				<div class="wrap rating-inner">
+					<div class="rating-score">
+						<strong>5,0</strong>
+						<div>
+							<span class="rating-stars" role="img" aria-label="5 de 5 estrellas">★★★★★</span>
+							<p id="rating-title" style="margin:0;font-size:.78rem">3 reseñas en Google Maps</p>
+						</div>
+					</div>
+					<p class="rating-copy">
+						Es la nota que muestra hoy la ficha del puesto. Son solo tres reseñas, así que
+						tómalas como una primera referencia: se leen enteras, con su texto original, en
+						Google.
+					</p>
+					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el Mercado <br /><em>del Marrubial.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.streetLine2, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de la Panadería La Miguita en el Mercado del Marrubial, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Miguita · puesto 17"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Llamar', href: BUSINESS.phoneHref },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google no publica página web propia ni información de accesibilidad del puesto. El teléfono es el que figura en esa ficha. Esta página no gestiona encargos ni pedidos online."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>acercarse.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario, productos y precios pueden cambiar; confírmalos en el puesto."
+			ctaLabel="Llamar a La Miguita"
+			navAriaLabel="Enlaces de la Panadería La Miguita"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

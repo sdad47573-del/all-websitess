@@ -1,0 +1,438 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import pollos from '../assets/fotos/asador-de-pollos-rosa-apaisada-04.jpg';
+import fachada from '../assets/fotos/asador-de-pollos-rosa-apaisada-03.jpg';
+import horno from '../assets/fotos/asador-de-pollos-rosa-apaisada-05.jpg';
+import vitrina from '../assets/fotos/asador-de-pollos-rosa-apaisada-07.jpg';
+import fachadaCalle from '../assets/fotos/asador-de-pollos-rosa-vertical-01.jpg';
+import pincho from '../assets/fotos/asador-de-pollos-rosa-vertical-02.jpg';
+import ofertas from '../assets/fotos/asador-de-pollos-rosa-vertical-06.jpg';
+import plato from '../assets/fotos/asador-de-pollos-rosa-vertical-08.jpg';
+import interior from '../assets/fotos/asador-de-pollos-rosa-vertical-09.jpg';
+import bandeja from '../assets/fotos/asador-de-pollos-rosa-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Asador de Pollos Rosa · Pollos asados en Teatinos, Málaga';
+const description =
+	'Asador de Pollos Rosa, en C. Navarro Ledesma, 90 (Teatinos-Universidad, 29010 Málaga). Pollos asados tradicionales, patatas, croquetas y pimientos fritos. Menús desde 8 €.';
+
+const galeria = [
+	{
+		src: pollos,
+		alt: 'Bandeja metálica con varios pollos asados enteros recién salidos del horno',
+	},
+	{
+		src: horno,
+		alt: 'El asador giratorio del local con decenas de pollos ensartados en los pinchos',
+	},
+	{
+		src: ofertas,
+		alt: 'El cartel de ofertas de Asador Rosa con los menús normal, ensalada, súper e individual y sus precios',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de ladrillo de Asador Rosa con el rótulo de La Colonia Santa Inés y los dos teléfonos',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina del local con tarrinas de ensaladilla, guisos, tortilla de patatas, ensaladas y botellas de ajoblanco y gazpacho',
+	},
+	{
+		src: plato,
+		alt: 'Un plato de pollo asado con patatas panadera y hierbas',
+	},
+	{
+		src: pincho,
+		alt: 'Un pollo asado ensartado en el pincho del asador, dorado y con hierbas',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja de aluminio con pollo asado troceado y hierbas',
+	},
+	{
+		src: interior,
+		alt: 'El interior del local con el horno asador abierto y los pollos en los pinchos',
+	},
+	{
+		src: fachadaCalle,
+		alt: 'Vista de la fachada de Asador Rosa desde la calle, junto a un paso de peatones y el número 90',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Asador de Pollos Rosa',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#rosa`,
+	name: BUSINESS.name,
+	alternateName: [
+		'Asador De Pollos Rosa La Colonia Santa Inés.',
+		'Asador Rosa Teatinos',
+		'Asador de Pollos Rosa Málaga',
+	],
+	description:
+		'Asador de pollos tradicional en la calle Navarro Ledesma, 90, Teatinos-Universidad (29010 Málaga). Pollos asados, patatas, pimientos, croquetas y menús para llevar.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34951463266',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Pollo asado', 'Comida tradicional', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Teatinos-Universidad' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '09:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Bucle magnético asistencial',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#191411" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Manrope:wght@400;500;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Asador de Pollos Rosa, pollos asados Teatinos, pollo asado Málaga, La Colonia Santa Inés, comida para llevar Teatinos, Navarro Ledesma, croquetas, pimientos fritos, menú pollo asado"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados tradicionales, patatas, croquetas y pimientos fritos en la calle Navarro Ledesma, 90, Teatinos. Menús desde 8 €."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de pollos asados de Asador de Pollos Rosa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#191411"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Teatinos"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[pollos]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Asador Rosa"
+			subtitle="Pollos asados · Teatinos"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Navarro Ledesma, 90 · Teatinos, Málaga"
+				title="El pollo asado <br /><em>de La Colonia.</em>"
+				lede={`Asador de Pollos Rosa lleva el rótulo de La Colonia Santa Inés en la calle Navarro Ledesma. El asador giratorio trabaja al mediodía y el pollo sale con patatas, pimientos fritos y pan; los menús van desde los 8 € del individual a los 22 € del súper. Abre de martes a domingo, de 9:00 a 16:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={pollos}
+				imageAlt="Bandeja metálica con varios pollos asados enteros recién salidos del horno"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:00–16:00</b> · lunes cerrado' },
+					{ label: 'Menús', html: '<b>Desde 8 €</b> · pollo, patatas y pan' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Menú Individual · 8,00 €"
+			/>
+
+			<LocalChips label="Lo que ofrece Asador de Pollos Rosa" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pollo asado <br /><em>y cocina de vitrina.</em>"
+				paragraphs={[
+					'Asador de Pollos Rosa está en la calle Navarro Ledesma, 90, en Teatinos. La fachada de ladrillo, el toldo blanco y el rótulo negro con las llamas y el pollo se ven desde la acera; el número 90 queda junto a la puerta del local.',
+					'La ficha de Google lo clasifica como restaurante especializado en pollo y lo describe en cuatro palabras: «Asador de pollos exquisitos tradicional». El asador giratorio trabaja al mediodía y los pollos salen en bandejas de aluminio, recién hechos.',
+					'El cartel de ofertas de la pared detalla cuatro menús: el Normal por 16 € con bebida de 2 litros, patatas, un pollo y pan; el Ensalada por 18,50 € con lo mismo más ensalada; el Súper por 22 € con patatas grandes, pollo y medio y pan; y el Individual por 8 € con una lata, media ración de patatas y medio pollo.',
+					'Junto al asador, la vitrina guarda ensaladilla, guisos, tortilla de patatas, ensaladas y botellas de ajoblanco y gazpacho. Google le da 4,6 sobre 5 con 517 reseñas, y el rótulo de la fachada muestra también un segundo teléfono: el 691 657 243.',
+				]}
+				note="La ficha no publica página web ni carta. Los precios de esta página son los del cartel de ofertas y los platos del local en las fotos del perfil de Google; conviene confirmarlos por teléfono antes de encargar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se asa</p>
+					<h2 id="highlights-title">Asador, menús <br /><em>y vitrina.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Menús y pollo <br /><em>de la casa.</em>"
+				description="La ficha de Google no publica carta. Los menús son los del cartel de ofertas del local y los platos, los que nombran la descripción y las reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Los precios son los del cartel de ofertas fotografiado en el perfil de Google del local, consultado en octubre de 2026: Menú Normal 16 €, Menú Ensalada 18,50 €, Menú Súper 22 € y Menú Individual 8 €. La disponibilidad y el precio pueden cambiar; confírmalos por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El asador <br /><em>y la fachada.</em>"
+				description="Diez fotografías del perfil de Asador de Pollos Rosa en Google Maps: la fachada, el asador giratorio, los pollos recién hechos, el cartel de ofertas y la vitrina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,6 sobre 5, <em>con 517 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,6 con 517 opiniones. Las
+							reseñas destacadas hablan del pollo, de las patatas, de los pimientos y de las
+							croquetas; aquí se reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,6</strong>
+						<span>★★★★★</span>
+						<small>517 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Teatinos, <br /><em>Navarro Ledesma.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de martes a domingo, de 9:00 a 16:00, con el lunes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Asador de Pollos Rosa en la calle Navarro Ledesma, 90, Teatinos, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Navarro Ledesma, 90 · Teatinos"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y encargos por teléfono: la ficha no publica reservas ni pedidos online. Google marca el acceso para sillas de ruedas y los asientos adaptados, pero no hay aparcamiento adaptado, aseo adaptado ni bucle magnético."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Asador Rosa"
+			navAriaLabel="Enlaces de Asador de Pollos Rosa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

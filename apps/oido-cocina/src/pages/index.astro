@@ -1,0 +1,536 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, ORDER, RATING, RESENAS } from '../data/site';
+import '../styles/global.css';
+
+import fotoHamburguesa from '../assets/fotos/oido-cocina-apaisada-01.jpg';
+import fotoPostre from '../assets/fotos/oido-cocina-vertical-02.jpg';
+import fotoBocadillo from '../assets/fotos/oido-cocina-vertical-03.jpg';
+
+const DESC =
+	'Oído Cocina, en C. Genezaret, 3 (Cruz de Humilladero, 29006 Málaga). Bravas con kimchi, serranitos, camperos y tarta de queso. 4,6 sobre 5 con 19 reseñas en Google.';
+
+const ticker = [
+	'Bravas con kimchi',
+	'Serranito',
+	'Camperos',
+	'Tarta de queso',
+	'C. Genezaret, 3',
+	'Cruz de Humilladero',
+	`${RATING.label} en Google`,
+	'Sin horario publicado',
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Restaurant',
+			'@id': `${BUSINESS.siteUrl}/#restaurante`,
+			name: BUSINESS.fullName,
+			description: DESC,
+			url: `${BUSINESS.siteUrl}/`,
+			telephone: '+34952721159',
+			image: `${BUSINESS.siteUrl}/og.jpg`,
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: BUSINESS.street,
+				addressLocality: BUSINESS.city,
+				addressRegion: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				addressCountry: BUSINESS.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			},
+			hasMap: MAPS.place,
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: RATING.value,
+				reviewCount: RATING.count,
+				bestRating: 5,
+			},
+			amenityFeature: [
+				{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+			],
+			potentialAction: {
+				'@type': 'OrderAction',
+				target: { '@type': 'EntryPoint', urlTemplate: ORDER.href, inLanguage: 'es' },
+				deliveryMethod: 'https://purl.org/goodrelations/v1#DeliveryModeOwnFleet',
+			},
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${BUSINESS.siteUrl}/#faq`,
+			mainEntity: FAQ.map((item) => ({
+				'@type': 'Question',
+				name: item.q,
+				acceptedAnswer: { '@type': 'Answer', text: item.a },
+			})),
+		},
+	],
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Oído Cocina · Tapas y bocadillos en Cruz de Humilladero, Málaga</title>
+		<meta name="description" content={DESC} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#f4efe2" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content="Oído Cocina · Cocina de barrio en Málaga" />
+		<meta property="og:description" content={DESC} />
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Hamburguesa de Oído Cocina en su caja de reparto" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#contenido">Saltar al contenido</a>
+
+		<header class="top">
+			<div class="wrap top__in">
+				<a class="brand" href="/" aria-label="Oído Cocina, inicio">
+					<span class="brand__dot" aria-hidden="true">OC</span>
+					<span class="brand__name">
+						<strong>Oído Cocina</strong>
+						<small>Tapas y bocadillos · Málaga</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Secciones">
+					<a href="#casa">La casa</a>
+					<a href="#carta">Qué se come</a>
+					<a href="#fotos">Fotos</a>
+					<a href="#visita">Visita</a>
+					<a href="#preguntas">Preguntas</a>
+				</nav>
+				<a class="call" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero">
+				<div class="wrap hero__grid">
+					<div>
+						<p class="kicker">Cruz de Humilladero · Málaga</p>
+						<h1 class="hero__title">Oído<br /><em>Cocina</em></h1>
+						<p class="hero__lede">
+							Tapas, bocadillos y algún postre que no esperabas, en la calle Genezaret. Cocina de
+							barrio, para comer aquí o pedir a domicilio.
+						</p>
+						<div class="hero__actions">
+							<a class="btn btn--tomato" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+							<a class="btn btn--outline" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+						<p class="rating">
+							<b>{RATING.label}</b>
+							<span class="stars" aria-hidden="true">★★★★★</span>
+							<span>sobre 5 · {RATING.count} reseñas en Google</span>
+						</p>
+					</div>
+
+					<figure class="hero__media">
+						<Image
+							src={fotoBocadillo}
+							alt="Bocadillo con jamón serrano, queso fundido y huevo en su caja de cartón"
+							widths={[420, 700, 1000]}
+							sizes="(max-width: 960px) 88vw, 30rem"
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<figcaption>
+							<span>Camperos y serranitos</span>
+							<span>Foto: ficha de Google</span>
+						</figcaption>
+						<div class="stamp" aria-hidden="true">
+							<b>{RATING.label}</b>
+							<span>{RATING.count} reseñas</span>
+						</div>
+					</figure>
+				</div>
+			</section>
+
+			<div class="ticker" aria-hidden="true">
+				<div class="ticker__track">
+					{[...ticker, ...ticker].map((texto) => (
+						<span>{texto}</span>
+					))}
+				</div>
+			</div>
+
+			<section class="sec" id="casa">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La casa</span>
+							<h2>Comanda cantada, plato servido</h2>
+						</div>
+						<p>
+							Todo lo que cuenta esta página sale de la ficha pública de Oído Cocina en Google: la
+							dirección, el teléfono, la nota y lo que dicen quienes han comido aquí.
+						</p>
+					</div>
+
+					<div class="about__grid">
+						<figure class="about__fig">
+							<Image
+								src={fotoHamburguesa}
+								alt="Hamburguesa con carne y cebolla en una caja de cartón con papel de envolver"
+								widths={[420, 760]}
+								sizes="(max-width: 960px) 92vw, 34rem"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>La hamburguesa, en caja de reparto</figcaption>
+						</figure>
+						<div class="about__text">
+							<p class="lead">
+								Un bajo en la calle Genezaret, en Cruz de Humilladero, con cocina de barrio y
+								comida que viaja bien.
+							</p>
+							<p>
+								La ficha lo puntúa con 4,6 sobre 5 y suma 19 reseñas. Las que están publicadas
+								hablan de bravas con kimchi, del serranito, de los camperos y de la tarta de queso:
+								platos de barra y de bocadillo, con algún guiño propio.
+							</p>
+							<p>
+								La ficha enlaza con Glovo para pedir a domicilio, así que buena parte de lo que sale
+								de la cocina se va en caja. Del local solo consta el acceso para sillas de ruedas;
+								no detalla aseos, asientos ni aparcamiento.
+							</p>
+							<blockquote class="pull">
+								«Me ha gustado mucho las bravas con Kimchi y el serranito un espectáculo.»
+								<cite>Reseña publicada en Google</cite>
+							</blockquote>
+						</div>
+					</div>
+
+					<div class="cards">
+						{
+							HIGHLIGHTS.map((item) => (
+								<article class="card">
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<div class="ticker" aria-hidden="true">
+				<div class="ticker__track">
+					{[...ticker, ...ticker].map((texto) => (
+						<span>{texto}</span>
+					))}
+				</div>
+			</div>
+
+			<section class="sec menu" id="carta">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Sin carta publicada</span>
+							<h2>Qué se come</h2>
+						</div>
+						<p>
+							La ficha de Google no publica carta ni precios. Lo que sigue son los platos que
+							nombran las reseñas, no una lista cerrada.
+						</p>
+					</div>
+
+					<div class="menu__grid">
+						<aside class="menu__aside">
+							<h3>Ni carta ni horario en Google</h3>
+							<p>
+								El perfil no tiene menú, ni importes, ni horario de apertura. Lo único fiable es
+								llamar: el teléfono de la ficha es el 952 72 11 59.
+							</p>
+							<a class="btn btn--tomato" href={BUSINESS.phoneHref}>Preguntar por teléfono</a>
+							<p class="menu__note">
+								Si la casa facilita la carta, esta sección se actualiza con los platos y precios
+								reales.
+							</p>
+						</aside>
+
+						<div class="groups">
+							{
+								MENU.map((grupo) => (
+									<div class="group">
+										<h3>{grupo.title}</h3>
+										<p class="group__src">{grupo.source}</p>
+										{grupo.items.map((dish) => (
+											<article class="dish">
+												<h4>{dish.name}</h4>
+												<p>{dish.note}</p>
+											</article>
+										))}
+									</div>
+								))
+							}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec" id="fotos">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La galería de la ficha</span>
+							<h2>Tres fotos, ni una más</h2>
+						</div>
+						<p>
+							La ficha pública solo tiene tres fotos: un bocadillo, una hamburguesa y un postre.
+							Están las tres, sin repetir ninguna.
+						</p>
+					</div>
+
+					<div class="photos">
+						<div class="photos__grid">
+							<figure>
+								<Image
+									src={fotoHamburguesa}
+									alt="Hamburguesa con carne y cebolla en caja de cartón, sobre papel marrón"
+									widths={[420, 760, 1100]}
+									sizes="(max-width: 620px) 92vw, (max-width: 960px) 92vw, 50vw"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>Hamburguesa en caja de reparto</figcaption>
+							</figure>
+							<figure>
+								<Image
+									src={fotoBocadillo}
+									alt="Bocadillo con serrano, queso y huevo dentro de su caja"
+									widths={[380, 620, 900]}
+									sizes="(max-width: 620px) 92vw, (max-width: 960px) 46vw, 26vw"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>Bocadillo en caja</figcaption>
+							</figure>
+							<figure>
+								<Image
+									src={fotoPostre}
+									alt="Pizza de chocolate cubierta de lacasitos de colores en su caja"
+									widths={[380, 620, 900]}
+									sizes="(max-width: 620px) 92vw, (max-width: 960px) 46vw, 26vw"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>Pizza de chocolate con lacasitos</figcaption>
+							</figure>
+						</div>
+						<p class="photos__foot">
+							<span>Son las tres fotos que hay en la galería del perfil.</span>
+							<a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha en Google ↗</a>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec revs">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Opiniones</span>
+							<h2>{RATING.label} sobre 5 con {RATING.count} reseñas</h2>
+						</div>
+						<p>
+							Tres de las reseñas publicadas en la ficha, sin retocar el texto. Todas las que hay
+							en el perfil son de cinco estrellas.
+						</p>
+					</div>
+
+					<div class="revs__grid">
+						{
+							RESENAS.map((resena) => (
+								<article class="rev">
+									<p class="rev__stars" aria-label={`${resena.valor} de 5 estrellas`}>
+										{'★'.repeat(resena.valor)}
+									</p>
+									<blockquote>{resena.texto}</blockquote>
+									<p class="rev__meta">Reseña en Google</p>
+								</article>
+							))
+						}
+					</div>
+
+					<div class="revs__foot">
+						<span>
+							Las tres hablan de platos concretos: bravas, serranito, camperos y tarta de queso.
+						</span>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas las reseñas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec visit" id="visita">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Dónde estamos</span>
+							<h2>Genezaret, 3</h2>
+						</div>
+						<p>
+							En Cruz de Humilladero, al oeste del centro. El mapa abre las coordenadas exactas de
+							la ficha y el botón «Cómo llegar» lanza la ruta.
+						</p>
+					</div>
+
+					<div class="visit__grid">
+						<div>
+							<p class="addr">
+								{BUSINESS.street}
+								<span>{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</span>
+							</p>
+
+							{
+								HORARIO.length ? (
+									<table class="hours">
+										<tbody>
+											{HORARIO.map((fila) => (
+												<tr class:list={['', { 'is-closed': fila.closed }]}>
+													<th scope="row">{fila.dia}</th>
+													<td>{fila.horas}</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								) : (
+									<div class="no-hours">
+										<b>Horario no publicado</b>
+										<p>{HORARIO_AVISO}</p>
+									</div>
+								)
+							}
+
+							<div class="actions">
+								<a class="btn btn--tomato" href={BUSINESS.phoneHref}>Llamar antes de venir</a>
+								<a class="btn btn--outline" href={MAPS.directions} target="_blank" rel="noreferrer">
+									Cómo llegar ↗
+								</a>
+								<a class="btn btn--outline" href={MAPS.streetView} target="_blank" rel="noreferrer">
+									Ver la calle ↗
+								</a>
+								<a class="btn btn--outline" href={ORDER.href} target="_blank" rel="noreferrer">
+									{ORDER.label} ↗
+								</a>
+							</div>
+
+							<ul class="tags">
+								<li>Acceso para sillas de ruedas</li>
+								<li>Sin datos de aseo adaptado</li>
+								<li>Sin datos de asientos adaptados</li>
+								<li>Reparto a domicilio en Glovo</li>
+								<li>Sin horario en Google</li>
+							</ul>
+						</div>
+
+						<div class="map">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa con la ubicación de ${BUSINESS.name} en ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec faq" id="preguntas">
+				<div class="wrap faq__grid">
+					<div>
+						<span class="head__label">Antes de venir</span>
+						<h2>Preguntas frecuentes</h2>
+						<p class="faq__intro">
+							Todo lo que sigue está sacado de la ficha pública de Google. Cuando un dato no está,
+							la respuesta lo dice en vez de rellenarlo.
+						</p>
+					</div>
+					<div>
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="foot">
+			<div class="wrap">
+				<div class="foot__grid">
+					<div class="foot__brand">
+						<strong>Oído Cocina</strong>
+						<p>
+							Tapas y cocina de barrio en {BUSINESS.street}, {BUSINESS.district},{' '}
+							{BUSINESS.postalCode} {BUSINESS.city}.
+						</p>
+					</div>
+					<div>
+						<h3>La casa</h3>
+						<ul>
+							<li><a href="#casa">Quiénes somos</a></li>
+							<li><a href="#carta">Qué se come</a></li>
+							<li><a href="#fotos">Fotos</a></li>
+							<li><a href="#preguntas">Preguntas frecuentes</a></li>
+						</ul>
+					</div>
+					<div>
+						<h3>Contacto</h3>
+						<ul>
+							<li><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></li>
+							<li><a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></li>
+							<li><a href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps</a></li>
+							<li><a href={ORDER.href} target="_blank" rel="noreferrer">Pedir en Glovo</a></li>
+							<li><a href="/aviso-legal">Aviso legal y privacidad</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot__bottom">
+					<small>© {new Date().getFullYear()} {BUSINESS.fullName}. Todos los derechos reservados.</small>
+					<p class="credit">
+						<small>
+							Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+							<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+						</small>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Llamar al restaurante <span>{BUSINESS.phone}</span>
+		</a>
+	</body>
+</html>

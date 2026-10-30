@@ -1,0 +1,560 @@
+---
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, MENU_GROUPS, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'La Cosecha · Panadería en Almogávares, Córdoba';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#la-cosecha`,
+	name: BUSINESS.name,
+	alternateName: ['La Cosecha Panadería Córdoba', 'La Cosecha Almogávares', 'Panadería La Cosecha Nte. Sierra'],
+	description:
+		'Panadería en la avenida de los Almogávares, 42 (Nte. Sierra, 14006 Córdoba): pan y dulces, abierta todos los días de 8:00 a 21:00.',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34857870372',
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Panadería'],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '21:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#mostrador' },
+	{ label: 'Horario', href: '#horario' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const stats = [
+	{ label: 'Abre', value: '8:00' },
+	{ label: 'Todos los días', value: '8:00–21:00' },
+	{ label: 'Valoración', value: '3,8 · 16 reseñas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2c3724" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Cosecha panadería Córdoba, panadería Almogávares, panadería Nte. Sierra, pan y dulces Córdoba, panadería 14006, encargos panadería Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería en la avenida de los Almogávares, 42: pan y dulces, abierta todos los días de 8:00 a 21:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Ilustración de espigas de trigo para La Cosecha, panadería en Almogávares, Córdoba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2c3724"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="La Cosecha, inicio">
+					<span class="brand-mark" aria-hidden="true">LC</span>
+					<span class="brand-name">
+						La Cosecha
+						<small>Panadería · Almogávares, Córdoba</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone} <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Av. de los Almogávares, 42 · 14006 Córdoba</p>
+						<h1 id="hero-title">Pan del día,<br /><em>dulces de siempre.</em></h1>
+						<p class="hero-lede">
+							La Cosecha es la panadería de la avenida de los Almogávares: pan y dulces de barrio,
+							abierta de ocho de la mañana a nueve de la noche, todos los días de la semana.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href="#mostrador">Ver el mostrador</a>
+						</div>
+						<dl class="hero-facts">
+							{
+								stats.map((stat) => (
+									<div>
+										<dt>{stat.label}</dt>
+										<dd>{stat.value}</dd>
+									</div>
+								))
+							}
+						</dl>
+					</div>
+
+					<figure class="hero-media">
+						<div class="hero-photo">
+							<img
+								src="/fotos/trigo.svg"
+								alt="Ilustración de espigas de trigo en un campo al atardecer"
+								width="1200"
+								height="1500"
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figcaption>
+							<span>Ilustración propia</span>
+							<span>La ficha no publica fotos del local</span>
+						</figcaption>
+						<span class="hero-seal" aria-hidden="true">
+							<strong>3,8</strong>
+							<small>16 reseñas<br />en Google</small>
+						</span>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que ofrece la panadería">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Una panadería de avenida, <em>abierta todo el día.</em></h2>
+						<p>
+							La Cosecha está en la avenida de los Almogávares, 42, en la zona de Nte. Sierra. Es
+							una panadería de barrio con un horario poco habitual: de 8:00 a 21:00, sin cerrar al
+							mediodía y sin descansar ningún día.
+						</p>
+						<p>
+							Las reseñas de Google hablan de «panes y dulces» y de la amabilidad de las
+							dependientas. También hay una crítica: un encargo recogido el día 5 estaba duro. La
+							web reproduce las dos caras.
+						</p>
+						<p>
+							La ficha no publica carta, precios ni descripción del negocio, y tampoco incluye
+							fotos del establecimiento. Por eso esta página usa ilustraciones propias y
+							provisionales en lugar de imágenes del local.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#fotos">Sobre las imágenes</a>
+						</div>
+					</div>
+
+					<figure class="about-media">
+						<img
+							src="/fotos/hogazas.svg"
+							alt="Ilustración de tres hogazas de pan sobre una tabla de madera"
+							width="1000"
+							height="1200"
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Ilustración del pan del día</figcaption>
+					</figure>
+				</div>
+
+				<ul class="highlights">
+					{
+						HIGHLIGHTS.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="menu" id="mostrador" aria-labelledby="menu-title">
+				<div class="wrap menu-grid">
+					<div class="menu-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> El mostrador</p>
+						<h2 id="menu-title">Pan, dulces <em>y encargos.</em></h2>
+						<p class="menu-lede">
+							La ficha no publica carta ni precios. Lo que sigue sale de su categoría, de las
+							reseñas y de lo que el propio nombre del negocio anuncia.
+						</p>
+
+						<div class="menu-groups">
+							{
+								MENU_GROUPS.map((group) => (
+									<div class="menu-group">
+										<h3>{group.title}</h3>
+										<ul>
+											{group.items.map((item) => (
+												<li>
+													<strong>{item.name}</strong>
+													<span>{item.note}</span>
+												</li>
+											))}
+										</ul>
+									</div>
+								))
+							}
+						</div>
+
+						<p class="menu-note">
+							Sin precios en la web: la ficha no los publica. Para preguntar por un encargo, llama
+							al <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.
+						</p>
+					</div>
+
+					<figure class="menu-media">
+						<img
+							src="/fotos/vitrina.svg"
+							alt="Ilustración de una vitrina de panadería con panes, dulces y bollería"
+							width="1000"
+							height="1250"
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Ilustración del mostrador</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">De ocho a nueve, <em>los siete días.</em></h2>
+						<p class="hours-lede">
+							La ficha publica el mismo horario todos los días: trece horas seguidas de panadería,
+							sin cierre de mediodía y sin día de descanso. Es el horario más amplio de la zona.
+						</p>
+						<p class="hours-note">
+							<strong>Ojo con los festivos.</strong> {HOURS_NOTE}
+						</p>
+						<a class="hours-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Comprobar en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="hours-table-wrap">
+						<table class="hours-table">
+							<caption class="visually-hidden">Horario publicado en la ficha de Google</caption>
+							<tbody>
+								{
+									HOURS.map((row) => (
+										<tr>
+											<th scope="row">{row.day}</th>
+											<td>{row.value}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+						<p class="hours-foot">
+							Horario publicado en la ficha pública de Google, consultada en octubre de 2026.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="fotos wrap" id="fotos" aria-labelledby="fotos-title">
+				<div class="fotos-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Imágenes</p>
+						<h2 id="fotos-title">Sin fotos en Google, <em>de momento.</em></h2>
+					</div>
+					<p>
+						La ficha pública de Google de esta panadería no incluye ninguna fotografía del local.
+						En lugar de coger imágenes de otros negocios, la web usa ilustraciones propias.
+					</p>
+				</div>
+
+				<div class="fotos-grid">
+					<figure class="foto foto-single">
+						<img
+							src="/fotos/dulces.svg"
+							alt="Ilustración de una bandeja con bollería, dulces y pan"
+							width="1600"
+							height="1000"
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Ilustración del mostrador y la bollería</figcaption>
+					</figure>
+				</div>
+
+				<p class="fotos-note">
+					<strong>Pendiente de fotos propias.</strong> Las ilustraciones de esta página son
+					provisionales y no representan el local. Cuando el titular facilite fotografías reales
+					del obrador y del mostrador, se sustituirán y se actualizarán los textos alternativos.
+				</p>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">Tres y ocho, <em>entre dieciséis reseñas.</em></h2>
+						<p>
+							La ficha tiene 3,8 sobre 5 con 16 reseñas en el momento de consultarla (octubre de
+							2026). Una clienta destaca la amabilidad y el sabor del pan y los dulces; otra
+							cuenta que un encargo estaba duro. Se reproducen las dos.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)}{' '}
+											<small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<div class="rating-actions">
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="rating-figure">
+						<div class="rating-symbol" aria-hidden="true">
+							<span class="rating-value">3,8</span>
+							<span class="rating-stars">★★★☆☆</span>
+						</div>
+						<p class="rating-caption">
+							valoración media<br />
+							con 16 reseñas publicadas
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En Almogávares, <em>42.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<p class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</p>
+
+					<p class="hours-note">
+						<strong>El teléfono es el que publica la ficha.</strong> No consta página web ni perfil
+						social del negocio, así que esta página no enlaza ninguno.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Acceso</span>
+							Google marca el acceso para sillas de ruedas.
+						</li>
+						<li>
+							<span>Aparcamiento</span>
+							La ficha indica que no hay aparcamiento adaptado.
+						</li>
+						<li>
+							<span>Horario</span>
+							Todos los días de 8:00 a 21:00, sin cierre al mediodía.
+						</li>
+						<li>
+							<span>Plus Code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de La Cosecha - Panadería en la avenida de los Almogávares, 42, Córdoba"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Almogávares, 42
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>pasar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">LC</span>
+						<p>
+							La Cosecha · Panadería
+							<small>
+								Pan y dulces, todos los días<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={BUSINESS.phoneHref}>Llamar</a>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos y reseñas de la ficha pública de
+					Google Maps, consultada en octubre de 2026. Las ilustraciones son propias y provisionales:
+					la ficha no publica fotos del local.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/aviso-legal">Aviso legal</a>
+					<a href="/aviso-legal#privacidad">Privacidad</a>
+					<a href="/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>
+						Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+						sur-digital.vercel.app
+					</small>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

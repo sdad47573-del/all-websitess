@@ -1,0 +1,428 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import surtido from '../assets/fotos/asador-don-carbon-cuadrada-02.jpg';
+import polloPatatas from '../assets/fotos/asador-don-carbon-vertical-04.jpg';
+import menuCompleto from '../assets/fotos/asador-don-carbon-vertical-06.jpg';
+import polloExtras from '../assets/fotos/asador-don-carbon-vertical-07.jpg';
+import costillas from '../assets/fotos/asador-don-carbon-apaisada-03.jpg';
+import brasa from '../assets/fotos/asador-don-carbon-apaisada-10.jpg';
+import cocina from '../assets/fotos/asador-don-carbon-apaisada-05.jpg';
+import pimientos from '../assets/fotos/asador-don-carbon-cuadrada-08.jpg';
+import vitrina from '../assets/fotos/asador-don-carbon-vertical-01.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Asador Don Carbón · Pollo asado al carbón en Puerto de la Torre';
+const description =
+	'Asador Don Carbón, en C. Cirilo Salinas, 7 (Puerto de la Torre, 29190 Málaga). Pollo asado al carbón vegetal, costillas y carnes a la brasa, de jueves a lunes de 11:00 a 15:30.';
+
+const galeria = [
+	{
+		src: polloPatatas,
+		alt: 'Pollo asado troceado en una bandeja de aluminio junto a una ración de patatas y una barra de pan',
+	},
+	{
+		src: surtido,
+		alt: 'Una mesa con pollo asado, costillas, salchichas, patatas fritas y varios vasos de salsa',
+	},
+	{
+		src: polloExtras,
+		alt: 'Bandeja de pollo asado con patatas, croquetas, ensaladilla, ensalada y pan de un pedido de Don Carbón',
+	},
+	{
+		src: menuCompleto,
+		alt: 'Un pedido para llevar con pollo asado, patatas, barra de pan, refresco de naranja y dos salsas',
+	},
+	{
+		src: costillas,
+		alt: 'Costillas de cerdo asándose sobre la parrilla con el carbón vegetal al fondo',
+	},
+	{
+		src: brasa,
+		alt: 'Una pieza de carne a la brasa sobre la parrilla, con las ascuas encendidas debajo',
+	},
+	{
+		src: cocina,
+		alt: 'La cocina del asador con la parrilla de carbón, la freidora y una bandeja de patatas fritas',
+	},
+	{
+		src: pimientos,
+		alt: 'Pimientos verdes asados en una bandeja blanca',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina del local con tarrinas de postres, flanes y ensaladas preparadas',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Asador Don Carbón',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#don-carbon`,
+	name: BUSINESS.name,
+	alternateName: ['ASADOR DON CARBÓN', 'Don Carbón Puerto de la Torre', 'Asador Don Carbon Málaga'],
+	description:
+		'Asador de pollo al carbón vegetal y carnes a la brasa en la calle Cirilo Salinas, 7, Puerto de la Torre (29190 Málaga). Comida para llevar de jueves a lunes.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34625893357',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Carnes a la brasa', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Puerto de la Torre' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '15:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Bucle magnético asistencial',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#191411" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Manrope:wght@400;500;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Asador Don Carbón, pollo asado al carbón Málaga, pollo asado Puerto de la Torre, costillas a la brasa, carnes a la brasa Málaga, comida para llevar Puerto de la Torre, Cirilo Salinas, asador Don Carbon"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado al carbón vegetal, costillas y carnes a la brasa en la calle Cirilo Salinas, 7, Puerto de la Torre. De jueves a lunes, de 11:00 a 15:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Costillas asándose sobre la parrilla de carbón de Asador Don Carbón"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#191411"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Puerto de la Torre"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[surtido]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Don Carbón"
+			subtitle="Pollo al carbón · Puerto de la Torre"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Cirilo Salinas, 7 · Puerto de la Torre, Málaga"
+				title="Pollo asado <br /><em>al carbón vegetal.</em>"
+				lede={`Don Carbón asa pollos y carnes sobre carbón vegetal con una receta propia, pensada para llevárselos a casa. El pollo va con patatas, pimientos y salsa, y las costillas y las carnes a la brasa completan la carta. Abre de jueves a lunes, de 11:00 a 15:30, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={surtido}
+				imageAlt="Una mesa con pollo asado, costillas, salchichas, patatas fritas y varios vasos de salsa"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:00–15:30</b> · martes y miércoles cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · pollo, costillas y brasa' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Al carbón vegetal · receta de la casa"
+			/>
+
+			<LocalChips label="Lo que ofrece Asador Don Carbón" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pollo y brasa <br /><em>con receta propia.</em>"
+				paragraphs={[
+					'Asador Don Carbón está en la calle Cirilo Salinas, 7, en Puerto de la Torre. Es un asador de comida para llevar en el que la parrilla de carbón y la freidora trabajan al mismo ritmo: los pollos y las carnes se asan al momento y las patatas salen recién fritas.',
+					'La ficha de Google lo presenta con una idea clara: «Nuestra misión es mantener la receta más sabrosa que tanto deleita a nuestros clientes». Y lo resume en una frase: «Descubre el Pollo Asado al carbón vegetal. Exquisito sabor para degustar en la comodidad de tu hogar».',
+					'Sobre la parrilla se asan pollos y carnes que la casa dice seleccionar cuidadosamente y sazonar «con una receta especial para crear un sabor irresistible». Las costillas, el pollo con patatas fritas, los pimientos y las salsas son los platos que más aparecen en las reseñas.',
+					'Google le da 4,9 sobre 5 con 430 reseñas. Una destaca «pollos deliciosos, patatas muy ricas y pimientos exquisitos»; otra celebra «las costillas, las salsas y el pollo con patatas fritas»; y una tercera insiste en la salsa incluida con el pollo.',
+				]}
+				note="La ficha no publica página web ni carta. Los platos que se citan aquí son los que nombran la descripción del negocio y las reseñas; los precios y la disponibilidad se consultan por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se asa</p>
+					<h2 id="highlights-title">Carbón, receta <br /><em>y salsa de la casa.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del asador <br /><em>a tu casa.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que nombran la descripción del negocio y las reseñas de la propia ficha."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios ni la carta completa. Los platos de esta lista son los que aparecen en la descripción del negocio y en las reseñas del perfil de Google, consultado en octubre de 2026. La disponibilidad cambia: confírmala por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El pollo, la parrilla <br /><em>y las patatas.</em>"
+				description="Nueve fotografías del perfil de Asador Don Carbón en Google Maps: el pollo asado con patatas, las costillas en la parrilla, las carnes a la brasa, la cocina y la vitrina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,9 sobre 5, <em>con 430 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,9 con 430 opiniones. Las
+							reseñas destacadas hablan del pollo, de las costillas, de las patatas y de las salsas;
+							aquí se reproducen tal como aparecen en la ficha.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,9</strong>
+						<span>★★★★★</span>
+						<small>430 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Puerto de la Torre, <br /><em>calle Cirilo Salinas.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de jueves a lunes, de 11:00 a 15:30, con el martes y el miércoles cerrados. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Asador Don Carbón en la calle Cirilo Salinas, 7, Puerto de la Torre, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Cirilo Salinas, 7 · Puerto de la Torre"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y encargos por teléfono: la ficha no publica reservas ni pedidos online. Google marca el acceso para sillas de ruedas y el aparcamiento adaptado, pero indica que no hay aseo adaptado, asientos adaptados ni bucle magnético."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Don Carbón"
+			navAriaLabel="Enlaces de Asador Don Carbón"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
