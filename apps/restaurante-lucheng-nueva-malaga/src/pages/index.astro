@@ -1,0 +1,609 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS } from '../data/site';
+import '../styles/global.css';
+
+import fotoFachada from '../assets/fotos/restaurante-lucheng-nueva-malaga-apaisada-01.jpg';
+import fotoCarta from '../assets/fotos/restaurante-lucheng-nueva-malaga-apaisada-03.jpg';
+import fotoSopa from '../assets/fotos/restaurante-lucheng-nueva-malaga-apaisada-10.jpg';
+import fotoTernera from '../assets/fotos/restaurante-lucheng-nueva-malaga-cuadrada-06.jpg';
+import fotoSopaHuevo from '../assets/fotos/restaurante-lucheng-nueva-malaga-cuadrada-09.jpg';
+import fotoTallarines from '../assets/fotos/restaurante-lucheng-nueva-malaga-vertical-02.jpg';
+import fotoPolloSetas from '../assets/fotos/restaurante-lucheng-nueva-malaga-vertical-04.jpg';
+import fotoAgridulce from '../assets/fotos/restaurante-lucheng-nueva-malaga-vertical-07.jpg';
+import fotoEnsalada from '../assets/fotos/restaurante-lucheng-nueva-malaga-vertical-08.jpg';
+import fotoMarisco from '../assets/fotos/restaurante-lucheng-nueva-malaga-vista-5-05.jpg';
+
+const ticker = [
+	'Cocina china',
+	'Sopas y entrantes',
+	'Arroces y tallarines',
+	'Pato Pekín',
+	'Dos turnos',
+	'Bailén-Miraflores',
+	`${RATING.label} en Google`,
+	'Miércoles cerrado',
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Restaurant',
+			'@id': `${BUSINESS.siteUrl}/#restaurante`,
+			name: BUSINESS.fullName,
+			description: BUSINESS.description,
+			url: `${BUSINESS.siteUrl}/`,
+			telephone: '+34952285574',
+			image: `${BUSINESS.siteUrl}/og.jpg`,
+			servesCuisine: 'Cocina china',
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: BUSINESS.street,
+				addressLocality: BUSINESS.city,
+				addressRegion: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				addressCountry: BUSINESS.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			},
+			hasMap: MAPS.place,
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: RATING.value,
+				reviewCount: RATING.count,
+				bestRating: 5,
+			},
+			openingHoursSpecification: [
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+					opens: '13:00',
+					closes: '16:00',
+				},
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+					opens: '20:00',
+					closes: '23:00',
+				},
+			],
+			amenityFeature: [
+				{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+				{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+			],
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${BUSINESS.siteUrl}/#faq`,
+			mainEntity: FAQ.map((item) => ({
+				'@type': 'Question',
+				name: item.q,
+				acceptedAnswer: { '@type': 'Answer', text: item.a },
+			})),
+		},
+	],
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Restaurante Lucheng Nueva Málaga · Cocina china en Bailén-Miraflores</title>
+		<meta name="description" content={BUSINESS.description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#1e4438" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content="Restaurante Lucheng · Cocina china en Bailén-Miraflores" />
+		<meta property="og:description" content={BUSINESS.description} />
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Fachada del Restaurante Lucheng con su tejado chino y farolillos rojos" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Young+Serif&display=swap"
+			rel="stylesheet"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#contenido">Saltar al contenido</a>
+
+		<header class="top">
+			<div class="wrap top__in">
+				<a class="brand" href="/" aria-label="Restaurante Lucheng Nueva Málaga, inicio">
+					<span class="brand__mark" aria-hidden="true">{BUSINESS.mark}</span>
+					<span class="brand__name">
+						<strong>Lucheng Nueva Málaga</strong>
+						<small>Restaurante chino · Bailén-Miraflores</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Secciones">
+					<a href="#casa">La casa</a>
+					<a href="#carta">Carta</a>
+					<a href="#fotos">Fotos</a>
+					<a href="#visita">Visita</a>
+					<a href="#preguntas">Preguntas</a>
+				</nav>
+				<a class="call" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero">
+				<div class="wrap hero__grid">
+					<div>
+						<p class="kicker">Bailén-Miraflores · Málaga</p>
+						<h1 class="hero__title">
+							Cocina china <span>de mediodía</span> y de <em>noche</em>
+						</h1>
+						<p class="hero__lede">
+							Sopas, arroces, tallarines y pato en la calle Maestro Pablo Luna. Dos turnos cada
+							día, seis días a la semana, con la carta escrita a la puerta y el té puesto.
+						</p>
+						<div class="hero__actions">
+							<a class="btn btn--gold" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+							<a class="btn btn--ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+						<p class="rating">
+							<b>{RATING.label}</b>
+							<span class="stars" aria-hidden="true">★★★★★</span>
+							<span>sobre 5 · {RATING.count} reseñas en Google</span>
+						</p>
+					</div>
+
+					<figure class="hero__media">
+						<div class="hero__arch">
+							<Image
+								src={fotoTallarines}
+								alt="Tallarines chinos con ternera y verduras en un plato hondo"
+								widths={[420, 700, 1000]}
+								sizes="(max-width: 980px) 88vw, 25rem"
+								loading="eager"
+								fetchpriority="high"
+							/>
+						</div>
+						<figcaption>
+							<span>Tallarines con ternera</span>
+							<span>Foto: ficha de Google</span>
+						</figcaption>
+						<div class="stamp" aria-hidden="true">
+							<b>鹿城</b>
+							<span>Lucheng</span>
+						</div>
+					</figure>
+				</div>
+			</section>
+
+			<div class="band">
+				<div class="wrap band__in">
+					<div class="band__item">
+						<span>Mediodía</span>
+						<strong>13:00 – 16:00</strong>
+					</div>
+					<div class="band__item">
+						<span>Noche</span>
+						<strong>20:00 – 23:00</strong>
+					</div>
+					<div class="band__item">
+						<span>Miércoles cerrado · pedidos</span>
+						<strong><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="ticker" aria-hidden="true">
+				<div class="ticker__track">
+					{[...ticker, ...ticker].map((texto) => <span>{texto}</span>)}
+				</div>
+			</div>
+
+			<section class="sec" id="casa">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La casa</span>
+							<h2>Un restaurante de barrio con tejado chino</h2>
+						</div>
+						<p>
+							Todo lo que cuenta esta página sale de la ficha pública de Lucheng en Google y de
+							la carta fotografiada en su galería: la dirección, el teléfono, la nota y el menú.
+						</p>
+					</div>
+
+					<div class="about__grid">
+						<figure class="about__fig">
+							<Image
+								src={fotoFachada}
+								alt="Fachada del restaurante con tejado chino, farolillos rojos y la carta en el escaparate"
+								widths={[420, 760, 1100]}
+								sizes="(max-width: 980px) 92vw, 32rem"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>La fachada, en la calle Maestro Pablo Luna</figcaption>
+						</figure>
+						<div class="about__text">
+							<p class="lead">
+								Un bajo con farolillos rojos y el cartel de 鹿城 sobre la puerta, en pleno
+								Bailén-Miraflores. Dentro, mesas de mantel y una carta larga.
+							</p>
+							<p>
+								Google lo clasifica como restaurante chino y le da 3,9 sobre 5 con 210 reseñas.
+								Lo que más se repite en las opiniones publicadas son el arroz con ternera y curry,
+								los fideos chinos y el trato del personal; también hay alguna queja por la
+								espera, que esta página no esconde.
+							</p>
+							<p>
+								La cocina abre dos veces al día, mediodía y noche, y descansa los miércoles. Es
+								un sitio para sentarse con tiempo: la carta incluye desde sopas de 3,25 € hasta
+								pato Pekín de 13,25 €.
+							</p>
+							<blockquote class="pull">
+								«Especialmente el arroz con ternera y curry y los fideos chinos, muy sabrosos.»
+								<cite>Reseña publicada en Google</cite>
+							</blockquote>
+						</div>
+					</div>
+
+					<div class="cards">
+						{
+							HIGHLIGHTS.map((item) => (
+								<article class="card">
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="sec sec--paper" id="carta">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La carta, fotografiada</span>
+							<h2>Qué se come y cuánto cuesta</h2>
+						</div>
+						<p>
+							Selección de la carta impresa que el local publica en su ficha. Los precios son los
+							del menú fotografiado y pueden cambiar; la carta completa está en la foto.
+						</p>
+					</div>
+
+					<div class="menu__grid">
+						<aside class="menu__aside">
+							<h3>Una selección, no la carta entera</h3>
+							<p>
+								La ficha no tiene menú en texto, pero sí la foto del impreso. De ahí salen estos
+								platos. Para el resto, se pregunta en el local o por teléfono.
+							</p>
+							<a class="btn btn--jade" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+							<figure class="menu__figure">
+								<Image
+									src={fotoCarta}
+									alt="Carta impresa del Restaurante Lucheng con sopas, arroces, carnes y precios"
+									widths={[360, 620, 900]}
+									sizes="(max-width: 980px) 92vw, 17rem"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>La carta, tal como está en la ficha</figcaption>
+							</figure>
+							<p class="menu__note">
+								Precios del menú impreso publicados en octubre de 2026. Pueden variar.
+							</p>
+						</aside>
+
+						<div class="groups">
+							{
+								MENU.map((grupo) => (
+									<div class="group">
+										<h3>{grupo.title}</h3>
+										<p class="group__src">{grupo.source}</p>
+										{grupo.items.map((dish) => (
+											<article class="dish">
+												<h4>
+													{dish.name}
+													<span class="dish__price">{dish.price}</span>
+												</h4>
+												{dish.note && <p>{dish.note}</p>}
+											</article>
+										))}
+									</div>
+								))
+							}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec" id="fotos">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La galería de la ficha</span>
+							<h2>Siete fotos más de la mesa</h2>
+						</div>
+						<p>
+							Las diez imágenes públicas del perfil, repartidas entre la portada, la sección de
+							la casa y esta galería. Ninguna repetida.
+						</p>
+					</div>
+
+					<div class="photos">
+						<figure>
+							<Image
+								src={fotoSopa}
+								alt="Cuenco de sopa agripicante con hebras de huevo"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Sopa agripicante, con hebras de huevo</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoMarisco}
+								alt="Salteado de marisco con langostinos, calamar, zanahoria y pimiento verde"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Mariscos salteados</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoTernera}
+								alt="Ternera salteada con col, zanahoria y pimiento en un plato blanco"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Ternera con verduras</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoPolloSetas}
+								alt="Pollo con setas y salsa oscura en una fuente con borde floral"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Pollo con setas chinas</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoAgridulce}
+								alt="Bolas de pollo agridulce con pimiento verde, cebolla y piña en salsa roja"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Pollo agridulce</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoSopaHuevo}
+								alt="Cuenco de sopa clara con huevo en hebras y cuchara"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Sopa de huevos revueltos</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoEnsalada}
+								alt="Ensalada de lechuga con zanahoria rallada y jamón en un plato blanco"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Ensalada china</figcaption>
+						</figure>
+					</div>
+					<p class="photos__foot">
+						<span>
+							Las diez fotos del perfil están en la página: la portada, la casa, la carta y estas
+							siete.
+						</span>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha en Google ↗</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="sec revs">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Opiniones</span>
+							<h2>{RATING.label} sobre 5 con {RATING.count} reseñas</h2>
+						</div>
+						<p>
+							Tres de las reseñas publicadas en la ficha, sin retocar el texto. Dos muy buenas y
+							una queja por la espera: están las tres.
+						</p>
+					</div>
+
+					<div class="revs__grid">
+						{
+							RESENAS.map((resena) => (
+								<article class="rev">
+									<p class="rev__stars" aria-label={`${resena.valor} de 5 estrellas`}>
+										{'★'.repeat(resena.valor)}
+										{'☆'.repeat(5 - resena.valor)}
+									</p>
+									<blockquote>{resena.texto}</blockquote>
+									<p class="rev__meta">Reseña en Google</p>
+								</article>
+							))
+						}
+					</div>
+
+					<div class="revs__foot">
+						<span>La tercera está puntuada con una estrella y se muestra igual que las demás.</span>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas las reseñas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec visit" id="visita">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Dónde estamos</span>
+							<h2>Maestro Pablo Luna, 4</h2>
+						</div>
+						<p>
+							En Bailén-Miraflores, al oeste del centro. El mapa abre las coordenadas exactas de
+							la ficha y el botón lanza la ruta en Google Maps.
+						</p>
+					</div>
+
+					<div class="visit__grid">
+						<div>
+							<p class="addr">
+								{BUSINESS.street}
+								<span>{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</span>
+							</p>
+
+							<table class="hours">
+								<tbody>
+									{HORARIO.map((fila) => (
+										<tr class:list={['', { 'is-closed': fila.closed }]}>
+											<th scope="row">{fila.dia}</th>
+											<td>{fila.horas}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+							<p class="hours__note">{HORARIO_AVISO}</p>
+
+							<div class="actions">
+								<a class="btn btn--jade" href={BUSINESS.phoneHref}>Llamar antes de venir</a>
+								<a class="btn btn--outline" href={MAPS.directions} target="_blank" rel="noreferrer">
+									Cómo llegar ↗
+								</a>
+								<a class="btn btn--outline" href={MAPS.streetView} target="_blank" rel="noreferrer">
+									Ver la calle ↗
+								</a>
+							</div>
+
+							<ul class="tags">
+								<li>Restaurante chino</li>
+								<li>Mediodía y noche</li>
+								<li>Miércoles cerrado</li>
+								<li>Acceso para sillas de ruedas</li>
+								<li>Asientos adaptados</li>
+								<li>Sin datos de aparcamiento</li>
+							</ul>
+						</div>
+
+						<div class="map">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa con la ubicación de ${BUSINESS.name} en ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec faq" id="preguntas">
+				<div class="wrap faq__grid">
+					<div>
+						<span class="head__label">Antes de venir</span>
+						<h2>Preguntas frecuentes</h2>
+						<p class="faq__intro">
+							Las respuestas salen de la ficha pública de Google y de la carta fotografiada. Si un
+							dato no está, se dice en vez de rellenarlo.
+						</p>
+					</div>
+					<div>
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="foot">
+			<div class="wrap">
+				<div class="foot__grid">
+					<div class="foot__brand">
+						<strong>Lucheng Nueva Málaga</strong>
+						<p>
+							Restaurante chino en {BUSINESS.street}, {BUSINESS.district},{' '}
+							{BUSINESS.postalCode} {BUSINESS.city}. Mediodía y noche.
+						</p>
+					</div>
+					<div>
+						<h3>La casa</h3>
+						<ul>
+							<li><a href="#casa">Quiénes somos</a></li>
+							<li><a href="#carta">Carta</a></li>
+							<li><a href="#fotos">Fotos</a></li>
+							<li><a href="#preguntas">Preguntas frecuentes</a></li>
+						</ul>
+					</div>
+					<div>
+						<h3>Contacto</h3>
+						<ul>
+							<li><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></li>
+							<li><a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></li>
+							<li><a href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps</a></li>
+							<li><a href="/aviso-legal/">Aviso legal y privacidad</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot__bottom">
+					<small>© {new Date().getFullYear()} {BUSINESS.fullName}. Todos los derechos reservados.</small>
+					<p>
+						<small>
+							Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+							<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+						</small>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Llamar a Lucheng <span>{BUSINESS.phone}</span>
+		</a>
+	</body>
+</html>
