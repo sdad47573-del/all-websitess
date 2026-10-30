@@ -1,0 +1,284 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/tortillas-y-comida-javi-sera-apaisada-01.jpg';
+import tortilla from '../assets/fotos/tortillas-y-comida-javi-sera-apaisada-02.jpg';
+import mostrador from '../assets/fotos/tortillas-y-comida-javi-sera-apaisada-03.jpg';
+import ensaladillas from '../assets/fotos/tortillas-y-comida-javi-sera-apaisada-04.jpg';
+import báscula from '../assets/fotos/tortillas-y-comida-javi-sera-apaisada-06.jpg';
+import plato from '../assets/fotos/tortillas-y-comida-javi-sera-apaisada-08.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Javi Sera · Tortillas y comida casera en Sevilla';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: tortilla,
+		alt: 'Trozo de tortilla de patatas cuajada y dorada en una bandeja de aluminio',
+	},
+	{
+		src: mostrador,
+		alt: 'Mostrador del local con bandejas de comida preparada, empanadas y botellas sobre el cristal',
+	},
+	{
+		src: ensaladillas,
+		alt: 'Vitrina con ensaladilla de atún, salpicón de marisco, patatas alioli, huevos rellenos y choco en salsa, con sus carteles de precio',
+	},
+	{
+		src: báscula,
+		alt: 'Tortilla de patatas entera sobre una báscula, con el peso de un kilo y cincuenta gramos en el visor',
+	},
+	{
+		src: plato,
+		alt: 'Plato con un trozo de tortilla y choco en salsa, junto a tarrinas de salpicón, patatas y coliflor',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#javi-sera`,
+	name: BUSINESS.fullName,
+	alternateName: ['Tortillas y Comida Javi Sera', 'Javi Sera Sevilla', 'Tortillas Javi Sera'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Casera', 'Tortillas', 'Comida para llevar'],
+	areaServed: [{ '@type': 'City', name: 'Sevilla' }],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	hasMenu: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	acceptsReservations: false,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:30',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1c1913" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300..700&family=DM+Serif+Display:ital@0;1&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Tortillas Javi Sera, tortillas Sevilla, comida casera Sevilla, tortilla de patatas por encargo, Santo Domingo de la Calzada 23, ensaladilla de atún, choco en salsa, raciones para llevar Sevilla"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Tortillas y comida casera en Santo Domingo de la Calzada 23, Sevilla. Tortilla por porciones o entera, ensaladillas, choco y pisto. Todos los días de 11:30 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Tortillas y Comida Javi Sera, con el rótulo de madera y los escaparates naranjas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#1c1913"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Santo Domingo de la Calzada, Sevilla"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Javi Sera"
+			subtitle="Tortillas y comida · Sevilla"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Tortillas y comida <br /><em>de casa.</em>"
+				lede="En la calle Santo Domingo de la Calzada 23, un restaurante de mediodía con la tortilla como bandera: se compra entera o por porciones y comparte mostrador con ensaladillas, choco en salsa, pastel de berenjena y pisto. Abre todos los días de 11:30 a 16:00 y tiene 4 sobre 5 con 133 reseñas."
+				image={fachada}
+				imageAlt="Fachada de Tortillas y Comida Javi Sera en un edificio de ladrillo, con el rótulo de madera y los escaparates vinilados en naranja"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,0</b> en Google · 133 reseñas' },
+					{ label: 'Horario', html: '<b>11:30–16:00</b><br />Todos los días' },
+					{ label: 'Teléfono', html: `<b>615 36 88 80</b> encargos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de Javi Sera" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="La tortilla <br /><em>y el mostrador.</em>"
+				paragraphs={[
+					'Javi Sera está en el número 23 de la calle Santo Domingo de la Calzada, en un bajo de ladrillo con el rótulo de madera y dos escaparates naranjas. La ficha de Google lo clasifica como restaurante y le da 4 sobre 5 con 133 reseñas.',
+					'La casa se llama «Tortillas y Comida» y lo dice todo: la tortilla de patatas es el centro. En las fotos del perfil aparece entera sobre la báscula, con más de un kilo, y también en porciones. Alrededor, el mostrador ofrece ensaladilla de atún, salpicón de marisco, patatas alioli, huevos rellenos, puntillitas, choco en salsa y choco encebollado.',
+					'Las reseñas destacan el pastel de berenjena y el pisto —«también están increíbles»— y resumen la casa como «surtido de comida a buen precio y raciones generosas». No todo son elogios: otra reseña se queja de que cobren 0,10 € por la bolsa de papel.',
+					'Abre todos los días de 11:30 a 16:00, solo al mediodía, así que es una casa de comidas para el almuerzo. Se puede comer en el local o pedir la comida para llevar.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las fotos del perfil del establecimiento. La ficha no publica carta ni precios: confirma platos y precios por teléfono antes de la visita."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Tortilla <br /><em>y mostrador.</em>"
+				description="La ficha no publica carta con precios. La lista sale de lo que aparece en las fotos del perfil y de lo que destacan las reseñas: tortilla, ensaladillas y platos del mostrador."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="No hay carta oficial publicada ni precios en la ficha, así que esta lista es orientativa: sirve para reconocer lo que se cocina aquí, no para cerrar una cuenta. Para saber qué hay ese día y cuánto cuesta, llama a la casa."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La tortilla <br /><em>y la vitrina.</em>"
+				description="Las fotografías del perfil de Javi Sera: la tortilla en porciones y entera sobre la báscula, el mostrador con las bandejas y la vitrina de ensaladillas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>Santo Domingo.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Sevilla, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días de 11:30 a 16:00, solo mediodía. En festivos puede cambiar; la ficha avisa, por ejemplo, del día de Todos los Santos."
+				mapTitle="Mapa de Tortillas y Comida Javi Sera en la calle Santo Domingo de la Calzada 23, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Santo Domingo de la Calzada, 23 · Sevilla"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. Para encargar una tortilla, raciones o preguntar qué hay hoy, llama al teléfono de la casa: es el canal directo."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Tortillas y Comida Javi Sera"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

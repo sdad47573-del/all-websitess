@@ -1,0 +1,228 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/to-gueno-fachada.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'To Güeno · Comida casera para llevar en Sevilla';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#to-gueno`,
+	name: BUSINESS.fullName,
+	alternateName: ['To Gueno Sevilla', 'Comidas caseras para llevar To Güeno', 'To Güeno Urbión'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Casera', 'Comida para llevar'],
+	areaServed: [{ '@type': 'City', name: 'Sevilla' }],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	acceptsReservations: false,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#16201f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,600;0,700;1,500&family=Figtree:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="To Güeno, To Gueno Sevilla, comida casera para llevar Sevilla, calle Urbión, comida para llevar 41005, raciones para llevar Sevilla, cocina casera Sevilla"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar en la calle Urbión, Sevilla. Cocina de casa y trato cercano, con 4,5 sobre 5 en Google y 24 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Rótulo de To Güeno, comidas caseras para llevar, en la calle Urbión de Sevilla"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#16201f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="C. Urbión, Sevilla"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="To Güeno"
+			subtitle="Comidas caseras · Sevilla"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Comida casera <br /><em>para llevar.</em>"
+				lede="En la calle Urbión, un local de barrio con el rótulo granate que anuncia «comidas caseras para llevar». Cocina de casa, raciones para recoger y trato cercano: la ficha de Google le da 4,5 sobre 5 con 24 reseñas, aunque no publica horario ni carta."
+				image={fachada}
+				imageAlt="Rótulo de To Güeno con la leyenda «comidas caseras para llevar» sobre la puerta de cristal del local, en la calle Urbión"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 24 reseñas' },
+					{ label: 'Horario', html: '<b>Sin publicar</b><br />Llama antes de ir' },
+					{ label: 'Teléfono', html: `<b>671 62 51 17</b> encargos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la ficha"
+			/>
+
+			<LocalChips label="Señas de To Güeno" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina de casa <br /><em>en Urbión.</em>"
+				paragraphs={[
+					'To Güeno está en la calle Urbión, en el 41005, con un local pequeño de barrio y un rótulo granate que lo dice todo: «comidas caseras para llevar». La ficha de Google lo clasifica como restaurante de comida para llevar.',
+					'No hay carta publicada ni web propia. Lo que sí consta es la cocina: las reseñas hablan de «cocina casera, exquisita», de «trato agradable, precio razonable y buena calidad» y de «buena comida y muy buen servicio». Con 4,5 sobre 5 y 24 reseñas, es una de las casas de comida para llevar mejor valoradas de la zona.',
+					'La ficha tampoco publica horario, así que conviene llamar antes de ir. El teléfono es también el canal para encargar: pregunta qué hay ese día, cuánto cuesta la ración y a qué hora puedes recogerla.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las fotos del perfil del establecimiento. La ficha no publica horario, carta ni precios: confírmalos por teléfono antes de la visita."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que se cocina <br /><em>ese día.</em>"
+				description="La ficha no publica carta ni precios: solo la categoría y lo que dicen las reseñas. Aquí no hay una lista de platos que copiar, sino lo que consta del formato de la casa."
+				cta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="No hay carta oficial publicada. Para saber qué hay ese día, cuánto cuesta la ración y a qué hora recogerla, llama al asador: el teléfono es el único canal que consta."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>la calle Urbión.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Sevilla, España']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="La ficha de Google no publica horario para este establecimiento, así que no hay una tabla que copiar. Llama antes de ir para confirmar que está abierto y qué hay ese día."
+				mapTitle="Mapa de To Güeno en la calle Urbión, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Urbión · Sevilla"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. Para encargar raciones o preguntar qué hay hoy, llama al teléfono del local: es el canal directo."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de To Güeno"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
