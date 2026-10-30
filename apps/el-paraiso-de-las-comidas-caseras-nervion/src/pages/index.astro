@@ -1,0 +1,296 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/el-paraiso-de-las-comidas-caseras-nervion-apaisada-06.jpg';
+import esquina from '../assets/fotos/el-paraiso-de-las-comidas-caseras-nervion-vertical-01.jpg';
+import carta from '../assets/fotos/el-paraiso-de-las-comidas-caseras-nervion-vertical-02.jpg';
+import paella from '../assets/fotos/el-paraiso-de-las-comidas-caseras-nervion-vertical-03.jpg';
+import comidas from '../assets/fotos/el-paraiso-de-las-comidas-caseras-nervion-vertical-04.jpg';
+import pescados from '../assets/fotos/el-paraiso-de-las-comidas-caseras-nervion-vertical-05.jpg';
+
+import { BUSINESS, DELIVERY, FAQ, HOURS, MAPS, MENU, SERVICIOS, WHATSAPP } from '../data/site';
+
+const title = 'El Paraíso de las Comidas Caseras · Nervión, Sevilla';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de El Paraíso de las Comidas Caseras en la calle Divino Redentor 1, con el rótulo rojo y los carteles del menú en el escaparate',
+	},
+	{
+		src: esquina,
+		alt: 'Esquina del local al atardecer, con el toldo rojo y el rótulo «Divino Redentor» en la fachada del edificio',
+	},
+	{
+		src: paella,
+		alt: 'Paellera grande de arroz amarillo con patatas y perejil recién espolvoreado, en la cocina del obrador',
+	},
+	{
+		src: carta,
+		alt: 'Carta del local pegada en el escaparate, con los platos fríos, arroces, pastas, carnes y pescados por cuarto de kilo y kilo',
+	},
+	{
+		src: comidas,
+		alt: 'Segunda hoja de la carta con las comidas, los precocinados y los postres, con el teléfono y el WhatsApp de la casa',
+	},
+	{
+		src: pescados,
+		alt: 'Hoja de la carta con los pescados, las tortillas de patatas por encargo y los postres, con la dirección de Divino Redentor 1',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#paraiso-nervion`,
+	name: BUSINESS.fullName,
+	alternateName: [
+		'El Paraíso de las Comidas Caseras',
+		'El Paraíso Nervión',
+		'Comidas caseras para llevar Nervión',
+	],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Casera', 'Andaluza', 'Comida para llevar'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sevilla' },
+		{ '@type': 'AdministrativeArea', name: 'Nervión' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	hasMenu: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	acceptsReservations: false,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'], opens: '10:30', closes: '15:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'], opens: '17:30', closes: '21:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '10:30', closes: '18:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '10:30', closes: '15:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday', opens: '11:00', closes: '15:00' },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#14201a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Outfit:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="El Paraíso de las Comidas Caseras, comida casera para llevar Sevilla, comida para llevar Nervión, Divino Redentor 1, bandejas de comida Sevilla, croquetas Nervión, lasaña Sevilla, reparto de comida Nervión"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar en el número 1 de Divino Redentor, Nervión. Guisos, arroces, pastas, empanados y bandejas por cuarto de kilo o kilo. 4,7 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de El Paraíso de las Comidas Caseras en la calle Divino Redentor 1, Nervión, Sevilla"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#14201a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Nervión, Sevilla"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Paraíso"
+			subtitle="Comida casera · Nervión"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
+				title="Comida casera <br /><em>para llevar.</em>"
+				lede={`En el número 1 de la calle Divino Redentor, en Nervión, una tienda de comida casera para llevar: guisos, arroces, pastas y bandejas que se piden por cuarto de kilo o por kilo. Abre todos los días y la ficha de Google le da 4,7 sobre 5 con 50 reseñas.`}
+				image={fachada}
+				imageAlt="Fachada de El Paraíso de las Comidas Caseras con el rótulo rojo sobre la calle Divino Redentor, en Nervión"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 50 reseñas' },
+					{ label: 'Horario', html: '<b>10:30–21:00</b><br />De lunes a jueves, partido' },
+					{ label: 'Teléfono', html: `<b>954 08 25 51</b> encargos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de El Paraíso de las Comidas Caseras" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comida de olla, <br /><em>para llevar.</em>"
+				paragraphs={[
+					'El Paraíso de las Comidas Caseras está en el número 1 de la calle Divino Redentor, en Nervión, con el escaparate lleno de carteles y el mostrador de bandejas al fondo. La ficha de Google lo clasifica como tienda de alimentación y su descripción es literal: «comida casera para llevar».',
+					'Aquí no se sirve mesa: se compra la comida y se lleva a casa. La carta se organiza por cuarto de kilo y por kilo, con platos fríos, verduras, legumbres y arroces, pastas, carnes, pescados, empanadas y empanados artesanales. Hay lasaña de carne, canelones, albóndigas en salsa, carrillada, solomillo al whisky, arroz de paella los sábados y arroz negro los miércoles.',
+					'Las reseñas de Google repiten dos cosas: la comida casera y el trato. «Comida casera muy rica y muy buena atención», «maravilloso el trato y la comida» y «la comida buenísima, especialmente la lasaña, estaba espectacular». Con 4,7 sobre 5 y 50 reseñas, es una de las casas de comida para llevar más valoradas del barrio.',
+					'El horario es partido de lunes a jueves (10:30–15:30 y 17:30–21:00), continuo el viernes hasta las 18:00, mediodía el sábado y de 11:00 a 15:00 el domingo. La carta anuncia reparto a domicilio de 13:30 a 15:30 con un pedido mínimo de 12 €, y un WhatsApp para encargar.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y de la carta expuesta en el propio local. No hay web oficial ni pedidos en línea: confirma platos, precios y disponibilidad por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Guisos, pastas <br /><em>y bandejas.</em>"
+				description="La carta que está expuesta en el local, con el precio del cuarto de kilo y el del kilo. Es comida para llevar: se pide en el mostrador, por teléfono o por WhatsApp."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Precios de la carta expuesta en el local, con el cuarto de kilo primero y el kilo después. Pueden cambiar según mercado y temporada: confirma en el mostrador o por teléfono. Algunos platos solo se hacen un día concreto, como el arroz de paella de los sábados o el arroz negro de los miércoles."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El escaparate <br /><em>y la olla.</em>"
+				description="Las fotografías del perfil de El Paraíso de las Comidas Caseras: la esquina de Divino Redentor, el rótulo, la paellera y la carta que se puede leer en el escaparate."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>Nervión.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Sevilla, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google. De lunes a jueves hay dos turnos; el viernes es continuo hasta las 18:00, el sábado solo mediodía y el domingo abre a las 11:00. En festivos puede cambiar."
+				mapTitle="Mapa de El Paraíso de las Comidas Caseras en la calle Divino Redentor 1, Nervión, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Divino Redentor, 1 · Sevilla"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote={`No hay reservas ni pedidos en línea en esta página. Para encargar una bandeja o preguntar qué hay hoy, llama al teléfono del local o escribe al WhatsApp de la casa (${WHATSAPP.number}). ${DELIVERY.note}`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'WhatsApp ↗', href: WHATSAPP.href, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de El Paraíso de las Comidas Caseras"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

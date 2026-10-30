@@ -1,0 +1,290 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import pernil from '../assets/fotos/polleria-y-churreria-sabor-de-la-casa-apaisada-03.jpg';
+import croquetas from '../assets/fotos/polleria-y-churreria-sabor-de-la-casa-apaisada-09.jpg';
+import paella from '../assets/fotos/polleria-y-churreria-sabor-de-la-casa-apaisada-05.jpg';
+import bocadillo from '../assets/fotos/polleria-y-churreria-sabor-de-la-casa-apaisada-06.jpg';
+import asado from '../assets/fotos/polleria-y-churreria-sabor-de-la-casa-apaisada-07.jpg';
+import interior from '../assets/fotos/polleria-y-churreria-sabor-de-la-casa-apaisada-01.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Sabor de la Casa · Pollería y churrería en Espartinas';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: croquetas,
+		alt: 'Bandeja de croquetas caseras recién fritas, doradas y crujientes',
+	},
+	{
+		src: paella,
+		alt: 'Paella con langostinos, mejillones, guisantes y chorizo en la paellera',
+	},
+	{
+		src: bocadillo,
+		alt: 'Bocadillo con filete empanado, jamón y lechuga sobre papel de aluminio en el mostrador, con dos personas trabajando al fondo',
+	},
+	{
+		src: asado,
+		alt: 'Pernil asado en una bandeja con patatas panadera y ajos enteros',
+	},
+	{
+		src: interior,
+		alt: 'Interior del local con las neveras de bebidas, el mostrador de comida preparada y el horno al fondo',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#sabor-de-la-casa`,
+	name: BUSINESS.fullName,
+	alternateName: ['Sabor de la Casa Espartinas', 'Pollería Sabor de la Casa', 'Churrería Sabor de la Casa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Pollería', 'Churrería', 'Casera', 'Comida para llevar'],
+	areaServed: [
+		{ '@type': 'City', name: 'Espartinas' },
+		{ '@type': 'AdministrativeArea', name: 'Sevilla' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	hasMenu: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	acceptsReservations: false,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Monday', opens: '10:00', closes: '16:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '10:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Wednesday', 'Thursday'], opens: '10:00', closes: '16:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Wednesday', 'Thursday'], opens: '19:00', closes: '23:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '10:00', closes: '16:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '19:00', closes: '23:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '08:00', closes: '16:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '19:00', closes: '23:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Sunday', opens: '08:00', closes: '17:00' },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: false },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1d1410" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito+Sans:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Sabor de la Casa Espartinas, pollería Espartinas, churrería Espartinas, pollos asados Sevilla, croquetas caseras, ensaladilla brasileña, churros con chocolate, comida para llevar Espartinas"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados, croquetas, solomillos, ensaladillas y churros artesanales en la calle Escultor Echegoyan 27, Espartinas. 4,7 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pernil asado con piña y pasas de Sabor de la Casa, en Espartinas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#1d1410"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Espartinas, Sevilla"
+			preload={[pernil]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Sabor de la Casa"
+			subtitle="Pollería y churrería · Espartinas"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Pollo asado, churros <br /><em>y comida de casa.</em>"
+				lede="En el local 4 del número 27 de la calle Escultor Echegoyan, en Espartinas, un asador de pollos que es también freiduría, churrería y casa de comidas para llevar. Desde 2020, con el lema de «trato exquisito y precios asequibles» y 4,7 sobre 5 con 258 reseñas."
+				image={pernil}
+				imageAlt="Pernil asado glaseado con rodajas de piña y pasas, rodeado de patatas asadas"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 258 reseñas' },
+					{ label: 'Horario', html: '<b>10:00–16:00</b><br />Y 19:00–23:00, miércoles a sábado' },
+					{ label: 'Teléfono', html: `<b>622 00 65 29</b> encargos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de Sabor de la Casa" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Asador, freiduría <br /><em>y churrería.</em>"
+				paragraphs={[
+					'Sabor de la Casa está en el local 4 del número 27 de la calle Escultor Echegoyan, en Espartinas. Abrió en 2020 con asador de pollos, freiduría, comidas caseras para llevar y churrería propia; la ficha de Google lo clasifica como pollería.',
+					'La carta que describe el propio negocio es larga: carrillada, solomillo al whisky, solomillo al roquefort, bacalao dorado, ensaladilla rusa, ensaladilla de pulpo, su ensaladilla brasileña, salmorejo, gazpacho, croquetas caseras y churros de rueda con chocolate, todo artesanal. En las fotos del perfil aparecen además el pernil asado con piña y pasas, la paella, los bocadillos y las croquetas recién fritas.',
+					'Con 4,7 sobre 5 y 258 reseñas, es una de las casas de comida del Aljarafe con más valoraciones. Las reseñas repiten los pollos asados, los churros, las croquetas y el solomillo al whisky, y una sentencia las patatas fritas con queso y bacon como «las mejores que he comido en toda mi vida». No todo son flores: otra reseña se queja de más de media hora de espera en hora punta.',
+					'Abre todos los días, con dos turnos de miércoles a sábado (mediodía y noche) y horario continuo el resto. El fin de semana arranca a las 8:00, que es la franja de los churros. El lema de la casa lo resume: «trato exquisito y precios asequibles».',
+				]}
+				note="La información sale de la ficha pública de Google Maps, de la descripción del propio negocio y de las fotos de su perfil. No hay web oficial ni carta con precios publicada: confirma platos, precios y disponibilidad por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del asador <br /><em>a la churrera.</em>"
+				description="La ficha no publica precios. La lista sale de la descripción del propio negocio y de lo que aparece en las fotos del perfil: asador, freiduría, comidas caseras y churrería."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="No hay carta oficial publicada ni precios del local, así que esta lista es orientativa: sirve para reconocer lo que se cocina aquí, no para cerrar una cuenta. Para saber qué hay ese día y cuánto cuesta, llama a la casa."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La freiduría <br /><em>y el mostrador.</em>"
+				description="Las fotografías del perfil de Sabor de la Casa: las croquetas, la paella, el bocadillo del mostrador, el pernil asado y el interior con las neveras y el horno."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a <br /><em>Espartinas.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Sevilla, España',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días, con dos turnos de miércoles a sábado (mediodía y noche). El sábado abre a las 8:00 y el domingo también, hasta las 17:00. En festivos puede cambiar."
+				mapTitle="Mapa de Pollería y Churrería Sabor de la Casa en la calle Escultor Echegoyan 27, Espartinas"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Escultor Echegoyan, 27 · Espartinas"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. Para encargar pollos, una bandeja de comida casera o churros, llama al teléfono de la casa y confirma la hora de recogida: en hora punta la espera puede alargarse."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Sabor de la Casa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

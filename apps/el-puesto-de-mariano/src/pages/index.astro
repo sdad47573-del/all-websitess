@@ -1,0 +1,368 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/el-puesto-de-mariano-apaisada-01.jpg';
+import arroz from '../assets/fotos/el-puesto-de-mariano-apaisada-02.jpg';
+import garbanzos from '../assets/fotos/el-puesto-de-mariano-vertical-04.jpg';
+import tarta from '../assets/fotos/el-puesto-de-mariano-apaisada-05.jpg';
+import pasta from '../assets/fotos/el-puesto-de-mariano-vista-6-06.jpg';
+import empanada from '../assets/fotos/el-puesto-de-mariano-apaisada-07.jpg';
+import rollo from '../assets/fotos/el-puesto-de-mariano-apaisada-08.jpg';
+import pollo from '../assets/fotos/el-puesto-de-mariano-vertical-09.jpg';
+import cupcakes from '../assets/fotos/el-puesto-de-mariano-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'El Puesto de Mariano · Comida casera en Sevilla';
+const description =
+	'El Puesto de Mariano, comida casera para llevar en el Mercado de Abasto Las Palmeritas (C. Beatriz de Suabia, Sevilla). Menús diarios, guisos de elaboración lenta y repostería. Fotos, horario y teléfono.';
+
+const galeria = [
+	{ src: vitrina, alt: 'Vitrina de El Puesto de Mariano con empanadas, guisos y postres del día' },
+	{ src: arroz, alt: 'Arroz amarillo con gambas y limón servido en un plato' },
+	{ src: garbanzos, alt: 'Garbanzos con gambas en salsa de tomate en una olla' },
+	{ src: pollo, alt: 'Pollo guisado en salsa de tomate con patatas' },
+	{ src: empanada, alt: 'Empanada de hojaldre con sésamo de El Puesto de Mariano' },
+	{ src: rollo, alt: 'Rollo de fiambre con frutos secos cortado en rodajas' },
+	{ src: pasta, alt: 'Pasta con salsa de tomate y queso rallado' },
+	{ src: tarta, alt: 'Tarta de nueces con azúcar glas y decoración navideña' },
+	{ src: cupcakes, alt: 'Cupcakes de cacahuete y chocolate en su caja' },
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Oferta de El Puesto de Mariano',
+	inLanguage: 'es-ES',
+	description:
+		'Selección orientativa basada en las fotografías del puesto y en las reseñas; la ficha no publica una carta oficial ni precios.',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-puesto-de-mariano`,
+	name: BUSINESS.name,
+	alternateName: ['Puesto de Mariano Sevilla', 'El Puesto de Mariano Las Palmeritas'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34620009017',
+	priceRange: '€',
+	servesCuisine: ['Comida casera', 'Cocina tradicional', 'Comida para llevar', 'Cocina de mercado'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google feature id', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El puesto', href: '#casa' },
+	{ label: 'Oferta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..500&family=Nunito+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Puesto de Mariano, comida casera Sevilla, menú diario Sevilla, comida para llevar Las Palmeritas, mercado de abasto Sevilla, Beatriz de Suabia, slow food Sevilla"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Menús diarios y guisos de elaboración lenta en el Mercado de Las Palmeritas. Fotos, horario y encargos por teléfono."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vitrina de El Puesto de Mariano con los platos del día"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#43303f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Sevilla"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Puesto de Mariano"
+			subtitle="Comida casera · Mercado Las Palmeritas"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Mercado Las Palmeritas · C. Beatriz de Suabia"
+				title="Comida casera, <br /><em>cocinada despacio.</em>"
+				lede={`El Puesto de Mariano prepara cada día recetas tradicionales para llevar, con productos de calidad y elaboración lenta. Está dentro del Mercado de Abasto Las Palmeritas y la ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={vitrina}
+				imageAlt="Vitrina de El Puesto de Mariano con empanadas, guisos y postres del día"
+				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Tipo', html: '<b>Comida casera</b> para llevar' },
+					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>8:00 – 15:00</b> de lunes a sábado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver fotos y ficha"
+				tag="Menú del día"
+			/>
+
+			<LocalChips label="Servicios de El Puesto de Mariano" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El puesto"
+				title="Cocina de mercado, <br /><em>para llevar a casa.</em>"
+				paragraphs={[
+					'El Puesto de Mariano es un puesto de comida casera para llevar dentro del Mercado de Abasto Las Palmeritas, en la calle Beatriz de Suabia, en Sevilla. En su ficha se presenta como «recetas tradicionales hechas con esmero, para disfrutar en su mesa».',
+					'Todo se cocina con productos de calidad y elaboración lenta, lo que el negocio resume como «slow food». Cada día hay un menú distinto, y en la vitrina conviven los guisos, los arroces, las empanadas y la repostería.',
+					'La ficha de Google le da 5,0 sobre 5 con 20 reseñas. Los clientes hablan de menús diarios «con relación calidad precio insuperable», del trato amable y de platos con sabor de siempre, como el pollo al ajillo.',
+				]}
+				note="La ficha no publica carta ni precios. Los platos que aparecen en esta web son los de las fotografías del puesto y las reseñas; el menú cambia a diario, así que conviene preguntarlo al llamar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotografías', href: '#galeria' },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="Lo que hay en la vitrina"
+				title="Guisos de siempre <br /><em>y dulces de casa.</em>"
+				description="La ficha no publica carta, así que esta selección se apoya en las fotografías del puesto: arroces, guisos, empanadas, pasta y repostería casera. El menú del día cambia."
+				cta={{ label: `Preguntar el menú de hoy · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios ni carta oficial publicados. Confirma el menú del día, los platos disponibles y las condiciones de recogida llamando al 620 00 90 17."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos del perfil de Google Maps"
+				title="La vitrina <br /><em>y los platos.</em>"
+				description="El mostrador del puesto en el mercado y algunos de los platos que aparecen en las fotografías públicas del establecimiento."
+				images={galeria}
+				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
+				note="Imágenes descargadas del perfil público de El Puesto de Mariano en Google Maps y servidas desde esta página."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Lo que dicen <em>las reseñas.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer reseñas en Google ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>{resena.texto}</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
+							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
+								>Consulta las opiniones actualizadas en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Dentro del <br /><em>mercado.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de El Puesto de Mariano en el Mercado de Abasto Las Palmeritas, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Mercado Las Palmeritas · Sevilla"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="El puesto está dentro del mercado y trabaja para llevar. Llama antes para reservar el menú del día o encargar repostería; al ser un puesto de mercado, conviene confirmar la disponibilidad."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Información y fotografías de la ficha pública de Google Maps. Confirma horario, platos y precios con el establecimiento."
+			ctaLabel="Encargar en El Puesto"
+			navAriaLabel="Enlaces de El Puesto de Mariano"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

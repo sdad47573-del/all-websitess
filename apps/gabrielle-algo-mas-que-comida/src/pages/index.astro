@@ -1,0 +1,367 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-01.jpg';
+import vitrina from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-02.jpg';
+import lasana from '../assets/fotos/gabrielle-algo-mas-que-comida-vertical-03.jpg';
+import fachada from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-05.jpg';
+import lasanaPlato from '../assets/fotos/gabrielle-algo-mas-que-comida-vertical-06.jpg';
+import cuscus from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-07.jpg';
+import vitrinaDetalle from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-08.jpg';
+import rotulo from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-09.jpg';
+import logo from '../assets/fotos/gabrielle-algo-mas-que-comida-vista-10-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Gabrielle · Comida casera para llevar en San Bernardo';
+const description =
+	'Gabrielle. Algo más que comida, comida casera para llevar en C. San Bernardo, 52, Sevilla. Platos del día, lasaña, cuscús y todo tipo de encargos. Fotos, horario y teléfono.';
+
+const galeria = [
+	{ src: fachada, alt: 'Fachada de Gabrielle en la calle San Bernardo, 52' },
+	{ src: vitrina, alt: 'Vitrina de Gabrielle con tarrinas de platos preparados' },
+	{ src: lasana, alt: 'Bandeja de lasaña casera recién gratinada' },
+	{ src: cuscus, alt: 'Cuscús con pollo, verduras y garbanzos' },
+	{ src: lasanaPlato, alt: 'Ración de lasaña servida en un plato decorado' },
+	{ src: vitrinaDetalle, alt: 'Detalle de la vitrina con arroces, patatas y guisos' },
+	{ src: rotulo, alt: 'Rótulo de Gabrielle en la pared del local con tomate, guindilla y manzana' },
+	{ src: logo, alt: 'Logotipo circular de Gabrielle, algo más que comida' },
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Oferta de Gabrielle',
+	inLanguage: 'es-ES',
+	description:
+		'Selección orientativa basada en la descripción del negocio, sus fotografías y sus reseñas; la ficha no publica una carta oficial ni precios.',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#gabrielle`,
+	name: BUSINESS.name,
+	alternateName: ['Gabrielle Sevilla', 'Gabrielle San Bernardo', 'Gabrielle Algo más que comida'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34692889156',
+	priceRange: '€',
+	servesCuisine: ['Comida casera', 'Comida para llevar', 'Cocina tradicional'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+	],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google feature id', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..500&family=Nunito+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Gabrielle Sevilla, comida casera San Bernardo, comida para llevar Sevilla, platos del día San Bernardo, lasaña Sevilla, cuscús Sevilla, San Bernardo 52"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera recién hecha para llevar en San Bernardo, 52. Platos del día, lasaña, cuscús y encargos."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Interior de Gabrielle con el mostrador y la pizarra de platos"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#26241f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Sevilla"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Gabrielle"
+			subtitle="Algo más que comida · Sevilla"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. San Bernardo, 52 · Sevilla"
+				title="Comida de casa, <br /><em>recién hecha.</em>"
+				lede={`Gabrielle prepara cada día platos caseros para llevar en el barrio de San Bernardo: lasaña, cuscús, arroces y guisos, con ingredientes seleccionados. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={interior}
+				imageAlt="Interior de Gabrielle con el mostrador blanco, la vitrina y la pizarra de platos"
+				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Tipo', html: '<b>Comida casera</b> para llevar' },
+					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00 – 16:00</b> de lunes a viernes' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver fotos y ficha"
+				tag="Menú del día"
+			/>
+
+			<LocalChips label="Servicios de Gabrielle" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Algo más <br /><em>que comida.</em>"
+				paragraphs={[
+					'Gabrielle es un establecimiento de comida casera para llevar en la calle San Bernardo, 52, en pleno barrio de San Bernardo. Su lema lo dice todo: «algo más que comida».',
+					'Cada día elabora sus platos con ingredientes seleccionados y recetas tradicionales, con una propuesta variada de platos preparados para llevar: lasaña, cuscús con pollo, salmón con quinoa, arroces y guisos de la casa.',
+					'El local es nuevo y cuida la presentación: mostrador blanco, vitrina con las tarrinas del día y una pizarra con los platos. Abre de lunes a viernes a mediodía y atiende encargos por teléfono.',
+				]}
+				note="La ficha no publica carta ni precios. Los platos que aparecen en esta web son los de la descripción, las fotografías y las reseñas del establecimiento; el menú cambia cada día, así que conviene preguntarlo al llamar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotografías', href: '#galeria' },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="La pizarra del local"
+				title="Lasaña, cuscús <br /><em>y guisos del día.</em>"
+				description="La ficha no tiene carta publicada, pero en las fotos se ve la pizarra y la vitrina del local. Esta selección reúne los platos que aparecen en ellas y en las reseñas: principal, del día, acompañamientos y encargos."
+				cta={{ label: `Preguntar el menú de hoy · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios ni carta oficial publicados. La oferta cambia a diario y algunos platos se acaban: llama al 692 88 91 56 para confirmar el menú, encargar una bandeja o preguntar por la recogida."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos del perfil de Google Maps"
+				title="El local, la vitrina <br /><em>y los platos.</em>"
+				description="La fachada en la calle San Bernardo, el interior con la pizarra, la vitrina de tarrinas y algunos de los platos que aparecen en las fotografías públicas del establecimiento."
+				images={galeria}
+				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
+				note="Imágenes descargadas del perfil público de Gabrielle. Algo más que comida en Google Maps y servidas desde esta página."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Lo que dicen <em>las reseñas.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer reseñas en Google ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>{resena.texto}</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
+							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
+								>Consulta las opiniones actualizadas en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En San <br /><em>Bernardo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de Gabrielle en C. San Bernardo, 52, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="San Bernardo, 52 · Sevilla"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Los pedidos se atienden por teléfono en el 692 88 91 56 y se recogen en el local. Para bandejas o encargos grandes, avisa con antelación."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Información y fotografías de la ficha pública de Google Maps. Confirma horario, platos y precios con el establecimiento."
+			ctaLabel="Encargar en Gabrielle"
+			navAriaLabel="Enlaces de Gabrielle"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

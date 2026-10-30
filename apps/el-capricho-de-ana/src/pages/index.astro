@@ -1,0 +1,366 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/el-capricho-de-ana-apaisada-01.jpg';
+import pasteles from '../assets/fotos/el-capricho-de-ana-apaisada-02.jpg';
+import vitrina from '../assets/fotos/el-capricho-de-ana-cuadrada-04.jpg';
+import tortilla from '../assets/fotos/el-capricho-de-ana-apaisada-05.jpg';
+import pastelNavidena from '../assets/fotos/el-capricho-de-ana-apaisada-06.jpg';
+import interior from '../assets/fotos/el-capricho-de-ana-apaisada-08.jpg';
+import bandejas from '../assets/fotos/el-capricho-de-ana-apaisada-09.jpg';
+import huevos from '../assets/fotos/el-capricho-de-ana-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'El Capricho de Ana · Comida casera en Sevilla';
+const description =
+	'El Capricho de Ana, comida casera para llevar en C. Porvenir, 29, Sevilla. Recetas de la abuela, pastel de merluza y gambas, huevos rellenos y guisos del día. Fotos, horario y teléfono de encargos.';
+
+const galeria = [
+	{ src: fachada, alt: 'Fachada de El Capricho de Ana con el toldo naranja en la calle Porvenir' },
+	{ src: pasteles, alt: 'Tres pasteles de merluza y gambas con el letrero de El Capricho de Ana' },
+	{ src: vitrina, alt: 'Vitrina de El Capricho de Ana con guisos, carnes y espinacas con garbanzos' },
+	{ src: huevos, alt: 'Bandeja de huevos rellenos con lechuga de El Capricho de Ana' },
+	{ src: bandejas, alt: 'Cuatro pasteles salados con langostinos en la vitrina del local' },
+	{ src: tortilla, alt: 'Tortilla de patatas entera en su bandeja de aluminio' },
+	{ src: pastelNavidena, alt: 'Pastel de merluza y gambas de encargo junto al letrero del local' },
+	{ src: interior, alt: 'Interior de El Capricho de Ana con la pizarra del nombre y los estantes' },
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Oferta de El Capricho de Ana',
+	inLanguage: 'es-ES',
+	description:
+		'Selección orientativa basada en las fotografías del local y en las reseñas; la ficha no publica una carta oficial ni precios.',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-capricho-de-ana`,
+	name: BUSINESS.name,
+	alternateName: ['El Capricho de Ana Sevilla', 'Capricho de Ana Porvenir'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34630389732',
+	priceRange: '€',
+	servesCuisine: ['Comida casera', 'Cocina tradicional', 'Comida para llevar'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '12:30',
+			closes: '16:00',
+		},
+	],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google feature id', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Oferta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..500&family=Nunito+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Capricho de Ana, comida casera Sevilla, comida para llevar Porvenir, pastel de merluza y gambas Sevilla, huevos rellenos, guisos caseros Sevilla, recetas de la abuela"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera con recetas de la abuela en la calle Porvenir. Pastel de merluza y gambas, huevos rellenos y guisos del día."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de El Capricho de Ana con el toldo naranja en Sevilla"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#3b2a22"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Sevilla"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Capricho de Ana"
+			subtitle="Comida casera · Sevilla"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Porvenir, 29 · Sevilla"
+				title="Las recetas de la abuela, <br /><em>para llevar.</em>"
+				lede={`El Capricho de Ana cocina a diario comida totalmente casera en la calle Porvenir, con ingredientes frescos y recetas de familia. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas y el local atiende encargos por teléfono.`}
+				image={fachada}
+				imageAlt="Fachada de El Capricho de Ana con el toldo naranja de comida casera para llevar"
+				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Tipo', html: '<b>Comida casera</b> para llevar' },
+					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>12:30 – 16:00</b> de lunes a viernes' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver fotos y ficha"
+				tag="Cocina diaria"
+			/>
+
+			<LocalChips label="Servicios de El Capricho de Ana" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comida de casa, <br /><em>hecha cada día.</em>"
+				paragraphs={[
+					'El Capricho de Ana es una tienda de comida para llevar en la calle Porvenir, 29, en Sevilla. El negocio se presenta en Google como comida «totalmente casera, elaborada en el propio establecimiento con recetas de la Abuela».',
+					'Se cocina a diario con ingredientes frescos: guisos de cuchara, carnes en salsa, espinacas con garbanzos, tortillas y huevos rellenos. En la vitrina aparecen también los pasteles salados que la casa prepara por encargo.',
+					'La especialidad más repetida es el pastel de merluza y gambas, que una clienta recuerda de sus encargos de Navidad. La atención es de mostrador: la comida se prepara para recoger en el local, y solo se atienden grandes pedidos fuera.',
+				]}
+				note="La ficha no publica carta ni precios. Los platos que aparecen en esta web son los de las fotografías del local y las reseñas; el guiso del día se pregunta por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotografías', href: '#galeria' },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="La vitrina del local"
+				title="Guisos de siempre <br /><em>y salados de encargo.</em>"
+				description="La ficha no tiene carta publicada, así que esta selección se apoya en las fotografías del local: pasteles salados, huevos rellenos, tortillas y guisos de cuchara. La oferta cambia a diario."
+				cta={{ label: `Preguntar el menú de hoy · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios ni carta oficial publicados. Confirma el menú del día, los encargos de pasteles y las condiciones de recogida llamando al 630 38 97 32."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos del perfil de Google Maps"
+				title="La fachada, la vitrina <br /><em>y los salados.</em>"
+				description="El local en la calle Porvenir y algunos de los platos que aparecen en las fotografías públicas del establecimiento: pasteles de merluza y gambas, huevos rellenos, tortilla y guisos."
+				images={galeria}
+				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
+				note="Imágenes descargadas del perfil público de El Capricho de Ana en Google Maps y servidas desde esta página."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Lo que dicen <em>las reseñas.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer reseñas en Google ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>{resena.texto}</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
+							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
+								>Consulta las opiniones actualizadas en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la calle <br /><em>Porvenir.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de El Capricho de Ana en C. Porvenir, 29, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Porvenir, 29 · Sevilla"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="La comida se recoge en el local; no hay reparto a domicilio salvo para grandes pedidos. Para pasteles salados y bandejas conviene encargar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Información y fotografías de la ficha pública de Google Maps. Confirma horario, platos y precios con el establecimiento."
+			ctaLabel="Encargar en El Capricho"
+			navAriaLabel="Enlaces de El Capricho de Ana"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

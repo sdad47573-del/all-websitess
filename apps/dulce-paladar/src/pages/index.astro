@@ -1,0 +1,346 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import tortilla from '../assets/fotos/dulce-paladar-apaisada-10.jpg';
+import carne from '../assets/fotos/dulce-paladar-apaisada-03.jpg';
+import champinones from '../assets/fotos/dulce-paladar-apaisada-06.jpg';
+import vitrina from '../assets/fotos/dulce-paladar-vertical-02.jpg';
+import patatas from '../assets/fotos/dulce-paladar-vertical-04.jpg';
+import polloGuisado from '../assets/fotos/dulce-paladar-vertical-07.jpg';
+import polloAsado from '../assets/fotos/dulce-paladar-vertical-08.jpg';
+import pisto from '../assets/fotos/dulce-paladar-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Dulce paladar · Comida casera para llevar en Sevilla';
+const description =
+	'Dulce paladar, comida casera para llevar en Av. de Alemania, 5 (41012 Sevilla). Tortilla de berenjenas, salmorejo, guisos y platos de cuchara. Horario, teléfono y reseñas.';
+
+const galeria = [
+	{ src: tortilla, alt: 'Tortilla de patata entera recién cuajada en una sartén' },
+	{ src: carne, alt: 'Fuente rosa con carne guisada en salsa sobre un mantel de cuadros' },
+	{ src: champinones, alt: 'Bandeja con champiñones guisados en salsa' },
+	{ src: patatas, alt: 'Bandeja de patatas en salsa cubiertas de alioli' },
+	{ src: polloGuisado, alt: 'Plato de pollo guisado con su salsa y pasas' },
+	{ src: pisto, alt: 'Cuenco de pisto con tomate, pimiento y calabacín' },
+	{ src: vitrina, alt: 'Vitrina del local con las bandejas de comida preparada para llevar' },
+	{ src: polloAsado, alt: 'Pollo asado entero en una bandeja, listo para llevar' },
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Oferta de Dulce paladar',
+	inLanguage: 'es-ES',
+	description:
+		'Selección orientativa basada en las reseñas y las fotografías públicas del establecimiento; no es una carta oficial.',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#dulce-paladar`,
+	name: BUSINESS.name,
+	alternateName: ['Dulce Paladar Sevilla', 'Dulce Paladar comidas para llevar'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34646632776',
+	servesCuisine: ['Comida casera', 'Comida para llevar', 'Cocina andaluza'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google feature id', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Oferta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Dulce paladar Sevilla, comida para llevar Sevilla, Av. de Alemania 5, tortilla de berenjenas, comida casera Sevilla, salmorejo"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar en Av. de Alemania, 5, Sevilla. Tortilla de berenjenas, salmorejo y guisos de cuchara. De martes a domingo a mediodía."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tortilla de patata entera cuajada en sartén, en Dulce paladar"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#4a1f2c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Sevilla"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[tortilla]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Dulce paladar"
+			subtitle="Comida casera · Sevilla"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Comida casera, <br /><em>para llevar.</em>"
+				lede={`Dulce paladar prepara cada mediodía tortillas, salmorejo y guisos de cuchara para comer en casa o en el trabajo. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={tortilla}
+				imageAlt="Tortilla de patata entera recién hecha en una sartén"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Tipo', html: '<b>Comida para llevar</b>' },
+					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: 'Mediodía · <b>cerrado lunes</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver fotos y ficha"
+				tag="Solo mediodía"
+			/>
+
+			<LocalChips label="Servicios y oferta de Dulce paladar" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comida de casa, <br /><em>a diario.</em>"
+				paragraphs={[
+					'Dulce paladar está en la Avenida de Alemania, 5. El propio negocio se presenta en Google como «Dulce Paladar comidas para llevar», sin más adornos: cocina casera de mediodía, lista para recoger.',
+					'Las reseñas de la ficha hablan de tortilla de berenjenas, salmorejo, tortillas empanadas, lentejas y puchero. En las fotos aparecen además bandejas de carne guisada, champiñones en salsa, patatas con alioli, pollo guisado y pisto.',
+					'Abre de martes a domingo y cierra los lunes. El servicio es de mediodía, con la cocina en marcha hasta media tarde, así que conviene llamar antes de acercarse.',
+				]}
+				note="La ficha de Google no publica carta ni precios, y esta página no los inventa. Los platos citados son los que nombran las reseñas y los que se ven en las fotografías del local; el menú cambia según el día."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotografías', href: '#galeria' },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="Lo que cuentan las reseñas y las fotos"
+				title="Tortillas, salmorejo <br /><em>y cuchara.</em>"
+				description="Esta selección se basa en los platos que citan las opiniones de la ficha y en las bandejas que aparecen en la galería del local. No es la carta oficial: no hay precios publicados."
+				cta={{ label: `Preguntar el menú · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="El menú cambia cada día y la ficha no indica precios. Llama al establecimiento para saber qué hay, cuánto cuesta y si queda ración."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos del perfil de Google Maps"
+				title="La vitrina <br /><em>y sus platos.</em>"
+				description="Las bandejas del local, la tortilla entera y los guisos que el establecimiento publica en su ficha: ocho fotos de cocina casera."
+				images={galeria}
+				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
+				note="Imágenes descargadas del perfil público de Dulce paladar en Google Maps y servidas desde esta página."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Lo que dicen <em>los clientes.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer reseñas en Google ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>{resena.texto}</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
+							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
+								>Consulta las opiniones actualizadas en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la Avenida <br /><em>de Alemania.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO}
+				hoursCaption="Horario de la ficha"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de Dulce paladar en Av. de Alemania, 5, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Av. de Alemania, 5 · Sevilla"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha no tiene reservas ni pedidos en línea: se llama y se recoge en el local. El teléfono es un móvil, así que puede estar ocupado a la hora punta del mediodía."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Información y fotografías de la ficha pública de Google Maps. Confirma horario, menú y disponibilidad con el establecimiento."
+			ctaLabel="Llamar a Dulce paladar"
+			navAriaLabel="Enlaces de Dulce paladar"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
