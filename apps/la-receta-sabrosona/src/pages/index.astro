@@ -1,0 +1,372 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/la-receta-sabrosona-apaisada-01.jpg';
+import paella from '../assets/fotos/la-receta-sabrosona-vertical-02.jpg';
+import tortilla from '../assets/fotos/la-receta-sabrosona-cuadrada-03.jpg';
+import interior from '../assets/fotos/la-receta-sabrosona-apaisada-04.jpg';
+import tartaCoco from '../assets/fotos/la-receta-sabrosona-apaisada-06.jpg';
+import roscon from '../assets/fotos/la-receta-sabrosona-apaisada-07.jpg';
+import escaparate from '../assets/fotos/la-receta-sabrosona-apaisada-09.jpg';
+import tartaChocolate from '../assets/fotos/la-receta-sabrosona-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'La Receta Sabrosona · Comida para llevar en Umbrete';
+const description =
+	'La Receta Sabrosona, comida para llevar en el Paseo 1º de Mayo, 32, Umbrete. Pollos asados, tortillas de patatas, arroces, fritos y comida casera. Fotos, horario y teléfono de encargos.';
+
+const galeria = [
+	{ src: fachada, alt: 'Fachada de La Receta Sabrosona con el rótulo azul en el Paseo 1º de Mayo' },
+	{ src: paella, alt: 'Paella de arroz con gambas y verduras en la paellera' },
+	{ src: tortilla, alt: 'Tortilla de patatas entera recién hecha' },
+	{ src: interior, alt: 'Interior de La Receta Sabrosona con el mostrador y la pared verde' },
+	{ src: tartaCoco, alt: 'Tarta de coco cubierta de coco rallado' },
+	{ src: tartaChocolate, alt: 'Tarta de chocolate con virutas y estrellas de chocolate blanco' },
+	{ src: roscon, alt: 'Roscón de Reyes con fruta escarchada y almendras' },
+	{ src: escaparate, alt: 'Entrada y rótulo de La Receta Sabrosona en el Paseo 1º de Mayo' },
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Oferta de La Receta Sabrosona',
+	inLanguage: 'es-ES',
+	description:
+		'Selección orientativa basada en la descripción del negocio, sus fotografías y sus reseñas; la ficha no publica una carta oficial ni precios.',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-receta-sabrosona`,
+	name: BUSINESS.name,
+	alternateName: ['La Receta Sabrosona Umbrete', 'La Receta Sabrosona Sevilla'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34954495967',
+	priceRange: '€',
+	servesCuisine: ['Comida casera', 'Comida para llevar', 'Pollos asados', 'Arroces'],
+	hasMenu: menuSchema,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:30',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Thursday', 'Friday', 'Saturday'],
+			opens: '19:30',
+			closes: '22:30',
+		},
+	],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google feature id', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..600;1,400..500&family=Nunito+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Receta Sabrosona, comida para llevar Umbrete, pollos asados Umbrete, tortillas de patatas Umbrete, arroces Umbrete, fritos Umbrete, Paseo 1º de Mayo"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados, tortillas de patatas, arroces y fritos en el Paseo 1º de Mayo, 32. Fotos, horario y encargos por teléfono."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de La Receta Sabrosona en Umbrete"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#1b2a5e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Umbrete"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[tortilla]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Receta Sabrosona"
+			subtitle="Comida para llevar · Umbrete"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Paseo 1º de Mayo, 32 · Umbrete"
+				title="El sabor de siempre, <br /><em>para llevar.</em>"
+				lede={`La Receta Sabrosona prepara pollos asados, tortillas de patatas, arroces y fritos de comida casera en Umbrete. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas y los encargos se hacen por teléfono.`}
+				image={tortilla}
+				imageAlt="Tortilla de patatas entera dorada, recién hecha en La Receta Sabrosona"
+				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Especialidad', html: '<b>Pollos asados</b> y tortillas' },
+					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:30 – 16:00</b> · y noches de jueves a sábado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver fotos y ficha"
+				tag="Cocina casera"
+			/>
+
+			<LocalChips label="Servicios de La Receta Sabrosona" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comida para llevar <br /><em>con sabor de siempre.</em>"
+				paragraphs={[
+					'La Receta Sabrosona es una tienda de comida para llevar en el Paseo 1º de Mayo, 32, en Umbrete. El negocio lo resume en su cartel: «con el sabor de siempre… la receta sabrosona».',
+					'Su ficha de Google detalla la oferta en cinco palabras: pollos asados, tortillas de patatas, arroces, fritos y comida casera. En las fotos aparecen la tortilla entera recién dorada, la paella con gambas y verduras, los fritos y la repostería del obrador.',
+					'Los encargos se atienden por teléfono y el local está preparado para recoger: mostrador, vitrina y congelador. Abre todos los días a mediodía y añade servicio de noche los jueves, viernes y sábados.',
+				]}
+				note="La ficha no publica carta ni precios. Los platos que aparecen en esta web son los de la descripción, las fotografías y las reseñas del establecimiento; pregunta por la oferta del día al llamar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotografías', href: '#galeria' },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<ul class="highlights">
+				{
+					HIGHLIGHTS.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<LocalMenu
+				eyebrow="La carta de la casa"
+				title="Pollo, tortilla <br /><em>y fritos.</em>"
+				description="La ficha no tiene carta publicada, pero sí detalla la oferta y publica fotos de los platos. Esta selección reúne los pollos, tortillas, arroces, fritos y postres que aparecen en ellas."
+				cta={{ label: `Encargar el pollo o la tortilla · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios ni carta oficial publicados. Confirma la oferta del día, el precio y la hora de recogida llamando al 954 49 59 67."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos del perfil de Google Maps"
+				title="La fachada, la cocina <br /><em>y los platos.</em>"
+				description="El local en el Paseo 1º de Mayo, el mostrador y algunos de los platos que aparecen en las fotografías públicas del establecimiento: tortilla, paella, tartas y roscón."
+				images={galeria}
+				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
+				note="Imágenes descargadas del perfil público de La Receta Sabrosona en Google Maps y servidas desde esta página."
+			/>
+
+			<section class="notas" aria-labelledby="notas-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="notas-title">Lo que dicen <em>las reseñas.</em></h2>
+						<p class="notas-score">
+							<strong>{RATING.label}</strong>
+							<span>
+								<b>★★★★★</b>
+								{RATING.count} reseñas<br />en Google
+							</span>
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer reseñas en Google ↗
+						</a>
+					</div>
+
+					<div class="notas-copy">
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>{resena.texto}</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class="notas-foot">
+							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
+							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
+								>Consulta las opiniones actualizadas en Google ↗</a
+							>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el Paseo <br /><em>1º de Mayo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Sevilla']}
+				hours={HORARIO}
+				hoursCaption="Horario"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de La Receta Sabrosona en el Paseo 1º de Mayo, 32, Umbrete"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Paseo 1º de Mayo, 32 · Umbrete"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Los encargos se atienden por teléfono en el 954 49 59 67. Pregunta por el pollo asado, la tortilla, los fritos del día y las condiciones de reparto antes de acercarte."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Información y fotografías de la ficha pública de Google Maps. Confirma horario, platos y precios con el establecimiento."
+			ctaLabel="Encargar en La Receta"
+			navAriaLabel="Enlaces de La Receta Sabrosona"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
