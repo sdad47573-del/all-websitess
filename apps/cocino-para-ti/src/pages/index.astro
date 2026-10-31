@@ -1,0 +1,404 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/cocino-para-ti-apaisada-05.jpg';
+import bandejas from '../assets/fotos/cocino-para-ti-apaisada-08.jpg';
+import fachada from '../assets/fotos/cocino-para-ti-vertical-01.jpg';
+import ensaladaLangostinos from '../assets/fotos/cocino-para-ti-vertical-03.jpg';
+import catering from '../assets/fotos/cocino-para-ti-vertical-04.jpg';
+import fachadaPuerta from '../assets/fotos/cocino-para-ti-vertical-06.jpg';
+import vitrinaEmpanadas from '../assets/fotos/cocino-para-ti-vertical-07.jpg';
+import ensaladilla from '../assets/fotos/cocino-para-ti-vertical-09.jpg';
+import pescados from '../assets/fotos/cocino-para-ti-vertical-10.jpg';
+import paella from '../assets/fotos/cocino-para-ti-vista-2-02.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Cocino para ti · Comida preparada en Retiro, Madrid';
+const description =
+	'Cocino para ti, en Calle de Narciso Serra, 17 (28007 Madrid, Retiro). Comida preparada para llevar, catering y pollería: guisos, albóndigas, tortillas y postres caseros.';
+
+const galeria = [
+	{
+		src: bandejas,
+		alt: 'Bandejas de carnes asadas, lasaña, pisto y pasta en el mostrador de Cocino para ti',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de Cocino para ti con el toldo verde y los carteles de menús y catering',
+	},
+	{
+		src: paella,
+		alt: 'Una paella de verduras en su paellera',
+	},
+	{
+		src: pescados,
+		alt: 'Bandejas de pescado gratinado, salmón y patatas panadera',
+	},
+	{
+		src: catering,
+		alt: 'Una mesa de catering con croquetas, tortilla, bocadillos y tarta',
+	},
+	{
+		src: ensaladaLangostinos,
+		alt: 'Una ensalada de langostinos con mayonesa y huevo sobre lechuga',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Ensaladilla con mayonesa, huevo y aceitunas junto a una bandeja de croquetas',
+	},
+	{
+		src: vitrinaEmpanadas,
+		alt: 'La vitrina con empanadas, tortillas, bandejas de albóndigas y pastas',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina de Cocino para ti con bandejas de pasta, ensaladilla, carnes y empanadillas',
+	},
+	{
+		src: fachadaPuerta,
+		alt: 'La fachada de Cocino para ti con la puerta abierta y los carteles del local',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Cocino para ti',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#cocino-para-ti`,
+	name: BUSINESS.fullName,
+	alternateName: ['Cocino para ti Madrid', 'Cocino para ti Retiro', 'Cocino para ti Narciso Serra'],
+	description:
+		'Comida preparada para llevar, catering y pollería en la calle de Narciso Serra, 17 (Retiro, 28007 Madrid). Guisos, albóndigas, tortillas y postres caseros.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34918313861',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida preparada', 'Comida para llevar', 'Cocina española'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Retiro' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '09:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '09:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#223a54" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..700;1,400&family=Assistant:wght@400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Cocino para ti Madrid, comida preparada Retiro, comida para llevar Narciso Serra, catering Madrid Retiro, pollos asados Madrid, albóndigas caseras Retiro"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida preparada para llevar, catering y pollería en la calle de Narciso Serra, 17 (Retiro). Guisos, albóndigas, tortillas y postres caseros, de lunes a domingo."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La vitrina de Cocino para ti con bandejas de comida preparada"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#223a54"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Retiro"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Cocino para ti"
+			subtitle="Comida preparada · Retiro"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Calle de Narciso Serra, 17 · Retiro, Madrid"
+				title="Comida preparada <br /><em>para ti.</em>"
+				lede={`Cocino para ti es una tienda de comida preparada en la calle de Narciso Serra. La vitrina se llena cada día de guisos, carnes, pescados, tortillas, pastas y ensaladillas, y el local acepta encargos de menús, cumpleaños y catering de empresa. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, y abre de lunes a sábado de 9:00 a 17:00 y el domingo de 9:00 a 16:00.`}
+				image={vitrina}
+				imageAlt="La vitrina de Cocino para ti con bandejas de pasta, ensaladilla, carnes y empanadillas"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:00–17:00</b> · domingo hasta las 16:00' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · y catering' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Catering y encargos"
+			/>
+
+			<LocalChips label="Lo que ofrece Cocino para ti" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Narciso Serra, 17. <br /><em>Comida de casa.</em>"
+				paragraphs={[
+					'Cocino para ti está en la calle de Narciso Serra, 17, en el distrito de Retiro. El toldo verde con el nombre en cursiva es lo primero que se ve desde la acera, junto a dos carteles que resumen la casa: a un lado, pollos asados de corral, tortilla al gusto, carnes, pescados, arroces por encargo, entrantes, pastas y postres caseros; al otro, cumpleaños, menú diario, menús especiales, menús de Navidad, catering de empresas y encargos para eventos.',
+					'Dentro manda la vitrina. En las bandejas se ven las carnes asadas, el pisto, la lasaña, las empanadillas, las tortillas, las albóndigas, las pastas y las ensaladillas. En las fotos del perfil aparecen también una paella de verduras, bandejas de pescado gratinado y salmón con patatas panadera, una ensalada de langostinos y una mesa de catering con croquetas, bocadillos y tarta.',
+					'Google la clasifica como establecimiento de comida preparada, servicio de catering, pollería y restaurante de comida para llevar. La ficha no incluye descripción del negocio, así que esta página se limita a lo que se ve en el local y en sus reseñas.',
+					`Las opiniones de Google mencionan el ragú de ternera, las albóndigas y las patatas alioli. La ficha le da ${RATING.label} sobre 5 con ${RATING.count} opiniones (octubre de 2026), abre de lunes a sábado de 9:00 a 17:00 y el domingo de 9:00 a 16:00, y atiende pedidos y encargos en el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica carta ni precios, y tampoco una descripción del negocio. Los platos de esta página son los que aparecen en los carteles, la vitrina y las fotos del perfil de Google; confirma precios, disponibilidad y encargos por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la vitrina al encargo</p>
+					<h2 id="highlights-title">Guisos, pollos <br /><em>y catering.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que se prepara <br /><em>cada día.</em>"
+				description="La ficha no publica carta, así que esta lista sale de los carteles de la fachada, de la vitrina y de las reseñas de Google. Aquí se compra para llevar y también se encargan menús completos."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin precios publicados: ni la ficha ni los carteles de la fachada los incluyen. Llama al 918 31 38 61 para saber el menú del día, el precio de las raciones y las condiciones de los encargos de catering."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina, la brasa <br /><em>y los encargos.</em>"
+				description="Diez fotografías del perfil de Cocino para ti en Google Maps: las bandejas del mostrador, la fachada, la paella de verduras, los pescados, la mesa de catering, las ensaladillas y la vitrina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,4 sobre 5, <em>con 94 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,4 con 94 opiniones (octubre de 2026). Hay reseñas
+							que destacan el ragú de ternera, las albóndigas y las patatas alioli, y también
+							alguna crítica, así que lo mejor es probar y juzgar por uno mismo.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,4</strong>
+						<span>★★★★☆</span>
+						<small>94 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Retiro, <br /><em>Narciso Serra 17.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de lunes a sábado, de 9:00 a 17:00, y el domingo de 9:00 a 16:00. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Cocino para ti en la calle de Narciso Serra, 17, Retiro, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Narciso Serra, 17 · Retiro"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y encargos por teléfono: la ficha no publica reservas ni pedidos online, y el servicio que anuncia es de recogida y catering. Tampoco indica que la entrada sea accesible y avisa de que no hay aparcamiento adaptado."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma platos y horario antes de la visita."
+			ctaLabel="Llamar a Cocino para ti"
+			navAriaLabel="Enlaces de Cocino para ti"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

@@ -1,0 +1,316 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/salon-san-juan-apaisada-01.jpg';
+import rotulo from '../assets/fotos/salon-san-juan-apaisada-03.jpg';
+import guiso from '../assets/fotos/salon-san-juan-apaisada-08.jpg';
+import buffet from '../assets/fotos/salon-san-juan-vertical-02.jpg';
+import arroz from '../assets/fotos/salon-san-juan-vertical-05.jpg';
+import pollo from '../assets/fotos/salon-san-juan-vertical-07.jpg';
+import fruta from '../assets/fotos/salon-san-juan-vertical-09.jpg';
+import calamares from '../assets/fotos/salon-san-juan-vista-6-06.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, SERVICIOS } from '../data/site';
+
+const title = 'Salón San Juan · Comidas para llevar en San Pedro del Pinatar';
+const description =
+	'Salón San Juan, en C. la Paz, 8 (30740 San Pedro del Pinatar, Murcia). Comidas para llevar, con 4,5 sobre 5 en Google Maps. Horario de lunes a domingo de 8:30 a 17:30, salvo los miércoles.';
+
+const galeria = [
+	{ src: fachada, alt: 'La fachada de Salón San Juan con el rótulo amarillo «Comidas para llevar»' },
+	{ src: rotulo, alt: 'El rótulo de Salón San Juan sobre la entrada del local' },
+	{ src: guiso, alt: 'Un guiso de carne en salsa roja servido en el plato' },
+	{ src: buffet, alt: 'El mostrador con guisos y platos del día en bandejas de acero' },
+	{ src: arroz, alt: 'Arroz con marisco y calamar en el plato' },
+	{ src: pollo, alt: 'Pollo asado con patatas y ajo servido en la bandeja' },
+	{ src: fruta, alt: 'Un plato de fruta fresca con melón y sandía' },
+	{ src: calamares, alt: 'Calamares a la plancha con aceite y pimienta' },
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que se prepara en Salón San Juan',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#salon-san-juan`,
+	name: BUSINESS.fullName,
+	alternateName: ['Salón San Juan San Pedro del Pinatar'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34664062713',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida para llevar', 'Cocina española'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'San Pedro del Pinatar' },
+		{ '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '17:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'La cocina', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1d5c3f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..700;1,400&family=Assistant:wght@400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Salón San Juan, comidas para llevar San Pedro del Pinatar, comida para llevar Murcia, restaurante San Pedro del Pinatar"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comidas para llevar en C. la Paz, 8, San Pedro del Pinatar (Murcia). Horario, teléfono y mapa."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de Salón San Juan con el rótulo «Comidas para llevar»"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1d5c3f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.city}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Salón San Juan"
+			subtitle="Comidas para llevar · San Pedro del Pinatar"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Comidas para llevar, <br /><em>en San Pedro.</em>"
+				lede={`Salón San Juan prepara comidas para llevar en C. la Paz, 8, en San Pedro del Pinatar. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, y abre de lunes a domingo de 8:30 a 17:30, salvo los miércoles.`}
+				image={fachada}
+				imageAlt="La fachada de Salón San Juan con el rótulo «Comidas para llevar»"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>8:30–17:30</b> · cerrado los miércoles' },
+					{ label: 'Servicio', html: '<b>Para llevar</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comidas para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Salón San Juan" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El local"
+				title="C. la Paz, 8. <br /><em>Comida para llevar.</em>"
+				paragraphs={[
+					'Salón San Juan está en la calle la Paz, 8, en San Pedro del Pinatar. En la fachada se lee el rótulo amarillo «Comidas para llevar», y el local tiene un salón con ventanales y mesas de mantel blanco.',
+					'Google lo clasifica como restaurante de comida para llevar. Las fotos del perfil muestran guisos de carne, arroz con marisco, pollo asado con patatas, calamares a la plancha y un mostrador con platos del día.',
+					`La ficha tiene ${RATING.label} sobre 5 con ${RATING.count} reseñas. Para pedir o consultar, llama al ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica una carta con precios. Lo que aparece aquí son los platos que se ven en las fotos del perfil; confirma disponibilidad y precios por teléfono."
+				links={[
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Para llevar</p>
+					<h2 id="highlights-title">Lo esencial <br /><em>antes de ir.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La cocina"
+				title="Lo que se ve <br /><em>en las fotos.</em>"
+				description="La ficha no publica carta. Esta lista reúne los platos que aparecen en las fotografías del perfil de Google Maps."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin precios publicados. Llama al 664 06 27 13 para saber el menú del día y los precios."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El rótulo, <br /><em>y los platos.</em>"
+				description="Fotografías del perfil de Salón San Juan en Google Maps: la fachada, el rótulo, varios guisos y platos del día."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En San Pedro, <br /><em>junto al centro.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Salón San Juan en C. la Paz, 8, San Pedro del Pinatar"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. la Paz, 8 · San Pedro del Pinatar"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y encargos por teléfono: la ficha no enlaza una web propia ni un sistema de pedidos online."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada el 31 de octubre de 2026. Confirma platos y horario antes de la visita."
+			ctaLabel="Llamar a Salón San Juan"
+			navAriaLabel="Enlaces de Salón San Juan"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

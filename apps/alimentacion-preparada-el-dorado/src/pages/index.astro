@@ -1,0 +1,398 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/alimentacion-preparada-el-dorado-apaisada-01.jpg';
+import bandeja from '../assets/fotos/alimentacion-preparada-el-dorado-apaisada-04.jpg';
+import mostrador from '../assets/fotos/alimentacion-preparada-el-dorado-apaisada-08.jpg';
+import pollos from '../assets/fotos/alimentacion-preparada-el-dorado-apaisada-10.jpg';
+import platoCriollo from '../assets/fotos/alimentacion-preparada-el-dorado-cuadrada-06.jpg';
+import guiso from '../assets/fotos/alimentacion-preparada-el-dorado-cuadrada-09.jpg';
+import entrecot from '../assets/fotos/alimentacion-preparada-el-dorado-vertical-02.jpg';
+import carne from '../assets/fotos/alimentacion-preparada-el-dorado-vertical-03.jpg';
+import empanadillas from '../assets/fotos/alimentacion-preparada-el-dorado-vertical-05.jpg';
+import flan from '../assets/fotos/alimentacion-preparada-el-dorado-vertical-07.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'El Dorado · Pollos asados y comida preparada en Madrid';
+const description =
+	'El Dorado, en Calle de Palos de la Frontera, 17 (28045 Madrid, Arganzuela). Pollos asados y comida preparada para llevar: carnes, guisos, arroz, ensaladas y postres.';
+
+const galeria = [
+	{
+		src: bandeja,
+		alt: 'Una bandeja de patatas fritas, pollo asado y pan de barra sobre la mesa, para llevar',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de ladrillo de El Dorado en Palos de la Frontera, 17, con el rótulo de Pollos Asados',
+	},
+	{
+		src: pollos,
+		alt: 'Dos pollos asados en una bandeja de aluminio con su caldo',
+	},
+	{
+		src: mostrador,
+		alt: 'El mostrador de El Dorado con los platos del día y los carteles de precios',
+	},
+	{
+		src: platoCriollo,
+		alt: 'Pollo asado con arroz, habichuelas, patata y aguacate en un plato',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot con patatas fritas y dos huevos fritos',
+	},
+	{
+		src: carne,
+		alt: 'Carne a la plancha con patatas, huevos fritos y una fuente de pimientos y aceitunas',
+	},
+	{
+		src: guiso,
+		alt: 'Una bandeja de patatas con judías verdes y cebolla',
+	},
+	{
+		src: empanadillas,
+		alt: 'Masa de empanadillas rebozada en la cocina del local',
+	},
+	{
+		src: flan,
+		alt: 'Un flan con caramelo en una bandeja',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Platos de El Dorado',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-dorado`,
+	name: BUSINESS.fullName,
+	alternateName: ['El Dorado Madrid', 'El Dorado Arganzuela', 'El Dorado Palos de la Frontera'],
+	description:
+		'Establecimiento de comida preparada en la calle de Palos de la Frontera, 17 (Arganzuela, 28045 Madrid): pollos asados, carnes, guisos, ensaladas y postres para llevar.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34914675790',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida preparada', 'Pollo asado', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Arganzuela' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El asador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#23372b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Mulish:wght@400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Dorado Madrid, pollos asados Arganzuela, alimentación preparada Palos de la Frontera, comida para llevar Arganzuela, pollo asado Madrid, flan casero Madrid"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados y comida preparada para llevar en Palos de la Frontera, 17 (Arganzuela). Carnes, guisos, arroz, ensaladas y postres, todos los días de 10:00 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de El Dorado con el rótulo de pollos asados"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#23372b"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Arganzuela"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Dorado"
+			subtitle="Comida preparada · Arganzuela"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Calle de Palos de la Frontera, 17 · Arganzuela"
+				title="Pollos asados <br /><em>y comida preparada.</em>"
+				lede={`El Dorado es una tienda de alimentación preparada en Palos de la Frontera. El asador de pollos se ve desde la calle y el mostrador se llena cada día de carnes, pescados, guisos, arroz, ensaladas y postres. Abre todos los días de 10:00 a 16:00 y la ficha de Google reúne ${RATING.count} reseñas con una media de ${RATING.label} sobre 5.`}
+				image={fachada}
+				imageAlt="La fachada de ladrillo de El Dorado en Palos de la Frontera, 17, con el rótulo de Pollos Asados"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–16:00</b> · todos los días' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · comida preparada' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pollos asados"
+			/>
+
+			<LocalChips label="Lo que ofrece El Dorado" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Palos de la Frontera, 17. <br /><em>Alimentación preparada.</em>"
+				paragraphs={[
+					'El Dorado está en la calle de Palos de la Frontera, 17, en el distrito de Arganzuela. La fachada es de ladrillo y sobre el escaparate cuelga el rótulo que anuncia la especialidad: «Pollos asados».',
+					'Dentro manda el mostrador. En las bandejas se ven los guisos del día, las carnes, los arroces, las ensaladas y los postres, con los carteles de precios a la vista. Los pollos se asan enteros y salen en bandejas de aluminio con su caldo, listos para llevar.',
+					'En las fotos del perfil aparece la comida servida: pollo con arroz, habichuelas, patata y aguacate; entrecot con patatas y huevos fritos; una fuente de pimientos y aceitunas; un flan con caramelo; y la masa de las empanadillas en la cocina.',
+					`Las reseñas de Google destacan la variedad y el pollo, y alguna avisa de que las raciones pueden ser pequeñas. La ficha reúne ${RATING.count} opiniones con una media de ${RATING.label} sobre 5 (octubre de 2026), abre todos los días de 10:00 a 16:00 y atiende los pedidos en el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica carta ni precios, y tampoco una descripción del negocio. Los platos de esta página son los que aparecen en el mostrador y en las fotos del perfil de Google; confirma precios y disponibilidad por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que dicen las reseñas</p>
+					<h2 id="highlights-title">Variedad, pollo <br /><em>y raciones.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El asador y el mostrador"
+				title="Lo que hay <br /><em>ese día.</em>"
+				description="La ficha no publica carta. Estos platos son los que se ven en el mostrador y en las fotos del perfil de Google, agrupados por tipo."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin precios publicados: los carteles del mostrador cambian cada día. Llama al 914 67 57 90 para saber qué hay, cuánto cuesta y si quedan pollos asados."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, el asador <br /><em>y los platos.</em>"
+				description="Diez fotografías del perfil de El Dorado en Google Maps: la bandeja de pollo con patatas, la fachada, los pollos asados, el mostrador, el plato criollo, el entrecot, la carne con huevos, el guiso, las empanadillas y el flan."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">3,2 sobre 5, <em>con 64 reseñas.</em></h2>
+						<p>
+							Google publica una media de 3,2 con 64 opiniones (octubre de 2026). Es una nota
+							por debajo de lo habitual en la zona: unas reseñas elogian la variedad y la
+							rapidez, y otras se quejan del tamaño de las raciones. Mejor probar y decidir.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>3,2</strong>
+						<span>★★★☆☆</span>
+						<small>64 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Arganzuela, <br /><em>Palos de la Frontera.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: todos los días, de 10:00 a 16:00. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de El Dorado en la calle de Palos de la Frontera, 17, Arganzuela, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Palos de la Frontera, 17 · Arganzuela"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas ni pedidos online y el servicio es de comida preparada para llevar. Tampoco indica que la entrada sea accesible y avisa de que no hay aparcamiento adaptado."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma platos y horario antes de la visita."
+			ctaLabel="Llamar a El Dorado"
+			navAriaLabel="Enlaces de El Dorado"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

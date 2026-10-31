@@ -1,0 +1,398 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-apaisada-01.jpg';
+import neon from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vista-2-02.jpg';
+import guiso from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vertical-03.jpg';
+import lomo from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vertical-04.jpg';
+import albondigas from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vertical-05.jpg';
+import verduras from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vertical-06.jpg';
+import horneado from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vertical-07.jpg';
+import verdurasSalsa from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-vertical-10.jpg';
+import bandejas from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-apaisada-08.jpg';
+import arroz from '../assets/fotos/sabores-del-hogar-comida-casera-para-llevar-apaisada-09.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Sabores del Hogar · Comida casera para llevar en Madrid';
+const description =
+	'Sabores del Hogar, en Calle de Gaztambide, 32 (28015 Madrid, Chamberí). Comida casera para llevar hecha por Dani: guisos, albóndigas, croquetas y patatas caseras.';
+
+const galeria = [
+	{
+		src: vitrina,
+		alt: 'El mostrador de Sabores del Hogar con las bandejas de lentejas, ensaladilla, garbanzos, pasta, berenjena, judías verdes, pollo asado, guiso, lomo y albóndigas',
+	},
+	{
+		src: albondigas,
+		alt: 'Primer plano de las albóndigas en salsa de Sabores del Hogar',
+	},
+	{
+		src: arroz,
+		alt: 'Una bandeja redonda de arroz al horno gratinado con queso, guisantes y pimiento',
+	},
+	{
+		src: guiso,
+		alt: 'Una bandeja de ternera guisada en su salsa en el mostrador',
+	},
+	{
+		src: lomo,
+		alt: 'Lomo asado loncheado con su jugo en una bandeja de acero',
+	},
+	{
+		src: horneado,
+		alt: 'Una bandeja de masa horneada cortada en porciones en el mostrador',
+	},
+	{
+		src: verdurasSalsa,
+		alt: 'Verduras asadas con salsa verde: berenjena, calabacín, calabaza, cebolla y tomate',
+	},
+	{
+		src: verduras,
+		alt: 'Bandeja de berenjena, calabacín, zanahoria, cebolla y pimiento asados',
+	},
+	{
+		src: bandejas,
+		alt: 'Bandejas de arroces, pastas y ensaladas en la vitrina de Sabores del Hogar',
+	},
+	{
+		src: neon,
+		alt: 'El cartel de neón del local con un muslo de pollo y el texto «Sabor de Hogar»',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Platos del mostrador de Sabores del Hogar',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#sabores-del-hogar`,
+	name: BUSINESS.fullName,
+	alternateName: ['Sabores del Hogar Madrid', 'Sabores del Hogar Chamberí', 'Sabores del Hogar by Dani'],
+	description:
+		'Comida casera para llevar en la calle de Gaztambide, 32 (Chamberí, 28015 Madrid). Guisos, albóndigas en salsa, croquetas y patatas caseras hechos por Dani.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34642912557',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Comida para llevar', 'Cocina española'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Chamberí' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '12:00',
+			closes: '17:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El hogar', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6b2130" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Manrope:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Sabores del Hogar Madrid, comida casera para llevar Chamberí, comida para llevar Gaztambide, albóndigas en salsa Madrid, croquetas caseras Chamberí, Sabores del Hogar by Dani"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar hecha por Dani, en Gaztambide, 32 (Chamberí). Guisos, albóndigas en salsa, croquetas y patatas caseras. De domingo a viernes, de 12:00 a 17:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="El mostrador de Sabores del Hogar con sus bandejas de comida casera"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#6b2130"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Chamberí"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Sabores del Hogar"
+			subtitle="Comida casera · Chamberí"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Calle de Gaztambide, 32 · Chamberí, Madrid"
+				title="La comida de casa, <br /><em>hecha por Dani.</em>"
+				lede={`Sabores del Hogar es la comida casera que se echa de menos, servida para llevar en pleno Chamberí. En el mostrador esperan los guisos, las albóndigas en salsa, el pollo asado, las croquetas y las patatas caseras. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, y abre de domingo a viernes, de 12:00 a 17:00.`}
+				image={vitrina}
+				imageAlt="El mostrador de Sabores del Hogar con las bandejas de lentejas, ensaladilla, garbanzos, pasta, berenjena, judías verdes, pollo asado, guiso, lomo y albóndigas"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>12:00–17:00</b> · sábado cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · comida casera' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Casero"
+			/>
+
+			<LocalChips label="Lo que ofrece Sabores del Hogar" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El hogar"
+				title="Gaztambide, 32. <br /><em>Comida de cuchara.</em>"
+				paragraphs={[
+					'Sabores del Hogar está en la calle de Gaztambide, 32, en el distrito de Chamberí. Es un local pequeño de comida para llevar en el que la cocina se ve en el mostrador: bandejas de acero con los guisos del día, el pollo asado, el lomo en su salsa y las albóndigas que más repiten las reseñas.',
+					'La propia ficha de Google lo cuenta así: comida casera con ingredientes de calidad y «la mano mágica de Dani». En las fotos del perfil aparecen las lentejas, los garbanzos con tomate, las judías verdes con jamón, la berenjena asada, la pasta con verduras, la ensaladilla, las croquetas, el arroz gratinado y las verduras asadas.',
+					'Las opiniones de Google hablan de raciones generosas y de buen precio, y mencionan por su nombre las albóndigas en salsa, las croquetas y las patatas caseras. La ficha no publica una carta, así que la lista de esta página es la que se ve en las fotos del mostrador: lo que hay cada día puede cambiar.',
+					`La ficha le da ${RATING.label} sobre 5 con ${RATING.count} reseñas (octubre de 2026). Abre de domingo a viernes, de 12:00 a 17:00, cierra el sábado y atiende los pedidos por teléfono en el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica carta, precios, reparto a domicilio ni datos de accesibilidad. Los platos de esta página son los que aparecen en las fotos del perfil de Google y en sus reseñas; confirma disponibilidad y precio por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que repiten las reseñas</p>
+					<h2 id="highlights-title">Guisos, croquetas <br /><em>y patatas caseras.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que hay <br /><em>ese día.</em>"
+				description="La ficha de Google no publica carta. Estos platos son los que se ven en las bandejas del mostrador en las fotos del perfil del local, agrupados por tipo."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin precios publicados: los fija el local y no aparecen ni en la ficha ni en las fotos. La disponibilidad cambia cada día, así que conviene llamar antes para preguntar qué hay y cuánto cuesta."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El mostrador, plato <br /><em>a plato.</em>"
+				description="Diez fotografías del perfil de Sabores del Hogar en Google Maps: la vitrina completa, las albóndigas en salsa, el arroz gratinado, el guiso de ternera, el lomo asado, las verduras y el cartel de neón del local."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,2 sobre 5, <em>con 43 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,2 con 43 opiniones (octubre de 2026). Las reseñas
+							que se ven aquí hablan de las albóndigas en salsa, de las croquetas, de las patatas
+							caseras y de la relación entre ración y precio.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,2</strong>
+						<span>★★★★☆</span>
+						<small>43 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Chamberí, <br /><em>Gaztambide 32.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de domingo a viernes, de 12:00 a 17:00, con el sábado cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Sabores del Hogar en la calle de Gaztambide, 32, Chamberí, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Gaztambide, 32 · Chamberí"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono: la ficha no publica reservas, pedidos online ni reparto a domicilio. Tampoco publica datos de accesibilidad, así que conviene llamar antes si necesitas acceso para silla de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Sabores del Hogar"
+			navAriaLabel="Enlaces de Sabores del Hogar"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
