@@ -1,0 +1,389 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/mas-sabor-apaisada-01.jpg';
+import guiso from '../assets/fotos/mas-sabor-apaisada-02.jpg';
+import interior from '../assets/fotos/mas-sabor-apaisada-03.jpg';
+import entrada from '../assets/fotos/mas-sabor-apaisada-04.jpg';
+import vitrinaBandejas from '../assets/fotos/mas-sabor-apaisada-05.jpg';
+import cocina from '../assets/fotos/mas-sabor-apaisada-06.jpg';
+import alitas from '../assets/fotos/mas-sabor-apaisada-07.jpg';
+import croqueta from '../assets/fotos/mas-sabor-vertical-08.jpg';
+import arrozBrocoli from '../assets/fotos/mas-sabor-apaisada-09.jpg';
+import vitrinaPrecios from '../assets/fotos/mas-sabor-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Más Sabor · Asador de pollos y comida para llevar en Carabanchel';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: entrada,
+		alt: 'Entrada de Más Sabor con las pizarras del menú diario de medio pollo, patatas y bebida',
+	},
+	{
+		src: alitas,
+		alt: 'Bandejas de alitas de pollo y albóndigas con patatas en salsa de la vitrina',
+	},
+	{
+		src: vitrinaBandejas,
+		alt: 'Bandejas de lentejas, patatas panadera con pimientos, arroz y pasta en la vitrina',
+	},
+	{
+		src: vitrinaPrecios,
+		alt: 'Vitrina con croquetas de jamón, lasaña, empanada y pollo asado, con los carteles de precios',
+	},
+	{
+		src: croqueta,
+		alt: 'Croqueta de jamón recién frita con una tarrina de salsa',
+	},
+	{
+		src: arrozBrocoli,
+		alt: 'Bandejas de arroz frito con huevo y brócoli con verduras',
+	},
+	{
+		src: guiso,
+		alt: 'Plato de guiso de carne con patatas, zanahoria y pimiento',
+	},
+	{
+		src: interior,
+		alt: 'Interior de Más Sabor con la vitrina, mesas altas y el local vacío',
+	},
+	{
+		src: cocina,
+		alt: 'Cocina de Más Sabor con el horno de pollos, la mesa de acero y el cartel de la marca',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Más Sabor',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: Number(item.price.match(/[\d,]+/)?.[0]?.replace(',', '.') ?? 0),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#mas-sabor`,
+	name: BUSINESS.name,
+	alternateName: ['Mas Sabor Carabanchel', 'Más Sabor asador', 'Más Sabor Antonio de Leyva'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34910934560',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Casera', 'Española', 'Asados'],
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Carabanchel' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	hasTakeaway: true,
+	hasDelivery: true,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '10:30',
+			closes: '21:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '10:30',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1a1512" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Más Sabor Carabanchel, Mas Sabor asador de pollos, pollo asado Carabanchel, comida preparada para llevar Madrid, menú del día Carabanchel, croquetas de jamón, lentejas, Antonio de Leyva 10"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado con salsa, menú diario de medio pollo con patatas y bebida por 8,50 €, guisos y platos preparados en la calle Antonio de Leyva 10, Carabanchel."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada roja de Más Sabor, asador de pollos y comida casera para llevar"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#1a1512"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Carabanchel, Madrid"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Más Sabor"
+			subtitle="Asador de pollos · Carabanchel"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
+				title="Pollo asado <br /><em>y comida de casa.</em>"
+				lede={`Más Sabor es asador de pollos y comida preparada para llevar en la calle Antonio de Leyva, 10, en Carabanchel. Pollo asado con salsa al gusto, menú diario de medio pollo con patatas y bebida, guisos y platos de vitrina como lentejas, albóndigas, croquetas de jamón y lasaña. Abre de lunes a sábado de 10:30 a 21:30 y el domingo de 10:30 a 16:00. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada roja de Más Sabor con el rótulo de asador de pollos y comida casera para llevar"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,7</b> en Google · 71 reseñas' },
+					{ label: 'Horario', html: '<b>10:30–21:30</b><br />L-S · domingo hasta 16:00' },
+					{ label: 'Menú diario', html: '<b>8,50 €</b><br />Medio pollo, patatas y bebida' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar o comer aquí"
+			/>
+
+			<LocalChips label="Lo que se puede pedir en Más Sabor" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El asador <br /><em>de Carabanchel.</em>"
+				paragraphs={[
+					'Más Sabor está en la calle Antonio de Leyva, 10, en Carabanchel (28019 Madrid). La fachada es roja y lo dice todo: asador de pollos y comida casera para llevar. Dentro, la vitrina y las bandejas del día se ven desde la calle.',
+					'El pollo se asa en el horno del local y se sirve con salsa al gusto: una reseña cuenta que lo pidió con bastante salsa y «así lo hicieron». El menú diario de la pizarra es medio pollo con patatas y bebida por 8,50 €, para comer allí o para llevar.',
+					'La vitrina cambia cada día: lentejas, albóndigas con patatas, alitas, croquetas de jamón, lasaña, arroz frito, brócoli con verduras, patatas panadera y guisos de carne. Los carteles del propio local marcan los precios de cada bandeja.',
+					'Abre de lunes a sábado de 10:30 a 21:30 y el domingo de 10:30 a 16:00. La ficha lo clasifica como comida a domicilio, así que también se puede pedir para casa. El teléfono es el 910 93 45 60 y la valoración de Google es de 3,7 sobre 5 con 71 reseñas.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y de los carteles fotografiados en el propio local. La ficha no enlaza web propia ni publica carta completa: los platos y precios del día se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo, menú <br /><em>y vitrina.</em>"
+				description="El pollo del asador, el menú diario de la pizarra y los platos que se ven en la vitrina. La cocina cambia cada día, así que no siempre hay lo mismo."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				groups={MENU}
+				note="Precios transcritos de los carteles de la pizarra y de la vitrina que aparecen en la galería de Google Maps. Son orientativos y cambian con el día; los platos sin precio se consultan en el 910 93 45 60."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la vitrina <br /><em>y la cocina.</em>"
+				description="Nueve fotografías del perfil de Más Sabor en Google Maps: la entrada con las pizarras del menú, la vitrina con los precios, las alitas y albóndigas, las croquetas, el arroz frito, el brócoli, el guiso de carne y la cocina con el horno."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div>
+						<p class="reviews-kicker">La ficha de Google</p>
+						<h2 id="resenas-title">3,7 sobre 5 <br /><em>en Google.</em></h2>
+						<p class="reviews-rating">
+							<strong>3,7</strong>
+							<span>★★★★★<br />71 reseñas en Google</span>
+						</p>
+						<p class="reviews-note">
+							Las reseñas hablan del pollo con salsa, del bocadillo de pollo rebozado y de las
+							croquetas. Aquí se reproducen dos tal como están publicadas.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="reviews-list">
+						{
+							RESENAS.map((resena) => (
+								<li class="review-card">
+									<p>«{resena.texto}»</p>
+									<footer>
+										<span class="stars" aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+										</span>
+										<span>Reseña publicada en Google</span>
+									</footer>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Carabanchel, <br /><em>Antonio de Leyva.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de lunes a sábado de 10:30 a 21:30 y el domingo de 10:30 a 16:00. En festivos puede cambiar."
+				mapTitle="Mapa de Más Sabor en la calle Antonio de Leyva, 10, Carabanchel, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. de Antonio de Leyva, 10"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos online en esta página. La ficha clasifica el local como comida a domicilio y la pizarra invita a comer allí o pedir para llevar; el teléfono es el canal que consta para pedir o preguntar por los platos del día."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.neighbourhood}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos, carta y fotografías de la ficha pública de Google Maps y de los carteles del local, consultados en octubre de 2026. Los precios pueden cambiar."
+			ctaLabel="Llamar a Más Sabor"
+			navAriaLabel="Enlaces de Más Sabor"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

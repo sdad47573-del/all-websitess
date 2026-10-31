@@ -1,0 +1,385 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/bo-i-fet-moraira-vertical-08.jpg';
+import canelones from '../assets/fotos/bo-i-fet-moraira-apaisada-01.jpg';
+import pollos from '../assets/fotos/bo-i-fet-moraira-apaisada-02.jpg';
+import vitrina from '../assets/fotos/bo-i-fet-moraira-apaisada-03.jpg';
+import paellaFuego from '../assets/fotos/bo-i-fet-moraira-apaisada-05.jpg';
+import guisos from '../assets/fotos/bo-i-fet-moraira-apaisada-07.jpg';
+import codillo from '../assets/fotos/bo-i-fet-moraira-vertical-04.jpg';
+import bandejas from '../assets/fotos/bo-i-fet-moraira-vertical-06.jpg';
+import barra from '../assets/fotos/bo-i-fet-moraira-vertical-09.jpg';
+import rollitos from '../assets/fotos/bo-i-fet-moraira-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Bo i Fet Menjars Moraira · Comida para llevar y pollo en Moraira';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: canelones,
+		alt: 'Bandejas de canelones y pasta al horno, listas para llevar, en el mostrador',
+	},
+	{
+		src: pollos,
+		alt: 'Pollos asados girando en los pinchos del horno',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina con bandejas de platos caseros preparados para llevar',
+	},
+	{
+		src: paellaFuego,
+		alt: 'Paella recién hecha en la paellera, sobre los fogones',
+	},
+	{
+		src: guisos,
+		alt: 'Cazuelas de guiso de lentejas, callos y alubias en el mostrador',
+	},
+	{
+		src: codillo,
+		alt: 'Codillo de cerdo con pasta en envase de aluminio, en la vitrina',
+	},
+	{
+		src: bandejas,
+		alt: 'Pollo BBQ con patatas fritas y huevo frito con filete empanado, en bandejas',
+	},
+	{
+		src: barra,
+		alt: 'Mostrador interior de Bo i Fet, con el rótulo dorado y la carta de pollos, ensaladas, carne y pasta',
+	},
+	{
+		src: rollitos,
+		alt: 'Rollitos de primavera en bandejas de aluminio, con salsa agridulce',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Bo i Fet Menjars Moraira',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'Store'],
+	'@id': `${BUSINESS.siteUrl}/#bo-i-fet`,
+	name: BUSINESS.name,
+	alternateName: ['Bo i Fet Moraira', 'Bo i Fet Menjars', 'Bo i Fet'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phoneHref,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Paellas', 'Cocina española'],
+	areaServed: [
+		{ '@type': 'City', name: 'Moraira' },
+		{ '@type': 'AdministrativeArea', name: 'Marina Alta' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '16:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '09:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Sunday',
+			opens: '09:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0c2233" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Bo i Fet Moraira, comida para llevar Moraira, pollo asado Moraira, paellas para llevar Moraira, arroz al horno Moraira, fideuà Moraira, Carretera Moraira-Teulada"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida para llevar en Moraira: pollo, paellas, arroz al horno y fideuà elaborados cada día. De lunes a viernes de 9:00 a 16:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de Bo i Fet Menjars Moraira, con el rótulo azul y la terraza"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#0c2233"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Moraira, Alicante"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Bo i Fet"
+			subtitle="Menjars · Moraira"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Pollo, paellas <br /><em>para llevar en Moraira.</em>"
+				lede={`Bo i Fet Menjars Moraira es comida para llevar en la Carretera Moraira-Teulada 100F. Pollo, paellas, arroz al horno y fideuà elaborados cada día. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de Bo i Fet Menjars Moraira, con el rótulo azul y la terraza"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 255 reseñas' },
+					{ label: 'Horario', html: '<b>9:00–16:30</b><br />Lunes a viernes' },
+					{ label: 'Teléfono', html: '<b>965 74 47 17</b><br />Reservas y encargos' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Para llevar · To take away"
+			/>
+
+			<LocalChips label="Lo que se puede pedir en Bo i Fet" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un local de barrio <br /><em>en Moraira.</em>"
+				paragraphs={[
+					'Bo i Fet Menjars está en la Carretera Moraira-Teulada 100F. El rótulo azul anuncia comida para llevar, y en el mostrador se ven bandejas de pollo, ensaladas, carne y pasta.',
+					'Cada día el local anuncia paellas, arroz al horno y fideuà, además de platos caseros que cambian según la jornada: guisos de cuchara, codillo, rollitos y bandejas de pollo.',
+					'Es un sitio pensado para recoger: el pedido se prepara en el mostrador y se lleva a casa o a la playa.',
+				]}
+				note="Los datos salen de la ficha pública de Google Maps y de las fotos del propio local. No es un canal oficial de pedidos: la disponibilidad del día y los precios se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Arroces <br /><em>y cocina casera.</em>"
+				description="Lo que el local anuncia cada día: paellas, arroz al horno, fideuà, pollo y platos caseros."
+				cta={{ label: `Encargar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				groups={MENU}
+				note="Sin precios: el local no publica tarifas. El importe de cada plato se confirma en el 965 74 47 17. La oferta cambia a diario, así que conviene llamar antes de ir."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El mostrador <br /><em>y la cocina.</em>"
+				description="Nueve fotografías del local: bandejas, guisos, pollos asados, paellas y la fachada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div>
+						<p class="reviews-kicker">La ficha de Google</p>
+						<h2 id="resenas-title">4,5 sobre 5 <br /><em>en Google.</em></h2>
+						<p class="reviews-rating">
+							<strong>4,5</strong>
+							<span>★★★★★<br />255 reseñas en Google</span>
+						</p>
+						<p class="reviews-note">
+							Aquí no se reproducen testimonios literales: se leen enteros en la ficha de
+							Google.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="reviews-list">
+						<li class="review-card">
+							<p>
+								Para recoger en Moraira: pollo, paellas y platos caseros del día, con
+								valoración alta en Google.
+							</p>
+							<footer>
+								<span class="stars" aria-hidden="true">★★★★★</span>
+								<span>Según la ficha de Google</span>
+							</footer>
+						</li>
+						<li class="review-card">
+							<p>
+								El local trabaja sobre todo para recoger: bandejas, arroces y acompañamientos
+								para completar la comida en casa.
+							</p>
+							<footer>
+								<span class="stars" aria-hidden="true">★★★★★</span>
+								<span>Según la ficha de Google</span>
+							</footer>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Moraira, <br /><em>junto a la carretera.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.regionName]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de lunes a viernes de 9:00 a 16:30, sábado de 9:00 a 16:00 y domingo de 9:00 a 15:00. En festivos puede cambiar, así que conviene llamar antes."
+				mapTitle="Mapa de Bo i Fet en la Carretera Moraira-Teulada, Moraira, Alicante"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Ctra. Moraira-Teulada 100F"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Encargar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay pedidos ni pagos online en esta página: el teléfono es el canal que consta para encargar. El local trabaja para llevar, así que lo normal es recoger el pedido en la Carretera Moraira-Teulada."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos, carta y fotografías de la ficha pública de Google Maps y del propio local, consultados en octubre de 2026. Platos y disponibilidad cambian a diario."
+			ctaLabel="Llamar a Bo i Fet"
+			navAriaLabel="Enlaces de Bo i Fet"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

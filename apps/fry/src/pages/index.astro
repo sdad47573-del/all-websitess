@@ -1,0 +1,458 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import bandeja from '../assets/fotos/fry-apaisada-01.jpg';
+import logo from '../assets/fotos/fry-panoramica-06.jpg';
+import cartelArte from '../assets/fotos/fry-vertical-02.jpg';
+import mesas from '../assets/fotos/fry-vertical-03.jpg';
+import bandejas from '../assets/fotos/fry-vertical-04.jpg';
+import pedido from '../assets/fotos/fry-vertical-05.jpg';
+import cartaPoster from '../assets/fotos/fry-vertical-07.jpg';
+import burgerMano from '../assets/fotos/fry-vertical-08.jpg';
+import burgerPapel from '../assets/fotos/fry-vertical-09.jpg';
+import cono from '../assets/fotos/fry-vertical-10.jpg';
+
+import { ALERGENOS, BUSINESS, FAQ, HOURS, MAPS, MENU, RESENAS, SERVICIOS, SOCIALS } from '../data/site';
+
+const title = 'FRY. · Pollo frito picante a domicilio en Madrid';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: logo,
+		alt: 'Logotipo de FRY. en blanco y rojo sobre fondo negro',
+	},
+	{
+		src: cartelArte,
+		alt: 'Cartel de FRY. con una hamburguesa de pollo, salsa y el lema «El pollo también es un arte»',
+	},
+	{
+		src: pedido,
+		alt: 'Pedido completo de FRY. con envases, salsas, hamburguesas, alitas, patatas y maíz',
+	},
+	{
+		src: cono,
+		alt: 'Hamburguesa de pollo, cono de patatas y tarrinas de salsa sobre papel de cuadros',
+	},
+	{
+		src: mesas,
+		alt: 'Varias hamburguesas de pollo y bandejas de patatas y maíz sobre la mesa',
+	},
+	{
+		src: bandejas,
+		alt: 'Bandejas de aluminio con patatas, pollo frito y hamburguesas',
+	},
+	{
+		src: burgerMano,
+		alt: 'Hamburguesa de pollo con salsa FRY. sostenida con la mano',
+	},
+	{
+		src: burgerPapel,
+		alt: 'Hamburguesa de pollo en pan brioche sobre papel de cuadros rojo y blanco',
+	},
+	{
+		src: cartaPoster,
+		alt: 'Cartel de la carta completa de FRY. con precios de pollo, hamburguesas, patatas, salsas y bebidas',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de FRY.',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: Number(item.price.match(/[\d,]+/)?.[0]?.replace(',', '.') ?? 0),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#fry`,
+	name: BUSINESS.name,
+	alternateName: ['FRY Madrid', 'FRY Villaverde', 'FRY pollo frito'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.website, SOCIALS.instagram, SOCIALS.tiktok],
+	telephone: '+34669765785',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo frito', 'Hamburguesas', 'Comida a domicilio'],
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Villaverde' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	hasDelivery: true,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '19:30',
+			closes: '23:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Reparto', href: '#reparto' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#111111" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="FRY Madrid, FRY pollo frito, pollo frito picante Villaverde, pollo frito a domicilio Madrid, hamburguesa de pollo Madrid, FRY BITES, salsa FRY, reparto pollo frito Villaverde"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo frito picante con doble rebozado, hamburguesas de pollo entero, tiras, FRY BITES y salsas caseras. Solo a domicilio en Madrid. 5,0 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de pollo frito picante de FRY. con patatas y hamburguesa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#111111"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Villaverde, Madrid"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[bandeja]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="FRY."
+			subtitle="Pollo frito · Madrid"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
+				title="Pollo frito <br /><em>sin filtros.</em>"
+				lede={`FRY. es pollo frito picante con doble rebozado, hamburguesas de pollo entero, tiras, FRY BITES y salsas caseras. Solo reparto a domicilio en Madrid: envío en Villaverde por 2 € y fuera de zona se consulta. Abre todos los días de 19:30 a 23:30 y Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
+				image={bandeja}
+				imageAlt="Bandeja de pollo frito picante de FRY. con un cono de patatas, salsa y una hamburguesa de pollo"
+				primaryCta={{ label: 'Pedir por WhatsApp', href: SOCIALS.whatsapp }}
+				secondaryCta={{ label: 'Ver la carta', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: '<b>5,0</b> en Google · 24 reseñas' },
+					{ label: 'Horario', html: '<b>19:30–23:30</b><br />Todos los días' },
+					{ label: 'Reparto', html: '<b>Villaverde 2 €</b><br />Fuera de zona, consultar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Solo delivery"
+			/>
+
+			<LocalChips label="Lo que se puede pedir en FRY." items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pollo frito <br /><em>de verdad.</em>"
+				paragraphs={[
+					'FRY. es un negocio de reparto de pollo frito en Villaverde. La ficha lo clasifica como «comida a domicilio» y su web lo deja claro desde la portada: solo pedidos a domicilio, sin servicio de sala. La dirección que publica Google es A-42, 28021.',
+					'El pollo es pechuga entera marinada en buttermilk y doble rebozado picante. Se vende por raciones de dos piezas, en tiras grandes, en FRY BITES de 10, 20 o 30 bocaditos y en hamburguesa con 150 g de pollo rebozado entero, queso, pepinillos y pan brioche.',
+					'Acompaña con patatas fritas de tres tamaños, patatas especiales con sazón cajún y Ranch, alitas BBQ y una línea de salsas propias: la Salsa FRY. con paprika y miel, el Ranch FRY con yogur y cilantro, y miel. Bourbon, Sweet Chilli y Habanero Mango están por llegar.',
+					'El reparto cuesta 2 € en Villaverde y fuera de zona hay que consultarlo. Abre todos los días de 19:30 a 23:30 y la valoración de Google es de 5,0 sobre 5 con 24 reseñas. Los pedidos se hacen por WhatsApp, teléfono o en la web oficial.',
+				]}
+				note={ALERGENOS}
+				links={[
+					{ label: 'Web oficial de FRY.', href: MAPS.website, external: true },
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo, patatas <br /><em>y salsas.</em>"
+				description="La carta que el local publica en su web, con el cartel de precios del perfil de Google. Todo se fríe al momento y se manda a domicilio."
+				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				groups={MENU}
+				note={`Precios de la carta publicada en la web oficial y del cartel de la carta de Google Maps. Pueden cambiar. ${ALERGENOS}`}
+			/>
+
+			<section class="reparto section-pad" id="reparto" aria-labelledby="reparto-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Reparto</p>
+					<h2 id="reparto-title">Solo a domicilio, <br /><em>de noche.</em></h2>
+					<ul class="reparto-grid">
+						<li>
+							<h3>Villaverde</h3>
+							<p>Envío en zona por <strong>2 €</strong>. Se pide por WhatsApp, teléfono o en la web del local.</p>
+						</li>
+						<li>
+							<h3>Fuera de zona</h3>
+							<p>Se consulta con el local según la dirección. El reparto no cubre toda la ciudad por defecto.</p>
+						</li>
+						<li>
+							<h3>Horario</h3>
+							<p>Todos los días de <strong>19:30 a 23:30</strong>. En festivos puede cambiar.</p>
+						</li>
+					</ul>
+					<div class="reparto-actions">
+						<a class="button button-primary" href={SOCIALS.whatsapp}>Pedir por WhatsApp</a>
+						<a class="button button-ghost" href={`tel:${BUSINESS.phoneHref}`}>Llamar · {BUSINESS.phone}</a>
+						<a class="button button-ghost" href={SOCIALS.tiktok} target="_blank" rel="noreferrer">
+							TikTok <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<p class="reparto-note">
+						FRY. no publica servicio de mesa ni recogida en local: la ficha lo clasifica como
+						comida a domicilio y su web lo anuncia como «solo pedidos a domicilio».
+					</p>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El pollo, las cajas <br /><em>y el cartel.</em>"
+				description="Nueve fotografías del perfil de FRY. en Google Maps: el logotipo, el cartel de la marca, el pedido completo, las hamburguesas, las bandejas de pollo y patatas y la carta con los precios."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div>
+						<p class="reviews-kicker">La ficha de Google</p>
+						<h2 id="resenas-title">5,0 sobre 5 <br /><em>en Google.</em></h2>
+						<p class="reviews-rating">
+							<strong>5,0</strong>
+							<span>★★★★★<br />24 reseñas en Google</span>
+						</p>
+						<p class="reviews-note">
+							Las 24 reseñas de la ficha puntúan con cinco estrellas. Aquí se reproduce una
+							tal como está publicada.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="reviews-list">
+						{
+							RESENAS.map((resena) => (
+								<li class="review-card">
+									<p>«{resena.texto}»</p>
+									<footer>
+										<span class="stars" aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+										</span>
+										<span>Reseña publicada en Google</span>
+									</footer>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="A-42, <br /><em>Villaverde.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días de 19:30 a 23:30. En festivos puede cambiar."
+				mapTitle="Mapa de FRY. en la A-42, Villaverde, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="A-42, 28021"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Web oficial', href: MAPS.website, external: true },
+				]}
+				contactLink={{ label: `Pedir al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="FRY. funciona solo con pedidos a domicilio: no publica mesa ni recogida en local. El pedido se hace por WhatsApp, teléfono o la web oficial. La ficha no detalla condiciones de accesibilidad del local."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="FRY."
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.neighbourhood}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Web oficial ↗', href: MAPS.website, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos, carta y fotografías de la ficha pública de Google Maps y de la web oficial del local, consultadas en octubre de 2026. Los precios pueden cambiar."
+			ctaLabel="Pedir a FRY."
+			navAriaLabel="Enlaces de FRY."
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
+
+<style>
+	.reparto-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 1.5rem 2rem;
+		margin: 2.5rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.reparto-grid li {
+		padding-top: 1.1rem;
+		border-top: 1px solid rgba(245, 208, 0, 0.35);
+	}
+
+	.reparto-grid h3 {
+		margin-bottom: 0.5rem;
+		font-size: 1.15rem;
+		letter-spacing: -0.02em;
+	}
+
+	.reparto-grid p {
+		margin: 0;
+		font-size: 0.92rem;
+		line-height: 1.7;
+		color: rgba(255, 248, 231, 0.72);
+	}
+
+	.reparto-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.7rem;
+		margin-top: 2.25rem;
+	}
+
+	.reparto-note {
+		margin: 2rem 0 0;
+		max-width: 42rem;
+		font-size: 0.82rem;
+		line-height: 1.7;
+		color: rgba(255, 248, 231, 0.55);
+	}
+</style>

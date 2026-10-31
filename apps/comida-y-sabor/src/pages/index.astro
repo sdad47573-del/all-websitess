@@ -1,0 +1,363 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/comida-y-sabor-apaisada-01.jpg';
+import cocido from '../assets/fotos/comida-y-sabor-panoramica-02.jpg';
+import mostrador from '../assets/fotos/comida-y-sabor-apaisada-03.jpg';
+import platoPollo from '../assets/fotos/comida-y-sabor-vertical-04.jpg';
+import torreznos from '../assets/fotos/comida-y-sabor-vista-5-05.jpg';
+import vitrina from '../assets/fotos/comida-y-sabor-apaisada-06.jpg';
+import berenjenas from '../assets/fotos/comida-y-sabor-vertical-07.jpg';
+import fachadaNieve from '../assets/fotos/comida-y-sabor-vista-8-08.jpg';
+import berenjenasTomate from '../assets/fotos/comida-y-sabor-apaisada-09.jpg';
+import polloBandeja from '../assets/fotos/comida-y-sabor-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const title = 'Comida Y Sabor · Cocina de leña y pan de masa madre en Villa de Vallecas';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: mostrador,
+		alt: 'Mostrador de Comida Y Sabor con panes, el horno de leña al fondo y la vitrina de platos caseros',
+	},
+	{
+		src: cocido,
+		alt: 'Plato de cocido con garbanzos, carne, patata y zanahoria junto a una sopa de fideos',
+	},
+	{
+		src: polloBandeja,
+		alt: 'Bandeja de aluminio con pollo asado a la leña y su salsa',
+	},
+	{
+		src: platoPollo,
+		alt: 'Plato de pollo asado con pan y ensaladilla',
+	},
+	{
+		src: torreznos,
+		alt: 'Ración abundante de torreznos crujientes recién hechos',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina con bandejas de pimientos asados, pisto, ensaladilla y guisos del día',
+	},
+	{
+		src: berenjenas,
+		alt: 'Bandeja de berenjenas rellenas gratinadas con queso',
+	},
+	{
+		src: berenjenasTomate,
+		alt: 'Berenjenas rellenas con tomate y queso gratinado, recién sacadas del horno',
+	},
+	{
+		src: fachadaNieve,
+		alt: 'La fachada de Comida Y Sabor nevada, con los coches cubiertos de nieve en la calle',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Comida Y Sabor',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: Number(item.price.replace(' €', '').replace(',', '.')),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#comida-y-sabor`,
+	name: BUSINESS.name,
+	alternateName: ['Comida y Sabor Villa de Vallecas', 'Comida Y Sabor Madrid', 'Comida y Sabor asador'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34912327046',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Casera', 'Española', 'Asados'],
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Villa de Vallecas' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	hasTakeaway: true,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0f1b18" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Comida Y Sabor, Comida y Sabor Villa de Vallecas, pollo a la leña Madrid, asador de pollos Villa de Vallecas, menú del día Vallecas, cocido a la leña, croquetas caseras, pan de masa madre, Pueblanueva 27"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos a la leña de encina, menú del día con postre, cocido de miércoles y jueves, croquetas caseras, torreznos y pan de masa madre en Villa de Vallecas. 4,1 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de Comida Y Sabor, panadería y asador de leña en Villa de Vallecas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#0f1b18"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Villa de Vallecas, Madrid"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Comida Y Sabor"
+			subtitle="Panadería y asador · Vallecas"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
+				title="Cocina de leña <br /><em>y pan de casa.</em>"
+				lede={`Comida Y Sabor es panadería y asador de leña en la calle Pueblanueva, 27, en Villa de Vallecas. Pollos asados a la leña de encina, menú del día con primero, segundo y postre, cocido de miércoles y jueves, croquetas caseras, torreznos y pan de masa madre. Abre de martes a domingo de 10:00 a 16:00, lunes cerrado. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de Comida Y Sabor con el rótulo de panadería y asador de leña con pollos asados"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,1</b> en Google · 339 reseñas' },
+					{ label: 'Horario', html: '<b>10:00–16:00</b><br />Martes a domingo · lunes cerrado' },
+					{ label: 'Servicio', html: '<b>Menú del día</b><br />Comida para llevar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Cocido miércoles y jueves"
+			/>
+
+			<LocalChips label="Lo que se puede pedir en Comida Y Sabor" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El sabor <br /><em>de la leña.</em>"
+				paragraphs={[
+					'Comida Y Sabor está en la calle de la Pueblanueva, 27, en Villa de Vallecas (28051 Madrid). El rótulo de la fachada reparte el negocio en dos: panadería y asador de leña con pollos asados. Por el aroma que sale a la calle, el horno se nota antes de entrar.',
+					'El pollo se asa a la leña de encina, con un sabor ahumado que lo separa del asado convencional, y se sirve con patatas asadas o fritas y salsa. En la vitrina conviven las croquetas caseras de jamón, morcilla, cocido y queso, los torreznos, las berenjenas rellenas gratinadas, los pimientos asados, la ensaladilla y los guisos del día.',
+					'El cocido a la leña se prepara los miércoles y jueves y conviene reservarlo. El menú del día incluye primero, segundo y postre, con platos de cuchara como lentejas, garbanzos con espinacas, judías, pucheros y pasta, y se completa con la repostería casera: natillas, tarta de queso y torrijas.',
+					'El pan de masa madre de la panadería se agota pronto, así que muchos vecinos lo reservan. Abre de martes a domingo de 10:00 a 16:00 y cierra los lunes. La valoración de Google es de 4,1 sobre 5 con 339 reseñas y el teléfono de la ficha es el 912 32 70 46.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las reseñas y fichas públicas del local. La ficha no enlaza web propia ni publica carta con precios: el menú del día y los encargos se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo, cocido <br /><em>y pan de casa.</em>"
+				description="Lo que consta en la información pública del local y en las bandejas de su galería. El menú del día cambia cada día y no hay carta con precios publicada."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				groups={MENU}
+				note="La ficha de Google no publica carta con precios: el menú del día y los precios se confirman en el 912 32 70 46. El cocido se hace miércoles y jueves, y el pan de masa madre se agota, así que conviene reservar."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El horno, la vitrina <br /><em>y los platos.</em>"
+				description="Nueve fotografías del perfil de Comida Y Sabor en Google Maps: el mostrador con el horno de leña, el cocido, el pollo asado, los torreznos, la vitrina, las berenjenas rellenas y la fachada nevada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div>
+						<p class="reviews-kicker">La ficha de Google</p>
+						<h2 id="resenas-title">4,1 sobre 5 <br /><em>en Google.</em></h2>
+						<p class="reviews-rating">
+							<strong>4,1</strong>
+							<span>★★★★★<br />339 reseñas en Google</span>
+						</p>
+						<p class="reviews-note">
+							Las reseñas de la ficha hablan de «menús caseros diarios, pollos asados y
+							aperitivos para los fines de semana», y de las croquetas, el cocido y el pan de
+							masa madre. Puedes leerlas todas en Google Maps.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver las reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Villa de Vallecas, <br /><em>Pueblanueva.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de martes a domingo de 10:00 a 16:00, con el lunes cerrado. En festivos puede cambiar."
+				mapTitle="Mapa de Comida Y Sabor en la calle Pueblanueva, 27, Villa de Vallecas, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. de la Pueblanueva, 27"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos online en esta página. El teléfono de la ficha es el canal que consta para encargar el pollo, el cocido o el pan. La información pública del local menciona recogida en local, entrega a domicilio y accesibilidad para movilidad reducida; confirma las condiciones al llamar."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.neighbourhood}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos y fotografías de la ficha pública de Google Maps, consultados en octubre de 2026. La carta no tiene precios publicados: confírmalos por teléfono."
+			ctaLabel="Llamar a Comida Y Sabor"
+			navAriaLabel="Enlaces de Comida Y Sabor"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

@@ -1,0 +1,446 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/cocina-real-apaisada-04.jpg';
+import escuela from '../assets/fotos/cocina-real-apaisada-01.jpg';
+import vitrina from '../assets/fotos/cocina-real-vertical-02.jpg';
+import ilustracion from '../assets/fotos/cocina-real-apaisada-03.jpg';
+import ensaladilla from '../assets/fotos/cocina-real-apaisada-05.jpg';
+import bocadillos from '../assets/fotos/cocina-real-apaisada-06.jpg';
+import sandwiches from '../assets/fotos/cocina-real-apaisada-07.jpg';
+import vermuts from '../assets/fotos/cocina-real-vertical-08.jpg';
+import arroz from '../assets/fotos/cocina-real-vertical-09.jpg';
+import noodles from '../assets/fotos/cocina-real-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, RESENAS, SERVICIOS, SERVICIOS_DETALLE } from '../data/site';
+
+const title = 'Cocina Real · Comida casera y tienda gourmet en Campo Real';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: ilustracion,
+		alt: 'Ilustración de la fachada de Cocina Real con el toldo amarillo y el cartel «Cocina Real tu tienda»',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de Cocina Real con ensaladilla, asadillo de pimiento, callos a la madrileña, bacalao confitado y bocaditos con sus precios',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Primer plano de la ensaladilla con atún, huevo cocido, aceitunas y pimiento',
+	},
+	{
+		src: bocadillos,
+		alt: 'Bocadillos de jamón y queso en pan de semillas, apilados',
+	},
+	{
+		src: sandwiches,
+		alt: 'Bandeja de sándwiches variados con semillas y sésamo, preparados para un evento',
+	},
+	{
+		src: vermuts,
+		alt: 'Estantería de la tienda con vermuts, vinos y aguardientes seleccionados',
+	},
+	{
+		src: arroz,
+		alt: 'Bol de arroz con huevo revuelto y arroz salvaje',
+	},
+	{
+		src: noodles,
+		alt: 'Bol de noodles con verduras, langostinos y tomate',
+	},
+	{
+		src: escuela,
+		alt: 'Grupo de alumnos con delantal en un taller de cocina de Cocina Real, con ensaladas preparadas en la mesa',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Cocina Real',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: Number(item.price.match(/[\d,]+/)?.[0]?.replace(',', '.') ?? 0),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#cocina-real`,
+	name: BUSINESS.name,
+	alternateName: ['Cocina Real Campo Real', 'Cocina Real tienda gourmet', 'Cocina Real comida para llevar'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34675342709',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Comida casera', 'Gourmet'],
+	areaServed: [
+		{ '@type': 'City', name: 'Campo Real' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad de Madrid' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	hasTakeaway: true,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '16:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '10:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Qué ofrece', href: '#servicios' },
+	{ label: 'Vitrina', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1a1216" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Cocina Real Campo Real, tienda gourmet Campo Real, comida para llevar Campo Real, comida casera Campo Real, cestas gourmet Campo Real, escuela de cocina Campo Real, Carr. Villar del Olmo 37"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar, despensa gourmet, cestas y regalos, eventos privados y escuela de cocina en la Carretera Villar del Olmo 37, Campo Real. 4,8 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Interior de la tienda gourmet Cocina Real en Campo Real"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#1a1216"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Campo Real, Madrid"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Cocina Real"
+			subtitle="Tienda gourmet · Campo Real"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Comida casera <br /><em>y despensa gourmet.</em>"
+				lede={`Cocina Real es tienda gourmet y cocina para llevar en la Carretera Villar del Olmo, 37, en Campo Real. Platos caseros de dieta mediterránea, productos gourmet seleccionados, cestas y regalos por encargo, eventos privados y escuela de cocina. Abre de lunes a viernes de 8:00 a 16:30 y el sábado de 10:00 a 15:00. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
+				image={interior}
+				imageAlt="Interior de Cocina Real: vitrina de comida casera y estanterías con vinos, conservas y productos gourmet"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				secondaryCta={{ label: 'Ver la vitrina y las fotos', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> en Google · 67 reseñas' },
+					{ label: 'Horario', html: '<b>8:00–16:30</b><br />L-V · sábado 10:00–15:00' },
+					{ label: 'Servicio', html: '<b>Para llevar</b><br />Tienda gourmet y encargos' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Cestas y encargos por teléfono"
+			/>
+
+			<LocalChips label="Lo que se puede encontrar en Cocina Real" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una tienda <br /><em>con cocina detrás.</em>"
+				paragraphs={[
+					'Cocina Real está en la Carretera Villar del Olmo, 37, en Campo Real. La ficha la define como «tu tienda gourmet» y restaurante de comida para llevar: en el mismo local conviven la vitrina de platos caseros, la despensa de productos seleccionados y una mesa larga para los talleres.',
+					'La cocina sigue la dieta mediterránea. En la vitrina aparecen la ensaladilla con atún y aceitunas, el asadillo de pimiento, los callos a la madrileña, el bacalao confitado y los bocaditos, con los precios escritos en los carteles del propio local.',
+					'La parte gourmet ocupa las estanterías: vermuts rojos y de reserva, vinos y aguardientes de bodega, conservas, mermeladas, cremas y aceites. Con todo eso preparan encargos, detalles, regalos y cestas para momentos especiales.',
+					'También organiza eventos privados y es escuela de cocina, un lugar de reunión para amantes de la gastronomía. Abre de lunes a viernes de 8:00 a 16:30 y el sábado de 10:00 a 15:00; el domingo cierra. El teléfono de la ficha es el 675 34 27 09.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y de los carteles fotografiados en el propio local. No hay carta ni web publicadas en la ficha. Los precios y el horario pueden cambiar: confírmalos por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="services section-pad" id="servicios" aria-labelledby="services-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Qué ofrece</p>
+					<h2 id="services-title">Mucho más <br /><em>que comida para llevar.</em></h2>
+					<ul class="services-grid">
+						{
+							SERVICIOS_DETALLE.map((servicio) => (
+								<li>
+									<h3>{servicio.title}</h3>
+									<p>{servicio.text}</p>
+								</li>
+							))
+						}
+					</ul>
+					<p class="services-note">
+						La descripción es la que publica el propio establecimiento en su ficha de Google.
+						Para encargos, cestas o eventos, llama al {BUSINESS.phone}.
+					</p>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La vitrina y la despensa"
+				title="Lo del día <br /><em>y lo de la estantería.</em>"
+				description="Los platos que aparecen en la vitrina y los productos gourmet de las estanterías. La cocina cambia según el día, así que la vitrina no siempre es la misma."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				groups={MENU}
+				note="Precios transcritos de los carteles de la vitrina que aparecen en la galería de Google Maps. Son orientativos y cambian con el día; algunos productos de la despensa se venden por unidad o por encargo. Confirma disponibilidad y precio en el 675 34 27 09."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La tienda, la vitrina <br /><em>y los talleres.</em>"
+				description="Nueve fotografías del perfil de Cocina Real en Google Maps: la ilustración de la fachada, la vitrina con sus carteles, la despensa de vermuts y vinos, los bocadillos y los talleres de cocina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div>
+						<p class="reviews-kicker">La ficha de Google</p>
+						<h2 id="resenas-title">4,8 sobre 5 <br /><em>en Google.</em></h2>
+						<p class="reviews-rating">
+							<strong>4,8</strong>
+							<span>★★★★★<br />67 reseñas en Google</span>
+						</p>
+						<p class="reviews-note">
+							En la ficha aparecen reseñas sobre el trato del local, el producto y platos como
+							el cocido. Aquí se reproduce una tal como está publicada.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="reviews-list">
+						{
+							RESENAS.map((resena) => (
+								<li class="review-card">
+									<p>«{resena.texto}»</p>
+									<footer>
+										<span class="stars" aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+										</span>
+										<span>Reseña publicada en Google</span>
+									</footer>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la carretera, <br /><em>junto al casco.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de lunes a viernes de 8:00 a 16:30, sábado de 10:00 a 15:00 y domingo cerrado. En festivos puede cambiar."
+				mapTitle="Mapa de Cocina Real en la Carretera Villar del Olmo, 37, Campo Real"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Carr. Villar del Olmo, 37"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos online en esta página. El teléfono y la ficha de Google son los canales que constan. La ficha no detalla condiciones de accesibilidad ni de aparcamiento, así que conviene preguntar por teléfono si las necesitas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasarte.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos, carta y fotografías de la ficha pública de Google Maps y de los carteles del local, consultados en octubre de 2026. Los precios pueden cambiar."
+			ctaLabel="Llamar a Cocina Real"
+			navAriaLabel="Enlaces de Cocina Real"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
+
+<style>
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 1.5rem 2rem;
+		margin: 2.5rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.services-grid li {
+		padding-top: 1.1rem;
+		border-top: 1px solid rgba(201, 162, 39, 0.35);
+	}
+
+	.services-grid h3 {
+		margin-bottom: 0.5rem;
+		font-size: 1.15rem;
+		letter-spacing: -0.02em;
+	}
+
+	.services-grid p {
+		margin: 0;
+		font-size: 0.92rem;
+		line-height: 1.7;
+		color: rgba(247, 240, 230, 0.72);
+	}
+
+	.services-note {
+		margin: 2.5rem 0 0;
+		max-width: 42rem;
+		font-size: 0.82rem;
+		line-height: 1.7;
+		color: rgba(247, 240, 230, 0.55);
+	}
+</style>

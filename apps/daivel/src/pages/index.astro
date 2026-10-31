@@ -1,0 +1,169 @@
+---
+import '../styles/global.css';
+import {
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+} from '@astro-components';
+
+import foto1 from '../assets/fotos/daivel-apaisada-01.jpg';
+import foto2 from '../assets/fotos/daivel-apaisada-02.jpg';
+import foto3 from '../assets/fotos/daivel-panoramica-03.jpg';
+import foto4 from '../assets/fotos/daivel-cuadrada-04.jpg';
+import foto5 from '../assets/fotos/daivel-cuadrada-05.jpg';
+import foto6 from '../assets/fotos/daivel-apaisada-06.jpg';
+import foto7 from '../assets/fotos/daivel-vista-7-07.jpg';
+import foto8 from '../assets/fotos/daivel-vertical-08.jpg';
+import foto9 from '../assets/fotos/daivel-vertical-09.jpg';
+import foto10 from '../assets/fotos/daivel-apaisada-10.jpg';
+
+import { BUSINESS, MAPS } from '../data/site';
+
+const title = `${BUSINESS.name} · Fotos y ficha de Google Maps`;
+const description = `${BUSINESS.name}: fotos del local y ficha de Google Maps. Los datos de contacto, horario y carta se completarán al confirmarlos en la ficha.`;
+
+const galeria = [foto1, foto2, foto3, foto4, foto5, foto6, foto7, foto8, foto9, foto10].map(
+	(src) => ({ src, alt: `Foto del local de ${BUSINESS.name}` }),
+);
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#negocio`,
+	name: BUSINESS.name,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+};
+
+const nav = [
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0c2233" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords={BUSINESS.name}
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription={description}
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt={`Fachada de ${BUSINESS.name}`}
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#0c2233"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.name}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			schemas={[bizSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle={BUSINESS.regionName}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={BUSINESS.name}
+				title={`${BUSINESS.name} <br /><em>en Google Maps.</em>`}
+				lede="Fotos del local y acceso a su ficha de Google Maps. Los datos de contacto y el horario se añadirán cuando estén confirmados."
+				image={foto1}
+				imageAlt={`Foto del local de ${BUSINESS.name}`}
+				primaryCta={{ label: 'Ver en Google Maps', href: MAPS.place }}
+				secondaryCta={{ label: 'Ver las fotos', href: '#galeria' }}
+				facts={[]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag={BUSINESS.name}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El local <br /><em>en imágenes.</em>"
+				description="Fotografías del local publicadas en su perfil de Google Maps."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={BUSINESS.regionName}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías del perfil público de Google Maps del establecimiento."
+			ctaLabel={`Llamar a ${BUSINESS.shortName}`}
+			navAriaLabel={`Enlaces de ${BUSINESS.shortName}`}
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

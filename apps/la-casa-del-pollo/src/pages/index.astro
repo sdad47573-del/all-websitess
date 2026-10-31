@@ -1,0 +1,387 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/la-casa-del-pollo-apaisada-01.jpg';
+import paella from '../assets/fotos/la-casa-del-pollo-apaisada-02.jpg';
+import paellaCerca from '../assets/fotos/la-casa-del-pollo-vertical-03.jpg';
+import vitrina from '../assets/fotos/la-casa-del-pollo-apaisada-04.jpg';
+import cartel from '../assets/fotos/la-casa-del-pollo-apaisada-05.jpg';
+import paellaMano from '../assets/fotos/la-casa-del-pollo-apaisada-06.jpg';
+import cocina from '../assets/fotos/la-casa-del-pollo-apaisada-07.jpg';
+import polloPatatas from '../assets/fotos/la-casa-del-pollo-apaisada-08.jpg';
+import vitrinaPostres from '../assets/fotos/la-casa-del-pollo-apaisada-09.jpg';
+import vitrinaBacalao from '../assets/fotos/la-casa-del-pollo-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'La Casa del Pollo · Pollo asado y comida casera en Villaverde, Madrid';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: cartel,
+		alt: 'Cartel rojo de la carta de La Casa del Pollo con los precios de los pollos, patatas, primeros, segundos, postres y bebidas',
+	},
+	{
+		src: polloPatatas,
+		alt: 'Pollo asado de La Casa del Pollo con patatas fritas, croquetas y pan en un envase para llevar',
+	},
+	{
+		src: paella,
+		alt: 'Paella mixta con gambas, mejillones, pimiento y guisantes en la paellera',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de La Casa del Pollo con bandejas de comida casera para llevar y carteles de los platos',
+	},
+	{
+		src: cocina,
+		alt: 'Cocina de La Casa del Pollo con el horno de pollos, bandejas y el personal al fondo',
+	},
+	{
+		src: vitrinaPostres,
+		alt: 'Bandejas de natillas caseras, pasta boloñesa y huevos rellenos en la vitrina',
+	},
+	{
+		src: paellaCerca,
+		alt: 'Primer plano de una paella de marisco con gambas y cigalas',
+	},
+	{
+		src: vitrinaBacalao,
+		alt: 'Bandejas de bacalao con tomate y otros guisos en la vitrina',
+	},
+	{
+		src: paellaMano,
+		alt: 'Un cocinero sostiene una paellera de paella mixta recién hecha',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de La Casa del Pollo',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: Number(item.price.replace(' €', '').replace(',', '.')),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-casa-del-pollo`,
+	name: BUSINESS.name,
+	alternateName: ['Casa del Pollo', 'La Casa del Pollo Villaverde', 'Casa del Pollo Madrid'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34910701827',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Comida casera', 'Española'],
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Villaverde' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	hasTakeaway: true,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '15:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: false },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1c1512" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="La Casa del Pollo, pollo asado Villaverde, pollo asado Madrid, comida casera para llevar Madrid, C. Tántalo 12, restaurante Villaverde, croquetas caseras, cocido los lunes, La Casa del Pollo Madrid"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado, croquetas caseras, guisos de cuchara y comida para llevar en la calle Tántalo 12, Villaverde. 4,7 sobre 5 con 293 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada roja de La Casa del Pollo en la calle Tántalo, Villaverde"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#1c1512"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Villaverde, Madrid"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Casa del Pollo"
+			subtitle="Pollo asado · Villaverde"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
+				title="Pollo asado <br /><em>y cocina de casa.</em>"
+				lede={`La Casa del Pollo es un asador de barrio en la calle Tántalo, 12, en Villaverde. Pollo asado, croquetas caseras, guisos de cuchara, cocido los lunes y comida casera para llevar. Abre de martes a domingo, de 8:00 a 15:30. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada roja de La Casa del Pollo en la calle Tántalo, con el rótulo de asados y comidas para llevar"
+				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,7</b> en Google · 293 reseñas' },
+					{ label: 'Horario', html: '<b>8:00–15:30</b><br />Martes a domingo · lunes cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b><br />Asados y comidas caseras' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="La cocina como en casa"
+			/>
+
+			<LocalChips label="Lo que se puede pedir en La Casa del Pollo" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="La cocina <br /><em>como en casa.</em>"
+				paragraphs={[
+					'La Casa del Pollo está en el número 12 de la calle Tántalo, en Villaverde, con la fachada pintada de rojo y el rótulo «Asados y comidas para llevar». Google la clasifica como restaurante especializado en pollo y le da 4,7 sobre 5 con 293 reseñas.',
+					'La carta está colgada en la pared del local y se puede leer entera en la galería: pollo asado entero o medio, patatas fritas, alitas, croquetas caseras de pollo o jamón, empanadillas de atún, cocido completo los lunes, potaje de bacalao los viernes, paella por encargo, guisos, postres y bebidas.',
+					'La cocina trabaja también para llevar: en la vitrina se ven bandejas de lasaña, albóndigas, bacalao con tomate, natillas y otros platos del día, y el cartel anuncia ofertas de fin de semana con pollo, patatas, croquetas y pan.',
+					'Abre de martes a domingo de 8:00 a 15:30 y cierra los lunes. En festivos el horario puede cambiar. El teléfono de la ficha es el 910 70 18 27, el canal para encargar pollo, preguntar por los platos del día o reservar mesa.',
+				]}
+				note="La información sale de la ficha pública de Google Maps y del cartel de la carta fotografiado en el local. No hay web oficial ni redes sociales en la ficha. Los precios y el horario pueden cambiar: confírmalos por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo, guisos <br /><em>y postres.</em>"
+				description="La carta que está colgada en el local, con los precios tal como aparecen en el cartel fotografiado. La cocina cambia algún plato según el día."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				groups={MENU}
+				note="Precios tomados del cartel de la carta que aparece en la galería de Google Maps. Son precios orientativos y pueden cambiar; algunos platos son por encargo o solo se hacen un día concreto (cocido los lunes, potaje los viernes). Confirma disponibilidad y precio por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la carta <br /><em>y la vitrina.</em>"
+				description="Nueve fotografías del perfil de La Casa del Pollo en Google Maps: el cartel de la carta, el pollo asado con patatas, la paella, la cocina y la vitrina de comida casera."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<section class="reviews-band section-pad" id="resenas" aria-labelledby="reviews-title">
+				<div class="wrap">
+					<div>
+						<p class="reviews-kicker">La ficha de Google</p>
+						<h2 id="reviews-title">Lo que dice <br /><em>la gente.</em></h2>
+						<p class="reviews-rating">
+							<strong>4,7</strong>
+							<span>★★★★★<br />293 reseñas en Google</span>
+						</p>
+						<p class="reviews-note">
+							Las opiniones destacadas hablan del pollo asado, de las papas alioli, del arroz, de
+							las patatas y del cocido. Aquí se reproducen tal como aparecen en la ficha.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="reviews-list">
+						{
+							RESENAS.map((resena) => (
+								<li class="review-card">
+									<p>«{resena.texto}»</p>
+									<footer>
+										<span class="stars" aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+										</span>
+										<span>Reseña publicada en Google</span>
+									</footer>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Villaverde, <br /><em>calle Tántalo.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de martes a domingo, de 8:00 a 15:30, con el lunes cerrado. En festivos puede cambiar."
+				mapTitle="Mapa de La Casa del Pollo en la calle Tántalo, 12, Villaverde, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Tántalo, 12"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos online en esta página. La ficha no publica web propia ni servicio de reparto; el teléfono es el canal para mesa, encargos y platos del día. La ficha marca acceso para sillas de ruedas, pero no aparcamiento ni asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.neighbourhood}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos, carta y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Los precios son los del cartel del local y pueden cambiar."
+			ctaLabel="Llamar a La Casa del Pollo"
+			navAriaLabel="Enlaces de La Casa del Pollo"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
