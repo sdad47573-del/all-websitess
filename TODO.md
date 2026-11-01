@@ -1,17 +1,5 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
 
-https://www.google.com/maps/place/Casa+Carlos+-+Comida+casera/@36.735966,-4.4800953,17z/data=!4m6!3m5!1s0xd72f10c2802a0cb:0xddefddeff36d48f0!8m2!3d36.735966!4d-4.4800953!16s%2Fg%2F11fshmhlsr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/EL+NOU+PICA+PICA/@42.508069,1.5356962,17z/data=!4m6!3m5!1s0x12a58adc46835565:0x2552867ad948adf5!8m2!3d42.508069!4d1.5356962!16s%2Fg%2F11b6_dl_f1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Don+F%C3%A9lix+Lounge/@42.5090892,1.538849,17z/data=!4m6!3m5!1s0x12a58add0c8c61fd:0xd287a91e9c54f37e!8m2!3d42.5090892!4d1.538849!16s%2Fg%2F1ptyrwp1k?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Can+Narc%C3%ADs/@42.5057232,1.516709,17z/data=!4m6!3m5!1s0x12a5f5ab878490f1:0xc0f8a014656d5845!8m2!3d42.5057232!4d1.516709!16s%2Fg%2F11jgtbf15y?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/RESTAURANT+PIZZERIA+LA+TAULA+DELS+AMICS/@42.5658557,1.5981063,17z/data=!4m6!3m5!1s0x12af6337062f7411:0xb07c2fa5c1116719!8m2!3d42.5658557!4d1.5981063!16s%2Fg%2F1ptvx0v2f?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Almirez,+Comida+Tradicional+Para+Llevar/@36.7211669,-4.4753877,17z/data=!4m6!3m5!1s0xd72f71705186dd1:0x8cd6747ab60dbff8!8m2!3d36.7211669!4d-4.4753877!16s%2Fg%2F11j68fl0pg?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/RESTAURANT+SNACK+BAR+EL+ROSAT+%7C+Pas+de+la+Casa/@42.54223,1.73361,17z/data=!4m6!3m5!1s0x12af7d8b5b3afd49:0x13606cd99bbe433b!8m2!3d42.54223!4d1.73361!16s%2Fg%2F1pp2xbj0w?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Chester/@42.5074574,1.5221594,17z/data=!4m6!3m5!1s0x12a58ad36b004721:0x72a4e34509f5a132!8m2!3d42.5074574!4d1.5221594!16s%2Fg%2F11c5g_st7b?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
