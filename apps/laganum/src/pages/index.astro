@@ -1,0 +1,391 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/laganum-interior.jpg';
+import cajas from '../assets/fotos/laganum-cajas.jpg';
+import pizarra from '../assets/fotos/laganum-pizarra.jpg';
+import vitrina from '../assets/fotos/laganum-vitrina.jpg';
+import raviolis from '../assets/fotos/laganum-raviolis.jpg';
+import rigatoni from '../assets/fotos/laganum-rigatoni.jpg';
+import mostrador from '../assets/fotos/laganum-mostrador.jpg';
+import fachada from '../assets/fotos/laganum-fachada.jpg';
+import pastaFresca from '../assets/fotos/laganum-pasta-fresca.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Laganum · Obrador de pasta en Andorra la Vella';
+const description =
+	'Laganum, Carrer de la Sardana, 6 (AD500 Andorra la Vella). Pasta fresca del obrador, Menú Clàssic 10,95 € y Menú Especial 11,95 €, bol de pasta desde 6,90 €, nueve salsas y vitrina de platos preparados. 4,8 sobre 5 con 194 reseñas.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de Laganum con el rótulo «obrador de pasta» en el Carrer de la Sardana',
+	},
+	{
+		src: pizarra,
+		alt: 'Pizarra de Laganum con el Menú Clàssic, el Menú Especial, los bols de pasta y la lista de salsas',
+	},
+	{
+		src: cajas,
+		alt: 'Dos cajas de cartón kraft con pasta al horno, dos tiramisús en vasito, cubiertos y dos botellas de agua',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de Laganum con focaccias, empanadas, tiramisú, panna cotta, lasaña y canelones etiquetados',
+	},
+	{
+		src: raviolis,
+		alt: 'Bandejas de ravioli de masa verde y rosa en el mostrador, con el cartel de «Ravioli»',
+	},
+	{
+		src: rigatoni,
+		alt: 'Rigatoni crudo en una bandeja de madera dentro de la vitrina',
+	},
+	{
+		src: mostrador,
+		alt: 'Mostrador de Laganum con las bandejas de pasta y una empleada atendiendo',
+	},
+	{
+		src: pastaFresca,
+		alt: 'Pasta fresca en espiral en una bandeja de madera, con la etiqueta de Laganum',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'La pizarra de Laganum',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#laganum`,
+	name: BUSINESS.name,
+	alternateName: ['Laganum Andorra', 'Laganum obrador de pasta'],
+	description:
+		'Obrador de pasta en Andorra la Vella: pasta fresca al peso, menús con bebida y postre, bol de pasta o de gnocchi y ravioli para llevar, nueve salsas y vitrina de platos preparados.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+376813870',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Italiana', 'Pasta fresca'],
+	priceRange: '6,90 € – 11,95 €',
+	areaServed: [
+		{ '@type': 'City', name: 'Andorra la Vella' },
+		{ '@type': 'AdministrativeArea', name: 'Andorra' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	hasTakeaway: true,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '11:00',
+			closes: '20:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '11:00',
+			closes: '21:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El obrador', href: '#casa' },
+	{ label: 'La pizarra', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2e2119" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Karla:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Laganum, Laganum Andorra, obrador de pasta Andorra la Vella, pasta fresca Andorra, menú italiano Andorra, pasta para llevar Andorra la Vella, Carrer de la Sardana"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pasta fresca de obrador en Andorra la Vella: menús de 10,95 y 11,95 €, bol de pasta desde 6,90 €, nueve salsas y vitrina de platos preparados. 4,8 en Google con 194 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Mostrador de Laganum con las bandejas de pasta fresca y la pizarra de menús"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2e2119"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="AD-07"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="Andorra"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Laganum"
+			subtitle="Obrador de pasta · Andorra la Vella"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer de la Sardana, 6 · Andorra la Vella"
+				title="Obrador de pasta, <br /><em>en el centro.</em>"
+				lede={`Laganum es pasta fresca hecha allí mismo y servida al peso: rigatoni, radiatori y raviolis rellenos en bandejas de madera, nueve salsas para elegir y bols que salen en caja kraft. Dos menús con bebida y postre —10,95 € el Clàssic y 11,95 € el Especial— y una vitrina con focaccias, lasaña, canelones y tiramisú. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={interior}
+				imageAlt="Interior de Laganum con el mostrador, las bandejas de pasta, las lámparas y la ventana a la calle"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la pizarra', href: '#carta' }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Menús', html: '<b>10,95 €</b> y <b>11,95 €</b> · con bebida y postre' },
+					{ label: 'Horario', html: '<b>11:00–20:30</b> · lunes a sábado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pasta fresca"
+			/>
+
+			<LocalChips label="Lo que ofrece Laganum" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El obrador"
+				title="Sardana, 6. <br /><em>Pasta a la vista.</em>"
+				paragraphs={[
+					'Laganum está en el Carrer de la Sardana, número 6, en el centro de Andorra la Vella, a pocos pasos de la avenida Meritxell. La ficha de Google lo sitúa en las coordenadas 42.50737, 1.5288869 (Plus Code GG4H+WH) y el teléfono es el +376 813 870.',
+					'El rótulo de la fachada lo define: «Laganum, obrador de pasta». Dentro, el mostrador es una vitrina con bandejas de madera donde se ve la pasta fresca —rigatoni, radiatori, raviolis de masa verde y rosa— junto a carteles como el de «Ravioli». Detrás, la pared oscura con los nombres de las pastas y las lámparas colgadas sobre el mármol de la barra.',
+					'Google lo clasifica como «Restaurante italiano» y «Tienda de alimentación», y las dos cosas encajan: se puede comer con los menús de la pizarra o comprar pasta, salsas y platos de la vitrina para llevarse. En la vitrina hay focaccias, empanadas, lasaña, canelones, tiramisú y panna cotta, cada uno con su etiqueta.',
+					`Con ${RATING.count} reseñas y una media de ${RATING.label} sobre 5 (noviembre de 2026), el horario es de mediodía a tarde: de 11:00 a 20:30 de lunes a jueves y hasta las 21:00 viernes y sábado, con el domingo cerrado.`,
+				]}
+				note="Los precios de esta página son los que aparecen en la pizarra del local en las fotos del perfil; no hay carta online enlazada desde Google, así que pueden cambiar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Del obrador</p>
+					<h2 id="highlights-title">Pasta, salsas <br /><em>y vitrina.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La pizarra"
+				title="Tres formas <br /><em>de comer pasta.</em>"
+				description="Los menús completos, los bols para llevar y las nueve salsas, tal como están escritos en la pizarra del local. Los importes son los de esa pizarra, en las fotos del perfil de Google."
+				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`El pedido se hace en el mostrador o por teléfono, en el ${BUSINESS.phone}. La pasta se elige a la vista y la salsa, de la lista; los precios pueden cambiar respecto a la pizarra.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El obrador, por dentro."
+				description="Ocho fotografías del perfil: la fachada, la pizarra con los menús y las salsas, las cajas con pasta al horno y tiramisú, la vitrina de platos preparados, los raviolis de colores, el rigatoni crudo, el mostrador y una bandeja de pasta fresca."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,8 sobre 5, <em>con 194 reseñas.</em></h2>
+						<p>
+							Una de las notas más altas de Andorra la Vella, con un volumen de reseñas que ya pesa.
+							La ficha lo clasifica como restaurante italiano y tienda de alimentación.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer todas las reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,8</strong>
+						<span>★★★★★</span>
+						<small>194 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el centro, <br /><em>hasta las nueve.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city} (parroquia de Andorra la Vella)`,
+					'Principado de Andorra',
+				]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 11:00 a 20:30 de lunes a jueves, hasta las 21:00 viernes y sábado, y domingo cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Laganum en el Carrer de la Sardana, Andorra la Vella"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel={`${BUSINESS.street} · Andorra la Vella`}
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Reseñas', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`No hay reservas ni carta online: se pide en el mostrador o en el ${BUSINESS.phone}. El domingo cierra, así que conviene no dejarlo para el final de la semana.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, precios de la pizarra y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma menús, precios y horario antes de ir."
+			ctaLabel="Llamar a Laganum"
+			navAriaLabel="Enlaces de Laganum"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

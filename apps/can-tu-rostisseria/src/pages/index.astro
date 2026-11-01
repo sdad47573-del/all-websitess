@@ -1,0 +1,383 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/can-tu-rostisseria-fachada.jpg';
+import pollo from '../assets/fotos/can-tu-rostisseria-pollo-asado.jpg';
+import gratinados from '../assets/fotos/can-tu-rostisseria-gratinados.jpg';
+import carbassa from '../assets/fotos/can-tu-rostisseria-carbassa.jpg';
+import mostrador from '../assets/fotos/can-tu-rostisseria-mostrador.jpg';
+import pimientos from '../assets/fotos/can-tu-rostisseria-pimientos.jpg';
+import fachada2 from '../assets/fotos/can-tu-rostisseria-fachada-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'CAN TU Rostisseria · Pollo asado y platos para llevar en Andorra la Vella';
+const description =
+	'CAN TU Rostisseria, Cap del Carrer, 16 (AD500 Andorra la Vella). Pollo asado en bandeja, gratinados, calabaza rellena y platos preparados para llevar. De martes a domingo al mediodía y noches de martes a sábado; lunes cerrado.';
+
+const galeria = [
+	{
+		src: pollo,
+		alt: 'Pollo asado en bandeja de acero con patatas, calabacín, tomate asado y cebolla morada',
+	},
+	{
+		src: gratinados,
+		alt: 'Dos barquetas de aluminio con un gratinado de queso y una carne con cebolla',
+	},
+	{
+		src: carbassa,
+		alt: 'Calabaza entera horneada y rellena de garbanzos, butifarra negra y tomate',
+	},
+	{
+		src: mostrador,
+		alt: 'Mostrador de cristal con bandejas de carne con bacon y verduras asadas',
+	},
+	{
+		src: pimientos,
+		alt: 'Pimientos rojos y verdes rellenos de arroz y pollo en una bandeja metálica',
+	},
+	{
+		src: fachada2,
+		alt: 'Entrada de la rostisseria CAN TU con el toldo negro y la pizarra en la acera',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que sale de la rostisseria',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#can-tu-rostisseria`,
+	name: BUSINESS.name,
+	alternateName: ['Can Tu', 'Rostisseria Can Tu', 'Can Tu Andorra'],
+	description:
+		'Rostisseria y platos preparados en Andorra la Vella: pollo asado en bandeja con patatas y verduras, gratinados, calabaza rellena y pimientos rellenos para llevar.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+376740000',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Rostisseria', 'Catalana', 'Comida para llevar'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Andorra la Vella' },
+		{ '@type': 'AdministrativeArea', name: 'Andorra' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '11:00', closes: '15:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Tuesday', opens: '19:30', closes: '22:30' },
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Sunday'],
+			opens: '10:30',
+			closes: '15:00',
+		},
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '10:30', closes: '15:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Thursday', opens: '19:30', closes: '22:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '10:30', closes: '15:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '19:30', closes: '22:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '10:30', closes: '15:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '19:30', closes: '22:30' },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2b2620" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Can Tu Rostisseria, pollo asado Andorra la Vella, rostisseria Andorra, comida para llevar Andorra, calabaza rellena Andorra, platos preparados Cap del Carrer"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado en bandeja, gratinados y platos preparados para llevar en Cap del Carrer, 16 (Andorra la Vella). Lunes cerrado."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pollo asado con patatas, tomate y cebolla en la bandeja de Can Tu Rostisseria"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2b2620"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="AD-07"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="Andorra"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Can Tu Rostisseria"
+			subtitle="Rostisseria · Andorra la Vella"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Cap del Carrer, 16 · Andorra la Vella"
+				title="Pollo asado <br /><em>y platos de casa.</em>"
+				lede={`Can Tu es la rostisseria de Cap del Carrer, en el centro de Andorra la Vella: pollo entero en bandeja con patatas y verduras, gratinados en barqueta, calabaza rellena y pimientos rellenos de arroz. Comida de casa para llevar, con horno y mostrador de cristal. Abre al mediodía de martes a domingo y vuelve por la noche de martes a sábado.`}
+				image={fachada}
+				imageAlt="Entrada de la rostisseria CAN TU en Cap del Carrer, Andorra la Vella"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Mediodía', html: '<b>10:30–15:00</b> · martes a domingo' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · y mostrador' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Rostisseria"
+			/>
+
+			<LocalChips label="Lo que ofrece Can Tu Rostisseria" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cap del Carrer, <br /><em>horno y mostrador.</em>"
+				paragraphs={[
+					'Can Tu Rostisseria está en el número 16 de Cap del Carrer, una calle céntrica de Andorra la Vella. La ficha de Google la sitúa en las coordenadas 42.5079726, 1.522468. El teléfono es un fijo andorrano, el +376 740 000.',
+					'Desde la calle se ve el rótulo negro con el pollo dibujado y el cartel de «Rostisseria CAN TU», la pizarra con los platos del día en la acera y un par de plantas junto a la puerta. Dentro, el horno, el mostrador de cristal con las bandejas y una pared de piedra.',
+					'La especialidad es el pollo asado: sale entero, con la piel dorada y crujiente, sobre una bandeja de acero con patatas en rodajas, calabacín, tomate asado y una cebolla morada horneada entera. Hay también gratinados en barqueta de aluminio, carne con bacon, calabaza entera rellena de garbanzos y butifarra negra, y pimientos y cebollas rellenos de arroz y pollo.',
+					'Google lo clasifica como restaurante, y la misma ficha añade las categorías de proveedor mayorista de alimentos y empresa de procesado de alimentos; el local funciona sobre todo como rostisseria de barrio con mostrador, no como restaurante de mesas. La ficha marca además el negocio como amigable con la comunidad LGBTQ+.',
+				]}
+				note="La ficha es todavía muy pequeña: cinco reseñas en noviembre de 2026. No publica carta, precios ni datos de accesibilidad, y las fotos del perfil muestran el mostrador y las bandejas, no un comedor."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Del horno</p>
+					<h2 id="highlights-title">Pollo, bandejas <br /><em>y rellenos.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo asado <br /><em>y platos al horno.</em>"
+				description="No hay carta publicada: esta lista es lo que se reconoce en las fotos del perfil y en el escaparate del local. Cambia según el día y lo que salga del horno."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`Lo que haya cada día se pregunta por teléfono, en el ${BUSINESS.phone}, o directamente en el mostrador. No se copian precios porque la ficha no los publica.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El pollo, el mostrador <br /><em>y los rellenos.</em>"
+				description="Seis fotografías del perfil de Can Tu: el pollo asado en su bandeja, dos gratinados en barqueta, la calabaza rellena, el mostrador de cristal, los pimientos rellenos y la entrada del local."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,0 sobre 5, <em>con solo 5 reseñas.</em></h2>
+						<p>
+							La ficha es muy joven: cinco opiniones no permiten hablar de una media consolidada, y
+							preferimos decirlo antes que lucir un 4,0 que todavía no significa gran cosa. Lo que sí
+							está claro es el horario y el tipo de comida.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver las reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,0</strong>
+						<span>★★★★☆</span>
+						<small>5 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el centro, <br /><em>Cap del Carrer.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Principado de Andorra',
+				]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: mediodía de martes a domingo (martes desde las 11:00, el resto desde las 10:30) y noches de martes a sábado desde las 19:30. Miércoles y domingo solo mediodía; lunes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Can Tu Rostisseria en Cap del Carrer, Andorra la Vella"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel={`${BUSINESS.street} · Andorra la Vella`}
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Los encargos se hacen por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni pedidos online. Las fotos del perfil muestran mostrador y bandejas, no mesas, así que si se quiere comer allí conviene preguntar en la misma llamada.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma platos, precios y horario antes de ir."
+			ctaLabel="Llamar a Can Tu Rostisseria"
+			navAriaLabel="Enlaces de Can Tu Rostisseria"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
