@@ -1,0 +1,365 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/cooking-carabanchel-panoramica-01.jpg';
+import polloPatatas from '../assets/fotos/cooking-carabanchel-apaisada-07.jpg';
+import croquetas from '../assets/fotos/cooking-carabanchel-panoramica-09.jpg';
+import albondigas from '../assets/fotos/cooking-carabanchel-vertical-05.jpg';
+import flan from '../assets/fotos/cooking-carabanchel-vertical-06.jpg';
+import pollo from '../assets/fotos/cooking-carabanchel-vertical-02.jpg';
+import ensaladilla from '../assets/fotos/cooking-carabanchel-panoramica-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'COOKING · Comida casera para llevar y pollos asados en Carabanchel';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de COOKING en la calle de Salvador Allende, con el rótulo de comida preparada y el toldo de comida casera para llevar',
+	},
+	{
+		src: polloPatatas,
+		alt: 'Pollo asado troceado en una bandeja de aluminio junto a otra de patatas fritas',
+	},
+	{
+		src: croquetas,
+		alt: 'Bandeja de aluminio con croquetas caseras recién fritas',
+	},
+	{
+		src: albondigas,
+		alt: 'Dos tarrinas para llevar: albóndigas en salsa y ensaladilla rusa',
+	},
+	{
+		src: flan,
+		alt: 'Flan con canela en una tarrina para llevar, sostenido en la mano dentro del coche',
+	},
+	{
+		src: pollo,
+		alt: 'Muslo y contramuslo de pollo asado en una bandeja de aluminio con su jugo',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Tarrina de ensaladilla rusa con guisantes, zanahoria y mayonesa',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#cooking`,
+	name: BUSINESS.name,
+	alternateName: ['COOKING Comida casera para llevar', 'COOKING Pollos asados', 'COOKING Carabanchel'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34915114657',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Casera', 'Pollo asado', 'Española'],
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Carabanchel' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1d2a4a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:ital,wght@0,400..700;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="COOKING Carabanchel, comida casera para llevar Madrid, pollos asados Carabanchel, Salvador Allende 34, menús para llevar 28054, paellas y arroces"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar, pollos asados, paellas y arroces, pescados y ensaladas en C. de Salvador Allende, 34 (Carabanchel, 28054 Madrid)."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tarjeta de COOKING con su nombre sobre fondo azul cobalto"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1d2a4a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Carabanchel"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="COOKING"
+			subtitle="Comida casera · Carabanchel"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. de Salvador Allende, 34 · Carabanchel, Madrid"
+				title="Comida casera <br /><em>para llevar.</em>"
+				lede={`COOKING es el local de comida preparada de Salvador Allende, 34, en Carabanchel: pollos asados, paellas y arroces, pescados, ensaladas y platos de puchero. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de COOKING en la calle de Salvador Allende, con el rótulo de comida preparada y el toldo de comida casera para llevar"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–16:00</b> · todos los días' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · menús diarios' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pollos asados · puchero · menús"
+			/>
+
+			<LocalChips label="Lo que ofrece COOKING" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comida preparada <br /><em>en Carabanchel.</em>"
+				paragraphs={[
+					'COOKING está en el número 34 de la calle de Salvador Allende, en Carabanchel. El rótulo dice «COOKING · comida preparada» y el toldo lo remata: «Comida casera para llevar». En el escaparate cuelgan los menús del día y el cartel de los platos de puchero.',
+					'La ficha describe la casa así: «Comida casera para llevar. Pollos asados, paellas y arroces, pescados, ensaladas. Gran variedad de platos elaborados a diario». El asador de pollos es la base, con bandejas de pollo troceado y patatas.',
+					'En el escaparate se anuncian un mini menú por 4,95 € y un maxi menú por 6,95 €, además de platos de puchero a 3,30 € la ración: patatas con costillas, callos, cocido madrileño y patatas con bacalao. El toldo anuncia potaje todos los viernes.',
+					'Google le da 3,2 sobre 5 con 120 reseñas. No es una nota alta y conviene decirlo: las tres opiniones que muestra la ficha son de cuatro y cinco estrellas, pero el conjunto incluye valoraciones más bajas. Aquí se reproducen las tres tal cual.',
+				]}
+				note="La ficha no publica página web, redes sociales, encargos ni reparto a domicilio. Los precios salen del cartel del escaparate que aparece en las fotos y pueden cambiar; se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que hay en el mostrador</p>
+					<h2 id="highlights-title">Pollo, puchero <br /><em>y menús.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del asador <br /><em>y del puchero.</em>"
+				description="Lo que anuncian la ficha, el escaparate y las reseñas. Los importes son los del cartel de las fotos."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay carta completa publicada. El escaparate añade menús de 4,95 € y 6,95 €, platos de puchero a 3,30 € la ración y potaje los viernes. Precios y disponibilidad pueden cambiar: se confirman por teléfono o en el mostrador."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada <br /><em>y las bandejas.</em>"
+				description="Siete fotografías del perfil de COOKING: la fachada, el pollo con patatas, las croquetas, las albóndigas con ensaladilla, el flan y la ensaladilla. La fachada abre la página."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Una de las diez fotos del perfil corresponde a otro establecimiento y se ha dejado fuera. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">3,2 sobre 5, <em>con 120 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 3,2 con 120 opiniones. Es
+							una nota discreta y el conjunto de la ficha incluye valoraciones bajas. Las tres
+							reseñas que muestra Google son de cuatro y cinco estrellas, sobre las croquetas y la
+							ensaladilla, el arroz y el bacalao, y la rapidez de los menús; se reproducen tal cual.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>3,2</strong>
+						<span>★★★☆☆</span>
+						<small>120 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Carabanchel, <br /><em>Salvador Allende.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 10:00 a 16:00 todos los días, también sábado y domingo. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de COOKING en la calle de Salvador Allende, 34, Carabanchel, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. de Salvador Allende, 34"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha lo clasifica como restaurante de comida para llevar. No publica reparto a domicilio, encargos ni pedidos online: todo se concreta por teléfono, en el 915 11 46 57. En accesibilidad marca que no hay acceso para sillas de ruedas, ni aparcamiento adaptado, ni asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="COOKING"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a COOKING"
+			navAriaLabel="Enlaces de COOKING"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

@@ -1,0 +1,365 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import vitrina from '../assets/fotos/almirez-apaisada-04.jpg';
+import mostrador from '../assets/fotos/almirez-apaisada-01.jpg';
+import guiso from '../assets/fotos/almirez-apaisada-03.jpg';
+import potaje from '../assets/fotos/almirez-vertical-09.jpg';
+import mesa from '../assets/fotos/almirez-apaisada-07.jpg';
+import ensalada from '../assets/fotos/almirez-apaisada-06.jpg';
+import albondigas from '../assets/fotos/almirez-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Almirez · Comida tradicional para llevar en Teatinos, Málaga';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: vitrina,
+		alt: 'El mostrador de Almirez con tortillas, empanadillas, ensaladas y tarrinas de guisos etiquetadas con sus nombres',
+	},
+	{
+		src: mostrador,
+		alt: 'La vitrina de Almirez llena de tarrinas de comida preparada, tortillas y ensaladas',
+	},
+	{
+		src: guiso,
+		alt: 'Una tarrina de guiso de garbanzos con carne y chorizo, con un panecillo y cubiertos al lado',
+	},
+	{
+		src: potaje,
+		alt: 'Un plato de garbanzos con espinacas, una albóndiga y huevo cocido, con torrijas al lado',
+	},
+	{
+		src: mesa,
+		alt: 'Una mesa con mini hamburguesas, empanadas, sándwiches y dos tortillas para una celebración',
+	},
+	{
+		src: ensalada,
+		alt: 'Dos ensaladas con langostinos y piña en tarrinas transparentes',
+	},
+	{
+		src: albondigas,
+		alt: 'Una tarrina de albóndigas en salsa de tomate con patatas fritas',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#almirez`,
+	name: BUSINESS.name,
+	alternateName: ['ALMIREZ, COMIDA TRADICIONAL PARA LLEVAR', 'Almirez Málaga', 'Almirez Teatinos'],
+	description:
+		'Comida tradicional para llevar en la calle Margarita Xirgu, 4, bajo A, Teatinos-Universidad (29010 Málaga). Guisos, bacalao con tomate, espinacas con garbanzos y gazpacho.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34644678099',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida tradicional', 'Cocina andaluza'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Teatinos-Universidad' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '15:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2b3324" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Figtree:ital,wght@0,400..800;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Almirez Málaga, comida tradicional para llevar, Teatinos, Margarita Xirgu, guisos, bacalao con tomate, espinacas con garbanzos, gazpacho, comida preparada"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Guisos, bacalao con tomate, espinacas con garbanzos y gazpacho en la calle Margarita Xirgu, 4, bajo A (Teatinos, 29010 Málaga). Comida tradicional para llevar."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tarjeta de Almirez con su nombre en cursiva sobre fondo verde oliva"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2b3324"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Teatinos-Universidad"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Almirez"
+			subtitle="Comida tradicional · Teatinos"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Margarita Xirgu, 4, bajo A · Teatinos, Málaga"
+				title="Comida de casa <br /><em>para llevar.</em>"
+				lede={`Almirez es la comida tradicional de Teatinos para llevar: guisos, bacalao con tomate, espinacas con garbanzos y gazpacho, en raciones para comer en casa. Abre de 10:00 a 15:30 y descansa el martes. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={vitrina}
+				imageAlt="El mostrador de Almirez con tortillas, empanadillas, ensaladas y tarrinas de guisos etiquetadas con sus nombres"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–15:30</b> · martes cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · comida preparada' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Guisos · bacalao · espinacas · gazpacho"
+			/>
+
+			<LocalChips label="Lo que ofrece Almirez" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Guisos de siempre <br /><em>en Teatinos.</em>"
+				paragraphs={[
+					'Almirez está en el número 4 de la calle Margarita Xirgu, bajo A, en Teatinos-Universidad. Es un local pequeño de comida preparada: al entrar, la vitrina ocupa casi todo el espacio.',
+					'Dentro hay tortillas enteras, empanadillas, ensaladas y decenas de tarrinas de guisos con su etiqueta escrita a mano: lomo en manteca, callos, albóndigas, carrillada, potajes. Todo se prepara para llevar.',
+					'Google la clasifica como establecimiento de comida preparada. La ficha no publica la carta ni los precios, pero las reseñas dejan claro el recetario: bacalao con tomate, espinacas con garbanzos, gazpacho y guisos de cuchara.',
+					'La ficha le da 4,6 sobre 5 con 87 reseñas. Las tres que muestra son de cinco estrellas y hablan del trato, de las raciones y de ese bacalao con tomate que «saben lo que hacen».',
+				]}
+				note="La ficha no publica carta, precios, página web ni redes sociales. Los platos de esta página son los que nombran la categoría y las reseñas de Google, consultadas en octubre de 2026. Los precios y la disponibilidad se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la olla a la tarrina</p>
+					<h2 id="highlights-title">Guisos, raciones <br /><em>y cuchara.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Bacalao, potajes <br /><em>y gazpacho.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que nombran su categoría y sus reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la categoría y en las reseñas del perfil de Google, consultadas en octubre de 2026. La disponibilidad se confirma por teléfono o en el local."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina <br /><em>y la mesa.</em>"
+				description="Siete fotografías del perfil de Almirez en Google Maps: el mostrador de comida preparada, los guisos, las tortillas y las ensaladas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,6 sobre 5, <em>con 87 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,6 con 87 opiniones. Las
+							tres reseñas que muestra la ficha son de cinco estrellas y hablan de los guisos, del
+							trato y del bacalao con tomate; aquí se reproducen tal cual.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,6</strong>
+						<span>★★★★★</span>
+						<small>87 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Teatinos, <br /><em>Margarita Xirgu.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 10:00 a 15:30 de lunes a domingo, con el martes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Almirez en la calle Margarita Xirgu, 4, Teatinos-Universidad, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Margarita Xirgu, 4"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Comida para llevar: la ficha no publica reparto a domicilio ni pedidos online. El canal que aparece es el teléfono, el 644 67 80 99, y en el local se pide en el mostrador. En accesibilidad la ficha marca acceso para sillas de ruedas, pero no aparcamiento adaptado."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Almirez"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Almirez"
+			navAriaLabel="Enlaces de Almirez"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

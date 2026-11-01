@@ -1,0 +1,399 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import cuscus from '../assets/fotos/marrakech-valdemorillo-vertical-01.jpg';
+import dulces from '../assets/fotos/marrakech-valdemorillo-apaisada-04.jpg';
+import te from '../assets/fotos/marrakech-valdemorillo-vista-9-09.jpg';
+import garbanzos from '../assets/fotos/marrakech-valdemorillo-vertical-03.jpg';
+import teDos from '../assets/fotos/marrakech-valdemorillo-vertical-06.jpg';
+import ensalada from '../assets/fotos/marrakech-valdemorillo-vertical-07.jpg';
+import durum from '../assets/fotos/marrakech-valdemorillo-vertical-08.jpg';
+import dulcesFuente from '../assets/fotos/marrakech-valdemorillo-vertical-10.jpg';
+import carta from '../assets/fotos/marrakech-valdemorillo-vertical-05.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Marrakech · Comida casera marroquí y kebab en Valdemorillo';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: cuscus,
+		alt: 'Cuscús con pollo, verduras y garbanzos servido en una fuente de barro en la terraza de Marrakech',
+	},
+	{
+		src: dulces,
+		alt: 'La vitrina de dulces marroquíes de Marrakech con bandejas de pastas de almendra, dátiles y miel',
+	},
+	{
+		src: te,
+		alt: 'Té con hierbabuena en un vaso decorado junto a una tetera de plata sobre una bandeja',
+	},
+	{
+		src: garbanzos,
+		alt: 'Fuente de barro con garbanzos, calabaza, zanahoria y carne, junto a otra ración',
+	},
+	{
+		src: teDos,
+		alt: 'Dos bandejas con teteras de plata y vasos de té con hierbabuena en la mesa del local',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada de patata, zanahoria, remolacha, judía verde y maíz con mayonesa',
+	},
+	{
+		src: durum,
+		alt: 'Dürum de kebab envuelto en papel de la casa con patatas fritas, kétchup y salsa',
+	},
+	{
+		src: dulcesFuente,
+		alt: 'Bandeja de dulces marroquíes: chebakia, pastas de almendra y dulces de dátil y pistacho',
+	},
+	{
+		src: carta,
+		alt: 'La carta impresa de Marrakech Kebab con tacos, dürum, bocadillos, hamburguesas y platos',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#marrakech`,
+	name: BUSINESS.name,
+	alternateName: ['Marrakech Kebab', 'Marrakech Valdemorillo', 'Comida casera para llevar Marrakech'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34611533240',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Marroquí', 'Casera', 'Kebab'],
+	areaServed: [
+		{ '@type': 'City', name: 'Valdemorillo' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad de Madrid' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
+			opens: '09:30',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
+			opens: '19:00',
+			closes: '23:59',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday'],
+			opens: '18:00',
+			closes: '23:59',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '19:00',
+			closes: '23:59',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#123c36" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=Mulish:ital,wght@0,400..700;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Marrakech Valdemorillo, comida casera marroquí, kebab Valdemorillo, Marrakech Kebab, Calle la Fuente 12, comida para llevar Sierra Oeste, dulces árabes"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cocina casera marroquí y kebab en C. la Fuente, 12 (Valdemorillo, 28210 Madrid). Para comer allí o para llevar, con raciones abundantes y dulces caseros."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tarjeta de Marrakech con su nombre sobre fondo verde esmeralda"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#123c36"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Valdemorillo"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[cuscus]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Marrakech"
+			subtitle="Cocina marroquí · Valdemorillo"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. la Fuente, 12 · Valdemorillo, Madrid"
+				title="Comida casera <br /><em>marroquí.</em>"
+				lede={`Marrakech es la cafetería y cocina casera de la calle la Fuente, 12, en Valdemorillo: cuscús, guisos, kebab, dulces y té con hierbabuena, para comer allí o para llevar. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={cuscus}
+				imageAlt="Cuscús con pollo, verduras y garbanzos servido en una fuente de barro en la terraza de Marrakech"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:30–17:00</b> · y de 19:00 a 24:00' },
+					{ label: 'Servicio', html: '<b>En el local</b> · o para llevar' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Cuscús · kebab · dulces"
+			/>
+
+			<LocalChips label="Lo que ofrece Marrakech" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina de casa <br /><em>en Valdemorillo.</em>"
+				paragraphs={[
+					'Marrakech está en el número 12 de la calle la Fuente, en Valdemorillo. La ficha lo describe como «cafetería y elaboración de comida casera para comer ahí y para llevar», y lo clasifica como restaurante marroquí y cafetería.',
+					'En la mesa aparecen el cuscús con pollo y verduras, los garbanzos en fuente de barro y el té con hierbabuena servido en tetera de plata. En la vitrina, bandejas de dulces de almendra, dátil y miel.',
+					'La carta impresa, con el rótulo «Marrakech Kebab», añade kebab, dürum, tacos, bocadillos, hamburguesas, alitas y nuggets, con menús que incluyen patatas y bebida. Es la misma casa, con dos registros: la cocina marroquí del día y la carta rápida.',
+					'Google le da 4,7 sobre 5 con 46 reseñas. Una habla de «comida variada y exquisita, abundante en las raciones»; otra, de «buena cantidad y buen precio»; la tercera, de puntualidad y de los dulces.',
+				]}
+				note="La ficha no publica página web, redes sociales, encargos ni reparto a domicilio. Los precios salen de la carta impresa que aparece en las fotos y pueden cambiar; se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que dicen de Marrakech</p>
+					<h2 id="highlights-title">Cuscús, té <br /><em>y dulces.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del kebab <br /><em>y de la casa.</em>"
+				description="La carta impresa del local, fotografiada en la ficha: kebab, dürum, tacos, bocadillos, hamburguesas y platos, con los precios de esa carta."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios de la carta fotografiada en la ficha de Google, consultada en octubre de 2026; pueden haber cambiado. La ficha no publica carta online, encargos ni reparto a domicilio: todo se confirma por teléfono, en el 611 53 32 40."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La mesa <br /><em>y la vitrina.</em>"
+				description="Nueve fotografías del perfil de Marrakech: el cuscús, los dulces, el té, los garbanzos, la ensalada, el dürum y la carta del local."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. La foto de fachada del perfil incluye a un menor y no se publica. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,7 sobre 5, <em>con 46 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,7 con 46 opiniones. Las
+							tres reseñas que muestra la ficha son de cinco estrellas y hablan de la variedad, de
+							las raciones, del precio, de la puntualidad y de los dulces; aquí se reproducen tal
+							cual.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,7</strong>
+						<span>★★★★★</span>
+						<small>46 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Valdemorillo, <br /><em>calle la Fuente.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.region]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google, con dos turnos: de 9:30 a 17:00 y de 19:00 a 24:00 de lunes, martes, jueves y viernes; el miércoles de 10:00 a 17:00 y de 18:00 a 24:00; sábado y domingo de 10:00 a 17:00 y de 19:00 a 24:00. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Marrakech en la calle la Fuente, 12, Valdemorillo, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. la Fuente, 12"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Se puede comer en el local o pedir para llevar, según la ficha. No publica reparto a domicilio, encargos ni pedidos online: se concreta todo por teléfono, en el 611 53 32 40. La ficha no da datos de accesibilidad, así que conviene llamar antes si necesitas algo concreto."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Marrakech"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Marrakech"
+			navAriaLabel="Enlaces de Marrakech"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

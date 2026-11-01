@@ -1,0 +1,267 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/la-ribena-moratalaz-apaisada-01.jpg';
+import vitrina from '../assets/fotos/la-ribena-moratalaz-apaisada-02.jpg';
+import fachadaDos from '../assets/fotos/la-ribena-moratalaz-apaisada-05.jpg';
+import pollo from '../assets/fotos/la-ribena-moratalaz-apaisada-06.jpg';
+import tarta from '../assets/fotos/la-ribena-moratalaz-apaisada-07.jpg';
+import croquetas from '../assets/fotos/la-ribena-moratalaz-apaisada-08.jpg';
+import interior from '../assets/fotos/la-ribena-moratalaz-panoramica-04.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'La Ribereña · Pollo asado y comida casera para llevar en Moratalaz';
+const description = BUSINESS.description;
+
+const galeria = [
+	{ src: fachada, alt: 'Fachada de La Ribereña en la calle Antonio Cumella, con los carteles de pollos asados y comidas caseras' },
+	{ src: vitrina, alt: 'Vitrina con guisos, arroz y platos caseros de La Ribereña en fuentes de cristal' },
+	{ src: fachadaDos, alt: 'Segunda vista de la fachada de La Ribereña con la carta de platos en el escaparate' },
+	{ src: pollo, alt: 'Pollo asado dorado en una bandeja de horno del local' },
+	{ src: tarta, alt: 'Tarta de manzana con una cereza en el centro, sobre una base de papel de blonda' },
+	{ src: croquetas, alt: 'Croquetas caseras doradas en una bandeja de cristal' },
+	{ src: interior, alt: 'Mostrador de panadería y cocina de La Ribereña con pan recién hecho' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-ribenera`,
+	name: BUSINESS.name,
+	alternateName: ['Churrería Asador de Pollos La Ribereña', 'La Ribereña Moratalaz'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34602415472',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Comida casera', 'Paella'],
+	areaServed: [
+		{ '@type': 'City', name: 'Madrid' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad de Madrid' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Thursday', 'Friday'], opens: '10:00', closes: '15:30' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '09:00', closes: '15:30' },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#123c36" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=Mulish:ital,wght@0,400..700;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Ribereña, Moratalaz, asador de pollos Moratalaz, pollo asado para llevar, comida casera Antonio Cumella, paella para llevar"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado, paella y comida casera para llevar en C. Antonio Cumella, 10 (Moratalaz, Madrid)."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tarjeta de La Ribereña con su nombre sobre fondo verde esmeralda"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#123c36"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Moratalaz"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Ribereña"
+			subtitle="Asador de pollos · Moratalaz"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Antonio Cumella, 10 · Moratalaz, Madrid"
+				title="Pollo asado <br /><em>y comida casera.</em>"
+				lede={`La Ribereña es asador de pollos y comida casera para llevar en Moratalaz: pollo asado, paella, croquetas y tortilla. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="Fachada de La Ribereña en la calle Antonio Cumella, con los carteles de pollos asados y comidas caseras"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>Jue–vie</b> 10:00–15:30 · <b>Sáb–dom</b> 9:00–15:30' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · comida casera' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pollo asado · paella · croquetas"
+			/>
+
+			<LocalChips label="Lo que ofrece La Ribereña" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Asador de pollos <br /><em>de barrio.</em>"
+				paragraphs={[
+					'La Ribereña está en la calle Antonio Cumella, 10, en Moratalaz. Su ficha la describe como asador de pollos y comida para llevar, y el rótulo del local añade «comidas caseras de toda la vida».',
+					'Las reseñas hablan de la paella, de las croquetas y la tortilla caseras, y de la salsa del pollo y las patatas.',
+					'En el escaparate se ven pollos asados, platos caseros del mostrador y la paella anunciada en el rótulo.',
+				]}
+				note="La ficha no publica página web, redes sociales, carta con precios ni reparto a domicilio. Para precios concretos y encargos, llama al 602 41 54 72."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El local <br /><em>y la cocina.</em>"
+				description="Fachada, escaparate, pollo asado, croquetas, tarta de manzana y el mostrador de la cocina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Las fotos de la carta y de los platos de otros locales no se publican. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Moratalaz, <br /><em>Antonio Cumella.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.region]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.horas === 'Cerrado' }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: jueves y viernes de 10:00 a 15:30, sábado y domingo de 9:00 a 15:30, y de lunes a miércoles cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de La Ribereña en la calle Antonio Cumella, 10, Moratalaz, Madrid"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Antonio Cumella, 10"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha no publica reparto a domicilio, encargos ni pedidos online: se concreta todo por teléfono, en el 602 41 54 72. No da datos de accesibilidad, así que conviene llamar antes si necesitas algo concreto."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="La Ribereña"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma horario antes de la visita."
+			ctaLabel="Llamar a La Ribereña"
+			navAriaLabel="Enlaces de La Ribereña"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

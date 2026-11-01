@@ -1,4 +1,6 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
+Restaurante+Ega%C3%B1a+Bar/@43.258444,-2.9387189,17z/data=!3m1!4b1!4m6!3m5!1s0xd4e50298d23b5a7:0xa8db09ed719ba3be!8m2!3d43.258444!4d-2.9387189!16s%2Fg%2F1tqnmyw8?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+
 https://www.google.com/maps/place/El+Chef+a+Casa+El+Punto*/@37.3560645,-5.9844716,17z/data=!4m6!3m5!1s0xd126dd5966e1fa5:0x14067191aa178d06!8m2!3d37.3560645!4d-5.9844716!16s%2Fg%2F11gvf13jw6?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Don+Pollo/@37.3617984,-5.9677116,17z/data=!4m6!3m5!1s0xd126e89f4a6b563:0x2b33cb67cc2234a1!8m2!3d37.3617984!4d-5.9677116!16s%2Fg%2F11bzz1v9jd?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D

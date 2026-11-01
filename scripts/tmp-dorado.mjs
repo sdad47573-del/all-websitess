@@ -1,7 +1,6 @@
 import { writeFileSync } from 'node:fs';
 
-const FID = '0xd42262e2551b459:0xaab737f3fb412798';
-const SLUG = 'dorado';
+const FID = '0xd41885736e7a045:0xd501cfd66ebcba54';
 
 const HEADERS = {
 	'user-agent':
@@ -26,68 +25,19 @@ for (let i = 0; i < 12; i++) {
 		await sleep(1500 + i * 1000);
 		continue;
 	}
-	const ok = text.startsWith(")]}'");
-	const hasName = /Dorado/i.test(text);
-	console.log('attempt', i, 'len', text.length, 'ok', ok, 'name', hasName);
-	if (ok && hasName && text.length > bestText.length) bestText = text;
-	if (ok && hasName && text.length > 22000) break;
-	await sleep(1200 + i * 800);
+	const full = /lunes/.test(text) && /reseñas/.test(text);
+	if (text.startsWith(")]}'") && text.length > bestText.length) {
+		bestText = text;
+	}
+	console.log('attempt', i, 'len', text.length, 'full', full);
+	if (full && text.length > 25000) break;
+	await sleep(1500 + i * 900);
 }
 
-if (!bestText) {
+if (bestText) {
+	writeFileSync('scripts/tmp-dorado.txt', bestText);
+	console.log('SAVED bytes:', bestText.length);
+} else {
 	console.log('no valid response');
 	process.exit(1);
 }
-
-writeFileSync(`scripts/tmp-${SLUG}.txt`, bestText);
-console.log('SAVED bytes:', bestText.length);
-
-const j = JSON.parse(bestText.slice(bestText.indexOf('[')));
-const info = j[6];
-const pick = (i) => JSON.stringify(info[i]);
-
-console.log('\nNAME:', pick(11));
-console.log('ADDRESS:', pick(2));
-console.log('GEO:', pick(9));
-console.log('FID:', pick(10));
-console.log('CATS:', pick(13));
-console.log('PLACEID:', pick(78));
-console.log('RATING:', pick(4));
-console.log('PHONE:', pick(178));
-console.log('WEB:', pick(7));
-console.log('PLUS:', pick(183));
-console.log('DESC:', pick(154));
-console.log('\nHOURS RAW:', JSON.stringify(info[203]).slice(0, 3000));
-console.log('\nATTRIBUTES:', JSON.stringify(info[100]).slice(0, 3000));
-console.log('\nREVIEWS:');
-try {
-	for (const r of info[31][1]) console.log('rating', r[9], '|', r[1]);
-} catch (e) {
-	console.log('err', e.message);
-}
-console.log('\nMENU:', JSON.stringify(info[164]).slice(0, 1500));
-
-writeFileSync(
-	`scripts/tmp-${SLUG}.json`,
-	JSON.stringify(
-		{
-			name: info[11],
-			address: info[2],
-			geo: info[9],
-			fid: info[10],
-			categories: info[13],
-			placeId: info[78],
-			rating: info[4],
-			desc: info[154],
-			phone: info[178],
-			website: info[7],
-			plusCode: info[183],
-			attributes: info[100],
-			hours: info[203],
-			reviews: info[31]?.[1]?.map((r) => ({ rating: r[9], text: r[1] })),
-			menu: info[164],
-		},
-		null,
-		2,
-	),
-);

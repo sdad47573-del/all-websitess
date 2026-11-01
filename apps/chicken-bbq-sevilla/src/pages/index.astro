@@ -1,0 +1,365 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/chicken-bbq-sevilla-apaisada-01.jpg';
+import brasas from '../assets/fotos/chicken-bbq-sevilla-cuadrada-02.jpg';
+import parrilla from '../assets/fotos/chicken-bbq-sevilla-apaisada-04.jpg';
+import interior from '../assets/fotos/chicken-bbq-sevilla-panoramica-07.jpg';
+import patatas from '../assets/fotos/chicken-bbq-sevilla-vertical-05.jpg';
+import arroz from '../assets/fotos/chicken-bbq-sevilla-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Chicken BBQ Sevilla · Pollo asado a la brasa en Los Bermejales';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de Chicken BBQ Sevilla en la avenida de Alemania, con el rótulo de pollo al carbón y el teléfono de pedidos en el escaparate',
+	},
+	{
+		src: brasas,
+		alt: 'Los pollos asándose en cestas metálicas sobre las brasas al rojo en Chicken BBQ Sevilla',
+	},
+	{
+		src: parrilla,
+		alt: 'Varias cestas de pollos girando sobre la parrilla de carbón, entre humo',
+	},
+	{
+		src: interior,
+		alt: 'El interior de Chicken BBQ Sevilla con la barra de madera, los taburetes rojos y la nevera de bebidas',
+	},
+	{
+		src: patatas,
+		alt: 'Una ración de patatas fritas en un cucurucho de papel de periódico',
+	},
+	{
+		src: arroz,
+		alt: 'Una olla de arroz con perejil recién hecho, removido con una cuchara de madera',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#chickenbbq`,
+	name: BUSINESS.name,
+	alternateName: ['Chicken BBQ Sevilla', 'Chicken BBQ Los Bermejales', 'Pollo asado a la brasa Los Bermejales'],
+	description:
+		'Pollo asado a la brasa al carbón en la avenida de Alemania, 19, Los Bermejales (41012 Sevilla). Patatas, arroz, salsa picante y pedidos por teléfono.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34955386130',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo a la brasa', 'Barbacoa', 'Costillas'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sevilla' },
+		{ '@type': 'AdministrativeArea', name: 'Los Bermejales' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#14100e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400..800;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Chicken BBQ Sevilla, pollo asado a la brasa, Los Bermejales, pollo al carbón Sevilla, patatas, arroz, salsa picante, avenida de Alemania, comida a domicilio"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado a la brasa al carbón, patatas, arroz y salsa picante en la avenida de Alemania, 19, Los Bermejales (41012 Sevilla). Pedidos por teléfono."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Cartel de Chicken BBQ Sevilla con su nombre sobre fondo carbón y brasa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#14100e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Los Bermejales"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Chicken BBQ"
+			subtitle="Pollo al carbón · Los Bermejales"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. de Alemania, 19 · Los Bermejales, Sevilla"
+				title="Pollo al carbón <br /><em>en Los Bermejales.</em>"
+				lede={`Chicken BBQ Sevilla es el asador de la avenida de Alemania: pollo asado a la brasa, patatas, arroz y salsa picante, con pedidos por teléfono. Abre todos los días al mediodía. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de Chicken BBQ Sevilla en la avenida de Alemania, con el rótulo de pollo al carbón y el teléfono de pedidos en el escaparate"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:00–16:00</b> · todos los días' },
+					{ label: 'Pedidos', html: '<b>Por teléfono</b> · a domicilio' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pollo a la brasa · patatas · arroz"
+			/>
+
+			<LocalChips label="Lo que ofrece Chicken BBQ Sevilla" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Brasa de carbón <br /><em>en el barrio.</em>"
+				paragraphs={[
+					'Chicken BBQ Sevilla está en la avenida de Alemania, 19, en Los Bermejales. El rótulo granate sobre la fachada lo anuncia sin rodeos: «Pollo al carbón, auténtico sabor barbacoa», y en el escaparate se lee el teléfono de pedidos con letras grandes.',
+					'La parrilla es el corazón del local: los pollos van en cestas metálicas sobre las brasas al rojo, girando hasta quedar dorados. Las fotos de la ficha muestran la brasa, el humo y el interior con barra de madera y taburetes rojos.',
+					'La ficha lo clasifica como restaurante especializado en pollo, parrilla, barbacoa y costillas al estilo coreano, y también como pollería y comida a domicilio. La carta completa y los precios no están publicados.',
+					'Google le da 3,8 sobre 5 con 135 reseñas. Las que muestra hablan del pollo, las patatas, el arroz y la salsa picante, y destacan la formalidad al recoger los pedidos telefónicos.',
+				]}
+				note="La ficha no publica carta, precios, página web ni redes sociales. Los platos de esta página son los que nombran las categorías y las reseñas de Google, consultadas en octubre de 2026. Los precios y la disponibilidad se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Del carbón a la mesa</p>
+					<h2 id="highlights-title">Brasa, pollo <br /><em>y pedidos.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pollo a la brasa <br /><em>y sus acompañamientos.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que nombran sus categorías y sus reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en las categorías y en las reseñas del perfil de Google, consultadas en octubre de 2026. La disponibilidad se confirma por teléfono."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La brasa, el local <br /><em>y la mesa.</em>"
+				description="Seis fotografías del perfil de Chicken BBQ Sevilla en Google Maps: la fachada, la parrilla, el interior y los acompañamientos."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">3,8 sobre 5, <em>con 135 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 3,8 con 135 opiniones. Las
+							tres reseñas que muestra la ficha hablan del pollo, las patatas, el arroz, la salsa
+							picante y la atención telefónica; aquí se reproducen tal cual.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>3,8</strong>
+						<span>★★★★☆</span>
+						<small>135 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Los Bermejales, <br /><em>avenida de Alemania.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.district]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 10:00 a 16:00 el lunes y de 11:00 a 16:00 de martes a domingo, sin día de cierre. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Chicken BBQ Sevilla en la avenida de Alemania, 19, Los Bermejales, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Av. de Alemania, 19"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos por teléfono: Google lo clasifica como comida a domicilio y una reseña destaca «la formalidad al recoger los pedidos telefónicos». No consta página web ni pedidos online, así que el reparto, la zona y el importe se confirman llamando. En accesibilidad la ficha marca acceso para sillas de ruedas, pero no aparcamiento ni asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Chicken BBQ Sevilla"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Chicken BBQ"
+			navAriaLabel="Enlaces de Chicken BBQ Sevilla"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

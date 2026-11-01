@@ -1,0 +1,379 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/pico-de-oro-vista-01.jpg';
+import parrilla from '../assets/fotos/pico-de-oro-apaisada-06.jpg';
+import mostrador from '../assets/fotos/pico-de-oro-apaisada-05.jpg';
+import tortilla from '../assets/fotos/pico-de-oro-vertical-07.jpg';
+import cordero from '../assets/fotos/pico-de-oro-apaisada-04.jpg';
+import migas from '../assets/fotos/pico-de-oro-apaisada-02.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Pico de Oro · Pollos al carbón, freiduría y churrería en Bormujos';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de Pico de Oro en la calle Pablo Coso Calero, con el rótulo de pollos al carbón, freiduría y churrería',
+	},
+	{
+		src: parrilla,
+		alt: 'Los pollos asándose sobre las brasas en la parrilla de Pico de Oro',
+	},
+	{
+		src: mostrador,
+		alt: 'El mostrador de Pico de Oro con tortillas, huevos rellenos, solomillo al whisky y albóndigas en salsa',
+	},
+	{
+		src: tortilla,
+		alt: 'Una tortilla entera de Pico de Oro sobre el mármol de la cocina',
+	},
+	{
+		src: cordero,
+		alt: 'Una pierna de cordero asada con patatas y verduras en su bandeja',
+	},
+	{
+		src: migas,
+		alt: 'Una paellera llena de migas con chorizo, pimiento verde y torreznos',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#picodeoro`,
+	name: BUSINESS.name,
+	alternateName: ['FREIDURÍA Y POLLOS AL CARBÓN PICO DE ORO', 'Pico de Oro Bormujos', 'Pollos al carbón Pico de Oro'],
+	description:
+		'Freiduría y pollos al carbón en la calle Pablo Coso Calero, 107, Bormujos (41930 Sevilla). Tortillas, tapas, churros y comida para llevar y a domicilio.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34614108496',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Pollo al carbón', 'Freiduría', 'Churros', 'Tapas'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Bormujos' },
+		{ '@type': 'AdministrativeArea', name: 'Aljarafe' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: 'Sevilla',
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:30',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Thursday', 'Sunday'],
+			opens: '19:00',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '19:00',
+			closes: '00:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday'],
+			opens: '10:30',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1e1613" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Karla:ital,wght@0,400..800;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Pico de Oro Bormujos, pollos al carbón Bormujos, freiduría Bormujos, churrería Bormujos, tortillas, tapas, comida para llevar Aljarafe, Pablo Coso Calero"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos al carbón, freiduría, churrería, tortillas y tapas en la calle Pablo Coso Calero, 107 (41930 Bormujos, Sevilla). Para llevar y a domicilio."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Cartel de Pico de Oro con su nombre sobre fondo granate y la dirección en Bormujos"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1e1613"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region="Sevilla"
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Bormujos"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: 'Sevilla',
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Pico de Oro"
+			subtitle="Pollos al carbón · Bormujos"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Pablo Coso Calero, 107 · 41930 Bormujos"
+				title="Pollos al carbón <br /><em>y freiduría.</em>"
+				lede={`Pico de Oro es la freiduría de la calle Pablo Coso Calero, en Bormujos: pollos al carbón, freiduría, churros, tortillas y tapas a 2 €. Abre al mediodía y por la noche, hace comida para llevar y reparte a domicilio. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de Pico de Oro en la calle Pablo Coso Calero, con el rótulo de pollos al carbón, freiduría y churrería"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:30–16:00</b> y noches · miércoles cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> y a domicilio' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pollo al carbón · freiduría · churrería"
+			/>
+
+			<LocalChips label="Lo que ofrece Pico de Oro" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pollo a la brasa <br /><em>en Bormujos.</em>"
+				paragraphs={[
+					'Pico de Oro está en el número 107 de la calle Pablo Coso Calero, en Bormujos. La fachada de ladrillo se abre con un rótulo blanco que lo anuncia todo: «Pollos, carnes, tapas» a un lado y «Freiduría, churrería, bebidas» al otro, con el dibujo del pollo asándose.',
+					'Dentro manda la parrilla: en las fotos de la ficha se ve la brasa al rojo y los pollos girando en los cestos metálicos. También hay un mostrador con tortillas enteras, huevos rellenos, solomillo al whisky, albóndigas en salsa y flamenquín.',
+					'Google lo clasifica como restaurante de comida para llevar y le añade etiquetas de panadería, pollería, hamburguesería, pastelería, tienda de aves, bar de tapas y tortillería: es el surtido de barrio para completar la mesa.',
+					'La ficha le da 4,0 sobre 5 con 163 reseñas. Las que muestra hablan de «pollos ricos y sabrosos», del pollo «con una buena ración de patatas y pimientos» y también de alguna ración que salió seca.',
+				]}
+				note="La ficha no publica carta ni precios (solo el cartel «Tapas varias a 2 €» del escaparate) ni página web o redes sociales. Todo lo que se cuenta aquí sale de la ficha, de su rótulo y de sus fotos, consultadas en octubre de 2026."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la parrilla al mostrador</p>
+					<h2 id="highlights-title">Brasa, freiduría <br /><em>y mostrador.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="Lo que se lleva"
+				title="Pollo, freiduría <br /><em>y tapas.</em>"
+				description="La ficha no tiene carta online. Esto es lo que anuncia el rótulo y lo que muestran las fotos del mostrador."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios salvo el cartel «Tapas varias a 2 €» del escaparate. La disponibilidad, los precios y el reparto se confirman por teléfono o en el local."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la brasa <br /><em>y el mostrador.</em>"
+				description="Las fotos del perfil de Pico de Oro en Google Maps: la fachada, los pollos en la parrilla, el mostrador, una tortilla, el cordero y las migas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,0 sobre 5, <em>con 163 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 4,0 con 163 opiniones. Las
+							tres reseñas que muestra la ficha hablan del pollo y de su guarnición; aquí se
+							reproducen tal cual, también la que no es nada amable.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,0</strong>
+						<span>★★★★☆</span>
+						<small>163 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Bormujos, <br /><em>Pablo Coso Calero.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Sevilla']}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: dos turnos, de 10:30 a 16:00 y de 19:00 a 23:30, con el miércoles cerrado. El martes solo abre de 10:30 a 15:00 y viernes y sábado cierran a las 24:00. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Pico de Oro en la calle Pablo Coso Calero, 107, Bormujos, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Pablo Coso Calero, 107"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos por teléfono: la ficha no publica pedidos online. Google lo clasifica como comida a domicilio y para llevar; el reparto, la zona y el importe se confirman llamando. En accesibilidad la ficha marca entrada y aparcamiento adaptados para sillas de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Pico de Oro"
+			navAriaLabel="Enlaces de Pico de Oro"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

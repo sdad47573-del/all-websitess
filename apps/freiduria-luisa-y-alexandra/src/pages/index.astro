@@ -1,0 +1,366 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import frito from '../assets/fotos/freiduria-luisa-y-alexandra-apaisada-01.jpg';
+import bandejas from '../assets/fotos/freiduria-luisa-y-alexandra-vertical-02.jpg';
+import surtido from '../assets/fotos/freiduria-luisa-y-alexandra-vertical-03.jpg';
+import fachada from '../assets/fotos/freiduria-luisa-y-alexandra-vertical-09.jpg';
+import croquetas from '../assets/fotos/freiduria-luisa-y-alexandra-apaisada-05.jpg';
+import postre from '../assets/fotos/freiduria-luisa-y-alexandra-apaisada-04.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Freiduría Luisa y Alexandra · Pescado frito para llevar en Sevilla';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: frito,
+		alt: 'Un cucurucho de boquerones fritos en una bandeja de aluminio, con un gajo de limón',
+	},
+	{
+		src: bandejas,
+		alt: 'Una mesa llena de bandejas de pescado frito variado, calamares, croquetas y patatas en Freiduría Luisa y Alexandra',
+	},
+	{
+		src: surtido,
+		alt: 'Una bandeja de frito variado con calamares a la romana, boquerones, pescado y croquetas, con limón',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de Freiduría Luisa y Alexandra en Emilio Lemos, con el rótulo de comida para llevar y el teléfono',
+	},
+	{
+		src: croquetas,
+		alt: 'Un plato de croquetas con patatas fritas',
+	},
+	{
+		src: postre,
+		alt: 'Cinco vasos de postre con galleta triturada y crema',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#luisayalexandra`,
+	name: BUSINESS.name,
+	alternateName: ['FREIDURÍA LUISA Y ALEXANDRA', 'Freiduría Luisa Alexandra', 'Freiduría Emilio Lemos'],
+	description:
+		'Freiduría de pescado frito y papas para llevar en la avenida de Emilio Lemos, 19, Local 5C1, Pino Montano (41020 Sevilla). Abierta todos los días hasta la 1:00.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34642983813',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pescado frito', 'Freiduría', 'Papas fritas'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Sevilla' },
+		{ '@type': 'AdministrativeArea', name: 'Pino Montano' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '13:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '20:00',
+			closes: '01:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0f2f2d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&family=DM+Sans:ital,wght@0,400..800;1,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Freiduría Luisa y Alexandra, pescado frito Sevilla, freiduría Pino Montano, Emilio Lemos, chocos, papas fritas, comida para llevar, frito para dos"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pescado frito variado, chocos, papas y frito para dos en la avenida de Emilio Lemos, 19 (Pino Montano, 41020 Sevilla). Todos los días hasta la 1:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Tarjeta de Freiduría Luisa y Alexandra con su nombre en cursiva sobre fondo verde marino"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#0f2f2d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-SE"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Pino Montano"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[frito]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Luisa y Alexandra"
+			subtitle="Freiduría · Pino Montano"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. de Emilio Lemos, 19, Local 5C1 · Pino Montano, Sevilla"
+				title="Pescado frito <br /><em>para llevar.</em>"
+				lede={`Luisa y Alexandra es la freiduría de la avenida de Emilio Lemos: pescado frito variado, chocos y papas, todo para llevar. Abre todos los días de 13:00 a 17:00 y de 20:00 a 1:00. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={frito}
+				imageAlt="Un cucurucho de boquerones fritos en una bandeja de aluminio, con un gajo de limón"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>13:00–17:00</b> · y 20:00–01:00' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · todos los días' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Fotos de la ficha de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pescado frito · chocos · papas"
+			/>
+
+			<LocalChips label="Lo que ofrece Luisa y Alexandra" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Frito de barrio <br /><em>en Pino Montano.</em>"
+				paragraphs={[
+					'Luisa y Alexandra está en la avenida de Emilio Lemos, 19, local 5C1, en Pino Montano. La fachada blanca con el borde verde muestra el rótulo de la freiduría, el teléfono y las fotos del frito: todo se pide para llevar.',
+					'Google la clasifica como tienda de pescado y papas fritas para llevar. En las fotos de la ficha se ven los cucuruchos de papel con boquerones, las bandejas de frito variado, los calamares y las croquetas, siempre con su gajo de limón.',
+					'La ficha no publica la carta ni los precios. Lo que sí cuentan las reseñas es el pescado variado, los chocos y el frito para dos personas, que describen como «abundante y muy rico».',
+					'Google le da 3,8 sobre 5 con 50 reseñas. Las tres opiniones que muestra son de cinco estrellas y hablan de limpieza, amabilidad, del pescado y de los chocos.',
+				]}
+				note="La ficha no publica carta, precios, página web ni redes sociales. Los platos de esta página son los que nombran la categoría y las reseñas de Google, consultadas en octubre de 2026. La disponibilidad y los precios se confirman por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la freidora al cucurucho</p>
+					<h2 id="highlights-title">Pescado, chocos <br /><em>y papas.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Frito variado <br /><em>y para llevar.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que nombran su categoría y sus reseñas."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la categoría y en las reseñas del perfil de Google, consultadas en octubre de 2026. La disponibilidad se confirma por teléfono o en el local."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El frito, el mostrador <br /><em>y la fachada.</em>"
+				description="Seis fotografías del perfil de Freiduría Luisa y Alexandra en Google Maps: cucuruchos de pescado, bandejas de frito variado, la fachada y algún postre."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">3,8 sobre 5, <em>con 50 reseñas.</em></h2>
+						<p>
+							La valoración que publica Google en octubre de 2026 es de 3,8 con 50 opiniones. Las
+							tres reseñas que muestra la ficha son de cinco estrellas y hablan del pescado, los
+							chocos, la limpieza y la amabilidad; aquí se reproducen tal cual.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>3,8</strong>
+						<span>★★★★☆</span>
+						<small>50 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Pino Montano, <br /><em>Emilio Lemos.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.district]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: todos los días de 13:00 a 17:00 y de 20:00 a 1:00, sin día de cierre. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Freiduría Luisa y Alexandra en la avenida de Emilio Lemos, 19, Pino Montano, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Av. de Emilio Lemos, 19"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Comida para llevar: la ficha no publica reparto a domicilio ni pedidos online. El canal que aparece es el teléfono, el 642 98 38 13, y en el local se pide en el mostrador. En accesibilidad la ficha marca acceso para sillas de ruedas, pero no asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Luisa y Alexandra"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
+			ctaLabel="Llamar a Luisa y Alexandra"
+			navAriaLabel="Enlaces de Luisa y Alexandra"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
