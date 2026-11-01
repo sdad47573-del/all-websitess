@@ -1,0 +1,406 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import mostrador from '../assets/fotos/tastic-apaisada-01.jpg';
+import pizzaMixta from '../assets/fotos/tastic-apaisada-04.jpg';
+import interior from '../assets/fotos/tastic-apaisada-06.jpg';
+import barra from '../assets/fotos/tastic-apaisada-07.jpg';
+import vitrina from '../assets/fotos/tastic-apaisada-10.jpg';
+import pizzaBurrata from '../assets/fotos/tastic-panoramica-03.jpg';
+import pizzaVerdura from '../assets/fotos/tastic-vertical-02.jpg';
+import mesa from '../assets/fotos/tastic-vertical-05.jpg';
+import pizzaCarne from '../assets/fotos/tastic-vertical-08.jpg';
+import empanadas from '../assets/fotos/tastic-vertical-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Tastic · Hot Pizza & Hot Stuff en Andorra la Vella';
+const description =
+	'Tastic (Hot Pizza & Hot Stuff), en el Carrer Dr. Vilanova, 13, de Andorra la Vella (AD500). Pizza al corte, empanadas, burgers, burritos y menús de desayuno. 4,2 sobre 5 con 149 reseñas. De 8:00 a 20:00 de lunes a viernes; sábado de 9:00 a 16:00 y domingo cerrado. Teléfono +376 845 578.';
+
+const galeria = [
+	{
+		src: mostrador,
+		alt: 'El mostrador de Tastic con las pizarras de precios de empanadas, burgers, burritos, pizza y cafés, y las vitrinas de bollería',
+	},
+	{
+		src: barra,
+		alt: 'La barra de Tastic con el toldo rojo, el cartel de Hot Pizza Hot Stuff y la pizarra de menús, junto a las cajas de A emportar',
+	},
+	{
+		src: interior,
+		alt: 'El interior del local con el jardín vertical, las mesas altas de madera, las sillas negras y el cartel de All you need today is coffee',
+	},
+	{
+		src: pizzaMixta,
+		alt: 'Una pizza mitad y mitad en su caja: una parte con queso azul y aceitunas negras y otra con pimiento, cebolla y carne',
+	},
+	{
+		src: pizzaBurrata,
+		alt: 'Una pizza con burrata, tomate cherry, rúcula y frutos secos, con el logotipo de Tastic sobre la imagen',
+	},
+	{
+		src: pizzaCarne,
+		alt: 'Detalle de una pizza con pepperoni, jamón cocido y carne picada sobre base de queso fundido',
+	},
+	{
+		src: pizzaVerdura,
+		alt: 'Una pizza con rodajas de calabacín, tiras de pimiento rojo y corazones de alcachofa',
+	},
+	{
+		src: empanadas,
+		alt: 'Dos empanadas de hojaldre dorado en un plato blanco',
+	},
+	{
+		src: mesa,
+		alt: 'Una mesa con porciones de pizza, medio bocadillo, una bebida y un café con hielo, con salseras al lado',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina de bollería con croissants, napolitanas de chocolate, donuts y otras piezas recién horneadas',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Tastic',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#tastic`,
+	name: BUSINESS.fullName,
+	alternateName: ['Tastic', 'Tastic Andorra', 'Tastic Hot Pizza', 'Hot Pizza & Hot Stuff'],
+	description:
+		'Pizzería de pizza al corte, empanadas, burgers, burritos y desayunos en el Carrer Dr. Vilanova, 13, del centro de Andorra la Vella.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+376845578',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pizza', 'Empanadas', 'Comida rápida', 'Desayunos'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '20:00',
+		},
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '09:00', closes: '16:00' },
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#211a16" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Space+Grotesk:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Tastic Andorra, pizza al corte Andorra la Vella, Hot Pizza Hot Stuff, empanadas Andorra, burger Andorra la Vella, burritos Andorra, desayuno Andorra la Vella, Dr. Vilanova 13"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pizza al corte, empanadas, burgers y desayunos en el Carrer Dr. Vilanova, 13, Andorra la Vella. 4,2 sobre 5 con 149 reseñas. De 8:00 a 20:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="El mostrador de Tastic con las pizarras de precios y las vitrinas de bollería"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.fullName}
+			themeColor="#211a16"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="AD-07"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.city}
+			locale="es_ES"
+			countryName="Andorra"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[mostrador]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Tastic"
+			subtitle="Hot pizza · Andorra la Vella"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer Dr. Vilanova, 13 · Andorra la Vella"
+				title="Hot pizza, <br /><em>hot stuff.</em>"
+				lede={`Tastic es la pizzería de al corte del centro de Andorra la Vella: porciones recién hechas, empanadas, burgers, burritos y menús de desayuno hasta las 13:00. Abre de 8:00 a 20:00 de lunes a viernes, el sábado de 9:00 a 16:00 y descansa el domingo. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={mostrador}
+				imageAlt="El mostrador de Tastic con las pizarras de precios de empanadas, burgers, burritos, pizza y cafés, y las vitrinas de bollería"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>8:00–20:00</b> · de lunes a viernes' },
+					{ label: 'Domingo', html: '<b>Cerrado</b> · sábado hasta las 16:00' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pizza al corte · Andorra"
+			/>
+
+			<LocalChips label="Lo que ofrece Tastic" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Dr. Vilanova, 13. <br /><em>Corte y vitrina.</em>"
+				paragraphs={[
+					'El local está en el Carrer Dr. Vilanova, 13, en pleno centro de Andorra la Vella, a pocos minutos de la avenida Meritxell. Dentro hay dos ambientes: el mostrador con las vitrinas y las pizarras de precios, y una sala con jardín vertical, mesas de madera y sillas metálicas bajo los carteles de «All you need today is coffee» y «Hot pizza, hot stuff».',
+					'La pizarra ordena la oferta en bloques: empanadas y packs, burgers, burritos, pizza al corte y menús de desayuno, además del café. La pizza se vende por porción a 2,50 € y también entera con bebida; los burritos —de ternera, pollo o vegetal— están a 5,95 €, y las empanadas sueltas a 2,65 €.',
+					'Los desayunos son hasta las 13:00 de lunes a viernes: menú de bollería desde 2,20 €, menú picolo o flautí con café por 3,60 €. Las cajas de cartón de «A emportar» apuntan a que buena parte del negocio sale por la puerta.',
+					`El horario es de 8:00 a 20:00 de lunes a viernes y de 9:00 a 16:00 el sábado, con el domingo cerrado. Google la clasifica como «Pizzería», marca el acceso para sillas de ruedas y le da ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026).`,
+				]}
+				note="La ficha de Google no publica la carta. Los platos y precios de esta página son los que se leen en las pizarras del propio local en las fotos del perfil; cambian con las temporadas y las ofertas, así que confírmalos en el +376 845 578."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> La casa</p>
+					<h2 id="highlights-title">Porciones, packs <br /><em>y café.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo que dice <br /><em>la pizarra.</em>"
+				description="Los precios de las pizarras del local, tal como aparecen en las fotos del perfil de Google Maps: empanadas y packs, pizza al corte, burritos, burgers y los menús de desayuno con el café."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Importes leídos en las pizarras del establecimiento fotografiadas en su perfil de Google (consultado el 1 de noviembre de 2026). La ficha no publica carta oficial y los precios pueden cambiar; los menús de desayuno se sirven hasta las 13:00 de lunes a viernes."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El mostrador, <br /><em>la pizza y la vitrina.</em>"
+				description="Diez fotografías del perfil de Tastic en Google Maps: el mostrador con las pizarras, la barra con el toldo rojo, la sala con el jardín vertical, cuatro pizzas distintas, las empanadas, una mesa con porciones y bocadillo, y la vitrina de bollería."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,2 sobre 5, <em>con 149 reseñas.</em></h2>
+						<p>
+							Ciento cuarenta y nueve opiniones y una media de 4,2 sobre 5 (consultada el 1 de
+							noviembre de 2026). Es un local de paso, con mucha clientela de oficina y de compras:
+							la media refleja la experiencia habitual, con reseñas buenas y alguna más tibia.
+						</p>
+						<p>
+							Esta web no copia reseñas sueltas: para leerlas con sus fechas y sus respuestas, abre
+							la ficha en Google.
+						</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver las 149 reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,2</strong>
+						<span>★★★★☆</span>
+						<small>149 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el centro <br /><em>de la capital.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.city, `${BUSINESS.postalCode} · Andorra`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 8:00 a 20:00 de lunes a viernes, el sábado de 9:00 a 16:00 y el domingo cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Tastic en el Carrer Dr. Vilanova, 13, Andorra la Vella"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Dr. Vilanova, 13 · Andorra la Vella"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Pedidos y consultas por teléfono, en el +376 845 578: la ficha no publica pedidos online ni reservas, y Google solo marca el acceso para sillas de ruedas, sin datos de aparcamiento."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Tastic"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario, valoración, carta y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Los precios son los de las pizarras del local: confírmalos por teléfono."
+			ctaLabel="Llamar a Tastic"
+			navAriaLabel="Enlaces de Tastic (Hot Pizza & Hot Stuff)"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

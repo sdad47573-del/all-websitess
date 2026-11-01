@@ -7,7 +7,7 @@
  *   36.7319859,-4.4631077, feature 0xd72f738c37f14a9:0xe536fd53797e32fb.
  * - Nombre, dirección, categoría, teléfono, valoración, horario, accesibilidad,
  *   descripción del negocio, reseñas y galería: ficha pública de Google
- *   consultada en octubre de 2026.
+ *   consultada en noviembre de 2026.
  *
  * Lo que la ficha NO publica: página web, redes sociales, carta ni precios. La
  * web no inventa esos datos. Los platos que se citan son los que nombran la
@@ -47,10 +47,10 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=36.7319859,-4.4631077',
 };
 
-/** Valoración publicada en la ficha (octubre de 2026). */
+/** Valoración publicada en la ficha (noviembre de 2026). */
 export const RATING = {
 	value: 4.9,
-	count: 430,
+	count: 431,
 	label: '4,9',
 };
 
@@ -189,7 +189,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué valoración tiene?',
-		a: 'La ficha tiene 4,9 sobre 5 con 430 reseñas en el momento de consultarla (octubre de 2026). Las opiniones destacadas elogian el pollo, las costillas, las patatas, los pimientos y las salsas.',
+		a: 'La ficha tiene 4,9 sobre 5 con 431 reseñas en el momento de consultarla (noviembre de 2026). Las opiniones destacadas elogian el pollo, las costillas, las patatas, los pimientos y las salsas.',
 	},
 	{
 		q: '¿Tiene página web o redes sociales?',

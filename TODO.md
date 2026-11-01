@@ -1,7 +1,4 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
-https://www.google.com/maps/place/La+Terrasse+Lucien/@42.5405832,1.7337715,17z/data=!4m6!3m5!1s0x12af7d65ff0891f5:0x98660615845dde56!8m2!3d42.5405832!4d1.7337715!16s%2Fg%2F11gxssq67r?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/ASADOR+DE+POLLOS+DANI/@36.7239388,-4.4920974,17z/data=!4m6!3m5!1s0xd72f755c3404c93:0x82019eea5048fff2!8m2!3d36.7239388!4d-4.4920974!16s%2Fg%2F11zdc6bhbm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Asador+de+pollos+y+comida+para+llevar+%22El+Laurel%22/@36.717033,-4.4545256,17z/data=!4m6!3m5!1s0xd72f76b862bbe7d:0x44c951e83162bd81!8m2!3d36.717033!4d-4.4545256!16s%2Fg%2F11byz79s11?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
@@ -45,8 +42,16 @@ https://www.google.com/maps/place/Asador+De+Pollos+Rosa+La+Colonia+Santa+In%C3%A
 
 https://www.google.com/maps/place/Sabor+Kebab+Halal/@42.5083527,1.522037,17z/data=!4m6!3m5!1s0x12a58ad33d5ad03f:0xd441b75a082b5af!8m2!3d42.5083527!4d1.522037!16s%2Fg%2F11csbtr7q2?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/EL+TURKO+KEBAB+PIZZERIA/@42.5086103,1.5405986,17z/data=!4m6!3m5!1s0x12a58ae779209c67:0xe951168a986897e3!8m2!3d42.5086103!4d1.5405986!16s%2Fg%2F11cjkp3nn9?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Bar+Nou/@42.5096757,1.5311149,17z/data=!4m6!3m5!1s0x12a58adae310eb89:0x65155ba6a3ca6ebd!8m2!3d42.5096757!4d1.5311149!16s%2Fg%2F11c5h2k96l?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+
+https://www.google.com/maps/place/Restaurant+M%C3%B3n+Asi%C3%A0tic/@42.509151,1.5417669,17z/data=!4m6!3m5!1s0x12a5f558265557b1:0x63183f109164384f!8m2!3d42.509151!4d1.5417669!16s%2Fg%2F11vbc3mfzt?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/RESTAURANT+PIZZERIA+VEN%C3%88CIA/@42.4626196,1.4911699,17z/data=!4m6!3m5!1s0x12a5f37d59ce1799:0x5050715ef9e79ba8!8m2!3d42.4626196!4d1.4911699!16s%2Fg%2F1pp2xbjd3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
-https://www.google.com/maps/place/Tastic+(Hot+Pizza+%26+Hot+Stuff)/@42.5060766,1.5216047,17z/data=!4m6!3m5!1s0x12a58b5d62be493d:0xf68125399ad7342f!8m2!3d42.5060766!4d1.5216047!16s%2Fg%2F11sg7ztxkc?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Food+Truck/@42.5411874,1.7331251,17z/data=!4m6!3m5!1s0x12af7d0c05c6458d:0x89c56a8d240732e1!8m2!3d42.5411874!4d1.7331251!16s%2Fg%2F11sf8n_m1p?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+
+https://www.google.com/maps/place/CREPERIA+PIZZERIA+SEGLE+XXI/@42.532906,1.576869,17z/data=!4m6!3m5!1s0x12a58a73018861e3:0x5157a19105ae9e80!8m2!3d42.532906!4d1.576869!16s%2Fg%2F1pzswmpn1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+
+https://www.google.com/maps/place/RESTAURANT+PIZZERIA+CREPERIA+LA+DI+ROMA/@42.5408852,1.733738,17z/data=!4m6!3m5!1s0x12af7d8b2522358f:0x7d90700adb950c7c!8m2!3d42.5408852!4d1.733738!16s%2Fg%2F1pp2xbhzk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
+
+https://www.google.com/maps/place/Bon+App%C3%A9tit+-+Cafeteria+Carrefour+Andorra+2000/@42.5064585,1.5300457,17z/data=!3m1!4b1!4m6!3m5!1s0x12a58b740d31a297:0x84f745fe7dbda7f8!8m2!3d42.5064585!4d1.5300457!16s%2Fg%2F11hkc8hprk?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D

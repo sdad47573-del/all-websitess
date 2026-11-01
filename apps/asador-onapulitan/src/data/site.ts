@@ -47,10 +47,10 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=36.7355024,-4.4808437',
 };
 
-/** Valoración publicada en la ficha (octubre de 2026). */
+/** Valoración publicada en la ficha (1 de noviembre de 2026). */
 export const RATING = {
 	value: 5,
-	count: 17,
+	count: 18,
 	label: '5,0',
 };
 
@@ -204,7 +204,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué valoración tiene?',
-		a: 'La ficha tiene 5,0 sobre 5 con 17 reseñas en el momento de consultarla (octubre de 2026). Las opiniones destacadas elogian los bocadillos, el tiramisú, la comida preparada y el trato de la familia.',
+		a: 'La ficha tiene 5,0 sobre 5 con 18 reseñas en el momento de consultarla (noviembre de 2026). Las opiniones destacadas elogian los bocadillos, el tiramisú, la comida preparada y el trato de la familia.',
 	},
 	{
 		q: '¿Tiene página web o redes sociales?',

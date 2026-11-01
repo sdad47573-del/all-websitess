@@ -6,7 +6,7 @@
  * - Ficha de Google Maps aportada: «Asador Fuente De Colores»,
  *   36.7197018,-4.4607396, feature 0xd72f739aaaaaaab:0x7f20ee4ef085198d.
  * - Nombre, dirección, categoría, teléfono, valoración, horario, reseñas y
- *   galería: ficha pública de Google consultada en octubre de 2026.
+ *   galería: ficha pública de Google consultada en noviembre de 2026.
  *
  * Lo que la ficha NO publica: descripción del negocio, página web, redes
  * sociales, carta, precios ni datos de accesibilidad. La web no inventa esos
@@ -46,7 +46,7 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=36.7197018,-4.4607396',
 };
 
-/** Valoración publicada en la ficha (octubre de 2026). */
+/** Valoración publicada en la ficha (noviembre de 2026). */
 export const RATING = {
 	value: 4.3,
 	count: 231,
@@ -195,7 +195,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué valoración tiene?',
-		a: 'La ficha tiene 4,3 sobre 5 con 231 reseñas en el momento de consultarla (octubre de 2026). Las opiniones destacadas elogian el pollo, las patatas, la variedad de menús y el trato.',
+		a: 'La ficha tiene 4,3 sobre 5 con 231 reseñas en el momento de consultarla (noviembre de 2026). Las opiniones destacadas elogian el pollo, las patatas, la variedad de menús y el trato.',
 	},
 	{
 		q: '¿Tiene página web o redes sociales?',
