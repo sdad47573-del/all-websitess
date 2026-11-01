@@ -1,5 +1,5 @@
-import { defineConfig } from 'astro/config';
+import { createAstroConfig } from '@astro-config';
 
-export default defineConfig({
+export default createAstroConfig({
 	site: 'https://atalaya-catering.vercel.app',
 });

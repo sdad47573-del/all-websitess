@@ -1,0 +1,393 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import durum from '../assets/fotos/kebab-y-pizzeria-santutxu-vertical-08.jpg';
+import fachada from '../assets/fotos/kebab-y-pizzeria-santutxu-apaisada-01.jpg';
+import carta from '../assets/fotos/kebab-y-pizzeria-santutxu-vertical-03.jpg';
+import durumCortado from '../assets/fotos/kebab-y-pizzeria-santutxu-vertical-04.jpg';
+import pita from '../assets/fotos/kebab-y-pizzeria-santutxu-vertical-05.jpg';
+import patatas from '../assets/fotos/kebab-y-pizzeria-santutxu-vertical-06.jpg';
+import barra from '../assets/fotos/kebab-y-pizzeria-santutxu-vertical-07.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Kebab y Pizzería Santutxu · Kebab halal en Bilbao';
+const description =
+	'Kebab y Pizzería Santutxu, Santutxu Kalea (48004 Bilbao). Kebab halal, durum, pizzas, hamburguesas y fritos, con servicio a domicilio. 4,1 sobre 5 con 88 reseñas. Abierto todos los días desde las 12:30.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada roja del local en Santutxu, con el cartel de Asia Döner Kebab y la carta en el escaparate',
+	},
+	{
+		src: durumCortado,
+		alt: 'Durum cortado por la mitad, con la carne y la salsa dentro de la tortilla',
+	},
+	{
+		src: pita,
+		alt: 'Kebab en pan de pita con pollo desmenuzado, lechuga y salsa blanca',
+	},
+	{
+		src: patatas,
+		alt: 'Caja de patatas fritas recién hechas para llevar',
+	},
+	{
+		src: barra,
+		alt: 'La barra del local con paredes verdes, taburetes altos y la cocina al fondo',
+	},
+	{
+		src: carta,
+		alt: 'La carta del local en la ventana, con los kebabs, durums, pizzas y fritos',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que sirve Kebab y Pizzería Santutxu',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FastFoodRestaurant',
+	'@id': `${BUSINESS.siteUrl}/#santutxu`,
+	name: BUSINESS.name,
+	alternateName: ['Kebab y Pizzeria Santutxu', 'Asia Döner Kebab Santutxu', 'Kebab Santutxu'],
+	description:
+		'Kebab halal, durum, pizzas, hamburguesas y fritos en Santutxu Kalea (48004 Bilbao), con servicio a domicilio.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.web],
+	telephone: '+34666234905',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Kebab', 'Turca', 'Pizza', 'Halal'],
+	hasTakeaway: true,
+	hasDeliveryMethod: 'http://purl.org/goodrelations/v1#DeliveryModeOwnFleet',
+	areaServed: [
+		{ '@type': 'City', name: 'Bilbao' },
+		{ '@type': 'Place', name: 'Santutxu' },
+		{ '@type': 'AdministrativeArea', name: 'Bizkaia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '12:30',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '12:30',
+			closes: '00:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3c201a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Karla:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="kebab Santutxu, kebab Bilbao, pizzeria Santutxu, kebab halal Bilbao, durum Santutxu, kebab a domicilio Bilbao, Santutxu Kalea"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Kebab halal, durum, pizzas y fritos en Santutxu (Bilbao), con servicio a domicilio. Todos los días de 12:30 a 23:30 y hasta las 24:00 los viernes y sábados."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Durum de Kebab y Pizzería Santutxu, con la carne y la salsa dentro de la tortilla"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#3c201a"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[durum]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Kebab y Pizzería Santutxu"
+			subtitle="Kebab, pizza y durum · Bilbao"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Santutxu Kalea · Bilbao"
+				title="Kebab, durum <br /><em>y pizza.</em>"
+				lede={`Kebab y Pizzería Santutxu es el local de Santutxu Kalea donde conviven el döner y la pizzería: kebab halal en pan de pita, durum a la plancha, pizzas, hamburguesas y fritos, para comer en la barra o pedir a domicilio. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días de 12:30 a 23:30 y hasta las 24:00 los viernes y sábados.`}
+				image={durum}
+				imageAlt="Durum de Kebab y Pizzería Santutxu en el papel de rayas"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>12:30–23:30</b> · todos los días' },
+					{ label: 'A domicilio', html: `<b>${BUSINESS.phoneSign}</b> · el del cartel` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Halal"
+			/>
+
+			<LocalChips label="Lo que ofrece Kebab y Pizzería Santutxu" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Santutxu. <br /><em>Barra, durum y pizzas.</em>"
+				paragraphs={[
+					'Kebab y Pizzería Santutxu está en Santutxu Kalea, en el barrio de Santutxu, Bilbao. La ficha de Google no publica número de portal, pero sitúa el local en las coordenadas 43.2543252, -2.9166637. La fachada es roja, con el rótulo de «Asia Döner Kebab» y el cartel de «Servicio a domicilio» con su propio teléfono.',
+					'Dentro hay una barra de madera curvada, taburetes altos, paredes verdes y azulejo blanco en la zona de la cocina, con las campanas y los asadores al fondo. Es un local pequeño, de los de pedir en la barra y comer de pie o sentarse en las mesas de al lado.',
+					'La ficha lo clasifica como comida rápida, halal, tienda de kebabs y pizzería a domicilio. En las fotos del perfil aparecen el kebab en pan de pita con la carne desmenuzada y la salsa blanca, el durum cortado por la mitad, el durum envuelto en el papel de rayas, la caja de patatas fritas y la carta completa en la ventana.',
+					`Las reseñas que se ven en Google son breves: «el típico kebab con buena atención». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}; el del reparto, el ${BUSINESS.phoneSign}. La ficha también lo marca como espacio amigable con la comunidad LGBTQ+.`,
+				]}
+				note="La ficha no publica carta ni precios. Lo que aparece en esta página es lo que dice la ficha, lo que se lee en la carta de la ventana y lo que se reconoce en las fotos; los importes de la carta no se copian porque pueden estar desactualizados. Para pedir, hay que llamar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Recién hecho</p>
+					<h2 id="highlights-title">Kebab, durum <br /><em>y pizza.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Kebab, durum <br /><em>y fritos.</em>"
+				description="Sin precios publicados: esta lista reúne lo que se lee en la carta de la ventana y lo que se reconoce en las fotos del perfil de Google. Se puede comer en el local o pedir para llevar y a domicilio."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`Los pedidos se hacen por teléfono: el ${BUSINESS.phone} de la ficha y el ${BUSINESS.phoneSign}, que es el que anuncia el cartel para el servicio a domicilio. La carta está en la ventana del local y el precio se confirma al encargar.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, el durum <br /><em>y la barra.</em>"
+				description="Seis fotografías del perfil de Kebab y Pizzería Santutxu: la fachada roja con el cartel de Asia Döner Kebab, el durum cortado por la mitad, el kebab en pan de pita, la caja de patatas fritas, la barra de paredes verdes y la carta de la ventana."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,1 sobre 5, <em>con 88 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,1 con 88 opiniones (noviembre de 2026). Las reseñas que
+							se ven en la ficha hablan del kebab de siempre y de la atención del mostrador.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<small>Reseña publicada en Google</small>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,1</strong>
+						<span>★★★★☆</span>
+						<small>88 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Bilbao, <br /><em>Santutxu.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Bizkaia)`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: todos los días de 12:30 a 23:30, y hasta las 24:00 los viernes y sábados. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Kebab y Pizzería Santutxu en Santutxu Kalea, Bilbao"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Santutxu Kalea · Bilbao"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Para comer en el local o pedir a domicilio: ${BUSINESS.phone} y, para el reparto, ${BUSINESS.phoneSign}. La ficha no publica datos de accesibilidad, así que conviene preguntarlo. El local se anuncia como halal y como espacio amigable con la comunidad LGBTQ+.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma platos, precios y horario antes de pedir."
+			ctaLabel="Llamar a Kebab y Pizzería Santutxu"
+			navAriaLabel="Enlaces de Kebab y Pizzería Santutxu"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

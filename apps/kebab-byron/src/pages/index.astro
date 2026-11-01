@@ -1,0 +1,393 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import durumGratinado from '../assets/fotos/kebab-byron-vista-8-08.jpg';
+import comedor from '../assets/fotos/kebab-byron-apaisada-04.jpg';
+import barra from '../assets/fotos/kebab-byron-apaisada-07.jpg';
+import flyer from '../assets/fotos/kebab-byron-apaisada-03.jpg';
+import bandeja from '../assets/fotos/kebab-byron-vertical-09.jpg';
+import fachada from '../assets/fotos/kebab-byron-vista-1-01.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Kebab Byron · Döner kebab, durum y pizzas turcas en Basauri';
+const description =
+	'Kebab Byron, Agirre Lehendakaria Kalea, 36 (Arizgoiti, 48970 Basauri, Bizkaia). Döner kebab halal de pollo o cordero, durum, pizzas turcas y menús con patatas y refresco. Servicio a domicilio. 3,5 sobre 5 con 63 reseñas.';
+
+const galeria = [
+	{
+		src: durumGratinado,
+		alt: 'Durum gratinado con queso fundido por encima, servido en el plato',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de Kebab Byron en Arizgoiti, con el rótulo rojo y las fotos de durum y hamburguesa',
+	},
+	{
+		src: comedor,
+		alt: 'El comedor de Kebab Byron con mesas de mármol, sillas de metal y paredes rojas',
+	},
+	{
+		src: barra,
+		alt: 'La barra de madera de Kebab Byron con la carta colgada encima y las lámparas',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja con durums, sándwiches tostados y patatas fritas con salsa',
+	},
+	{
+		src: flyer,
+		alt: 'El flyer de Kebab Byron con la carta, los menús y el teléfono de reparto',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que sirve Kebab Byron',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#kebab-byron`,
+	name: BUSINESS.name,
+	alternateName: ['Kebab Byron Basauri', 'Byron Arizgoiti', 'Bar Baserri Kebab'],
+	description:
+		'Döner kebab halal, durum y pizzas turcas en Agirre Lehendakaria Kalea, 36 (Arizgoiti, 48970 Basauri, Bizkaia), con menús de patatas y refresco y servicio a domicilio.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34946076441',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Turca', 'Kebab', 'Halal'],
+	hasTakeaway: true,
+	hasDeliveryMethod: 'http://purl.org/goodrelations/v1#DeliveryModeOwnFleet',
+	areaServed: [
+		{ '@type': 'City', name: 'Basauri' },
+		{ '@type': 'Place', name: 'Arizgoiti' },
+		{ '@type': 'AdministrativeArea', name: 'Bizkaia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '12:00',
+			closes: '00:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '12:00',
+			closes: '01:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2f1e15" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Oswald:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Kebab Byron Basauri, kebab Arizgoiti, döner kebab Basauri, durum Basauri, pizza turca Basauri, kebab halal Bizkaia, kebab a domicilio Basauri"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Döner kebab halal, durum y pizzas turcas en Arizgoiti (Basauri), con menús de patatas y refresco y reparto a domicilio. Todos los días desde las 12:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Durum gratinado con queso fundido de Kebab Byron, en Basauri"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2f1e15"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.city}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[durumGratinado]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Kebab Byron"
+			subtitle="Kebab y durum · Basauri"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Agirre Lehendakaria, 36 · Arizgoiti (Basauri)"
+				title="Kebab, durum <br /><em>y a domicilio.</em>"
+				lede={`Kebab Byron es el döner de Arizgoiti, en Basauri: kebab halal de pollo, cordero o mixto, durum a la plancha, pizzas turcas y menús con patatas fritas y refresco, en la barra o en el comedor de mesas de mármol. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días desde las 12:00 y reparte a domicilio.`}
+				image={durumGratinado}
+				imageAlt="Durum gratinado con queso fundido de Kebab Byron"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>12:00</b> · hasta las 24:00' },
+					{ label: 'Reparto', html: `<b>${BUSINESS.phoneDelivery}</b> · a domicilio` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Halal"
+			/>
+
+			<LocalChips label="Lo que ofrece Kebab Byron" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Arizgoiti. <br /><em>Barra, durum y reparto.</em>"
+				paragraphs={[
+					'Kebab Byron está en Agirre Lehendakaria Kalea, 36, en el barrio de Arizgoiti, Basauri. La ficha de Google sitúa el local en las coordenadas 43.2372002, -2.8877564. La fachada tiene el rótulo rojo de «BYRON» con la foto de un durum y una hamburguesa, y las ventanas con los platos de la carta.',
+					'Dentro hay una barra de madera curva con la carta colgada encima y dos cafeteras, taburetes altos y un comedor con mesas de mármol, sillas de metal, zócalo de madera y paredes estampadas en rojo. El flyer del local se presenta como «Bar Baserri · Döner Kebab» y añade «hamburguesería».',
+					'La ficha lo clasifica como restaurante especializado en döner kebab. El flyer, que aparece en las fotos del perfil, ofrece kebab de pollo, cordero o mixto, kebab con queso, kebab de falafel, durum normal y especial, pizzas turcas (lahmacun), platos con patatas y pan, y menús con patatas fritas y refresco. Lleva el sello halal y anuncia servicio a domicilio.',
+					`Las reseñas que se ven en Google son de pocas palabras y muy entusiastas: «el mejor durum que he comido jamás, ya sea de cordero, pollo o mixto». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}; el del reparto, el ${BUSINESS.phoneDelivery}.`,
+				]}
+				note="La ficha no publica carta ni precios, y el local no tiene web propia. Lo que aparece en esta página es lo que dice la ficha, lo que se lee en el flyer y lo que se reconoce en las fotos; los importes del flyer no se copian porque pueden estar desactualizados. Para pedir, hay que llamar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> A la brasa</p>
+					<h2 id="highlights-title">Kebab, durum <br /><em>y menú.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Kebab, durum <br /><em>y pizza turca.</em>"
+				description="Sin precios publicados: esta lista reúne lo que anuncia el flyer del local y lo que se reconoce en las fotos del perfil de Google. Los menús van con patatas fritas y refresco, y hay extras de queso y de carne."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`Los pedidos se hacen por teléfono: el ${BUSINESS.phone} para el local y el ${BUSINESS.phoneDelivery} para el reparto a domicilio. La carta está a la vista en la barra y en el flyer, y el precio se confirma al encargar.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra, el durum <br /><em>y el comedor.</em>"
+				description="Seis fotografías del perfil de Kebab Byron: el durum gratinado con queso, la fachada con el rótulo rojo, el comedor de mesas de mármol, la barra de madera con la carta colgada, la bandeja con durums y patatas y el flyer del local con los menús."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">3,5 sobre 5, <em>con 63 reseñas.</em></h2>
+						<p>
+							Google publica una media de 3,5 con 63 opiniones (noviembre de 2026). Es una ficha con
+							pocas reseñas y muy repartidas: entre las que se ven hay clientes que lo ponen por las
+							nubes, como la que habla del mejor durum que han comido.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<small>Reseña publicada en Google</small>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>3,5</strong>
+						<span>★★★☆☆</span>
+						<small>63 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Basauri, <br /><em>Arizgoiti.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Bizkaia)`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: todos los días desde las 12:00, hasta las 24:00 de domingo a jueves y hasta la 1:00 viernes y sábado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Kebab Byron en Agirre Lehendakaria Kalea, Basauri"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Agirre Lehendakaria, 36 · Basauri"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Para comer en el local o pedir a domicilio: ${BUSINESS.phone} y, para el reparto, ${BUSINESS.phoneDelivery}. La ficha marca acceso para sillas de ruedas, pero no aseo ni aparcamiento adaptados. El flyer anuncia cierre a las 2:00 los viernes y sábados, mientras la ficha pone la 1:00.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma platos, precios y horario antes de pedir."
+			ctaLabel="Llamar a Kebab Byron"
+			navAriaLabel="Enlaces de Kebab Byron"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

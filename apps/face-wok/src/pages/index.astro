@@ -1,0 +1,408 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import bandeja from '../assets/fotos/face-wok-apaisada-05.jpg';
+import fachadaNoche from '../assets/fotos/face-wok-apaisada-01.jpg';
+import rotulo from '../assets/fotos/face-wok-vertical-02.jpg';
+import caja from '../assets/fotos/face-wok-vertical-03.jpg';
+import comedor from '../assets/fotos/face-wok-vertical-06.jpg';
+import ventana from '../assets/fotos/face-wok-vertical-09.jpg';
+import pared from '../assets/fotos/face-wok-vertical-10.jpg';
+import carta from '../assets/fotos/face-wok-vista-4-04.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'FACE WOK · Wok, arroz y tallarines en Abando, Bilbao';
+const description =
+	'FACE WOK, Autonomia Kalea, 2 (48012 Bilbao, Abando). Wok asiático para llevar o en el local: tallarines, arroces, entrantes y sushi, con una salsa gratis en cada pedido. 4,1 sobre 5 con 484 reseñas.';
+
+const galeria = [
+	{
+		src: bandeja,
+		alt: 'Bandeja de Face Wok con arroz en la caja de cartón, empanadillas y salsas',
+	},
+	{
+		src: fachadaNoche,
+		alt: 'La fachada de FACE WOK de noche, con el rótulo luminoso y la puerta abierta',
+	},
+	{
+		src: rotulo,
+		alt: 'El rótulo amarillo de WOK sobre la entrada del local',
+	},
+	{
+		src: caja,
+		alt: 'Caja de Face Wok con tallarines y pato asado, junto a una bandeja de sushi',
+	},
+	{
+		src: comedor,
+		alt: 'El comedor de FACE WOK con mesas de madera, sillas amarillas y lámparas colgantes',
+	},
+	{
+		src: ventana,
+		alt: 'La carta de FACE WOK en la ventana, con tallarines, arroces, entrantes y sushi',
+	},
+	{
+		src: carta,
+		alt: 'Detalle de la carta, con los platos de tallarines, arroces y entrantes y sus fotos',
+	},
+	{
+		src: pared,
+		alt: 'Pared del local con tarjetas de caracteres chinos y una orquídea',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que sirve FACE WOK',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#face-wok`,
+	name: BUSINESS.name,
+	alternateName: ['Face Wok Bilbao', 'Hot Wok Bilbao', 'Face Wok Abando'],
+	description:
+		'Wok asiático en Autonomia Kalea, 2 (Abando, 48012 Bilbao): tallarines, arroces, entrantes y sushi, para llevar o para comer en el local, con una salsa gratis en cada pedido.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34946004057',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Asiática', 'China', 'Sushi'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Bilbao' },
+		{ '@type': 'Place', name: 'Abando' },
+		{ '@type': 'AdministrativeArea', name: 'Bizkaia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '11:30',
+			closes: '16:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Thursday'],
+			opens: '19:15',
+			closes: '23:45',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Wednesday', 'Friday', 'Saturday'],
+			opens: '19:15',
+			closes: '00:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#24262b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="FACE WOK Bilbao, wok Bilbao, comida asiática Abando, tallarines Bilbao, arroz tres delicias Bilbao, sushi Bilbao, comida para llevar Bilbao, Autonomia Kalea"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Wok asiático en Abando (Bilbao): tallarines, arroces, entrantes y sushi, para llevar o en el local, con una salsa gratis en cada pedido. Todos los días de 11:30 a 16:30 y desde las 19:15."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bandeja de Face Wok con arroz en la caja de cartón, empanadillas y salsas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#24262b"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[bandeja]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Face Wok"
+			subtitle="Wok · Bilbao"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Autonomia Kalea, 2 · Abando (Bilbao)"
+				title="Wok, arroz <br /><em>y para llevar.</em>"
+				lede={`Face Wok es el wok de Autonomia Kalea, en Abando: tallarines y arroces al fuego, entrantes y sushi, servidos en las cajas de cartón de la casa o en la mesa, con sillas amarillas y pared de madera. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días de 11:30 a 16:30 y vuelve desde las 19:15.`}
+				image={bandeja}
+				imageAlt="Bandeja de Face Wok con arroz en la caja de cartón, empanadillas y salsas"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:30–16:30</b> · y 19:15–23:45' },
+					{ label: 'Pedidos', html: '<b>Para llevar</b> · y en el local' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Salsa gratis"
+			/>
+
+			<LocalChips label="Lo que ofrece Face Wok" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Abando. <br /><em>Wok y caja de cartón.</em>"
+				paragraphs={[
+					'Face Wok está en Autonomia Kalea, 2, en el barrio de Abando, Bilbao. La ficha de Google sitúa el local en las coordenadas 43.2574699, -2.9350086. La fachada tiene el rótulo luminoso de «WOK» en amarillo sobre la puerta y la carta completa pegada en la ventana, con las fotos de cada plato y su precio.',
+					'Dentro hay mesas de madera con sillas amarillas, zócalo y pared de listones de madera, el techo oscuro con lámparas colgantes y una pared blanca con tarjetas de caracteres chinos sujetas con pinzas. Es un local pequeño, de los de pedir en la barra y sentarse si queda sitio.',
+					'La ficha lo clasifica como restaurante asiático, chino y de comida rápida. En las fotos del perfil aparecen las cajas de cartón blancas de Face Wok con arroz tres delicias y con tallarines y pato asado, las empanadillas a la plancha con su salsa de soja, las bandejas de sushi variado y la comida servida en bandeja, con los palillos y las salsas aparte.',
+					`Las reseñas que se ven en Google hablan de los pedidos de siempre: «comimos arroz tres delicias, pintxo moruno de pollo, ensalada china y pan chino». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica carta ni precios, y el local no tiene web propia. Lo que aparece en esta página es lo que dice la ficha, lo que se lee en la carta de la ventana y lo que se reconoce en las fotos; para el precio del día y los pedidos, hay que llamar."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> En la caja</p>
+					<h2 id="highlights-title">Wok, arroz <br /><em>y una salsa.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Tallarines, arroces <br /><em>y sushi.</em>"
+				description="Sin precios publicados: esta lista reúne lo que se lee en la carta de la ventana y lo que se reconoce en las fotos del perfil de Google. Cada plato se pide en tamaño pequeño o grande, y con el pedido se elige una salsa gratis."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`Los pedidos se hacen por teléfono, en el ${BUSINESS.phone}, o en el propio local. La salsa va incluida: curry, agripicante, cebolla, tres delicias, soya o cacahuete. Los precios están en la carta de la ventana y se confirman al encargar.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, las cajas <br /><em>y el comedor.</em>"
+				description="Ocho fotografías del perfil de Face Wok: la bandeja con el arroz en su caja, la fachada de noche con el rótulo luminoso, el cartel amarillo de WOK, la caja con tallarines y pato junto al sushi, el comedor de mesas de madera y sillas amarillas, la carta de la ventana, un detalle de los platos y la pared con caracteres chinos."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,1 sobre 5, <em>con 484 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,1 con 484 opiniones (noviembre de 2026). Entre las
+							reseñas que se ven en la ficha, las hay que cuentan pedidos de arroz tres delicias,
+							pincho moruno de pollo, ensalada china y pan chino.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<small>Reseña publicada en Google</small>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,1</strong>
+						<span>★★★★☆</span>
+						<small>484 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Bilbao, <br /><em>Abando.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Bizkaia)`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: mediodía de 11:30 a 16:30 y noches desde las 19:15, hasta las 23:45 de domingo a jueves y hasta las 24:00 miércoles, viernes y sábado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Face Wok en Autonomia Kalea, Bilbao"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Autonomia Kalea, 2 · Bilbao"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Los pedidos se hacen por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni pedidos online. La ficha marca acceso para sillas de ruedas, pero no aseo ni aparcamiento adaptados. En el mediodía del jueves la ficha muestra un horario raro, así que llama antes de ir.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma platos, precios y horario antes de pedir."
+			ctaLabel="Llamar a Face Wok"
+			navAriaLabel="Enlaces de Face Wok"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

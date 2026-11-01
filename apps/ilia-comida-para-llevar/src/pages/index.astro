@@ -1,0 +1,403 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/ilia-comida-para-llevar-vertical-01.jpg';
+import paella from '../assets/fotos/ilia-comida-para-llevar-apaisada-04.jpg';
+import interior from '../assets/fotos/ilia-comida-para-llevar-apaisada-06.jpg';
+import lentejas from '../assets/fotos/ilia-comida-para-llevar-apaisada-07.jpg';
+import vitrina from '../assets/fotos/ilia-comida-para-llevar-apaisada-08.jpg';
+import mostrador from '../assets/fotos/ilia-comida-para-llevar-apaisada-09.jpg';
+import tartaQueso from '../assets/fotos/ilia-comida-para-llevar-vertical-02.jpg';
+import arroz from '../assets/fotos/ilia-comida-para-llevar-vertical-03.jpg';
+import tartaSofia from '../assets/fotos/ilia-comida-para-llevar-vertical-05.jpg';
+import arrozOtra from '../assets/fotos/ilia-comida-para-llevar-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'ILIA Comida para Llevar · Cocina casera en Orihuela';
+const description =
+	'ILIA Comida para Llevar, Calle Aragón, 11 (03300 Orihuela, Alicante). Cocina casera en táper, arroces, guisos, postres caseros y tartas personalizadas. De 10:00 a 15:30; martes cerrado.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de ILIA con el rótulo de comidas para llevar, la pizarra en la acera y los carteles del escaparate',
+	},
+	{
+		src: arroz,
+		alt: 'Una tarrina de aluminio con arroz amarillo y un trozo de carne',
+	},
+	{
+		src: lentejas,
+		alt: 'Tarrina de plástico con lentejas con chorizo, recién servida',
+	},
+	{
+		src: tartaQueso,
+		alt: 'Tarta de queso cubierta de chocolate blanco y trozos de Kinder',
+	},
+	{
+		src: vitrina,
+		alt: 'El expositor de ILIA con tápers, bandejas y postres listos para llevar',
+	},
+	{
+		src: interior,
+		alt: 'La zona de espera del local, con pufs blancos, plantas y el ventanal a la calle',
+	},
+	{
+		src: mostrador,
+		alt: 'El mostrador de ILIA, con la planta seca, el datáfono y la pantalla encendida',
+	},
+	{
+		src: tartaSofia,
+		alt: 'Tarta personalizada con el nombre Sofía, letras de bebé y bolas de chocolate',
+	},
+	{
+		src: arrozOtra,
+		alt: 'Otra vista del arroz amarillo con carne en su tarrina, sobre el papel de la bolsa',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que se prepara en ILIA',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#ilia`,
+	name: BUSINESS.fullName,
+	alternateName: ['ILIA', 'ILIA Orihuela', 'ILIA comida para llevar Orihuela'],
+	description:
+		'Cocina casera para llevar en la Calle Aragón, 11 (03300 Orihuela, Alicante): arroces, guisos, postres caseros y tartas personalizadas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34621054978',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Comida para llevar', 'Arroces', 'Guisos'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Orihuela' },
+		{ '@type': 'AdministrativeArea', name: 'Vega Baja del Segura' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '15:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#243a52" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="ILIA comida para llevar, comida casera Orihuela, comida para llevar Orihuela, tartas personalizadas Orihuela, lentejas con chorizo, arroz para llevar, Calle Aragón 11"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cocina casera en táper, arroces, postres caseros y tartas personalizadas en la Calle Aragón, 11 de Orihuela. De 10:00 a 15:30; martes cerrado."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Una paella recién hecha en su paellera, en la cocina de ILIA"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#243a52"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[paella]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="ILIA"
+			subtitle="Comida para llevar · Orihuela"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Calle Aragón, 11 · Orihuela (Alicante)"
+				title="Cocina casera, <br /><em>para llevar a casa.</em>"
+				lede={`ILIA es un local de comida para llevar en la Calle Aragón de Orihuela: arroces en su tarrina, guisos de cuchara como las lentejas con chorizo, y postres que las reseñas no se cansan de elogiar. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, y abre de 10:00 a 15:30 con el martes cerrado.`}
+				image={paella}
+				imageAlt="Una paella grande recién hecha en su paellera, en la cocina de ILIA"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–15:30</b> · martes cerrado' },
+					{ label: 'Servicio', html: '<b>Para llevar</b> · solo a mediodía' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida casera"
+			/>
+
+			<LocalChips label="Lo que ofrece ILIA" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Calle Aragón, 11. <br /><em>El expositor y la olla.</em>"
+				paragraphs={[
+					'ILIA está en la Calle Aragón, 11, en Orihuela. La ficha de Google sitúa el local en las coordenadas 38.0816933, -0.949617. La fachada es de paneles grises, con el rótulo de la olla y el nombre en letras naranjas y el subtítulo de «comidas para llevar»; en la acera se colocan pizarras con lo que hay ese día y el escaparate se llena de carteles de menús.',
+					'Dentro hay un mostrador blanco y un expositor refrigerado con tápers y bandejas alineadas: guisos, arroces y postres. Al fondo, una zona de espera con pufs blancos, plantas y un ventanal a la calle. No hay mesas: se entra, se elige del expositor (o se encarga) y se sale con la bolsa.',
+					'En las fotos del perfil aparece la cocina trabajando: una paella grande en su paellera, tarrinas de arroz amarillo con carne y una tarrina de lentejas con chorizo. Y los postres, que son su otra fama: una tarta de queso cubierta de chocolate blanco y Kinder y tartas personalizadas con nombre y decoración para cumpleaños.',
+					`Las reseñas lo confirman: «se nota el cariño en cada plato, ingredientes de primera y sabor inigualable», «súper bien de precio, muy buenas raciones… ¡los postres increíbles!». La media es de ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026). Se atiende en el ${BUSINESS.phone}.`,
+				]}
+				note="La ficha no publica carta ni precios. Lo que aparece en esta página es lo que citan las reseñas y lo que se reconoce en las fotos del perfil; confirma platos, precios y encargos por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la olla a la tarrina</p>
+					<h2 id="highlights-title">Guisos, arroces <br /><em>y postres.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que sale <br /><em>del expositor.</em>"
+				description="Sin carta publicada: esta lista reúne lo que citan las reseñas de la ficha (lentejas con chorizo, tallarines con trufa, raciones y postres) y los platos que se reconocen en las fotos del perfil."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={`Sin precios publicados. Llama al ${BUSINESS.phone} para saber qué hay ese día, cuánto cuesta la ración y con cuánta antelación hay que encargar la paella o una tarta.`}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, el expositor <br /><em>y los postres.</em>"
+				description="Nueve fotografías del perfil de ILIA: la fachada con el rótulo y las pizarras, el expositor con los tápers, la zona de espera, la paella, el arroz amarillo con carne, las lentejas con chorizo y las tartas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">5,0 sobre 5, <em>con 86 reseñas.</em></h2>
+						<p>
+							Google publica una media de 5,0 con 86 opiniones (noviembre de 2026), una de las
+							notas más altas de la zona. Las reseñas que se ven hablan del cariño en los platos,
+							de los ingredientes, del precio y de los postres.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span>
+											<small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>5,0</strong>
+						<span>★★★★★</span>
+						<small>86 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Orihuela, <br /><em>calle Aragón.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city} (Alicante)`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google: de 10:00 a 15:30 de lunes a domingo, con el martes cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de ILIA comida para llevar en la Calle Aragón, 11, Orihuela"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Calle Aragón, 11 · Orihuela"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Los pedidos se hacen por teléfono o en el mostrador: la ficha no enlaza una web del local ni un sistema de pedidos online, y tampoco anuncia reparto a domicilio. Para arroces grandes o tartas personalizadas, avisa con tiempo."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir a por la comida.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="ILIA Comida para Llevar"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma platos, precios y horario antes de pedir."
+			ctaLabel="Llamar a ILIA"
+			navAriaLabel="Enlaces de ILIA"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
