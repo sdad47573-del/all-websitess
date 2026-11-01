@@ -1,15 +1,5 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
 
-https://www.google.com/maps/place/Asador+de+pollos+y+comida+para+llevar+%22El+Laurel%22/@36.717033,-4.4545256,17z/data=!4m6!3m5!1s0xd72f76b862bbe7d:0x44c951e83162bd81!8m2!3d36.717033!4d-4.4545256!16s%2Fg%2F11byz79s11?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurant+Tequilando+Box+%22Mexican+Street+Food%22/@42.5051766,1.527328,17z/data=!4m6!3m5!1s0x12a58bec4f604213:0xad71564d36e91df6!8m2!3d42.5051766!4d1.527328!16s%2Fg%2F11nwl0yyb5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Pizzeria+La+Capricciosa/@42.5424344,1.517273,17z/data=!4m6!3m5!1s0x12af5fff15f77ff7:0x112b4af62ba807cc!8m2!3d42.5424344!4d1.517273!16s%2Fg%2F1pt_4lb9p?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/PIZZERIA+URUGUAIA,+Pizza+restaurant,+Pizzeria+Andorra,+Restaurant+Itali%C3%A0/@42.4629812,1.4911651,17z/data=!4m6!3m5!1s0x12a5f482a6482663:0xc744033f94a224e4!8m2!3d42.4629812!4d1.4911651!16s%2Fg%2F1q5glkr6f?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Restaurant+Hong+Kong+Escaldes/@42.5089595,1.5366211,17z/data=!4m6!3m5!1s0x12a58adcf4555557:0x52408b96b9199dd0!8m2!3d42.5089595!4d1.5366211!16s%2Fg%2F11g6bjcgvt?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/Casa+Carlos+-+Comida+casera/@36.735966,-4.4800953,17z/data=!4m6!3m5!1s0xd72f10c2802a0cb:0xddefddeff36d48f0!8m2!3d36.735966!4d-4.4800953!16s%2Fg%2F11fshmhlsr?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/EL+NOU+PICA+PICA/@42.508069,1.5356962,17z/data=!4m6!3m5!1s0x12a58adc46835565:0x2552867ad948adf5!8m2!3d42.508069!4d1.5356962!16s%2Fg%2F11b6_dl_f1?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D

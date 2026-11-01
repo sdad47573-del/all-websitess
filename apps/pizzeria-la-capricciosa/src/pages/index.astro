@@ -1,0 +1,274 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/pizzeria-la-capricciosa-apaisada-01.jpg';
+import foto02 from '../assets/fotos/pizzeria-la-capricciosa-apaisada-02.jpg';
+import foto03 from '../assets/fotos/pizzeria-la-capricciosa-vertical-03.jpg';
+import foto04 from '../assets/fotos/pizzeria-la-capricciosa-vertical-04.jpg';
+import foto05 from '../assets/fotos/pizzeria-la-capricciosa-vertical-05.jpg';
+import foto06 from '../assets/fotos/pizzeria-la-capricciosa-vertical-06.jpg';
+import foto07 from '../assets/fotos/pizzeria-la-capricciosa-vertical-07.jpg';
+import foto08 from '../assets/fotos/pizzeria-la-capricciosa-apaisada-08.jpg';
+import foto09 from '../assets/fotos/pizzeria-la-capricciosa-vertical-09.jpg';
+import foto10 from '../assets/fotos/pizzeria-la-capricciosa-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, SERVICIOS } from '../data/site';
+
+const title = 'Pizzeria La Capricciosa · Pizzería en La Massana';
+const description = `Pizzeria La Capricciosa, Av. de Sant Antoni, 38 (AD400 La Massana). Pizzería con ${RATING.label} sobre 5 en Google. Teléfono ${BUSINESS.phone}.`;
+
+const galeria = [
+	{ src:	fachada, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto02, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto03, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto04, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto05, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto06, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto07, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto08, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto09, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+	{ src: foto10, alt: 'Foto de Pizzeria La Capricciosa publicada en su ficha de Google Maps' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#pizzeria-la-capricciosa`,
+	name: BUSINESS.fullName,
+	alternateName: ['La Capricciosa', 'Pizzeria La Capricciosa La Massana'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	servesCuisine: ['Pizza'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#163b2d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Pizzeria La Capricciosa, pizzería La Massana, pizza La Massana, Av. de Sant Antoni 38"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pizzería en la Av. de Sant Antoni, 38, de La Massana."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pizzeria La Capricciosa en La Massana"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#163b2d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="La Massana"
+			locale="es_ES"
+			countryName="Andorra"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Capricciosa"
+			subtitle="Pizzeria"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. de Sant Antoni, 38 · La Massana"
+				title="Pizza en La Massana <br /><em>para cenar.</em>"
+				lede={`Pizzeria La Capricciosa está en la Av. de Sant Antoni, 38, de La Massana. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre por la noche, de lunes a domingo, salvo los martes.`}
+				image={fachada}
+				imageAlt="Fachada de Pizzeria La Capricciosa en La Massana"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>19:00–22:30</b> · cada día, salvo martes' },
+					{ label: 'Cocina', html: '<b>Pizzería</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pizzería"
+			/>
+
+			<LocalChips label="Lo que ofrece La Capricciosa" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Street food mexicano <br /><em>en el centro de Andorra.</em>"
+				paragraphs={[
+					'Pizzeria La Capricciosa está en la Av. de Sant Antoni, 38, en La Massana (AD400). Google la clasifica como pizzería.',
+					`Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. La ficha no publica una carta online propia, así que esta web no incluye platos ni precios.`,
+				]}
+				note="La ficha no publica precios en su propio texto. Para el menú y los importes, llama por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Sobre el local</p>
+					<h2 id="highlights-title">Pizzería, <br /><em>de noche.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item) => (
+								<li>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El local <br /><em>y la comida.</em>"
+				description="Diez fotografías del perfil de Pizzeria La Capricciosa en Google Maps."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la Av. de Sant Antoni, 38, <br /><em>La Massana.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Pizzeria La Capricciosa en la Av. de Sant Antoni, 38, La Massana"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Av. de Sant Antoni, 38"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Consultas y pedidos por teléfono: la ficha no publica reservas online."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada el 1 de noviembre de 2026. Confirma el horario antes de la visita."
+			ctaLabel="Llamar a La Capricciosa"
+			navAriaLabel="Enlaces de Pizzeria La Capricciosa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
