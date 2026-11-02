@@ -1,14 +1,5 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
 
-https://www.google.com/maps/place/RESTAURANT+SNACK+BAR+EL+ROSAT+%7C+Pas+de+la+Casa/@42.54223,1.73361,17z/data=!4m6!3m5!1s0x12af7d8b5b3afd49:0x13606cd99bbe433b!8m2!3d42.54223!4d1.73361!16s%2Fg%2F1pp2xbj0w?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Chester/@42.5074574,1.5221594,17z/data=!4m6!3m5!1s0x12a58ad36b004721:0x72a4e34509f5a132!8m2!3d42.5074574!4d1.5221594!16s%2Fg%2F11c5g_st7b?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/ASADOR+DON+CARB%C3%93N/@36.7319859,-4.4631077,17z/data=!4m6!3m5!1s0xd72f738c37f14a9:0xe536fd53797e32fb!8m2!3d36.7319859!4d-4.4631077!16s%2Fg%2F11t5y5ljfm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/La+Catedral+(Granja+Diva)/@42.5098606,1.5317004,17z/data=!4m6!3m5!1s0x12a58ada9495efd1:0x4dd84c9280904a52!8m2!3d42.5098606!4d1.5317004!16s%2Fg%2F12qfbhr0j?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/REY+KEBAB+EL+ATABAL+MALAGA/@36.7309051,-4.469115,17z/data=!4m6!3m5!1s0xd72f72ff2d7b739:0x8bbc3e0daf1ebd14!8m2!3d36.7309051!4d-4.469115!16s%2Fg%2F11c0r5tfzc?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/La+Cirera/@42.5349471,1.5871667,17z/data=!4m6!3m5!1s0x12a58a0f348f5473:0x797fc873fd118761!8m2!3d42.5349471!4d1.5871667!16s%2Fg%2F1ptx0kndm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 

@@ -1,0 +1,336 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/la-catedral-vertical-02.jpg';
+import bravas from '../assets/fotos/la-catedral-apaisada-03.jpg';
+import carta from '../assets/fotos/la-catedral-apaisada-05.jpg';
+import entrepa from '../assets/fotos/la-catedral-apaisada-08.jpg';
+import burger from '../assets/fotos/la-catedral-vertical-01.jpg';
+import cervezas from '../assets/fotos/la-catedral-vertical-04.jpg';
+import pizza from '../assets/fotos/la-catedral-vertical-06.jpg';
+import terraza from '../assets/fotos/la-catedral-vertical-07.jpg';
+import carne from '../assets/fotos/la-catedral-vertical-09.jpg';
+import desayuno from '../assets/fotos/la-catedral-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, SERVICIOS } from '../data/site';
+
+const title = 'La Catedral (Granja Diva) · Bar, cafetería y pizzas en Andorra la Vella';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de La Catedral con bocadillos y patatas fritas sobre la mesa, y las montañas de Andorra al fondo',
+	},
+	{
+		src: carta,
+		alt: 'La carta de La Catedral expuesta en la entrada, con las tapas, torrades, entrepans, pizzes y hamburgueses',
+	},
+	{
+		src: pizza,
+		alt: 'Pizza de La Catedral con jamón y alcachofas servida sobre una tabla con cortador',
+	},
+	{
+		src: burger,
+		alt: 'Hamburguesa de pollo de La Catedral con huevo y queso, y una cerveza de grifo al fondo',
+	},
+	{
+		src: bravas,
+		alt: 'Patatas bravas de La Catedral en dados, con un cuenco de salsa brava, sobre la mesa de la terraza',
+	},
+	{
+		src: entrepa,
+		alt: 'Bocadillo caliente de La Catedral con bacon, huevo y queso fundido en un plato blanco',
+	},
+	{
+		src: carne,
+		alt: 'Entrecot a la plancha de La Catedral con ensalada de lechuga, tomate, cebolla y aceitunas',
+	},
+	{
+		src: cervezas,
+		alt: 'Dos cervezas Estrella Damm en vasos escarchados sobre la mesa de la terraza de La Catedral',
+	},
+	{
+		src: desayuno,
+		alt: 'Croissant a la plancha de La Catedral con un vaso de café con hielo en la terraza',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de La Catedral (Granja Diva)',
+	inLanguage: 'ca-AD',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-catedral`,
+	name: BUSINESS.name,
+	alternateName: ['La Catedral', 'Granja Diva', 'La Catedral Andorra la Vella', 'Bar Cafeteria La Catedral'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.website],
+	telephone: BUSINESS.phone,
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Tapas', 'Pizzas', 'Hamburguesas', 'Cocina casera', 'Cafetería'],
+	hasTakeaway: true,
+	hasMenu: menuSchema,
+	areaServed: [
+		{ '@type': 'City', name: 'Andorra la Vella' },
+		{ '@type': 'AdministrativeArea', name: 'Andorra la Vella' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google Maps feature ID', value: BUSINESS.featureId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '07:00',
+			closes: '23:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+		{ '@type': 'LocationFeatureSpecification', name: 'Se admiten perros', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#12100f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,500;0,600;0,700;1,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Catedral Andorra la Vella, Granja Diva, bar cafetería Andorra, tapas Andorra la Vella, pizzas Andorra la Vella, hamburguesas Andorra, bocadillos Andorra, Av. Dr. Mitjavila 20, comer en Andorra la Vella, terraza Andorra"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Bar-cafetería familiar en la Av. Dr. Mitjavila 20 de Andorra la Vella. Tapes, torrades, pizzes, hamburgueses y amanides casolanas de 7:00 a 23:00. 4,5 sobre 5 con 101 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de La Catedral en Andorra la Vella con las montañas al fondo"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#12100f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Andorra la Vella"
+			countryName="Andorra"
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Catedral"
+			subtitle="Bar cafetería · Granja Diva"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
+				title="Tapes, pizzes <br /><em>i terrassa.</em>"
+				lede={`La Catedral es el bar-cafetería familiar de la Av. Dr. Mitjavila 20, en Andorra la Vella. Cocina casolana de 7:00 a 23:00, de lunes a sábado: tapes, torrades, entrepans freds i calents, pizzes, hamburgueses, plats combinats i amanides, con terraza y vistas a la montaña. La ficha de Google le da 4,5 sobre 5 con 101 reseñas.`}
+				image={terraza}
+				imageAlt="Terraza de La Catedral con bocadillos y patatas fritas en la mesa y las montañas de Andorra al fondo"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,5</b> en Google · 101 reseñas' },
+					{ label: 'Horario', html: '<b>7:00–23:00</b><br />Lunes a sábado · domingo cerrado' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> pedidos y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de La Catedral" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un racó familiar <br /><em>a Andorra la Vella.</em>"
+				paragraphs={[
+					'La Catedral (Granja Diva) está en el número 20 de la Av. Dr. Mitjavila, local 2, en el centro de Andorra la Vella. Es un bar-cafetería de barrio con terraza: sillas y sombrillas con el logo de la casa, mesas frente a la montaña y un cartel con la carta completa junto a la puerta.',
+					'La propia casa lo cuenta así: «El nostre Bar / Cafeteria La Catedral és un racó familiar on trobaràs un assortiment de tapes, pizzes, hamburgueses, amanides, etc. Tot casolà i amb productes de molt bona qualitat, però sobretot, un ambient acollidor i familiar que amb el temps s’han convertit en la nostra identitat».',
+					'La carta es larga y va de la barra a la mesa: tapas de jamón ibérico, queso manchego, calamares o patatas bravas; torrades y bocadillos fríos y calientes; pizzas de masa fina; hamburguesas con huevo frito y bacon; platos combinados con dos huevos; ensaladas y espárragos. Todo con precios de barrio.',
+					'Abre de 7:00 a 23:00 de lunes a sábado y cierra el domingo. Google le da 4,5 sobre 5 con 101 reseñas y marca que se admiten perros. La ficha indica acceso y asientos adaptados, pero no aparcamiento adaptado. Se puede llamar para encargar por teléfono.',
+				]}
+				note="La información sale de la ficha pública de Google Maps, de la web oficial del local y de la carta que aparece en las fotografías del perfil. Precios y disponibilidad pueden cambiar: confírmalos al pedir."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Web oficial', href: BUSINESS.website, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Tapes, pizzes <br /><em>i entrepans.</em>"
+				description="La carta está expuesta en la entrada del local, escrita en catalán. Estos son los platos y precios tal como aparecen en la fotografía del perfil de Google."
+				cta={{ label: 'Ver la carta en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note={MENU_NOTE}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve fotos <br /><em>de La Catedral.</em>"
+				description="La terraza con las montañas, la carta de la entrada, las pizzas, las hamburguesas, los bocadillos, las bravas y la mesa del desayuno."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a la <br /><em>avinguda.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Andorra',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de 7:00 a 23:00 de lunes a sábado, con el domingo cerrado. Al abrir a las 7:00 sirve cafés y desayunos, y la cocina sigue hasta la noche. En festivos puede cambiar; llama antes si vas en día señalado."
+				mapTitle="Mapa de La Catedral en la Av. Dr. Mitjavila 20, Andorra la Vella"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Catedral"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+					{ label: 'Web oficial', href: BUSINESS.website, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. El teléfono es el canal directo que publica la ficha, y la web oficial también invita a llamar para encargar. La terraza se ocupa por orden de llegada."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Web oficial ↗', href: BUSINESS.website, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de La Catedral"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
