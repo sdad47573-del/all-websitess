@@ -29,6 +29,3 @@ https://www.google.com/maps/place/Cafeter%C3%ADa-Bar+Molina/@38.9851951,-3.93149
 https://www.google.com/maps/place/Terraza+La+Candela/@38.9722877,-3.9344196,17z/data=!4m6!3m5!1s0xd6bc30349ccd9d9:0x14fc5b2d0976e759!8m2!3d38.9722877!4d-3.9344196!16s%2Fg%2F11lb_pz30l?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Restaurante+Hostal+Frasca/@38.9894818,-3.9259455,17z/data=!4m6!3m5!1s0xd6bc341f790c123:0xd6224d8914091a6b!8m2!3d38.9894818!4d-3.9259455!16s%2Fg%2F12qhhwn96?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/Cafeter%C3%ADa+San+Jos%C3%A9./@38.9810353,-3.9242805,17z/data=!4m6!3m5!1s0xd6bc33e58f3d6c9:0xed76bddbb3974f68!8m2!3d38.9810353!4d-3.9242805!16s%2Fg%2F11c5st3f21?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
