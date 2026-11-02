@@ -5,7 +5,7 @@
  * - Enlace de Google Maps aportado: «RESTAURANT PIZZERIA CREPERIA LA DI ROMA»,
  *   42.5408852,1.733738, feature 0x12af7d8b2522358f:0x7d90700adb950c7c.
  * - Nombre, dirección, teléfono, categorías, valoración, horario, Plus Code y
- *   fotos: respuesta pública de la ficha de Google consultada el 1 de noviembre
+ *   fotos: respuesta pública de la ficha de Google consultada el 2 de noviembre
  *   de 2026 (4,0 · 499 reseñas).
  *
  * Avisos importantes:
@@ -49,7 +49,7 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.5408852,1.733738',
 };
 
-/** Valoración publicada en la ficha (1 de noviembre de 2026). */
+/** Valoración publicada en la ficha (2 de noviembre de 2026). */
 export const RATING = {
 	value: 4.0,
 	count: 499,
@@ -69,7 +69,7 @@ export const HORARIO = [
 
 /** Aviso que acompaña al horario en la ficha. */
 export const HORARIO_AVISO =
-	'La ficha avisa de que el Día de Todos los Santos (1 de noviembre) el horario podría ser distinto. La hora de cierre que publica es la 1:00, es decir, ya pasada la medianoche.';
+	'La ficha no añade avisos de festivos para este local. La hora de cierre que publica es la 1:00, es decir, ya pasada la medianoche.';
 
 export const SERVICIOS = [
 	'Restaurante',
@@ -110,7 +110,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'Según la ficha de Google, abre de 9:00 a 1:00 todos los días, de lunes a domingo, sin día de cierre semanal. La 1:00 es ya la madrugada del día siguiente. La ficha advierte de que en festivos —por ejemplo el Día de Todos los Santos— el horario podría ser distinto.',
+		a: 'Según la ficha de Google, abre de 9:00 a 1:00 todos los días, de lunes a domingo, sin día de cierre semanal. La 1:00 es ya la madrugada del día siguiente. La ficha no añade avisos de festivos, así que en una fecha señalada conviene llamar antes.',
 	},
 	{
 		q: '¿A qué teléfono se llama?',
@@ -134,7 +134,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cuál es la valoración en Google?',
-		a: '4,0 sobre 5 con 499 reseñas (consultado el 1 de noviembre de 2026). Es una media con muchas opiniones, así que refleja la experiencia media: hay mesas muy bien valoradas y otras que no, y merece la pena leer las reseñas enteras en la ficha.',
+		a: '4,0 sobre 5 con 499 reseñas (consultado el 2 de noviembre de 2026). Es una media con muchas opiniones, así que refleja la experiencia media: hay mesas muy bien valoradas y otras que no, y merece la pena leer las reseñas enteras en la ficha.',
 	},
 	{
 		q: '¿Se puede ver la carta o los precios?',

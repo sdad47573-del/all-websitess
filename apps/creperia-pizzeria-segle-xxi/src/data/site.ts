@@ -5,12 +5,13 @@
  * - Enlace de Google Maps aportado: «CREPERIA PIZZERIA SEGLE XXI»,
  *   42.532906,1.576869, feature 0x12a58a73018861e3:0x5157a19105ae9e80.
  * - Nombre, dirección, teléfono, categoría, valoración, horario, Plus Code y
- *   fotos: respuesta pública de la ficha de Google consultada el 1 de noviembre
- *   de 2026 (4,4 · 189 reseñas).
+ *   fotos: respuesta pública de la ficha de Google consultada el 2 de noviembre
+ *   de 2026 (4,4 · 190 reseñas).
  *
  * Avisos importantes:
- * - Google clasifica el negocio solo como «Crepería», aunque el nombre comercial
- *   añade «Pizzería». La web lo explica sin deducir una carta completa.
+ * - Google lo clasifica como «Crepería», «Cafetería», «Restaurante de comida para
+ *   llevar» y «Pizzería». La web usa esas categorías sin deducir una carta
+ *   completa.
  * - La ficha no publica carta, precios, servicios (reparto, terraza) ni reservas
  *   online: la web no los inventa y remite al teléfono.
  */
@@ -33,11 +34,12 @@ export const BUSINESS = {
 	placeId: 'ChIJ42GIAXOKpRIRgJ6uBZGhV1E',
 	plusCode: 'GHMG+5P Encamp',
 	googleCategory: 'Crepería',
+	googleCategories: ['Crepería', 'Cafetería', 'Restaurante de comida para llevar', 'Pizzería'],
 	phone: '+376 832 690',
 	phoneHref: 'tel:+376832690',
 	tagline: 'Crepería y pizzería en Encamp',
 	description:
-		'CREPERIA PIZZERIA SEGLE XXI, en la Av. de Joan Martí, 74, de Encamp (AD200, Andorra). Crepería y pizzería con 4,4 sobre 5 y 189 reseñas en Google. Abre de 7:00 a 22:30 entre semana y de 13:00 a 22:30 el fin de semana.',
+		'CREPERIA PIZZERIA SEGLE XXI, en la Av. de Joan Martí, 74, de Encamp (AD200, Andorra). Crepería y pizzería con 4,4 sobre 5 y 190 reseñas en Google. Abre de 7:00 a 22:30 entre semana y de 13:00 a 22:30 el fin de semana.',
 };
 
 export const MAPS = {
@@ -49,10 +51,10 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.532906,1.576869',
 };
 
-/** Valoración publicada en la ficha (1 de noviembre de 2026). */
+/** Valoración publicada en la ficha (2 de noviembre de 2026). */
 export const RATING = {
 	value: 4.4,
-	count: 189,
+	count: 190,
 	label: '4,4',
 };
 
@@ -72,23 +74,25 @@ export const HORARIO = [
 
 /** Aviso que acompaña al horario en la ficha. */
 export const HORARIO_AVISO =
-	'La ficha avisa de que el Día de Todos los Santos (1 de noviembre) el horario podría ser distinto. No publica ningún día de cierre semanal.';
+	'La ficha no añade avisos de festivos para este local y no publica ningún día de cierre semanal.';
 
 export const SERVICIOS = [
 	'Crepería',
 	'Pizzería',
+	'Cafetería',
+	'Comida para llevar',
 	'Encamp',
 	'Av. de Joan Martí, 74',
 	'Abierto de 7:00 entre semana',
 	'Hasta las 22:30',
 	'4,4 en Google',
-	'189 reseñas',
+	'190 reseñas',
 ];
 
 export const HIGHLIGHTS = [
 	{
 		title: 'Crepes y pizza',
-		text: 'El nombre comercial lo dice: crepería y pizzería. Google la clasifica solo como «Crepería», así que la carta de pizzas se sobreentiende por el rótulo, no por el perfil público.',
+		text: 'El nombre comercial lo dice: crepería y pizzería. La ficha de Google la clasifica como «Crepería», «Cafetería», «Restaurante de comida para llevar» y «Pizzería», aunque no publica la carta.',
 	},
 	{
 		title: 'Abre a las 7:00',
@@ -99,8 +103,8 @@ export const HIGHLIGHTS = [
 		text: 'Está en la Av. de Joan Martí, 74, en Encamp (AD200), la parroquia del norte de Andorra que queda por debajo de Canillo. Plus Code GHMG+5P.',
 	},
 	{
-		title: '189 opiniones',
-		text: 'La ficha reúne 189 reseñas con una media de 4,4 sobre 5 (noviembre de 2026). Es una muestra suficiente para una media estable, sin ser un local masificado.',
+		title: '190 opiniones',
+		text: 'La ficha reúne 190 reseñas con una media de 4,4 sobre 5 (noviembre de 2026). Es una muestra suficiente para una media estable, sin ser un local masificado.',
 	},
 ];
 
@@ -111,7 +115,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'Según la ficha de Google, de lunes a viernes abre de 7:00 a 22:30, y el sábado y el domingo de 13:00 a 22:30. No publica ningún día de cierre semanal, y advierte de que en festivos —por ejemplo el Día de Todos los Santos— el horario podría ser distinto.',
+		a: 'Según la ficha de Google, de lunes a viernes abre de 7:00 a 22:30, y el sábado y el domingo de 13:00 a 22:30. No publica ningún día de cierre semanal ni avisos de festivos, así que en una fecha señalada conviene llamar antes.',
 	},
 	{
 		q: '¿A qué teléfono se llama?',
@@ -119,7 +123,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué se puede comer?',
-		a: 'El nombre del negocio es «Creperia Pizzeria Segle XXI» y Google lo clasifica como «Crepería». Es decir, crepes y pizza, en un local de Encamp. La ficha no publica carta ni platos concretos, así que la oferta exacta, los precios y las opciones sin gluten o vegetarianas se consultan por teléfono.',
+		a: 'El nombre del negocio es «Creperia Pizzeria Segle XXI» y Google lo clasifica como «Crepería», «Cafetería», «Restaurante de comida para llevar» y «Pizzería». Es decir, crepes y pizza, en un local de Encamp. La ficha no publica la carta de pizzas ni precios fuera de la carta de crepes, así que la oferta exacta y las opciones sin gluten o vegetarianas se consultan por teléfono.',
 	},
 	{
 		q: '¿Sirve desayunos?',
@@ -131,11 +135,11 @@ export const FAQ = [
 	},
 	{
 		q: '¿Tiene terraza o reparto a domicilio?',
-		a: 'La ficha pública no lo indica: no publica servicios de terraza, reparto ni comida para llevar. Si necesitas saberlo, pregúntalo en el teléfono del local antes de contar con ello.',
+		a: 'La ficha la incluye en la categoría «Restaurante de comida para llevar», así que la comida para llevar aparece en el perfil. No detalla si hay terraza ni si hacen reparto a domicilio: eso se pregunta en el +376 832 690 antes de contar con ello.',
 	},
 	{
 		q: '¿Cuál es la valoración en Google?',
-		a: '4,4 sobre 5 con 189 reseñas (consultado el 1 de noviembre de 2026). Es una media con bastantes opiniones, así que refleja la experiencia habitual del local: buena, pero no perfecta.',
+		a: '4,4 sobre 5 con 190 reseñas (consultado el 2 de noviembre de 2026). Es una media con bastantes opiniones, así que refleja la experiencia habitual del local: buena, pero no perfecta.',
 	},
 	{
 		q: '¿Se puede ver la carta o los precios?',

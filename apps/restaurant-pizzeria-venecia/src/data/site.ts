@@ -11,6 +11,8 @@
  * Avisos importantes:
  * - La ficha no publica carta, precios ni servicios (reparto, reservas,
  *   terraza). La web no los inventa: remite al teléfono.
+ * - Accesibilidad según la ficha (noviembre de 2026): acceso y asientos
+ *   adaptados para sillas de ruedas.
  * - La ficha es de una pizzería: el nombre comercial añade «restaurante», pero
  *   Google solo la clasifica como «Pizzería».
  */
@@ -69,7 +71,7 @@ export const HORARIO = [
 
 /** Aviso que acompaña al horario en la ficha. */
 export const HORARIO_AVISO =
-	'La ficha avisa de que el Día de Todos los Santos (1 de noviembre) el horario podría ser distinto. Los martes cierra todo el día.';
+	'La ficha avisa de que en festivos el horario puede ser distinto. Los martes cierra todo el día.';
 
 export const SERVICIOS = [
 	'Pizzería',
@@ -77,6 +79,7 @@ export const SERVICIOS = [
 	'Mediodía y noche',
 	'Martes cerrado',
 	'En la Av. Verge de Canòlich',
+	'Acceso adaptado',
 	'Cocina italiana',
 	'4,4 en Google',
 	'622 reseñas',
@@ -96,6 +99,10 @@ export const HIGHLIGHTS = [
 		text: 'La dirección de la ficha es Av. Verge de Canòlich, 20, en Sant Julià de Lòria (AD600), la parroquia de entrada a Andorra desde la Seu d’Urgell. Plus Code FF7R+2F.',
 	},
 	{
+		title: 'Acceso y asientos adaptados',
+		text: 'La ficha marca acceso para sillas de ruedas y asientos adaptados en el comedor. No publica datos sobre el aparcamiento, así que esta web no afirma nada al respecto.',
+	},
+	{
 		title: '622 opiniones',
 		text: 'La ficha reúne 622 reseñas con una media de 4,4 sobre 5 (noviembre de 2026). Es una muestra amplia para un local de parroquia: hay margen para opiniones de todo tipo, no solo las entusiastas.',
 	},
@@ -108,7 +115,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'Según la ficha de Google, sirve de 13:00 a 15:30 y de 20:00 a 23:30 de domingo a sábado, y cierra los martes todo el día. La ficha avisa de que en festivos —por ejemplo el Día de Todos los Santos— el horario podría ser distinto, así que conviene llamar antes.',
+		a: 'Según la ficha de Google, sirve de 13:00 a 15:30 y de 20:00 a 23:30 de domingo a sábado, y cierra los martes todo el día. La ficha avisa de que en festivos el horario puede ser distinto, así que conviene llamar antes.',
 	},
 	{
 		q: '¿A qué teléfono se llama?',
@@ -123,12 +130,16 @@ export const FAQ = [
 		a: 'La ficha no publica un sistema de reservas online ni dice si hacen falta. Para una mesa en fin de semana o para un grupo, lo práctico es llamar al +376 841 796 y preguntar.',
 	},
 	{
+		q: '¿Es accesible para sillas de ruedas?',
+		a: 'La ficha marca acceso para sillas de ruedas y asientos adaptados en el comedor. No publica datos sobre aparcamiento adaptado ni aseos, así que esta página no los afirma; si necesitas una condición concreta, llama al +376 841 796.',
+	},
+	{
 		q: '¿Tiene terraza o reparto a domicilio?',
 		a: 'La ficha pública no lo indica: no publica servicios de terraza, reparto ni comida para llevar. Conviene preguntarlo en el mismo teléfono, +376 841 796, antes de contar con ello.',
 	},
 	{
 		q: '¿Cuál es la valoración en Google?',
-		a: '4,4 sobre 5 con 622 reseñas (consultado el 1 de noviembre de 2026). Es una media con muchas opiniones, así que refleja bastante bien la experiencia media del local, sin ser un 5 perfecto.',
+		a: '4,4 sobre 5 con 622 reseñas (consultado el 2 de noviembre de 2026). Es una media con muchas opiniones, así que refleja bastante bien la experiencia media del local, sin ser un 5 perfecto.',
 	},
 	{
 		q: '¿Se puede ver la carta o los precios?',

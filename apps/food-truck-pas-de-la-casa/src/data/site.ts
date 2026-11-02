@@ -5,7 +5,7 @@
  * - Enlace de Google Maps aportado: «Food Truck»,
  *   42.5411874,1.7331251, feature 0x12af7d0c05c6458d:0x89c56a8d240732e1.
  * - Nombre, dirección, categoría, valoración, horario y Plus Code: respuesta
- *   pública de la ficha de Google consultada el 1 de noviembre de 2026
+ *   pública de la ficha de Google consultada el 2 de noviembre de 2026
  *   (3,4 · 12 reseñas).
  *
  * Avisos importantes:
@@ -48,7 +48,7 @@ export const MAPS = {
 	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=42.5411874,1.7331251',
 };
 
-/** Valoración publicada en la ficha (1 de noviembre de 2026). */
+/** Valoración publicada en la ficha (2 de noviembre de 2026). */
 export const RATING = {
 	value: 3.4,
 	count: 12,
@@ -68,7 +68,7 @@ export const HORARIO = [
 
 /** Aviso que acompaña al horario en la ficha. */
 export const HORARIO_AVISO =
-	'La ficha avisa de que el Día de Todos los Santos (1 de noviembre) el horario podría ser distinto. En Pas de la Casa el tiempo cambia mucho en invierno, así que conviene confirmar antes de subir.';
+	'La ficha no añade avisos de festivos para este local. En Pas de la Casa el tiempo cambia mucho en invierno, así que conviene confirmar antes de subir.';
 
 /** Lo que la ficha permite afirmar del local. */
 export const SERVICIOS = [
@@ -110,7 +110,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'Según la ficha de Google, abre todos los días de 9:00 a 19:00, sin día de cierre. La ficha advierte de que en festivos —por ejemplo el Día de Todos los Santos— el horario podría ser distinto.',
+		a: 'Según la ficha de Google, abre todos los días de 9:00 a 19:00, sin día de cierre. La ficha no añade avisos de festivos para este local, pero en una zona de montaña conviene confirmar el horario antes de subir.',
 	},
 	{
 		q: '¿Cuál es el teléfono?',
@@ -126,7 +126,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cuál es la valoración en Google?',
-		a: '3,4 sobre 5 con 12 reseñas (consultado el 1 de noviembre de 2026). Son pocas opiniones: cada reseña nueva mueve la media, así que conviene leerlas en la ficha antes de sacar conclusiones.',
+		a: '3,4 sobre 5 con 12 reseñas (consultado el 2 de noviembre de 2026). Son pocas opiniones: cada reseña nueva mueve la media, así que conviene leerlas en la ficha antes de sacar conclusiones.',
 	},
 	{
 		q: '¿Es accesible?',
