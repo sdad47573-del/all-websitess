@@ -86,7 +86,30 @@ if (breadcrumbList.length > 0) {
 	extra.push(buildBreadcrumb(breadcrumbList.map((it) => ({ name: it.name, url: absUrl(it.url) }))));
 }
 
-const finalAdditionalSchemas = [...extra, ...additionalSchemas];
+const withArticleDefaults = (schema: Record<string, unknown>): Record<string, unknown> => {
+	const type = schema['@type'];
+	if (type !== 'Article' && type !== 'BlogPosting' && type !== 'NewsArticle') return schema;
+	const image =
+		typeof schema.image === 'string' && schema.image.startsWith('/')
+			? absUrl(schema.image)
+			: (schema.image ?? ogImageURL);
+	return {
+		...schema,
+		image,
+		...(schema.url ? {} : { url: canonicalURL }),
+		...(schema.mainEntityOfPage ? {} : { mainEntityOfPage: canonicalURL }),
+	};
+};
+
+const finalAdditionalSchemas = [...extra, ...additionalSchemas].map(withArticleDefaults);
+
+const schemaGraph = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		...(Array.isArray(baseGraph['@graph']) ? baseGraph['@graph'] : [baseGraph]),
+		...finalAdditionalSchemas,
+	],
+};
 
 // Robots meta — respeta noindex explícito por página
 const robotsContent = noindex
@@ -123,8 +146,7 @@ const robotsContent = noindex
 	Favicon={Favicon}
 	Topbar={Topbar}
 	Footer={Footer3}
-	schemaData={baseGraph}
-	additionalSchemas={finalAdditionalSchemas}
+	schemaData={schemaGraph}
 	robotsContent={robotsContent}
 >
 	<slot name="head" slot="head" />
