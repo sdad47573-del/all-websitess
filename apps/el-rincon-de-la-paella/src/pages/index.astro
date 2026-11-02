@@ -1,0 +1,302 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import arrozNegro from '../assets/fotos/el-rincon-de-la-paella-apaisada-01.jpg';
+import fideua from '../assets/fotos/el-rincon-de-la-paella-apaisada-02.jpg';
+import verduras from '../assets/fotos/el-rincon-de-la-paella-apaisada-03.jpg';
+import garbanzos from '../assets/fotos/el-rincon-de-la-paella-panoramica-04.jpg';
+import cordero from '../assets/fotos/el-rincon-de-la-paella-apaisada-06.jpg';
+import paellaFuego from '../assets/fotos/el-rincon-de-la-paella-apaisada-07.jpg';
+import paellaMarisco from '../assets/fotos/el-rincon-de-la-paella-apaisada-08.jpg';
+import ensaladilla from '../assets/fotos/el-rincon-de-la-paella-apaisada-10.jpg';
+import paellaMixta from '../assets/fotos/el-rincon-de-la-paella-vertical-05.jpg';
+import polloGuisado from '../assets/fotos/el-rincon-de-la-paella-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, HORARIO_AVISO, MAPS, MENU, RATING, SERVICIOS } from '../data/site';
+
+const title = 'El rincón de la paella · paellas y arroces para llevar en Miguelturra';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: paellaFuego,
+		alt: 'Paella grande con gambas en corona y judía verde recién hecha, en la cocina de El rincón de la paella',
+	},
+	{
+		src: paellaMixta,
+		alt: 'Paella mixta con pollo, gambas y judía verde en la paella, sobre una mesa con mantel',
+	},
+	{
+		src: paellaMarisco,
+		alt: 'Paella de marisco con gambas, mejillones y almejas repartidas por el arroz',
+	},
+	{
+		src: arrozNegro,
+		alt: 'Arroz negro con gambas enteras colocadas alrededor y trozos de sepia, en la paella',
+	},
+	{
+		src: fideua,
+		alt: 'Fideuá de fideos finos con pollo y azafrán, recién sacada del fuego',
+	},
+	{
+		src: verduras,
+		alt: 'Arroz con verduras en la paella: judía verde, calabacín y berenjena en trozos',
+	},
+	{
+		src: garbanzos,
+		alt: 'Garbanzos con chorizo y morcilla en cazuela de barro, con pimiento rojo y cebolla',
+	},
+	{
+		src: cordero,
+		alt: 'Cordero asado en cazuela de barro, con su jugo y ajos enteros',
+	},
+	{
+		src: polloGuisado,
+		alt: 'Pollo guisado en cazuela de barro con la salsa ligada y dorada',
+	},
+	{
+		src: ensaladilla,
+		alt: 'Ensaladilla rusa en bandeja de barro, decorada con huevo cocido y tiras de pimiento',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-rincon-de-la-paella`,
+	name: BUSINESS.name,
+	alternateName: ['El rincón de la paella Miguelturra', 'El rincón de la paella Ciudad Real'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Paella', 'Arroces', 'Fideuá', 'Cocina manchega', 'Comida para llevar'],
+	areaServed: [
+		{ '@type': 'City', name: 'Miguelturra' },
+		{ '@type': 'City', name: 'Ciudad Real' },
+		{ '@type': 'AdministrativeArea', name: 'Castilla-La Mancha' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.channel },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#191510" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El rincón de la paella Miguelturra, paellas por encargo Miguelturra, paella para llevar Ciudad Real, arroces Miguelturra, fideuá Miguelturra, comida para llevar Francisco Fernández Ordóñez, cordero asado Miguelturra, paella mixta 13170"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Paellas, arroces, fideuá y guisos por encargo en la calle Francisco Fernández Ordóñez, 5, de Miguelturra. 5,0 sobre 5 con 33 reseñas en Google. Encargos en el 672 60 17 17."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Paella con gambas de El rincón de la paella"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#191510"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-CM"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Miguelturra"
+			preload={[paellaFuego]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Paellas y arroces en Miguelturra"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="La paella, <br /><em>recién hecha.</em>"
+				lede={`El rincón de la paella está en la calle Francisco Fernández Ordóñez, 5, en Miguelturra. Paellas de marisco y mixtas, arroz negro, fideuá, arroces de verduras y guisos de cazuela, para encargar y llevar. La ficha de Google le da 5,0 sobre 5 con 33 reseñas, todas de cinco estrellas.`}
+				image={paellaFuego}
+				imageAlt="Paella grande con gambas en corona y judía verde recién hecha en la cocina de El rincón de la paella"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>5,0</b> en Google · 33 reseñas' },
+					{
+						label: 'Horario',
+						html: '<b>Por teléfono</b><br />La ficha no publica horario',
+					},
+					{ label: 'Encargos', html: `<b>${BUSINESS.phone}</b> paellas y arroces` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de El rincón de la paella" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Arroz al fuego, <br /><em>para llevar.</em>"
+				paragraphs={[
+					'El rincón de la paella está en la calle Francisco Fernández Ordóñez, 5, en Miguelturra, a un paso de Ciudad Real. Google lo clasifica como restaurante de comida para llevar, y esa es la pista más clara de cómo funciona: la paella se encarga, se hace al fuego y se recoge.',
+					'Las fotos del perfil son casi todas la misma escena: la paella recién apartada del fuego, con las gambas colocadas en corona, la judía verde repartida y el arroz suelto. Hay paella mixta con pollo y gambas, paella de marisco, arroz negro con gambas y sepia, arroz con verduras y fideuá de pollo.',
+					'La carta no se queda en el arroz. En el perfil aparecen también garbanzos con chorizo y morcilla en cazuela de barro, cordero asado con su jugo, pollo guisado, ensaladilla rusa y croquetas. Una de las reseñas lo resume: «Pedimos una paella mixta para 5 y unas croquetas y muy bueno todo».',
+					'La valoración es difícil de mejorar: 5,0 sobre 5 con 33 reseñas y ninguna por debajo de cinco estrellas. Las tres opiniones destacadas hablan de la paella, de las croquetas y del trato: «Trato excelente, y la comida inmejorable».',
+				]}
+				note="Los datos salen de la ficha pública de Google Maps y de las fotos del perfil. La ficha no publica horario, carta ni precios: para encargar o confirmar, llama al 672 60 17 17."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Paellas, arroces <br /><em>y cazuelas.</em>"
+				description="Los platos que aparecen aquí son los que enseñan las fotos del perfil y los que nombran las reseñas. La casa no tiene carta publicada en Google ni web propia."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Esta página no publica precios porque no hay carta oficial que copiar. El tamaño de la paella, el precio y el plazo del encargo se preguntan en el 672 60 17 17."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la paella.</em>"
+				description="Las fotografías del perfil de El rincón de la paella en Google Maps: las paellas recién hechas, el arroz negro, la fideuá, el arroz de verduras, el cordero, el pollo guisado y la ensaladilla."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Encarga <br /><em>la tuya.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Ciudad Real · Castilla-La Mancha',
+				]}
+				hours={HOURS}
+				hoursCaption="Horario y encargos"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de El rincón de la paella en la calle Francisco Fernández Ordóñez 5, Miguelturra"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El rincón de la paella"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. El local no publica web propia ni sistema de reservas, así que el teléfono es el canal directo para encargar una paella, preguntar por el tamaño o confirmar la recogida."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y encargos antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de El rincón de la paella"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
