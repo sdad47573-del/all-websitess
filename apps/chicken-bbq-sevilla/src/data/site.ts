@@ -1,197 +1,145 @@
 /**
- * Datos de CHICKEN BBQ SEVILLA — Av. de Alemania, 19, 41012 Sevilla
- * (Los Bermejales).
+ * Datos de Chicken BBQ Sevilla (Los Bermejales) — Av. de Alemania, 19,
+ * 41012 Sevilla.
  *
- * Fuentes públicas:
- * - Ficha de Google Maps aportada: «Chicken BBQ Sevilla: Los Bermejales,
- *   Pollo asado a la Brasa (carbon)», 37.3452325,-5.9815071,
- *   feature 0xd126f2fcdb4dbff:0x778bae87468348e0.
- * - Nombre, dirección, categorías, teléfono, valoración, horario, reseñas,
- *   accesibilidad y galería: ficha pública de Google consultada en octubre de 2026.
+ * Fuente pública:
+ * - Ficha de Google Maps indicada: 37.3452325,-5.9815071,
+ *   feature 0xd126f2fcdb4dbff:0x778bae87468348e0 (nombre, dirección, categorías,
+ *   horario, teléfono, nota, reseñas, accesibilidad y la descripción que publica
+ *   el negocio), más su place id y su CID.
+ * - Fotografías del perfil del establecimiento en Google Maps, descargadas a
+ *   src/assets/fotos/.
  *
- * Lo que la ficha NO publica: carta, precios, página web propia, redes sociales
- * ni pedidos online. La web no inventa esos datos: lo que cuenta sale de la
- * ficha, de sus categorías y de sus reseñas.
+ * Lo que la ficha NO publica y esta web no inventa: carta con precios, web
+ * propia y plataforma de reparto. Los productos que se nombran salen de la
+ * descripción del negocio, de las categorías de Google y de las reseñas.
  */
 
 export const BUSINESS = {
 	name: 'Chicken BBQ Sevilla',
-	fullName: 'CHICKEN BBQ SEVILLA: LOS BERMEJALES, POLLO ASADO A LA BRASA (CARBÓN)',
+	fullName: 'Chicken BBQ Sevilla: Los Bermejales, Pollo asado a la Brasa (carbón)',
 	shortName: 'Chicken BBQ',
-	mark: 'CB',
+	mark: 'BBQ',
 	street: 'Av. de Alemania, 19',
-	district: 'Los Bermejales',
 	city: 'Sevilla',
 	region: 'Andalucía',
+	regionName: 'Andalucía',
+	neighbourhood: 'Los Bermejales',
 	postalCode: '41012',
 	country: 'ES',
+	phone: '+34 955 38 61 30',
+	phoneHref: '+34955386130',
+	rating: 3.8,
+	reviewsCount: 135,
 	siteUrl: 'https://chicken-bbq-sevilla.vercel.app',
 	geo: { lat: 37.3452325, lng: -5.9815071 },
 	featureId: '0xd126f2fcdb4dbff:0x778bae87468348e0',
 	placeId: 'ChIJ_9u0zS9vEg0R4EiDRoeui3c',
-	plusCode: '8C9P82W9+39',
-	googleCategory: 'Restaurante especializado en pollo',
-	phone: '955 38 61 30',
-	phoneHref: 'tel:+34955386130',
-	tagline: 'Pollo asado a la brasa en Los Bermejales',
+	cid: '8614170608303032544',
+	/** Categorías con las que Google clasifica el local. */
+	category: 'Pollo asado a la brasa',
+	categories: [
+		'Restaurante especializado en pollo',
+		'Parrilla',
+		'Restaurante especializado en barbacoa',
+		'Pollería',
+		'Comida a domicilio',
+	],
+	tagline: 'Pollo asado a la leña de encinas',
 	description:
-		'Chicken BBQ Sevilla, en Av. de Alemania, 19 (Los Bermejales, 41012 Sevilla). Pollo asado a la brasa al carbón, patatas, arroz y salsa picante, con pedidos por teléfono.',
+		'Chicken BBQ Sevilla, pollo asado a la brasa en Los Bermejales, avenida de Alemania 19, 41012 Sevilla. Leña de encinas, todos los días de 11:00 a 16:00.',
+	hasPublicWebsite: false,
+	/** Descripción que publica el propio negocio en su ficha. */
+	ownerDescription: 'Pollo a la Brasa. Productos frescos hechos a la leña de encinas.',
 };
 
 export const MAPS = {
 	place:
-		'https://www.google.com/maps/place/Chicken+BBQ+Sevilla:+Los+Bermejales,Pollo+asado+a+la+Brasa+(carbon)/@37.3452325,-5.9815071,17z/data=!4m6!3m5!1s0xd126f2fcdb4dbff:0x778bae87468348e0!8m2!3d37.3452325!4d-5.9815071!16s%2Fg%2F11gng95_hc?authuser=0&hl=es&entry=ttu',
-	reviews: `https://search.google.com/local/reviews?placeid=${BUSINESS.placeId}&hl=es`,
+		'https://www.google.com/maps/place/Chicken+BBQ+Sevilla:+Los+Bermejales,Pollo+asado+a+la+Brasa+(carbon)/@37.3452325,-5.9815071,17z/data=!4m6!3m5!1s0xd126f2fcdb4dbff:0x778bae87468348e0!8m2!3d37.3452325!4d-5.9815071!16s%2Fg%2F11gng95_hc',
+	cid: `https://www.google.com/maps?cid=${BUSINESS.cid}`,
+	reviews: `https://www.google.com/maps?cid=${BUSINESS.cid}&hl=es`,
 	directions: 'https://www.google.com/maps/dir/?api=1&destination=37.3452325%2C-5.9815071',
 	embed: 'https://maps.google.com/maps?q=37.3452325,-5.9815071&z=17&hl=es&output=embed',
-	streetView: 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=37.3452325,-5.9815071',
 };
 
-/** Valoración publicada en la ficha (octubre de 2026). */
-export const RATING = {
-	value: 3.8,
-	count: 135,
-	label: '3,8',
-};
-
-/** Horario de la ficha: todos los días al mediodía, sin día de cierre. */
-export const HORARIO = [
-	{ dia: 'Lunes', horas: '10:00–16:00' },
-	{ dia: 'Martes', horas: '11:00–16:00' },
-	{ dia: 'Miércoles', horas: '11:00–16:00' },
-	{ dia: 'Jueves', horas: '11:00–16:00' },
-	{ dia: 'Viernes', horas: '11:00–16:00' },
-	{ dia: 'Sábado', horas: '11:00–16:00' },
-	{ dia: 'Domingo', horas: '11:00–16:00' },
+/**
+ * Horario publicado en la ficha de Google: solo comidas, de 11:00 a 16:00 de
+ * martes a domingo y desde las 10:00 los lunes. No hay servicio de cenas.
+ */
+export const HOURS = [
+	{ day: 'Lunes', value: '10:00–16:00' },
+	{ day: 'Martes', value: '11:00–16:00' },
+	{ day: 'Miércoles', value: '11:00–16:00' },
+	{ day: 'Jueves', value: '11:00–16:00' },
+	{ day: 'Viernes', value: '11:00–16:00' },
+	{ day: 'Sábado', value: '11:00–16:00' },
+	{ day: 'Domingo', value: '11:00–16:00' },
 ];
 
-export const HORARIO_AVISO =
-	'El domingo 1 de noviembre la ficha avisa de que el horario podría ser distinto por el Día de Todos los Santos. Confirma antes de desplazarte: el horario puede cambiar sin previo aviso.';
-
-/** Lo que anuncian las categorías y las reseñas. */
+/** Lo que declara la ficha y lo que repiten las reseñas que Google destaca. */
 export const SERVICIOS = [
 	'Pollo a la brasa',
-	'Parrilla',
-	'Costillas',
-	'Patatas',
-	'Arroz',
-	'Salsa picante',
-	'A domicilio',
+	'Leña de encinas',
+	'Parrilla y barbacoa',
+	'Patatas y arroz',
+	'Comida a domicilio',
 ];
 
-export const HIGHLIGHTS = [
+/** Reseñas destacadas en la ficha pública, con la puntuación de su autor. */
+export const REVIEWS = [
 	{
-		title: 'El pollo a la brasa',
-		text: 'La ficha lo clasifica como restaurante especializado en pollo, parrilla y barbacoa. Las reseñas lo confirman: «Pollo asado de calidad», dice una; «el pollo muy rico», otra.',
+		quote: 'El pollo, las patatas y el arroz están buenísimos.',
+		rating: 5,
 	},
 	{
-		title: 'Patatas y arroz',
-		text: '«El pollo, las patatas y el arroz están bueníssimos», resume una de las reseñas de cinco estrellas. Es la guarnición que acompaña al pollo en la mesa.',
+		quote: 'El pollo muy rico y la salsa picante buenísima.',
+		rating: 4,
 	},
 	{
-		title: 'La salsa picante',
-		text: 'Otra reseña deja claro qué pedir al lado: «El pollo muy rico y la salsa picante buenísima». La ficha no publica la carta, así que el resto se pregunta al pedir.',
-	},
-	{
-		title: 'Pedidos por teléfono',
-		text: '«Formalidad al recoger los pedidos telefónicos», según otra opinión. Google lo clasifica como comida a domicilio y el canal que publica la ficha es el 955 38 61 30.',
-	},
-];
-
-/** Solo lo que nombran la ficha y sus reseñas; sin precios inventados. */
-export const MENU = [
-	{
-		title: 'Del asador',
-		items: [
-			{
-				name: 'Pollo asado a la brasa',
-				note: 'al carbón, según el nombre de la ficha',
-			},
-			{
-				name: 'Costillas',
-				note: 'la ficha lo clasifica como restaurante de costillas al estilo coreano',
-			},
-			{
-				name: 'Parrilla',
-				note: 'categoría de la ficha, junto a «zona de barbacoa»',
-			},
-		],
-	},
-	{
-		title: 'Para acompañar',
-		items: [
-			{
-				name: 'Patatas',
-				note: '«el pollo, las patatas y el arroz están bueníssimos», según una reseña',
-			},
-			{
-				name: 'Arroz',
-				note: 'la misma reseña lo pone al mismo nivel que el pollo',
-			},
-			{
-				name: 'Salsa picante',
-				note: '«buenísima», según otra de las reseñas de la ficha',
-			},
-		],
-	},
-	{
-		title: 'Para casa',
-		items: [
-			{
-				name: 'Pedidos a domicilio',
-				note: 'la ficha lo clasifica como comida a domicilio; se piden por teléfono',
-			},
-		],
-	},
-];
-
-/** Las tres reseñas que publica la ficha, tal cual. */
-export const RESENAS = [
-	{
-		texto: 'El pollo, las patatas y el arroz están buenisimos',
-		valor: 5,
-	},
-	{
-		texto: 'El pollo muy rico y la salsa picante buenísima.',
-		valor: 4,
-	},
-	{
-		texto: 'Pollo asado de calidad y formalidad al recoger los pedidos telefónicos.',
-		valor: 5,
+		quote: 'Pollo asado de calidad y formalidad al recoger los pedidos telefónicos.',
+		rating: 5,
 	},
 ];
 
 export const FAQ = [
 	{
 		q: '¿Dónde está Chicken BBQ Sevilla?',
-		a: 'En la avenida de Alemania, 19, 41012 Sevilla, en Los Bermejales. El mapa de esta página abre las coordenadas exactas (37.3452325, -5.9815071) y el botón «Cómo llegar» lanza la ruta en Google Maps.',
+		a: 'En la avenida de Alemania 19, en Los Bermejales (41012 Sevilla). El mapa de esta página lleva al punto exacto que publica Google y el botón «Cómo llegar» abre las indicaciones en Google Maps.',
 	},
 	{
-		q: '¿Qué horario tiene?',
-		a: 'La ficha publica horario de mediodía todos los días: de 10:00 a 16:00 el lunes y de 11:00 a 16:00 de martes a domingo. No marca ningún día de cierre. El domingo 1 de noviembre la ficha avisa de que el horario podría ser distinto por el Día de Todos los Santos.',
+		q: '¿Cuál es el horario?',
+		a: 'Abre solo para comer: de 11:00 a 16:00 de martes a domingo, y desde las 10:00 los lunes. No hay servicio de cenas ni cierre a mediodía entre semana.',
 	},
 	{
-		q: '¿Qué se puede pedir?',
-		a: 'Pollo asado a la brasa al carbón, costillas, parrilla, patatas, arroz y salsa picante. La ficha no publica la carta completa ni los precios, así que la disponibilidad se confirma al pedir.',
+		q: '¿Cómo se asa el pollo?',
+		a: 'A la brasa, con leña de encinas. Lo dice el propio negocio en su ficha: «Pollo a la Brasa. Productos frescos hechos a la leña de encinas». No es un horno eléctrico ni una freidora.',
 	},
 	{
-		q: '¿Hay reparto a domicilio?',
-		a: 'Google lo clasifica como «Comida a domicilio» y una reseña habla de «formalidad al recoger los pedidos telefónicos». El canal que publica la ficha es el teléfono, el 955 38 61 30; no consta página web ni pedidos online, así que el reparto y la zona se confirman llamando.',
+		q: '¿Qué más se puede pedir?',
+		a: 'La ficha lo clasifica también como parrilla, restaurante de barbacoa y especialista en costillas, así que hay más que pollo. Las reseñas que Google destaca nombran las patatas, el arroz y la salsa picante como acompañamientos.',
+	},
+	{
+		q: '¿Se puede pedir para llevar o a domicilio?',
+		a: 'Google lo clasifica como comida a domicilio y una de las reseñas habla de recoger pedidos telefónicos. El canal directo es el teléfono 955 38 61 30, donde confirman reparto, horario y disponibilidad.',
 	},
 	{
 		q: '¿Cuánto cuesta?',
-		a: 'No consta. La ficha de Google no incluye carta ni precios; hay que preguntar por teléfono o en el local.',
+		a: 'La ficha no publica carta ni precios y esta web no inventa importes. Para saberlo, lo más rápido es llamar al 955 38 61 30 o pasarse por la avenida de Alemania 19.',
 	},
 	{
-		q: '¿Es accesible?',
-		a: 'La ficha marca acceso para sillas de ruedas, pero no aparcamiento adaptado ni asientos adaptados. Conviene llamar antes si necesitas algo concreto.',
+		q: '¿Hace falta reservar?',
+		a: 'La ficha no publica un sistema de reservas. El teléfono es el canal directo para preguntar por mesa o por un encargo, sobre todo si vais varios.',
 	},
 	{
-		q: '¿Qué valoración tiene?',
-		a: 'Google le da 3,8 sobre 5 con 135 reseñas en el momento de consultar la ficha (octubre de 2026). Las opiniones que muestra elogian el pollo, las patatas, el arroz y la salsa picante, y destacan la formalidad en los pedidos por teléfono.',
+		q: '¿El local es accesible?',
+		a: 'La ficha marca acceso para sillas de ruedas, pero no aparcamiento adaptado ni asientos adaptados. Si necesitas condiciones concretas, conviene llamar antes.',
 	},
 	{
-		q: '¿Tiene página web o redes sociales?',
-		a: 'No consta. La ficha pública no enlaza página web ni perfiles sociales, y esta página no enlaza nada que no aparezca en ella.',
+		q: '¿Tiene web propia?',
+		a: 'No. La ficha de Google no enlaza ninguna web del local y ofrece al titular la opción de añadir una. Esta página es informativa y no es un canal oficial de reservas ni de pedidos.',
+	},
+	{
+		q: '¿Qué valoración tiene en Google?',
+		a: 'Tres coma ocho sobre cinco con 135 reseñas. Las que Google destaca hablan bien del pollo, las patatas, el arroz y la salsa picante; en la ficha están todas, también las críticas.',
 	},
 ];

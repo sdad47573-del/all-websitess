@@ -1,0 +1,415 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-06.jpg';
+import rotulo from '../assets/fotos/comidas-para-llevar-como-en-casa-vertical-08.jpg';
+import mostrador from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-01.jpg';
+import bandejas from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-04.jpg';
+import interior from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-07.jpg';
+import vitrina from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-03.jpg';
+import paella from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-05.jpg';
+import arrozPollo from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-09.jpg';
+import filete from '../assets/fotos/comidas-para-llevar-como-en-casa-apaisada-02.jpg';
+import pizarra from '../assets/fotos/comidas-para-llevar-como-en-casa-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Como en casa · Pollos asados y comida para llevar en Lorca';
+const description =
+	'Comidas Para Llevar Como en casa, en C. Asilo de San Diego, 1 (30800 Lorca). Pollos asados, pan y comida casera para llevar de martes a sábado, de 8:00 a 18:00.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de Comidas Para Llevar Como en casa, en la esquina de la calle Asilo de San Diego de Lorca, con el rótulo de pollos asados, pan y comidas',
+	},
+	{
+		src: rotulo,
+		alt: 'Detalle del rótulo del local: «Pollos asados · pan · Paqui · Comidas» sobre las cristaleras',
+	},
+	{
+		src: mostrador,
+		alt: 'El mostrador con bandejas de pollo empanado, huevos fritos y croquetas, y el asador de pollos al fondo',
+	},
+	{
+		src: bandejas,
+		alt: 'Bandejas de patatas con pollo, un gratinado, salsa de tomate y pollo guisado en el mostrador caliente',
+	},
+	{
+		src: vitrina,
+		alt: 'La vitrina de postres con tartas de queso y chocolate, flanes, natillas, ensaladas envasadas y tarrinas de flan',
+	},
+	{
+		src: paella,
+		alt: 'Una paella grande de marisco recién hecha en la cocina, junto a las ollas del fuego',
+	},
+	{
+		src: pizarra,
+		alt: 'La pizarra del menú del día con los platos y los precios escritos a mano: arroz de costillejas, cocido, tallarines, migas, pisto y guisos',
+	},
+	{
+		src: arrozPollo,
+		alt: 'Una paella de arroz amarillo con pollo, y una mano enguantada sirviendo una ración en una fiambrera',
+	},
+	{
+		src: interior,
+		alt: 'El interior del local con el mostrador de bandejas, el expositor de postres y el cartel de Estrella Galicia',
+	},
+	{
+		src: filete,
+		alt: 'Un filete a la plancha con patatas fritas en un plato oscuro',
+	},
+];
+
+const precioNumerico = (price) => price?.replace(/[^\d,]/g, '').replace(',', '.');
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Comidas Para Llevar Como en casa',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: precioNumerico(item.price),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#como-en-casa-lorca`,
+	name: BUSINESS.fullName,
+	alternateName: [
+		'Como en casa Lorca',
+		'Comidas Para Llevar Como en casa',
+		'Paqui Comidas',
+		'Pollos asados Paqui',
+	],
+	description:
+		'Pollos asados, pan y comida casera para llevar en la calle Asilo de San Diego, 1 (30800 Lorca). Pizarra diaria de guisos, raciones y postres de vitrina.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34618593334',
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	paymentAccepted: 'Efectivo; tarjeta a partir de 10 €, según el cartel del local',
+	servesCuisine: ['Comida casera', 'Cocina murciana', 'Comida para llevar', 'Pollos asados'],
+	hasMenu: menuSchema,
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Lorca' },
+		{ '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '18:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#8c3b1f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Nothing+You+Could+Do&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Comidas Para Llevar Como en casa Lorca, comida para llevar Lorca, pollos asados Lorca, Paqui comidas, menú del día Lorca, Asilo de San Diego comida, comida casera 30800"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados, pan y comida casera para llevar en Asilo de San Diego, 1, Lorca. Pizarra diaria de guisos y raciones, de martes a sábado, 8:00–18:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="El rótulo de Paqui Comidas y Pollos asados en la fachada del local de Lorca"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#8c3b1f"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lorca"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Como en casa"
+			subtitle="Comidas · Pollos asados · Lorca"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Asilo de San Diego, 1 · Lorca"
+				title="Pollos asados y guisos, <br /><em>para llevar.</em>"
+				lede={`En la esquina de Asilo de San Diego, en Lorca, el rótulo lo dice todo: «Pollos asados · pan · Paqui · Comidas». Cada día se escribe la pizarra con lo que hay —arroz de costillejas, cocido, migas, carnes en salsa, pescado— y se sirve en fiambrera. Abre de martes a sábado, de 8:00 a 18:00, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de Comidas Para Llevar Como en casa, con el rótulo de pollos asados y comidas, en la esquina de la calle Asilo de San Diego de Lorca"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>8:00–18:00</b> · martes a sábado' },
+					{ label: 'Pollo asado', html: '<b>9 €</b> · del asador' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece Como en casa" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="La esquina <br /><em>de Paqui.</em>"
+				paragraphs={[
+					'El local está en la calle Asilo de San Diego, 1, en Lorca, en una esquina con cristaleras grandes y zócalo de piedra. Encima de las ventanas corre el rótulo: «Pollos asados · pan · Paqui · Comidas». Al fondo del mostrador se ve el asador con los pollos ensartados.',
+					'Dentro manda la pizarra. Cada día se escribe a mano lo que hay: arroz de costillejas, cocido, tallarines, migas, pisto, macarrones, patatas a lo pobre, brócoli gratinado, sangre frita, conejo al ajillo, ternera en salsa, magra al vino, pollo a la cerveza, merluza con tomate o empanada, boquerón frito, pechuga empanada, calamares, croquetas y fingers.',
+					'Junto a la pizarra está el mostrador caliente, con las bandejas de pollo empanado, huevos fritos, croquetas y guisos, y la vitrina de postres: tarta de queso con mermelada de fresa, tarta de chocolate, flanes y natillas en tarrinas, además de ensaladas envasadas.',
+					`Los vecinos le dan ${RATING.label} sobre 5 con ${RATING.count} reseñas. «Comida exquisita a un precio muy bueno y grandes raciones», cuenta una; «uno de los platos que mejor les sale, el arroz en cualquiera de sus variedades», añade otra. La tercera avisa de lo de siempre: «suele haber mucha gente y hay que hacer bastante cola».`,
+				]}
+				note="La ficha no publica carta fuera de la pizarra fotografiada, ni reparto, ni datos de accesibilidad más allá de que no hay asientos adaptados. Los precios de esta página son los de la pizarra que aparece en las fotos del perfil (noviembre de 2026) y pueden haber cambiado. Confirma siempre por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se lleva la gente</p>
+					<h2 id="highlights-title">Asador, pizarra <br /><em>y vitrina.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que hay <br /><em>hoy en la pizarra.</em>"
+				description="Los platos y los precios salen de la pizarra que aparece en las fotos del perfil de Google. La lista cambia cada día; el arroz, el cocido y los guisos son los que más se repiten."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios de la pizarra fotografiada en el perfil del local: la mayoría de los platos van de 3 a 4,50 € y el pollo asado figura a 9 €. La pizarra se reescribe a diario, así que puede haber platos que no estén y otros que no aparezcan aquí. Llama al 618 59 33 34 para saber qué hay ese día."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El asador, la pizarra <br /><em>y la vitrina.</em>"
+				description="Diez fotografías del perfil de Google: la fachada y su rótulo, el mostrador con el asador al fondo, las bandejas de guisos, la vitrina de postres, las paellas, la pizarra del día y el interior del local."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,6 sobre 5, <em>con 178 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,6 con 178 opiniones (noviembre de 2026). Las
+							reseñas que se ven aquí elogian la comida, el precio, las raciones y el arroz, y
+							avisan de que suele haber cola a la hora punta. Son las que destaca la ficha; hay
+							muchas más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,6</strong>
+						<span>★★★★★</span>
+						<small>178 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Lorca, <br /><em>Asilo de San Diego.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.postalCode, `${BUSINESS.district}, ${BUSINESS.region}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha: de 8:00 a 18:00, de martes a sábado, con lunes y domingo cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Comidas Para Llevar Como en casa en la calle Asilo de San Diego, 1, Lorca"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Asilo de San Diego, 1 · Lorca"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Pedidos por teléfono en el ${BUSINESS.phone} y recogida en el local. La ficha no publica reparto a domicilio ni datos de accesibilidad; en las fotos, un cartel avisa de que no se aceptan pagos con tarjeta por debajo de 10 €.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario, pizarra y fotografías de la ficha pública de Google Maps, consultadas en noviembre de 2026. Confirma platos, precios y horario antes de la visita."
+			ctaLabel="Llamar a Como en casa"
+			navAriaLabel="Enlaces de Comidas Para Llevar Como en casa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

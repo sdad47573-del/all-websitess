@@ -13,59 +13,43 @@ import {
 	LocalVisit,
 } from '@astro-components';
 
-import cartaPared from '../assets/fotos/don-pollo-vertical-01.jpg';
-import cartaImpresa from '../assets/fotos/don-pollo-apaisada-02.jpg';
+import pizarra from '../assets/fotos/don-pollo-vertical-01.jpg';
 import carteles from '../assets/fotos/don-pollo-vertical-03.jpg';
+import carta from '../assets/fotos/don-pollo-apaisada-02.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
 
-const title = 'Don Pollo · Pollo, kebab y pizza hasta las 2:00 en Sevilla';
+const title = 'Don Pollo · Pollo, pizzas y kebab en Sevilla';
 const description = BUSINESS.description;
 
 const galeria = [
 	{
-		src: cartaPared,
-		alt: 'El interior de Don Pollo con la carta de la pared sobre fondo morado y las mesas de metal',
-	},
-	{
-		src: cartaImpresa,
-		alt: 'La carta impresa de Don Pollo: hamburguesas, pizzas, pepitos, serranitos, empanados, kebab y papas asadas',
+		src: pizarra,
+		alt: 'Interior de Don Pollo con la pizarra verde de la carta sobre la pared morada, carteles de precios y mesas de metal',
 	},
 	{
 		src: carteles,
-		alt: 'Los carteles de la carta de Don Pollo con las pizzas, las papas asadas y las bolas de queso',
+		alt: 'Carteles de precios en la pared morada del local: papas asadas, carne con tomate y bolitas de queso con bebida de regalo',
+	},
+	{
+		src: carta,
+		alt: 'Pizarra amarilla con los precios de hamburguesas, pizzas, pepitos, serranitos, empanado de pollo, tortillas y kebab',
 	},
 ];
-
-const menuSchema = {
-	'@type': 'Menu',
-	name: 'Carta de Don Pollo',
-	inLanguage: 'es-ES',
-	hasMenuSection: MENU.map((group) => ({
-		'@type': 'MenuSection',
-		name: group.title,
-		hasMenuItem: group.items.map((item) => ({
-			'@type': 'MenuItem',
-			name: item.name,
-			description: item.note,
-		})),
-	})),
-};
 
 const bizSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Restaurant',
-	'@id': `${BUSINESS.siteUrl}/#donpollo`,
+	'@id': `${BUSINESS.siteUrl}/#don-pollo`,
 	name: BUSINESS.name,
-	alternateName: ['DON POLLO', 'Don Pollo Sevilla', 'Pollo asado La Sirena Varada'],
-	description:
-		'Restaurante de pollo, empanados, kebab, pizzas y papas asadas en la calle la Sirena Varada, 41013 Sevilla. Abre de 21:00 a 2:00 y hace pedidos a domicilio.',
+	alternateName: ['Don Pollo Sevilla', 'Don Pollo Cerillo', 'Don Pollo Sirena Varada'],
+	description,
 	url: `${BUSINESS.siteUrl}/`,
 	sameAs: [MAPS.place],
-	telephone: '+34955095278',
+	telephone: BUSINESS.phone,
 	currenciesAccepted: 'EUR',
 	priceRange: '€',
-	servesCuisine: ['Pollo', 'Kebab', 'Pizza', 'Comida rápida'],
+	servesCuisine: ['Pollo', 'Pizza', 'Kebab', 'Comida rápida'],
 	areaServed: { '@type': 'City', name: 'Sevilla' },
 	address: {
 		'@type': 'PostalAddress',
@@ -81,10 +65,9 @@ const bizSchema = {
 		longitude: BUSINESS.geo.lng,
 	},
 	hasMap: MAPS.place,
-	image: [`${BUSINESS.siteUrl}/og.jpg`],
-	hasMenu: menuSchema,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
 	identifier: [
-		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
 		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
 	],
 	openingHoursSpecification: [
@@ -97,16 +80,10 @@ const bizSchema = {
 	],
 	aggregateRating: {
 		'@type': 'AggregateRating',
-		ratingValue: RATING.value,
-		reviewCount: RATING.count,
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
 		bestRating: 5,
-		worstRating: 1,
 	},
-	review: RESENAS.map((review) => ({
-		'@type': 'Review',
-		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
-		reviewBody: review.texto,
-	})),
 };
 
 const faqSchema = {
@@ -123,8 +100,9 @@ const faqSchema = {
 const nav = [
 	{ label: 'La casa', href: '#casa' },
 	{ label: 'La carta', href: '#carta' },
+	{ label: 'Reseñas', href: '#resenas' },
 	{ label: 'Fotos', href: '#galeria' },
-	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
 ---
@@ -133,197 +111,159 @@ const nav = [
 <html lang="es">
 	<head>
 		<title>{title}</title>
-		<meta name="theme-color" content="#1d1224" />
+		<meta name="theme-color" content="#17120c" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400..800;1,400..600&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
 			rel="stylesheet"
 		/>
 		<LocalSeo
 			name={BUSINESS.name}
 			description={description}
-			keywords="Don Pollo Sevilla, pollo asado Sevilla, kebab Sevilla, pizza 5 euros Sevilla, papas asadas, empanados, La Sirena Varada, comida a domicilio Sevilla, abierto hasta las 2"
+			keywords="Don Pollo Sevilla, pollo Sirena Varada, pizzas a 5 euros Sevilla, kebab 41013, papas asadas Sevilla, hamburguesas Sevilla 41013, Don Pollo Cerillo, comida a domicilio 41013"
 			canonical={`${BUSINESS.siteUrl}/`}
 			site={BUSINESS.siteUrl}
 			ogTitle={title}
-			ogDescription="Pollo, empanados, kebab, pizzas de 5 € y papas asadas en la calle la Sirena Varada (41013 Sevilla), todas las noches hasta las 2:00. Pedidos a domicilio por teléfono."
+			ogDescription="Pizzas de un solo tamaño a 5 €, kebab con patatas y bebida, bocatas y papas asadas en la calle Sirena Varada, 41013 Sevilla. Abre de 21:00 a 2:00 de lunes a sábado y reparte con 10 € de mínimo."
 			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
-			ogImageAlt="Cartel de Don Pollo con su nombre sobre fondo morado y la dirección en Sevilla"
+			ogImageAlt="Cartel de Don Pollo con la dirección, el horario y el teléfono del restaurante"
 			ogImageWidth={1200}
 			ogImageHeight={630}
-			ogType="business.business"
 			author={BUSINESS.name}
-			themeColor="#1d1224"
+			themeColor="#17120c"
 			street={BUSINESS.street}
 			city={BUSINESS.city}
 			region={BUSINESS.region}
-			geoRegion="ES-SE"
+			geoRegion="ES-AN"
 			postalCode={BUSINESS.postalCode}
-			phone={BUSINESS.phone}
+			phone={BUSINESS.phoneHref}
 			latitude={BUSINESS.geo.lat}
 			longitude={BUSINESS.geo.lng}
-			placeName="Sevilla"
-			locale="es_ES"
-			countryName="España"
-			contact={{
-				street: BUSINESS.street,
-				locality: BUSINESS.city,
-				region: BUSINESS.region,
-				postalCode: BUSINESS.postalCode,
-				country: BUSINESS.country,
-				phone: BUSINESS.phone,
-				latitude: BUSINESS.geo.lat,
-				longitude: BUSINESS.geo.lng,
-			}}
-			preload={[cartaPared]}
+			placeName="Calle Sirena Varada, Sevilla"
+			preload={[pizarra]}
 			schemas={[bizSchema, faqSchema]}
 		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 	</head>
 	<body>
-		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
 
 		<LocalTopbar
 			mark={BUSINESS.mark}
 			name="Don Pollo"
-			subtitle="Pollo · kebab · pizza"
+			subtitle="Pollo · pizzas · kebab"
 			phone={BUSINESS.phone}
-			phoneHref={BUSINESS.phoneHref}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
 			nav={nav}
 			homeLabel="inicio"
 			navAriaLabel="Navegación principal"
 		/>
 
-		<main id="contenido">
+		<main id="conteudo">
 			<LocalHero
-				eyebrow="C. la Sirena Varada · 41013 Sevilla"
-				title="Pollo, kebab <br /><em>y pizza.</em>"
-				lede={`Don Pollo es la parada de madrugada de la Sirena Varada: pollo y empanados, kebab, pizzas de 5 € y papas asadas. Abre todas las noches de 21:00 a 2:00 y hace pedidos a domicilio. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={cartaPared}
-				imageAlt="El interior de Don Pollo con la carta de la pared sobre fondo morado y las mesas de metal"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Pollo, pizzas <br /><em>y kebab.</em>"
+				lede="Don Pollo abre solo de noche en la calle Sirena Varada, en el 41013 de Sevilla: de 21:00 a 2:00, de lunes a sábado. La pizarra del local, fotografiada en su ficha de Google, anuncia pizzas de un solo tamaño a 5 €, kebab con patatas y bebida, hamburguesas, bocatas y papas asadas. Los pedidos a domicilio llevan 1,50 € de recargo y 10 € de mínimo."
+				image={pizarra}
+				imageAlt="Interior de Don Pollo con la pizarra verde de la carta sobre la pared morada y las mesas de metal"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
 				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
 				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>21:00–02:00</b> · domingo cerrado' },
-					{ label: 'Servicio', html: '<b>A domicilio</b> con 1,50 € de recargo' },
+					{ label: 'Nota', html: '<b>4,3</b> en Google · 51 reseñas' },
+					{ label: 'Horario', html: '<b>21:00–2:00</b><br />Lunes a sábado · domingo cerrado' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> pedidos y consultas` },
 				]}
 				galleryHref={MAPS.place}
-				photoCredit="Fotos de la ficha de Google Maps"
+				photoCredit="Foto del perfil de Google Maps"
 				galleryLinkLabel="Ver la galería"
-				tag="Pollo · kebab · pizza · papas asadas"
 			/>
 
-			<LocalChips label="Lo que ofrece Don Pollo" items={SERVICIOS} />
+			<LocalChips label="Señas de Don Pollo" items={SERVICIOS} />
 
 			<LocalAbout
 				label="La casa"
-				title="La parada <br /><em>de la madrugada.</em>"
+				title="Pollo y pizza <br /><em>hasta las dos.</em>"
 				paragraphs={[
-					'Don Pollo está en la calle la Sirena Varada, 41013 Sevilla. Dentro, la pared morada sostiene la carta entera: baguettes, tapas, sándwiches, empanados, kebab y papas asadas, con las fotos de los platos pegadas alrededor y mesas de metal para comer allí.',
-					'La cocina es de noche: abre de 21:00 a 2:00 de lunes a sábado y descansa el domingo. Es cocina rápida de barrio, con el pollo y el empanado como bandera y precios que rondan los 2 y 3 €.',
-					'La carta impresa añade hamburguesas, perritos, serranitos, tortillas, paninis y veinte pizzas de un solo tamaño a 5 €. Las papas asadas van numeradas del 1 al 4 y llevan maíz, queso, pollo, atún o alioli según la versión.',
-					'Google le da 4,3 sobre 5 con 51 reseñas. Las que publica la ficha hablan de «servicio rápido», «precios muy buenos», limpieza y del «típico empanado del barrio».',
+					'Don Pollo es un local de barrio de la calle Sirena Varada, en el 41013 de Sevilla. Google lo clasifica como restaurante especializado en pollo y la propia pizarra del local se presenta como «Don Pollo · Cerillo», con la carta escrita en verde sobre la pared morada y los carteles de precios alrededor.',
+					'El horario es de noche: abre a las 21:00 y sirve hasta las 2:00, de lunes a sábado. El domingo figura cerrado, así que no hay servicio de mediodía ni de mañana.',
+					'La carta se organiza en pizzas de un solo tamaño, kebab con patatas y bebida, hamburguesas y bocatas, revueltos, tortillas, paninis y papas asadas con cuatro combinaciones. Los carteles que cuelgan de la pared repiten algunos de esos precios, y el más llamativo es la pizza a 5 €.',
+					'La pizarra también resuelve la duda del reparto: «Pedidos a domicilio incremento 1,50 €» y «Pedidos mínimo 10 €». Para encargar hay un teléfono publicado en la ficha, el 955 09 52 78.',
 				]}
-				note="La ficha no publica página web ni redes sociales. La carta y los precios de esta página salen de las fotos publicadas en la ficha de Google (octubre de 2026) y pueden haber cambiado; confírmalos al pedir."
+				note="Los precios de esta página están transcritos de la pizarra que aparece en las fotos del perfil de Google. Son los del cartel y pueden cambiar: confírmalos por teléfono antes de pedir."
 				links={[
 					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
+					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
 				]}
 			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que sale de la cocina</p>
-					<h2 id="highlights-title">Pollo, pizzas <br /><em>y papas asadas.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
 
 			<LocalMenu
 				eyebrow="La carta"
-				title="Pollo, kebab <br /><em>y pizzas de 5 €.</em>"
-				description="La ficha no tiene carta online: esto es lo que se lee en las fotos de la carta del local. Precios tal como aparecen."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				title="La pizarra <br /><em>del local.</em>"
+				description="Pizzas, kebab, hamburguesas, bocatas, revueltos y papas asadas, tal como están escritos en la pizarra del local y en los carteles de la pared."
+				cta={{ label: 'Ver la carta en las fotos de Google', href: MAPS.place }}
 				groups={MENU}
-				note="Precios de la carta fotografiada en la ficha de Google (octubre de 2026); pueden haber cambiado. Los pedidos a domicilio llevan un recargo de 1,50 € y el mínimo es de 10 €. La disponibilidad se confirma por teléfono."
+				note="Precios transcritos de la pizarra del local, que aparece en una de las fotos de su perfil de Google. Los pedidos a domicilio llevan un incremento de 1,50 € y el mínimo es de 10 €. El kebab se anuncia con patatas y bebida, pero la pizarra no marca un importe para cada variedad. Confirma precios y disponibilidad al llamar."
 			/>
 
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La casa <br /><em>y la carta.</em>"
-				description="Las tres fotografías del perfil de Don Pollo en Google Maps: el interior con la carta de la pared y las dos cartas donde se leen los platos y los precios."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,3 sobre 5, <em>con 51 reseñas.</em></h2>
+			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
+					<div class="reviews-head">
+						<h2 id="resenas-title">Lo que dicen <br /><em>los vecinos.</em></h2>
 						<p>
-							La valoración que publica Google en octubre de 2026 es de 4,3 con 51 opiniones. Las
-							tres reseñas que muestra la ficha hablan de comida rápida, precios y limpieza; aquí
-							se reproducen tal cual, también las que no son entusiastas.
+							Cuatro coma tres sobre cinco con 51 reseñas. Estas son las tres que Google destaca en
+							la ficha del local, con la puntuación que les dio su autor.
 						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
 					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,3</strong>
-						<span>★★★★☆</span>
-						<small>51 reseñas<br />en Google</small>
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="review-card">
+									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
+										{'★'.repeat(review.rating)}
+										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
+									</p>
+									<blockquote>{review.quote}</blockquote>
+									<figcaption>Reseña publicada en Google Maps</figcaption>
+								</figure>
+							))
+						}
 					</div>
+					<p class="review-note">
+						Citas de las reseñas públicas del local, con la puntuación del autor y la puntuación del
+						texto normalizada. Puedes leerlas todas en la ficha de Google.
+					</p>
 				</div>
 			</section>
 
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Tres fotos <br /><em>del local.</em>"
+				description="El perfil de Don Pollo tiene tres fotos: la pizarra verde con la carta, los carteles de precios de la pared morada y una vista de las mesas."
+				images={galeria}
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
+			/>
+
 			<LocalVisit
 				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Sirena Varada, <br /><em>hasta las dos.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				title="Ven a la <br /><em>Sirena Varada.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
+				hours={HOURS}
 				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 21:00 a 2:00 de lunes a sábado, con el domingo cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Don Pollo en la calle la Sirena Varada, 41013 Sevilla"
+				hoursNote="Horario publicado en la ficha de Google: solo noche, de 21:00 a 2:00, de lunes a sábado. El domingo figura cerrado. En festivos puede cambiar; llama antes si vas en día señalado."
+				mapTitle="Mapa de Don Pollo en la calle Sirena Varada, Sevilla"
 				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. la Sirena Varada"
-				mapHref={MAPS.place}
+				mapLabel="Don Pollo"
+				mapHref={MAPS.cid}
 				links={[
 					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
 				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Pedidos por teléfono: la ficha no publica pedidos online. La carta anuncia reparto a domicilio con 1,50 € de recargo y pedido mínimo de 10 €; la zona se confirma llamando. En accesibilidad la ficha solo marca que no hay aparcamiento adaptado para sillas de ruedas."
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="Los pedidos a domicilio se hacen por teléfono: la pizarra del local marca 1,50 € de incremento y 10 € de pedido mínimo. Esta página no tramita encargos ni reservas."
 			/>
 
 			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
@@ -336,13 +276,12 @@ const nav = [
 			links={[
 				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
 				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
-				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
 				{ label: 'Aviso legal', href: '/aviso-legal' },
 			]}
 			phone={BUSINESS.phone}
-			phoneHref={BUSINESS.phoneHref}
-			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma precios y horario antes de la visita."
-			ctaLabel="Llamar a Don Pollo"
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos y fotografías tomados del perfil público del restaurante en Google Maps. La carta está transcrita de la pizarra del local: confirma precios y horario antes de pedir."
+			ctaLabel="Llamar"
 			navAriaLabel="Enlaces de Don Pollo"
 			legalLinks={[
 				{ label: 'Aviso legal', href: '/aviso-legal' },
@@ -350,9 +289,8 @@ const nav = [
 				{ label: 'Cookies', href: '/aviso-legal#cookies' },
 			]}
 			creditLabel="Creado por"
-			creditName="Sur Digital"
+			creditName="Sur Digital · sur-digital.vercel.app"
 			creditHref="https://sur-digital.vercel.app/"
-			creditNote="sur-digital.vercel.app"
 		/>
 	</body>
 </html>

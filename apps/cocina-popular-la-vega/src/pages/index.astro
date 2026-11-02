@@ -1,0 +1,286 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/cocina-popular-la-vega-vertical-01.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, REVIEWS, SERVICIOS } from '../data/site';
+
+const title = 'Cocina popular · Comidas para llevar en La Vega, Murcia';
+const description = BUSINESS.description;
+
+const carta = [
+	{
+		title: 'La pizarra del lunes',
+		items: [
+			{ name: 'Sopa de cocido con pelotas', note: 'el plato que abre la pizarra de la puerta' },
+			{ name: 'Potaje de garbanzos con acelgas', note: 'de cuchara, para llevar' },
+			{ name: 'Lentejas', note: 'en la misma pizarra' },
+			{ name: 'Arroz y verdura', note: 'la opción de arroz' },
+		],
+	},
+	{
+		title: 'Y de segundo',
+		items: [
+			{ name: 'Pollo con patatas al ajo cabañil', note: 'el guiso de pollo que anuncia la pizarra' },
+			{ name: 'Tortilla de berenjena', note: 'por raciones' },
+			{ name: 'Empanada casera', note: 'también en la pizarra del día' },
+			{ name: 'Espaguetis', note: 'el plato de pasta de esa pizarra' },
+		],
+	},
+	{
+		title: 'Del escaparate',
+		items: [
+			{ name: 'Pan', note: 'lo que anuncia el cartel de la puerta' },
+			{ name: 'Bollería', note: 'en el mismo cartel' },
+			{ name: 'Zona gourmet', note: 'así la llama el propio local' },
+		],
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#cocina-popular`,
+	name: BUSINESS.name,
+	alternateName: ['Cocina popular La Vega', 'Cocina popular Murcia', 'Comidas para llevar La Vega'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	takeaway: true,
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La pizarra', href: '#carta' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#101a1c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Cocina popular Murcia, comidas para llevar La Vega, comida para llevar Murcia 30008, menú del día Murcia, potaje de garbanzos, ajo cabañil, Cronista Carlos Valcárcel, cocina popular La Vega"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comidas para llevar en la calle Cronista Carlos Valcárcel 1, 1ºA, 30008 Murcia. La ficha de Google no publica carta, horario ni teléfono: esta página reúne lo que sí se sabe, sin adornos."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Cocina popular con el toldo de comidas para llevar en Murcia"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#101a1c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MC"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="La Vega, Murcia"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Cocina popular"
+			subtitle="Comidas para llevar · La Vega"
+			cta={{ label: 'Ficha en Google', href: MAPS.place, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Cocina popular, <br /><em>para llevar.</em>"
+				lede="En la calle Cronista Carlos Valcárcel 1, 1ºA, en Murcia, bajo un toldo que dice «Comidas para llevar». La ficha de Google la clasifica como restaurante de comida para llevar, no publica horario ni teléfono y la puntúa con 2,2 sobre 5 entre 5 reseñas. Esta página reúne lo que sí consta, sin adornos."
+				image={fachada}
+				imageAlt="Fachada de Cocina popular en Murcia, con el rótulo, el toldo de comidas para llevar y la pizarra del menú del día"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver la ficha en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>2,2</b> en Google · 5 reseñas' },
+					{ label: 'Horario', html: '<b>Sin publicar</b><br />la ficha no trae horario' },
+					{ label: 'Teléfono', html: '<b>Sin publicar</b><br />tampoco hay web del negocio' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la ficha"
+			/>
+
+			<LocalChips label="Lo que consta de Cocina popular" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un bajo con <br /><em>pizarra.</em>"
+				paragraphs={[
+					'El local está en la calle Cronista Carlos Valcárcel 1, 1ºA, en el 30008 de Murcia, en un bajo de un edificio de ladrillo con el rótulo «COCINA POPULAR» sobre la persiana y un toldo que repite lo de siempre: «Comidas para llevar».',
+					'En la puerta hay una pizarra escrita a mano con el menú del día, y en el escaparate un cartel que anuncia «Comidas para llevar · Pan, bollería, Zona gourmet». Es la única fotografía que la ficha tiene del negocio, y de ella sale casi todo lo que se puede contar aquí.',
+					'La pizarra que se ve en esa foto es la del lunes: sopa de cocido con pelotas, potaje de garbanzos con acelgas, lentejas, arroz y verdura, pollo con patatas al ajo cabañil, tortilla de berenjena, empanada casera y espaguetis. Es un menú de cuchara, del día, escrito a tiza.',
+					'La ficha de Google, en cambio, está casi vacía: no publica horario, ni teléfono, ni web, ni una descripción del negocio. Y su nota es baja, 2,2 sobre 5 con 5 reseñas. Aquí no se maquilla: las dos reseñas que Google destaca son de una estrella y están reproducidas tal cual más abajo.',
+				]}
+				note="La ficha no publica horario, teléfono, web ni carta con precios. Los platos de esta página salen de la pizarra y del cartel que aparecen en la foto del perfil; los precios no se copian porque la pizarra no los muestra y no hay carta publicada."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La pizarra"
+				title="Menú del día, <br /><em>a tiza.</em>"
+				description="Lo que se lee en la pizarra de la puerta en la foto del perfil, más lo que anuncia el cartel del escaparate. Sin precios: ni la pizarra ni la ficha los publican."
+				cta={{ label: 'Ver la foto en Google', href: MAPS.place }}
+				groups={carta}
+				note="Platos copiados de la pizarra del lunes y del cartel del escaparate, en la única foto del perfil del local. El menú cambia cada día y no hay carta publicada: lo que haya se ve en la pizarra al llegar."
+			/>
+
+			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
+					<div class="reviews-head">
+						<h2 id="resenas-title">2,2 sobre 5, <br /><em>sin filtros.</em></h2>
+						<p>
+							La ficha tiene 5 reseñas y una media de 2,2. Estas son las dos que Google destaca, ambas
+							de una estrella, con la puntuación que les dio su autor.
+						</p>
+					</div>
+					<div class="review-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="review-card">
+									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
+										{'★'.repeat(review.rating)}
+										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
+									</p>
+									<blockquote>{review.quote}</blockquote>
+									<figcaption>Reseña publicada en Google Maps</figcaption>
+								</figure>
+							))
+						}
+					</div>
+					<p class="review-note">
+						Citas literales de las reseñas públicas del local. En la ficha de Google están las cinco, con
+						sus respuestas y su fecha, si el negocio las ha contestado.
+					</p>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · La Vega`}
+				title="Está <br /><em>aquí.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="La ficha de Google no publica horario: no aparece ningún bloque de días. Esta web no anuncia uno, así que compruébalo en la ficha antes de acercarte. Tampoco hay teléfono ni web del negocio para preguntar."
+				mapTitle="Mapa de Cocina popular comidas para llevar - La Vega, calle Cronista Carlos Valcárcel 1, Murcia"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Cocina popular · La Vega"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				reserveNote="Esta página no tramita pedidos ni encargos, y el local no publica teléfono. La ficha lo clasifica como comida para llevar y marca acceso para sillas de ruedas, sin más datos de accesibilidad ni de reparto."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Lo que <em>se sabe.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Cocina popular"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos y fotografía tomados de la ficha y del perfil públicos del local en Google Maps. Horario, teléfono y precios no están publicados."
+			ctaLabel="Ficha"
+			navAriaLabel="Enlaces de Cocina popular La Vega"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
