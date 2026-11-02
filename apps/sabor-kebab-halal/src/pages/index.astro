@@ -1,0 +1,321 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import asador from '../assets/fotos/sabor-kebab-halal-apaisada-10.jpg';
+import vitrina from '../assets/fotos/sabor-kebab-halal-apaisada-01.jpg';
+import hamburguesa from '../assets/fotos/sabor-kebab-halal-apaisada-05.jpg';
+import burgerQueso from '../assets/fotos/sabor-kebab-halal-vertical-09.jpg';
+import patatas from '../assets/fotos/sabor-kebab-halal-vertical-02.jpg';
+import plato from '../assets/fotos/sabor-kebab-halal-vertical-03.jpg';
+import durum from '../assets/fotos/sabor-kebab-halal-vertical-04.jpg';
+import interior from '../assets/fotos/sabor-kebab-halal-vertical-06.jpg';
+import kebabPan from '../assets/fotos/sabor-kebab-halal-vertical-08.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, RATING, SERVICIOS } from '../data/site';
+
+const title = 'Sabor Kebab Halal · Kebab y comida rápida en Andorra la Vella';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: vitrina,
+		alt: 'Vitrina de Sabor Kebab con bandejas de pollo, falafel, patatas, arroz y verduras, y bebidas debajo',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa de pollo crujiente de Sabor Kebab con pan de sésamo, lechuga, cebolla roja y tomate',
+	},
+	{
+		src: kebabPan,
+		alt: 'Kebab en pan abierto con carne de pollo, tomate, cebolla morada, lechuga y salsa blanca',
+	},
+	{
+		src: durum,
+		alt: 'Durum a la plancha de Sabor Kebab cortado, con un cuenco de salsa blanca al lado',
+	},
+	{
+		src: plato,
+		alt: 'Plato de kebab con pollo, alitas, nuggets, patatas y ensalada de col, zanahoria y tomate',
+	},
+	{
+		src: patatas,
+		alt: 'Ración de patatas fritas de Sabor Kebab servida sobre el papel del local',
+	},
+	{
+		src: burgerQueso,
+		alt: 'Hamburguesa de Sabor Kebab con queso fundido y lechuga en pan de sésamo',
+	},
+	{
+		src: interior,
+		alt: 'Interior de Sabor Kebab con la barra naranja, el asador y mesas con sillas rojas',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#sabor-kebab`,
+	name: BUSINESS.name,
+	alternateName: ['Sabor Kebab', 'Sabor Kebab Andorra', 'Sabor Kebab Halal Andorra la Vella'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Kebab', 'Turca', 'Comida rápida', 'Halal'],
+	hasMenu: {
+		'@type': 'Menu',
+		name: 'Carta de Sabor Kebab Halal',
+		inLanguage: 'es-ES',
+		hasMenuSection: MENU.map((group) => ({
+			'@type': 'MenuSection',
+			name: group.title,
+			hasMenuItem: group.items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.note,
+			})),
+		})),
+	},
+	hasDeliveryMethod: 'http://purl.org/goodrelations/v1#DeliveryModeOwnFleet',
+	areaServed: [
+		{ '@type': 'City', name: 'Andorra la Vella' },
+		{ '@type': 'City', name: 'Escaldes-Engordany' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.parish,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google Maps feature ID', value: BUSINESS.featureId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '11:30',
+			closes: '23:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Para llevar', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Servicio a domicilio', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Qué se pide', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#14211c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Sora:wght@600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Sabor Kebab Halal, kebab Andorra la Vella, kebab halal Andorra, durum Andorra, hamburguesas Andorra la Vella, pizza Andorra, kebab a domicilio Andorra, Mossèn Cinto Verdaguer, comida rápida Andorra"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Kebab, durum, hamburguesas y pizzas en la calle Mossèn Cinto Verdaguer 5, en el centro de Andorra la Vella. Todos los días de 11:30 a 23:30, con reparto a domicilio. 3,7 sobre 5 con 140 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Asador vertical de Sabor Kebab con los pinchos de carne y la vitrina de verduras"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#14211c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.parish}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Andorra la Vella"
+			countryName="Andorra"
+			preload={[asador]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Sabor Kebab"
+			subtitle="Halal · Andorra la Vella"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
+				title="Kebab, durum <br /><em>y a domicilio.</em>"
+				lede={`Sabor Kebab Halal está en la calle Mossèn Cinto Verdaguer, 5, en el centro de Andorra la Vella. Kebab y durum recién hechos en el asador, hamburguesas, pizzas, platos combinados y ensaladas, con servicio para llevar y reparto a domicilio en Andorra la Vella y Escaldes-Engordany. Abre todos los días de 11:30 a 23:30. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={asador}
+				imageAlt="Asador vertical de Sabor Kebab con dos pinchos de carne y una montaña de lechuga en la vitrina"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>11:30–23:30</b><br />Todos los días' },
+					{ label: 'Pedidos', html: `<b>${BUSINESS.phone}</b><br />Para llevar y a domicilio` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Reparto a domicilio"
+			/>
+
+			<LocalChips label="Señas de Sabor Kebab" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Kebab halal <br /><em>en el centro.</em>"
+				paragraphs={[
+					'Sabor Kebab Halal está en la calle Mossèn Cinto Verdaguer, 5, en el centro de Andorra la Vella. Dentro hay una barra naranja, mesas con sillas rojas y el asador vertical con los pinchos de carne girando junto a la vitrina de verduras.',
+					'La casa lo cuenta así: «Oferim kebabs, durums, hamburgueses, pizzes, plats combinats, amanides i opcions per a tota la família, sempre preparats amb ingredients frescos i de qualitat».',
+					'El servicio es rápido y pensado para llevárselo: hay servicio para llevar y «lliurament a domicili principalment a Andorra la Vella i Escaldes-Engordany». El objetivo que declara el restaurante es «un servei ràpid, un tracte amable i una excel·lent relació qualitat-preu».',
+					`Abre todos los días de 11:30 a 23:30, sin cerrar a mediodía. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`,
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento. La carta y los precios no están publicados: confírmalos en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="Qué se pide"
+				title="Kebab, durum <br /><em>y hamburguesas.</em>"
+				description="La ficha no publica la carta, así que aquí solo aparecen los platos que describe la casa y los que se ven en las fotos del perfil: kebab, durum, hamburguesas, pizzas y platos para completar."
+				cta={{ label: 'Pedir por teléfono', href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={MENU_NOTE}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Ocho fotos <br /><em>del kebab.</em>"
+				description="La vitrina con las bandejas, el kebab en pan, el durum a la plancha, las hamburguesas, el plato de kebab con alitas y la barra naranja del local."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el centro <br /><em>de Andorra.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días de 11:30 a 23:30, sin cierre a mediodía. En festivos puede cambiar."
+				mapTitle="Mapa de Sabor Kebab Halal en la calle Mossèn Cinto Verdaguer 5, Andorra la Vella"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Sabor Kebab Halal"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Pedidos: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay pedidos en línea en esta página. Se pide por teléfono, en el +376 665 665, y el local ofrece servicio para llevar y reparto a domicilio en Andorra la Vella y Escaldes-Engordany."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de pedir."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Sabor Kebab"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

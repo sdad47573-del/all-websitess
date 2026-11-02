@@ -7,7 +7,7 @@
  *   36.7250021,-4.4681361, feature 0xd72f7398bc10b3f:0x9c3f4c20bc04a969.
  * - Nombre, dirección, categoría, teléfono, valoración, horario, accesibilidad,
  *   descripción del negocio, reseñas y galería: ficha pública de Google
- *   consultada en octubre de 2026.
+ *   consultada en noviembre de 2026.
  *
  * Lo que la ficha NO publica: página web, redes sociales, carta ni precios. La
  * web no inventa esos datos. Los platos que se citan son los que nombran la
@@ -35,7 +35,7 @@ export const BUSINESS = {
 	phoneHref: 'tel:+34951463266',
 	tagline: 'Pollos asados tradicionales en Teatinos',
 	description:
-		'Asador de Pollos Rosa, en C. Navarro Ledesma, 90 (Teatinos-Universidad, 29010 Málaga). Pollos asados tradicionales, patatas, croquetas y pimientos fritos, de martes a domingo de 9:00 a 16:00.',
+		'Asador de Pollos Rosa, en C. Navarro Ledesma, 90 (Teatinos-Universidad, 29010 Málaga). Pollos asados tradicionales, patatas, croquetas y pimientos fritos, todos los días de 9:00 a 16:00.',
 };
 
 export const MAPS = {
@@ -54,9 +54,9 @@ export const RATING = {
 	label: '4,6',
 };
 
-/** Horario que publica la ficha: de martes a domingo. */
+/** Horario que publica la ficha: todos los días, solo mediodía. */
 export const HORARIO = [
-	{ dia: 'Lunes', horas: 'Cerrado', closed: true },
+	{ dia: 'Lunes', horas: '9:00–16:00' },
 	{ dia: 'Martes', horas: '9:00–16:00' },
 	{ dia: 'Miércoles', horas: '9:00–16:00' },
 	{ dia: 'Jueves', horas: '9:00–16:00' },
@@ -67,7 +67,7 @@ export const HORARIO = [
 
 /** Aviso que acompaña al horario en la ficha. */
 export const HORARIO_AVISO =
-	'La ficha avisa de que el Día de Todos los Santos el horario podría ser distinto. El horario puede cambiar sin previo aviso; confírmalo en Google o por teléfono antes de desplazarte.';
+	'El horario puede cambiar en festivos o por vacaciones; confírmalo en Google o por teléfono antes de desplazarte.';
 
 /** Lo que la ficha permite afirmar del local. */
 export const SERVICIOS = [
@@ -79,6 +79,7 @@ export const SERVICIOS = [
 	'Para llevar',
 	'Acceso para sillas de ruedas',
 	'Asientos adaptados',
+	'Aparcamiento y aseo adaptados',
 ];
 
 export const HIGHLIGHTS = [
@@ -194,7 +195,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué horario tiene?',
-		a: 'La ficha publica de martes a domingo, de 9:00 a 16:00, y el lunes como día de cierre. El Día de Todos los Santos la propia ficha avisa de que el horario podría ser distinto.',
+		a: 'La ficha publica todos los días de la semana, de 9:00 a 16:00, sin día de cierre. En festivos o vacaciones puede cambiar.',
 	},
 	{
 		q: '¿Qué se puede pedir?',
@@ -214,7 +215,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Es accesible?',
-		a: 'Google marca el acceso para sillas de ruedas y los asientos adaptados, pero indica que no hay aparcamiento adaptado, aseo adaptado ni bucle magnético. No publica más datos sobre el interior.',
+		a: 'Google marca acceso y asientos adaptados, aparcamiento adaptado, aseo adaptado y bucle magnético asistencial. No publica más datos sobre el interior.',
 	},
 	{
 		q: '¿Qué valoración tiene?',

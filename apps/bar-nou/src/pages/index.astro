@@ -1,0 +1,284 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/bar-nou-apaisada-01.jpg';
+import interior from '../assets/fotos/bar-nou-apaisada-02.jpg';
+import terraza from '../assets/fotos/bar-nou-panoramica-10.jpg';
+import tapas from '../assets/fotos/bar-nou-vertical-03.jpg';
+import combinado from '../assets/fotos/bar-nou-vertical-04.jpg';
+import cerveza from '../assets/fotos/bar-nou-vertical-06.jpg';
+
+import { BUSINESS, CARTA, CARTA_NOTE, FAQ, HOURS, MAPS, RATING, SERVICIOS } from '../data/site';
+
+const title = 'Bar Nou · Bar restaurante en Andorra la Vella';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Dos cervezas de barril y un cuenco de patatas bravas en la terraza de Bar Nou, con sillas blancas marcadas con el nombre del bar',
+	},
+	{
+		src: interior,
+		alt: 'Interior de Bar Nou con sillas de madera, columna roja y manteles de papel en las mesas',
+	},
+	{
+		src: tapas,
+		alt: 'Bandejas de calamares a la plancha con cebolla y champiñones al ajillo en Bar Nou',
+	},
+	{
+		src: combinado,
+		alt: 'Plato combinado de huevos fritos sobre patatas con salsa de tomate, con cesta de pan y copa de vino tinto',
+	},
+	{
+		src: cerveza,
+		alt: 'Copa de cerveza Estrella Damm de barril sobre una mesa de la terraza de Bar Nou',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BarOrPub',
+	'@id': `${BUSINESS.siteUrl}/#bar-nou`,
+	name: BUSINESS.name,
+	alternateName: ['Restaurant Bar Nou', 'Bar Nou Andorra', 'Bar Nou Andorra la Vella'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.parish,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google Maps feature ID', value: BUSINESS.featureId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '01:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Sunday',
+			opens: '08:00',
+			closes: '01:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El bar', href: '#casa' },
+	{ label: 'Qué se sirve', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17120e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bar Nou, bar Andorra la Vella, bar restaurante Andorra, Av. Dr. Mitjavila, terraza Andorra la Vella, menú turístico Andorra, tapas Andorra, platos combinados Andorra"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Bar restaurante en la avenida Doctor Mitjavila, 10, de Andorra la Vella. De lunes a viernes de 7:00 a 1:00, domingos de 8:00 a 1:00, sábado cerrado. Terraza, acceso y asientos adaptados. 4 sobre 5 con 89 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Toldo de Bar Nou con el rótulo RESTAURANT BAR NOU en la avenida Doctor Mitjavila"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#17120e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.parish}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Andorra la Vella"
+			countryName="Andorra"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Bar Nou"
+			subtitle="Restaurant · Andorra la Vella"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
+				title="Bar restaurante <br /><em>en la Mitjavila.</em>"
+				lede={`Bar Nou está en la avenida Doctor Mitjavila, 10, en Andorra la Vella, junto al río Valira. Abre de lunes a viernes de 7:00 a 1:00 y los domingos de 8:00 a 1:00, con terraza y con entrada y asientos adaptados para sillas de ruedas. El escaparate anuncia menú turístico, platos combinados y tapas. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="Fachada de Bar Nou con el toldo blanco rotulado RESTAURANT BAR NOU, el letrero de Martini y una máquina de tabaco Fortuna"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>7:00–1:00</b><br />Sábado cerrado' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b><br />Sin reservas en línea` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Con terraza"
+			/>
+
+			<LocalChips label="Señas de Bar Nou" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El bar"
+				title="Un bar de barrio <br /><em>junto al río.</em>"
+				paragraphs={[
+					'Bar Nou ocupa el bajo de un edificio de la avenida Doctor Mitjavila, 10, en Andorra la Vella. El toldo blanco de la fachada se anuncia como «RESTAURANT BAR NOU» y junto a la puerta se ven el letrero de Martini, la máquina de tabaco Fortuna y la banderola de Delta Cafés.',
+					'El escaparate resume la oferta en tres palabras: «Menú turístic · Plats combinats · Tapes». Dentro, las mesas se cubren con mantel de papel y las sillas son de madera, con una columna pintada de rojo en mitad del comedor.',
+					'Fuera hay terraza: mesas y sillas blancas con las letras «NOU» en el respaldo, junto a la barandilla del río y bajo unas luces colgadas. Las fotos del perfil muestran las bravas, los calamares y la cerveza servida en la terraza.',
+					`El horario es largo: de 7:00 a 1:00 de lunes a viernes y de 8:00 a 1:00 los domingos, con el sábado cerrado. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`,
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento. La ficha no publica descripción del negocio ni carta con precios: lo que se cuenta aquí es lo que se ve en las fotos y lo que anuncia el propio local."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="Qué se sirve"
+				title="Tapas y platos <br /><em>de barra.</em>"
+				description="La ficha no publica la carta, así que aquí solo aparecen los platos que se ven en las fotos del perfil y los que anuncia el escaparate: tapas, platos combinados y menú turístico."
+				cta={{ label: 'Preguntar por teléfono', href: BUSINESS.phoneHref }}
+				groups={CARTA}
+				note={CARTA_NOTE}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Cinco fotos <br /><em>del bar.</em>"
+				description="La fachada con el toldo, el comedor de sillas de madera, la terraza con las bravas y la cerveza, las tapas de calamar y champiñones y un plato combinado de huevos con patatas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Avenida Mitjavila, <br /><em>junto al río.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de 7:00 a 1:00 de lunes a viernes, de 8:00 a 1:00 los domingos y sábado cerrado. En festivos puede cambiar."
+				mapTitle="Mapa de Bar Nou en la avenida Doctor Mitjavila 10, Andorra la Vella"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bar Nou"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Teléfono: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. El bar solo publica el teléfono +376 863 117, que es la vía para preguntar por mesa o por el menú del día."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de venir."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Bar Nou"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
