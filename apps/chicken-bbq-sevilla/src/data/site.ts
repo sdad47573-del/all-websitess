@@ -42,7 +42,9 @@ export const BUSINESS = {
 		'Restaurante especializado en pollo',
 		'Parrilla',
 		'Restaurante especializado en barbacoa',
+		'Zona de barbacoa',
 		'Pollería',
+		'Restaurante especializado en costillas al estilo coreano',
 		'Comida a domicilio',
 	],
 	tagline: 'Pollo asado a la leña de encinas',
@@ -116,7 +118,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué más se puede pedir?',
-		a: 'La ficha lo clasifica también como parrilla, restaurante de barbacoa y especialista en costillas, así que hay más que pollo. Las reseñas que Google destaca nombran las patatas, el arroz y la salsa picante como acompañamientos.',
+		a: 'La ficha lo clasifica también como parrilla, restaurante de barbacoa, zona de barbacoa y especialista en costillas al estilo coreano, así que hay más que pollo. Las reseñas que Google destaca nombran las patatas, el arroz y la salsa picante como acompañamientos.',
 	},
 	{
 		q: '¿Se puede pedir para llevar o a domicilio?',

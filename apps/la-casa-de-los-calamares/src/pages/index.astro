@@ -1,0 +1,301 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import paella from '../assets/fotos/la-casa-de-los-calamares-apaisada-01.jpg';
+import bocadilloMesa from '../assets/fotos/la-casa-de-los-calamares-apaisada-04.jpg';
+import boquerones from '../assets/fotos/la-casa-de-los-calamares-apaisada-07.jpg';
+import bocadillo from '../assets/fotos/la-casa-de-los-calamares-apaisada-08.jpg';
+import cartaBebidas from '../assets/fotos/la-casa-de-los-calamares-vertical-02.jpg';
+import cana from '../assets/fotos/la-casa-de-los-calamares-vertical-03.jpg';
+import mesaCanas from '../assets/fotos/la-casa-de-los-calamares-vertical-05.jpg';
+import fritura from '../assets/fotos/la-casa-de-los-calamares-vertical-06.jpg';
+import oreja from '../assets/fotos/la-casa-de-los-calamares-vertical-09.jpg';
+import mesaFritura from '../assets/fotos/la-casa-de-los-calamares-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, HORARIO_AVISO, MAPS, MENU, RATING, SERVICIOS } from '../data/site';
+
+const title = 'La Casa de los Calamares · frituras y bocadillos de calamar en Ciudad Real';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: fritura,
+		alt: 'Fritura variada de calamares, boquerones y cazón recién hecha, con gajo de limón',
+	},
+	{
+		src: bocadillo,
+		alt: 'Bocadillo de calamares en barra de pan, con las anillas asomando',
+	},
+	{
+		src: boquerones,
+		alt: 'Boquerones fritos a la andaluza con limón, en plato de borde azul',
+	},
+	{
+		src: paella,
+		alt: 'Paella de marisco con gambas grandes y limón sobre mesa de mantel azul',
+	},
+	{
+		src: cana,
+		alt: 'Caña de cerveza Calatrava servida en jarra de cristal con asa',
+	},
+	{
+		src: mesaCanas,
+		alt: 'Mesa roja con tres cañas Calatrava y una sartén para compartir con palitos de pan',
+	},
+	{
+		src: oreja,
+		alt: 'Trozos de cerdo fritos con hierbas sobre plato de borde azul',
+	},
+	{
+		src: mesaFritura,
+		alt: 'Mesa con plato de fritura, limón y media caña Calatrava',
+	},
+	{
+		src: bocadilloMesa,
+		alt: 'Bocadillo de calamares partido en dos sobre plato blanco y mesa roja',
+	},
+	{
+		src: cartaBebidas,
+		alt: 'Carta de bebidas y licores de la casa, con los precios de barra y mesa',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#casa-de-los-calamares`,
+	name: BUSINESS.name,
+	alternateName: ['Casa de los Calamares', 'Los Calamares Ciudad Real'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Frituras de pescado', 'Tapas', 'Bocadillos', 'Cocina andaluza'],
+	areaServed: [
+		{ '@type': 'City', name: 'Ciudad Real' },
+		{ '@type': 'AdministrativeArea', name: 'Castilla-La Mancha' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.channel },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Entrada adaptada', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0d1d2a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Casa de los Calamares Ciudad Real, bocadillo de calamares calle de Toledo, frituras de pescado Ciudad Real, boquerones fritos, caña Calatrava, bar restaurante 13003, tapas Ciudad Real"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Frituras de pescado, bocadillo de calamar, sardinas y cañas Calatrava en la calle de Toledo, 81, de Ciudad Real. 3,7 sobre 5 con 115 reseñas. Teléfono 642 38 41 02."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fritura variada de La Casa de los Calamares"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#0d1d2a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-CM"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Ciudad Real"
+			preload={[fritura]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Frituras y cañas en la calle de Toledo"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Fritura <br /><em>y calamar.</em>"
+				lede={`La Casa de los Calamares está en la calle de Toledo, 81, en Ciudad Real. Bar restaurante de frituras: calamares a la andaluza, boquerones, cazón, sardinas, bocadillo de calamar y paella de marisco, con la caña de Calatrava bien fría. La ficha de Google le da 3,7 sobre 5 con 115 reseñas.`}
+				image={fritura}
+				imageAlt="Fritura variada de calamares, boquerones y cazón con limón, en plato de borde azul"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>3,7</b> en Google · 115 reseñas' },
+					{
+						label: 'Horario',
+						html: '<b>No publicado</b><br />La ficha no da horas: llama antes',
+					},
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> mesa y encargos` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de La Casa de los Calamares" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un bar de <br /><em>fritura.</em>"
+				paragraphs={[
+					'La Casa de los Calamares es un bar restaurante en la calle de Toledo, 81, en la salida de Ciudad Real hacia Toledo. Google lo clasifica con una sola etiqueta, «Bar restaurante», y la ficha no publica horario, carta de comidas ni web propia.',
+					'Las fotos del perfil son casi todas la misma escena: el plato de fritura recién hecha, con el gajo de limón al lado, sobre las mesas rojas de la barra. Calamares en anillas, boquerones a la andaluza, cazón y sardinas, servidos en platos de borde azul.',
+					'El calamar también va en bocadillo: barra de pan partida, las anillas dentro y nada más, tal como aparece en dos de las fotos. Y para completar la mesa hay paella de marisco con gambas grandes, una sartén para compartir y tapas de la casa.',
+					'La cerveza es Calatrava, de Ciudad Real, y sale fría: una de las reseñas lo resume así, «cerveza muy fría y buenas tapas». Las otras dos destacadas van en la misma línea: «Buenas frituras de pescado y buenas sardinas y Paco el mejor camarero» y «Buena gente, buen lugar y buena atención».',
+				]}
+				note="Los datos salen de la ficha pública de Google Maps y de las fotos y reseñas del perfil. La ficha no publica horario ni carta de comidas: esta web no se los inventa. Para horario y mesa, el teléfono es el 642 38 41 02."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver el bar en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Frituras, bocadillos <br /><em>y cañas.</em>"
+				description="Los platos que aparecen aquí son los que enseñan las fotos del perfil y los que nombran las reseñas. La única lista con precios que publica el perfil es la de bebidas."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Los precios de las bebidas están copiados de la foto de la carta del perfil (consultada el 2 de noviembre de 2026) y pueden haber cambiado: confírmalos en la barra. La comida no tiene precios publicados en la ficha."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la barra.</em>"
+				description="Las fotografías del perfil de La Casa de los Calamares en Google Maps: la fritura, el bocadillo de calamar, los boquerones, la paella, las cañas Calatrava, la oreja frita y la carta de bebidas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Caña y <br /><em>fritura.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castilla-La Mancha, España']}
+				hours={HOURS}
+				hoursCaption="Horario y datos"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de La Casa de los Calamares en la calle de Toledo 81, Ciudad Real"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Casa de los Calamares"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. El bar no publica web propia ni sistema de reservas, así que el teléfono es el canal directo para preguntar horario, reservar mesa o encargar fritura para llevar."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de La Casa de los Calamares"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

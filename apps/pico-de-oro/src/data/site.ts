@@ -101,6 +101,10 @@ export const REVIEWS = [
 		quote: 'Pollos ricos y sabrosos. Mejor trato. Repetiremos.',
 		rating: 5,
 	},
+	{
+		quote: 'Está seco y la «salsa» que lo acompaña es aceite con pimentón.',
+		rating: 1,
+	},
 ];
 
 export const FAQ = [

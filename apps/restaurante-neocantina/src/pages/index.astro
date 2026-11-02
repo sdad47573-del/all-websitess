@@ -1,0 +1,314 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import arroz from '../assets/fotos/restaurante-neocantina-apaisada-01.jpg';
+import churros from '../assets/fotos/restaurante-neocantina-apaisada-02.jpg';
+import morcilla from '../assets/fotos/restaurante-neocantina-apaisada-03.jpg';
+import migas from '../assets/fotos/restaurante-neocantina-apaisada-04.jpg';
+import entrecot from '../assets/fotos/restaurante-neocantina-apaisada-05.jpg';
+import calabacin from '../assets/fotos/restaurante-neocantina-apaisada-06.jpg';
+import hojaldre from '../assets/fotos/restaurante-neocantina-vertical-07.jpg';
+import croqueta from '../assets/fotos/restaurante-neocantina-apaisada-08.jpg';
+import hamburguesa from '../assets/fotos/restaurante-neocantina-vertical-09.jpg';
+import godello from '../assets/fotos/restaurante-neocantina-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'Restaurante Neocantina · Cocina manchega en Ciudad Real';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: arroz,
+		alt: 'Arroz con sardinas abiertas en sartén de hierro, recién sacado del fuego',
+	},
+	{
+		src: migas,
+		alt: 'Migas manchegas con huevo frito en la sartén, con pan y mantel de cuadros',
+	},
+	{
+		src: morcilla,
+		alt: 'Morcilla sobre crema de garbanzos con garbanzos tostados, en plato de cerámica decorado',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la brasa con patatas asadas y sal gruesa en plato de gres',
+	},
+	{
+		src: churros,
+		alt: 'Churros recién hechos en cucurucho de papel sobre tabla de madera, con chocolate',
+	},
+	{
+		src: calabacin,
+		alt: 'Milhojas de calabacín con ensalada y frutos secos sobre plato de cristal rayado',
+	},
+	{
+		src: croqueta,
+		alt: 'Croqueta dorada sobre salsa de pimiento con ensalada, en plato blanco',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa con huevo frito y patatas fritas junto a dos cañas',
+	},
+	{
+		src: godello,
+		alt: 'Botella de Godello Orovel 2020 en la mesa, junto a copas de vino',
+	},
+];
+
+const cartaGrupos = [
+	{
+		title: 'Para empezar y compartir',
+		items: [
+			{ name: 'Croqueta de la casa', note: 'dorada por fuera, sobre salsa de pimiento' },
+			{ name: 'Morcilla con crema de garbanzos', note: 'con garbanzos tostados y yema curada' },
+			{ name: 'Milhojas de calabacín', note: 'con ensalada y frutos secos' },
+			{ name: 'Raciones de la barra', note: 'la parte de cantina: se pregunta por lo del día' },
+		],
+	},
+	{
+		title: 'Cuchara y sartén',
+		items: [
+			{ name: 'Migas manchegas', note: 'coronadas con un huevo frito' },
+			{ name: 'Arroz con sardinas', note: 'en sartén de hierro, con las sardinas abiertas encima' },
+			{ name: 'Hojaldre de carne guisada', note: 'sobre salsa de pimiento y con ensalada' },
+			{ name: 'Guisos de temporada', note: 'lo que marque el mercado; se pregunta al reservar' },
+		],
+	},
+	{
+		title: 'A la brasa',
+		items: [
+			{ name: 'Entrecot a la brasa', note: 'con patatas asadas y sal gruesa' },
+			{ name: 'Carnes a la parrilla', note: 'el punto se pide en mesa' },
+			{ name: 'Hamburguesa con huevo frito', note: 'con patatas fritas' },
+		],
+	},
+	{
+		title: 'Postres y sobremesa',
+		items: [
+			{ name: 'Churros con chocolate', note: 'en cucurucho de papel, para mojar' },
+			{ name: 'Vinos de la casa', note: 'blancos tipo Godello y tintos de la tierra' },
+		],
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#neocantina`,
+	name: BUSINESS.name,
+	alternateName: ['Neocantina', 'Neocantina Ciudad Real', 'Restaurante Neocantina Ciudad Real'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.instagram, BUSINESS.facebook],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina manchega', 'Cocina española', 'Brasa'],
+	acceptsReservations: true,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid }],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1b2117" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Neocantina, restaurante Ciudad Real, cocina manchega Ciudad Real, comer en Ciudad Real, Av. de las Lagunas de Ruidera 8, migas manchegas, arroz con sardinas, carnes a la brasa Ciudad Real, restaurante 13004, reservar mesa Ciudad Real"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cocina manchega, brasa y sobremesa en la avenida de las Lagunas de Ruidera, 8, 13004 Ciudad Real. Reservas en el 926 22 26 94."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Hojaldre de carne guisada del Restaurante Neocantina, en Ciudad Real"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1b2117"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-CM"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="13004 Ciudad Real"
+			preload={[hojaldre]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Neocantina"
+			subtitle="Restaurante · Ciudad Real"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Brasa, cuchara <br /><em>y sobremesa.</em>"
+				lede="Neocantina está en la avenida de las Lagunas de Ruidera, 8, en el 13004 de Ciudad Real. Es un restaurante de mantel y cantina: migas con huevo frito, arroz con sardinas en sartén de hierro, carnes a la brasa, raciones para compartir y churros con chocolate para cerrar. Se reserva por teléfono, en el 926 22 26 94, y los lunes cierra."
+				image={hojaldre}
+				imageAlt="Hojaldre relleno de carne guisada sobre salsa de pimiento, con ensalada, en el Restaurante Neocantina"
+				primaryCta={{ label: 'Llamar al 926 22 26 94', href: `tel:${BUSINESS.phoneHref}` }}
+				secondaryCta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+				facts={[
+					{ label: 'Dirección', html: '<b>Lagunas de Ruidera, 8</b><br />13004 Ciudad Real' },
+					{ label: 'Reservas', html: `<b>${BUSINESS.phone}</b><br />el teléfono del local` },
+					{ label: 'Horario', html: '<b>Lunes cerrado</b><br />mediodía y noche' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de Neocantina" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina manchega <br /><em>sin prisa.</em>"
+				paragraphs={[
+					'Neocantina ocupa un local de la avenida de las Lagunas de Ruidera, en el sur de Ciudad Real, con la cocina a la vista en el plato: producto de la tierra, guisos de los de toda la vida y una brasa que se pide en mesa. El nombre ya avisa de la idea: cantina, mesa larga y conversación.',
+					'La cocina se mueve entre dos aguas. Por un lado, el recetario manchego: migas con su huevo frito, morcilla con crema de garbanzos, pisto y guisos de temporada. Por otro, una parte de brasa y raciones —entrecot con patatas, croquetas, hojaldres— que es lo que más se comparte en la barra.',
+					'El local está pensado para grupos: los directorios donde figura anuncian salón y recinto para eventos, además de servicio de fiestas infantiles. Para una comida de empresa, un cumpleaños o una mesa larga de domingo, lo práctico es llamar antes y hablar de números y de menú.',
+					'Las fotos de esta página son del perfil público del restaurante en Google Maps; de ahí salen también los platos que se nombran. No hay carta con precios ni tabla de horarios cerrada: eso se pregunta en el 926 22 26 94 y se confirma en el local.',
+				]}
+				note="Esta web es informativa. La dirección y el teléfono proceden de la ficha y de los directorios públicos del local; los platos, de las fotos de su perfil en Google Maps. No se publican precios ni una parrilla de horarios que las fuentes no sostienen."
+				links={[
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Instagram @neocantina', href: BUSINESS.instagram, external: true },
+					{ label: 'Facebook del restaurante', href: BUSINESS.facebook, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Migas, brasa <br /><em>y churros.</em>"
+				description="No hay carta publicada con precios, así que esta lista recoge los platos que aparecen en las fotos del perfil del restaurante: lo que se puede pedir, sin importes. El menú del día y lo que entre por temporada se confirman al llamar."
+				cta={{ label: 'Ver las fotos en Google', href: MAPS.place }}
+				groups={cartaGrupos}
+				note="Nombres de platos tomados de las fotos del perfil público del local en Google Maps. Sin precios: cambian con el mercado y se confirman en el 926 22 26 94."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve platos <br /><em>de la casa.</em>"
+				description="Del perfil del restaurante: el arroz con sardinas, las migas con huevo, la morcilla con crema de garbanzos, el entrecot, los churros, el milhojas de calabacín, la croqueta, la hamburguesa y la botella de Godello."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode}`}
+				title="Se reserva <br /><em>por teléfono.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Los directorios del local coinciden en el lunes cerrado y en el servicio de mediodía y noche, pero no en los minutos exactos: unos dan 12:00 a 17:00 y 20:00 a 23:45; otros, hasta medianoche. Confirma la hora al reservar en el 926 22 26 94."
+				mapTitle="Mapa del Restaurante Neocantina en la avenida de las Lagunas de Ruidera, 8, 13004 Ciudad Real"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Neocantina"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Reservas: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
+				reserveNote="Las reservas se gestionan por teléfono, en el 926 22 26 94: esta página no tiene formulario ni tramita mesas. Si vais a ser un grupo o queréis celebrar algo en el salón, conviene avisar al llamar."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>reservar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Restaurante Neocantina"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Instagram ↗', href: BUSINESS.instagram, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos y fotografías tomados de la ficha y del perfil públicos del restaurante en Google Maps. El horario exacto y los precios se confirman por teléfono."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Restaurante Neocantina"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

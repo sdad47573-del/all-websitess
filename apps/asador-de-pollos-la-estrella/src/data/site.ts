@@ -28,7 +28,7 @@ export const BUSINESS = {
 	phone: '+34 954 34 06 66',
 	phoneHref: '+34954340666',
 	rating: 4.5,
-	reviewsCount: 244,
+	reviewsCount: 245,
 	siteUrl: 'https://asador-de-pollos-la-estrella.vercel.app',
 	geo: { lat: 37.384002, lng: -6.0048165 },
 	featureId: '0xd126c6b486f1d75:0x8b549611d9a8848d',
@@ -86,6 +86,10 @@ export const REVIEWS = [
 		quote: 'Pollos sabrosos y muy ricos. Tienen tortillas, aliños, patatas y demás.',
 		rating: 4,
 	},
+	{
+		quote: 'Si te encuentras una gamba en la ensaladilla de gambas, compra lotería.',
+		rating: 2,
+	},
 ];
 
 export const FAQ = [
@@ -123,6 +127,6 @@ export const FAQ = [
 	},
 	{
 		q: '¿Qué valoración tiene en Google?',
-		a: 'Cuatro coma cinco sobre cinco, con 244 reseñas. Es una de las medias más altas de la zona y con una muestra amplia; en la ficha están todas las opiniones, también las que no son tan buenas.',
+		a: 'Cuatro coma cinco sobre cinco, con 245 reseñas. Es una de las medias más altas de la zona y con una muestra amplia; en la ficha están todas las opiniones, también las que no son tan buenas.',
 	},
 ];

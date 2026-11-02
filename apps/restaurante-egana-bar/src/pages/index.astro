@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import barra from '../assets/fotos/restaurante-egana-bar-vertical-01.jpg';
+import pintxos from '../assets/fotos/restaurante-egana-bar-vertical-06.jpg';
+import tarta from '../assets/fotos/restaurante-egana-bar-vertical-07.jpg';
+import gildas from '../assets/fotos/restaurante-egana-bar-vertical-10.jpg';
+import entrecot from '../assets/fotos/restaurante-egana-bar-apaisada-02.jpg';
+import gambas from '../assets/fotos/restaurante-egana-bar-apaisada-04.jpg';
+import pescado from '../assets/fotos/restaurante-egana-bar-apaisada-05.jpg';
+import pate from '../assets/fotos/restaurante-egana-bar-apaisada-08.jpg';
+import callos from '../assets/fotos/restaurante-egana-bar-apaisada-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, HORARIO_AVISO, MAPS, MENU } from '../data/site';
+
+const title = 'Restaurante Egaña Bar · pintxos, menú y vinos en Abando, Bilbao';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: pintxos,
+		alt: 'Plato de pintxos de tortilla, jamón y pimiento sobre la barra de madera del bar',
+	},
+	{
+		src: barra,
+		alt: 'Barra con la vitrina de pintxos, las copas colgadas y las botellas al fondo',
+	},
+	{
+		src: gildas,
+		alt: 'Pintxos de aceituna, anchoa y cebolleta en brocheta sobre plato blanco',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la plancha con patatas fritas y pimientos de Padrón',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado a la plancha con limón y patatas sobre plato blanco',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas cocidas en plato blanco alargado',
+	},
+	{
+		src: callos,
+		alt: 'Callos en salsa de tomate sobre plato blanco',
+	},
+	{
+		src: pate,
+		alt: 'Paté con pan tostado y el nombre Egaña escrito en chocolate en el plato',
+	},
+	{
+		src: tarta,
+		alt: 'Tarta de queso con nata y salsa de frutos rojos',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante-egana-bar`,
+	name: BUSINESS.name,
+	alternateName: ['Egaña Bar', 'Egaña Bar Bilbao', 'Restaurante Egaña'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	currenciesAccepted: 'EUR',
+	priceRange: '€€',
+	servesCuisine: ['Vasca', 'Pintxos', 'Menú del día'],
+	areaServed: [
+		{ '@type': 'City', name: 'Bilbao' },
+		{ '@type': 'AdministrativeArea', name: 'Bizkaia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google kgmid', value: BUSINESS.channel },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: 4.2,
+		reviewCount: 564,
+		bestRating: 5,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '22:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '08:00',
+			closes: '22:30',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: false },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El bar', href: '#bar' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#141a18" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Egaña Bar Bilbao, bar Egaña Kalea 14, pintxos Abando, menú del día Bilbao, restaurante vasco Bilbao, callos para llevar, 48010 Bilbao"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pintxos caseros, menú del día y raciones para llevar en Egaña Kalea, 14, Abando (Bilbao). 4,2 sobre 5 con 564 reseñas. Teléfono 685 92 95 84."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Entrecot con patatas y pimientos de Padrón de Restaurante Egaña Bar"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#141a18"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Bilbao"
+			preload={[pintxos]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Pintxos y menú en Abando"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Pintxos <br /><em>y menú.</em>"
+				lede={`Restaurante Egaña Bar está en Egaña Kalea, 14, en el barrio de Abando de Bilbao. Bar y restaurante vasco: pintxos caseros en la barra, menú del día, raciones para llevar y una selección de vinos. Abre a las 7:00 de lunes a viernes y la ficha de Google le da 4,2 sobre 5 con 564 reseñas.`}
+				image={pintxos}
+				imageAlt="Plato de pintxos de tortilla, jamón y pimiento sobre la barra de madera"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,2</b> en Google · 564 reseñas' },
+					{
+						label: 'Horario',
+						html: '<b>7:00 – 22:30</b><br />Lunes a viernes · domingo cerrado',
+					},
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> mesa y encargos` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Señas de Restaurante Egaña Bar" items={['Bar', 'Restaurante vasco', 'Pintxos caseros', 'Menú del día', 'Raciones para llevar', 'Vinos', 'Abando', 'Domingo cerrado']} />
+
+			<LocalAbout
+				label="El bar"
+				title="Casa de <br /><em>barrio.</em>"
+				paragraphs={[
+					'Restaurante Egaña Bar ocupa el número 14 de Egaña Kalea, en pleno Abando, a un paso de la calle Autonomía y del límite con Indautxu. Google lo clasifica con dos etiquetas, «Bar» y «Restaurante vasco», y la ficha lo presenta así: «Tradición vasca en Bilbao. En Egaña Bar te ofrecemos pintxos caseros y una cuidada selección de vinos».',
+					'La barra es el centro del local: vitrina de pintxos, copas colgadas y botellas al fondo, según las fotos del perfil. Ahí aparecen los bocadillos de tortilla y jamón, las gildas de aceituna, anchoa y cebolleta, y el café de primera hora. Abre a las 7:00 de lunes a viernes, así que funciona igual de bien para desayunar que para el aperitivo.',
+					'En la mesa hay cocina de la casa: entrecot con patatas y pimientos de Padrón, pescado a la plancha con limón, gambas cocidas, callos en salsa y paté con pan tostado, con el nombre Egaña escrito en chocolate en el plato. Para terminar, tarta de queso con nata y frutos rojos.',
+					'La ficha marca 4,2 sobre 5 con 564 reseñas, alta para un bar de barrio con este volumen. Las tres opiniones que Google destaca hablan del servicio y del menú: «Sitio agradable, con buen servicio y las camareras muy simpáticas, buenos menús», «Ambiente tranquilo y amigable, buen café y gran variedad de pinchos» y «También raciones para llevar: ensalada, ensaladilla, callos etc.».',
+				]}
+				note="Los datos salen de la ficha pública de Google Maps y de las fotos y reseñas del perfil. La ficha no publica carta ni precios: esta web no los inventa. El bar abre de lunes a viernes de 7:00 a 22:30, el sábado desde las 8:00 y el domingo cierra."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver el bar en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Barra, menú <br /><em>y mesa.</em>"
+				description="Los platos que aparecen aquí son los que enseñan las fotos del perfil y los que nombran las reseñas y la descripción del propio local. La ficha no publica la carta con precios."
+				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="La ficha de Google no publica precios y esta página no los inventa. El menú del día cambia, así que lo mejor es preguntarlo en la barra o llamar al 685 92 95 84."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nueve fotos <br /><em>del bar.</em>"
+				description="Las fotografías del perfil de Restaurante Egaña Bar en Google Maps: la barra con los pintxos, las gildas, el entrecot, el pescado a la plancha, las gambas, los callos, el paté y la tarta de queso."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Abando, <br /><em>a las siete.</em>"
+				addressLines={[BUSINESS.street, 'Abando', `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Bizkaia, España']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote={HORARIO_AVISO}
+				mapTitle="Mapa de Restaurante Egaña Bar en Egaña Kalea 14, Abando, Bilbao"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Egaña Bar"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. El bar no publica web propia ni sistema de reservas, así que el teléfono es el canal directo para preguntar por el menú del día, reservar mesa o encargar raciones para llevar."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · Abando · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma menú, horario y precios antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de Restaurante Egaña Bar"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

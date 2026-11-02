@@ -17,7 +17,7 @@ bun run --filter don-pollo build
 - Horario de la ficha: de 21:00 a 2:00, de lunes a sábado. Domingo cerrado. No hay servicio de mediodía.
 - Categoría de Google: restaurante especializado en pollo. La ficha marca que no hay aparcamiento adaptado para sillas de ruedas.
 - Nota de Google: 4,3 sobre 5 con 51 reseñas. Las tres reseñas destacadas se citan en la portada con la puntuación de su autor.
-- La carta, los precios y el aviso de reparto (1,50 € de incremento, 10 € de mínimo) están transcritos de la pizarra de precios del local, que aparece en una de las fotos de su perfil de Google.
+- La carta, los precios y el aviso de reparto (1,50 € de incremento, 10 € de mínimo) están transcritos de la pizarra de precios del local, que aparece en las fotos de su perfil de Google: pizzas de un solo tamaño a 5 €, kebab a 4,50 € con patatas y bebida, papas asadas de 3,50 a 6 €.
 - La ficha no enlaza web propia, así que la web es informativa y no tramita reservas ni pedidos.
 - Dominio provisional: `https://don-pollo.vercel.app`. Al elegir dominio definitivo, actualizar `astro.config.mjs`, `public/robots.txt` y `src/data/site.ts`.
 

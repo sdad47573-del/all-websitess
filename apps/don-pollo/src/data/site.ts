@@ -144,7 +144,7 @@ export const MENU = [
 		],
 	},
 	{
-		title: 'Kebab · con patatas y bebida',
+		title: 'Kebab · 4,50 € con patatas y bebida',
 		items: [
 			{ name: 'Kebab', note: 'lechuga, tomate, patata y salsa de yogur' },
 			{ name: 'Kebab de atún', note: 'lechuga, tomate y atún' },
@@ -203,7 +203,7 @@ export const FAQ = [
 	},
 	{
 		q: '¿Cuánto cuesta?',
-		a: 'Las pizzas cuestan 5 € y la pizza con borde de queso, 5,50 €. Las papas asadas van de 3,50 a 6 €, y los bocatas y hamburguesas, entre 1,50 y 4,50 €. Son los precios de la pizarra del local y pueden cambiar: confírmalos al pedir.',
+		a: 'Las pizzas cuestan 5 € y la pizza con borde de queso, 5,50 €. Cualquier kebab sale a 4,50 € con patatas y bebida. Las papas asadas van de 3,50 a 6 €, y los bocatas y hamburguesas, entre 1,50 y 4,50 €. Son los precios de la pizarra del local y pueden cambiar: confírmalos al pedir.',
 	},
 	{
 		q: '¿Se puede comer en el local?',
