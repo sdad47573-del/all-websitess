@@ -1,10 +1,5 @@
 crea una web con astro, pon en el footer creado por sur digital, sur-digital.vercel.app y descarga las imagenes de google para
 
-
-https://www.google.com/maps/place/La+Cirera/@42.5349471,1.5871667,17z/data=!4m6!3m5!1s0x12a58a0f348f5473:0x797fc873fd118761!8m2!3d42.5349471!4d1.5871667!16s%2Fg%2F1ptx0kndm?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
-https://www.google.com/maps/place/FRANKFURT+PEDRALBES+(rollo+low+cost+est%C3%A1+genial)/@42.5078297,1.5326679,17z/data=!4m6!3m5!1s0x12a58ada49664313:0x1d1fbd40b8268743!8m2!3d42.5078297!4d1.5326679!16s%2Fg%2F1q627wh5l?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
-
 https://www.google.com/maps/place/La+Buena/@42.5091605,1.536608,17z/data=!4m6!3m5!1s0x12a58b007fb7bfc3:0x13f72bf5c7718644!8m2!3d42.5091605!4d1.536608!16s%2Fg%2F11xh6qg61z?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/Asador+De+Pollos+Rosa+La+Colonia+Santa+In%C3%A9s./@36.7250021,-4.4681361,17z/data=!4m6!3m5!1s0xd72f7398bc10b3f:0x9c3f4c20bc04a969!8m2!3d36.7250021!4d-4.4681361!16s%2Fg%2F11fxwnhln3?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D

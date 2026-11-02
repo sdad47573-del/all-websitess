@@ -1,0 +1,322 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/la-buena-vertical-01.jpg';
+import tostas from '../assets/fotos/la-buena-apaisada-03.jpg';
+import bowl from '../assets/fotos/la-buena-apaisada-10.jpg';
+import salmon from '../assets/fotos/la-buena-vertical-04.jpg';
+import bocadillo from '../assets/fotos/la-buena-vertical-05.jpg';
+import carne from '../assets/fotos/la-buena-vertical-06.jpg';
+import batatas from '../assets/fotos/la-buena-vertical-07.jpg';
+import tostaJamon from '../assets/fotos/la-buena-vertical-08.jpg';
+import mesa from '../assets/fotos/la-buena-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, RATING, SERVICIOS } from '../data/site';
+
+const title = 'La Buena · Brunch y cocina non stop en Escaldes-Engordany';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: tostas,
+		alt: 'Tres tostas de La Buena con jamón, salmón y aguacate sobre platos de cerámica',
+	},
+	{
+		src: bowl,
+		alt: 'Bowl de La Buena con aguacate, queso a la plancha, espinacas, champiñones, zanahoria y remolacha',
+	},
+	{
+		src: salmon,
+		alt: 'Tosta de salmón ahumado con aguacate, queso crema y pipas de calabaza',
+	},
+	{
+		src: bocadillo,
+		alt: 'Bocadillo tostado de La Buena con jamón, queso y espinacas servido en papel',
+	},
+	{
+		src: carne,
+		alt: 'Carne a la plancha de La Buena con arroz, ensalada de hojas y pan tostado',
+	},
+	{
+		src: batatas,
+		alt: 'Cesta de batatas fritas de La Buena con tres salsas en un plato de pizarra',
+	},
+	{
+		src: tostaJamon,
+		alt: 'Tosta de jamón curado con aguacate y cebolla confitada sobre pan de masa madre',
+	},
+	{
+		src: mesa,
+		alt: 'Mesa de La Buena con pollo y verduras, carne con huevo y ensalada, y el QR para pedir',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-buena`,
+	name: BUSINESS.name,
+	alternateName: ['LaBuena', 'La Buena Escaldes', 'La Buena Andorra', 'La Buena brunch'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	priceRange: '€€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Brunch', 'Cocina saludable', 'Desayunos', 'Platos para compartir'],
+	hasMenu: {
+		'@type': 'Menu',
+		name: 'Carta de La Buena',
+		inLanguage: 'es-ES',
+		hasMenuSection: MENU.map((group) => ({
+			'@type': 'MenuSection',
+			name: group.title,
+			hasMenuItem: group.items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.note,
+			})),
+		})),
+	},
+	areaServed: [
+		{ '@type': 'City', name: 'Escaldes-Engordany' },
+		{ '@type': 'AdministrativeArea', name: 'Parroquia de Escaldes-Engordany' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.parish,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google Maps feature ID', value: BUSINESS.featureId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '09:00',
+			closes: '23:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Pedido por QR en la mesa', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Qué se come', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fbf6ec" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Buena Escaldes, brunch Andorra, brunch Escaldes-Engordany, desayunos Andorra, cocina non stop Andorra, tostas aguacate Andorra, bowls saludables Andorra, comer en Escaldes, terraceo Andorra, Passatge Antònia Font Caminal"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Brunch y cocina non stop en el Passatge Antònia Font Caminal 7 de Escaldes-Engordany. Tostas, bowls, carnes a la plancha y terraza, todos los días de 9:00 a 23:00. 4,3 sobre 5 con 288 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Interior de La Buena con lámparas de mimbre, plantas y el rótulo Healthy is not boring"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#fbf6ec"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.parish}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Escaldes-Engordany"
+			countryName="Andorra"
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Buena"
+			subtitle="Brunch · Non stop"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
+				title="Brunch, bowls <br /><em>y sobremesa.</em>"
+				lede={`La Buena es el restaurante de brunch y cocina non stop del Passatge Antònia Font Caminal, 7, en Escaldes-Engordany: desayunos, tostas, bowls, carnes a la plancha y platos para compartir desde las 9:00 hasta las 23:00, todos los días. Se pide desde la mesa con un código QR. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={interior}
+				imageAlt="Interior de La Buena con el techo oscuro, lámparas de mimbre, plantas colgando y mesas de madera"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>9:00–23:00</b><br />Todos los días, non stop' },
+					{ label: 'Pedidos', html: '<b>QR en la mesa</b><br />Terraza y sala' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Brunch todo el día"
+			/>
+
+			<LocalChips label="Señas de La Buena" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Healthy is not <br /><em>boring.</em>"
+				paragraphs={[
+					'La Buena está en el Passatge Antònia Font Caminal, 7, en Escaldes-Engordany. Dentro, el techo oscuro y las lámparas de mimbre cuelgan sobre mesas de madera clara, con plantas verdes en las paredes y el rótulo de la casa al fondo.',
+					'La propia casa se presenta así: «LaBuena, restaurante de cocina non stop, donde puedes disfrutar de servicio de desayunos, brunch, comidas, meriendas, tardeo y cenas, saludable equilibrado pero también con caprichos dulces que hacen que nada sea aburrido».',
+					'La carta se mueve entre lo verde y lo contundente: tostas de pan de masa madre con aguacate, salmón o jamón curado; bowls con queso a la plancha y verduras; carnes y pollo a la plancha con arroz o ensalada; batatas fritas con tres salsas. Y una carta de bebidas con vinos ecológicos, cervezas, zumos naturales y limonadas.',
+					`El servicio es de mesa y pantalla: se pide con un código QR desde la propia mesa, «las veces que quieras». Abre todos los días de 9:00 a 23:00 y tiene terraza. La nota media es de ${RATING.label} sobre 5 con ${RATING.count} reseñas.`,
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento. La carta y los precios no están publicados: confírmalos en el local o por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="Qué se come"
+				title="Tostas, bowls <br /><em>y brasa.</em>"
+				description="La ficha no publica la carta, así que aquí solo aparecen los platos que se ven en las fotos del perfil y los que describe la casa: tostas, bocadillos, bowls, carnes a la plancha y platos para compartir."
+				cta={{ label: 'Consultar por teléfono', href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={MENU_NOTE}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Ocho fotos <br /><em>de La Buena.</em>"
+				description="Las tostas de jamón y salmón, el bowl verde, el bocadillo tostado, la carne con arroz, las batatas con salsas y la mesa con el QR para pedir."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el <br /><em>passatge.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: todos los días de 9:00 a 23:00, sin cierre a mediodía. La cocina es non stop, así que se puede comer a cualquier hora dentro de ese tramo. En festivos puede cambiar."
+				mapTitle="Mapa de La Buena en el Passatge Antònia Font Caminal 7, Escaldes-Engordany"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Buena"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. En el local se pide desde la mesa con un código QR; para reservar o preguntar por grupos, el teléfono publicado es el +376 770 001."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de La Buena"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

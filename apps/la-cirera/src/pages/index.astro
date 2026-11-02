@@ -1,0 +1,327 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/la-cirera-apaisada-01.jpg';
+import pollo from '../assets/fotos/la-cirera-apaisada-04.jpg';
+import hamburguesa from '../assets/fotos/la-cirera-apaisada-05.jpg';
+import pizza from '../assets/fotos/la-cirera-apaisada-06.jpg';
+import pizzaPollo from '../assets/fotos/la-cirera-apaisada-08.jpg';
+import barra from '../assets/fotos/la-cirera-cuadrada-02.jpg';
+import exterior from '../assets/fotos/la-cirera-vertical-07.jpg';
+import terrazaFlores from '../assets/fotos/la-cirera-vertical-09.jpg';
+import sala from '../assets/fotos/la-cirera-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, RATING, SERVICIOS } from '../data/site';
+
+const title = 'La Cirera · Parrilla y borda junto al Funicamp, en Encamp';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de La Cirera con toldos amarillos, mesas blancas y la montaña de Encamp al fondo',
+	},
+	{
+		src: pollo,
+		alt: 'Pollo a la brasa de La Cirera con patatas fritas, pimientos de Padrón y alioli',
+	},
+	{
+		src: pizza,
+		alt: 'Pizza de La Cirera con cebolla roja, jamón y queso sobre plato blanco',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa de La Cirera con queso fundido y cesta de patatas fritas',
+	},
+	{
+		src: sala,
+		alt: 'Sala de La Cirera con mesas de madera y el televisor encendido junto a la puerta',
+	},
+	{
+		src: barra,
+		alt: 'Barra de La Cirera con barriles, tiradores de cerveza y la figura de Elvis sobre el escenario',
+	},
+	{
+		src: exterior,
+		alt: 'Exterior de La Cirera con el cartel de Restaurant, el rótulo PIZZERIA, TAPAS y el aparcamiento',
+	},
+	{
+		src: terrazaFlores,
+		alt: 'Terraza de madera de La Cirera con toldos, flores y vistas al valle de Encamp',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-cirera`,
+	name: BUSINESS.name,
+	alternateName: ['Restaurant La Cirera', 'La Cirera Encamp', 'La Cirera Pizza & Brasa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	priceRange: '€€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Parrilla', 'Pizza', 'Tapas', 'Cocina andorrana'],
+	hasMenu: {
+		'@type': 'Menu',
+		name: 'Carta de La Cirera',
+		inLanguage: 'es-ES',
+		hasMenuSection: MENU.map((group) => ({
+			'@type': 'MenuSection',
+			name: group.title,
+			hasMenuItem: group.items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.note,
+			})),
+		})),
+	},
+	areaServed: [
+		{ '@type': 'City', name: 'Encamp' },
+		{ '@type': 'AdministrativeArea', name: 'Parroquia de Encamp' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.parish,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google Maps feature ID', value: BUSINESS.featureId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '07:30',
+			closes: '22:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento para clientes', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La borda', href: '#casa' },
+	{ label: 'Qué se come', href: '#cocina' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1e211c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Cirera Encamp, restaurant Encamp, parrilla Andorra, carnes a la brasa Encamp, pizzeria Encamp, tapas Encamp, comer en Encamp, restaurante junto al Funicamp, Av. de François Mitterrand 81, menú diario Andorra"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Parrilla y borda de piedra en la Av. de François Mitterrand 81, junto al Telecabina Funicamp de Encamp. Brasa, pizzas, tapas y terraza al sol, todos los días de 7:30 a 22:30. 3,9 sobre 5 con 1.015 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de La Cirera en Encamp con toldos amarillos y las montañas al fondo"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1e211c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.parish}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phoneHref}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Encamp"
+			countryName="Andorra"
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Cirera"
+			subtitle="Parrilla · Encamp"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
+				title="Brasa de borda <br /><em>junto al Funicamp.</em>"
+				lede={`La Cirera es la parrilla de piedra y vigas de madera que hay al lado del Telecabina Funicamp, en Encamp: brasa a la vista, pizzería, tapas y una terraza de madera con vistas a la montaña. Abre todos los días de 7:30 a 22:30, sin cerrar a mediodía. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={terraza}
+				imageAlt="Terraza de La Cirera con toldos amarillos, mesas y sillas blancas, flores y la montaña de Encamp al fondo"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>7:30–22:30</b><br />Todos los días, non stop' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b><br />Reservas y consultas` },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Terraza al sol"
+			/>
+
+			<LocalChips label="Señas de La Cirera" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La borda"
+				title="Piedra, madera <br /><em>y brasa.</em>"
+				paragraphs={[
+					'La Cirera está en la Av. de François Mitterrand, 81, en Encamp, justo al lado de la estación del Telecabina Funicamp. La fachada es de piedra y el comedor se reconoce desde fuera por las vigas de madera del techo y los rótulos de PIZZERIA y TAPAS.',
+					'La propia casa la describe así: «una borda de grandes muros de piedra y vigas de madera en el techo, decorada al estilo típico de Andorra». Tiene capacidad para unas 150 personas repartidas en tres espacios muy distintos.',
+					'El primero es la zona de barra y mesas junto a la brasa, con taburetes, barriles y una barra larga. El segundo es un salón amplio para 100 comensales con ventanales exteriores y vista panorámica sobre Encamp. El tercero es la terraza de madera, con toldos, flores y el valle de fondo.',
+					`Abre todos los días de 7:30 a 22:30 y no cierra a mediodía: el cartel de la terraza lo anuncia como «Restaurant La Cirera non stop». La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`,
+				]}
+				note="La información sale de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento. La carta y los precios no están publicados: confírmalos por teléfono."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="Qué se come"
+				title="Brasa, pizza <br /><em>y tapas.</em>"
+				description="La ficha no publica la carta, así que aquí solo aparecen los platos que muestran las fotos del perfil y los carteles de la fachada: brasa, pizzería, tapas, hamburguesas y menú diario."
+				cta={{ label: 'Llamar para el menú del día', href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note={MENU_NOTE}
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Ocho fotos <br /><em>de La Cirera.</em>"
+				description="La terraza con las montañas, el pollo a la brasa con patatas y pimientos, las pizzas, la hamburguesa, la barra con la figura de Elvis, la sala y la entrada con el aparcamiento."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Junto al <br /><em>Funicamp.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google: de 7:30 a 22:30 todos los días, sin cierre a mediodía. El local lo anuncia como «non stop». En festivos y temporada de nieve puede cambiar; llama antes si vas en grupo."
+				mapTitle="Mapa de La Cirera en la Av. de François Mitterrand 81, Encamp"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Cirera"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reservas ni pedidos en línea en esta página. El teléfono es el canal que publica la ficha. Para grupos, el local tiene un salón de 100 personas y capacidad total para unas 150: conviene avisar antes."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>subir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta antes de la visita."
+			ctaLabel="Llamar"
+			navAriaLabel="Enlaces de La Cirera"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>
