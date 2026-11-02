@@ -1,0 +1,313 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import { BUSINESS, FAQ, HOURS, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'El Chef a Casa El Punto · Cocina española en Sevilla';
+const description = BUSINESS.description;
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#el-chef-a-casa-el-punto`,
+	name: BUSINESS.name,
+	alternateName: ['El Chef a Casa El Punto*', 'El Chef a Casa', 'El Punto Sevilla'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Comida casera'],
+	areaServed: { '@type': 'City', name: 'Sevilla' },
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	takeaway: true,
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday'],
+			opens: '12:00',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Friday',
+			opens: '12:00',
+			closes: '24:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '12:00',
+			closes: '00:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Sunday',
+			opens: '12:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Servicios', href: '#servicios' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const ficha = [
+	{ label: 'Dirección', value: `${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}` },
+	{ label: 'Cocina', value: 'Española y casera' },
+	{ label: 'Servicio', value: 'En el local, para llevar y a domicilio' },
+	{
+		label: 'Horario',
+		value: 'Mar–jue 12:00–23:30 · Vie hasta 24:00 · Sáb hasta 0:30 · Dom hasta 16:00 · Lun cerrado',
+	},
+	{ label: 'Acceso', value: 'Acceso para sillas de ruedas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#10150f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Chef a Casa El Punto, restaurante cocina española Sevilla, comida a domicilio 41500, comida para llevar calle Tajo 2, restaurante Sevilla 41500, cocina casera Sevilla"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cocina española en la calle Tajo 2, 41500 Sevilla. Abierto de 12:00 a 23:30 de martes a jueves; viernes hasta las 24:00, sábado hasta las 0:30 y domingo hasta las 16:00. Lunes cerrado."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Cartel de El Chef a Casa El Punto con la dirección y el horario del restaurante"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#10150f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Calle Tajo, Sevilla"
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Chef a Casa"
+			subtitle="Cocina española · a domicilio"
+			nav={nav}
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow">
+						<span aria-hidden="true"></span> {BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+					<h1 id="hero-title">El Chef a Casa<br /><em>El Punto.</em></h1>
+					<p class="hero-lede">
+						Cocina española en la calle Tajo 2, en el 41500 de la provincia de Sevilla. Google lo
+						clasifica a la vez como restaurante de cocina española, de comida a domicilio y de comida
+						para llevar. Abre de martes a jueves de 12:00 a 23:30; el viernes alarga hasta las 24:00 y
+						el sábado hasta las 0:30. El domingo se queda en el mediodía, de 12:00 a 16:00, y el lunes
+						cierra.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha y reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<aside class="hero-card" aria-labelledby="ficha-title">
+					<p class="hero-card-title" id="ficha-title">La ficha, en corto</p>
+					<dl>
+						{
+							ficha.map((row) => (
+								<div>
+									<dt>{row.label}</dt>
+									<dd>{row.value}</dd>
+								</div>
+							))
+						}
+					</dl>
+					<p class="hero-card-foot">
+						Según la <a href={MAPS.place} target="_blank" rel="noreferrer">ficha pública de Google Maps</a>.
+						No publica teléfono, web ni carta.
+					</p>
+				</aside>
+			</section>
+
+			<LocalChips label="Señas de El Chef a Casa El Punto" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Cocina española <br /><em>en la calle Tajo.</em>"
+				paragraphs={[
+					'El Chef a Casa El Punto está en el número 2 de la calle Tajo, en el código postal 41500 de Sevilla. Google lo clasifica como restaurante de cocina española, de comida a domicilio y de comida para llevar: las tres categorías conviven en su ficha, así que la casa sirve en mesa, prepara pedidos para recoger y reparte a domicilio.',
+					'La ficha no publica teléfono, correo ni web propia, y en el momento de escribir esta página no tiene ninguna fotografía subida al perfil. Lo que sí publica son los datos que recoge este sitio: nombre, dirección, categorías, horario y accesibilidad.',
+					'El horario es continuo de mediodía a noche de martes a jueves, de 12:00 a 23:30. El viernes llega hasta las 24:00 y el sábado hasta las 0:30; el domingo solo cubre el mediodía, de 12:00 a 16:00. El lunes figura como cerrado y no aparece ningún otro tramo.',
+					'La página de Facebook del negocio, que se presenta como «El chef a casa», lo sitúa en la misma calle Tajo número 2 pero en Alcalá de Guadaíra. Esta web usa la dirección que publica Google, con el código postal 41500, porque es la que acompaña a las coordenadas del mapa.',
+				]}
+				note="Google no publica teléfono, correo, plataforma de pedidos ni carta, y la ficha tiene dos reseñas. Por eso aquí no hay precios ni platos: no existe una fuente pública de la que sacarlos sin inventarlos. Si algo cambia, manda lo que digan en el mostrador."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="services section-pad" id="servicios" aria-labelledby="servicios-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Servicios</p>
+					<div class="services-head">
+						<h2 id="servicios-title">En el local, <br /><em>en casa.</em></h2>
+						<p>
+							La ficha de Google declara tres formas de comer aquí. No publica carta ni precios, así
+							que esta página solo recoge lo que el propio negocio declara en Google y lo deja claro.
+						</p>
+					</div>
+					<div class="service-grid">
+						<article class="service-card">
+							<span class="service-num" aria-hidden="true">01</span>
+							<h3>Comer en el local</h3>
+							<p>
+								La ficha lo clasifica como restaurante de cocina española y publica horario de
+								mediodía a noche, con el lunes cerrado. El domingo solo abre al mediodía.
+							</p>
+						</article>
+						<article class="service-card">
+							<span class="service-num" aria-hidden="true">02</span>
+							<h3>Para llevar</h3>
+							<p>
+								También aparece como restaurante de comida para llevar. Se puede pedir para recoger,
+								pero no hay teléfono ni web publicados, así que cualquier encargo se confirma en el
+								propio local.
+							</p>
+						</article>
+						<article class="service-card">
+							<span class="service-num" aria-hidden="true">03</span>
+							<h3>A domicilio</h3>
+							<p>
+								Google lo lista como comida a domicilio. El reparto lo organiza la casa y su ficha no
+								enlaza ninguna plataforma de pedidos.
+							</p>
+						</article>
+					</div>
+					<p class="service-note">
+						Servicios, horario y accesibilidad salen de la ficha pública de Google Maps. Esta web no es
+						un canal de pedidos: no recoge datos ni tramita encargos.
+					</p>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a la <br /><em>calle Tajo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario publicado en la ficha de Google. El domingo solo abre al mediodía y el lunes cierra. En festivos puede cambiar: la propia ficha marca avisos de horario especial en días señalados."
+				mapTitle="Mapa de El Chef a Casa El Punto en la calle Tajo 2, Sevilla"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Chef a Casa El Punto"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Ver la ficha en Google Maps', href: MAPS.cid, external: true }}
+				reserveNote="No hay teléfono ni web publicados en Google, así que esta página no puede ofrecer reservas ni pedidos en línea. Para comer aquí, para recoger o para pedir a domicilio, lo directo es la ficha de Maps o pasarse por la calle Tajo 2."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Información y datos tomados de la ficha pública del restaurante en Google Maps. Sin teléfono ni web oficiales publicados: confirma horario y servicio antes de la visita."
+			ctaLabel="Cómo llegar"
+			navAriaLabel="Enlaces de El Chef a Casa El Punto"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

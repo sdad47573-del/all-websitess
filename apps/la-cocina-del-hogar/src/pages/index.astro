@@ -1,0 +1,393 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/la-cocina-del-hogar-vertical-01.jpg';
+import cartel from '../assets/fotos/la-cocina-del-hogar-vertical-08.jpg';
+import migas from '../assets/fotos/la-cocina-del-hogar-vertical-06.jpg';
+import tartas from '../assets/fotos/la-cocina-del-hogar-vertical-03.jpg';
+import bizcocho from '../assets/fotos/la-cocina-del-hogar-vertical-05.jpg';
+import tortillas from '../assets/fotos/la-cocina-del-hogar-apaisada-02.jpg';
+import croquetas from '../assets/fotos/la-cocina-del-hogar-apaisada-07.jpg';
+import horario from '../assets/fotos/la-cocina-del-hogar-apaisada-09.jpg';
+import tartaHorno from '../assets/fotos/la-cocina-del-hogar-apaisada-04.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'La Cocina Del Hogar · Comida casera en Ciudad Real';
+const description =
+	'Menú del día, pollo asado con patatas, arroces y migas por encargo en C. Morería, 19 (13002 Ciudad Real). De 12:00 a 15:30; martes cerrado.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'La fachada de La Cocina Del Hogar en la calle Morería de Ciudad Real, con el rótulo, el teléfono y la pizarra del menú del día',
+	},
+	{
+		src: cartel,
+		alt: 'El cartel del menú del día de La Cocina Del Hogar, con los platos, el precio de 9,90 € y los pollos asados',
+	},
+	{
+		src: migas,
+		alt: 'Una bandeja de migas con tropezones de pan, chorizo y pimiento verde frito',
+	},
+	{
+		src: tortillas,
+		alt: 'Dos tortillas de patata doradas en platos blancos sobre la mesa de acero de la cocina',
+	},
+	{
+		src: croquetas,
+		alt: 'Dos bandejas de croquetas empanadas, alineadas y listas para freír',
+	},
+	{
+		src: tartas,
+		alt: 'Diez tartas recién horneadas en sus moldes de aluminio, alineadas sobre la mesa de acero',
+	},
+	{
+		src: bizcocho,
+		alt: 'Un trozo de bizcocho glaseado en blanco y espolvoreado con canela',
+	},
+	{
+		src: horario,
+		alt: 'El cartel de horario del local: de 12:00 a 15:30, de lunes a domingo, con el martes cerrado',
+	},
+	{
+		src: tartaHorno,
+		alt: 'Una tarta horneada de superficie dorada, recién salida del horno, en su molde',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-cocina-del-hogar`,
+	name: BUSINESS.fullName,
+	alternateName: ['La Cocina del Hogar Ciudad Real', 'La Cocina Del Hogar Morería', 'Cocina del Hogar'],
+	description:
+		'Comida casera para llevar en la calle Morería, 19 (13002 Ciudad Real): menú del día con dos platos y postre, pollos asados con patatas, arroces y migas por encargo.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34926721660',
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	slogan: 'Sabor y calidez en cada plato',
+	servesCuisine: ['Cocina casera', 'Cocina manchega', 'Asador', 'Comida para llevar'],
+	hasMenu: {
+		'@type': 'Menu',
+		name: 'Menú del día de La Cocina Del Hogar',
+		inLanguage: 'es-ES',
+		hasMenuSection: MENU.map((group) => ({
+			'@type': 'MenuSection',
+			name: group.title,
+			hasMenuItem: group.items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.note,
+			})),
+		})),
+	},
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Ciudad Real' },
+		{ '@type': 'AdministrativeArea', name: 'Castilla-La Mancha' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:00',
+			closes: '15:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El menú', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3e5c46" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Figtree:wght@400;600;700&family=Shadows+Into+Light&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Cocina Del Hogar Ciudad Real, comida casera para llevar Ciudad Real, menú del día Ciudad Real, pollo asado Ciudad Real, migas por encargo, comida a domicilio Ciudad Real, calle Morería 19, 13002"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Menú del día con dos platos y postre, pollo asado con patatas, arroces y migas por encargo en la calle Morería, 19, Ciudad Real. De 12:00 a 15:30."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Los platos de comida casera de La Cocina Del Hogar, en Ciudad Real"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#3e5c46"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-CM"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Ciudad Real"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Cocina"
+			subtitle="Del Hogar · Ciudad Real"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Morería, 19 · Ciudad Real"
+				title="Sabor y calidez <br /><em>en cada plato.</em>"
+				lede={`Es el lema que el local tiene rotulado sobre la puerta, y también lo que ofrece: comida casera para llevar en pleno centro de Ciudad Real. Menú del día con dos platos y postre, pollo asado con patatas, arroces y migas por encargo. Abre de 12:00 a 15:30, con el martes cerrado por descanso del personal, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
+				image={fachada}
+				imageAlt="La fachada de La Cocina Del Hogar en la calle Morería de Ciudad Real"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>12:00–15:30</b> · martes cerrado' },
+					{ label: 'Menú del día', html: '<b>9,90 €</b><br />con postre' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida casera para llevar"
+			/>
+
+			<LocalChips label="Lo que ofrece La Cocina Del Hogar" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="La comida de casa, <br /><em>hecha en la Morería.</em>"
+				paragraphs={[
+					'La Cocina Del Hogar está en el número 19 de la calle Morería, en el centro de Ciudad Real. Sobre la puerta, un rótulo de madera con la batidora, la espátula, la cuchara y la espumadera dibujadas anuncia el nombre, el lema «Sabor y calidez en cada plato» y el teléfono, el 926 721 660. La entrada, con la puerta amarilla y las persianas de hierro, se abre a un pequeño zaguán con el suelo de mármol.',
+					'Junto a la puerta cuelga una pizarra con el «MENÚ HOY» escrito a mano: gazpacho, ensalada mixta, revuelto de champiñones, paella mixta, pollo al ajillo, bacalao a la plancha, secreto a la jardinera y postres caseros. Al otro lado, una placa pequeña repite el horario: de 12:00 a 15:30.',
+					'El cartel de la casa detalla el resto. Su menú del día son dos platos con postre a elegir por 9,90 €; el del 26 de octubre juntaba garbanzos con sepia, patatas con carne, macarrones con chorizo y jamón, tortilla de calabacín, huevos turcos, magro con tomate, merluza en salsa y alitas de pollo al ajillo. Fuera del menú, el pollo asado con patatas cuesta 12 € y el medio pollo 7,50 €.',
+					'Y luego están las bandejas: tortillas de patata en platos blancos, croquetas empanadas a centenares, diez tartas recién horneadas en sus moldes, un bizcocho con glaseado y canela y las migas con chorizo y pimiento verde que anuncian por encargo. Todo se prepara para llevárselo a casa; el cartel lo dice con el corazón dibujado: «Comida casera para disfrutar en casa».',
+					`Tiene ${RATING.label} sobre 5 con ${RATING.count} reseñas. Las tres que destaca Google son de cinco estrellas: «Excelente trato y comida casera buenísima y económica», «la comida estaba deliciosa, bien presentada y con raciones generosas» y «muy recomendable cocina tradicional y muy rica y las cocineras las mejores».`,
+				]}
+				note="Los precios son los que aparecen impresos en el cartel promocional del propio local y pueden cambiar. La ficha no publica zona de reparto, formas de pago ni datos de accesibilidad: el menú de cada día y esas condiciones se preguntan en el 926 72 16 60."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se lleva la gente</p>
+					<h2 id="highlights-title">Del menú del día <br /><em>al pollo asado.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El menú"
+				title="Lo que pone <br /><em>en el cartel.</em>"
+				description="El menú del día, los pollos y lo que la casa anuncia por encargo, tomados del cartel del local y de la pizarra de la entrada. Los importes son los impresos en ese cartel."
+				cta={{ label: `Preguntar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La lista cambia cada día: la pizarra de «MENÚ HOY» se reescribe a mano. El menú, los precios y si hay migas se preguntan en el 926 72 16 60. El cartel pide reservar el pollo asado y el menú del día con antelación."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada, la pizarra <br /><em>y las bandejas.</em>"
+				description="Nueve fotografías del perfil del local: la fachada con el rótulo y la pizarra, el cartel del menú del día, las migas con chorizo, las tortillas, las croquetas, las tartas recién horneadas, el bizcocho glaseado, el cartel del horario y una tarta salida del horno."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,8 sobre 5, <em>con 65 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,8 con 65 opiniones (noviembre de 2026). Las tres
+							que destaca la ficha son de cinco estrellas y hablan del trato, de la cocina
+							tradicional, de la presentación y del tamaño de las raciones. Son las que se ven
+							aquí; en Google hay más.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,8</strong>
+						<span>★★★★★</span>
+						<small>65 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En el centro, <br /><em>calle Morería.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.postalCode, `${BUSINESS.district}, ${BUSINESS.region}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha y en la placa de la puerta: de 12:00 a 15:30, con el martes cerrado por descanso del personal. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de La Cocina Del Hogar en la calle Morería, 19, Ciudad Real"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Morería, 19 · Ciudad Real"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Pedidos por teléfono en el ${BUSINESS.phone} y recogida en el local, en la calle Morería, 19. La ficha incluye la categoría «comida a domicilio», pero no publica zona, horario de reparto ni formas de pago.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultados en noviembre de 2026. Los precios son los del cartel del propio local y pueden cambiar: confírmalos antes de pedir."
+			ctaLabel="Llamar a La Cocina Del Hogar"
+			navAriaLabel="Enlaces de La Cocina Del Hogar"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

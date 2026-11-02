@@ -1,0 +1,130 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	hours,
+	mapEmbedUrl,
+	mapsUrl,
+	resenas,
+	site,
+} from '../data/site';
+
+// Fotos descargadas de la ficha de Google Maps, en `src/assets/fotos`, servidas con `<Image>`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const listaFotos = Object.keys(fotos)
+	.sort()
+	.map((ruta) => fotos[ruta].default);
+
+const title = 'Son y Arepas · Arepas en Ciudad Real';
+const description = `Son y Arepas, ${business.category.toLowerCase()} en la Calle de Las Cañas, 31 de Ciudad Real. ${business.reviewCount} reseñas en Google.`;
+const telefono = business.phone.replace(/\s/g, '');
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta name="robots" content="index, follow" />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:card" content="summary_large_image" />
+	</head>
+	<body>
+		<header class="hero" id="inicio">
+			<div class="hero-grid">
+				<div class="hero-copy">
+					<p class="eyebrow">{business.category} · Ciudad Real</p>
+					<h1>{business.name}</h1>
+					<p class="hero-lede">
+						Snack bar en la Calle de Las Cañas, 31. {business.reviewCount} reseñas en Google.
+					</p>
+					<div class="hero-actions">
+						<a class="button" href={mapsUrl} rel="noopener">Ver ficha en Google Maps</a>
+						<a class="button secondary" href={directionsUrl} rel="noopener">Cómo llegar</a>
+					</div>
+				</div>
+				{listaFotos[0] && (
+					<Image src={listaFotos[0]} alt={`Fotografía de ${business.name} publicada en Google Maps`} widths={[640, 960]} sizes="(min-width: 800px) 50vw, 100vw" />
+				)}
+			</div>
+		</header>
+
+		<main>
+			<section class="section" id="local" aria-labelledby="local-title">
+				<h2 id="local-title">Dónde estamos</h2>
+				<p>{business.streetAddress}, {business.postalCode} {business.city}. Teléfono: <a href={`tel:${telefono}`}>{business.phone}</a>.</p>
+				<p>
+					<a href={mapsUrl} rel="noopener">Abrir en Google Maps</a> ·
+					<a href={directionsUrl} rel="noopener">Cómo llegar</a>
+				</p>
+				<iframe
+					title={`Mapa de ${business.name}`}
+					src={mapEmbedUrl}
+					width="100%"
+					height="320"
+					style="border:0"
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
+				></iframe>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<h2 id="horario-title">Horario</h2>
+				<table>
+					<tbody>
+						{hours.map((item) => (
+							<tr>
+								<th scope="row">{item.day}</th>
+								<td>{item.service}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+
+			<section class="section" id="resenas" aria-labelledby="resenas-title">
+				<h2 id="resenas-title">Lo que dicen</h2>
+				<p>{business.reviewCount} reseñas en Google.</p>
+				{resenas.map((r) => (
+					<blockquote>« {r.texto} »</blockquote>
+				))}
+				{accesibilidad.length > 0 && <p>Accesibilidad publicada en la ficha: {accesibilidad.join('; ')}.</p>}
+			</section>
+
+			{listaFotos.length > 1 && (
+				<section class="section" id="fotos" aria-labelledby="fotos-title">
+					<h2 id="fotos-title">Fotos</h2>
+					<div class="galeria">
+						{listaFotos.map((foto) => (
+							<Image src={foto} alt={`Fotografía de ${business.name} publicada en Google Maps`} widths={[480, 800]} sizes="(min-width: 800px) 33vw, 50vw" />
+						))}
+					</div>
+				</section>
+			)}
+		</main>
+
+		<footer class="site-footer">
+			<p>
+				© {new Date().getFullYear()} {business.name}. Datos tomados de la ficha pública de Google Maps el {site.consultado}.
+			</p>
+			<p>
+				<small>Creado por <a href="https://sur-digital.vercel.app" rel="noopener">Sur Digital</a> · sur-digital.vercel.app</small>
+			</p>
+		</footer>
+	</body>
+</html>

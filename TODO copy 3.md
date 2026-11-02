@@ -16,3 +16,4 @@ https://www.google.com/maps/place/Freiduria+Luisa+y+Alexandra/@37.4027135,-5.922
 https://www.google.com/maps/place/Almirez,+Comida+Tradicional+Para+Llevar/@36.7218918,-4.4731396,17z/data=!4m6!3m5!1s0xd72f71705186dd1:0x8cd6747ab60dbff8!8m2!3d36.7218918!4d-4.4731396!16s%2Fg%2F11j68fl0pg?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
 
 https://www.google.com/maps/place/La+Cocina+de+JB/@37.4022755,-5.919011,17z/data=!4m6!3m5!1s0xd126f0045069bbf:0x9ddbf8ba39c3d4ee!8m2!3d37.4022755!4d-5.919011!16s%2Fg%2F11ldkt_m2t?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D
+https://www.google.com/maps/place/Restaurante+Neocantina/@38.9796759,-3.9266019,17z/data=!3m1!4b1!4m6!3m5!1s0xd6bc3916748021f:0xb719ee99ce3f4854!8m2!3d38.9796759!4d-3.9266019!16s%2Fg%2F11ff2mb6w4?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D

@@ -1,0 +1,396 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import arrozConejo from '../assets/fotos/pache-comidas-caseras-almoradi-vista-1-01.jpg';
+import vitrina from '../assets/fotos/pache-comidas-caseras-almoradi-cuadrada-02.jpg';
+import tortilla from '../assets/fotos/pache-comidas-caseras-almoradi-cuadrada-03.jpg';
+import pimientos from '../assets/fotos/pache-comidas-caseras-almoradi-vista-4-04.jpg';
+import arrozEmpanado from '../assets/fotos/pache-comidas-caseras-almoradi-apaisada-05.jpg';
+import huevos from '../assets/fotos/pache-comidas-caseras-almoradi-vertical-06.jpg';
+import pescado from '../assets/fotos/pache-comidas-caseras-almoradi-vertical-07.jpg';
+import ensalada from '../assets/fotos/pache-comidas-caseras-almoradi-vertical-08.jpg';
+import guiso from '../assets/fotos/pache-comidas-caseras-almoradi-vertical-09.jpg';
+import cazuela from '../assets/fotos/pache-comidas-caseras-almoradi-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Pache · Comida casera para llevar en Almoradí';
+const description =
+	'Pache, comida casera para llevar en C. Canalejas, 44 (03160 Almoradí, Alicante). Menú de mediodía de lunes a viernes, de 10:00 a 15:00.';
+
+const galeria = [
+	{
+		src: vitrina,
+		alt: 'La vitrina de Pache con bandejas de caracoles, albóndigas, garbanzos con espinacas, ensaladilla, berenjenas gratinadas y pasta',
+	},
+	{
+		src: arrozConejo,
+		alt: 'Una paella de arroz amarillo con conejo y tiras de pimiento rojo, recién hecha',
+	},
+	{
+		src: guiso,
+		alt: 'Una cazuela de guiso de carne con patatas en salsa de tomate, con la cuchara dentro',
+	},
+	{
+		src: pescado,
+		alt: 'Una bandeja de merluza rebozada sobre salsa de tomate en la vitrina',
+	},
+	{
+		src: pimientos,
+		alt: 'Una bandeja de pimientos rojos asados con cebollas asadas y patatas',
+	},
+	{
+		src: huevos,
+		alt: 'Huevos fritos con la yema líquida sobre pimientos y cebolla asada en una bandeja',
+	},
+	{
+		src: tortilla,
+		alt: 'Una tortilla con chorizo cuajada en la sartén, dorada por encima',
+	},
+	{
+		src: arrozEmpanado,
+		alt: 'Un plato de arroz con guisantes y maíz con filetes de pollo empanado, sobre un mantel azul',
+	},
+	{
+		src: ensalada,
+		alt: 'Una ensalada grande de atún con aceitunas negras, huevo, patata, tomate y cebolla',
+	},
+	{
+		src: cazuela,
+		alt: 'Una cazuela hirviendo con un guiso amarillo de azafrán, recién removido',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#pache`,
+	name: BUSINESS.fullName,
+	alternateName: ['Pache Almoradí', 'Pache comidas caseras', 'Comidas caseras para llevar Pache'],
+	description:
+		'Comida casera para llevar en la calle Canalejas, 44 (03160 Almoradí, Alicante): vitrina de guisos, arroces, pescado rebozado y postres, de lunes a viernes al mediodía.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34604420521',
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina casera', 'Cocina valenciana', 'Comida para llevar'],
+	hasMenu: {
+		'@type': 'Menu',
+		name: 'Carta de Pache',
+		inLanguage: 'es-ES',
+		hasMenuSection: MENU.map((group) => ({
+			'@type': 'MenuSection',
+			name: group.title,
+			hasMenuItem: group.items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.note,
+			})),
+		})),
+	},
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Almoradí' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad Valenciana' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '10:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7b2d3b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;700&family=DM+Serif+Display&family=Sacramento&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Pache Almoradí, comidas caseras para llevar Almoradí, menú del día Almoradí, comida para llevar Canalejas, guisos caseros Vega Baja, tarta de tres chocolates 03160"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Guisos, arroces, pescado rebozado y postres caseros para llevar en C. Canalejas, 44, Almoradí. De lunes a viernes, de 10:00 a 15:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La vitrina de guisos caseros de Pache, en Almoradí"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#7b2d3b"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Almoradí, Alicante"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Pache"
+			subtitle="Comidas caseras · Almoradí"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Canalejas, 44 · Almoradí"
+				title="La comida de casa, <br /><em>recién hecha.</em>"
+				lede={`Pache es una casa de comidas caseras para llevar en la calle Canalejas, 44, en Almoradí. Abre solo al mediodía, de 10:00 a 15:00, de lunes a viernes, con la vitrina llena de guisos, arroces, pescado rebozado y postres. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas, y una de ellas lo resume: «comida casera muy rica y muy buen precio».`}
+				image={vitrina}
+				imageAlt="La vitrina de Pache con bandejas de caracoles, albóndigas, garbanzos con espinacas, ensaladilla y pasta"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Horario', html: '<b>10:00–15:00</b> · lunes a viernes' },
+					{ label: 'Solo mediodía', html: '<b>Sábado y domingo</b><br />cerrado' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Comida casera"
+			/>
+
+			<LocalChips label="Lo que ofrece Pache" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El menú <br /><em>de cada día.</em>"
+				paragraphs={[
+					'Pache está en la calle Canalejas, 44, en Almoradí, y su horario lo dice todo: abre de 10:00 a 15:00, de lunes a viernes, y cierra sábados y domingos. Es una casa de comida casera para llevar, pensada para el almuerzo de diario.',
+					'La vitrina es el escaparate de la casa. En las fotos del perfil se ven bandejas de caracoles en salsa, albóndigas, garbanzos con espinacas, ensaladilla, berenjenas gratinadas y pasta, junto a un arroz de conejo con tiras de pimiento, guiso de carne con patatas, merluza rebozada sobre tomate, pimientos y cebollas asadas con huevos fritos y una tortilla con chorizo cuajada en la sartén.',
+					'La ficha lo clasifica como restaurante de comida para llevar y declara acceso para sillas de ruedas, aunque no asientos adaptados. No publica carta con precios ni formas de pago: el menú del día se pregunta por teléfono.',
+					`Entre las ${RATING.count} opiniones, una clienta de siempre cuenta que va «mucho tiempo» porque la comida es «muy rica y muy buen precio»; otra destaca que «la tarta de tres chocolates espectacular»; y una tercera, de dos estrellas, se queja de que las raciones son pequeñas y «lo intentan disimular con patatas».`,
+				]}
+				note="La ficha no publica carta con precios, reparto a domicilio ni formas de pago. Los platos de esta página salen de las bandejas y cazuelas que aparecen en las fotos del perfil, y los postres, de las reseñas. El menú de cada día se consulta en el 604 42 05 21."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver las fotos', href: '#galeria' },
+				]}
+			/>
+
+			<section class="highlight-strip" aria-labelledby="highlights-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se lleva la gente</p>
+					<h2 id="highlights-title">Cazuela, vitrina <br /><em>y postre.</em></h2>
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-mark" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="La comida"
+				title="Lo que hay <br /><em>en la vitrina.</em>"
+				description="Platos y guisos tomados de las bandejas y cazuelas que aparecen en las fotos del perfil del local. La ficha no publica precios, así que aquí no hay importes."
+				cta={{ label: `Preguntar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La lista cambia cada día y los precios no están publicados: se preguntan en el 604 42 05 21. Las bandejas de esta página son las que se ven en el perfil de Google, y los postres, los que citan las reseñas."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La vitrina, los guisos <br /><em>y los arroces.</em>"
+				description="Diez fotografías del perfil de Pache: la vitrina completa, el arroz de conejo, el guiso de carne con patatas, la merluza rebozada, los pimientos y cebollas asadas con huevos, la tortilla con chorizo, el arroz con empanado, la ensalada de atún y la cazuela al fuego."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
+			/>
+
+			<section class="rating-section" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">4,5 sobre 5, <em>con 31 reseñas.</em></h2>
+						<p>
+							Google publica una media de 4,5 con 31 opiniones (noviembre de 2026). Las reseñas
+							que se ven aquí elogian la comida casera, el precio y la tarta de tres chocolates;
+							la de dos estrellas critica el tamaño de las raciones. Son las que destaca la ficha;
+							hay más opiniones en Google.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Ver todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="rating-badge" aria-hidden="true">
+						<strong>4,5</strong>
+						<span>★★★★★</span>
+						<small>31 reseñas<br />en Google</small>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+				title="En Almoradí, <br /><em>Canalejas 44.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.postalCode, `${BUSINESS.district}, ${BUSINESS.region}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario"
+				hoursNote={`Horario publicado en la ficha: de 10:00 a 15:00, de lunes a viernes, con sábado y domingo cerrado. ${HORARIO_AVISO}`}
+				mapTitle="Mapa de Pache comidas caseras para llevar en la calle Canalejas, 44, Almoradí"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="C. Canalejas, 44 · Almoradí"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote={`Pedidos por teléfono en el ${BUSINESS.phone} y recogida en el local. La ficha declara acceso para sillas de ruedas, aunque no asientos adaptados, y no publica reparto a domicilio, pedido mínimo ni formas de pago.`}
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultados en noviembre de 2026. La ficha no publica carta con precios: confirma el menú y el horario antes de ir."
+			ctaLabel="Llamar a Pache"
+			navAriaLabel="Enlaces de Pache comidas caseras"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>
