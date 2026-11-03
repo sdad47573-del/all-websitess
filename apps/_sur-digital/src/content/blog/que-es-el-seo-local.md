@@ -51,6 +51,8 @@ Parte sí: ficha, reseñas y fotos están a tu alcance. [Esto es lo que puedes h
 
 ---
 
+Cada vez más clientes preguntan directamente a ChatGPT o Gemini por un negocio en su ciudad: [cómo se decide a quién citan](/blog/aparecer-en-chatgpt-busquedas-ia/) y qué puedes hacer desde ya.
+
 ¿Quieres saber cómo está tu negocio hoy en Google Maps? [Pide la revisión gratuita](/&#35;contacto) y te lo decimos punto por punto, sin compromiso.
 
 Y si tu web todavía no existe o está anticuada, esto es [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) con precios reales, y aquí tienes [todo lo que incluye el SEO local](/servicios/).

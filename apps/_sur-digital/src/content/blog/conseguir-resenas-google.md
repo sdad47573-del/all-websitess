@@ -43,6 +43,8 @@ Si la reseña es falsa o de alguien que no ha sido cliente, se puede reportar po
 
 Reseñas, ficha de Google y web se refuerzan entre sí. El paso a paso de la ficha está en [cómo optimizar tu ficha de Google Business](/blog/ficha-google-business-optimizada/), y para entender por qué todo esto importa en local, empieza por [qué es el SEO local](/blog/que-es-el-seo-local/).
 
+Y cuando llegue la primera de una estrella —llegará—, no improvises: [cómo responder reseñas negativas](/blog/resenas-negativas-google-como-responder/) con plantillas por tipo de caso.
+
 ---
 
 En Sur Digital dejamos tu ficha enlazada desde la web y el botón de reseña listo para que solo tengas que mandarlo. La primera landing es gratis: [cuéntanoslo por LinkedIn](/&#35;contacto).

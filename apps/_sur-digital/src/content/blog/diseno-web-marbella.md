@@ -22,6 +22,8 @@ No hay "precio Marbella": una web cuesta lo mismo la hagas donde la hagas, porqu
 
 Parte de tus clientes busca en inglés («dentist in Marbella», «lawyer Marbella»). Eso significa páginas en inglés que posicionen solas, no un traductor automático pegado encima. Y en [Google Maps](/blog/salir-en-google-maps-malaga-marbella/) los servicios también en inglés: el mapa no traduce por ti.
 
+Cuánto cuesta hacerlo bien, qué errores se pagan caros y cómo medir si compensa: [web bilingüe en la Costa del Sol](/blog/web-bilingue-negocio-costa-del-sol/).
+
 ## Cómo trabajar con un estudio de Málaga (100% online)
 
 Estamos en Málaga capital y trabajamos en toda la Costa del Sol sin que notes la distancia: videollamada de 20 minutos para el brief, borrador navegable en 2–3 días, revisión por mensaje y lanzamiento en menos de 7 días. Nuestras [webs por sector](/especialidades/) (restaurantes, clínicas, inmobiliarias…) ya están pensadas para negocios de la costa.

@@ -19,6 +19,8 @@ export const CRUMB_ESPECIALIDADES: Crumb[] = [
 
 export const CRUMB_BLOG: Crumb[] = [INICIO, { label: "Blog" }];
 
+export const CRUMB_GLOSARIO: Crumb[] = [INICIO, { label: "Glosario" }];
+
 export const CRUMB_AVISO: Crumb[] = [INICIO, { label: "Aviso Legal" }];
 
 export const CRUMB_PRIVACIDAD: Crumb[] = [

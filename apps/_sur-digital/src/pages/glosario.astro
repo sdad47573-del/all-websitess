@@ -1,0 +1,182 @@
+---
+// Página de glosario: la lista de términos ya existía pero solo se usaba (si se
+// usaba) como sección. Aquí se convierte en una página propia, ordenada de la A
+// a la Z, con ancla por término para poder enlazar una definición concreta
+// desde un presupuesto, un email o el blog.
+import { CRUMB_GLOSARIO } from "../data/breadcrumbs";
+import { TERMINOS } from "../data/glosario";
+import Layout from "../layouts/Layout.astro";
+import Topbar from "../components/Topbar.astro";
+import Footer from "../components/Footer.astro";
+
+const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const pageUrl = `${site}/glosario/`;
+
+// Anclas sin acentos ni símbolos: /glosario/#core-web-vitals
+const toSlug = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+const terminos = TERMINOS.map((termino) => ({
+  ...termino,
+  id: toSlug(termino.term),
+  letter: toSlug(termino.term)[0].toUpperCase(),
+})).sort((a, b) => a.term.localeCompare(b.term, "es"));
+
+// Solo las letras que tienen algún término: nada de un abecedario con huecos.
+const letters = [...new Set(terminos.map((t) => t.letter))];
+
+const definedTermSet = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: "Glosario web de Sur Digital",
+  description: `Los ${terminos.length} términos que se usan al vender una web, explicados en una frase.`,
+  url: pageUrl,
+  hasDefinedTerm: terminos.map((t) => ({
+    "@type": "DefinedTerm",
+    name: t.term,
+    description: t.text,
+    url: `${pageUrl}#${t.id}`,
+  })),
+};
+
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${site}/` },
+    { "@type": "ListItem", position: 2, name: "Glosario", item: pageUrl },
+  ],
+};
+---
+
+<Layout
+  title={`Glosario web en cristiano (${terminos.length} términos) | Sur Digital`}
+  description={`Los ${terminos.length} términos que se usan al vender una web, explicados en una frase: dominio, hosting, SEO, hreflang, 301 y todo lo que te cobran.`}
+  image={`${site}/og/glosario.png`}
+  path="/glosario/"
+  breadcrumbs={CRUMB_GLOSARIO}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(definedTermSet)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+
+  <Topbar />
+
+  <main
+    id="contenido"
+    class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200"
+  >
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p
+        class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3"
+      >
+        <a href="/" class="link link-hover">Inicio</a> · Glosario
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        El diccionario <span class="text-wave">en cristiano</span>
+      </h1>
+      <p class="text-lg text-base-content/70 mb-6">
+        Si alguien te vende una web y no te explica estas {terminos.length}{" "}
+        palabras, mal empezamos. Aquí las tienes sin humo, para que negocies
+        sabiendo lo que firmas.
+      </p>
+
+      <nav aria-label="Índice alfabético" class="flex flex-wrap gap-2 mb-12">
+        {
+          letters.map((letter) => (
+            <a
+              href={`#letra-${letter.toLowerCase()}`}
+              class="badge badge-lg badge-outline font-bold"
+            >
+              {letter}
+            </a>
+          ))
+        }
+      </nav>
+
+      {
+        letters.map((letter) => (
+          <section id={`letra-${letter.toLowerCase()}`} class="mb-12 scroll-mt-28">
+            <h2 class="text-2xl font-bold text-base-content mb-4">{letter}</h2>
+            <dl class="flex flex-col gap-4">
+              {terminos
+                .filter((t) => t.letter === letter)
+                .map((t) => (
+                  <div class="card bg-base-100 shadow-sm border border-base-300 scroll-mt-28">
+                    <div class="card-body p-5 gap-2">
+                      <dt
+                        id={t.id}
+                        class="font-bold text-base text-base-content scroll-mt-28"
+                      >
+                        {t.term}
+                      </dt>
+                      <dd class="text-sm text-base-content/70 leading-relaxed">
+                        {t.text}
+                        {t.href && (
+                          <>
+                            {" "}
+                            <a
+                              href={t.href}
+                              class="link link-primary font-bold"
+                            >
+                              Leer la guía →
+                            </a>
+                          </>
+                        )}
+                      </dd>
+                    </div>
+                  </div>
+                ))}
+            </dl>
+          </section>
+        ))
+      }
+
+      <aside class="card brand-surface shadow-lg border-0 mb-12">
+        <div class="card-body items-center text-center gap-3">
+          <p class="text-xl font-bold">¿Te falta alguna palabra?</p>
+          <p class="text-sm">
+            Pregúntanosla y te la explicamos sin compromiso. Y si quieres ver
+            cómo se aplica todo esto, empieza por la primera landing gratis.
+          </p>
+          <a
+            href="https://www.linkedin.com/company/sur-digital-malaga"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary mt-1"
+          >
+            Preguntar por LinkedIn
+          </a>
+        </div>
+      </aside>
+
+      <nav aria-label="Seguir leyendo" class="text-sm text-base-content/70">
+        Si esto te ha servido, lo siguiente es verlo aplicado:
+        <a href="/servicios/" class="link link-primary font-bold"
+          >servicios</a
+        >, <a href="/precios/" class="link link-primary font-bold">precios</a> o
+        <a href="/blog/" class="link link-primary font-bold">las guías del blog</a
+        >. Y si tienes un negocio de la costa, mira las
+        <a href="/especialidades/" class="link link-primary font-bold"
+          >webs por sector</a
+        >.
+      </nav>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

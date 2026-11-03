@@ -313,7 +313,61 @@ Verificado en `dist/`: **115 páginas, 113 indexables, 0 títulos/descripciones
  duplicados, 0 titles > 60, 0 descriptions > 162, 0 páginas con más de un H1,
  0 enlaces internos rotos y 3 stubs `noindex` de redirección**.
 
-## 15. Pendiente operativo (fuera del repo, por impacto)
+## 15. Sexta tanda de guías: problemas que ya están pasando (3 nov 2026)
+
+El blog tenía mucha guía de «cómo montar» y poca de «me está pasando esto»,
+que es donde está la urgencia y la conversión. Seis artículos nuevos, todos
+enlazados desde guías ya publicadas (no quedan huérfanos en el índice):
+
+- `/blog/perfil-google-business-suspendido/` (SEO local): suspensión de la
+  ficha, pruebas para apelar y qué no hacer (crear ficha nueva). Enlazado
+  desde `ficha-google-business-optimizada`.
+- `/blog/aparecer-en-chatgpt-busquedas-ia/` (SEO local): cómo se citan los
+  negocios locales en asistentes, sin prometer aparición. Enlazado desde
+  `que-es-el-seo-local`.
+- `/blog/resenas-negativas-google-como-responder/` (SEO local): plantillas
+  por tipo de reseña, cuándo reportar y por qué no se ofrecen descuentos.
+  Enlazado desde `conseguir-resenas-google`.
+- `/blog/cambiar-de-agencia-web-sin-perder-google/` (Guías): traspaso de
+  dominio, DNS, correo y cuentas de Google. Enlazado desde
+  `elegir-agencia-marketing-malaga`.
+- `/blog/dominio-caducado-o-perdido/` (Guías): fases gracia/redención/
+  liberación y recuperación. Enlazado desde `dominio-hosting-negocios-guia`.
+- `/blog/web-bilingue-negocio-costa-del-sol/` (Precios): cuándo compensa el
+  inglés y qué cuesta (150 € el idioma adicional, cifra ya publicada).
+  Enlazado desde `diseno-web-marbella`.
+
+Ninguno inventa cifras: precios del sitio (490 €, 890 €, 39 €/mes, 150 €) y
+procesos públicos de Google, registradores y OEPM. Las imágenes OG salen
+solas del `og/[...route].ts` a partir de la colección.
+
+## 16. Glosario propio y cuatro guías de mantenimiento (3 nov 2026)
+
+`Glosario.astro` existía pero **no se importaba en ninguna página**: 20 términos
+con enlaces internos escritos para nada. En vez de borrarlo, se convierte en
+contenido:
+
+- `src/data/glosario.ts` pasa a ser la única fuente (`TERMINOS_BASE` +
+  `TERMINOS_EXTRA` + `TERMINOS`), y `Glosario.astro` la consume. Antes la lista
+  base vivía dentro del componente y no se podía reutilizar.
+- Nueva página `/glosario/` (29 términos): orden A-Z, ancla por término
+  (`/glosario/#core-web-vitals`), índice de letras, `DefinedTermSet` +
+  `BreadcrumbList`, OG propia y enlace desde el pie de las 126 páginas.
+- Cuatro guías nuevas que cubren huecos reales, no variaciones de lo ya escrito:
+  `/blog/web-hackeada-que-hacer/` (Guías), `/blog/spam-formularios-web-como-evitarlo/`
+  (Guías), `/blog/accesibilidad-web-negocios-locales/` (Guías) y
+  `/blog/cuanto-cuesta-un-logo/` (Precios, con el precio publicado: desde 150 €).
+
+Se eligieron temas que el blog no tocaba —intrusión, spam de formularios,
+accesibilidad y logo— en lugar de otra tanda de «web para X»: de esas ya hay
+27. Sin cifras inventadas; la normativa de accesibilidad se cita de forma
+prudente (Directiva 2019/882 para comercio electrónico).
+
+Verificado en `dist/`: **126 páginas indexables, 0 títulos > 60, 0
+descripciones > 162, 0 títulos duplicados, un solo H1 por página y 0 enlaces
+internos rotos**.
+
+## 17. Pendiente operativo (fuera del repo, por impacto)
 
 1. **Desplegar** (nada de lo anterior existe en producción hasta entonces).
 2. **Search Console**: pedir indexación de `/blog/category/seo-local/`, los tres

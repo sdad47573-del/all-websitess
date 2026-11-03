@@ -38,6 +38,8 @@ DNS, panel de hosting, cuenta del registrador. Pídelo todo por escrito cuando c
 
 ---
 
+Y si el dominio ya ha caducado, hay reloj: [en qué fase está y cómo recuperarlo](/blog/dominio-caducado-o-perdido/) antes de que lo registre otro.
+
 ¿Tienes dudas con tu dominio o tu hosting actual? [Escríbenos](/&#35;contacto) y lo revisamos sin compromiso.
 
 Y si además estás eligiendo proveedor, estas [preguntas antes de contratar](/blog/mejores-disenadores-web-malaga/) te ahorran el disgusto.

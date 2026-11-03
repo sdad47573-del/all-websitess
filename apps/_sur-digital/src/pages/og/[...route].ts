@@ -25,6 +25,11 @@ const pages: Record<string, { title: string; description: string }> = {
     description:
       "Desarrollo web, SEO local, consultoría, identidad gráfica, UX y contenidos. Primera landing gratis.",
   },
+  "glosario.png": {
+    title: "Glosario web en cristiano",
+    description:
+      "Los términos que se usan al vender una web, explicados en una frase. Sin humo.",
+  },
   "especialidades.png": {
     title: "Webs por sector en Málaga",
     // Derivado de SECTORS: la lista no se queda desfasada al añadir sectores
