@@ -29,6 +29,13 @@ const related = (await getCollection("blog", ({ data }) => !data.draft))
 const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
 const postUrl = `${site}/blog/${post.id}/`;
 
+// Artículos que tienen equivalente en inglés. Hoy solo el de Marbella, que
+// enlaza a la landing EN; el resto del blog existe únicamente en español y no
+// debe declarar hreflang (sería una señal engañosa para Google).
+const EN_VERSIONS: Record<string, string> = {
+  "diseno-web-marbella": "/web-design-marbella/",
+};
+
 // Migas de pan estructuradas para rich snippets
 const breadcrumbs = {
   "@context": "https://schema.org",
@@ -61,6 +68,9 @@ const breadcrumbs = {
   description={post.data.description}
   image={`/og/blog/${post.id}.png`}
   path={`/blog/${post.id}/`}
+  translations={
+    EN_VERSIONS[post.id] ? [{ lang: "en", path: EN_VERSIONS[post.id] }] : []
+  }
   article
 >
   <script

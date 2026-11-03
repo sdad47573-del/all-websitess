@@ -135,9 +135,16 @@ que buscan en inglés. Requiere prop `lang` nueva en `Layout.astro`
 `FAQPage` con los mismos textos y CTA a LinkedIn.
 
 Limitaciones v1 de la página EN (anotadas, no bloqueantes): Topbar/Footer
-siguen en español, la `og:image` es la genérica en español y no hay
-hreflang (una sola página EN: no hace falta). Si el tráfico EN despega,
-traducir chrome + OG propia.
+siguen en español y la `og:image` es la genérica en español. Si el tráfico
+EN despega, traducir chrome + OG propia.
+
+**hreflang (3 nov 2026).** `/web-design-marbella/` y
+`/blog/diseno-web-marbella/` se declaran mutuamente como alternates de
+idioma (`en-GB` ↔ `es-ES` + `x-default` al artículo español), con la
+prop `translations` nueva en `Layout.astro`. Cada idioma conserva su
+canonical: no hay canónicas cruzadas. Solo se emiten cuando la página
+tiene equivalente real, así que el resto del blog (solo ES) sigue sin
+hreflang.
 
 Build en 89 páginas; barrido total en 0/0/0/0.
 

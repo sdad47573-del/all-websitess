@@ -13,6 +13,8 @@ interface Props {
   noindex?: boolean;
   article?: boolean;
   breadcrumbs?: Crumb[];
+  // Equivalente de esta página en otro idioma: [{ lang: "en", path: "/web-design-marbella/" }]
+  translations?: { lang: string; path: string }[];
 }
 
 const {
@@ -30,6 +32,9 @@ const {
   lang = "es",
   // Miga de pan para el JSON-LD de las páginas internas (no la home).
   breadcrumbs = [],
+  // Alternates de idioma. Solo se emiten si hay alguno: una página que solo
+  // existe en español no necesita declarar hreflang consigo misma.
+  translations = [],
 } = Astro.props satisfies Props;
 
 // El dominio sale de astro.config.mjs (site), no de una URL escrita a mano.
@@ -38,6 +43,26 @@ const absoluteUrl = new URL(path, site).href;
 // Las OG siempre absolutas: sin URL completa no las previsualizan WhatsApp, etc.
 const ogImage = new URL(image, site).href;
 const ogAlt = `${title} — Sur Digital`;
+// `og:locale` describe el idioma del CONTENIDO, no el del sitio: la página
+// inglesa de Marbella se anunciaba como es_ES y además repetía ese mismo valor
+// en `og:locale:alternate`, que debe ser el idioma alternativo (no el propio).
+const ogLocale = lang === "en" ? "en_GB" : "es_ES";
+const ogLocaleAlternate = lang === "en" ? "es_ES" : undefined;
+
+// hreflang: Google exige que la página se declare a sí misma como alternate
+// además de a su equivalente, así que la propia URL entra en la lista. El
+// código va como es-ES / en-GB para coincidir con og:locale. x-default apunta
+// a la versión española (el sitio es español por defecto).
+const hreflangCode = (l: string) => (l === "en" ? "en-GB" : "es-ES");
+const hreflangLinks = translations.length
+  ? [{ lang, path }, ...translations].map((t) => ({
+      hreflang: hreflangCode(t.lang),
+      href: new URL(t.path, site).href,
+    }))
+  : [];
+const xDefaultHref =
+  hreflangLinks.find((l) => l.hreflang === "es-ES")?.href ??
+  (hreflangLinks[0]?.href ?? absoluteUrl);
 ---
 
 <!doctype html>
@@ -102,11 +127,23 @@ const ogAlt = `${title} — Sur Digital`;
       )
     }
     <link rel="canonical" href={absoluteUrl} />
+    {
+      // Alternates de idioma (ES ↔ EN). Sin canónicas cruzadas: cada idioma
+      // se indexa por su cuenta.
+      hreflangLinks.map((link) => (
+        <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+      ))
+    }
+    {
+      hreflangLinks.length > 0 && (
+        <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+      )
+    }
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={article ? "article" : "website"} />
     <meta property="og:site_name" content="Sur Digital" />
-    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={absoluteUrl} />
@@ -115,7 +152,11 @@ const ogAlt = `${title} — Sur Digital`;
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:locale:alternate" content="es_ES" />
+    {
+      ogLocaleAlternate && (
+        <meta property="og:locale:alternate" content={ogLocaleAlternate} />
+      )
+    }
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
