@@ -1,0 +1,55 @@
+---
+/**
+ * Mapa de Google que NO se descarga hasta que el usuario da su consentimiento.
+ *
+ * Por qué existe: el `iframe` de Google Maps instala cookies de terceros en
+ * cuanto aparece en el DOM, y el sitio no tenía banner ni forma de rechazarlas.
+ * Aquí el `src` real vive en `data-consent-src`, así que la página no hace
+ * ninguna petición a Google mientras no se acepte (ni siquiera con el atributo
+ * `loading="lazy"`, que no impide la conexión en todos los navegadores).
+ *
+ * Quien carga el mapa es el script de `CookieConsent.astro`, que:
+ *  - lo carga en todos los mapas si la decisión guardada es "all";
+ *  - lo deja bloqueado si es "necessary", hasta que se pulse "Cargar mapa";
+ *  - lo carga solo en este mapa si se pulsa "Cargar mapa" sin decisión global.
+ *
+ * Sin JavaScript no hay banner ni carga: queda el aviso con el enlace a Google
+ * Maps, que funciona igualmente.
+ */
+interface Props {
+	/** URL de `google.com/maps/embed?...` */
+	src: string;
+	/** Título accesible del mapa (describe la oficina). */
+	title: string;
+	/** Clases del contenedor: `absolute inset-0` o `h-full w-full` según el hueco. */
+	class?: string;
+}
+
+const { src, title, class: className = 'h-full w-full' } = Astro.props;
+---
+
+<div class:list={['relative overflow-hidden', className]} data-consent-embed>
+	<iframe
+		data-consent-src={src}
+		title={title}
+		class="absolute inset-0 h-full w-full"
+		allowfullscreen=""
+		loading="lazy"
+		referrerpolicy="no-referrer-when-downgrade"
+		style="border: 0px;"></iframe>
+	<div
+		class="bg-base-200 absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center"
+		data-consent-placeholder
+	>
+		<p class="text-base-content/80 max-w-xs text-sm">
+			El mapa de Google se carga solo si aceptas las cookies de terceros.
+		</p>
+		<button type="button" class="btn btn-primary btn-sm" data-cookie-load-map>Cargar mapa</button>
+		<a
+			href={src}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="link link-primary text-sm">Abrir en Google Maps</a
+		>
+	</div>
+</div>
