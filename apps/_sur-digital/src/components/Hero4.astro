@@ -1,614 +1,112 @@
 ---
-// Hero inspirado en el de expeditione.fun: fondo cálido oscuro, tipografía
-// editorial (Fraunces + Space Grotesk), kicker dorado, pill de vidrio, botón
-// pastilla y controles circulares junto a la escena. La escena 3D es la de
-// Sur Digital (una web en capas con nodos) y conserva su comportamiento: mira
-// al cursor todo el rato y da una vuelta completa al hacer clic.
+// Hero de la home con el modelo 3D del servidor (public/models/hero-modelo.glb).
+// Mantiene el lenguaje visual del resto del sitio: superficies y textos de
+// daisyUI (base-100/200, base-content), botones del tema y tarjeta con borde y
+// sombra como el resto de secciones. Sin tipografías ni paleta propias.
 //
-// Three.js se carga en diferido y solo cuando la escena entra en pantalla, así
-// que no pesa en el primer render. Sin JS o sin WebGL se queda la maqueta CSS
-// de la propia tarjeta. Con `prefers-reduced-motion` la escena no se mueve
-// sola, pero sigue mirando al cursor y girando al hacer clic.
-//
-// Los colores salen de tokens que cambian con `data-theme`: papel cálido en el
-// tema claro y la paleta nocturna en el oscuro.
-
+// Three.js y el modelo se cargan en diferido, solo cuando el hero entra en
+// pantalla. El modelo mira al cursor y da una vuelta completa al hacer clic.
+// Con `prefers-reduced-motion` se apaga el movimiento ambiental, pero la
+// mirada y el giro se mantienen porque los provoca el visitante.
 import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
 ---
 
 <!-- Sin data-reveal a propósito: el hero está siempre por encima del fold,
      así que la animación de entrada no aporta nada y sí retrasa el LCP. -->
-<section class="hero-exp" aria-labelledby="hero-title">
-  <div class="hero-exp__aura" aria-hidden="true"></div>
-
-  <div class="exp-grid">
-    <div class="exp-copy">
-      <p class="exp-kicker">Web · Consultoría · SEO local</p>
-      <span class="exp-pill">Landing gratis en menos de 7 días</span>
-
-      <h1 id="hero-title" class="exp-title">
-        Tu negocio merece una web que <em>traiga clientes.</em>
-      </h1>
-
-      <p class="exp-lead">
-        Diseñamos webs rápidas y a medida para negocios de Málaga. Precio
-        cerrado por escrito, sin permanencia y con el dominio a tu nombre.{" "}
-        <a href="/precios/" class="exp-lead-link">Ver precios →</a>
+<section
+  class="relative overflow-hidden bg-gradient-to-br from-base-200 via-base-100 to-base-100 pt-28 pb-12 md:pt-32 md:pb-16"
+>
+  <div class="container mx-auto grid max-w-6xl items-center gap-10 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+    <div class="relative z-10 text-center lg:text-left">
+      <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-primary shadow-sm">
+        <span class="size-2 rounded-full bg-secondary" aria-hidden="true"></span>
+        Consultora web para negocios de Málaga
       </p>
 
-      <div class="exp-actions">
+      <h1 class="mb-5 text-balance text-4xl font-black leading-[1.08] tracking-tight text-base-content sm:text-5xl lg:text-6xl">
+        Tu negocio merece una web que <span class="text-wave">traiga clientes.</span>
+      </h1>
+
+      <p class="mx-auto mb-6 max-w-xl text-lg leading-relaxed text-base-content/70 lg:mx-0">
+        Diseñamos webs rápidas y a medida para negocios locales. Tu primera landing gratis y online en <strong class="text-base-content">menos de 7 días</strong>, con precio cerrado por escrito. <a href="/precios/" class="link link-primary font-bold underline decoration-primary/50 underline-offset-4">Ver precios →</a>
+      </p>
+
+      <div class="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start">
         <a
           href={CONTACT.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          class="exp-btn"
+          class="btn btn-primary btn-lg shadow-lg shadow-primary/15"
         >
           <LinkedInIcon class="size-5" />
           Solicita tu landing gratis
         </a>
-        <a href="#clientes" class="exp-link">Ver clientes reales ↓</a>
+        <a href="#clientes" class="btn btn-ghost btn-lg">
+          Ver clientes reales
+          <span aria-hidden="true">↓</span>
+        </a>
       </div>
+
+      <p class="mt-4 text-sm font-bold text-base-content">
+        🔥 Solo 5 webs gratis al mes · Respondemos en menos de 24h
+      </p>
+
+      <ul class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-base-content/70 lg:justify-start">
+        <li class="flex items-center gap-2">
+          <span class="font-black text-success" aria-hidden="true">✓</span>
+          Precio cerrado
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="font-black text-success" aria-hidden="true">✓</span>
+          Dominio a tu nombre
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="font-black text-success" aria-hidden="true">✓</span>
+          Sin permanencia
+        </li>
+      </ul>
     </div>
 
-    <div class="exp-visual">
+    <div class="relative mx-auto w-full max-w-lg lg:mx-0">
       <div
-        class="exp-stage"
-        data-web3d
+        data-model3d
+        class="relative aspect-square"
         role="img"
-        aria-label="Escena en 3D de una página web en capas, rodeada de nodos conectados. Mira al cursor y da una vuelta completa al hacer clic."
+        aria-label="Modelo 3D interactivo. Mira hacia el cursor y da una vuelta completa al hacer clic."
       >
-        <canvas data-web3d-canvas class="block h-full w-full" aria-hidden="true"></canvas>
+        <canvas data-model3d-canvas class="block h-full w-full" aria-hidden="true"></canvas>
 
-        <!-- Maqueta de respaldo: se ve hasta que la escena 3D está lista, y se
-             queda para siempre si no hay JS o WebGL. -->
-        <div data-web3d-fallback class="exp-fallback" aria-hidden="true">
-          <div class="exp-fallback-card">
-            <div class="exp-fallback-bar">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="exp-fallback-body">
-              <div class="exp-fallback-hero"></div>
-              <div class="exp-fallback-grid">
-                <i></i><i></i><i></i>
-              </div>
-              <div class="exp-fallback-line"></div>
-            </div>
-          </div>
-        </div>
+        <p
+          data-model3d-loading
+          class="pointer-events-none absolute inset-x-0 bottom-3 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-base-content/40"
+        >
+          Cargando modelo…
+        </p>
 
-        <p data-web3d-loading class="exp-loading">Inicializando escena…</p>
+        <p
+          data-model3d-error
+          hidden
+          class="pointer-events-none absolute inset-x-0 bottom-3 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-base-content/40"
+        >
+          No se ha podido cargar el modelo 3D
+        </p>
       </div>
 
-      <div class="exp-controls">
-        <div class="exp-control">
-          <button
-            type="button"
-            class="exp-circle"
-            data-web3d-spin
-            aria-label="Girar la escena 3D una vuelta completa"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.7"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
-              <path d="M21 3v6h-6"></path>
-            </svg>
-          </button>
-          <span class="exp-caption">Girar</span>
-        </div>
-
-        <div class="exp-control">
-          <a href="/precios/" class="exp-circle" aria-label="Ver precios">
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.7"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M7 17 17 7"></path>
-              <path d="M8 7h9v9"></path>
-            </svg>
-          </a>
-          <span class="exp-caption">Precios</span>
-        </div>
-      </div>
+      <p class="mt-3 text-center text-sm text-base-content/60 lg:text-left">
+        La web de tu negocio, pieza a pieza: estructura, contenido y
+        posicionamiento local.
+      </p>
     </div>
-  </div>
-
-  <div class="exp-scroll" aria-hidden="true">
-    <div class="exp-mouse"><div class="exp-wheel"></div></div>
-    <span>Scroll para explorar</span>
   </div>
 </section>
 
-<style>
-  /* Paleta del hero por tema. El sitio arranca en claro (malaga-light), así
-     que aquí van los valores de papel cálido; con data-theme="malaga-dark" se
-     sustituyen por la versión nocturna. Todo el hero sale de estos tokens. */
-  .hero-exp {
-    --exp-bg: #f7f2ea;
-    --exp-text: #191512;
-    --exp-mute: #5d554d;
-    --exp-gold: #8a5200;
-    --exp-gold-soft: rgb(138 82 0 / 0.55);
-    --exp-border: rgb(25 21 18 / 0.14);
-    --exp-border-strong: rgb(25 21 18 / 0.32);
-    --exp-glass: rgb(25 21 18 / 0.04);
-    --exp-glass-active: rgb(25 21 18 / 0.1);
-    --exp-btn-hover: #000;
-    --exp-line: rgb(25 21 18 / 0.16);
-    --exp-line-soft: rgb(25 21 18 / 0.07);
-    --exp-tint: rgb(138 82 0 / 0.16);
-    --exp-loading: rgb(25 21 18 / 0.45);
-    --exp-aura-warm: rgb(214 138 40 / 0.2);
-    --exp-aura-cool: rgb(0 119 200 / 0.08);
-
-    position: relative;
-    overflow: hidden;
-    padding: 7rem 0 2.5rem;
-    background-color: var(--exp-bg);
-    color: var(--exp-text);
-    font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-    font-weight: 500;
-  }
-
-  :global([data-theme="malaga-dark"]) .hero-exp {
-    --exp-bg: #141210;
-    --exp-text: #eae6e1;
-    --exp-mute: #c7c1bc;
-    --exp-gold: #ffb347;
-    --exp-gold-soft: rgb(255 179 71 / 0.6);
-    --exp-border: rgb(255 255 255 / 0.15);
-    --exp-border-strong: rgb(255 255 255 / 0.38);
-    --exp-glass: rgb(255 255 255 / 0.05);
-    --exp-glass-active: rgb(255 255 255 / 0.13);
-    --exp-btn-hover: #fff;
-    --exp-line: rgb(255 255 255 / 0.16);
-    --exp-line-soft: rgb(255 255 255 / 0.08);
-    --exp-tint: rgb(255 179 71 / 0.22);
-    --exp-loading: rgb(234 230 225 / 0.45);
-    --exp-aura-warm: rgb(255 179 71 / 0.13);
-    --exp-aura-cool: rgb(72 199 213 / 0.07);
-  }
-
-  .hero-exp__aura {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(58% 52% at 74% 44%, var(--exp-aura-warm), transparent 72%),
-      radial-gradient(46% 42% at 16% 18%, var(--exp-aura-cool), transparent 72%);
-  }
-
-  .exp-grid {
-    position: relative;
-    z-index: 10;
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 0 1.5rem;
-    min-height: clamp(560px, calc(100svh - 10rem), 820px);
-  }
-
-  @media (min-width: 1024px) {
-    .exp-grid {
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 1rem;
-      padding: 0 4vw 0 8vw;
-    }
-  }
-
-  /* ── Columna de texto ────────────────────────────────────────────────── */
-
-  .exp-copy {
-    text-align: center;
-  }
-
-  @media (min-width: 1024px) {
-    .exp-copy {
-      margin-top: -4vh;
-      text-align: left;
-    }
-  }
-
-  .exp-kicker {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: fit-content;
-    margin: 0 auto 1.25rem;
-    color: var(--exp-gold);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    opacity: 0.9;
-  }
-
-  .exp-kicker::before {
-    content: "";
-    width: 2.5rem;
-    height: 1px;
-    background: currentColor;
-  }
-
-  /* Alineado a la izquierda junto al titular en escritorio (en móvil va
-     centrado con el resto de la columna). */
-  @media (min-width: 1024px) {
-    .exp-kicker {
-      margin-inline: 0;
-    }
-  }
-
-  .exp-pill {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding: 0.4rem 0.9rem;
-    border: 1px solid var(--exp-border);
-    border-radius: 100px;
-    background: var(--exp-glass);
-    color: var(--exp-mute);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    backdrop-filter: blur(8px);
-  }
-
-  .exp-title {
-    margin-bottom: 1.5rem;
-    color: var(--exp-text);
-    font-family: "Fraunces", Georgia, serif;
-    font-size: clamp(2.15rem, 4.6vw, 4.4rem);
-    font-weight: 300;
-    font-variation-settings: "opsz" 72, "wght" 300;
-    line-height: 1.06;
-    letter-spacing: -0.01em;
-    text-wrap: balance;
-  }
-
-  .exp-title em {
-    display: inline-block;
-    padding-right: 0.08em;
-    background: linear-gradient(90deg, var(--exp-text) 6%, var(--exp-gold) 100%);
-    background-clip: text;
-    color: transparent;
-    font-style: italic;
-    font-weight: 600;
-    font-variation-settings: "opsz" 72, "wght" 600;
-  }
-
-  .exp-lead {
-    max-width: 32rem;
-    margin: 0 auto 2rem;
-    color: var(--exp-mute);
-    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
-    font-weight: 500;
-    line-height: 1.6;
-  }
-
-  @media (min-width: 1024px) {
-    .exp-lead {
-      margin-left: 0;
-    }
-  }
-
-  .exp-lead-link {
-    color: var(--exp-text);
-    text-decoration: underline;
-    text-decoration-color: var(--exp-gold-soft);
-    text-underline-offset: 3px;
-    transition: color 0.25s ease;
-  }
-
-  .exp-lead-link:hover {
-    color: var(--exp-gold);
-  }
-
-  .exp-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 1024px) {
-    .exp-actions {
-      justify-content: flex-start;
-    }
-  }
-
-  .exp-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.6rem;
-    border-radius: 100px;
-    background: var(--exp-text);
-    color: var(--exp-bg);
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-decoration: none;
-    box-shadow: 0 0 20px rgb(0 0 0 / 0.1);
-    transition:
-      transform 0.25s ease,
-      background-color 0.25s ease;
-  }
-
-  .exp-btn:hover {
-    background: var(--exp-btn-hover);
-    transform: translateY(-1px);
-  }
-
-  .exp-link {
-    padding-bottom: 2px;
-    border-bottom: 1px solid var(--exp-border);
-    color: var(--exp-mute);
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition:
-      color 0.25s ease,
-      border-color 0.25s ease;
-  }
-
-  .exp-link:hover {
-    border-color: var(--exp-gold);
-    color: var(--exp-gold);
-  }
-
-  /* ── Escena 3D ───────────────────────────────────────────────────────── */
-
-  .exp-visual {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .exp-stage {
-    position: relative;
-    aspect-ratio: 1;
-    width: 100%;
-    max-width: 34rem;
-    cursor: pointer;
-  }
-
-  .exp-loading {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: var(--exp-loading);
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.24em;
-    text-align: center;
-    text-transform: uppercase;
-    pointer-events: none;
-  }
-
-  /* Maqueta de respaldo, en clave de wireframe para no romper el tono del
-     hero mientras carga el chunk de Three.js. */
-  .exp-fallback {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 1.5rem;
-  }
-
-  .exp-fallback-card {
-    width: 72%;
-    max-width: 20rem;
-    overflow: hidden;
-    border: 1px solid var(--exp-line);
-    border-radius: 0.6rem;
-    background: var(--exp-glass);
-  }
-
-  .exp-fallback-bar {
-    display: flex;
-    gap: 0.3rem;
-    padding: 0.55rem 0.7rem;
-    border-bottom: 1px solid var(--exp-line-soft);
-  }
-
-  .exp-fallback-bar span {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 100px;
-    background: var(--exp-line);
-  }
-
-  .exp-fallback-body {
-    display: grid;
-    gap: 0.5rem;
-    padding: 0.7rem;
-  }
-
-  .exp-fallback-hero {
-    height: 2.6rem;
-    border-radius: 0.3rem;
-    background: var(--exp-tint);
-  }
-
-  .exp-fallback-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.4rem;
-  }
-
-  .exp-fallback-grid i {
-    height: 1.2rem;
-    border-radius: 0.25rem;
-    background: var(--exp-line-soft);
-  }
-
-  .exp-fallback-line {
-    width: 55%;
-    height: 0.25rem;
-    border-radius: 100px;
-    background: var(--exp-line-soft);
-  }
-
-  /* ── Controles circulares junto a la escena ──────────────────────────── */
-
-  .exp-controls {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    transform: translateY(-50%);
-  }
-
-  @media (max-width: 1023px) {
-    .exp-controls {
-      position: static;
-      flex-direction: row;
-      gap: 1.6rem;
-      justify-content: center;
-      transform: none;
-      margin-top: 0.5rem;
-    }
-  }
-
-  .exp-control {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .exp-circle {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 1px solid var(--exp-border);
-    border-radius: 50%;
-    background: var(--exp-glass);
-    color: var(--exp-text);
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition:
-      background-color 0.25s ease,
-      border-color 0.25s ease,
-      transform 0.2s ease;
-  }
-
-  .exp-circle:hover {
-    border-color: var(--exp-border-strong);
-    background: var(--exp-glass-active);
-  }
-
-  .exp-circle:active {
-    transform: scale(0.94);
-  }
-
-  .exp-caption {
-    color: var(--exp-mute);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    opacity: 0.7;
-    text-transform: uppercase;
-  }
-
-  /* ── Indicador de scroll ─────────────────────────────────────────────── */
-
-  .exp-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 8vw;
-    z-index: 10;
-    display: none;
-    align-items: center;
-    gap: 0.9rem;
-    opacity: 0.6;
-  }
-
-  @media (min-width: 1024px) {
-    .exp-scroll {
-      display: flex;
-    }
-  }
-
-  .exp-mouse {
-    display: flex;
-    justify-content: center;
-    width: 24px;
-    height: 36px;
-    padding-top: 6px;
-    border: 2px solid var(--exp-mute);
-    border-radius: 12px;
-  }
-
-  .exp-wheel {
-    width: 2px;
-    height: 6px;
-    border-radius: 2px;
-    background: var(--exp-mute);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .exp-wheel {
-      animation: exp-wheel 1.5s infinite;
-    }
-  }
-
-  @keyframes exp-wheel {
-    0% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    70% {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-  }
-
-  .exp-scroll span {
-    color: var(--exp-mute);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-</style>
-
 <script>
-  // Escena 3D del hero. Se carga en diferido (Three.js es pesado) y se pausa
-  // fuera de pantalla o con la pestaña oculta. El modelo mira al cursor en todo
-  // momento, como una mirada que sigue al visitante, y da una vuelta completa
-  // al hacer clic. Con prefers-reduced-motion solo se apaga el movimiento
-  // ambiental: la escena se queda quieta si nadie interactúa con ella.
-  const host = document.querySelector<HTMLElement>("[data-web3d]");
-  const canvas = host?.querySelector<HTMLCanvasElement>("[data-web3d-canvas]");
+  // Modelo 3D del hero con Three.js. Se carga en diferido (Three.js + 1,4 MB de
+  // GLB) y se pausa fuera de pantalla o con la pestaña oculta. El modelo mira al
+  // cursor todo el rato y da una vuelta completa al hacer clic.
+  const host = document.querySelector<HTMLElement>("[data-model3d]");
+  const canvas = host?.querySelector<HTMLCanvasElement>("[data-model3d-canvas]");
 
   if (host && canvas) {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -618,11 +116,12 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
       if (booted) return;
       booted = true;
 
-      const fallback = host.querySelector<HTMLElement>("[data-web3d-fallback]");
-      const loading = host.querySelector<HTMLElement>("[data-web3d-loading]");
+      const loading = host.querySelector<HTMLElement>("[data-model3d-loading]");
+      const errorLabel = host.querySelector<HTMLElement>("[data-model3d-error]");
 
       try {
         const THREE = await import("three");
+        const { GLTFLoader } = await import("three/examples/jsm/loaders/GLTFLoader.js");
 
         const renderer = new THREE.WebGLRenderer({
           canvas,
@@ -633,294 +132,50 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
-        camera.position.set(0, 0.12, 7.1);
+        const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50);
+        camera.position.set(0, 0.25, 6.4);
         camera.lookAt(0, 0, 0);
 
-        // Luz de estudio: relleno frío + clave + dos rim lights que separan el
-        // modelo del fondo oscuro del hero.
-        scene.add(new THREE.HemisphereLight(0xffffff, 0x16273a, 1.05));
+        // Luz de estudio: relleno frío + clave + dos rim lights de marca.
+        scene.add(new THREE.HemisphereLight(0xffffff, 0x16273a, 1.2));
 
-        const key = new THREE.DirectionalLight(0xffffff, 1.5);
-        key.position.set(3.4, 4.4, 5.2);
+        const key = new THREE.DirectionalLight(0xffffff, 2.6);
+        key.position.set(3.2, 4.2, 4.8);
         scene.add(key);
 
-        const rimBlue = new THREE.PointLight(0x2b9bff, 16, 20, 2);
-        rimBlue.position.set(-3.4, -1.8, 3.6);
-        scene.add(rimBlue);
-
-        const rimWarm = new THREE.PointLight(0xffb066, 11, 20, 2);
-        rimWarm.position.set(3.2, 1.8, 3);
+        const rimWarm = new THREE.PointLight(0xffb066, 22, 24, 2);
+        rimWarm.position.set(-3.2, 1.4, 3.2);
         scene.add(rimWarm);
 
-        const BASE_X = -0.07;
-        const BASE_Y = -0.42;
+        const rimCool = new THREE.PointLight(0x2b9bff, 16, 24, 2);
+        rimCool.position.set(3.4, -1.4, 2.4);
+        scene.add(rimCool);
+
+        const BASE_X = 0;
+        const BASE_Y = -0.35;
         const TAU = Math.PI * 2;
 
         const stage = new THREE.Group();
-        stage.rotation.set(BASE_X, BASE_Y, 0.02);
-        stage.scale.setScalar(1.04);
+        stage.rotation.set(BASE_X, BASE_Y, 0);
         scene.add(stage);
 
-        const primary = 0x1a9bff;
-        const secondary = 0xf9a23f;
-        const ink = 0x14212f;
-        const paper = 0xf7f9fc;
+        // --- El modelo ---
+        const gltf = await new GLTFLoader().loadAsync("/models/hero-modelo.glb");
+        const model = gltf.scene;
 
-        const flat = (color: number, opacity = 1) =>
-          new THREE.MeshBasicMaterial({ color, transparent: opacity < 1, opacity });
+        // Centrar y escalar a partir de su caja real: el GLB viene en unidades
+        // de Blender (menos de 1 m), así que sin normalizar saldría diminuto.
+        const box = new THREE.Box3().setFromObject(model);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
 
-        const lit = (color: number, roughness = 0.7, emissive = 0x000000, intensity = 0) =>
-          new THREE.MeshStandardMaterial({
-            color,
-            roughness,
-            metalness: 0.2,
-            emissive,
-            emissiveIntensity: intensity,
-          });
+        const pivot = new THREE.Group();
+        model.position.sub(center);
+        pivot.add(model);
+        pivot.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));
+        stage.add(pivot);
 
-        // Rectángulo con esquinas redondeadas, extruido con un bisel fino: es
-        // lo que da volumen a la ventana y a cada pieza del contenido sin
-        // necesitar modelos externos.
-        const roundedShape = (width: number, height: number, radius: number) => {
-          const w = width / 2;
-          const h = height / 2;
-          const r = Math.min(radius, w, h);
-
-          const shape = new THREE.Shape();
-          shape.moveTo(-w + r, -h);
-          shape.lineTo(w - r, -h);
-          shape.quadraticCurveTo(w, -h, w, -h + r);
-          shape.lineTo(w, h - r);
-          shape.quadraticCurveTo(w, h, w - r, h);
-          shape.lineTo(-w + r, h);
-          shape.quadraticCurveTo(-w, h, -w, h - r);
-          shape.lineTo(-w, -h + r);
-          shape.quadraticCurveTo(-w, -h, -w + r, -h);
-          return shape;
-        };
-
-        const panel = (
-          width: number,
-          height: number,
-          radius: number,
-          depth: number,
-          material: import("three").Material,
-          bevel = 0.012
-        ) => {
-          const b = Math.min(bevel, height * 0.25, width * 0.25, radius * 0.5);
-          const geometry = new THREE.ExtrudeGeometry(roundedShape(width, height, radius), {
-            depth,
-            bevelEnabled: b > 0,
-            bevelThickness: b,
-            bevelSize: b,
-            bevelSegments: 2,
-            curveSegments: 6,
-          });
-          geometry.translate(0, 0, -depth / 2);
-          return new THREE.Mesh(geometry, material);
-        };
-
-        // --- La ventana: marco con bisel + pantalla ligeramente elevada ---
-        const browser = new THREE.Group();
-        stage.add(browser);
-
-        const bezel = panel(3.06, 2.06, 0.17, 0.18, lit(ink, 0.34, 0x081a29, 0.2), 0.022);
-        browser.add(bezel);
-
-        const screen = panel(2.86, 1.86, 0.07, 0.03, lit(paper, 0.92), 0.008);
-        screen.position.z = 0.085;
-        browser.add(screen);
-
-        // --- Contenido de la página ---
-        const ui = new THREE.Group();
-        ui.position.z = 0.105;
-        browser.add(ui);
-
-        const topbar = panel(2.82, 0.2, 0.05, 0.014, flat(0xe9eff7), 0.008);
-        topbar.position.set(0, 0.82, 0);
-        ui.add(topbar);
-
-        const dotGeometry = new THREE.SphereGeometry(0.026, 14, 10);
-        [0xff6b6b, secondary, 0x3ecf8e].forEach((color, i) => {
-          const dot = new THREE.Mesh(dotGeometry, flat(color));
-          dot.position.set(-1.27 + i * 0.08, 0.82, 0.02);
-          ui.add(dot);
-        });
-
-        const hero = panel(1.3, 0.7, 0.07, 0.02, lit(primary, 0.45, primary, 0.28), 0.014);
-        hero.position.set(-0.72, 0.26, 0);
-        ui.add(hero);
-
-        const lineMaterial = flat(0xffffff, 0.95);
-        [
-          { y: 0.44, width: 1.02 },
-          { y: 0.34, width: 0.86 },
-          { y: 0.24, width: 0.62 },
-        ].forEach(({ y, width }) => {
-          const line = panel(width, 0.055, 0.0275, 0.014, lineMaterial, 0.006);
-          line.position.set(-1.33 + width / 2, y, 0.016);
-          ui.add(line);
-        });
-
-        const cta = panel(0.34, 0.11, 0.055, 0.014, flat(secondary), 0.006);
-        cta.position.set(-1.16, 0.04, 0.016);
-        ui.add(cta);
-
-        const visual = panel(1.18, 0.7, 0.07, 0.02, lit(secondary, 0.5, secondary, 0.14), 0.014);
-        visual.position.set(0.73, 0.26, 0);
-        ui.add(visual);
-
-        [0, 1].forEach((i) => {
-          const chip = panel(0.28, 0.06, 0.03, 0.012, flat(0xffffff, 0.55), 0.006);
-          chip.position.set(0.33 + i * 0.34, -0.02, 0.016);
-          ui.add(chip);
-        });
-
-        [-0.92, 0, 0.92].forEach((x, i) => {
-          const card = panel(0.82, 0.34, 0.07, 0.016, lit(i === 1 ? 0xc6dcf1 : 0xdbe6f3, 0.82), 0.012);
-          card.position.set(x, -0.26, 0);
-          ui.add(card);
-        });
-
-        const footer = panel(2.6, 0.09, 0.045, 0.012, flat(0xcbd8e7), 0.006);
-        footer.position.set(0, -0.76, 0);
-        ui.add(footer);
-
-        // --- Reflejo de cristal: degradado diagonal muy tenue sobre la pantalla ---
-        const sheenCanvas = document.createElement("canvas");
-        sheenCanvas.width = 128;
-        sheenCanvas.height = 128;
-        const sheenContext = sheenCanvas.getContext("2d");
-        if (sheenContext) {
-          const gradient = sheenContext.createLinearGradient(0, 0, 128, 128);
-          gradient.addColorStop(0, "rgba(255, 255, 255, 0.9)");
-          gradient.addColorStop(0.42, "rgba(255, 255, 255, 0.14)");
-          gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-          sheenContext.fillStyle = gradient;
-          sheenContext.fillRect(0, 0, 128, 128);
-        }
-        const sheenTexture = new THREE.CanvasTexture(sheenCanvas);
-        sheenTexture.colorSpace = THREE.SRGBColorSpace;
-
-        const sheen = new THREE.Mesh(
-          new THREE.PlaneGeometry(2.74, 1.74),
-          new THREE.MeshBasicMaterial({ map: sheenTexture, transparent: true, opacity: 0.55, depthWrite: false })
-        );
-        sheen.position.z = 0.101;
-        browser.add(sheen);
-
-        // --- Capas detrás: la web como un sistema, no una página suelta ---
-        const ghostGeometry = new THREE.BufferGeometry().setFromPoints(
-          roundedShape(3.06, 2.06, 0.17).getPoints(64)
-        );
-        [
-          { z: -0.32, x: 0.2, y: -0.12, opacity: 0.32 },
-          { z: -0.62, x: 0.4, y: -0.24, opacity: 0.15 },
-        ].forEach((layer) => {
-          const ghost = new THREE.LineLoop(
-            ghostGeometry,
-            new THREE.LineBasicMaterial({ color: 0x4fb0ff, transparent: true, opacity: layer.opacity })
-          );
-          ghost.position.set(layer.x, layer.y, layer.z);
-          stage.add(ghost);
-        });
-
-        // --- Nodos conectados: consultoría, contenido y alcance local ---
-        const nodes = new THREE.Group();
-        stage.add(nodes);
-
-        const nodeGeometry = new THREE.SphereGeometry(0.062, 18, 14);
-        const nodeMaterials = [
-          lit(primary, 0.3, primary, 0.55),
-          lit(secondary, 0.3, secondary, 0.5),
-        ];
-        const haloMaterials = [
-          new THREE.MeshBasicMaterial({ color: primary, transparent: true, opacity: 0.18, depthWrite: false }),
-          new THREE.MeshBasicMaterial({ color: secondary, transparent: true, opacity: 0.18, depthWrite: false }),
-        ];
-        const linkMaterial = new THREE.LineBasicMaterial({
-          color: 0x4fb0ff,
-          transparent: true,
-          opacity: 0.3,
-        });
-
-        const NODE_COUNT = 8;
-        for (let i = 0; i < NODE_COUNT; i++) {
-          const angle = (i / NODE_COUNT) * TAU + 0.25;
-          const x = Math.cos(angle) * 2.12;
-          const y = Math.sin(angle) * 1.16;
-          const z = -0.5 + Math.sin(angle) * 0.24;
-
-          const node = new THREE.Mesh(nodeGeometry, nodeMaterials[i % 2]);
-          const halo = new THREE.Mesh(nodeGeometry, haloMaterials[i % 2]);
-          halo.scale.setScalar(2.2);
-          node.add(halo);
-          node.position.set(x, y, z);
-          nodes.add(node);
-
-          // Enlace curvo del nodo al borde de la ventana: se lee como una
-          // conexión del sistema, no como un radio de rueda.
-          const from = new THREE.Vector3(x, y, z);
-          const to = new THREE.Vector3(x * 0.62, y * 0.62, 0.05);
-          const control = from.clone().lerp(to, 0.5).setZ(-0.08);
-          const curve = new THREE.QuadraticBezierCurve3(from, control, to);
-          nodes.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(24)), linkMaterial));
-        }
-
-        const ring = new THREE.Mesh(
-          new THREE.TorusGeometry(2.12, 0.009, 6, 160),
-          new THREE.MeshBasicMaterial({ color: 0x4fb0ff, transparent: true, opacity: 0.2 })
-        );
-        ring.rotation.set(Math.PI / 2.12, 0, 0.06);
-        ring.scale.set(1, 0.52, 1);
-        ring.position.z = -0.5;
-        nodes.add(ring);
-
-        // --- Halo de fondo: separa el modelo del fondo del hero ---
-        const glowCanvas = document.createElement("canvas");
-        glowCanvas.width = 256;
-        glowCanvas.height = 256;
-        const glowContext = glowCanvas.getContext("2d");
-        if (glowContext) {
-          const gradient = glowContext.createRadialGradient(128, 128, 10, 128, 128, 128);
-          gradient.addColorStop(0, "rgba(70, 168, 255, 0.5)");
-          gradient.addColorStop(0.5, "rgba(70, 168, 255, 0.14)");
-          gradient.addColorStop(1, "rgba(70, 168, 255, 0)");
-          glowContext.fillStyle = gradient;
-          glowContext.fillRect(0, 0, 256, 256);
-        }
-        const glowTexture = new THREE.CanvasTexture(glowCanvas);
-        glowTexture.colorSpace = THREE.SRGBColorSpace;
-
-        const glowMaterial = new THREE.MeshBasicMaterial({
-          map: glowTexture,
-          transparent: true,
-          opacity: 0.6,
-          depthWrite: false,
-        });
-        const glow = new THREE.Mesh(new THREE.PlaneGeometry(6.2, 4.4), glowMaterial);
-        glow.position.set(0, 0, -1.4);
-        scene.add(glow);
-
-        // El halo azul funciona sobre el fondo cálido oscuro, pero sobre papel
-        // claro se lee como una mancha: se atenúa con el tema claro y se
-        // recalcula si el visitante cambia de tema (el canvas no entiende de
-        // variables CSS).
-        const applyTheme = () => {
-          const dark = document.documentElement.dataset.theme === "malaga-dark";
-          glowMaterial.opacity = dark ? 0.6 : 0.26;
-        };
-        applyTheme();
-        new MutationObserver(() => {
-          applyTheme();
-          if (!raf) draw(0);
-        }).observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["data-theme"],
-        });
-
-        // --- Tamaño, puntero y bucle ---
+        // --- Tamaño ---
         const resize = () => {
           const rect = host.getBoundingClientRect();
           const width = Math.max(1, Math.round(rect.width));
@@ -932,9 +187,8 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 
         resize();
 
-        // El modelo mira siempre al cursor. Se escucha en toda la ventana, no
-        // solo sobre la escena, y el ángulo se limita para que nunca llegue a
-        // girarse de espaldas: se lee como una mirada, no como un giro.
+        // El modelo mira siempre al cursor: se escucha en toda la ventana y el
+        // ángulo se limita para que nunca llegue a girarse de espaldas.
         const pointer = { x: 0, y: 0 };
         const gaze = { x: 0, y: 0 };
 
@@ -957,9 +211,8 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         document.addEventListener("pointerleave", lookAway);
         window.addEventListener("blur", lookAway);
 
-        // Un clic (o el botón "Girar") da una vuelta completa; después la
-        // escena vuelve a mirar al cursor, porque 2π y 0 son la misma
-        // orientación.
+        // Un clic sobre el modelo da una vuelta completa; después vuelve a
+        // mirar al cursor, porque 2π y 0 son la misma orientación.
         let spin = 0;
         let spinTarget = 0;
 
@@ -968,9 +221,6 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         };
 
         host.addEventListener("click", spinOnce);
-        document.querySelectorAll<HTMLElement>("[data-web3d-spin]").forEach((button) => {
-          button.addEventListener("click", spinOnce);
-        });
 
         let raf = 0;
         let elapsed = 0;
@@ -982,13 +232,9 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
           const ease = (current: number, target: number, speed: number) =>
             current + (target - current) * Math.min(1, delta * speed);
 
-          // La mirada persigue al cursor con inercia, así que nunca da un
-          // salto seco cuando el puntero cruza la pantalla...
           gaze.x = ease(gaze.x, pointer.x, 3.4);
           gaze.y = ease(gaze.y, pointer.y, 3.4);
 
-          // Vuelta del clic: se suma al ángulo de la mirada y, al completarse,
-          // se devuelve a cero sin salto porque 2π y 0 son lo mismo.
           if (spinTarget !== spin) {
             spin = ease(spin, spinTarget, 4.2);
             if (Math.abs(spinTarget - spin) < 0.015) {
@@ -997,24 +243,15 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
             }
           }
 
-          // El balanceo y el flote son ambiente: con reduced-motion se apagan
-          // (multiplicados por 0) pero la mirada y el giro del clic siguen.
+          // El flote y el balanceo son ambiente: con reduced-motion se apagan
+          // (multiplicados por 0), pero la mirada y el giro del clic siguen.
           const ambient = reduceMotion.matches ? 0 : 1;
 
-          stage.rotation.y =
-            BASE_Y + spin + gaze.x * 0.5 + Math.sin(elapsed * 0.34) * 0.03 * ambient;
-          stage.rotation.x =
-            BASE_X + gaze.y * 0.3 + Math.cos(elapsed * 0.29) * 0.015 * ambient;
-          stage.rotation.z =
-            0.02 + Math.sin(elapsed * 0.22) * 0.01 * ambient - gaze.x * 0.03;
+          stage.rotation.y = BASE_Y + spin + gaze.x * 0.5 + Math.sin(elapsed * 0.34) * 0.03 * ambient;
+          stage.rotation.x = BASE_X + gaze.y * 0.22 + Math.cos(elapsed * 0.29) * 0.015 * ambient;
+          stage.rotation.z = Math.sin(elapsed * 0.22) * 0.012 * ambient - gaze.x * 0.03;
           stage.position.x = gaze.x * 0.05;
-          stage.position.y = Math.sin(elapsed * 0.62) * 0.03 * ambient - gaze.y * 0.035;
-
-          // Los nodos y el halo acompañan el movimiento con un pequeño
-          // desfase: refuerzan la sensación de que el modelo reacciona.
-          nodes.rotation.z = Math.sin(elapsed * 0.2) * 0.04 * ambient - gaze.x * 0.04;
-          glow.position.x = gaze.x * -0.22;
-          glow.position.y = gaze.y * -0.14;
+          stage.position.y = Math.sin(elapsed * 0.62) * 0.04 * ambient - gaze.y * 0.04;
 
           renderer.render(scene, camera);
         };
@@ -1028,17 +265,13 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
           draw(Math.min(clock.getDelta(), 0.05));
         };
 
-        // setSize limpia el lienzo: cuando el bucle está parado (escena fuera
-        // de pantalla) hay que repintar el frame estático a mano.
+        // setSize limpia el lienzo: cuando el bucle está parado (fuera de
+        // pantalla) hay que repintar el frame estático a mano.
         new ResizeObserver(() => {
           resize();
           if (!raf) draw(0);
         }).observe(host);
 
-        // El bucle arranca ya (el hero está sobre el pliegue) y se pausa cuando
-        // la escena sale de pantalla o la pestaña queda oculta. Arrancarlo sin
-        // esperar al primer callback del observer evita depender de él para que
-        // la escena se mueva.
         const visibility = new IntersectionObserver(
           ([entry]) => {
             if (entry.isIntersecting) {
@@ -1054,21 +287,16 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 
         loop();
 
-        // Al cambiar la preferencia no hace falta reiniciar nada: el ambiente se
-        // calcula en cada frame. Solo se asegura de que el bucle siga vivo.
         reduceMotion.addEventListener("change", () => {
           if (!raf) loop();
         });
 
-        // Solo cuando hay un primer frame pintado se oculta la maqueta CSS.
         draw(0);
-        host.dataset.ready = "true";
-        if (fallback) fallback.style.display = "none";
-        if (loading) loading.style.display = "none";
+        if (loading) loading.hidden = true;
       } catch (error) {
-        // Sin WebGL o sin chunk de Three.js: se queda la maqueta CSS.
-        console.warn("La escena 3D del hero no se ha podido iniciar.", error);
-        if (loading) loading.style.display = "none";
+        console.warn("El modelo 3D del hero no se ha podido cargar.", error);
+        if (loading) loading.hidden = true;
+        if (errorLabel) errorLabel.hidden = false;
       }
     };
 
@@ -1077,8 +305,6 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         (entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
             near.disconnect();
-            // Sin espera artificial: la maqueta CSS cubre la carga del chunk
-            // de Three.js y se retira en cuanto hay un primer frame 3D.
             boot();
           }
         },
