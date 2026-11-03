@@ -37,10 +37,12 @@ src/
 ├── pages/              # Landings de servicio, ubicaciones, blog (50 artículos), legal
 ├── layouts/CustomLayout.astro  # SEO head centralizado (canonical, JSON-LD, robots)
 └── @astro-components/  # Tema vendido de terceros: solo se consumen Image, getImage,
-                        # Layout y QR. NO editar (es código externo); la única
-                        # excepción fue borrar su Topbar, que no se renderizaba
+                        # Layout y QR. NO editar (es código externo); las dos únicas
+                        # excepciones fueron borrar su Topbar, que no se renderizaba
                         # (el del sitio es src/components/Topbar1.astro y el Layout
-                        # lo recibe por prop)
+                        # lo recibe por prop) y añadir al Layout los props opcionales
+                        # `lang`/`alternates` para las landings en inglés (aditivos:
+                        # sin ellos el sitio sigue siendo solo español)
 ```
 
 ## 🌗 Modo oscuro ("tinta nocturna")

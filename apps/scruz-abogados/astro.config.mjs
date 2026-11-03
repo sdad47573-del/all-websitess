@@ -43,6 +43,9 @@ function priorityForPath(pathname) {
 	if (/^\/blog\//.test(pathname)) return SITEMAP_PRIORITY.defaultBlog;
 	if (/^\/(aviso-legal|politica-de-privacidad|declaracion-de-accesibilidad)\//.test(pathname))
 		return SITEMAP_PRIORITY.legal;
+	// Landings en inglés: misma prioridad que las locales, porque son la puerta de
+	// entrada del público expatriado de Málaga.
+	if (/^\/en\//.test(pathname)) return SITEMAP_PRIORITY.localPages;
 	if (/^\/(abogados-en-)/.test(pathname)) return SITEMAP_PRIORITY.localPages;
 	if (/^\/(divorcios-separaciones|herencias-testamentos|despidos|indemnizaciones-trafico)\//.test(pathname))
 		return SITEMAP_PRIORITY.servicesHigh;

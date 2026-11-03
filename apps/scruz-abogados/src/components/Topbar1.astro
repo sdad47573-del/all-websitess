@@ -4,6 +4,7 @@ import { RiIcon } from '@astro-icons';
 import { twJoin } from 'tailwind-merge';
 
 import { SERVICES } from '../data/SERVICES';
+import { EN_COUNTERPARTS, EN_HOME, ES_COUNTERPARTS, isEnglishRoute } from '../data/i18n';
 
 const currentPath = Astro.url.pathname;
 
@@ -13,6 +14,17 @@ const currentPath = Astro.url.pathname;
 // servicio y las de localidad (~55 de las 87 páginas del sitio) se quedaban sin
 // ningún enlace activo.
 const currentRoute = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+
+// Selector de idioma: en las páginas con traducción lleva a su pareja y en el
+// resto, a la landing inglesa de Málaga (la puerta del público expatriado).
+// La etiqueta indica el idioma de DESTINO, no el de la página actual.
+const onEnglishPage = isEnglishRoute(currentRoute);
+const languageHref = onEnglishPage
+	? (ES_COUNTERPARTS[currentRoute] ?? '/')
+	: (EN_COUNTERPARTS[currentRoute] ?? EN_HOME);
+const languageHreflang = onEnglishPage ? 'es-ES' : 'en';
+const languageLabel = onEnglishPage ? 'ES' : 'EN';
+const languageTitle = onEnglishPage ? 'Ver esta página en español' : 'View this page in English';
 
 interface NavSection {
 	name: string;
@@ -204,6 +216,15 @@ const isMoreActive = moreSections.some((s) => s.isActive);
 					<Sun class="hidden size-5 dark:block" aria-hidden="true" />
 				</button>
 				<a
+					class="hover:text-primary inline-flex cursor-pointer items-center justify-center rounded-md px-2 py-2 text-sm font-semibold text-gray-700 hover:bg-blue-50"
+					href={languageHref}
+					hreflang={languageHreflang}
+					lang={languageHreflang}
+					title={languageTitle}
+					aria-label={languageTitle}
+					data-discover="true">{languageLabel}</a
+				>
+				<a
 					class="hover:text-primary inline-flex cursor-pointer items-center justify-center rounded-md p-2 text-gray-700 hover:bg-blue-50"
 					href="/buscar/"
 					aria-label="Buscar servicios jurídicos"
@@ -286,6 +307,12 @@ const isMoreActive = moreSections.some((s) => s.isActive);
 			}
 		</nav>
 		<div class="mt-3 flex flex-col gap-2 border-t border-base-300 pt-3">
+			<a
+				class="btn btn-outline btn-neutral btn-sm w-full"
+				href={languageHref}
+				hreflang={languageHreflang}
+				lang={languageHreflang}>{onEnglishPage ? 'Ver en español' : 'View in English'}</a
+			>
 			<a class="btn btn-primary btn-sm w-full" href="tel:+34666329155" data-discover="true"
 				>Consulta gratuita: 666 329 155</a
 			>

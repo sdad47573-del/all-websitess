@@ -23,9 +23,24 @@ interface Props {
 	title: string;
 	/** Clases del contenedor: `absolute inset-0` o `h-full w-full` según el hueco. */
 	class?: string;
+	/** Idioma del aviso que sustituye al mapa. */
+	lang?: 'es' | 'en';
 }
 
-const { src, title, class: className = 'h-full w-full' } = Astro.props;
+const { src, title, class: className = 'h-full w-full', lang = 'es' } = Astro.props;
+
+const copy =
+	lang === 'en'
+		? {
+				notice: 'The Google map loads only if you accept third-party cookies.',
+				load: 'Load map',
+				open: 'Open in Google Maps',
+			}
+		: {
+				notice: 'El mapa de Google se carga solo si aceptas las cookies de terceros.',
+				load: 'Cargar mapa',
+				open: 'Abrir en Google Maps',
+			};
 ---
 
 <div class:list={['relative overflow-hidden', className]} data-consent-embed>
@@ -41,15 +56,13 @@ const { src, title, class: className = 'h-full w-full' } = Astro.props;
 		class="bg-base-200 absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center"
 		data-consent-placeholder
 	>
-		<p class="text-base-content/80 max-w-xs text-sm">
-			El mapa de Google se carga solo si aceptas las cookies de terceros.
-		</p>
-		<button type="button" class="btn btn-primary btn-sm" data-cookie-load-map>Cargar mapa</button>
+		<p class="text-base-content/80 max-w-xs text-sm">{copy.notice}</p>
+		<button type="button" class="btn btn-primary btn-sm" data-cookie-load-map>{copy.load}</button>
 		<a
 			href={src}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="link link-primary text-sm">Abrir en Google Maps</a
+			class="link link-primary text-sm">{copy.open}</a
 		>
 	</div>
 </div>

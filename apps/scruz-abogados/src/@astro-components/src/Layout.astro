@@ -37,6 +37,10 @@ interface Props {
 	geoPlacename?: string;
 	robotsContent?: string;
 	dataTheme?: string;
+	/** Idioma del documento (`en` solo en las landings inglesas de /en/). */
+	lang?: 'es' | 'en';
+	/** Pares hreflang completos; sin este prop se mantiene el comportamiento monolingüe. */
+	alternates?: { hreflang: string; href: string }[];
 	JSONLD?: unknown;
 }
 
@@ -72,6 +76,8 @@ const {
 	geoRegion = 'ES-AN',
 	geoPlacename = 'Lucena',
 	robotsContent = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+	lang = 'es',
+	alternates,
 } = Astro.props;
 
 // og:image:type real (deducido de la extensión de la URL) — evita declarar
@@ -110,7 +116,7 @@ const combinedSchema = (() => {
 ---
 
 <!doctype html>
-<html lang="es" data-theme={dataTheme}>
+<html lang={lang} data-theme={dataTheme}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -200,7 +206,7 @@ const combinedSchema = (() => {
 		<!-- Dublin Core (mejor indexación por bibliotecas/archivos digitales) -->
 		<meta name="DC.title" content={title} />
 		<meta name="DC.description" content={description} />
-		<meta name="DC.language" content="es-ES" />
+		<meta name="DC.language" content={lang === 'en' ? 'en-GB' : 'es-ES'} />
 
 		<!-- SEO local geo-meta -->
 		<meta name="geo.region" content={geoRegion} />
@@ -213,17 +219,24 @@ const combinedSchema = (() => {
 		<meta name="googlebot" content={googlebotContent} />
 		<link rel="canonical" href={canonical} />
 
-		<!-- hreflang (sitio sólo en español por ahora) -->
-		<link
-			rel="alternate"
-			hreflang="es-ES"
-			href={canonical}
-		/>
-		<link
-			rel="alternate"
-			hreflang="x-default"
-			href={canonical}
-		/>
+		<!--
+			hreflang. Por defecto el sitio es monolingüe (es-ES + x-default a la
+			propia canonical). Las páginas con versión en inglés pasan `alternates`
+			con el par completo y el x-default apuntando a la versión española, que
+			es la principal.
+		-->
+		{
+			alternates?.length ? (
+				alternates.map((alt) => (
+					<link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+				))
+			) : (
+				<>
+					<link rel="alternate" hreflang="es-ES" href={canonical} />
+					<link rel="alternate" hreflang="x-default" href={canonical} />
+				</>
+			)
+		}
 
 		<!-- Open Graph -->
 		<meta property="og:type" content={ogType} />
@@ -231,7 +244,7 @@ const combinedSchema = (() => {
 		<meta property="og:description" content={ogDescription} />
 		<meta property="og:url" content={ogUrl} />
 		<meta property="og:site_name" content={ogSitename} />
-		<meta property="og:locale" content="es_ES" />
+		<meta property="og:locale" content={lang === 'en' ? 'en_GB' : 'es_ES'} />
 		<meta property="og:image" content={ogImage} />
 		<meta property="og:image:secure_url" content={ogImage} />
 		<meta property="og:image:type" content={ogImageType} />

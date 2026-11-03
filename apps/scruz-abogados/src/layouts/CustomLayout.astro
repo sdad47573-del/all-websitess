@@ -35,6 +35,10 @@ interface CustomLayoutProps {
 	additionalSchemas?: Record<string, unknown>[];
 	offerCatalog?: import('../data/seo').OfferCatalogEntry[];
 	breadcrumb?: { name: string; url: string }[];
+	/** Idioma del documento: `en` solo en las landings inglesas de /en/. */
+	lang?: 'es' | 'en';
+	/** Pares hreflang de la página (es-ES, en y x-default). */
+	alternates?: { hreflang: string; href: string }[];
 	author?: string;
 }
 
@@ -51,6 +55,8 @@ const {
 	additionalSchemas = [],
 	offerCatalog,
 	breadcrumb,
+	lang = 'es',
+	alternates,
 } = Astro.props as CustomLayoutProps;
 
 // Defensive normalisation — Astro JSX prop type for `breadcrumb` is `any`.
@@ -121,6 +127,8 @@ const robotsContent = noindex
 	title={finalTitle}
 	description={finalDescription}
 	dataTheme="theme"
+	lang={lang}
+	alternates={alternates}
 	Favicon={Favicon}
 	Topbar={Topbar}
 	Footer={Footer3}
@@ -186,7 +194,7 @@ const robotsContent = noindex
 		</style>
 	</noscript>
 	<slot />
-	<CookieConsent />
+	<CookieConsent lang={lang} />
 	<script is:inline data-astro-rerun>
 		(() => {
 			/*

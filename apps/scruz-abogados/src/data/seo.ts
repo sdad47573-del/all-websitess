@@ -1171,6 +1171,21 @@ export const ROUTE_DEFAULTS: Record<
 		keywords:
 			'nacionalidad española Lucena, residencia Córdoba, visado trabajo Málaga, reagrupación familiar, abogado extranjería',
 	},
+	// Landings en inglés: solo existen para Málaga y extranjería (ver
+	// src/data/i18n.ts). Título y descripción propios, no traducción literal del
+	// español: responden a búsquedas distintas ("english speaking lawyer Malaga").
+	'/en/lawyers-in-malaga/': {
+		title: `English-Speaking Lawyers in Málaga | ${SITE_NAME}`,
+		description: `English-speaking lawyers in Málaga (Teatinos-Universidad): immigration, family, employment, property and inheritance law. Free first consultation.`,
+		keywords:
+			'english speaking lawyers Malaga, expat lawyer Costa del Sol, immigration lawyer Malaga, abogado inglés Málaga',
+	},
+	'/en/immigration-and-nationality/': {
+		title: `Immigration & Nationality Lawyers in Spain | ${SITE_NAME}`,
+		description: `Spanish residency, family reunification, EU registration, appeals and nationality, handled in English. Offices in Lucena and Málaga.`,
+		keywords:
+			'immigration lawyer Spain, Spanish residency, nationality by residence, family reunification Spain, TIE renewal',
+	},
 	'/violencia-genero/': {
 		title: `Abogado de Violencia de Género en Lucena | Atención 24 h`,
 		description: `Atención confidencial para víctimas, también de urgencia y por videollamada: denuncia, orden de protección y recursos. Llama ahora: 666 329 155.`,
