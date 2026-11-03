@@ -4,12 +4,12 @@ import { BLOG_RELATED_SERVICES } from './blogInternalLinks';
 import { SEO_ARTICLES } from './SEO_ARTICLES';
 
 describe('SEO_ARTICLES', () => {
-	// 177 = 174 anteriores + el cuarto lote de nov 2026 (plusvalía municipal,
-	// proceso monitorio y tutela/curatela). Subir el número es una decisión
+	// 182 = 179 anteriores + el lote laboral/SS de nov 2026 (movilidad geográfica,
+	// permiso de lactancia y cese de actividad). Subir el número es una decisión
 	// editorial: este test marca el tope.
-	it('publishes exactly 177 unique high-intent articles', () => {
-		expect(SEO_ARTICLES).toHaveLength(177);
-		expect(new Set(SEO_ARTICLES.map(({ slug }) => slug)).size).toBe(177);
+	it('publishes exactly 182 unique high-intent articles', () => {
+		expect(SEO_ARTICLES).toHaveLength(182);
+		expect(new Set(SEO_ARTICLES.map(({ slug }) => slug)).size).toBe(182);
 	});
 
 	it('keeps every article sufficiently developed and structured', () => {

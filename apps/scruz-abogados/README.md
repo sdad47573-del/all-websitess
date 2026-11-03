@@ -15,6 +15,8 @@ OpenGraph), blog jurídico, buscador interno y utilidades de QA.
 | `bun run indexnow:dry` | Muestra qué URLs se enviarían a IndexNow (sin llamar a la API) |
 | `bun run indexnow` | Envía el sitemap construido a IndexNow (Bing, Yandex, Seznam, Naver). **Ejecutar después de desplegar** |
 | `bun run indexnow:live` | Igual, pero solo si la clave ya está publicada en el host (para automatizar) |
+| `bun run indexnow:guides` | Envía solo las guías del último lote (`--paths`), no las 373 URLs del sitio |
+| `bun run indexnow:guides -- --dry-run` | Previsualiza ese envío dirigido y falla si alguna ruta no está en el sitemap |
 | `bun run notify` | `build` + `indexnow:live`. Es lo que corre en `.github/workflows/indexnow.yml` tras cada deploy |
 | `bun run check` | `astro check` + `typecheck` + `lint` (ver nota sobre `@astro-components`) |
 | `bun preview` | Previsualizar el build |

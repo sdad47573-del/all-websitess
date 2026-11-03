@@ -18,9 +18,16 @@ import { SERVICE_BLOG_POSTS } from '../data/blogInternalLinks';
 interface Props {
 	supertitle?: string;
 	title?: string;
+	/**
+	 * Guías concretas (slugs sin /blog/) cuando la página no es una ficha con
+	 * servicio propio en BLOG_RELATED_SERVICES: páginas de ciudad, contratos
+	 * comerciales, tutela legal… Sin esto, todas ellas se quedaban sin enlaces
+	 * al blog y solo llegaban al índice general.
+	 */
+	slugs?: string[];
 }
 
-const { supertitle = 'Blog jurídico', title } = Astro.props as Props;
+const { supertitle = 'Blog jurídico', title, slugs } = Astro.props as Props;
 
 /** Mínimo de tarjetas para que la rejilla no quede coja en `lg` (3 columnas). */
 const MIN_CARDS = 3;
@@ -30,7 +37,8 @@ const MIN_CARDS = 3;
 // registran en SERVICE_BLOG_POSTS con su ruta completa y con el último segmento
 // solo se quedarían sin guías.
 const serviceSlug = Astro.url.pathname.replace(/^\/+|\/+$/g, '');
-const related = (SERVICE_BLOG_POSTS[serviceSlug] ?? [])
+const explicit = (slugs ?? []).map((slug) => `/blog/${slug.replace(/^\/+|\/+$/g, '')}/`);
+const related = (explicit.length > 0 ? explicit : (SERVICE_BLOG_POSTS[serviceSlug] ?? []))
 	.map((href) => BLOG_POSTS.find((post) => post.href === href))
 	.filter((post): post is NonNullable<typeof post> => Boolean(post));
 

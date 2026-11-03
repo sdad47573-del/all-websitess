@@ -1,5 +1,6 @@
 ---
 import CustomLayout from '../layouts/CustomLayout.astro';
+import ServiceBlogGuides from './ServiceBlogGuides.astro';
 import defaultImage from '../@assets/OG-DEFAULT-1200x630.webp';
 
 interface LinkItem {
@@ -26,6 +27,14 @@ interface SeoLegalPageProps {
 	faqs: Array<{ question: string; answer: string }>;
 	related: LinkItem[];
 	image?: string;
+	/**
+	 * Monta la sección "Guías del blog" con los artículos que enlazan a esta
+	 * página (derivados de BLOG_RELATED_SERVICES). Opt-in para no cambiar de
+	 * golpe las páginas que aún no lo declaran.
+	 */
+	showBlogGuides?: boolean;
+	/** Guías concretas para páginas sin entrada propia en el grafo de servicios. */
+	guides?: string[];
 }
 
 const {
@@ -42,6 +51,8 @@ const {
 	faqs,
 	related,
 	image = defaultImage.src,
+	showBlogGuides = false,
+	guides,
 }: SeoLegalPageProps = Astro.props as SeoLegalPageProps;
 
 const siteOrigin = Astro.site ?? Astro.url.origin;
@@ -139,6 +150,8 @@ const faqSchema = {
 				</div>
 			</div>
 		</section>
+
+		{(showBlogGuides || (guides?.length ?? 0) > 0) && <ServiceBlogGuides slugs={guides} />}
 
 		{related.length > 0 && (
 			<nav class="related" aria-labelledby="temas-relacionados">

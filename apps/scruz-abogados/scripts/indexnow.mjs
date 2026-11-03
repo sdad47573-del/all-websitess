@@ -9,6 +9,7 @@
 //   bun run indexnow              → envía todas las URLs del sitemap
 //   bun run indexnow --dry-run    → muestra qué enviaría, sin llamar a la API
 //   bun run indexnow --sitemap dist/otro.xml
+//   bun run indexnow --paths /blog/a/,/blog/b/   → solo esas rutas (envío de un lote)
 //   bun run indexnow --if-live    → solo envía si la clave ya está publicada
 //
 // `--if-live` es el modo para automatizar: comprueba antes que la clave se
@@ -54,6 +55,7 @@ function parseArgs(argv) {
 		endpoint: DEFAULT_ENDPOINT,
 		key: undefined,
 		host: undefined,
+		paths: undefined,
 	};
 	for (let i = 0; i < argv.length; i += 1) {
 		const arg = argv[i];
@@ -69,6 +71,11 @@ function parseArgs(argv) {
 		else if (arg === '--endpoint') options.endpoint = next();
 		else if (arg === '--key') options.key = next();
 		else if (arg === '--host') options.host = next();
+		else if (arg === '--paths')
+			options.paths = next()
+				.split(',')
+				.map((value) => value.trim())
+				.filter(Boolean);
 		else fail(`argumento no reconocido: ${arg}`);
 	}
 	return options;
@@ -168,17 +175,43 @@ async function main() {
 		}
 	});
 	const descartadas = all.length - urls.length;
+
+	// Envío dirigido (--paths): solo las rutas indicadas y solo si existen en el
+	// sitemap. Sin esto, publicar tres guías obliga a reenviar el sitio entero o
+	// a repetir URLs a mano, que es donde se cuelan las erratas.
+	let selected = urls;
+	if (options.paths?.length) {
+		const normalizar = (ruta) => {
+			// Git Bash en Windows reescribe `/blog/x/` como `C:/Program Files/Git/blog/x/`
+			// al pasarlo como argumento (conversión MSYS de rutas). Si aparece un
+			// segmento /blog/, se toma desde ahí para no rechazar una ruta válida.
+			const msys = ruta.includes('/blog/') && !ruta.startsWith('/blog/')
+				? ruta.slice(ruta.indexOf('/blog/'))
+				: ruta;
+			const conBarra = msys.startsWith('/') ? msys : `/${msys}`;
+			return conBarra.replace(/\/+$/, '') + '/';
+		};
+		const pedidas = new Set(options.paths.map(normalizar));
+		selected = urls.filter((url) => pedidas.has(new URL(url).pathname));
+		const encontradas = new Set(selected.map((url) => new URL(url).pathname));
+		const faltan = [...pedidas].filter((ruta) => !encontradas.has(ruta));
+		if (faltan.length > 0) fail(`--paths: no están en el sitemap: ${faltan.join(', ')}`);
+	}
+
 	const key = resolveKey(options.key);
 
 	console.log(`Sitemap:  ${options.sitemap}`);
 	console.log(`Host:     ${host}`);
 	console.log(`Clave:    ${key} (public/${key}.txt)`);
-	console.log(`URLs:     ${urls.length}${descartadas ? ` (${descartadas} descartadas por no ser del host)` : ''}`);
+	console.log(
+		`URLs:     ${selected.length}${options.paths ? ' (filtradas con --paths)' : ''}` +
+			`${descartadas ? ` (${descartadas} descartadas por no ser del host)` : ''}`,
+	);
 
 	if (options.dryRun) {
 		console.log('\n--dry-run: no se llama a la API. Se enviaría a ' + options.endpoint + ':');
-		for (const url of urls) console.log(`   ${url}`);
-		console.log(`\n✓ Dry-run OK — ${urls.length} URLs listas (quita --dry-run para enviarlas).`);
+		for (const url of selected) console.log(`   ${url}`);
+		console.log(`\n✓ Dry-run OK — ${selected.length} URLs listas (quita --dry-run para enviarlas).`);
 		return;
 	}
 
@@ -199,7 +232,7 @@ async function main() {
 
 	const payloadBase = { host, key, keyLocation };
 	let enviadas = 0;
-	for (const group of chunk(urls, MAX_URLS_PER_REQUEST)) {
+	for (const group of chunk(selected, MAX_URLS_PER_REQUEST)) {
 		const result = await submit(options.endpoint, { ...payloadBase, urlList: group });
 		if (!result.ok) {
 			const hint = REJECTION_HINTS[result.status] ?? 'revisa la respuesta de la API';
