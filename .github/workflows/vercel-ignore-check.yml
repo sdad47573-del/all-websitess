@@ -1,0 +1,36 @@
+name: Vercel ignore filter
+
+# Impide que una app se quede sin `ignoreCommand` y vuelva a construir en cada push del
+# monorepo. Corre cuando cambia un vercel.json, cuando se añade o modifica una app y cuando
+# cambia el propio comprobador.
+
+on:
+  push:
+    paths:
+      - 'apps/**/vercel.json'
+      - 'apps/**/package.json'
+      - 'scripts/check-vercel-ignore-command.mjs'
+      - 'scripts/add-vercel-ignore-command.mjs'
+      - '.github/workflows/vercel-ignore-check.yml'
+  pull_request:
+    paths:
+      - 'apps/**/vercel.json'
+      - 'apps/**/package.json'
+      - 'scripts/check-vercel-ignore-command.mjs'
+      - 'scripts/add-vercel-ignore-command.mjs'
+      - '.github/workflows/vercel-ignore-check.yml'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # El script no usa dependencias, así que no hace falta `bun install`.
+      - name: Comprobar ignoreCommand en todas las apps
+        run: node scripts/check-vercel-ignore-command.mjs
