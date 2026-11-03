@@ -4,12 +4,12 @@ import { BLOG_RELATED_SERVICES } from './blogInternalLinks';
 import { SEO_ARTICLES } from './SEO_ARTICLES';
 
 describe('SEO_ARTICLES', () => {
-	// 168 = 165 anteriores + el lote de nov 2026 (3 guías: despido por bajo
-	// rendimiento, heredar una vivienda con hipoteca y alquiler con opción de
-	// compra). Subir el número es una decisión editorial: este test marca el tope.
-	it('publishes exactly 168 unique high-intent articles', () => {
-		expect(SEO_ARTICLES).toHaveLength(168);
-		expect(new Set(SEO_ARTICLES.map(({ slug }) => slug)).size).toBe(168);
+	// 177 = 174 anteriores + el cuarto lote de nov 2026 (plusvalía municipal,
+	// proceso monitorio y tutela/curatela). Subir el número es una decisión
+	// editorial: este test marca el tope.
+	it('publishes exactly 177 unique high-intent articles', () => {
+		expect(SEO_ARTICLES).toHaveLength(177);
+		expect(new Set(SEO_ARTICLES.map(({ slug }) => slug)).size).toBe(177);
 	});
 
 	it('keeps every article sufficiently developed and structured', () => {
