@@ -7,7 +7,12 @@
 //
 // Three.js se carga en diferido y solo cuando la escena entra en pantalla, así
 // que no pesa en el primer render. Sin JS o sin WebGL se queda la maqueta CSS
-// de la propia tarjeta, y con `prefers-reduced-motion` se dibuja un solo frame.
+// de la propia tarjeta. Con `prefers-reduced-motion` la escena no se mueve
+// sola, pero sigue mirando al cursor y girando al hacer clic.
+//
+// Los colores salen de tokens que cambian con `data-theme`: papel cálido en el
+// tema claro y la paleta nocturna en el oscuro.
+
 import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
 ---
@@ -131,13 +136,26 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 </section>
 
 <style>
+  /* Paleta del hero por tema. El sitio arranca en claro (malaga-light), así
+     que aquí van los valores de papel cálido; con data-theme="malaga-dark" se
+     sustituyen por la versión nocturna. Todo el hero sale de estos tokens. */
   .hero-exp {
-    --exp-bg: #141210;
-    --exp-text: #eae6e1;
-    --exp-mute: #c7c1bc;
-    --exp-gold: #ffb347;
-    --exp-border: rgb(255 255 255 / 0.15);
-    --exp-glass: rgb(255 255 255 / 0.05);
+    --exp-bg: #f7f2ea;
+    --exp-text: #191512;
+    --exp-mute: #5d554d;
+    --exp-gold: #8a5200;
+    --exp-gold-soft: rgb(138 82 0 / 0.55);
+    --exp-border: rgb(25 21 18 / 0.14);
+    --exp-border-strong: rgb(25 21 18 / 0.32);
+    --exp-glass: rgb(25 21 18 / 0.04);
+    --exp-glass-active: rgb(25 21 18 / 0.1);
+    --exp-btn-hover: #000;
+    --exp-line: rgb(25 21 18 / 0.16);
+    --exp-line-soft: rgb(25 21 18 / 0.07);
+    --exp-tint: rgb(138 82 0 / 0.16);
+    --exp-loading: rgb(25 21 18 / 0.45);
+    --exp-aura-warm: rgb(214 138 40 / 0.2);
+    --exp-aura-cool: rgb(0 119 200 / 0.08);
 
     position: relative;
     overflow: hidden;
@@ -148,13 +166,32 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
     font-weight: 500;
   }
 
+  :global([data-theme="malaga-dark"]) .hero-exp {
+    --exp-bg: #141210;
+    --exp-text: #eae6e1;
+    --exp-mute: #c7c1bc;
+    --exp-gold: #ffb347;
+    --exp-gold-soft: rgb(255 179 71 / 0.6);
+    --exp-border: rgb(255 255 255 / 0.15);
+    --exp-border-strong: rgb(255 255 255 / 0.38);
+    --exp-glass: rgb(255 255 255 / 0.05);
+    --exp-glass-active: rgb(255 255 255 / 0.13);
+    --exp-btn-hover: #fff;
+    --exp-line: rgb(255 255 255 / 0.16);
+    --exp-line-soft: rgb(255 255 255 / 0.08);
+    --exp-tint: rgb(255 179 71 / 0.22);
+    --exp-loading: rgb(234 230 225 / 0.45);
+    --exp-aura-warm: rgb(255 179 71 / 0.13);
+    --exp-aura-cool: rgb(72 199 213 / 0.07);
+  }
+
   .hero-exp__aura {
     position: absolute;
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(58% 52% at 74% 44%, rgb(255 179 71 / 0.13), transparent 72%),
-      radial-gradient(46% 42% at 16% 18%, rgb(72 199 213 / 0.07), transparent 72%);
+      radial-gradient(58% 52% at 74% 44%, var(--exp-aura-warm), transparent 72%),
+      radial-gradient(46% 42% at 16% 18%, var(--exp-aura-cool), transparent 72%);
   }
 
   .exp-grid {
@@ -274,7 +311,7 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
   .exp-lead-link {
     color: var(--exp-text);
     text-decoration: underline;
-    text-decoration-color: rgb(255 179 71 / 0.6);
+    text-decoration-color: var(--exp-gold-soft);
     text-underline-offset: 3px;
     transition: color 0.25s ease;
   }
@@ -315,13 +352,13 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
   }
 
   .exp-btn:hover {
-    background: #fff;
+    background: var(--exp-btn-hover);
     transform: translateY(-1px);
   }
 
   .exp-link {
     padding-bottom: 2px;
-    border-bottom: 1px solid rgb(255 255 255 / 0.2);
+    border-bottom: 1px solid var(--exp-border);
     color: var(--exp-mute);
     font-size: 0.9rem;
     font-weight: 500;
@@ -358,7 +395,7 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
     inset: 0;
     display: grid;
     place-items: center;
-    color: rgb(234 230 225 / 0.45);
+    color: var(--exp-loading);
     font-size: 0.68rem;
     font-weight: 500;
     letter-spacing: 0.24em;
@@ -381,23 +418,23 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
     width: 72%;
     max-width: 20rem;
     overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 0.16);
+    border: 1px solid var(--exp-line);
     border-radius: 0.6rem;
-    background: rgb(255 255 255 / 0.03);
+    background: var(--exp-glass);
   }
 
   .exp-fallback-bar {
     display: flex;
     gap: 0.3rem;
     padding: 0.55rem 0.7rem;
-    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    border-bottom: 1px solid var(--exp-line-soft);
   }
 
   .exp-fallback-bar span {
     width: 0.4rem;
     height: 0.4rem;
     border-radius: 100px;
-    background: rgb(255 255 255 / 0.16);
+    background: var(--exp-line);
   }
 
   .exp-fallback-body {
@@ -409,7 +446,7 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
   .exp-fallback-hero {
     height: 2.6rem;
     border-radius: 0.3rem;
-    background: rgb(255 179 71 / 0.22);
+    background: var(--exp-tint);
   }
 
   .exp-fallback-grid {
@@ -421,14 +458,14 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
   .exp-fallback-grid i {
     height: 1.2rem;
     border-radius: 0.25rem;
-    background: rgb(255 255 255 / 0.08);
+    background: var(--exp-line-soft);
   }
 
   .exp-fallback-line {
     width: 55%;
     height: 0.25rem;
     border-radius: 100px;
-    background: rgb(255 255 255 / 0.1);
+    background: var(--exp-line-soft);
   }
 
   /* ── Controles circulares junto a la escena ──────────────────────────── */
@@ -481,8 +518,8 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
   }
 
   .exp-circle:hover {
-    border-color: rgb(255 255 255 / 0.38);
-    background: rgb(255 255 255 / 0.13);
+    border-color: var(--exp-border-strong);
+    background: var(--exp-glass-active);
   }
 
   .exp-circle:active {
@@ -565,10 +602,11 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 </style>
 
 <script>
-  // Escena 3D del hero. Se carga en diferido (Three.js es pesado), se pausa
-  // fuera de pantalla o con la pestaña oculta, y respeta prefers-reduced-motion.
-  // El modelo gira suavemente para mirar al cursor en todo momento, como una
-  // mirada que sigue al visitante, y da una vuelta completa al hacer clic.
+  // Escena 3D del hero. Se carga en diferido (Three.js es pesado) y se pausa
+  // fuera de pantalla o con la pestaña oculta. El modelo mira al cursor en todo
+  // momento, como una mirada que sigue al visitante, y da una vuelta completa
+  // al hacer clic. Con prefers-reduced-motion solo se apaga el movimiento
+  // ambiental: la escena se queda quieta si nadie interactúa con ella.
   const host = document.querySelector<HTMLElement>("[data-web3d]");
   const canvas = host?.querySelector<HTMLCanvasElement>("[data-web3d-canvas]");
 
@@ -855,17 +893,32 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         const glowTexture = new THREE.CanvasTexture(glowCanvas);
         glowTexture.colorSpace = THREE.SRGBColorSpace;
 
-        const glow = new THREE.Mesh(
-          new THREE.PlaneGeometry(6.2, 4.4),
-          new THREE.MeshBasicMaterial({
-            map: glowTexture,
-            transparent: true,
-            opacity: 0.6,
-            depthWrite: false,
-          })
-        );
+        const glowMaterial = new THREE.MeshBasicMaterial({
+          map: glowTexture,
+          transparent: true,
+          opacity: 0.6,
+          depthWrite: false,
+        });
+        const glow = new THREE.Mesh(new THREE.PlaneGeometry(6.2, 4.4), glowMaterial);
         glow.position.set(0, 0, -1.4);
         scene.add(glow);
+
+        // El halo azul funciona sobre el fondo cálido oscuro, pero sobre papel
+        // claro se lee como una mancha: se atenúa con el tema claro y se
+        // recalcula si el visitante cambia de tema (el canvas no entiende de
+        // variables CSS).
+        const applyTheme = () => {
+          const dark = document.documentElement.dataset.theme === "malaga-dark";
+          glowMaterial.opacity = dark ? 0.6 : 0.26;
+        };
+        applyTheme();
+        new MutationObserver(() => {
+          applyTheme();
+          if (!raf) draw(0);
+        }).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
 
         // --- Tamaño, puntero y bucle ---
         const resize = () => {
@@ -911,7 +964,7 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         let spinTarget = 0;
 
         const spinOnce = () => {
-          if (!reduceMotion.matches) spinTarget += TAU;
+          spinTarget += TAU;
         };
 
         host.addEventListener("click", spinOnce);
@@ -944,16 +997,22 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
             }
           }
 
-          // ...y la escena sigue respirando cuando el cursor está quieto.
-          stage.rotation.y = BASE_Y + spin + gaze.x * 0.5 + Math.sin(elapsed * 0.34) * 0.03;
-          stage.rotation.x = BASE_X + gaze.y * 0.3 + Math.cos(elapsed * 0.29) * 0.015;
-          stage.rotation.z = 0.02 + Math.sin(elapsed * 0.22) * 0.01 - gaze.x * 0.03;
+          // El balanceo y el flote son ambiente: con reduced-motion se apagan
+          // (multiplicados por 0) pero la mirada y el giro del clic siguen.
+          const ambient = reduceMotion.matches ? 0 : 1;
+
+          stage.rotation.y =
+            BASE_Y + spin + gaze.x * 0.5 + Math.sin(elapsed * 0.34) * 0.03 * ambient;
+          stage.rotation.x =
+            BASE_X + gaze.y * 0.3 + Math.cos(elapsed * 0.29) * 0.015 * ambient;
+          stage.rotation.z =
+            0.02 + Math.sin(elapsed * 0.22) * 0.01 * ambient - gaze.x * 0.03;
           stage.position.x = gaze.x * 0.05;
-          stage.position.y = Math.sin(elapsed * 0.62) * 0.03 - gaze.y * 0.035;
+          stage.position.y = Math.sin(elapsed * 0.62) * 0.03 * ambient - gaze.y * 0.035;
 
           // Los nodos y el halo acompañan el movimiento con un pequeño
           // desfase: refuerzan la sensación de que el modelo reacciona.
-          nodes.rotation.z = Math.sin(elapsed * 0.2) * 0.04 - gaze.x * 0.04;
+          nodes.rotation.z = Math.sin(elapsed * 0.2) * 0.04 * ambient - gaze.x * 0.04;
           glow.position.x = gaze.x * -0.22;
           glow.position.y = gaze.y * -0.14;
 
@@ -969,46 +1028,37 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
           draw(Math.min(clock.getDelta(), 0.05));
         };
 
-        // setSize limpia el lienzo: cuando no hay bucle (reduced-motion o
-        // escena fuera de pantalla) hay que repintar el frame estático.
+        // setSize limpia el lienzo: cuando el bucle está parado (escena fuera
+        // de pantalla) hay que repintar el frame estático a mano.
         new ResizeObserver(() => {
           resize();
           if (!raf) draw(0);
         }).observe(host);
 
-        if (reduceMotion.matches) {
-          draw(0);
-        } else {
-          const visibility = new IntersectionObserver(
-            ([entry]) => {
-              if (entry.isIntersecting) {
-                if (!raf) loop();
-              } else {
-                cancelAnimationFrame(raf);
-                raf = 0;
-              }
-            },
-            { threshold: 0.05 }
-          );
-          visibility.observe(host);
-
-          reduceMotion.addEventListener("change", (event) => {
-            if (event.matches) {
+        // El bucle arranca ya (el hero está sobre el pliegue) y se pausa cuando
+        // la escena sale de pantalla o la pestaña queda oculta. Arrancarlo sin
+        // esperar al primer callback del observer evita depender de él para que
+        // la escena se mueva.
+        const visibility = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              if (!raf) loop();
+            } else {
               cancelAnimationFrame(raf);
               raf = 0;
-              pointer.x = 0;
-              pointer.y = 0;
-              gaze.x = 0;
-              gaze.y = 0;
-              spin = 0;
-              spinTarget = 0;
-              elapsed = 0;
-              draw(0);
-            } else if (!raf) {
-              loop();
             }
-          });
-        }
+          },
+          { threshold: 0.05 }
+        );
+        visibility.observe(host);
+
+        loop();
+
+        // Al cambiar la preferencia no hace falta reiniciar nada: el ambiente se
+        // calcula en cada frame. Solo se asegura de que el bucle siga vivo.
+        reduceMotion.addEventListener("change", () => {
+          if (!raf) loop();
+        });
 
         // Solo cuando hay un primer frame pintado se oculta la maqueta CSS.
         draw(0);
