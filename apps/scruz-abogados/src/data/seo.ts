@@ -660,14 +660,14 @@ export const ROUTE_DEFAULTS: Record<
 			'reclamación pensión seguridad social, INSS no responde silencio administrativo, cómo reclamar pensión jubilación, pensión viudedad reclamación, prestaciones seguridad social denegadas, atrasos pensión seguridad social, reclamación previa INSS, abogado pensiones Lucena Córdoba',
 	},
 	'/blog/multas-penales-suspension-condenas/': {
-		title: `Multa penal: cuánto se paga y cómo suspender la condena`,
-		description: `Cuánto cuesta una multa penal: cuotas diarias, qué pasa si no pagas y cuándo el juez suspende la condena. Consulta gratuita: 666 329 155.`,
+		title: `Multa penal 2026: cuotas diarias y suspensión de condena`,
+		description: `Cuánto se paga de multa penal, cómo se calculan las cuotas diarias, qué pasa si no pagas y cuándo el juez suspende la condena. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'multa penal cuotas diarias, cómo se calcula multa penal España, pagar multa penal plazos fraccionar, suspensión de la pena requisitos, sustitución pena multa trabajo comunitario, impago multa penal consecuencias, multa penal vs administrativa, abogado penalista Lucena Córdoba',
 	},
 	'/blog/prorroga-estancia-y-renovacion/': {
-		title: `Renovación del TIE: plazos y prórroga de estancia`,
-		description: `Renovación del TIE y prórroga de estancia: cuándo presentar (60 días antes), el silencio negativo y cómo no perder la residencia. Consulta gratuita.`,
+		title: `Renovar el TIE: plazos y prórroga de estancia 2026`,
+		description: `Renovación del TIE y prórroga de estancia: presenta 60 días antes, qué pasa con el silencio negativo y cómo no perder la residencia. Consulta gratuita: 666 329 155.`,
 		keywords:
 			'prórroga de estancia 90 días España, renovación tarjeta TIE plazo, renovar residencia cuándo presentar, silencio administrativo extranjería, renovación residencia justificación económica, autorización de retorno, tarjeta roja renovación, abogado extranjería Lucena Córdoba',
 	},
@@ -762,8 +762,8 @@ export const ROUTE_DEFAULTS: Record<
 			'cuánto cuesta constituir una SL, coste constituir sociedad limitada 2026, crear una sociedad limitada Lucena, notaría constitución SL Córdoba, capital social SL 1 euro, estatutos tipo Ley Crea y Crece, constitución telemática SL',
 	},
 	'/blog/seguro-cultivos-agroseguro/': {
-		title: `Agroseguro: qué cubre el seguro de cultivos en 2026`,
-		description: `Agroseguro, el seguro agrario combinado: qué cubre en olivar, cereal o viña, franquicias, plazos y cómo reclamar si pagan de menos. Consulta gratuita.`,
+		title: `Agroseguro 2026: qué cubre y cómo reclamar un siniestro`,
+		description: `Agroseguro y el seguro agrario combinado: coberturas en olivar, cereal y viña, franquicias, plazos y cómo reclamar si la indemnización no cubre el daño. 666 329 155.`,
 		keywords:
 			'agroseguro, seguro de cultivos, seguro agrario combinado, agroseguro qué cubre, pedir siniestro agroseguro, tasación pericial contradictoria, indemnización pedrisco helada, sequía olivar seguro, abogado seguros agrarios Córdoba Lucena',
 	},
@@ -858,8 +858,8 @@ export const ROUTE_DEFAULTS: Record<
 			'novedades pensiones 2027, subida pensiones 2026, revalorización IPC, pensión incapacidad permanente, complemento brecha género, pensión mínima, abogado pensiones Lucena',
 	},
 	'/blog/zonas-tensionadas-alquiler/': {
-		title: `Zonas tensionadas de alquiler: topes y subidas 2026`,
-		description: `Andalucía no ha declarado ninguna zona tensionada, pero el IRAV sí topa tu subida anual. Cómo reclamar en Lucena y Córdoba. Consulta gratuita: 666 329 155.`,
+		title: `Zonas tensionadas de alquiler: límites y cómo reclamar`,
+		description: `Qué son las zonas tensionadas, qué topes de renta permite la Ley de Vivienda y cómo se aplica el IRAV en Andalucía. Reclama una subida abusiva. Consulta gratuita.`,
 		keywords:
 			'zonas tensionadas alquiler, contención rentas alquiler, ley vivienda 12/2023, IRAV actualización renta, alquiler lucena, reducción IRPF arrendadores',
 	},
