@@ -25,6 +25,8 @@ Una portada no es un escaparate de todo lo que haces. Es una decisión. En los p
 3. **Dónde.** Tu ciudad o zona de trabajo, porque el cliente local necesita saber si llegas.
 4. **Qué tiene que hacer.** Ver precios, pedir cita, llamar.
 
+<img src="/img/blog/portada-cuatro-respuestas.svg" alt="Diagrama de la portada en cuatro respuestas: qué haces, para quién, dónde y qué tiene que hacer el visitante" width="720" height="520" loading="lazy" decoding="async" class="w-full rounded-box border border-base-300 bg-base-100 shadow-sm" />
+
 Si falta una de las cuatro, el visitante improvisa y se va. El resto de la página sirve para confirmar la decisión: pruebas, precios, proceso y cómo contactar.
 
 ## Frases que no dicen nada

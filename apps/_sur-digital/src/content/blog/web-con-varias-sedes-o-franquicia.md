@@ -20,6 +20,8 @@ Abrir la segunda sede es buena noticia y un problema de estructura: dos direccio
 
 Es el modelo que funciona para casi todo: un dominio, una marca y una página por ubicación. La home presenta el negocio y lleva a un selector de sede; cada sede tiene su dirección, teléfono, horario, equipo, fotos y servicios propios.
 
+<img src="/img/blog/varias-sedes-estructura.svg" alt="Esquema de la web con inicio, selector de sede y una página por cada local" width="720" height="440" loading="lazy" decoding="async" class="w-full rounded-box border border-base-300 bg-base-100 shadow-sm" />
+
 Ventajas:
 
 - Toda la autoridad se concentra en un dominio.

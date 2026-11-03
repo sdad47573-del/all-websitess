@@ -20,6 +20,8 @@ El formulario no es el final del trabajo: es el principio de la venta. Y ahí es
 
 Nuestro compromiso en la web es responder en menos de 24 horas, y no es marketing: quien busca un servicio escribe a dos o tres negocios a la vez. El que contesta primero no siempre gana, pero el que contesta el lunes por la tarde cuando la consulta llegó el viernes casi nunca.
 
+<img src="/img/blog/contacto-plazos-respuesta.svg" alt="Línea de tiempo de la respuesta: contacto, primera respuesta en menos de 24 horas, recordatorio al día 2 y última pregunta al día 7" width="720" height="470" loading="lazy" decoding="async" class="w-full rounded-box border border-base-300 bg-base-100 shadow-sm" />
+
 Si no puedes contestar en el día, ten una respuesta automática que diga cuándo vas a hacerlo. Un «he recibido tu mensaje, te llamo mañana antes de las 12» conserva al cliente; el silencio no.
 
 ## Los primeros cinco minutos: qué mirar

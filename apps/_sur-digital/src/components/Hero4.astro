@@ -1,22 +1,13 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
+// Hero con escena 3D (Three.js) en vez de captura de cliente o tarjeta plana:
+// una web en capas (estructura, secciones, contenido) rodeada de nodos
+// conectados que representan el trabajo de consultoría y el alcance local.
+//
+// Three.js se carga en diferido y solo cuando la escena entra en pantalla, así
+// que no pesa en el primer render. Sin JS o sin WebGL se queda la maqueta CSS
+// de la propia tarjeta, y con `prefers-reduced-motion` se dibuja un solo frame.
 import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
-
-interface Project {
-  title: string;
-  sector: string;
-  url: string;
-  preview: ImageMetadata;
-}
-
-interface Props {
-  featured: Project;
-  projectCount: number;
-}
-
-const { featured, projectCount } = Astro.props;
 ---
 
 <!-- Sin data-reveal a propósito: el hero está siempre por encima del fold,
@@ -80,46 +71,348 @@ const { featured, projectCount } = Astro.props;
       </ul>
     </div>
 
-    <div class="relative mx-auto w-full max-w-2xl lg:mx-0">
-      <div class="absolute -inset-4 -z-10 rounded-[2rem] bg-primary/10 blur-2xl" aria-hidden="true"></div>
-      <a
-        href={featured.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group relative block overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-2xl shadow-base-content/10 transition-transform duration-300 hover:-translate-y-1"
+    <div class="relative mx-auto w-full max-w-lg lg:mx-0">
+      <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-primary/10 blur-2xl" aria-hidden="true"></div>
+
+      <div
+        data-web3d
+        class="relative aspect-square overflow-hidden rounded-2xl border border-base-300 bg-gradient-to-br from-base-200 via-base-100 to-base-100 shadow-2xl shadow-base-content/10"
+        role="img"
+        aria-label="Escena en 3D de una página web en capas, rodeada de nodos conectados que representan el contenido y el posicionamiento local"
       >
-        <div class="flex h-10 items-center gap-1.5 border-b border-base-300 bg-base-200/80 px-4">
-          <span class="size-2.5 rounded-full bg-error/70" aria-hidden="true"></span>
-          <span class="size-2.5 rounded-full bg-warning/80" aria-hidden="true"></span>
-          <span class="size-2.5 rounded-full bg-success/80" aria-hidden="true"></span>
-          <span class="ml-2 truncate rounded bg-base-100 px-2 py-1 text-xs text-base-content/55">{new URL(featured.url).hostname}</span>
-        </div>
-        <div class="relative aspect-video overflow-hidden bg-base-200">
-          <Image
-            src={featured.preview}
-            alt={`Vista previa de la web de ${featured.title}`}
-            widths={[480, 768, 1024]}
-            sizes="(max-width: 639px) 92vw, (max-width: 1023px) 60vw, 520px"
-            loading="eager"
-            fetchpriority="high"
-            class="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-          />
-          <span class="absolute left-4 top-4 rounded-full bg-base-100/95 px-3 py-1.5 text-xs font-bold text-base-content shadow-md">
-            Cliente real
-          </span>
-        </div>
-        <div class="flex items-center justify-between gap-4 p-4 sm:p-5">
-          <div class="min-w-0 text-left">
-            <p class="truncate font-bold text-base-content">{featured.title}</p>
-            <p class="text-sm text-base-content/60">{featured.sector}</p>
+        <canvas data-web3d-canvas class="block h-full w-full" aria-hidden="true"></canvas>
+
+        <!-- Maqueta de respaldo: se ve hasta que la escena 3D está lista, y se
+             queda para siempre si no hay JS o WebGL. -->
+        <div
+          data-web3d-fallback
+          class="absolute inset-0 grid place-items-center p-6"
+          aria-hidden="true"
+        >
+          <div class="w-4/5 max-w-xs rounded-xl border border-base-300 bg-base-100 shadow-xl">
+            <div class="flex gap-1.5 border-b border-base-300 px-3 py-2">
+              <span class="size-2 rounded-full bg-error/60"></span>
+              <span class="size-2 rounded-full bg-warning/70"></span>
+              <span class="size-2 rounded-full bg-success/70"></span>
+            </div>
+            <div class="space-y-2 p-3">
+              <div class="h-14 rounded bg-primary/20"></div>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="h-7 rounded bg-base-300/70"></div>
+                <div class="h-7 rounded bg-base-300/70"></div>
+                <div class="h-7 rounded bg-base-300/70"></div>
+              </div>
+              <div class="h-2 w-1/2 rounded bg-base-300/70"></div>
+            </div>
           </div>
-          <span class="shrink-0 text-sm font-bold text-primary group-hover:underline">Visitar web <span aria-hidden="true">↗</span></span>
-          <span class="sr-only">de {featured.title} (abre en una pestaña nueva)</span>
         </div>
-      </a>
+
+        <p
+          class="pointer-events-none absolute inset-x-0 bottom-3 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-base-content/40"
+        >
+          Web · Consultoría · SEO local
+        </p>
+      </div>
+
       <p class="mt-4 text-center text-sm text-base-content/60 lg:text-left">
-        Este es uno de nuestros <strong class="text-base-content">{projectCount} clientes</strong> con la web publicada.
+        La web de tu negocio, pieza a pieza: estructura, contenido y
+        posicionamiento local.
       </p>
     </div>
   </div>
 </section>
+
+<script>
+  // Escena 3D del hero. Se carga en diferido (Three.js es pesado), se pausa
+  // fuera de pantalla o con la pestaña oculta, y respeta prefers-reduced-motion.
+  const host = document.querySelector<HTMLElement>("[data-web3d]");
+  const canvas = host?.querySelector<HTMLCanvasElement>("[data-web3d-canvas]");
+
+  if (host && canvas) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let booted = false;
+
+    const boot = async () => {
+      if (booted) return;
+      booted = true;
+
+      const fallback = host.querySelector<HTMLElement>("[data-web3d-fallback]");
+
+      try {
+        const THREE = await import("three");
+
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: "low-power",
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
+        camera.position.set(0, 0.15, 6.9);
+        camera.lookAt(0, 0, 0);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 1.15));
+
+        const key = new THREE.DirectionalLight(0xffffff, 1.05);
+        key.position.set(3, 4, 5);
+        scene.add(key);
+
+        const rim = new THREE.PointLight(0x008af9, 14, 18, 2);
+        rim.position.set(-3.2, -2.2, 3);
+        scene.add(rim);
+
+        const stage = new THREE.Group();
+        stage.rotation.set(-0.06, -0.42, 0.02);
+        stage.scale.setScalar(1.06);
+        scene.add(stage);
+
+        const primary = 0x008af9;
+        const secondary = 0xf9a23f;
+        const ink = 0x14212f;
+        const paper = 0xf7f9fc;
+
+        const flat = (color: number, opacity = 1) =>
+          new THREE.MeshBasicMaterial({ color, transparent: opacity < 1, opacity });
+
+        const lit = (color: number, roughness = 0.7, emissive = 0x000000, intensity = 0) =>
+          new THREE.MeshStandardMaterial({
+            color,
+            roughness,
+            metalness: 0.15,
+            emissive,
+            emissiveIntensity: intensity,
+          });
+
+        // --- La ventana: marco + pantalla ---
+        const frameGeo = new THREE.BoxGeometry(3, 2, 0.16);
+        const frame = new THREE.Mesh(frameGeo, lit(ink, 0.35));
+        stage.add(frame);
+        frame.add(
+          new THREE.LineSegments(
+            new THREE.EdgesGeometry(frameGeo),
+            new THREE.LineBasicMaterial({ color: 0x5ea4dd, transparent: true, opacity: 0.5 })
+          )
+        );
+
+        const screen = new THREE.Mesh(new THREE.PlaneGeometry(2.82, 1.82), lit(paper, 0.95));
+        screen.position.z = 0.085;
+        frame.add(screen);
+
+        // --- Contenido de la página ---
+        const topbar = new THREE.Mesh(new THREE.PlaneGeometry(2.82, 0.18), flat(0xe7edf5));
+        topbar.position.set(0, 0.82, 0.09);
+        frame.add(topbar);
+
+        const dotGeo = new THREE.SphereGeometry(0.028, 12, 8);
+        [-1.3, -1.2, -1.1].forEach((x, i) => {
+          const dot = new THREE.Mesh(dotGeo, flat([0xff6b6b, secondary, 0x3ecf8e][i]));
+          dot.position.set(x, 0.82, 0.1);
+          frame.add(dot);
+        });
+
+        const hero = new THREE.Mesh(
+          new THREE.PlaneGeometry(1.3, 0.66),
+          lit(primary, 0.5, primary, 0.22)
+        );
+        hero.position.set(-0.72, 0.3, 0.09);
+        frame.add(hero);
+
+        const lineMat = flat(0xffffff, 0.92);
+        [0.4, 0.31, 0.22].forEach((y, i) => {
+          const width = [0.96, 0.8, 0.6][i];
+          const line = new THREE.Mesh(new THREE.PlaneGeometry(width, 0.05), lineMat);
+          line.position.set(-0.72 - (0.96 - width) / 2, y, 0.095);
+          frame.add(line);
+        });
+
+        const cta = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.09), flat(secondary));
+        cta.position.set(-1.2, 0.06, 0.095);
+        frame.add(cta);
+
+        const visual = new THREE.Mesh(
+          new THREE.PlaneGeometry(1.16, 0.66),
+          lit(secondary, 0.55, secondary, 0.12)
+        );
+        visual.position.set(0.74, 0.3, 0.09);
+        frame.add(visual);
+
+        [-0.9, 0, 0.9].forEach((x, i) => {
+          const card = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.8, 0.32),
+            lit(i === 1 ? 0xcfe0f2 : 0xdde7f2, 0.85)
+          );
+          card.position.set(x, -0.22, 0.09);
+          frame.add(card);
+        });
+
+        const footer = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 0.07), flat(0xcfdbea));
+        footer.position.set(0, -0.72, 0.09);
+        frame.add(footer);
+
+        // --- Capas detrás: la web como un sistema, no una página suelta ---
+        const pageGeo = new THREE.PlaneGeometry(3, 2);
+        const pageEdges = new THREE.EdgesGeometry(pageGeo);
+        [
+          { z: -0.28, x: 0.16, y: -0.1, opacity: 0.3 },
+          { z: -0.56, x: 0.32, y: -0.2, opacity: 0.16 },
+        ].forEach((layer) => {
+          const ghost = new THREE.LineSegments(
+            pageEdges,
+            new THREE.LineBasicMaterial({ color: 0x008af9, transparent: true, opacity: layer.opacity })
+          );
+          ghost.position.set(layer.x, layer.y, layer.z);
+          stage.add(ghost);
+        });
+
+        // --- Nodos conectados: consultoría, contenido y alcance local ---
+        const nodes = new THREE.Group();
+        stage.add(nodes);
+
+        const nodeGeometry = new THREE.SphereGeometry(0.065, 16, 12);
+        const nodeMaterials = [
+          lit(primary, 0.35, primary, 0.5),
+          lit(secondary, 0.35, secondary, 0.45),
+        ];
+        const linkMaterial = new THREE.LineBasicMaterial({
+          color: 0x008af9,
+          transparent: true,
+          opacity: 0.22,
+        });
+
+        const NODE_COUNT = 8;
+        for (let i = 0; i < NODE_COUNT; i++) {
+          const angle = (i / NODE_COUNT) * Math.PI * 2;
+          const x = Math.cos(angle) * 2.05;
+          const y = Math.sin(angle) * 1.12;
+          const z = -0.55 + Math.sin(angle) * 0.2;
+
+          const node = new THREE.Mesh(nodeGeometry, nodeMaterials[i % 2]);
+          node.position.set(x, y, z);
+          nodes.add(node);
+
+          const link = new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints([
+              new THREE.Vector3(x, y, z),
+              new THREE.Vector3(0, 0, -0.55),
+            ]),
+            linkMaterial
+          );
+          nodes.add(link);
+        }
+
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(2.05, 0.012, 8, 140),
+          new THREE.MeshBasicMaterial({ color: 0x008af9, transparent: true, opacity: 0.22 })
+        );
+        ring.rotation.set(Math.PI / 2.15, 0, 0.08);
+        ring.scale.set(1, 0.51, 1);
+        ring.position.z = -0.55;
+        nodes.add(ring);
+
+        // --- Tamaño y bucle ---
+        const resize = () => {
+          const rect = host.getBoundingClientRect();
+          const width = Math.max(1, Math.round(rect.width));
+          const height = Math.max(1, Math.round(rect.height));
+          renderer.setSize(width, height, false);
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+        };
+
+        resize();
+        
+
+        const pointer = { x: 0, y: 0 };
+        const target = { x: 0, y: 0 };
+        host.addEventListener("pointermove", (event) => {
+          const rect = host.getBoundingClientRect();
+          target.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          target.y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+        });
+        host.addEventListener("pointerleave", () => {
+          target.x = 0;
+          target.y = 0;
+        });
+
+        let raf = 0;
+        const clock = new THREE.Clock();
+
+        const draw = (time: number) => {
+          pointer.x += (target.x - pointer.x) * 0.05;
+          pointer.y += (target.y - pointer.y) * 0.05;
+
+          stage.rotation.y = -0.42 + Math.sin(time * 0.32) * 0.12 + pointer.x * 0.22;
+          stage.rotation.x = -0.06 + Math.cos(time * 0.27) * 0.025 + pointer.y * 0.08;
+          stage.position.y = Math.sin(time * 0.6) * 0.05;
+          nodes.rotation.z = Math.sin(time * 0.18) * 0.06;
+
+          renderer.render(scene, camera);
+        };
+
+        const loop = () => {
+          raf = requestAnimationFrame(loop);
+          if (document.hidden) return;
+          draw(clock.getElapsedTime());
+        };
+
+        if (reduceMotion.matches) {
+          draw(0);
+          new ResizeObserver(() => {
+            draw(0);
+          }).observe(host);
+        } else {
+          const visibility = new IntersectionObserver(
+            ([entry]) => {
+              if (entry.isIntersecting) {
+                if (!raf) loop();
+              } else {
+                cancelAnimationFrame(raf);
+                raf = 0;
+              }
+            },
+            { threshold: 0.05 }
+          );
+          visibility.observe(host);
+
+          reduceMotion.addEventListener("change", (event) => {
+            if (event.matches) {
+              cancelAnimationFrame(raf);
+              raf = 0;
+              draw(0);
+            } else if (!raf) {
+              loop();
+            }
+          });
+        }
+
+        // Solo cuando hay un primer frame pintado se oculta la maqueta CSS.
+        renderer.render(scene, camera);
+        host.dataset.ready = "true";
+        if (fallback) fallback.style.display = "none";
+      } catch (error) {
+        // Sin WebGL o sin chunk de Three.js: se queda la maqueta CSS.
+        console.warn("La escena 3D del hero no se ha podido iniciar.", error);
+      }
+    };
+
+    if ("IntersectionObserver" in window) {
+      const near = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            near.disconnect();
+            // Sin espera artificial: la maqueta CSS cubre la carga del chunk
+            // de Three.js y se retira en cuanto hay un primer frame 3D.
+            boot();
+          }
+        },
+        { rootMargin: "300px" }
+      );
+      near.observe(host);
+    } else {
+      boot();
+    }
+  }
+</script>
