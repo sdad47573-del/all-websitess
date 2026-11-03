@@ -40,6 +40,10 @@ DNS, panel de hosting, cuenta del registrador. Pídelo todo por escrito cuando c
 
 Y si el dominio ya ha caducado, hay reloj: [en qué fase está y cómo recuperarlo](/blog/dominio-caducado-o-perdido/) antes de que lo registre otro.
 
+El certificado HTTPS viaja con el hosting: si el navegador te está avisando, mira [por qué sale el aviso y cómo se quita](/blog/web-no-segura-https/).
+
 ¿Tienes dudas con tu dominio o tu hosting actual? [Escríbenos](/&#35;contacto) y lo revisamos sin compromiso.
+
+El correo del negocio va con el dominio: si todavía usas una cuenta personal, mira [cómo montarlo sin perder mensajes](/blog/correo-profesional-con-tu-dominio/).
 
 Y si además estás eligiendo proveedor, estas [preguntas antes de contratar](/blog/mejores-disenadores-web-malaga/) te ahorran el disgusto.

@@ -63,7 +63,7 @@ Puedes. Cuenta con 20–40 horas de tu tiempo, un resultado correcto pero genér
 Tiene que estar por escrito: dominio a tu nombre y cuántos años de hosting entran. En nuestras webs el dominio es tuyo y el primer año de hosting va incluido.
 
 **¿Cuánto cuesta mantenerla al año?**
-El mantenimiento son 20 €/mes, más la renovación anual del dominio. Todo lo demás (textos nuevos, secciones nuevas) es mejora y se presupuesta aparte.
+El mantenimiento son 39 €/mes, más la renovación anual del dominio. Todo lo demás (textos nuevos, secciones nuevas) es mejora y se presupuesta aparte.
 
 **¿Me vale con la opción más barata?**
 Para la mayoría de negocios locales, una landing es todo lo que necesitas para empezar a aparecer en Google. La web grande llega cuando el negocio la pide, no antes.
@@ -73,3 +73,5 @@ Para la mayoría de negocios locales, una landing es todo lo que necesitas para 
 ¿Quieres número cerrado para tu proyecto? [Cuéntanos qué necesitas](/&#35;contacto) y te damos presupuesto por escrito en 24h. La primera landing es gratis, con [las condiciones contadas aquí](/blog/lanzamos-sur-digital-oferta/).
 
 Y si quieres ver cuánto cambia la propuesta según el negocio, mira las [webs por sector](/especialidades/): la carta con QR de un restaurante no se parece en nada a la web de un gimnasio.
+
+Y antes de pedir precio, decide el tamaño: [cuántas páginas necesita tu web](/blog/cuantas-paginas-debe-tener-tu-web/).

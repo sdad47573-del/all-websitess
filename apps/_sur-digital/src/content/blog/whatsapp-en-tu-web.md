@@ -52,6 +52,8 @@ Instala un identificador distinto en cada enlace (por ejemplo, un texto de orige
 - Comprueba que la versión móvil de tu web tiene teléfono, WhatsApp y formulario, no solo uno.
 - Contesta todo, incluso lo que no te interesa. Un «no trabajamos eso» a tiempo también es buena atención.
 
+Para los clientes que ya te conocen, el canal que casi nadie usa bien es el correo: [cuándo merece la pena una newsletter](/blog/newsletter-para-negocios-locales/). Y cuando el mensaje entra, lo que decide la venta es [lo que haces en las siguientes 24 horas](/blog/que-hacer-cuando-llega-un-contacto/).
+
 Si quieres que montemos los tres canales bien conectados en tu web, mira cómo trabajamos en [servicios](/servicios/) o empieza por la [primera landing gratis](/).
 
 ---

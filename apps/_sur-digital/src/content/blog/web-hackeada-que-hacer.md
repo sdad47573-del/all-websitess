@@ -59,7 +59,7 @@ Si no sabes por dónde entraron, no des por hecho que está limpio: el atacante 
 
 ## Prevención que sí funciona
 
-Doble factor en hosting y panel, actualizaciones automáticas, copias de seguridad diarias **probadas** (una copia que nunca se ha restaurado no sirve), pocos plugins, usuarios mínimos y un certificado HTTPS en condiciones. Todo eso entra en un [mantenimiento honesto](/blog/mantenimiento-web-20-euros-mes/), y si tu web es lenta o está sin actualizar desde 2022, el riesgo es la mitad del problema: mira también [cuánto te cuesta una web lenta](/blog/pagespeed-negocios-locales/).
+Doble factor en hosting y panel, actualizaciones automáticas, copias de seguridad diarias **probadas** (una copia que nunca se ha restaurado no sirve), pocos plugins, usuarios mínimos y un [certificado HTTPS en condiciones](/blog/web-no-segura-https/). Todo eso entra en un [mantenimiento honesto](/blog/mantenimiento-web-20-euros-mes/), y si tu web es lenta o está sin actualizar desde 2022, el riesgo es la mitad del problema: mira también [cuánto te cuesta una web lenta](/blog/pagespeed-negocios-locales/).
 
 ---
 

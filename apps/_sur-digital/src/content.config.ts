@@ -12,6 +12,12 @@ const blog = defineCollection({
     category: z
       .enum(["Precios", "SEO local", "Guías", "Sectores", "Anuncios"])
       .default("Guías"),
+    // Preguntas frecuentes del artículo. Si existen, la plantilla pinta el
+    // bloque visible y emite el FAQPage desde la misma fuente: no hay que
+    // repetirlas en el Markdown ni pueden desincronizarse del schema.
+    faq: z
+      .array(z.object({ q: z.string(), a: z.string() }))
+      .optional(),
     draft: z.boolean().default(false),
   }),
 });

@@ -50,10 +50,12 @@ Para empezar, sí: ficha completa + reseñas es lo primero que se mueve. Pero si
 La ficha y las reseñas se mueven en semanas; el posicionamiento sólido tarda meses. Los plazos realistas están en [cuánto tarda el SEO local](/blog/seo-local-cuanto-tarda/).
 
 **¿Y si tengo varios locales?**
-Cada sede necesita su ficha con horario y mapa propios, más una página conjunta que las agrupe. Es el mismo trabajo multiplicado, no uno distinto.
+Cada sede necesita su ficha con horario y mapa propios, más una página conjunta que las agrupe. Es el mismo trabajo multiplicado, no uno distinto. El detalle está en [cómo organizar la web con varias sedes](/blog/web-con-varias-sedes-o-franquicia/).
 
 ---
 
 ¿Quieres que revisemos tu ficha de Google Business y tu web sin coste? [Pide tu revisión gratuita](/&#35;contacto) y te contamos qué te falta para salir en el mapa.
 
 Y si lo que falla es la velocidad, empieza por [aquí](/blog/pagespeed-negocios-locales/).
+
+Para saber si el trabajo está trayendo clientes (y no solo posiciones), mira las [cinco cifras que importan](/blog/que-medir-en-tu-web/).

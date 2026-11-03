@@ -383,3 +383,72 @@ internos rotos**.
 5. El siguiente escalón (`seo local`, `paginas web malaga`, `agencia digital
    malaga`, clúster Marbella en pos 68-98) es **autoridad y enlaces**, no
    snippets: GBP, reseñas, directorios y menciones locales.
+
+## 18. Contenido nuevo: el candado y la medición (3 nov 2026)
+
+Dos huecos reales, no otra variación de «web para X»:
+
+- `/blog/web-no-segura-https/` (Guías): el aviso de «sitio no seguro» es la
+  primera impresión de la web y no había ningún artículo que lo cubriera.
+  Explica las cuatro causas (certificado caducado, sin certificado, contenido
+  mixto y certificado de otro dominio), cómo comprobarlo en móvil, qué cuesta
+  (el certificado no se paga; hosting incluido el primer año y 60–90 €/año
+  después, cifras ya publicadas) y una checklist de cierre.
+- `/blog/que-medir-en-tu-web/` (Guías): la home presume de «medición» pero el
+  blog solo hablaba de herramientas sueltas. Fija las cinco cifras que importan
+  (impresiones y clics, consultas en posiciones 4-20, contactos, velocidad
+  móvil y coste por cliente con anuncios), cómo montarlo gratis con Search
+  Console y Analytics, y qué métricas ignorar.
+
+Ninguno de los dos queda huérfano: se enlazan desde
+`web-hackeada-que-hacer`, `dominio-hosting-negocios-guia`,
+`mantenimiento-web-20-euros-mes`, `seo-local-malaga-negocios` y
+`google-ads-errores-negocios-locales`, además del índice y la categoría.
+
+Verificado en `dist/` tras `bun run build`: **128 páginas**, 0 enlaces internos
+rotos, 0 titles > 60 y 0 descriptions > 162 entre las indexables, un solo H1
+por página. Los cuatro stubs `noindex` de los 301 y los dos ficheros de
+verificación de Google quedan fuera del recuento, como siempre.
+
+## 19. Tres guías de estructura y canales (3 nov 2026)
+
+Huecos que ninguna de las 78 piezas tocaba:
+
+- `/blog/cuantas-paginas-debe-tener-tu-web/` (Guías): la pregunta con la que
+  empieza casi todo presupuesto, sin artículo que la respondiera. Regla de una
+  página por intención, los tres tamaños reales, qué función tiene cada página
+  y cuándo una página de más solo añade relleno. Con las cifras publicadas
+  (490 € con 5 páginas, 60 € cada extra).
+- `/blog/correo-profesional-con-tu-dominio/` (Guías): la web se vendía sin
+  resolver el correo, que es lo que sostiene facturas, reservas y la
+  recuperación de cuentas. Montaje por hosting o proveedor, SPF/DKIM/DMARC,
+  migración sin perder buzones y checklist.
+- `/blog/newsletter-para-negocios-locales/` (Guías): no había nada de email
+  marketing. Cuándo compensa (cliente recurrente) y cuándo no, qué enviar,
+  cada cuánto, consentimiento y doble confirmación, y qué medir.
+
+Ninguno queda huérfano: se enlazan desde `cuanto-cuesta-una-web-malaga-2026`,
+`dominio-hosting-negocios-guia` y `whatsapp-en-tu-web`, además del índice y la
+categoría. Sin cifras nuevas: 490 €, 60 €/página y lo ya publicado sobre
+dominio y hosting.
+
+## 20. Texto, respuesta y varias sedes (3 nov 2026)
+
+Tres huecos más, ninguno solapado con lo publicado:
+
+- `/blog/que-texto-poner-en-tu-web/` (Guías): el blog enseñaba a estructurar
+  páginas, pero no a escribirlas. Portada en cuatro respuestas, tabla de frases
+  que no dicen nada con su versión útil, ejemplo antes y después, qué va en
+  cada página y la entrevista de cinco preguntas.
+- `/blog/que-hacer-cuando-llega-un-contacto/` (Guías): la conversión se contaba
+  hasta el formulario. Ahora cubre el plazo de respuesta (menos de 24 h, el
+  compromiso ya publicado), qué mirar en los primeros minutos, plantilla de
+  primera respuesta, tres preguntas, seguimiento en día 2 y día 7 y qué
+  registrar.
+- `/blog/web-con-varias-sedes-o-franquicia/` (Guías): la FAQ de SEO local
+  resolvía «varios locales» en una línea. Una web con páginas por sede frente a
+  varias webs, NAP idéntico, horario y teléfono por sede, franquicia y sus
+  cláusulas, y el coste con las cifras publicadas (490 € y 60 € por página).
+
+Enlazados desde `cuantas-paginas-debe-tener-tu-web`, `whatsapp-en-tu-web` y
+`seo-local-malaga-negocios`, además del índice y la categoría.

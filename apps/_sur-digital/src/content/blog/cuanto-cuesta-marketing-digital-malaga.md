@@ -19,7 +19,7 @@ Trabajo básico de ficha y contenidos, 50–150 €/mes; posicionar de verdad en
 
 Google Ads se paga dos veces: la gestión (cuota o porcentaje) y el dinero que va a Google por cada clic, que depende de tu sector. Los números por sector están en [cuánto cuesta Google Ads en Málaga](/blog/cuanto-cuesta-google-ads-malaga/). Regla práctica: si nadie te pregunta cuánto estás dispuesto a pagar por cliente, no saben gestionar anuncios.
 
-## 4. El mantenimiento: 20 €/mes
+## 4. El mantenimiento: 39 €/mes
 
 Que la web siga cargando rápido, sin errores ni spam. [Esto es lo que debe incluir](/blog/mantenimiento-web-20-euros-mes/): si te cobran 90 € por «actualizar WordPress», estás pagando de más.
 

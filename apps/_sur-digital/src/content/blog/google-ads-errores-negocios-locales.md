@@ -29,7 +29,7 @@ Revisar una vez al mes no es gestionar: es pagar. Búsquedas que activan tus anu
 
 ## ¿Y el SEO entonces?
 
-Los anuncios dan clientes esta semana; [el SEO los da gratis dentro de meses](/blog/seo-local-o-anuncios-google/). La mayoría de negocios locales necesita los dos, en ese orden.
+Los anuncios dan clientes esta semana; [el SEO los da gratis dentro de meses](/blog/seo-local-o-anuncios-google/). La mayoría de negocios locales necesita los dos, en ese orden, y los dos se juzgan con las mismas [cinco cifras](/blog/que-medir-en-tu-web/).
 
 ---
 
