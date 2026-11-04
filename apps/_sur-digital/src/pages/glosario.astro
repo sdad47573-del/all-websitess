@@ -98,12 +98,13 @@ const breadcrumbs = {
       <nav aria-label="Índice alfabético" class="flex flex-wrap gap-2 mb-12">
         {
           letters.map((letter) => (
-            <a
-              href={`#letra-${letter.toLowerCase()}`}
-              class="badge badge-lg badge-outline font-bold"
+            <button
+              type="button"
+              data-letter={`letra-${letter.toLowerCase()}`}
+              class="badge badge-lg badge-outline font-bold cursor-pointer"
             >
               {letter}
-            </a>
+            </button>
           ))
         }
       </nav>
@@ -177,6 +178,21 @@ const breadcrumbs = {
       </nav>
     </div>
   </main>
+
+  <script>
+    // Índice alfabético sin fragmento en la URL: desplaza a la sección de la
+    // letra sin cambiar la dirección.
+    for (const button of document.querySelectorAll<HTMLElement>("[data-letter]")) {
+      button.addEventListener("click", () => {
+        const target = button.dataset.letter;
+        if (target) {
+          document
+            .getElementById(target)
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+  </script>
 
   <Footer />
 </Layout>

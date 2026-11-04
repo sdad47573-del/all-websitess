@@ -192,10 +192,11 @@ const xDefaultHref =
          Va en el body y no en el head a propósito: Astro saca del head todo
          lo que no sea metadato y arrastraría detrás el title y la meta
          description. Solo se ve al recibir el foco. -->
-    <a
-      href="#contenido"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-btn focus:bg-primary focus:px-4 focus:py-2 focus:font-bold focus:text-primary-content"
-      >Saltar al contenido</a
+    <button
+      type="button"
+      data-skip-link
+      class="sr-only cursor-pointer focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-btn focus:bg-primary focus:px-4 focus:py-2 focus:font-bold focus:text-primary-content"
+      >Saltar al contenido</button
     >
 
     <slot />
@@ -241,6 +242,23 @@ const xDefaultHref =
       } else {
         init();
       }
+
+      // Salto al contenido sin fragmento en la URL: al pulsar se enfoca el
+      // <main> para que el siguiente Tab siga dentro del contenido y no
+      // vuelva a recorrer la cabecera.
+      const skipLink = document.querySelector<HTMLElement>("[data-skip-link]");
+      skipLink?.addEventListener("click", () => {
+        const main = document.getElementById("contenido");
+        if (!main) return;
+        main.setAttribute("tabindex", "-1");
+        main.focus({ preventScroll: true });
+        main.scrollIntoView({ block: "start" });
+        main.addEventListener(
+          "blur",
+          () => main.removeAttribute("tabindex"),
+          { once: true }
+        );
+      });
     </script>
   </body>
 </html>
