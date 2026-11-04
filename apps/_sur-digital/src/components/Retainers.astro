@@ -1,0 +1,161 @@
+---
+// Cuotas recurrentes: las tres features que sostienen el negocio de la
+// competencia (SEO 199–400 €/mes, redes ~145 €/mes, Ads 150–320 €/mes; ver
+// COMPETENCIA-FEATURES.md). Aquí entran por debajo de esa banda y sin
+// permanencia, para no romper el discurso de precio cerrado del resto del
+// sitio: la web se paga una vez, esto se paga mes a mes y se cancela cuando
+// el cliente quiera.
+//
+// Debajo van los dos escalones de mantenimiento anual (750 y 900 €/año), que
+// es la otra cuota que publica el mercado nacional y que faltaba aquí.
+//
+// Los planes salen de DATA.retainers y DATA.maintenanceTiers (fuente única),
+// igual que los planes de pago único salen de DATA.plans.
+import { CONTACT } from "../data/contact";
+import { DATA } from "../data/data.astro";
+import DoneIcon from "../icons/DoneIcon.astro";
+
+const site = (Astro.site?.toString() ?? "https://sur-digital.vercel.app").replace(/\/$/, "");
+
+const catalog = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  name: "Planes mensuales y anuales de crecimiento digital",
+  url: `${site}/precios/#crecimiento`,
+  provider: {
+    "@type": "ProfessionalService",
+    name: "Sur Digital",
+    url: `${site}/`,
+  },
+  itemListElement: [
+    ...DATA.retainers.map((plan) => ({
+      "@type": "Offer",
+      name: plan.name,
+      price: String(plan.price),
+      priceCurrency: "EUR",
+      description: plan.note,
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: String(plan.price),
+        priceCurrency: "EUR",
+        unitCode: "MON",
+      },
+    })),
+    ...DATA.maintenanceTiers.map((tier) => ({
+      "@type": "Offer",
+      name: tier.name,
+      price: String(tier.price),
+      priceCurrency: "EUR",
+      description: tier.note,
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: String(tier.price),
+        priceCurrency: "EUR",
+        unitCode: "ANN",
+      },
+    })),
+  ],
+};
+---
+
+<section id="crecimiento" class="pt-14 pb-20 bg-transparent">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(catalog)} />
+
+  <div class="container mx-auto px-6 text-center">
+    <h2 data-reveal class="text-3xl md:text-4xl font-bold text-base-content mb-2">
+      Después de la web, <span class="text-wave">lo que la hace crecer</span>
+    </h2>
+    <p data-reveal class="text-base-content/70 max-w-2xl mx-auto mb-10">
+      Tres cuotas mensuales, sin permanencia: posicionamiento local, redes y
+      anuncios. Se contrata lo que necesites y se cancela cuando quieras.
+    </p>
+
+    <ul
+      data-reveal-group
+      class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch text-start"
+    >
+      {
+        DATA.retainers.map((plan) => (
+          <li class="card bg-base-100 shadow-sm border-2 border-base-300 hover:border-secondary transition-colors">
+            <div class="card-body items-center text-center">
+              <p class="font-bold text-lg text-base-content/70">{plan.name}</p>
+              <p class="text-sm text-base-content/60 min-h-10">{plan.tagline}</p>
+              <p class="text-4xl font-black">
+                {plan.price}€
+                <span class="text-sm font-normal text-base-content/60">/mes</span>
+              </p>
+              <ul class="text-start text-sm flex flex-col gap-2 mt-2">
+                {plan.features.map((feature) => (
+                  <li>
+                    <DoneIcon />{feature}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={CONTACT.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-outline btn-primary w-full mt-4"
+              >
+                Quiero este plan
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Mantenimiento anual: el escalón que la pyme contrata de una vez. -->
+    <div class="mt-16" data-reveal>
+      <h3 class="text-2xl md:text-3xl font-bold text-base-content mb-2">
+        Mantenimiento anual
+      </h3>
+      <p class="text-base-content/70 max-w-2xl mx-auto mb-8">
+        Si la web va a cambiar a menudo, el plan anual sale mejor que ir sumando
+        cambios sueltos. El mantenimiento mensual de 39 €/mes sigue disponible
+        para cambios pequeños.
+      </p>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto text-start">
+        {
+          DATA.maintenanceTiers.map((tier) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <div class="card-body">
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <p class="font-bold text-lg text-base-content/70">{tier.name}</p>
+                  <p class="text-2xl font-black">
+                    {tier.price}€
+                    <span class="text-sm font-normal text-base-content/60">/año</span>
+                  </p>
+                </div>
+                <p class="text-sm text-base-content/60">{tier.note}</p>
+                <ul class="text-start text-sm flex flex-col gap-2 mt-2">
+                  {tier.features.map((feature) => (
+                    <li>
+                      <DoneIcon />{feature}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={CONTACT.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-outline btn-primary w-full mt-4"
+                >
+                  Quiero este plan
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <p data-reveal class="text-xs text-base-content/50 mt-6 max-w-xl mx-auto">
+      {/* La inversión de Ads se paga directo a Google; el IVA va desglosado en
+          factura. Sin permanencia y sin cuota de alta. */}
+      Precios sin IVA, con el IVA desglosado en factura. En Google Ads, la
+      inversión publicitaria se paga aparte y directo a Google.
+    </p>
+  </div>
+</section>

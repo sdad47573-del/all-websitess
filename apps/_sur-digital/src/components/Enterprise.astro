@@ -1,0 +1,134 @@
+---
+// Oferta enterprise: proyectos grandes, plataformas a medida e integraciones,
+// con SLA por escrito. Es la franja que el mercado nacional vende sin precio
+// público (WebAvanzada, Dos Setenta, Nestrategia: 1.500–10.000 €); aquí se
+// publica un precio de entrada y los tiempos de respuesta, que es la parte
+// que de verdad se puede comparar.
+//
+// Los datos salen de DATA.enterprise (fuente única), igual que planes y
+// cuotas recurrentes.
+import { CONTACT } from "../data/contact";
+import { DATA } from "../data/data.astro";
+import DoneIcon from "../icons/DoneIcon.astro";
+
+const { enterprise } = DATA;
+// es-ES no agrupa números de 4 cifras (minimumGroupingDigits=2), así que se
+// formatea a mano para que salga 2.500 y no 2500.
+const priceLabel = String(enterprise.price).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const site = (Astro.site?.toString() ?? "https://sur-digital.vercel.app").replace(/\/$/, "");
+
+const offer = {
+  "@context": "https://schema.org",
+  "@type": "Offer",
+  name: "Proyecto enterprise a medida",
+  price: String(enterprise.price),
+  priceCurrency: "EUR",
+  description: `${enterprise.tagline} Incluye integraciones y SLA por contrato.`,
+  url: `${site}/precios/#enterprise`,
+  seller: {
+    "@type": "ProfessionalService",
+    name: "Sur Digital",
+    url: `${site}/`,
+  },
+  priceSpecification: {
+    "@type": "PriceSpecification",
+    price: String(enterprise.price),
+    priceCurrency: "EUR",
+    valueAddedTaxIncluded: false,
+  },
+};
+---
+
+<section id="enterprise" class="pt-14 pb-20 bg-transparent">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(offer)} />
+
+  <div class="container mx-auto px-6 max-w-5xl">
+    <div data-reveal class="text-center mb-10">
+      <p class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-primary mb-4">
+        Enterprise
+      </p>
+      <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-3">
+        Proyectos grandes, <span class="text-wave">con SLA por escrito</span>
+      </h2>
+      <p class="text-base-content/70 max-w-2xl mx-auto">{enterprise.tagline}</p>
+    </div>
+
+    <ul
+      data-reveal-group
+      class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto text-start"
+    >
+      {
+        enterprise.features.map(({ title, text }) => (
+          <li class="card bg-base-100 shadow-sm border border-base-300">
+            <div class="card-body gap-2">
+              <DoneIcon class="size-5 mb-1" />
+              <h3 class="card-title text-lg">{title}</h3>
+              <p class="text-sm text-base-content/70 leading-relaxed">{text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div data-reveal class="card bg-base-100 shadow-md border border-base-300 mt-10">
+      <div class="card-body gap-4">
+        <div class="flex flex-wrap items-baseline justify-between gap-3">
+          <h3 class="card-title text-xl">SLA de soporte</h3>
+          <p class="text-2xl font-black">
+            Desde {priceLabel}€
+            <span class="text-sm font-normal text-base-content/60">por proyecto</span>
+          </p>
+        </div>
+        <p class="text-sm text-base-content/70">
+          El alcance, los hitos y el SLA se firman antes de empezar. Los tiempos
+          de respuesta se cuentan en horario laboral (lunes a jueves 10–20 h,
+          viernes 10–15 h); la monitorización de disponibilidad es continua.
+        </p>
+
+        <div class="overflow-x-auto">
+          <table class="table table-sm">
+            <caption class="sr-only">
+              Niveles de servicio y tiempos de respuesta comprometidos
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Nivel</th>
+                <th scope="col">Respuesta</th>
+                <th scope="col">Cuándo aplica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                enterprise.sla.map(({ level, response, detail }) => (
+                  <tr class="border-b-base-200">
+                    <th scope="row" class="font-bold text-sm text-start">
+                      {level}
+                    </th>
+                    <td class="text-sm font-bold text-primary">{response}</td>
+                    <td class="text-sm text-base-content/70">{detail}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-xs text-base-content/50">
+          Precios sin IVA. Las integraciones con licencia de terceros (ERP, CRM,
+          pasarelas) se pagan a su proveedor y se presupuestan aparte.
+        </p>
+      </div>
+    </div>
+
+    <p data-reveal class="text-center mt-8">
+      <a
+        href={CONTACT.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary btn-lg"
+      >
+        Cuéntanos el proyecto
+      </a>
+    </p>
+  </div>
+</section>

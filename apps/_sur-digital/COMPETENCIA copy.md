@@ -1,12 +1,25 @@
+# Competencia: consultoras y agencias web en Málaga y España
+
+**Fecha de consulta:** 4 de noviembre de 2026
+**Objeto:** comparar la oferta publicada de Sur Digital con la de consultoras y agencias web que compiten por el mismo cliente (pyme y autónomo local) en Málaga y en el resto de España.
+**Método:** revisión directa de las páginas de precios de cada proveedor (las que publican tarifas) y de directorios de agencias. Solo se recogen cifras que el proveedor publica; cuando el dato viene de un resultado de búsqueda y no de la página, se indica.
+
+> Aviso: la mayoría de agencias **no publica precios**. Eso ya es, en sí, una diferencia: Sur Digital y una minoría de competidores sí los publican.
+
+---
 
 ## 1. La oferta de Sur Digital (según el propio sitio)
 
 | Plan | Precio | Incluye | Plazo |
 |---|---|---|---|
-| Landing Gratis | 0 € | 1 página responsive, botón de contacto, 1 revisión | Menos de 7 días |
-| Web Completa | 490 € | Hasta 5 páginas, dominio + hosting 1.er año, SEO básico, móvil, 3 revisiones | Menos de 7 días |
-| Pro + Tienda | 890 € | Tienda o web corporativa grande, pasarela de pago, gestión de productos, SEO local, mantenimiento opcional | No publicado |
+| Landing Gratis | 0 € | 1 página responsive, botón de contacto, 1 revisión, SSL | Menos de 7 días |
+| Portfolio | 390 € | Galería, textos, WhatsApp y formulario, SSL, SEO local, formación | No publicado |
+| Web Completa | 490 € | Hasta 5 páginas, dominio + hosting 1.er año, SEO básico, móvil, 3 revisiones, SSL, formación 30 min + guía, soporte 24/7 | Menos de 7 días |
+| Pro + Tienda | 890 € | Tienda o web corporativa grande, pasarela de pago, gestión de productos, SEO local, mantenimiento opcional, SSL, formación, soporte 24/7 | No publicado |
 | Mantenimiento | 39 €/mes | Actualizaciones, copias, cambios de contenido. Sin permanencia | — |
+| Mantenimiento anual | 750 €/año (Esencial) · 900 €/año (Gestión) | Copias, seguridad, soporte 24/7, cambios mensuales o secciones nuevas | — |
+| Cuotas de crecimiento | SEO local 149 €/mes · Redes 145 €/mes · Google Ads 150 €/mes + inversión | Gestión mensual, informes y sin permanencia | — |
+| Enterprise | Desde 2.500 € | Desarrollo a medida, integraciones, API y SLA de 2 h laborables | Por contrato |
 | Extras | 60 € página · 150 € idioma · 150 € logo · 90 € migración | — | — |
 
 Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/hosting/web a nombre del cliente, sin permanencia, pago 50 % al empezar y 50 % al entregar, **no trabajan con Kit Digital**, contacto principal por LinkedIn, stack propio (Astro/Three.js) en vez de WordPress.
@@ -54,7 +67,12 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 | Landing / 1 página | **0 €** | 250–600 € | Único en el mercado analizado |
 | Web corporativa 5–8 páginas | **490 €** (5 páginas, dominio y hosting 1 año) | 550–1.500 € (Málaga publicada: 800–1.290 €; nacional: 550–900 €) | Por debajo de la mediana malagueña |
 | Tienda online | **890 €** | 850–8.000 €; 1.200–1.452 € es lo más repetido en Málaga | Claramente por debajo |
-| Mantenimiento | **39 €/mes** | 29–150 €/mes (29 € en Málaga, 50–150 € de media según GoDaddy) | En la banda baja |
+| Mantenimiento | **39 €/mes**; anual 750 € o 900 € | 29–150 €/mes (29 € en Málaga, 50–150 € según GoDaddy); 750–900 €/año en el mercado nacional | En la banda baja |
+| Cuota de SEO local | **149 €/mes** | 199–400 €/mes en Málaga; 12 meses incluidos en el bono Kit Digital | Por debajo de la banda, sin permanencia |
+| Redes sociales | **145 €/mes** | 145 €/mes en Málaga; 12 meses vía Kit Digital | Precio de mercado, sin atadura de 12 meses |
+| Google Ads | **150 €/mes + inversión** | 150–320 €/mes + inversión | Suelo de la banda |
+| Formación al cliente | **Incluida** (30 min grabados + guía) | Estándar en agencia con WordPress; no en agentes Kit Digital | Paridad |
+| Enterprise con SLA | **Desde 2.500 €**; respuesta 2 h laborables | 1.500–10.000 €, casi nadie publica SLA | Precio y SLA publicados |
 | Plazo de entrega | **< 7 días** | 3–4 semanas corporativa, 6–10 tienda; Haleteo 3–7 días | Récord del mercado junto a Haleteo |
 | Modelo de precio | Cerrado, por escrito, IVA desglosado | Mayoría: presupuesto a medida; algunos por horas/día | Transparencia alta |
 | Dominio, hosting y web a nombre del cliente | Sí | Zaliza sí; en el resto suele quedar a nombre del proveedor | Diferenciador real |
@@ -76,13 +94,17 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 
 3. **Velocidad como producto.** 7 días frente a 3–4 semanas de Zaliza y 6–10 de tienda. Haleteo es el único que se atreve con la misma promesa. El plazo es hoy más diferencial que el precio en la pyme local que ya tiene una web mala y quiere cambiarla «ya».
 
-4. **Propiedad de todo.** Zaliza también lo ofrece; el resto lo deja ambiguo. Es un mensaje de confianza que se puede demostrar (credenciales a nombre del cliente) y que la competencia no puede copiar sin cambiar su modelo de retención.
+4. **Las cuotas ya están y entran por debajo.** SEO local 149 €/mes frente a 199–400 €/mes del mercado malagueño, redes a 145 €/mes (precio de mercado) y Ads a 150 €/mes (suelo de la banda), las tres sin permanencia mientras el Kit Digital ata 12 meses. Es la pieza que faltaba para que un cliente de 490 € pase de compra única a recurrente.
 
-5. **Contra el Kit Digital.** Casi todos los competidores malagueños son agentes digitalizadores (bono de 2.000 € para web y otros 2.000 € para SEO). Sur Digital renuncia a ese cliente por principios (burocracia, IVA fuera, plantillas cerradas) y lo argumenta en el blog. Es una postura coherente, pero deja fuera a un segmento con presupuesto subvencionado.
+5. **Propiedad de todo.** Zaliza también lo ofrece; el resto lo deja ambiguo. Es un mensaje de confianza que se puede demostrar (credenciales a nombre del cliente) y que la competencia no puede copiar sin cambiar su modelo de retención.
 
-7. **Tecnología propia frente a WordPress.** El argumento de Zaliza y WOM es la autonomía del cliente («lo editas tú, cambias de proveedor cuando quieras»). Sur Digital gana en rendimiento y Core Web Vitals, pero pierde ese argumento si no demuestra un panel sencillo y formación. WordPress es el estándar con el que se compara todo.
+6. **Contra el Kit Digital.** Casi todos los competidores malagueños son agentes digitalizadores (bono de 2.000 € para web y otros 2.000 € para SEO). Sur Digital renuncia a ese cliente por principios (burocracia, IVA fuera, plantillas cerradas) y lo argumenta en el blog. Es una postura coherente, pero deja fuera a un segmento con presupuesto subvencionado.
 
-8. **Canal y confianza.** Casi toda la competencia ofrece teléfono y WhatsApp. Sur Digital solo LinkedIn y formulario, con portfolio de prototipos sin enlaces reales. En un mercado de pymes locales, esa fricción pesa más que la calidad del código.
+7. **Especialización vertical.** Sur Digital tiene landings por sector y por barrio; en Málaga la tónica es la agencia generalista de marketing (13 de 17 agencias también venden SEO y redes). Especializarse en «web para clínicas dentales en Málaga» compite menos que «diseño web Málaga».
+
+8. **Tecnología propia frente a WordPress.** El argumento de Zaliza y WOM es la autonomía del cliente («lo editas tú, cambias de proveedor cuando quieras»). Sur Digital gana en rendimiento y Core Web Vitals, pero pierde ese argumento si no demuestra un panel sencillo y formación. WordPress es el estándar con el que se compara todo.
+
+9. **Canal y confianza.** Casi toda la competencia ofrece teléfono y WhatsApp. Sur Digital solo LinkedIn y formulario, con portfolio de prototipos sin enlaces reales. En un mercado de pymes locales, esa fricción pesa más que la calidad del código.
 
 ---
 
@@ -93,6 +115,9 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 - **El 0 € sin prueba social** se lee como anzuelo. El portfolio son prototipos (sin URL en los datos) y no hay reseñas ni casos con métricas.
 - **Sin Kit Digital** se pierde al cliente que ya tiene el bono concedido; el contenido que lo explica está en el blog, pero no se enlaza desde `/precios/`.
 - **Mantenimiento a 39 €/mes** está bien situado, pero hay quien publica 29 €/mes con hosting incluido y quien cobra 60–150 €. Sin detallar qué incluye, compite solo por precio.
+- **El «soporte 24/7» choca con el horario publicado** (lunes a jueves 10–20 h, viernes 10–15 h) y con el SLA de 2 h laborables del enterprise. O se matiza («monitorización 24/7, respuesta en horario laboral») o se convierte en una reclamación fácil de ganar para el cliente.
+- **Las cuotas rompen el discurso de precio cerrado**: 149 + 145 + 150 son 444 €/mes si se contrata todo. Hay que dejar claro que son independientes, sin permanencia y que la web se sigue pagando una sola vez.
+- **El plan Portfolio promete «contacto por WhatsApp»** mientras el resto del sitio solo publica LinkedIn (`src/data/contact.ts`). Decidir el canal antes de que un cliente lo pida.
 
 ---
 
@@ -102,8 +127,10 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 2. **Explicitar el ahorro**: 490 € frente a 800–1.290 € publicados en Málaga por el mismo alcance. Con la fuente al lado, no como afirmación suelta.
 3. **Convertir la propiedad en demostración**: captura de las credenciales a nombre del cliente y un «así te llevas tu web si te vas».
 4. **Responder a la objeción WordPress** con una demo del panel y una frase: «lo editas tú, y si no quieres, lo hacemos nosotros por 39 €/mes».
+5. **Cerrar el hueco Kit Digital con contenido, no con servicio**: la página que explica por qué no trabajan con él debería estar enlazada desde precios y desde la FAQ.
 6. **Reducir fricción de contacto**: teléfono o WhatsApp junto al formulario. Es lo que hace el 100 % de los competidores revisados.
 7. **Subir prueba social antes que bajar precios**: dos o tres casos con URL, métrica de velocidad y reseña valen más que otro descuento.
+8. **Actualizar la comparativa de la home**: `DATA.comparison` sigue diciendo «agencia 600–900 €» y no menciona ni las cuotas ni el enterprise, que ya son argumento de venta con cifra propia.
 
 ---
 
