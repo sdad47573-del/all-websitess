@@ -404,3 +404,29 @@ Perfecto. Solo mejoraría la jerarquía visual (por ejemplo, poner “Contacto�
 ---
 
 paginawebmalaga.es
+
+---
+
+# Huecos de la oferta y plan de acción (4 nov 2026)
+
+Fuente: [`COMPETENCIA-FEATURES.md`](./COMPETENCIA-FEATURES.md) §5.2. Material interno de planificación: qué falta, quién lo tiene y qué haría con cada hueco. **No va publicado en la web** (el sitio solo enseña lo que se vende; esta tabla incluye debilidades propias).
+
+| Feature que sigue faltando | Quién la tiene | Coste de no tenerla | Propuesta concreta |
+|---|---|---|---|
+| WhatsApp / clic para llamar | Prácticamente todos | Fricción en pymes locales; el formulario convierte menos en móvil | Botón flotante de WhatsApp y teléfono clicable en la cabecera y en cada landing de sector |
+| Chatbot / IA | Potencia 69 €/mes | Se queda fuera del discurso «IA» que ya usa la competencia | Respuesta automática por WhatsApp o formulario con IA a 49 €/mes |
+| Accesibilidad (Ley 11/2023) | Malagalogo lo trata; casi nadie lo garantiza | Riesgo legal en ecommerce y sector público | Checklist de accesibilidad en la entrega y declaración de conformidad |
+| Prueba social real | Todos los competidores consolidados | El 0 € se lee como anzuelo | 3 casos con URL, métrica de velocidad y reseña en la home |
+| Multi-idioma con traducción | WOM, Zaliza, TodoBravo | Costa del Sol con cliente extranjero | Traducción profesional como extra, no solo la estructura |
+| Panel tipo WordPress | Zaliza, WOM, WebCraft | La autonomía se promete, pero no se reconoce la herramienta | Demo pública del panel y tutorial en vídeo |
+| Kit Digital | Casi toda Málaga | Segmento con presupuesto subvencionado fuera | Contenido que explique la renuncia, enlazado desde precios y FAQ |
+
+## Orden de ejecución
+
+1. **WhatsApp y teléfono clicable.** El hueco con más impacto y menos coste: número visible en cabecera, footer y landings de sector, y botón flotante en móvil.
+2. **Prueba social real.** Tres casos con URL, métrica de velocidad y reseña; sin esto el 0 € sigue leyéndose como anzuelo.
+3. **Panel y tutorial en vídeo.** Convierte la formación que ya se incluye en una demostración que se puede ver antes de contratar.
+4. **Accesibilidad (Ley 11/2023).** Checklist en la entrega y declaración de conformidad, sobre todo en tiendas y clientes del sector público.
+5. **Chatbot / IA.** Diferenciación, no conversión: después de los cuatro anteriores.
+6. **Multi-idioma con traducción profesional.** Extra para Costa del Sol, nunca como promesa de serie.
+7. **Kit Digital.** No se implanta el servicio: se enlaza el contenido que explica la renuncia desde `/precios/` y la FAQ.
