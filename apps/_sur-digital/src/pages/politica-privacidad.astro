@@ -1,13 +1,19 @@
 ---
+// Política de privacidad (RGPD + LOPDGDD) y única página que informa del
+// almacenamiento local: el sitio no usa cookies (ni analítica ni publicidad),
+// así que no hay banner de consentimiento.
 import { CRUMB_PRIVACIDAD } from "../data/breadcrumbs";
+import { LEGAL } from "../data/legal";
 import Layout from "../layouts/Layout.astro";
 import Topbar from "../components/Topbar.astro";
 import Footer from "../components/Footer.astro";
+
+const MISSING = "[pendiente de completar]";
 ---
 
 <Layout
   title="Política de Privacidad | Sur Digital"
-  description="Política de privacidad de Sur Digital: tratamiento de los datos que compartas con nosotros por LinkedIn conforme al RGPD y la LOPDGDD."
+  description="Política de privacidad de Sur Digital: qué datos tratamos (LinkedIn y logs del hosting), base jurídica, conservación y derechos conforme al RGPD."
   path="/politica-privacidad/"
   breadcrumbs={CRUMB_PRIVACIDAD}
 >
@@ -15,9 +21,12 @@ import Footer from "../components/Footer.astro";
 
   <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
     <article class="container mx-auto px-6 max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-10">
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-3">
         Política de Privacidad
       </h1>
+      <p class="text-sm text-base-content/60 mb-10">
+        Última actualización: {LEGAL.updated}
+      </p>
 
       <div class="flex flex-col gap-6 text-base-content/70 leading-relaxed">
         <section>
@@ -25,8 +34,23 @@ import Footer from "../components/Footer.astro";
             1. Responsable del tratamiento
           </h2>
           <ul class="flex flex-col gap-1">
-            <li><strong>Responsable:</strong> Sur Digital (Jose Aguilar)</li>
-            <li><strong>NIF:</strong> [pendiente de completar]</li>
+            <li><strong>Responsable:</strong> {LEGAL.owner} ({LEGAL.brand})</li>
+            <li><strong>NIF:</strong> {LEGAL.nif || MISSING}</li>
+            <li>
+              <strong>Email:</strong>{" "}
+              {
+                LEGAL.email ? (
+                  <a href={`mailto:${LEGAL.email}`} class="link text-primary">
+                    {LEGAL.email}
+                  </a>
+                ) : (
+                  MISSING
+                )
+              }
+            </li>
+            <li>
+              <strong>Domicilio:</strong> {LEGAL.address}
+            </li>
             <li>
               <strong>Contacto:</strong>
               <a
@@ -37,27 +61,36 @@ import Footer from "../components/Footer.astro";
                 >LinkedIn · sur-digital-malaga</a
               >
             </li>
-            <li>
-              <strong>Domicilio:</strong> C. Marqués de Larios, 11, 29005
-              Málaga
-            </li>
           </ul>
         </section>
 
         <section>
           <h2 class="text-xl font-bold text-base-content mb-2">
-            2. Datos que recogemos y finalidad
+            2. Datos que tratamos y finalidad
           </h2>
           <p>
-            Cuando nos escribes por nuestro perfil de <strong>LinkedIn</strong>
-            treatamos los datos que decidas compartir en esa conversación (como
-            nombre, correo electrónico o empresa). Estos datos se utilizan
-            exclusivamente para <strong>atender tu consulta y enviarte una
-            propuesta</strong> sobre los servicios solicitados.
+            Este sitio no tiene formularios, registro ni área de usuario, así
+            que no recoge datos personales a través de sus páginas. Solo
+            tratamos datos en dos supuestos:
           </p>
+          <ul class="mt-3 flex flex-col gap-2">
+            <li>
+              <strong>Si nos escribes por LinkedIn:</strong> tratamos los datos
+              que decidas compartir en esa conversación (nombre, correo,
+              empresa o teléfono) para atender tu consulta y enviarte una
+              propuesta sobre los servicios solicitados.
+            </li>
+            <li>
+              <strong>Datos técnicos del alojamiento:</strong> el proveedor del
+              servidor registra datos de conexión (dirección IP, fecha y hora,
+              navegador y página solicitada) para mantener la seguridad y la
+              disponibilidad del sitio y para diagnosticar fallos.
+            </li>
+          </ul>
           <p class="mt-3">
-            No empleamos tus datos para enviar publicidad no solicitada ni los
-            cedemos a terceros con fines comerciales.
+            No usamos tus datos para enviar publicidad no solicitada, no
+            elaboramos perfiles y no tomamos decisiones automatizadas con
+            efectos legales sobre ti.
           </p>
         </section>
 
@@ -65,13 +98,19 @@ import Footer from "../components/Footer.astro";
           <h2 class="text-xl font-bold text-base-content mb-2">
             3. Legitimación
           </h2>
-          <p>
-            La base jurídica del tratamiento es tu
-            <strong>consentimiento</strong>, otorgado al escribirnos por
-            LinkedIn (art. 6.1.a del RGPD). Puedes retirarlo en cualquier
-            momento poniéndote en contacto con nosotros, sin efectos
-            retroactivos.
-          </p>
+          <ul class="mt-1 flex flex-col gap-2">
+            <li>
+              <strong>Consultas por LinkedIn:</strong> tu consentimiento (art.
+              6.1.a del RGPD) y, cuando la consulta va dirigida a contratar un
+              servicio, la aplicación de medidas precontractuales a petición
+              tuya (art. 6.1.b). Puedes retirar el consentimiento en cualquier
+              momento, sin efectos retroactivos.
+            </li>
+            <li>
+              <strong>Registros del servidor:</strong> nuestro interés legítimo
+              en mantener el sitio seguro y operativo (art. 6.1.f del RGPD).
+            </li>
+          </ul>
         </section>
 
         <section>
@@ -91,8 +130,8 @@ import Footer from "../components/Footer.astro";
               >.
             </li>
             <li>
-              <strong>Vercel Inc.</strong> (alojamiento web) — cláusulas
-              contractuales tipo; más información en su
+              <strong>Vercel Inc.</strong> (alojamiento web y registros del
+              servidor) — cláusulas contractuales tipo; más información en su
               <a
                 href="https://vercel.com/legal/privacy-policy"
                 class="link text-primary"
@@ -101,6 +140,10 @@ import Footer from "../components/Footer.astro";
               >.
             </li>
           </ul>
+          <p class="mt-3">
+            No cedemos tus datos a terceros con fines comerciales ni los
+            vendemos.
+          </p>
         </section>
 
         <section>
@@ -108,26 +151,40 @@ import Footer from "../components/Footer.astro";
             5. Conservación de los datos
           </h2>
           <p>
-            Conservaremos tus datos durante el tiempo necesario para atender tu
-            solicitud y, en su caso, durante la relación comercial posterior. Si
-            la consulta no deriva en contrato, los datos se eliminarán en un
-            plazo máximo de <strong>12 meses</strong>.
+            Conservamos los datos de tu consulta durante el tiempo necesario
+            para atenderla y, si deriva en una relación comercial, durante la
+            relación y los plazos legales aplicables. Si la consulta no deriva
+            en contrato, se eliminan en un plazo máximo de{" "}
+            <strong>12 meses</strong>. Los registros técnicos del servidor se
+            conservan durante el plazo limitado que fija el proveedor de
+            alojamiento para seguridad y diagnóstico.
           </p>
         </section>
 
         <section>
-          <h2 class="text-xl font-bold text-base-content mb-2">6. Tus derechos</h2>
+          <h2 class="text-xl font-bold text-base-content mb-2">
+            6. Tus derechos
+          </h2>
           <p>
             Puedes ejercer en cualquier momento tus derechos de acceso,
             rectificación, supresión, oposición, limitación del tratamiento y
-            portabilidad escribiendonos por
-            <a
-              href="https://www.linkedin.com/company/sur-digital-malaga"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link text-primary"
-              >LinkedIn</a
-            >. También puedes reclamar ante la
+            portabilidad escribiéndonos{" "}
+            {
+              LEGAL.email ? (
+                <>
+                  a{" "}
+                  <a href={`mailto:${LEGAL.email}`} class="link text-primary">
+                    {LEGAL.email}
+                  </a>
+                </>
+              ) : (
+                <>
+                  por{" "}
+                  <a href="https://www.linkedin.com/company/sur-digital-malaga" target="_blank" rel="noopener noreferrer" class="link text-primary">LinkedIn</a>
+                </>
+              )
+            }{" "}
+            e identificándote correctamente. También puedes reclamar ante la
             <a
               href="https://www.aepd.es"
               class="link text-primary"
@@ -139,19 +196,31 @@ import Footer from "../components/Footer.astro";
 
         <section>
           <h2 class="text-xl font-bold text-base-content mb-2">
-            7. Cookies
+            7. Cookies y almacenamiento local
           </h2>
           <p>
-            Este sitio no utiliza cookies de seguimiento ni analítica propia.
-            reCAPTCHA puede establecer las cookies técnicas necesarias para su
-            funcionamiento, según lo descrito en la política de Google enlazada
-            anteriormente.
+            Este sitio <strong>no usa cookies</strong>: ni propias, ni de
+            analítica, ni publicitarias, ni píxeles de terceros. Por eso no
+            mostramos un banner de cookies: no hay nada que consentir.
           </p>
           <p class="mt-3">
-            En tu primera visita se muestra un aviso de cookies donde puedes
-            aceptar o limitarte a las cookies necesarias. Tu elección se guarda
-            en el propio navegador (localStorage) y puedes cambiarla borrando
-            los datos de navegación del sitio.
+            Sí usamos el almacenamiento local del navegador (localStorage) para
+            recordar preferencias de la interfaz, como el tema claro u oscuro y
+            el cierre de avisos. Esos datos se quedan en tu navegador, no se
+            envían a ningún servidor y son técnicos: sin ellos la preferencia
+            elegida se perdería en cada visita. Puedes borrarlos en cualquier
+            momento desde la configuración de tu navegador.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-base-content mb-2">
+            8. Cambios en esta política
+          </h2>
+          <p>
+            Si cambiamos la forma de tratar datos (por ejemplo, si algún día
+            añadimos analítica o un formulario), actualizaremos esta página y su
+            fecha antes de empezar a usarlos.
           </p>
         </section>
       </div>

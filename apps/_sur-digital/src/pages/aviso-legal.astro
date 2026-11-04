@@ -1,8 +1,14 @@
 ---
+// Aviso legal conforme al art. 10 de la LSSI-CE. El NIF y el email salen de
+// PUBLIC_LEGAL_NIF / PUBLIC_LEGAL_EMAIL (.env local y Vercel): sin esos dos
+// datos la página muestra "pendiente" y el sitio no es conforme.
 import { CRUMB_AVISO } from "../data/breadcrumbs";
+import { LEGAL } from "../data/legal";
 import Layout from "../layouts/Layout.astro";
 import Topbar from "../components/Topbar.astro";
 import Footer from "../components/Footer.astro";
+
+const MISSING = "[pendiente de completar]";
 ---
 
 <Layout
@@ -15,9 +21,12 @@ import Footer from "../components/Footer.astro";
 
   <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
     <article class="container mx-auto px-6 max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-10">
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-3">
         Aviso Legal
       </h1>
+      <p class="text-sm text-base-content/60 mb-10">
+        Última actualización: {LEGAL.updated}
+      </p>
 
       <div class="flex flex-col gap-6 text-base-content/70 leading-relaxed">
         <section>
@@ -31,11 +40,23 @@ import Footer from "../components/Footer.astro";
             web:
           </p>
           <ul class="mt-3 flex flex-col gap-1">
-            <li><strong>Titular:</strong> Sur Digital (Jose Aguilar)</li>
-            <li><strong>NIF:</strong> [pendiente de completar]</li>
             <li>
-              <strong>Domicilio:</strong> C. Marqués de Larios, 11, 29005
-              Málaga
+              <strong>Titular:</strong> {LEGAL.owner} (nombre comercial:{" "}
+              {LEGAL.brand})
+            </li>
+            <li><strong>NIF:</strong> {LEGAL.nif || MISSING}</li>
+            <li><strong>Domicilio:</strong> {LEGAL.address}</li>
+            <li>
+              <strong>Email:</strong>{" "}
+              {
+                LEGAL.email ? (
+                  <a href={`mailto:${LEGAL.email}`} class="link text-primary">
+                    {LEGAL.email}
+                  </a>
+                ) : (
+                  MISSING
+                )
+              }
             </li>
             <li>
               <strong>Contacto:</strong>
@@ -47,18 +68,27 @@ import Footer from "../components/Footer.astro";
                 >LinkedIn · sur-digital-malaga</a
               >
             </li>
-            <li><strong>Sitio web:</strong> sur-digital.vercel.app</li>
+            <li><strong>Sitio web:</strong> {LEGAL.website}</li>
+            <li><strong>Actividad:</strong> {LEGAL.activity}</li>
           </ul>
         </section>
 
         <section>
-          <h2 class="text-xl font-bold text-base-content mb-2">2. Objeto</h2>
+          <h2 class="text-xl font-bold text-base-content mb-2">
+            2. Objeto
+          </h2>
           <p>
             Este sitio web tiene por objeto ofrecer información sobre los
             servicios de diseño web, creación de páginas web, tiendas online,
-            posicionamiento SEO y consultoría digital prestados por Sur Digital,
-            así como permitir el contacto de personas interesadas a través de
-            nuestra página de LinkedIn.
+            posicionamiento SEO y consultoría digital prestados por{" "}
+            {LEGAL.brand}, así como permitir el contacto de personas
+            interesadas a través de nuestra página de LinkedIn.
+          </p>
+          <p class="mt-3">
+            El sitio es informativo: no se venden productos ni servicios
+            directamente en línea ni se cobra ningún pago a través de esta web.
+            Cualquier contratación se acuerda antes por escrito (presupuesto
+            aceptado), con sus condiciones, plazos y precio.
           </p>
         </section>
 
@@ -80,8 +110,8 @@ import Footer from "../components/Footer.astro";
           </h2>
           <p>
             Todos los contenidos de este sitio web (textos, logotipos, imágenes,
-            diseño gráfico y código fuente) son titularidad de Sur Digital o de
-            terceros que han autorizado su uso, y están protegidos por la
+            diseño gráfico y código fuente) son titularidad de {LEGAL.brand} o
+            de terceros que han autorizado su uso, y están protegidos por la
             normativa de propiedad intelectual e industrial. Queda prohibida su
             reproducción, distribución o transformación sin autorización
             expresa del titular.
@@ -90,20 +120,35 @@ import Footer from "../components/Footer.astro";
 
         <section>
           <h2 class="text-xl font-bold text-base-content mb-2">
-            5. Responsabilidad
+            5. Responsabilidad y enlaces
           </h2>
           <p>
             El titular no se responsabiliza de los daños que pudieran derivarse
             de interferencias, omisiones, interrupciones o desconexiones ajenas
             a su control, ni de los contenidos de sitios web de terceros
             enlazados desde este sitio. Los precios e informaciones mostradas
-            son orientativos y pueden actualizarse sin previo aviso.
+            son orientativos y pueden actualizarse sin previo aviso; el
+            presupuesto aceptado por escrito es el que rige cada contratación.
           </p>
         </section>
 
         <section>
           <h2 class="text-xl font-bold text-base-content mb-2">
-            6. Legislación aplicable
+            6. Protección de datos
+          </h2>
+          <p>
+            El tratamiento de los datos personales que nos facilites se explica
+            en la
+            <a href="/politica-privacidad/" class="link text-primary"
+              >política de privacidad</a
+            >, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica
+            3/2018 (LOPDGDD).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-base-content mb-2">
+            7. Legislación aplicable
           </h2>
           <p>
             Las presentes condiciones se rigen por la legislación española. Para
