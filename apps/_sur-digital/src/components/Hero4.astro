@@ -125,6 +125,19 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let booted = false;
 
+    // La descarga del modelo arranca ya, sin esperar a Three.js: son 36 KB que
+    // se bajan mientras llegan los módulos y se monta la escena, y el <head>
+    // de la home la adelanta todavía más con un preload.
+    const modelBytes = fetch(modelSrc).then((response) => {
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText} al pedir ${modelSrc}`);
+      }
+      return response.arrayBuffer();
+    });
+    // Si el arranque falla antes de pedir el modelo, que no quede una promesa
+    // rechazada sin gestionar.
+    modelBytes.catch(() => {});
+
     const boot = async () => {
       if (booted) return;
       booted = true;
@@ -133,12 +146,16 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
       const errorLabel = host.querySelector<HTMLElement>("[data-model3d-error]");
 
       try {
-        const THREE = await import("three");
-        // Entorno de estudio procedural: da reflejos y Fresnel a los materiales
-        // PBR sin descargar un HDR de varios MB.
-        const { RoomEnvironment } = await import(
-          "three/examples/jsm/environments/RoomEnvironment.js"
-        );
+        // Los cuatro módulos se piden a la vez. Antes iban en serie y el GLB
+        // no empezaba a descargarse hasta terminar el último; ahora la red
+        // trabaja en paralelo desde el primer momento.
+        const [THREE, { RoomEnvironment }, { GLTFLoader }, { MeshoptDecoder }] =
+          await Promise.all([
+            import("three"),
+            import("three/examples/jsm/environments/RoomEnvironment.js"),
+            import("three/examples/jsm/loaders/GLTFLoader.js"),
+            import("three/examples/jsm/libs/meshopt_decoder.module.js"),
+          ]);
 
         const renderer = new THREE.WebGLRenderer({
           canvas,
@@ -221,18 +238,26 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         scene.add(stage);
 
         // --- Carga del modelo ---
-        // GLB comprimido con meshoptimizer. El parser y el decodificador se
-        // importan solo aquí, al cargar el modelo.
+        // El GLB llega comprimido con meshoptimizer (36 KB frente a 131 KB en
+        // claro). Como ya se está descargando desde que arrancó el script,
+        // aquí solo se esperan esos bytes y se parsean: nada de red.
         const loadObject = async (src: string): Promise<Object3D> => {
-          const { GLTFLoader } = await import("three/examples/jsm/loaders/GLTFLoader.js");
-          // Sin este decodificador (29 KB) el archivo no abre.
-          const { MeshoptDecoder } = await import(
-            "three/examples/jsm/libs/meshopt_decoder.module.js"
-          );
-          await MeshoptDecoder.ready;
           const loader = new GLTFLoader();
+          // Sin este decodificador el archivo no abre.
           loader.setMeshoptDecoder(MeshoptDecoder);
-          return (await loader.loadAsync(src)).scene;
+          await MeshoptDecoder.ready;
+
+          const data =
+            src === modelSrc
+              ? await modelBytes
+              : await fetch(src).then((response) => {
+                  if (!response.ok) {
+                    throw new Error(`${response.status} al pedir ${src}`);
+                  }
+                  return response.arrayBuffer();
+                });
+
+          return (await loader.parseAsync(data, "")).scene;
         };
 
         // Liberar geometría, materiales y texturas del modelo que se va: los

@@ -53,5 +53,11 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      // En .tmp viven los perfiles de Chrome de las comprobaciones locales: son
+      // miles de archivos que el watcher no necesita y que Windows bloquea
+      // mientras Chrome está abierto (EBUSY en bucle).
+      watch: { ignored: ["**/.tmp/**"] },
+    },
   },
 });
