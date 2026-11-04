@@ -2,31 +2,90 @@
 // Alternar tema claro/oscuro con persistencia. La preferencia del SO manda
 // solo la primera vez (ver script inline en Layout.astro); después manda la
 // elección explícita del usuario guardada en localStorage.
+//
+// Los iconos van como SVG en línea y no como emoji (☀️/🌙): cada sistema pinta
+// los emoji con su tipografía y su color, así que el botón se veía distinto en
+// Windows, Android o iOS y desentonaba con el resto de iconos de la cabecera.
+// Con currentColor heredan el color del tema y del hover.
 ---
 
 <button
-  class="theme-toggle btn btn-ghost btn-circle btn-sm"
+  class="theme-toggle btn btn-ghost btn-circle btn-sm text-base-content/60 hover:text-primary"
   type="button"
   aria-label="Cambiar tema claro/oscuro"
   title="Cambiar tema"
 >
-  <span class="theme-icon-light" aria-hidden="true">☀️</span>
-  <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+  <!-- En tema claro se muestra la luna (invita a pasar a oscuro) y en oscuro
+       el sol. El intercambio lo hace el CSS de abajo, sin JS. -->
+  <span class="theme-icon-dark" aria-hidden="true">
+    <svg
+      class="size-5"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+    </svg>
+  </span>
+
+  <span class="theme-icon-light" aria-hidden="true">
+    <svg
+      class="size-5"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="4"></circle>
+      <path
+        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+      ></path>
+    </svg>
+  </span>
 </button>
 
 <style is:global>
-  /* En claro se ve la luna (invita a oscuro) y en oscuro el sol */
+  /* Solo se pinta el icono del tema contrario al activo. */
+  .theme-icon-light,
+  .theme-icon-dark {
+    display: none;
+  }
   [data-theme="malaga-light"] .theme-icon-dark {
-    display: inline;
-  }
-  [data-theme="malaga-light"] .theme-icon-light {
-    display: none;
-  }
-  [data-theme="malaga-dark"] .theme-icon-dark {
-    display: none;
+    display: inline-flex;
   }
   [data-theme="malaga-dark"] .theme-icon-light {
-    display: inline;
+    display: inline-flex;
+  }
+
+  /* Giro suave al pasar el cursor: el icono responde sin animar el cambio de
+     tema entero. */
+  .theme-toggle svg {
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+  .theme-toggle:hover svg {
+    transform: rotate(-14deg) scale(1.08);
+  }
+  .theme-toggle:focus-visible svg {
+    transform: scale(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle svg {
+      transition: none;
+    }
+    .theme-toggle:hover svg,
+    .theme-toggle:focus-visible svg {
+      transform: none;
+    }
   }
 </style>
 
