@@ -127,9 +127,9 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
           canvas,
           antialias: true,
           alpha: true,
-          powerPreference: "low-power",
+          powerPreference: "high-performance",
         });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50);
@@ -165,9 +165,9 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 
         // Centrar y escalar a partir de su caja real: el GLB viene en unidades
         // de Blender (menos de 1 m), así que sin normalizar saldría diminuto.
-        const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
-        const center = box.getCenter(new THREE.Vector3());
+        const bounds = new THREE.Box3().setFromObject(model);
+        const size = bounds.getSize(new THREE.Vector3());
+        const center = bounds.getCenter(new THREE.Vector3());
 
         const pivot = new THREE.Group();
         model.position.sub(center);
@@ -192,14 +192,20 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         const pointer = { x: 0, y: 0 };
         const gaze = { x: 0, y: 0 };
 
-        const readPointer = (event: PointerEvent) => {
-          const rect = host.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          const clamp = (value: number) => Math.max(-1.6, Math.min(1.6, value)) / 1.6;
+        // El rectángulo se cachea: leerlo en cada pointermove fuerza un recálculo
+        // de layout decenas de veces por segundo y el cursor se nota pegajoso.
+        // Solo se refresca cuando la página se mueve o cambia de tamaño.
+        let box = host.getBoundingClientRect();
+        let boxStale = false;
+        const clampGaze = (value: number) => Math.max(-1.6, Math.min(1.6, value)) / 1.6;
 
-          pointer.x = clamp((event.clientX - centerX) / (rect.width * 0.5));
-          pointer.y = clamp((event.clientY - centerY) / (rect.height * 0.5));
+        const readPointer = (event: PointerEvent) => {
+          if (boxStale) {
+            box = host.getBoundingClientRect();
+            boxStale = false;
+          }
+          pointer.x = clampGaze((event.clientX - (box.left + box.width / 2)) / (box.width * 0.5));
+          pointer.y = clampGaze((event.clientY - (box.top + box.height / 2)) / (box.height * 0.5));
         };
 
         const lookAway = () => {
@@ -208,6 +214,13 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         };
 
         window.addEventListener("pointermove", readPointer, { passive: true });
+        window.addEventListener(
+          "scroll",
+          () => {
+            boxStale = true;
+          },
+          { passive: true }
+        );
         document.addEventListener("pointerleave", lookAway);
         window.addEventListener("blur", lookAway);
 
@@ -232,11 +245,11 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
           const ease = (current: number, target: number, speed: number) =>
             current + (target - current) * Math.min(1, delta * speed);
 
-          gaze.x = ease(gaze.x, pointer.x, 3.4);
-          gaze.y = ease(gaze.y, pointer.y, 3.4);
+          gaze.x = ease(gaze.x, pointer.x, 10);
+          gaze.y = ease(gaze.y, pointer.y, 10);
 
           if (spinTarget !== spin) {
-            spin = ease(spin, spinTarget, 4.2);
+            spin = ease(spin, spinTarget, 7);
             if (Math.abs(spinTarget - spin) < 0.015) {
               spin = 0;
               spinTarget = 0;
@@ -269,6 +282,7 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         // pantalla) hay que repintar el frame estático a mano.
         new ResizeObserver(() => {
           resize();
+          boxStale = true;
           if (!raf) draw(0);
         }).observe(host);
 
