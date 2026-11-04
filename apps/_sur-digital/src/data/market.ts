@@ -146,3 +146,52 @@ export const NATIONAL_COMPARISON: NationalRow[] = [
     edge: "Precio por hora para proyectos pequeños",
   },
 ];
+
+// Matriz completa de funcionalidades: Sur Digital frente a los cuatro
+// modelos que compiten por el mismo cliente (ver COMPETENCIA-FEATURES.md).
+// Cada celda es el texto publicado: «✓»/«✗» y, detrás, la condición.
+export interface FeatureRow {
+  feature: string;
+  us: string;
+  local: string;
+  national: string;
+  kit: string;
+  freelance: string;
+}
+
+export const FEATURE_COMPARISON: FeatureRow[] = [
+  { feature: "Landing de 1 página", us: "✓ 0 €", local: "✓ 250–400 €", national: "✓ 250–950 €", kit: "✓ (dentro del bono)", freelance: "✓" },
+  { feature: "Web corporativa 5–8 páginas", us: "✓ 490 € (5 páginas)", local: "✓ 800–1.290 €", national: "✓ 550–1.900 €", kit: "✓", freelance: "✓" },
+  { feature: "Portfolio / marca personal", us: "✓ 390 €", local: "✓ 400–450 €", national: "✓ 400 €", kit: "✓", freelance: "✓" },
+  { feature: "Tienda online", us: "✓ 890 €", local: "✓ 1.200–3.000 €", national: "✓ 850–6.000 €", kit: "✓", freelance: "✓" },
+  { feature: "Rediseño / migración", us: "parcial (rediseño se presupuesta; migración 90 €)", local: "✓", national: "✓", kit: "✓", freelance: "✓" },
+  { feature: "SEO técnico (sitemap, Search Console, datos estructurados)", us: "✓", local: "parcial", national: "✓", kit: "✓", freelance: "parcial" },
+  { feature: "Ficha de Google Business optimizada", us: "✓ incluida", local: "✓", national: "parcial", kit: "✓", freelance: "parcial" },
+  { feature: "Cuota mensual de SEO", us: "✓ 149 €/mes", local: "✓ 199–400 €/mes", national: "✓", kit: "✓ 12 meses", freelance: "parcial" },
+  { feature: "Gestión de redes sociales", us: "✓ 145 €/mes", local: "✓ 145 €/mes", national: "✓", kit: "✓ 12 meses", freelance: "parcial" },
+  { feature: "Google Ads / SEM", us: "✓ 150 €/mes + inversión aparte", local: "✓ 150–320 €/mes + inversión", national: "✓", kit: "✗", freelance: "parcial" },
+  { feature: "Mantenimiento mensual", us: "✓ 39 €/mes opcional", local: "✓ 25–90 €/mes", national: "✓ 70–90 €/mes", kit: "parcial", freelance: "✓" },
+  { feature: "Mantenimiento anual", us: "✓ 750 €/año (Esencial) y 900 €/año (Gestión)", local: "✗", national: "✓ 750–900 €/año", kit: "✗", freelance: "parcial" },
+  { feature: "Soporte 24/7 para incidencias críticas", us: "✓ monitorización 24/7; respuesta 2 h laborables", local: "parcial", national: "✓", kit: "✗", freelance: "✗" },
+  { feature: "Proyecto enterprise (integraciones, API, SLA)", us: "✓ desde 2.500 €", local: "parcial", national: "✓ 1.500–10.000 €", kit: "✗", freelance: "parcial" },
+  { feature: "Hosting y dominio incluidos", us: "✓ 1.er año (Web Completa)", local: "parcial", national: "parcial", kit: "✓ primer año", freelance: "✗" },
+  { feature: "Dominio y web a nombre del cliente", us: "✓", local: "parcial (Zaliza sí)", national: "parcial", kit: "parcial", freelance: "✓" },
+  { feature: "Panel editable para el cliente", us: "parcial (panel sencillo)", local: "✓ WordPress", national: "✓ WordPress/Shopify", kit: "✓", freelance: "✓" },
+  { feature: "Formación al cliente", us: "✓ sesión de 30 min grabada + guía", local: "✓", national: "✓", kit: "✗", freelance: "parcial" },
+  { feature: "Multi-idioma", us: "✓ extra desde 150 €", local: "✓", national: "✓", kit: "parcial", freelance: "parcial" },
+  { feature: "Formulario + WhatsApp clicable", us: "parcial (formulario; WhatsApp solo en Portfolio y sectores con pedido directo)", local: "✓", national: "✓", kit: "✓", freelance: "✓" },
+  { feature: "Reservas / cita online", us: "parcial (formulario de cita)", local: "✓", national: "✓", kit: "parcial", freelance: "parcial" },
+  { feature: "RGPD (aviso legal y cookies)", us: "parcial (textos los redacta la gestoría)", local: "✓", national: "✓", kit: "✓", freelance: "✗" },
+  { feature: "Accesibilidad (Ley 11/2023)", us: "✗ no declarada", local: "parcial", national: "parcial", kit: "✗", freelance: "✗" },
+  { feature: "Velocidad / Core Web Vitals como objetivo", us: "✓", local: "parcial", national: "✓", kit: "✗", freelance: "✗" },
+  { feature: "Precio publicado en la web", us: "✓", local: "✓ (varios)", national: "parcial", kit: "✗", freelance: "parcial" },
+  { feature: "Precio cerrado por escrito", us: "✓", local: "✓ (Zaliza)", national: "✓", kit: "✗", freelance: "parcial" },
+  { feature: "Plazo publicado", us: "✓ menos de 7 días", local: "✓ 3–4 semanas", national: "✓ 7–15 días", kit: "✗", freelance: "✗" },
+  { feature: "Garantía post-entrega", us: "✓ 30 días de ajustes", local: "parcial (Potencia: 30 días devolución)", national: "✗", kit: "✗", freelance: "✗" },
+  { feature: "Kit Digital", us: "✗ decisión propia", local: "✓ casi todas son agentes", national: "parcial", kit: "✓", freelance: "✗" },
+  { feature: "Chatbot / automatización con IA", us: "✗", local: "✓ 69 €/mes", national: "✓", kit: "✗", freelance: "✗" },
+  { feature: "Blog / contenidos SEO propios", us: "✓", local: "✓", national: "✓", kit: "✗", freelance: "parcial" },
+  { feature: "Casos y reseñas públicas", us: "parcial (portfolio sin URLs ni reseñas)", local: "✓", national: "✓", kit: "✗", freelance: "parcial" },
+  { feature: "Teléfono / WhatsApp visible", us: "✗ (solo LinkedIn y formulario)", local: "✓", national: "✓", kit: "✓", freelance: "✓" },
+  { feature: "Certificado SSL", us: "✓ incluido en todos los planes", local: "✓", national: "✓", kit: "✓", freelance: "parcial" },
+];

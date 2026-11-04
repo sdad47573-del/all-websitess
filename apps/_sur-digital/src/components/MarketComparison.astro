@@ -6,6 +6,7 @@
 // Solo se pinta lo que cada proveedor publica en su web. Si no publica un
 // precio, se escribe «No publicado» o «—» en vez de estimarlo.
 import {
+  FEATURE_COMPARISON,
   MARKET_COMPARISON,
   NATIONAL_COMPARISON,
   MARKET_UPDATED,
@@ -13,6 +14,15 @@ import {
 import { SECTORS } from "../data/sectors";
 
 const totalSectors = SECTORS.length;
+
+// Separa el símbolo del texto de la condición: «✓ 0 €» → icono + «0 €».
+const cell = (value: string) => {
+  if (value.startsWith("✓"))
+    return { mark: "yes" as const, text: value.slice(1).trim() };
+  if (value.startsWith("✗"))
+    return { mark: "no" as const, text: value.slice(1).trim() };
+  return { mark: "text" as const, text: value };
+};
 ---
 
 <section
@@ -175,6 +185,120 @@ const totalSectors = SECTORS.length;
       Datos publicados por cada proveedor el {MARKET_UPDATED} y sujetos a
       cambio. Se compara el catálogo, no la calidad de entrega ni los casos
       reales de cada uno.
+    </p>
+  </div>
+</section>
+
+<!-- Matriz completa: 34 funcionalidades frente a los cuatro modelos de
+     proveedor con los que se compara una pyme local. -->
+<section
+  id="comparativa-funcionalidades"
+  class="pt-14 pb-20 bg-transparent flex flex-col items-center"
+>
+  <div class="container mx-auto px-6 flex flex-col items-center">
+    <h2
+      data-reveal
+      class="text-3xl md:text-4xl font-bold text-base-content text-center"
+    >
+      La comparativa completa, <span class="text-wave">funcionalidad a funcionalidad</span>
+    </h2>
+    <p data-reveal class="text-base-content/70 text-center max-w-2xl mt-3 mb-6">
+      Lo que incluye cada modelo de proveedor, sin quedarse en el precio de la
+      web. <strong>✓</strong> lo incluye, <strong>✗</strong> no lo ofrece y
+      «parcial» lo incluye con condiciones.
+    </p>
+
+    <p data-reveal class="md:hidden text-xs text-base-content/50 mb-4 text-center">
+      Desliza la tabla para comparar las 6 columnas →
+    </p>
+
+    <div
+      data-reveal
+      role="region"
+      aria-label="Matriz de funcionalidades frente a agencia local, agencia nacional, agente Kit Digital y freelance"
+      tabindex="0"
+      class="overflow-x-auto w-full max-w-6xl shadow-lg rounded-box border border-base-300 bg-base-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+    >
+      <table class="table table-sm md:table-md">
+        <caption class="sr-only">
+          Funcionalidades publicadas por Sur Digital, agencia local, agencia
+          nacional, agente Kit Digital y freelance, consultadas el {MARKET_UPDATED}
+        </caption>
+        <thead>
+          <tr class="border-b-base-300">
+            <th scope="col" class="bg-transparent text-start font-bold min-w-56">
+              Funcionalidad
+            </th>
+            <th scope="col" class="bg-primary/5 text-start font-bold min-w-40">
+              Sur Digital
+            </th>
+            <th scope="col" class="bg-transparent text-start font-bold min-w-32">
+              Agencia local (Málaga)
+            </th>
+            <th scope="col" class="bg-transparent text-start font-bold min-w-32">
+              Agencia nacional
+            </th>
+            <th scope="col" class="bg-transparent text-start font-bold min-w-32">
+              Agente Kit Digital
+            </th>
+            <th scope="col" class="bg-transparent text-start font-bold min-w-28">
+              Freelance
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            FEATURE_COMPARISON.map((row) => (
+              <tr class="border-b-base-200 hover:bg-base-200/40 align-top">
+                <th
+                  scope="row"
+                  class="text-start text-xs md:text-sm font-bold"
+                >
+                  {row.feature}
+                </th>
+                {[
+                  row.us,
+                  row.local,
+                  row.national,
+                  row.kit,
+                  row.freelance,
+                ].map((value, index) => {
+                  const { mark, text } = cell(value);
+                  return (
+                    <td
+                      class:list={[
+                        "text-xs md:text-sm",
+                        index === 0 && "bg-primary/5",
+                        mark === "text" && "text-base-content/60",
+                      ]}
+                    >
+                      {mark === "yes" && (
+                        <span class="text-success font-bold" aria-label="Sí">
+                          ✓
+                        </span>
+                      )}
+                      {mark === "no" && (
+                        <span class="text-error font-bold" aria-label="No">
+                          ✗
+                        </span>
+                      )}
+                      {text && (
+                        <span class:list={[mark !== "text" && "ms-1"]}>{text}</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p data-reveal class="text-xs text-base-content/50 mt-6 text-center max-w-2xl">
+      Matriz elaborada con lo que cada proveedor publica el {MARKET_UPDATED}.
+      «Parcial» significa que existe con condiciones (según plan, precio aparte
+      o solo en algunos paquetes), no que se entregue siempre.
     </p>
   </div>
 </section>
