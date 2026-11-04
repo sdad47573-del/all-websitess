@@ -1,15 +1,50 @@
 ---
-// Hero de la home con el modelo 3D del servidor (public/models/hero-modelo.glb).
-// Mantiene el lenguaje visual del resto del sitio: superficies y textos de
-// daisyUI (base-100/200, base-content), botones del tema y tarjeta con borde y
-// sombra como el resto de secciones. Sin tipografías ni paleta propias.
+// Hero de la home con los modelos 3D de public/models. Mantiene el lenguaje
+// visual del resto del sitio: superficies y textos de daisyUI (base-100/200,
+// base-content), botones del tema y tarjeta con borde y sombra como el resto
+// de secciones. Sin tipografías ni paleta propias.
 //
-// Three.js y el modelo se cargan en diferido, solo cuando el hero entra en
-// pantalla. El modelo mira al cursor y da una vuelta completa al hacer clic.
-// Con `prefers-reduced-motion` se apaga el movimiento ambiental, pero la
-// mirada y el giro se mantienen porque los provoca el visitante.
+// Three.js y el primer modelo se cargan en diferido, solo cuando el hero entra
+// en pantalla; el resto se carga al pulsar su botón del selector. El modelo
+// mira al cursor y da una vuelta completa al hacer clic. Con
+// `prefers-reduced-motion` se apaga el movimiento ambiental, pero la mirada y
+// el giro se mantienen porque los provoca el visitante.
 import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
+
+// Galería del hero: un botón por archivo. El formato decide el loader
+// (GLTFLoader, OBJLoader o FBXLoader), que se importa solo al usarlo.
+// Consejo: los GLB por encima de ~10 MB tardan en descargar y en parsear, así
+// que primero van los ligeros.
+type ModelFormat = "glb" | "obj" | "fbx";
+
+// Texturas externas que sustituyen a las que trae el modelo incrustadas
+// (ver applyMaps en el script).
+interface ModelTextures {
+  baseColor?: string;
+  normal?: string;
+  ao?: string;
+  metallicRoughness?: string;
+  // Los normales en DirectX llevan el canal verde invertido respecto a OpenGL.
+  normalIsDirectX?: boolean;
+}
+
+interface ModelEntry {
+  label: string;
+  src: string;
+  format: ModelFormat;
+  textures?: ModelTextures;
+}
+
+const MODELS: ModelEntry[] = [
+  { label: "Hero", src: "/models/hero-modelo.glb", format: "glb" },
+  { label: "Planeta 19", src: "/models/planeta-19.glb", format: "glb" },
+  { label: "Logo IE · OBJ", src: "/models/ie-logo.obj", format: "obj" },
+  { label: "Logo IE · FBX", src: "/models/ie-logo.fbx", format: "fbx" },
+  { label: "Stitch", src: "/models/stitch.glb", format: "glb" },
+  { label: "Monster Store", src: "/models/monster-store.glb", format: "glb" },
+  { label: "Modelo OBJ", src: "/models/objeto-2.obj", format: "obj" },
+];
 ---
 
 <!-- Sin data-reveal a propósito: el hero está siempre por encima del fold,
@@ -93,6 +128,39 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         </p>
       </div>
 
+      <!-- Selector: un botón por modelo de public/models. Va debajo del canvas
+           y fuera de [data-model3d] para que pulsarlo no cuente como clic
+           sobre el modelo (ese clic le da una vuelta completa). -->
+      <div
+        class="mt-4 flex flex-wrap justify-center gap-2"
+        role="group"
+        aria-label="Cambiar de modelo 3D"
+      >
+        {
+          MODELS.map((model, index) => (
+            <button
+              type="button"
+              data-model3d-option
+              data-src={model.src}
+              data-format={model.format}
+              data-label={model.label}
+              data-color-map={model.textures?.baseColor}
+              data-normal-map={model.textures?.normal}
+              data-ao-map={model.textures?.ao}
+              data-metallic-roughness-map={model.textures?.metallicRoughness}
+              data-normal-directx={model.textures?.normalIsDirectX ? "true" : undefined}
+              aria-pressed={index === 0 ? "true" : "false"}
+              class:list={[
+                "btn btn-xs sm:btn-sm",
+                index === 0 ? "btn-primary" : "btn-outline",
+              ]}
+            >
+              {model.label}
+            </button>
+          ))
+        }
+      </div>
+
       <p class="mt-3 text-center text-sm text-base-content/60 lg:text-left">
         La web de tu negocio, pieza a pieza: estructura, contenido y
         posicionamiento local.
@@ -102,15 +170,42 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 </section>
 
 <script>
-  // Modelo 3D del hero con Three.js. Se carga en diferido (Three.js + 1,4 MB de
-  // GLB) y se pausa fuera de pantalla o con la pestaña oculta. El modelo mira al
+  // Galería 3D del hero con Three.js. Se carga en diferido (Three.js + el
+  // primer modelo) y se pausa fuera de pantalla o con la pestaña oculta. Los
+  // modelos se cambian con los botones de debajo del canvas; el modelo mira al
   // cursor todo el rato y da una vuelta completa al hacer clic.
+  import type { Mesh, MeshStandardMaterial, Object3D, Texture } from "three";
+
   const host = document.querySelector<HTMLElement>("[data-model3d]");
   const canvas = host?.querySelector<HTMLCanvasElement>("[data-model3d-canvas]");
+  const optionButtons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-model3d-option]")
+  );
 
   if (host && canvas) {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let booted = false;
+    let selectModel: ((button: HTMLButtonElement) => void) | null = null;
+
+    // Marca visual del botón activo (daisyUI: primario = elegido).
+    const setPressed = (button: HTMLButtonElement) => {
+      for (const option of optionButtons) {
+        const active = option === button;
+        option.setAttribute("aria-pressed", active ? "true" : "false");
+        option.classList.toggle("btn-primary", active);
+        option.classList.toggle("btn-outline", !active);
+      }
+    };
+
+    // Se puede pulsar antes de que el hero termine de arrancar: el botón queda
+    // marcado y boot() carga ese modelo en cuanto termina de preparar la escena.
+    for (const option of optionButtons) {
+      option.addEventListener("click", () => {
+        setPressed(option);
+        selectModel?.(option);
+        void boot();
+      });
+    }
 
     const boot = async () => {
       if (booted) return;
@@ -121,7 +216,6 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
 
       try {
         const THREE = await import("three");
-        const { GLTFLoader } = await import("three/examples/jsm/loaders/GLTFLoader.js");
 
         const renderer = new THREE.WebGLRenderer({
           canvas,
@@ -159,21 +253,206 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         stage.rotation.set(BASE_X, BASE_Y, 0);
         scene.add(stage);
 
-        // --- El modelo ---
-        const gltf = await new GLTFLoader().loadAsync("/models/hero-modelo.glb");
-        const model = gltf.scene;
+        // --- Modelos del selector ---
+        // Un loader por formato, importado solo cuando se usa: así el visitante
+        // que no prueba los OBJ/FBX no descarga sus parsers.
+        const loadObject = async (src: string, format: string): Promise<Object3D> => {
+          if (format === "obj") {
+            const { OBJLoader } = await import("three/examples/jsm/loaders/OBJLoader.js");
+            return await new OBJLoader().loadAsync(src);
+          }
+          if (format === "fbx") {
+            const { FBXLoader } = await import("three/examples/jsm/loaders/FBXLoader.js");
+            return await new FBXLoader().loadAsync(src);
+          }
+          const { GLTFLoader } = await import("three/examples/jsm/loaders/GLTFLoader.js");
+          return (await new GLTFLoader().loadAsync(src)).scene;
+        };
 
-        // Centrar y escalar a partir de su caja real: el GLB viene en unidades
-        // de Blender (menos de 1 m), así que sin normalizar saldría diminuto.
-        const bounds = new THREE.Box3().setFromObject(model);
-        const size = bounds.getSize(new THREE.Vector3());
-        const center = bounds.getCenter(new THREE.Vector3());
+        // Liberar geometría, materiales y texturas del modelo que se va: los
+        // archivos son grandes y sin esto cada cambio dejaría memoria de GPU
+        // retenida hasta recargar la página.
+        const disposeObject = (object: Object3D) => {
+          object.traverse((node) => {
+            const mesh = node as Mesh;
+            if (!mesh.isMesh) return;
+            mesh.geometry.dispose();
+            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            for (const material of materials) {
+              for (const value of Object.values(material as unknown as Record<string, unknown>)) {
+                if (value && (value as Texture).isTexture) (value as Texture).dispose();
+              }
+              material.dispose();
+            }
+          });
+        };
 
-        const pivot = new THREE.Group();
-        model.position.sub(center);
-        pivot.add(model);
-        pivot.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));
-        stage.add(pivot);
+        // Texturas externas (pack del D_Rex): se aplican encima y sustituyen a
+        // las que trae el modelo incrustadas. El normal del pack está en
+        // DirectX, con el canal verde invertido respecto a OpenGL, que es lo
+        // que espera three; el AO se lee de un segundo juego de UVs (uv1).
+        type ExternalMaps = {
+          baseColor?: string;
+          normal?: string;
+          ao?: string;
+          metallicRoughness?: string;
+          normalIsDirectX?: boolean;
+        };
+
+        const applyMaps = async (object: Object3D, maps: ExternalMaps) => {
+          const loader = new THREE.TextureLoader();
+          const [map, normalMap, aoMap, metalnessRoughnessMap] = await Promise.all([
+            maps.baseColor ? loader.loadAsync(maps.baseColor) : null,
+            maps.normal ? loader.loadAsync(maps.normal) : null,
+            maps.ao ? loader.loadAsync(maps.ao) : null,
+            maps.metallicRoughness ? loader.loadAsync(maps.metallicRoughness) : null,
+          ]);
+          if (map) map.colorSpace = THREE.SRGBColorSpace;
+          if (normalMap) normalMap.colorSpace = THREE.NoColorSpace;
+          if (aoMap) aoMap.colorSpace = THREE.NoColorSpace;
+          if (metalnessRoughnessMap) metalnessRoughnessMap.colorSpace = THREE.NoColorSpace;
+
+          // glTF usa flipY = false (lo pone GLTFLoader), pero TextureLoader deja
+          // true: sin esto cada isla del atlas se muestrea volteada y el modelo
+          // sale con manchas de otras partes de la textura.
+          for (const texture of [map, normalMap, aoMap, metalnessRoughnessMap]) {
+            if (texture) texture.flipY = false;
+          }
+
+          object.traverse((node) => {
+            const mesh = node as Mesh;
+            if (!mesh.isMesh) return;
+
+            // Si el modelo solo trae uv0, se reutiliza para el AO.
+            const uv = mesh.geometry.getAttribute("uv");
+            if (aoMap && uv && !mesh.geometry.getAttribute("uv1")) {
+              mesh.geometry.setAttribute("uv1", uv);
+            }
+
+            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            for (const material of materials) {
+              const standard = material as MeshStandardMaterial;
+              if (map) {
+                standard.map = map;
+                standard.color.set(0xffffff);
+              }
+              if (metalnessRoughnessMap) {
+                // Los mapas se multiplican por metalness/roughness: a 1 para que
+                // mande la textura.
+                standard.metalnessMap = metalnessRoughnessMap;
+                standard.roughnessMap = metalnessRoughnessMap;
+                standard.metalness = 1;
+                standard.roughness = 1;
+              } else if (map) {
+                // Sin mapa de metal/rugosidad: material dieléctrico y mate.
+                standard.metalnessMap = null;
+                standard.roughnessMap = null;
+                standard.metalness = 0;
+                standard.roughness = 0.8;
+              }
+              if (normalMap) {
+                standard.normalMap = normalMap;
+                standard.normalScale.set(1, maps.normalIsDirectX ? -1 : 1);
+              }
+              if (aoMap) {
+                standard.aoMap = aoMap;
+                standard.aoMapIntensity = 1;
+              }
+              standard.needsUpdate = true;
+            }
+          });
+        };
+
+        let pivot: Object3D | null = null;
+        let currentSrc = "";
+        let loadToken = 0;
+
+        const showModel = async (
+          src: string,
+          format: string,
+          label: string,
+          maps: ExternalMaps = {}
+        ) => {
+          if (src === currentSrc) return;
+
+          const token = ++loadToken;
+          if (errorLabel) errorLabel.hidden = true;
+          if (loading) {
+            loading.textContent = label ? `Cargando ${label}…` : "Cargando modelo…";
+            loading.hidden = false;
+          }
+
+          let next: Object3D;
+          try {
+            next = await loadObject(src, format);
+          } catch (error) {
+            console.warn(`El modelo 3D ${src} no se ha podido cargar.`, error);
+            if (token === loadToken) {
+              if (loading) loading.hidden = true;
+              if (errorLabel) errorLabel.hidden = false;
+            }
+            return; // se queda el modelo anterior
+          }
+
+          // Mientras cargaba se ha pedido otro modelo: se descarta este.
+          if (token !== loadToken) {
+            disposeObject(next);
+            return;
+          }
+
+          if (maps.baseColor || maps.normal || maps.ao || maps.metallicRoughness) {
+            try {
+              await applyMaps(next, maps);
+            } catch (error) {
+              // Sin texturas externas el modelo se ve igual, con las suyas.
+              console.warn(`No se han podido aplicar las texturas a ${src}.`, error);
+            }
+            if (token !== loadToken) {
+              disposeObject(next);
+              return;
+            }
+          }
+
+          // Centrar y escalar a partir de su caja real: los modelos vienen en
+          // unidades de Blender o de Rhino (a veces centímetros), así que sin
+          // normalizar saldrían diminutos o gigantes.
+          const bounds = new THREE.Box3().setFromObject(next);
+          const size = bounds.getSize(new THREE.Vector3());
+          const center = bounds.getCenter(new THREE.Vector3());
+          next.position.sub(center);
+
+          const group = new THREE.Group();
+          group.add(next);
+          group.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));
+
+          if (pivot) {
+            stage.remove(pivot);
+            disposeObject(pivot);
+          }
+          pivot = group;
+          stage.add(group);
+          currentSrc = src;
+
+          if (loading) loading.hidden = true;
+          if (!raf) draw(0);
+        };
+
+        const mapsFrom = (button: HTMLButtonElement): ExternalMaps => ({
+          baseColor: button.dataset.colorMap,
+          normal: button.dataset.normalMap,
+          ao: button.dataset.aoMap,
+          metallicRoughness: button.dataset.metallicRoughnessMap,
+          normalIsDirectX: button.dataset.normalDirectx === "true",
+        });
+
+        selectModel = (button) => {
+          void showModel(
+            button.dataset.src ?? "",
+            button.dataset.format ?? "glb",
+            button.dataset.label ?? "",
+            mapsFrom(button)
+          );
+        };
 
         // --- Tamaño ---
         const resize = () => {
@@ -306,7 +585,21 @@ import LinkedInIcon from "../icons/LinkedInIcon.astro";
         });
 
         draw(0);
-        if (loading) loading.hidden = true;
+
+        // Primer modelo: el botón marcado (o el primero del selector).
+        const initial =
+          optionButtons.find((option) => option.getAttribute("aria-pressed") === "true") ??
+          optionButtons[0];
+        if (initial) {
+          void showModel(
+            initial.dataset.src ?? "",
+            initial.dataset.format ?? "glb",
+            initial.dataset.label ?? "",
+            mapsFrom(initial)
+          );
+        } else if (loading) {
+          loading.hidden = true;
+        }
       } catch (error) {
         console.warn("El modelo 3D del hero no se ha podido cargar.", error);
         if (loading) loading.hidden = true;
