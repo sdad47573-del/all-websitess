@@ -1,50 +1,21 @@
 ---
-// Hero de la home con los modelos 3D de public/models. Mantiene el lenguaje
+// Hero de la home con el logo 3D de public/models. Mantiene el lenguaje
 // visual del resto del sitio: superficies y textos de daisyUI (base-100/200,
 // base-content), botones del tema y tarjeta con borde y sombra como el resto
 // de secciones. Sin tipografías ni paleta propias.
 //
-// Three.js y el primer modelo se cargan en diferido, solo cuando el hero entra
-// en pantalla; el resto se carga al pulsar su botón del selector. El modelo
-// mira al cursor y da una vuelta completa al hacer clic. Con
-// `prefers-reduced-motion` se apaga el movimiento ambiental, pero la mirada y
+// Three.js y el logo se cargan en diferido, solo cuando el hero entra en
+// pantalla. El logo se balancea solo para dejar ver el volumen, se puede
+// arrastrar para girarlo y da una vuelta completa al hacer clic. Con
+// `prefers-reduced-motion` se apaga el balanceo ambiental, pero el arrastre y
 // el giro se mantienen porque los provoca el visitante.
 import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
 
-// Galería del hero: un botón por archivo. El formato decide el loader
-// (GLTFLoader, OBJLoader o FBXLoader), que se importa solo al usarlo.
-// Consejo: los GLB por encima de ~10 MB tardan en descargar y en parsear, así
-// que primero van los ligeros.
-type ModelFormat = "glb" | "obj" | "fbx";
-
-// Texturas externas que sustituyen a las que trae el modelo incrustadas
-// (ver applyMaps en el script).
-interface ModelTextures {
-  baseColor?: string;
-  normal?: string;
-  ao?: string;
-  metallicRoughness?: string;
-  // Los normales en DirectX llevan el canal verde invertido respecto a OpenGL.
-  normalIsDirectX?: boolean;
-}
-
-interface ModelEntry {
-  label: string;
-  src: string;
-  format: ModelFormat;
-  textures?: ModelTextures;
-}
-
-const MODELS: ModelEntry[] = [
-  { label: "Hero", src: "/models/hero-modelo.glb", format: "glb" },
-  { label: "Planeta 19", src: "/models/planeta-19.glb", format: "glb" },
-  { label: "Logo IE · OBJ", src: "/models/ie-logo.obj", format: "obj" },
-  { label: "Logo IE · FBX", src: "/models/ie-logo.fbx", format: "fbx" },
-  { label: "Stitch", src: "/models/stitch.glb", format: "glb" },
-  { label: "Monster Store", src: "/models/monster-store.glb", format: "glb" },
-  { label: "Modelo OBJ", src: "/models/objeto-2.obj", format: "obj" },
-];
+// Logo del hero: GLB comprimido con meshoptimizer (EXT_meshopt_compression),
+// que lo deja en un tercio del tamaño original; el loader lo decodifica al
+// vuelo al cargarlo.
+const MODEL_SRC = "/models/logo-sur-digital.glb";
 ---
 
 <!-- Sin data-reveal a propósito: el hero está siempre por encima del fold,
@@ -106,9 +77,10 @@ const MODELS: ModelEntry[] = [
     <div class="relative mx-auto w-full max-w-lg lg:mx-0">
       <div
         data-model3d
-        class="relative aspect-square"
+        data-src={MODEL_SRC}
+        class="relative aspect-square cursor-grab touch-pan-y select-none active:cursor-grabbing"
         role="img"
-        aria-label="Modelo 3D interactivo. Mira hacia el cursor y da una vuelta completa al hacer clic."
+        aria-label="Logo 3D interactivo. Se balancea solo, gira al arrastrarlo y da una vuelta completa al hacer clic."
       >
         <canvas data-model3d-canvas class="block h-full w-full" aria-hidden="true"></canvas>
 
@@ -128,39 +100,6 @@ const MODELS: ModelEntry[] = [
         </p>
       </div>
 
-      <!-- Selector: un botón por modelo de public/models. Va debajo del canvas
-           y fuera de [data-model3d] para que pulsarlo no cuente como clic
-           sobre el modelo (ese clic le da una vuelta completa). -->
-      <div
-        class="mt-4 flex flex-wrap justify-center gap-2"
-        role="group"
-        aria-label="Cambiar de modelo 3D"
-      >
-        {
-          MODELS.map((model, index) => (
-            <button
-              type="button"
-              data-model3d-option
-              data-src={model.src}
-              data-format={model.format}
-              data-label={model.label}
-              data-color-map={model.textures?.baseColor}
-              data-normal-map={model.textures?.normal}
-              data-ao-map={model.textures?.ao}
-              data-metallic-roughness-map={model.textures?.metallicRoughness}
-              data-normal-directx={model.textures?.normalIsDirectX ? "true" : undefined}
-              aria-pressed={index === 0 ? "true" : "false"}
-              class:list={[
-                "btn btn-xs sm:btn-sm",
-                index === 0 ? "btn-primary" : "btn-outline",
-              ]}
-            >
-              {model.label}
-            </button>
-          ))
-        }
-      </div>
-
       <p class="mt-3 text-center text-sm text-base-content/60 lg:text-left">
         La web de tu negocio, pieza a pieza: estructura, contenido y
         posicionamiento local.
@@ -170,42 +109,21 @@ const MODELS: ModelEntry[] = [
 </section>
 
 <script>
-  // Galería 3D del hero con Three.js. Se carga en diferido (Three.js + el
-  // primer modelo) y se pausa fuera de pantalla o con la pestaña oculta. Los
-  // modelos se cambian con los botones de debajo del canvas; el modelo mira al
-  // cursor todo el rato y da una vuelta completa al hacer clic.
-  import type { Mesh, MeshStandardMaterial, Object3D, Texture } from "three";
+  // Logo 3D del hero con Three.js. Se carga en diferido (Three.js + el modelo)
+  // y se pausa fuera de pantalla o con la pestaña oculta. El logo se balancea
+  // solo, se puede arrastrar para girarlo y da una vuelta completa al hacer
+  // clic.
+  import type { Mesh, Object3D, Texture } from "three";
 
   const host = document.querySelector<HTMLElement>("[data-model3d]");
   const canvas = host?.querySelector<HTMLCanvasElement>("[data-model3d-canvas]");
-  const optionButtons = Array.from(
-    document.querySelectorAll<HTMLButtonElement>("[data-model3d-option]")
-  );
+  // El script del cliente no ve las constantes del frontmatter: la ruta llega
+  // por data-src.
+  const modelSrc = host?.dataset.src ?? "/models/logo-sur-digital.glb";
 
   if (host && canvas) {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let booted = false;
-    let selectModel: ((button: HTMLButtonElement) => void) | null = null;
-
-    // Marca visual del botón activo (daisyUI: primario = elegido).
-    const setPressed = (button: HTMLButtonElement) => {
-      for (const option of optionButtons) {
-        const active = option === button;
-        option.setAttribute("aria-pressed", active ? "true" : "false");
-        option.classList.toggle("btn-primary", active);
-        option.classList.toggle("btn-outline", !active);
-      }
-    };
-
-    // Se puede pulsar antes de que el hero termine de arrancar: el botón queda
-    // marcado y boot() carga ese modelo en cuanto termina de preparar la escena.
-    for (const option of optionButtons) {
-      option.addEventListener("click", () => {
-        setPressed(option);
-        selectModel?.(option);
-        void boot();
-      });
-    }
 
     const boot = async () => {
       if (booted) return;
@@ -216,6 +134,11 @@ const MODELS: ModelEntry[] = [
 
       try {
         const THREE = await import("three");
+        // Entorno de estudio procedural: da reflejos y Fresnel a los materiales
+        // PBR sin descargar un HDR de varios MB.
+        const { RoomEnvironment } = await import(
+          "three/examples/jsm/environments/RoomEnvironment.js"
+        );
 
         const renderer = new THREE.WebGLRenderer({
           canvas,
@@ -223,27 +146,71 @@ const MODELS: ModelEntry[] = [
           alpha: true,
           powerPreference: "high-performance",
         });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
+        // 1,75 en vez de 2: en pantallas retina se nota el borde, pero por
+        // encima de 1,75 ya no se aprecia y se paga el doble de píxeles.
+        let pixelRatio = Math.min(window.devicePixelRatio || 1, 1.75);
+        renderer.setPixelRatio(pixelRatio);
+        // Sin tone mapping las luces altas se recortan a blanco plano y los
+        // metales quedan sin matices. ACES comprime el rango como una cámara.
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.15;
+        renderer.setClearAlpha(0);
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 50);
-        camera.position.set(0, 0.25, 6.4);
-        camera.lookAt(0, 0, 0);
+        const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
 
-        // Luz de estudio: relleno frío + clave + dos rim lights de marca.
-        scene.add(new THREE.HemisphereLight(0xffffff, 0x16273a, 1.2));
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+        scene.environmentIntensity = 0.7;
+        pmrem.dispose();
 
-        const key = new THREE.DirectionalLight(0xffffff, 2.6);
+        // Luz de estudio: relleno frío + clave + dos rim lights de marca. El
+        // entorno ya aporta luz base, así que el hemisférico baja.
+        scene.add(new THREE.HemisphereLight(0xffffff, 0x16273a, 0.55));
+
+        const key = new THREE.DirectionalLight(0xffffff, 2.4);
         key.position.set(3.2, 4.2, 4.8);
         scene.add(key);
 
-        const rimWarm = new THREE.PointLight(0xffb066, 22, 24, 2);
+        const rimWarm = new THREE.PointLight(0xffb066, 20, 26, 2);
         rimWarm.position.set(-3.2, 1.4, 3.2);
         scene.add(rimWarm);
 
-        const rimCool = new THREE.PointLight(0x2b9bff, 16, 24, 2);
+        const rimCool = new THREE.PointLight(0x2b9bff, 14, 26, 2);
         rimCool.position.set(3.4, -1.4, 2.4);
         scene.add(rimCool);
+
+        // Sombra de contacto: degradado radial en un plano bajo el modelo. Sin
+        // ella el objeto parece flotar en el vacío, sobre todo con fondo claro.
+        const shadowCanvas = document.createElement("canvas");
+        shadowCanvas.width = shadowCanvas.height = 128;
+        const shadowContext = shadowCanvas.getContext("2d");
+        if (shadowContext) {
+          const gradient = shadowContext.createRadialGradient(64, 64, 0, 64, 64, 64);
+          gradient.addColorStop(0, "rgba(10, 25, 40, 0.55)");
+          gradient.addColorStop(0.45, "rgba(10, 25, 40, 0.22)");
+          gradient.addColorStop(1, "rgba(10, 25, 40, 0)");
+          shadowContext.fillStyle = gradient;
+          shadowContext.fillRect(0, 0, 128, 128);
+        }
+        const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
+        shadowTexture.colorSpace = THREE.SRGBColorSpace;
+
+        const contactShadow = new THREE.Mesh(
+          new THREE.PlaneGeometry(1, 1),
+          new THREE.MeshBasicMaterial({
+            map: shadowTexture,
+            transparent: true,
+            opacity: 0.75,
+            depthWrite: false,
+            toneMapped: false,
+          })
+        );
+        contactShadow.rotation.x = -Math.PI / 2;
+        contactShadow.position.y = -1.4;
+        contactShadow.visible = false;
+        contactShadow.renderOrder = -1;
+        scene.add(contactShadow);
 
         const BASE_X = 0;
         const BASE_Y = -0.35;
@@ -253,20 +220,19 @@ const MODELS: ModelEntry[] = [
         stage.rotation.set(BASE_X, BASE_Y, 0);
         scene.add(stage);
 
-        // --- Modelos del selector ---
-        // Un loader por formato, importado solo cuando se usa: así el visitante
-        // que no prueba los OBJ/FBX no descarga sus parsers.
-        const loadObject = async (src: string, format: string): Promise<Object3D> => {
-          if (format === "obj") {
-            const { OBJLoader } = await import("three/examples/jsm/loaders/OBJLoader.js");
-            return await new OBJLoader().loadAsync(src);
-          }
-          if (format === "fbx") {
-            const { FBXLoader } = await import("three/examples/jsm/loaders/FBXLoader.js");
-            return await new FBXLoader().loadAsync(src);
-          }
+        // --- Carga del modelo ---
+        // GLB comprimido con meshoptimizer. El parser y el decodificador se
+        // importan solo aquí, al cargar el modelo.
+        const loadObject = async (src: string): Promise<Object3D> => {
           const { GLTFLoader } = await import("three/examples/jsm/loaders/GLTFLoader.js");
-          return (await new GLTFLoader().loadAsync(src)).scene;
+          // Sin este decodificador (29 KB) el archivo no abre.
+          const { MeshoptDecoder } = await import(
+            "three/examples/jsm/libs/meshopt_decoder.module.js"
+          );
+          await MeshoptDecoder.ready;
+          const loader = new GLTFLoader();
+          loader.setMeshoptDecoder(MeshoptDecoder);
+          return (await loader.loadAsync(src)).scene;
         };
 
         // Liberar geometría, materiales y texturas del modelo que se va: los
@@ -287,104 +253,40 @@ const MODELS: ModelEntry[] = [
           });
         };
 
-        // Texturas externas (pack del D_Rex): se aplican encima y sustituyen a
-        // las que trae el modelo incrustadas. El normal del pack está en
-        // DirectX, con el canal verde invertido respecto a OpenGL, que es lo
-        // que espera three; el AO se lee de un segundo juego de UVs (uv1).
-        type ExternalMaps = {
-          baseColor?: string;
-          normal?: string;
-          ao?: string;
-          metallicRoughness?: string;
-          normalIsDirectX?: boolean;
-        };
-
-        const applyMaps = async (object: Object3D, maps: ExternalMaps) => {
-          const loader = new THREE.TextureLoader();
-          const [map, normalMap, aoMap, metalnessRoughnessMap] = await Promise.all([
-            maps.baseColor ? loader.loadAsync(maps.baseColor) : null,
-            maps.normal ? loader.loadAsync(maps.normal) : null,
-            maps.ao ? loader.loadAsync(maps.ao) : null,
-            maps.metallicRoughness ? loader.loadAsync(maps.metallicRoughness) : null,
-          ]);
-          if (map) map.colorSpace = THREE.SRGBColorSpace;
-          if (normalMap) normalMap.colorSpace = THREE.NoColorSpace;
-          if (aoMap) aoMap.colorSpace = THREE.NoColorSpace;
-          if (metalnessRoughnessMap) metalnessRoughnessMap.colorSpace = THREE.NoColorSpace;
-
-          // glTF usa flipY = false (lo pone GLTFLoader), pero TextureLoader deja
-          // true: sin esto cada isla del atlas se muestrea volteada y el modelo
-          // sale con manchas de otras partes de la textura.
-          for (const texture of [map, normalMap, aoMap, metalnessRoughnessMap]) {
-            if (texture) texture.flipY = false;
-          }
-
-          object.traverse((node) => {
-            const mesh = node as Mesh;
-            if (!mesh.isMesh) return;
-
-            // Si el modelo solo trae uv0, se reutiliza para el AO.
-            const uv = mesh.geometry.getAttribute("uv");
-            if (aoMap && uv && !mesh.geometry.getAttribute("uv1")) {
-              mesh.geometry.setAttribute("uv1", uv);
-            }
-
-            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-            for (const material of materials) {
-              const standard = material as MeshStandardMaterial;
-              if (map) {
-                standard.map = map;
-                standard.color.set(0xffffff);
-              }
-              if (metalnessRoughnessMap) {
-                // Los mapas se multiplican por metalness/roughness: a 1 para que
-                // mande la textura.
-                standard.metalnessMap = metalnessRoughnessMap;
-                standard.roughnessMap = metalnessRoughnessMap;
-                standard.metalness = 1;
-                standard.roughness = 1;
-              } else if (map) {
-                // Sin mapa de metal/rugosidad: material dieléctrico y mate.
-                standard.metalnessMap = null;
-                standard.roughnessMap = null;
-                standard.metalness = 0;
-                standard.roughness = 0.8;
-              }
-              if (normalMap) {
-                standard.normalMap = normalMap;
-                standard.normalScale.set(1, maps.normalIsDirectX ? -1 : 1);
-              }
-              if (aoMap) {
-                standard.aoMap = aoMap;
-                standard.aoMapIntensity = 1;
-              }
-              standard.needsUpdate = true;
-            }
-          });
-        };
-
+        // --- Estado del modelo y de la interacción ---
         let pivot: Object3D | null = null;
         let currentSrc = "";
         let loadToken = 0;
+        let baseScale = 1;
+        // 0 → 1 en la entrada de cada modelo: pequeño "pop" en vez de aparecer
+        // de golpe al cambiar de pieza.
+        let enter = 1;
+        // Radio de la esfera envolvente del modelo ya escalado, para encuadrar.
+        let modelRadius = 1.5;
 
-        const showModel = async (
-          src: string,
-          format: string,
-          label: string,
-          maps: ExternalMaps = {}
-        ) => {
+        // --- Encuadre ---
+        // Ajusta la distancia de cámara al radio real y al aspecto: el modelo
+        // llena el canvas igual en móvil que en escritorio, en vez de depender
+        // de una distancia fija que dejaba piezas diminutas o recortadas.
+        const fitCamera = () => {
+          const vFov = THREE.MathUtils.degToRad(camera.fov);
+          const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+          const distance = (modelRadius * 1.06) / Math.sin(Math.min(vFov, hFov) / 2);
+          camera.position.set(0, 0, Math.max(4.2, distance));
+          camera.lookAt(0, 0, 0);
+          camera.updateProjectionMatrix();
+        };
+
+        const showModel = async (src: string) => {
           if (src === currentSrc) return;
 
           const token = ++loadToken;
           if (errorLabel) errorLabel.hidden = true;
-          if (loading) {
-            loading.textContent = label ? `Cargando ${label}…` : "Cargando modelo…";
-            loading.hidden = false;
-          }
+          if (loading) loading.hidden = false;
 
           let next: Object3D;
           try {
-            next = await loadObject(src, format);
+            next = await loadObject(src);
           } catch (error) {
             console.warn(`El modelo 3D ${src} no se ha podido cargar.`, error);
             if (token === loadToken) {
@@ -400,19 +302,6 @@ const MODELS: ModelEntry[] = [
             return;
           }
 
-          if (maps.baseColor || maps.normal || maps.ao || maps.metallicRoughness) {
-            try {
-              await applyMaps(next, maps);
-            } catch (error) {
-              // Sin texturas externas el modelo se ve igual, con las suyas.
-              console.warn(`No se han podido aplicar las texturas a ${src}.`, error);
-            }
-            if (token !== loadToken) {
-              disposeObject(next);
-              return;
-            }
-          }
-
           // Centrar y escalar a partir de su caja real: los modelos vienen en
           // unidades de Blender o de Rhino (a veces centímetros), así que sin
           // normalizar saldrían diminutos o gigantes.
@@ -423,7 +312,20 @@ const MODELS: ModelEntry[] = [
 
           const group = new THREE.Group();
           group.add(next);
-          group.scale.setScalar(2.8 / Math.max(size.x, size.y, size.z));
+          const scale = 2.8 / Math.max(size.x, size.y, size.z);
+          group.scale.setScalar(scale);
+          baseScale = scale;
+
+          // Encuadre y sombra se calculan del tamaño ya escalado.
+          const scaled = new THREE.Box3().setFromObject(group);
+          modelRadius = scaled.getBoundingSphere(new THREE.Sphere()).radius;
+
+          const spanX = size.x * scale;
+          const spanZ = size.z * scale;
+          const footprint = Math.max(spanX, spanZ, size.y * scale * 0.55);
+          contactShadow.scale.set(footprint * 1.7, footprint * 1.2, 1);
+          contactShadow.position.y = scaled.min.y - 0.03;
+          contactShadow.visible = true;
 
           if (pivot) {
             stage.remove(pivot);
@@ -432,26 +334,12 @@ const MODELS: ModelEntry[] = [
           pivot = group;
           stage.add(group);
           currentSrc = src;
+          enter = 0;
+
+          fitCamera();
 
           if (loading) loading.hidden = true;
           if (!raf) draw(0);
-        };
-
-        const mapsFrom = (button: HTMLButtonElement): ExternalMaps => ({
-          baseColor: button.dataset.colorMap,
-          normal: button.dataset.normalMap,
-          ao: button.dataset.aoMap,
-          metallicRoughness: button.dataset.metallicRoughnessMap,
-          normalIsDirectX: button.dataset.normalDirectx === "true",
-        });
-
-        selectModel = (button) => {
-          void showModel(
-            button.dataset.src ?? "",
-            button.dataset.format ?? "glb",
-            button.dataset.label ?? "",
-            mapsFrom(button)
-          );
         };
 
         // --- Tamaño ---
@@ -462,46 +350,57 @@ const MODELS: ModelEntry[] = [
           renderer.setSize(width, height, false);
           camera.aspect = width / height;
           camera.updateProjectionMatrix();
+          fitCamera();
         };
 
         resize();
 
-        // El modelo mira siempre al cursor: se escucha en toda la ventana y el
-        // ángulo se limita para que nunca llegue a girarse de espaldas.
-        const pointer = { x: 0, y: 0 };
-        const gaze = { x: 0, y: 0 };
+        // --- Arrastre ---
+        // Arrastrar gira la pieza con inercia al soltar; un toque corto (sin
+        // desplazamiento) mantiene el comportamiento anterior de vuelta completa.
+        let dragging = false;
+        let dragDistance = 0;
+        let lastPointerX = 0;
+        let lastPointerY = 0;
+        let yaw = 0;
+        let pitch = 0;
+        let yawVelocity = 0;
 
-        // El rectángulo se cachea: leerlo en cada pointermove fuerza un recálculo
-        // de layout decenas de veces por segundo y el cursor se nota pegajoso.
-        // Solo se refresca cuando la página se mueve o cambia de tamaño.
-        let box = host.getBoundingClientRect();
-        let boxStale = false;
-        const clampGaze = (value: number) => Math.max(-1.6, Math.min(1.6, value)) / 1.6;
-
-        const readPointer = (event: PointerEvent) => {
-          if (boxStale) {
-            box = host.getBoundingClientRect();
-            boxStale = false;
-          }
-          pointer.x = clampGaze((event.clientX - (box.left + box.width / 2)) / (box.width * 0.5));
-          pointer.y = clampGaze((event.clientY - (box.top + box.height / 2)) / (box.height * 0.5));
+        const beginDrag = (event: PointerEvent) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          dragging = true;
+          dragDistance = 0;
+          yawVelocity = 0;
+          lastPointerX = event.clientX;
+          lastPointerY = event.clientY;
+          host.setPointerCapture?.(event.pointerId);
         };
 
-        const lookAway = () => {
-          pointer.x = 0;
-          pointer.y = 0;
+        const moveDrag = (event: PointerEvent) => {
+          if (!dragging) return;
+          const dx = event.clientX - lastPointerX;
+          const dy = event.clientY - lastPointerY;
+          lastPointerX = event.clientX;
+          lastPointerY = event.clientY;
+          dragDistance += Math.abs(dx) + Math.abs(dy);
+
+          yaw += dx * 0.008;
+          pitch = Math.max(-0.45, Math.min(0.45, pitch + dy * 0.004));
+          yawVelocity = dx * 0.008;
         };
 
-        window.addEventListener("pointermove", readPointer, { passive: true });
-        window.addEventListener(
-          "scroll",
-          () => {
-            boxStale = true;
-          },
-          { passive: true }
-        );
-        document.addEventListener("pointerleave", lookAway);
-        window.addEventListener("blur", lookAway);
+        const endDrag = () => {
+          if (!dragging) return;
+          dragging = false;
+          // Menos de 8 px de recorrido: ha sido un clic, no un arrastre.
+          if (dragDistance < 8) spinOnce();
+        };
+
+        host.addEventListener("pointerdown", beginDrag);
+        host.addEventListener("pointermove", moveDrag);
+        host.addEventListener("pointerup", endDrag);
+        host.addEventListener("pointercancel", endDrag);
+        window.addEventListener("pointerup", endDrag);
 
         // Un clic sobre el modelo da una vuelta completa; después vuelve a
         // mirar al cursor, porque 2π y 0 son la misma orientación.
@@ -512,10 +411,10 @@ const MODELS: ModelEntry[] = [
           spinTarget += TAU;
         };
 
-        host.addEventListener("click", spinOnce);
-
+        // --- Bucle ---
         let raf = 0;
         let elapsed = 0;
+        let slowFrames = 0;
         const clock = new THREE.Clock();
 
         const draw = (delta: number) => {
@@ -523,9 +422,6 @@ const MODELS: ModelEntry[] = [
 
           const ease = (current: number, target: number, speed: number) =>
             current + (target - current) * Math.min(1, delta * speed);
-
-          gaze.x = ease(gaze.x, pointer.x, 10);
-          gaze.y = ease(gaze.y, pointer.y, 10);
 
           if (spinTarget !== spin) {
             spin = ease(spin, spinTarget, 7);
@@ -535,25 +431,72 @@ const MODELS: ModelEntry[] = [
             }
           }
 
-          // El flote y el balanceo son ambiente: con reduced-motion se apagan
-          // (multiplicados por 0), pero la mirada y el giro del clic siguen.
+          if (!dragging) {
+            // Inercia del arrastre con decaimiento independiente del framerate.
+            yaw += yawVelocity;
+            yawVelocity *= Math.pow(0.92, delta * 60);
+            if (Math.abs(yawVelocity) < 0.0004) yawVelocity = 0;
+            // El cabeceo vuelve solo a la horizontal: si no, el modelo se queda
+            // torcido y no hay forma evidente de enderezarlo.
+            pitch = ease(pitch, 0, 1.4);
+          }
+
+          // Animación de escaparate: un balanceo lento que enseña el canto del
+          // logo sin llegar a ponerlo de perfil, con flote e inclinación suaves.
+          // Es ambiente: con reduced-motion se apaga (multiplicado por 0), pero
+          // el arrastre y el giro del clic siguen funcionando.
           const ambient = reduceMotion.matches ? 0 : 1;
 
-          stage.rotation.y = BASE_Y + spin + gaze.x * 0.5 + Math.sin(elapsed * 0.34) * 0.03 * ambient;
-          stage.rotation.x = BASE_X + gaze.y * 0.22 + Math.cos(elapsed * 0.29) * 0.015 * ambient;
-          stage.rotation.z = Math.sin(elapsed * 0.22) * 0.012 * ambient - gaze.x * 0.03;
-          stage.position.x = gaze.x * 0.05;
-          stage.position.y = Math.sin(elapsed * 0.62) * 0.04 * ambient - gaze.y * 0.04;
+          stage.rotation.y = BASE_Y + spin + yaw + Math.sin(elapsed * 0.55) * 0.3 * ambient;
+          stage.rotation.x = BASE_X + pitch + Math.sin(elapsed * 0.42) * 0.035 * ambient;
+          stage.rotation.z = Math.cos(elapsed * 0.37) * 0.02 * ambient;
+          stage.position.y = Math.sin(elapsed * 0.7) * 0.05 * ambient;
+
+          // Entrada del modelo: escala de 0,9 a 1 y sube desde un poco abajo.
+          if (pivot && enter < 1) {
+            enter = Math.min(1, enter + delta * 2.6);
+            const eased = 1 - Math.pow(1 - enter, 3);
+            pivot.scale.setScalar(baseScale * (0.9 + 0.1 * eased));
+            pivot.position.y = (1 - eased) * 0.18;
+          }
 
           renderer.render(scene, camera);
         };
 
+        // 30 fps en reposo: el flote es suave y no pide 60. Al arrastrar o al
+        // girar se sube a 60 para que el gesto siga al dedo sin retardo.
+        const FRAME_MS = 1000 / 30;
+        let lastFrame = 0;
+        let lastTick = 0;
+
         const loop = () => {
           raf = requestAnimationFrame(loop);
+          const now = performance.now();
+          const sinceLast = now - lastTick;
+          lastTick = now;
+
           if (document.hidden) {
             clock.getDelta();
             return;
           }
+
+          // Si los frames llegan tarde de forma sostenida (GPU lenta, portátil
+          // en ahorro de energía) se baja la resolución nativa una sola vez. Se
+          // mide la cadencia real: renderer.render encola en el proceso GPU y
+          // vuelve antes de que el trabajo esté hecho.
+          if (pixelRatio > 1 && sinceLast < 900) {
+            slowFrames = sinceLast > 50 ? slowFrames + 1 : 0;
+            if (slowFrames >= 20) {
+              pixelRatio = 1;
+              slowFrames = 0;
+              renderer.setPixelRatio(1);
+              resize();
+            }
+          }
+
+          const frameMs = dragging || spinTarget !== spin ? 1000 / 60 : FRAME_MS;
+          if (now - lastFrame < frameMs) return;
+          lastFrame = now;
           draw(Math.min(clock.getDelta(), 0.05));
         };
 
@@ -561,7 +504,6 @@ const MODELS: ModelEntry[] = [
         // pantalla) hay que repintar el frame estático a mano.
         new ResizeObserver(() => {
           resize();
-          boxStale = true;
           if (!raf) draw(0);
         }).observe(host);
 
@@ -586,20 +528,7 @@ const MODELS: ModelEntry[] = [
 
         draw(0);
 
-        // Primer modelo: el botón marcado (o el primero del selector).
-        const initial =
-          optionButtons.find((option) => option.getAttribute("aria-pressed") === "true") ??
-          optionButtons[0];
-        if (initial) {
-          void showModel(
-            initial.dataset.src ?? "",
-            initial.dataset.format ?? "glb",
-            initial.dataset.label ?? "",
-            mapsFrom(initial)
-          );
-        } else if (loading) {
-          loading.hidden = true;
-        }
+        void showModel(modelSrc);
       } catch (error) {
         console.warn("El modelo 3D del hero no se ha podido cargar.", error);
         if (loading) loading.hidden = true;
