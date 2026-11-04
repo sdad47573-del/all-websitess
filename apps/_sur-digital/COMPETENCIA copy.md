@@ -1,12 +1,3 @@
-# Competencia: consultoras y agencias web en Málaga y España
-
-**Fecha de consulta:** 4 de noviembre de 2026
-**Objeto:** comparar la oferta publicada de Sur Digital con la de consultoras y agencias web que compiten por el mismo cliente (pyme y autónomo local) en Málaga y en el resto de España.
-**Método:** revisión directa de las páginas de precios de cada proveedor (las que publican tarifas) y de directorios de agencias. Solo se recogen cifras que el proveedor publica; cuando el dato viene de un resultado de búsqueda y no de la página, se indica.
-
-> Aviso: la mayoría de agencias **no publica precios**. Eso ya es, en sí, una diferencia: Sur Digital y una minoría de competidores sí los publican.
-
----
 
 ## 1. La oferta de Sur Digital (según el propio sitio)
 
@@ -89,7 +80,6 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 
 5. **Contra el Kit Digital.** Casi todos los competidores malagueños son agentes digitalizadores (bono de 2.000 € para web y otros 2.000 € para SEO). Sur Digital renuncia a ese cliente por principios (burocracia, IVA fuera, plantillas cerradas) y lo argumenta en el blog. Es una postura coherente, pero deja fuera a un segmento con presupuesto subvencionado.
 
-6. **Especialización vertical.** Sur Digital tiene landings por sector y por barrio; en Málaga la tónica es la agencia generalista de marketing (13 de 17 agencias también venden SEO y redes). Especializarse en «web para clínicas dentales en Málaga» compite menos que «diseño web Málaga».
 
 7. **Tecnología propia frente a WordPress.** El argumento de Zaliza y WOM es la autonomía del cliente («lo editas tú, cambias de proveedor cuando quieras»). Sur Digital gana en rendimiento y Core Web Vitals, pero pierde ese argumento si no demuestra un panel sencillo y formación. WordPress es el estándar con el que se compara todo.
 
@@ -113,7 +103,6 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 2. **Explicitar el ahorro**: 490 € frente a 800–1.290 € publicados en Málaga por el mismo alcance. Con la fuente al lado, no como afirmación suelta.
 3. **Convertir la propiedad en demostración**: captura de las credenciales a nombre del cliente y un «así te llevas tu web si te vas».
 4. **Responder a la objeción WordPress** con una demo del panel y una frase: «lo editas tú, y si no quieres, lo hacemos nosotros por 39 €/mes».
-5. **Cerrar el hueco Kit Digital con contenido, no con servicio**: la página que explica por qué no trabajan con él debería estar enlazada desde precios y desde la FAQ.
 6. **Reducir fricción de contacto**: teléfono o WhatsApp junto al formulario. Es lo que hace el 100 % de los competidores revisados.
 7. **Subir prueba social antes que bajar precios**: dos o tres casos con URL, métrica de velocidad y reseña valen más que otro descuento.
 

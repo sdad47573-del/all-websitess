@@ -14,7 +14,9 @@ import Comparison from "../components/Comparison.astro";
 const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
 const pageUrl = `${site}/precios/`;
 
-const priceFaq = [
+// `links` es opcional y solo se pinta en la página: el JSON-LD de abajo usa
+// únicamente q/a, así que el schema se queda en texto plano.
+const priceFaq: { q: string; a: string; links?: { href: string; label: string }[] }[] = [
   {
     q: "¿El 0€ es para siempre o tiene truco?",
     a: "Sin truco: la primera landing (1 página) es gratis de verdad. Solo pedimos que el dominio y el hosting vayan a tu nombre. Si luego quieres más páginas u otros servicios, ahí ya hay precio (cerrado y por escrito).",
@@ -30,6 +32,16 @@ const priceFaq = [
   {
     q: "¿Puedo pagar con el Kit Digital?",
     a: "No trabajamos con Kit Digital. En el blog contamos por qué (burocracia, IVA fuera y plantillas cerradas), y también cómo elegir bien proveedor si tienes la subvención concedida.",
+    links: [
+      {
+        href: "/blog/kit-digital-merece-la-pena/",
+        label: "Por qué no trabajamos con el Kit Digital",
+      },
+      {
+        href: "/blog/kit-digital-fraude-proveedores/",
+        label: "Cómo elegir proveedor si tienes la subvención",
+      },
+    ],
   },
   {
     q: "¿Cómo se paga y cuándo?",
@@ -252,10 +264,23 @@ const offersSchema = {
       </h2>
       <div data-reveal-group class="flex flex-col gap-3">
         {
-          priceFaq.map(({ q, a }) => (
+          priceFaq.map(({ q, a, links }) => (
             <details class="collapse collapse-arrow bg-base-100 shadow-sm">
               <summary class="collapse-title font-bold">{q}</summary>
-              <div class="collapse-content text-base-content/70">{a}</div>
+              <div class="collapse-content text-base-content/70">
+                {a}
+                {links && (
+                  <ul class="mt-2 flex flex-col gap-1">
+                    {links.map(({ href, label }) => (
+                      <li>
+                        <a href={href} class="link link-primary font-bold text-sm">
+                          {label} →
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </details>
           ))
         }
