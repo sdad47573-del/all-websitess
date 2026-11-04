@@ -35,4 +35,4 @@ Y antes de publicar nada, hazte con el control de tu ficha: en [cómo optimizar 
 
 Tienes el detalle de la propuesta en [web para alojamientos turísticos](/web-para-alojamientos/). Si además trabajas el barrio, mira [SEO local en Málaga](/blog/seo-local-malaga-negocios/).
 
-¿Quieres una demo con tus fotos y tu calendario? [Escríbenos por LinkedIn](/&#35;contacto).
+¿Quieres una demo con tus fotos y tu calendario? [Escríbenos por LinkedIn](/contacto/).

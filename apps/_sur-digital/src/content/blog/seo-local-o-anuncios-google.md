@@ -45,4 +45,4 @@ Los negocios que mejor funcionan hacen las dos cosas: **anuncios para el mes, SE
 
 ---
 
-Si quieres saber, gratis, qué haríamos con tu negocio, [cuéntanoslo por LinkedIn](/&#35;contacto) y te lo decimos con números.
+Si quieres saber, gratis, qué haríamos con tu negocio, [cuéntanoslo por LinkedIn](/contacto/) y te lo decimos con números.

@@ -42,6 +42,6 @@ El mapa es tu escaparate real. Las bases ya las conoces si has leído nuestra [g
 
 ---
 
-¿Quieres saber por qué te elige (o no te elige) quien busca taller en tu zona? [Pide la revisión gratuita](/&#35;contacto) y te lo enseñamos con tu ficha delante.
+¿Quieres saber por qué te elige (o no te elige) quien busca taller en tu zona? [Pide la revisión gratuita](/contacto/) y te lo enseñamos con tu ficha delante.
 
 Para situar la inversión, mira [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) y [qué incluye cada plan](/precios/). La propuesta para tu sector está en [nuestras especialidades](/especialidades/).

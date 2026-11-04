@@ -70,7 +70,7 @@ Para la mayoría de negocios locales, una landing es todo lo que necesitas para 
 
 ---
 
-¿Quieres número cerrado para tu proyecto? [Cuéntanos qué necesitas](/&#35;contacto) y te damos presupuesto por escrito en 24h. La primera landing es gratis, con [las condiciones contadas aquí](/blog/lanzamos-sur-digital-oferta/).
+¿Quieres número cerrado para tu proyecto? [Cuéntanos qué necesitas](/contacto/) y te damos presupuesto por escrito en 24h. La primera landing es gratis, con [las condiciones contadas aquí](/blog/lanzamos-sur-digital-oferta/).
 
 Y si quieres ver cuánto cambia la propuesta según el negocio, mira las [webs por sector](/especialidades/): la carta con QR de un restaurante no se parece en nada a la web de un gimnasio.
 

@@ -54,4 +54,4 @@ El resto del tiempo, la web se trabaja: contenido nuevo, reseñas, fotos y veloc
 
 ---
 
-Si quieres saber qué está frenando tu web sin montar un panel nuevo, [escríbenos](/#contacto) y te decimos qué tres cosas mirar primero. Y si aún no tienes claros los precios de partida, están [aquí, con el IVA y las condiciones por escrito](/precios/).
+Si quieres saber qué está frenando tu web sin montar un panel nuevo, [escríbenos](/contacto/) y te decimos qué tres cosas mirar primero. Y si aún no tienes claros los precios de partida, están [aquí, con el IVA y las condiciones por escrito](/precios/).

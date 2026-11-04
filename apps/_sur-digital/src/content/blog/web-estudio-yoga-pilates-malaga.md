@@ -45,4 +45,4 @@ Tienes la propuesta completa en [web para estudios de yoga y pilates](/web-para-
 
 ---
 
-¿Quieres ver cómo quedaría tu estudio con reserva de plaza online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu estudio con reserva de plaza online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

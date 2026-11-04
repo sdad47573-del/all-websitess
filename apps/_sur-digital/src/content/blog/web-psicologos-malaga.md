@@ -45,4 +45,4 @@ Tienes la propuesta completa en [web para psicólogos](/web-para-psicologia/) y,
 
 ---
 
-¿Quieres ver cómo quedaría tu consulta con cita online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu consulta con cita online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

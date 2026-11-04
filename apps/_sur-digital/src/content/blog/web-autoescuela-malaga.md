@@ -45,4 +45,4 @@ Tienes la propuesta completa en [web para autoescuelas](/web-para-autoescuelas/)
 
 ---
 
-¿Quieres ver cómo quedaría tu autoescuela con matrícula online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu autoescuela con matrícula online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

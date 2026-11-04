@@ -59,4 +59,4 @@ No hay Search Console para asistentes, pero sí señales:
 
 ---
 
-Si quieres saber qué ve hoy un asistente cuando le preguntan por tu sector en Málaga, [escríbenos](/#contacto) y lo revisamos juntos. Para lo básico, empieza por [qué es el SEO local](/blog/que-es-el-seo-local/).
+Si quieres saber qué ve hoy un asistente cuando le preguntan por tu sector en Málaga, [escríbenos](/contacto/) y lo revisamos juntos. Para lo básico, empieza por [qué es el SEO local](/blog/que-es-el-seo-local/).

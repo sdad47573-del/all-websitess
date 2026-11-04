@@ -62,4 +62,4 @@ Si quieres que nos encarguemos de todo, en [servicios](/servicios/) tienes cómo
 
 ---
 
-¿Tienes las fotos y no sabes cómo montarlas? [Cuéntanoslo por LinkedIn](/&#35;contacto) y le damos forma sin compromiso.
+¿Tienes las fotos y no sabes cómo montarlas? [Cuéntanoslo por LinkedIn](/contacto/) y le damos forma sin compromiso.

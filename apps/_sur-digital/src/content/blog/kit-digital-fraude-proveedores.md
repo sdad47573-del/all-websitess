@@ -38,10 +38,10 @@ Justificación, plazos de entrega, firmas, informes. Está bien, es dinero públ
 
 ## ¿Merece la pena entonces?
 
-Sí, si eliges proveedor con criterio. No, si te apuntas al primero que te llama prometiéndote el oro. En [Sur Digital](/) no trabajamos con Kit Digital —y aquí [explicamos por qué](/&#35;faq) creemos que sale mejor sin él— pero esta guía vale igual: son las preguntas que deberías hacer a cualquiera que te venda una web.
+Sí, si eliges proveedor con criterio. No, si te apuntas al primero que te llama prometiéndote el oro. En [Sur Digital](/) no trabajamos con Kit Digital —y aquí [explicamos por qué](/faq/) creemos que sale mejor sin él— pero esta guía vale igual: son las preguntas que deberías hacer a cualquiera que te venda una web.
 
 ---
 
 Y si la duda es si coger la ayuda siquiera, haz [el cálculo a 3 años de si merece la pena el Kit Digital](/blog/kit-digital-merece-la-pena/).
 
-¿Te han llegado ya tres ofertas de Kit Digital y no te fías de ninguna? [Escríbenos](/&#35;contacto) y te las revisamos gratis, línea por línea.
+¿Te han llegado ya tres ofertas de Kit Digital y no te fías de ninguna? [Escríbenos](/contacto/) y te las revisamos gratis, línea por línea.

@@ -39,4 +39,4 @@ En el blog tienes la guía paso a paso: [cómo optimizar tu ficha de Google Busi
 
 Todo el detalle en [web para ópticas](/web-para-opticas/). Y si quieres entender el circuito completo, empieza por [qué es el SEO local](/blog/que-es-el-seo-local/).
 
-¿Te preparamos una demo con tu catálogo? [Escríbenos por LinkedIn](/&#35;contacto).
+¿Te preparamos una demo con tu catálogo? [Escríbenos por LinkedIn](/contacto/).

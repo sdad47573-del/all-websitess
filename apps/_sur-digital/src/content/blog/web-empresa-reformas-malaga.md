@@ -39,4 +39,4 @@ Enseñar la obra por WhatsApp funciona, pero solo con quien ya te ha llamado. En
 
 La propuesta completa está en [web para empresas de reformas](/web-para-reformas/), y si te preocupa la credibilidad, mira cómo se construye en [cómo elegir agencia de marketing en Málaga](/blog/elegir-agencia-marketing-malaga/).
 
-¿Te montamos una galería con tus obras? [Escríbenos por LinkedIn](/&#35;contacto).
+¿Te montamos una galería con tus obras? [Escríbenos por LinkedIn](/contacto/).

@@ -82,4 +82,4 @@ El dominio y el hosting van por otro lado: están explicados en [la guía de dom
 
 ---
 
-Si tu correo depende de una cuenta que no controlas, [escríbenos](/#contacto) y te decimos qué pedir y en qué orden. Y si la web está en la misma situación, empieza por [los errores que más se repiten](/blog/errores-web-negocio-local/).
+Si tu correo depende de una cuenta que no controlas, [escríbenos](/contacto/) y te decimos qué pedir y en qué orden. Y si la web está en la misma situación, empieza por [los errores que más se repiten](/blog/errores-web-negocio-local/).

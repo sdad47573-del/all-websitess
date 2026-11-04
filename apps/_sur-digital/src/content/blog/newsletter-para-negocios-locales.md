@@ -64,4 +64,4 @@ Enviar 300 correos desde una cuenta normal acaba en spam y puede limitar tu buz�
 
 ---
 
-Si quieres montar la lista sin depender de nadie y con la baja y el consentimiento bien puestos, [escríbenos](/#contacto). Y si tu problema todavía es que la web no convierte visitas, empieza por [los errores que más se repiten](/blog/errores-web-negocio-local/).
+Si quieres montar la lista sin depender de nadie y con la baja y el consentimiento bien puestos, [escríbenos](/contacto/). Y si tu problema todavía es que la web no convierte visitas, empieza por [los errores que más se repiten](/blog/errores-web-negocio-local/).

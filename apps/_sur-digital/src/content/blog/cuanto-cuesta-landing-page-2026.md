@@ -36,4 +36,4 @@ La primera landing page es **gratis**: 1 página moderna, botón de contacto, en
 
 ---
 
-¿No sabes si con una página tienes bastante? [Cuéntanos tu negocio](/&#35;contacto) y te decimos gratis qué estructura te conviene, sin venderte nada de más.
+¿No sabes si con una página tienes bastante? [Cuéntanos tu negocio](/contacto/) y te decimos gratis qué estructura te conviene, sin venderte nada de más.

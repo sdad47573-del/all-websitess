@@ -29,4 +29,4 @@ Con web hecha, un negocio local típico invierte **unos 200–400 €/mes** entr
 
 ---
 
-¿Quieres que te armemos el presupuesto de tu caso con estos números? [Escríbenos](/&#35;contacto) y lo calculamos gratis, aunque al final lo hagas con otro.
+¿Quieres que te armemos el presupuesto de tu caso con estos números? [Escríbenos](/contacto/) y lo calculamos gratis, aunque al final lo hagas con otro.

@@ -40,4 +40,4 @@ Las [preguntas para filtrar proveedores](/blog/kit-digital-fraude-proveedores/) 
 
 ---
 
-¿Tienes una oferta de Kit Digital delante? [Mándanosla](/&#35;contacto) y la revisamos gratis, línea por línea, con el cálculo a 3 años hecho.
+¿Tienes una oferta de Kit Digital delante? [Mándanosla](/contacto/) y la revisamos gratis, línea por línea, con el cálculo a 3 años hecho.

@@ -87,4 +87,4 @@ Si prefieres que lo revisemos nosotros, mira cómo trabajamos en [servicios](/se
 
 ---
 
-¿Tienes dudas con alguno de los doce? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te decimos por dónde empezar sin compromiso.
+¿Tienes dudas con alguno de los doce? [Cuéntanoslo por LinkedIn](/contacto/) y te decimos por dónde empezar sin compromiso.

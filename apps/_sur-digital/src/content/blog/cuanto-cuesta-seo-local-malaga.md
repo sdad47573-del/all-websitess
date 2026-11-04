@@ -40,5 +40,5 @@ El SEO local no es instantáneo. Lo que se mueve pronto y lo que tarda lo tienes
 
 ---
 
-Si quieres un presupuesto de SEO local con precio cerrado y sin permanencia, [escríbenos por LinkedIn](/&#35;contacto) y te decimos qué haríamos el primer mes y cuánto costaría.
+Si quieres un presupuesto de SEO local con precio cerrado y sin permanencia, [escríbenos por LinkedIn](/contacto/) y te decimos qué haríamos el primer mes y cuánto costaría.
 

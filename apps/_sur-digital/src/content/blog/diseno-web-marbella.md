@@ -39,4 +39,4 @@ Y desconfía del "posicionamiento garantizado en Marbella": quien lo garantiza, 
 
 ---
 
-¿Tienes negocio en Marbella, Fuengirola o Estepona? [Cuéntanoslo](/&#35;contacto): primer borrador en 2–3 días y la primera landing gratis, estés donde estés de la costa. English version: [web design in Marbella](/web-design-marbella/).
+¿Tienes negocio en Marbella, Fuengirola o Estepona? [Cuéntanoslo](/contacto/): primer borrador en 2–3 días y la primera landing gratis, estés donde estés de la costa. English version: [web design in Marbella](/web-design-marbella/).

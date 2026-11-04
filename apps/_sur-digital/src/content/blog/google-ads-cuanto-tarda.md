@@ -26,4 +26,4 @@ Si a las 6–8 semanas, con presupuesto suficiente y todo medido, no hay llamada
 
 ---
 
-¿Quieres saber en qué fase está tu cuenta? [Escríbenos](/&#35;contacto) y la revisamos gratis.
+¿Quieres saber en qué fase está tu cuenta? [Escríbenos](/contacto/) y la revisamos gratis.

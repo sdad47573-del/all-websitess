@@ -74,4 +74,4 @@ Si el problema es que llegan pocos contactos, empieza por [la ficha de Google](/
 
 ---
 
-Si quieres que la web no pierda consultas por el camino, [escríbenos](/#contacto) y revisamos el formulario, el canal y la respuesta. Y si aún estás montando la web, mira [cuántas páginas necesitas](/blog/cuantas-paginas-debe-tener-tu-web/).
+Si quieres que la web no pierda consultas por el camino, [escríbenos](/contacto/) y revisamos el formulario, el canal y la respuesta. Y si aún estás montando la web, mira [cuántas páginas necesitas](/blog/cuantas-paginas-debe-tener-tu-web/).

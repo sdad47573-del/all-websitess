@@ -76,4 +76,4 @@ Y si estás decidiendo el mapa completo del sitio, empieza por [cuántas página
 
 ---
 
-Si estás abriendo la segunda sede y no quieres que las dos compitan en Google, [escríbenos](/#contacto) y lo montamos con una estructura que aguante la tercera.
+Si estás abriendo la segunda sede y no quieres que las dos compitan en Google, [escríbenos](/contacto/) y lo montamos con una estructura que aguante la tercera.

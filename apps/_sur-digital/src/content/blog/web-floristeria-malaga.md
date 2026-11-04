@@ -45,4 +45,4 @@ Tienes la propuesta completa en [web para floristerías](/web-para-floristerias/
 
 ---
 
-¿Quieres ver cómo quedaría tu floristería con pedidos online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu floristería con pedidos online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

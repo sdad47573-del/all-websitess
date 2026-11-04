@@ -46,4 +46,4 @@ Empieza por **ficha y reseñas**, que son lo primero que se mueve. La web es el 
 
 Si tu ficha ya está completa y aun así no sales en el mapa, mira [cómo salir en Google Maps en Málaga y Marbella](/blog/salir-en-google-maps-malaga/). Si un día desaparece de golpe, no es un misterio: [qué hacer con una ficha suspendida](/blog/perfil-google-business-suspendido/). Y cuando llegue una reseña dura, [cómo responderla sin empeorarla](/blog/resenas-negativas-google-como-responder/).
 
-Si quieres que revisemos tu ficha punto por punto, en Sur Digital lo hacemos gratis junto con la primera landing. [Cuéntanoslo por LinkedIn](/&#35;contacto) y te decimos qué falta.
+Si quieres que revisemos tu ficha punto por punto, en Sur Digital lo hacemos gratis junto con la primera landing. [Cuéntanoslo por LinkedIn](/contacto/) y te decimos qué falta.

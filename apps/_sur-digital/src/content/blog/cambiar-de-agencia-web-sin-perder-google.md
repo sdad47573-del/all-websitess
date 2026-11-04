@@ -69,4 +69,4 @@ Un traspaso bien hecho no mueve posiciones. Uno mal hecho tarda meses en recuper
 
 ---
 
-Si estás en mitad de un cambio y no tienes los accesos, [escríbenos](/#contacto): te decimos qué pedir exactamente y en qué orden. Y si lo que quieres es que tu web deje de depender de una agencia para cambiar un horario, mira el [mantenimiento sin permanencia](/blog/mantenimiento-web-20-euros-mes/).
+Si estás en mitad de un cambio y no tienes los accesos, [escríbenos](/contacto/): te decimos qué pedir exactamente y en qué orden. Y si lo que quieres es que tu web deje de depender de una agencia para cambiar un horario, mira el [mantenimiento sin permanencia](/blog/mantenimiento-web-20-euros-mes/).

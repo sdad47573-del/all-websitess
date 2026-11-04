@@ -67,4 +67,4 @@ Puedes, pero solo redirige lo que controlas. Si el antiguo ya no es tuyo, no hay
 
 ---
 
-¿Te has quedado sin web o sin correo por un dominio caducado? [Escríbenos](/#contacto) y lo revisamos antes de que la situación empeore. Y si el problema es que no tienes claro quién gestiona tus accesos, empieza por [este checklist](/blog/cambiar-de-agencia-web-sin-perder-google/).
+¿Te has quedado sin web o sin correo por un dominio caducado? [Escríbenos](/contacto/) y lo revisamos antes de que la situación empeore. Y si el problema es que no tienes claro quién gestiona tus accesos, empieza por [este checklist](/blog/cambiar-de-agencia-web-sin-perder-google/).

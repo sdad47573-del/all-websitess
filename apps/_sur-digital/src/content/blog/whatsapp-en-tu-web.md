@@ -58,4 +58,4 @@ Si quieres que montemos los tres canales bien conectados en tu web, mira cómo t
 
 ---
 
-¿Quieres que tu web no pierda ni un mensaje? [Cuéntanoslo por LinkedIn](/&#35;contacto) y lo revisamos sin compromiso.
+¿Quieres que tu web no pierda ni un mensaje? [Cuéntanoslo por LinkedIn](/contacto/) y lo revisamos sin compromiso.

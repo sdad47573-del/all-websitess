@@ -37,4 +37,4 @@ En Sur Digital, **la primera landing page es gratis**, se entrega en **menos de 
 
 Tienes la propuesta completa en [web para centros de estética](/web-para-estetica/), y si quieres entender por qué el precio público convierte mejor, lee [¿publicar los precios en tu web?](/blog/publicar-precios-en-la-web/).
 
-¿Te montamos una demo con tus servicios y tus precios? [Escríbenos por LinkedIn](/&#35;contacto).
+¿Te montamos una demo con tus servicios y tus precios? [Escríbenos por LinkedIn](/contacto/).

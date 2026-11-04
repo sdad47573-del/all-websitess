@@ -38,4 +38,4 @@ La web de una asesoría debe ser informativa y sobria: sin promesas de resultado
 
 Detalle completo en [web para gestorías](/web-para-asesorias/). Y si te preocupa el encuadre legal del sitio, mira cómo lo resolvemos en [web para abogados](/blog/web-abogados-conseguir-clientes/).
 
-¿Quieres una propuesta para tu despacho? [Cuéntanoslo por LinkedIn](/&#35;contacto).
+¿Quieres una propuesta para tu despacho? [Cuéntanoslo por LinkedIn](/contacto/).

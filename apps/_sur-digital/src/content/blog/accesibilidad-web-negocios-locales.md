@@ -56,4 +56,4 @@ Si vendes online, si tu web es la única vía de contacto o si recibes quejas de
 
 ---
 
-¿Quieres saber por dónde empezar en tu web? [Escríbenos](/#contacto) y te decimos los tres arreglos con más impacto en tu caso. Mientras tanto, esto va de lo mismo que la velocidad: [una web lenta también excluye](/blog/pagespeed-negocios-locales/).
+¿Quieres saber por dónde empezar en tu web? [Escríbenos](/contacto/) y te decimos los tres arreglos con más impacto en tu caso. Mientras tanto, esto va de lo mismo que la velocidad: [una web lenta también excluye](/blog/pagespeed-negocios-locales/).

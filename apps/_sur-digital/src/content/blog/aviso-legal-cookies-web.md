@@ -63,4 +63,4 @@ Y si tu web está a punto de salir, repasa la [checklist para lanzar la web de t
 
 ---
 
-¿No sabes si tu web cumple? [Cuéntanoslo por LinkedIn](/&#35;contacto) y le echamos un ojo sin compromiso.
+¿No sabes si tu web cumple? [Cuéntanoslo por LinkedIn](/contacto/) y le echamos un ojo sin compromiso.

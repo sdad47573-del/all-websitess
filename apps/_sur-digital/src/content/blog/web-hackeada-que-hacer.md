@@ -63,4 +63,4 @@ Doble factor en hosting y panel, actualizaciones automáticas, copias de segurid
 
 ---
 
-Si tu web está redirigiendo o Google la ha marcado, [escríbenos](/#contacto) y lo miramos antes de tocar nada. Y si estás a tiempo de prevenir, empieza por [revisar los errores que más se repiten](/blog/errores-web-negocio-local/).
+Si tu web está redirigiendo o Google la ha marcado, [escríbenos](/contacto/) y lo miramos antes de tocar nada. Y si estás a tiempo de prevenir, empieza por [revisar los errores que más se repiten](/blog/errores-web-negocio-local/).

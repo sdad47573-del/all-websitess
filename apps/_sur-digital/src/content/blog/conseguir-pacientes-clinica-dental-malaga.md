@@ -34,4 +34,4 @@ Web dental con páginas por tratamiento, primera visita destacada y reseñas int
 
 ---
 
-¿Tu clínica vive del boca a boca y quieres que Google trabaje también? [Escríbenos](/&#35;contacto) y te decimos gratis qué le falta a tu presencia actual, por orden de impacto.
+¿Tu clínica vive del boca a boca y quieres que Google trabaje también? [Escríbenos](/contacto/) y te decimos gratis qué le falta a tu presencia actual, por orden de impacto.

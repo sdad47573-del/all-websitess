@@ -38,4 +38,4 @@ Tienda online completa por **890€**: catálogo, carrito, pasarela de pago, env
 
 ---
 
-¿Vendes ya por WhatsApp o Instagram y quieres pasar a tienda propia? [Cuéntanos tu catálogo](/#contacto) y te damos presupuesto cerrado en 24h.
+¿Vendes ya por WhatsApp o Instagram y quieres pasar a tienda propia? [Cuéntanos tu catálogo](/contacto/) y te damos presupuesto cerrado en 24h.

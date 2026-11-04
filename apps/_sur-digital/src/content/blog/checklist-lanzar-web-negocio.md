@@ -57,4 +57,4 @@ No se acaba: actualiza fotos, pide reseñas y añade una página nueva cada vez 
 
 ---
 
-Si prefieres que lo hagamos nosotros, **la primera landing page es gratis y sale con toda esta checklist hecha**, en menos de 7 días y todo a tu nombre. [Escríbenos por LinkedIn](/&#35;contacto).
+Si prefieres que lo hagamos nosotros, **la primera landing page es gratis y sale con toda esta checklist hecha**, en menos de 7 días y todo a tu nombre. [Escríbenos por LinkedIn](/contacto/).

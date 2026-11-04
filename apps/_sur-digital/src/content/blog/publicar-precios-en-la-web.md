@@ -69,4 +69,4 @@ Una tarifa bien publicada es una de las páginas que más tráfico recibe y más
 
 ---
 
-¿Tienes la tarifa lista y no sabes cómo encajarla en la web? [Escríbenos](/&#35;contacto) y la montamos con el resto de la página, sin "consúltanos".
+¿Tienes la tarifa lista y no sabes cómo encajarla en la web? [Escríbenos](/contacto/) y la montamos con el resto de la página, sin "consúltanos".

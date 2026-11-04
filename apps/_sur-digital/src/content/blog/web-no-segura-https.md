@@ -67,4 +67,4 @@ Y si el dominio está en el aire, hay otra prioridad: [en qué fase está y cóm
 
 ---
 
-Si el navegador está marcando tu web y no sabes de dónde viene, [escríbenos](/#contacto) con el dominio y te decimos qué está fallando antes de tocar nada. Y si lo que quieres es no volver a pensar en esto, mira [qué debe incluir un mantenimiento honesto](/blog/mantenimiento-web-20-euros-mes/).
+Si el navegador está marcando tu web y no sabes de dónde viene, [escríbenos](/contacto/) con el dominio y te decimos qué está fallando antes de tocar nada. Y si lo que quieres es no volver a pensar en esto, mira [qué debe incluir un mantenimiento honesto](/blog/mantenimiento-web-20-euros-mes/).

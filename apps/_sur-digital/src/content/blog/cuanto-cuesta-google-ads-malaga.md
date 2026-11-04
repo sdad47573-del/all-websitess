@@ -48,4 +48,4 @@ Y si lo que quieres es no pagar por cada visita, empieza por [cuánto cuesta el 
 
 ---
 
-¿Quieres saber si los anuncios te salen a cuenta? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo calculamos sin compromiso.
+¿Quieres saber si los anuncios te salen a cuenta? [Cuéntanoslo por LinkedIn](/contacto/) y te lo calculamos sin compromiso.

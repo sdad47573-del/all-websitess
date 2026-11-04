@@ -40,4 +40,4 @@ El mapa es hiperlocal: posicionas por zonas, no por ciudades enteras. Si trabaja
 
 ---
 
-¿Tu ficha existe pero no sale ni para tu propio nombre? [Escríbenos](/&#35;contacto): la auditamos gratis y te decimos qué le falta, por orden de impacto.
+¿Tu ficha existe pero no sale ni para tu propio nombre? [Escríbenos](/contacto/): la auditamos gratis y te decimos qué le falta, por orden de impacto.

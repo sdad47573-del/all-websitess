@@ -33,4 +33,4 @@ Los anuncios dan clientes esta semana; [el SEO los da gratis dentro de meses](/b
 
 ---
 
-¿Quieres que revisemos tu cuenta antes de seguir gastando? [Escríbenos](/&#35;contacto) y la auditamos gratis, aunque la gestione otro.
+¿Quieres que revisemos tu cuenta antes de seguir gastando? [Escríbenos](/contacto/) y la auditamos gratis, aunque la gestione otro.

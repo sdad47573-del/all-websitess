@@ -54,4 +54,4 @@ Depende de tu tiempo. Si sacas una tarde al mes, puedes llevar los puntos 1, 2, 
 
 ---
 
-¿Quieres saber por dónde empezar con tu negocio? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo decimos sin compromiso.
+¿Quieres saber por dónde empezar con tu negocio? [Cuéntanoslo por LinkedIn](/contacto/) y te lo decimos sin compromiso.

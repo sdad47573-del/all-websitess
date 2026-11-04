@@ -46,4 +46,4 @@ Tienes la propuesta completa en [web para escuelas infantiles](/web-para-guarder
 
 ---
 
-¿Quieres ver cómo quedaría tu escuela con solicitud de plaza online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu escuela con solicitud de plaza online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

@@ -52,4 +52,4 @@ Y si el formulario no llega a nadie (ni spam ni consultas), el problema es de co
 
 ---
 
-¿Tu formulario recibe más basura que consultas? [Cuéntanoslo](/#contacto) y lo dejamos con honeypot, límite de envíos y validación en servidor, sin captchas que espanten clientes. Si la web es nueva, mira antes la [checklist para lanzarla](/blog/checklist-lanzar-web-negocio/).
+¿Tu formulario recibe más basura que consultas? [Cuéntanoslo](/contacto/) y lo dejamos con honeypot, límite de envíos y validación en servidor, sin captchas que espanten clientes. Si la web es nueva, mira antes la [checklist para lanzarla](/blog/checklist-lanzar-web-negocio/).

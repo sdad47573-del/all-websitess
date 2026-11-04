@@ -19,7 +19,7 @@ Pide ver **webs publicadas y funcionando**, no mockups de Photoshop. Comprueba q
 
 ## 3. Preguntar quién es el dueño del dominio
 
-Pregunta directa: **"¿El dominio y la web quedarán a mi nombre?"**. Si la respuesta es "nosotros te lo gestionamos", estás firmado a la agencia de por vida. Es [el error más caro del sector](/blog/dominio-hosting-negocios-guia/), y nosotros lo dejamos claro desde el [principio](/#comparativa): todo a tu nombre.
+Pregunta directa: **"¿El dominio y la web quedarán a mi nombre?"**. Si la respuesta es "nosotros te lo gestionamos", estás firmado a la agencia de por vida. Es [el error más caro del sector](/blog/dominio-hosting-negocios-guia/), y nosotros lo dejamos claro desde el [principio](/precios/): todo a tu nombre.
 
 ## 4. Exigir precio cerrado
 
@@ -36,4 +36,4 @@ Un presupuesto profesional detalla qué incluye (páginas, revisiones, SEO bási
 
 El mejor diseñador web de Málaga **para ti** es el que tenga proyectos reales en tu sector, te deje el dominio a tu nombre y te dé un precio cerrado sin permanencia. Si reúnes esas tres condiciones, el resto es gustos.
 
-[¿Hablamos de tu proyecto?](/&#35;contacto) La primera landing es gratis, así que el riesgo es cero.
+[¿Hablamos de tu proyecto?](/contacto/) La primera landing es gratis, así que el riesgo es cero.

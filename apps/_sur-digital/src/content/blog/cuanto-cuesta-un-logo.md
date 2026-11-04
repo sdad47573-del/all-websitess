@@ -56,4 +56,4 @@ Es otro trámite y otro presupuesto: la solicitud en la OEPM ronda los 150 € p
 
 ---
 
-¿Necesitas logo y web a la vez y no sabes qué pedir primero? [Escríbenos](/#contacto) y te decimos el orden que ahorra dinero en tu caso. Si vienes de una web antigua, mira también [cuándo merece la pena rediseñar](/blog/rediseno-web-7-senales/).
+¿Necesitas logo y web a la vez y no sabes qué pedir primero? [Escríbenos](/contacto/) y te decimos el orden que ahorra dinero en tu caso. Si vienes de una web antigua, mira también [cuándo merece la pena rediseñar](/blog/rediseno-web-7-senales/).

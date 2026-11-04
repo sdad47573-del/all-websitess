@@ -44,6 +44,6 @@ Depende de tu actividad, y esto es terreno de tu gestoría, no de una web de age
 
 ---
 
-¿Estás valorando usar tu bono para la web? [Escríbenos](/&#35;contacto) y te decimos con números en la mano si te sale a cuenta, aunque no sea con nosotros.
+¿Estás valorando usar tu bono para la web? [Escríbenos](/contacto/) y te decimos con números en la mano si te sale a cuenta, aunque no sea con nosotros.
 
 Y para situar el coste de mercado fuera del Kit Digital, aquí tienes [precios reales de una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/).

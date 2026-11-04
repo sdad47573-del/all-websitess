@@ -34,4 +34,4 @@ El marco de [precios reales en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/
 
 ---
 
-¿Ya empezaste tu web y está a medias? [Cuéntanoslo](/&#35;contacto): la terminamos o la reheacemos con precio cerrado, sin juzgar el punto de partida.
+¿Ya empezaste tu web y está a medias? [Cuéntanoslo](/contacto/): la terminamos o la reheacemos con precio cerrado, sin juzgar el punto de partida.

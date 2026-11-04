@@ -45,4 +45,4 @@ Tienes la propuesta completa en [web para electricistas y fontaneros](/web-para-
 
 ---
 
-¿Quieres ver cómo quedaría tu oficio con avisos online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu oficio con avisos online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

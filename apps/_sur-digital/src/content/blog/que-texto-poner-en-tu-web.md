@@ -89,4 +89,4 @@ Con las respuestas ya tienes portada, servicios y FAQ. Si además quieres que el
 
 ---
 
-Si tienes claro lo que vendes y no cómo contarlo, [escríbenos](/#contacto) y lo redactamos a partir de una llamada. También puedes ver [cómo trabajamos cada página](/precios/) antes de decidir.
+Si tienes claro lo que vendes y no cómo contarlo, [escríbenos](/contacto/) y lo redactamos a partir de una llamada. También puedes ver [cómo trabajamos cada página](/precios/) antes de decidir.

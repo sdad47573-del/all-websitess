@@ -71,4 +71,4 @@ Y si la queja es real, la respuesta más rentable no es la del dueño: es cambia
 
 ---
 
-¿Tienes una reseña que no sabes cómo contestar? [Escríbenos](/#contacto) con el texto y te pasamos una respuesta en 24 horas. Y si el problema es que no recibes reseñas, empieza por [tu ficha de Google](/blog/ficha-google-business-optimizada/).
+¿Tienes una reseña que no sabes cómo contestar? [Escríbenos](/contacto/) con el texto y te pasamos una respuesta en 24 horas. Y si el problema es que no recibes reseñas, empieza por [tu ficha de Google](/blog/ficha-google-business-optimizada/).

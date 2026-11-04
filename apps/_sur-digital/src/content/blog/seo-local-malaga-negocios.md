@@ -54,7 +54,7 @@ Cada sede necesita su ficha con horario y mapa propios, más una página conjunt
 
 ---
 
-¿Quieres que revisemos tu ficha de Google Business y tu web sin coste? [Pide tu revisión gratuita](/&#35;contacto) y te contamos qué te falta para salir en el mapa.
+¿Quieres que revisemos tu ficha de Google Business y tu web sin coste? [Pide tu revisión gratuita](/contacto/) y te contamos qué te falta para salir en el mapa.
 
 Y si lo que falla es la velocidad, empieza por [aquí](/blog/pagespeed-negocios-locales/).
 

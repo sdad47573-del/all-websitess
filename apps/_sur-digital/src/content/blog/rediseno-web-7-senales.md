@@ -42,6 +42,6 @@ Depende del tamaño, pero los rangos de mercado para un negocio local están ent
 
 ---
 
-¿No sabes si tu caso es rediseño o arreglo? [Escríbenos](/&#35;contacto) y te lo decimos gratis en 24 horas, con la lista exacta de lo que tocaría.
+¿No sabes si tu caso es rediseño o arreglo? [Escríbenos](/contacto/) y te lo decimos gratis en 24 horas, con la lista exacta de lo que tocaría.
 
 Y si decides seguir, empieza mirando [nuestros precios](/precios/): todo publicado, sin presupuestos de adivino.

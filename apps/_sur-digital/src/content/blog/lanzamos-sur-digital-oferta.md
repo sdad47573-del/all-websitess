@@ -53,4 +53,4 @@ Aceptamos un número limitado de landings gratuitas al mes para cuidar la calida
 
 ---
 
-*Sur Digital es un proyecto de diseño web en Málaga para negocios locales. Puedes conocer nuestra [filosofía y precios](/#precios), leer las [preguntas frecuentes](/#faq), ver [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) o simplemente [escribirnos](https://www.linkedin.com/company/sur-digital-malaga).*
+*Sur Digital es un proyecto de diseño web en Málaga para negocios locales. Puedes conocer nuestra [filosofía y precios](/precios/), leer las [preguntas frecuentes](/faq/), ver [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) o simplemente [escribirnos](https://www.linkedin.com/company/sur-digital-malaga).*

@@ -39,6 +39,6 @@ Comprar enlaces, repetir "Málaga" en todos los párrafos, crear 20 páginas vac
 
 ---
 
-¿Quieres una estimación realista para tu negocio y tu zona? [Pide la revisión gratuita](/&#35;contacto) y te decimos qué se puede mover en 90 días, con nombres y apellidos.
+¿Quieres una estimación realista para tu negocio y tu zona? [Pide la revisión gratuita](/contacto/) y te decimos qué se puede mover en 90 días, con nombres y apellidos.
 
 Y si aún no tienes web o está en las últimas, aquí está [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) para empezar bien desde el primer día.

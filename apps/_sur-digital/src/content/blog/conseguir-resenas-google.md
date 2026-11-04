@@ -47,4 +47,4 @@ Y cuando llegue la primera de una estrella —llegará—, no improvises: [cómo
 
 ---
 
-En Sur Digital dejamos tu ficha enlazada desde la web y el botón de reseña listo para que solo tengas que mandarlo. La primera landing es gratis: [cuéntanoslo por LinkedIn](/&#35;contacto).
+En Sur Digital dejamos tu ficha enlazada desde la web y el botón de reseña listo para que solo tengas que mandarlo. La primera landing es gratis: [cuéntanoslo por LinkedIn](/contacto/).

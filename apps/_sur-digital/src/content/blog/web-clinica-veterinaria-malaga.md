@@ -32,6 +32,6 @@ El 60% de clientes nuevos llegan por el mapa. Claves rápidas:
 
 ---
 
-¿Tu clínica aparece cuando alguien busca "veterinario 24h" en tu zona? [Pide la revisión gratuita](/&#35;contacto) y te decimos qué te falta.
+¿Tu clínica aparece cuando alguien busca "veterinario 24h" en tu zona? [Pide la revisión gratuita](/contacto/) y te decimos qué te falta.
 
 Y si estás decidiendo cuánto invertir, [estos son los precios del mercado](/blog/cuanto-cuesta-una-web-malaga-2026/). La propuesta completa está en [web para veterinarias](/web-para-veterinarias/), y puedes comparar cómo cambia cuando el paciente reserva por especialidad en [fisioterapia](/web-para-fisioterapeutas/) o cuando lo que prima es la primera visita en [clínicas dentales](/web-para-dentistas/).

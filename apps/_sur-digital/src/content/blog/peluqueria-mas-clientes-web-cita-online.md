@@ -39,4 +39,4 @@ Muchas peluquerías pagan una web "bonita" que no permite pedir cita, no muestra
 
 ---
 
-¿Quieres la agenda más llena sin vivir pegada al móvil? [Pide tu landing gratis](/&#35;contacto) y la tenemos online esta semana. Tienes la [propuesta completa para peluquerías](/web-para-peluquerias/) y los [precios de las webs de varias páginas](/precios/) publicados.
+¿Quieres la agenda más llena sin vivir pegada al móvil? [Pide tu landing gratis](/contacto/) y la tenemos online esta semana. Tienes la [propuesta completa para peluquerías](/web-para-peluquerias/) y los [precios de las webs de varias páginas](/precios/) publicados.

@@ -78,4 +78,4 @@ No hay plazo garantizado. Prepara todas las pruebas antes de enviarla para no re
 
 ---
 
-Si tu ficha ha desaparecido y no sabes por dónde empezar, [escríbenos](/#contacto): revisamos el caso y te decimos qué documento falta antes de apelar. Y si la ficha está bien pero no aparece, el problema puede ser otro: empieza por [entender el SEO local](/blog/que-es-el-seo-local/).
+Si tu ficha ha desaparecido y no sabes por dónde empezar, [escríbenos](/contacto/): revisamos el caso y te decimos qué documento falta antes de apelar. Y si la ficha está bien pero no aparece, el problema puede ser otro: empieza por [entender el SEO local](/blog/que-es-el-seo-local/).

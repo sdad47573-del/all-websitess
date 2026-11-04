@@ -44,4 +44,4 @@ Y si al final la haces por tu cuenta con un profesional, estas son las [pregunta
 
 ---
 
-¿Tienes una oferta de Kit Digital delante y dudas? [Mándanosla](/&#35;contacto) y la revisamos gratis, línea por línea.
+¿Tienes una oferta de Kit Digital delante y dudas? [Mándanosla](/contacto/) y la revisamos gratis, línea por línea.

@@ -43,4 +43,4 @@ No con tu sensación ni con la de tu sobrino: con datos.
 
 ---
 
-¿Quieres saber cuánto tarda tu web y qué le pasa? [Pide la revisión gratuita](/&#35;contacto): la medimos, te lo contamos en cristiano y sin compromiso.
+¿Quieres saber cuánto tarda tu web y qué le pasa? [Pide la revisión gratuita](/contacto/): la medimos, te lo contamos en cristiano y sin compromiso.

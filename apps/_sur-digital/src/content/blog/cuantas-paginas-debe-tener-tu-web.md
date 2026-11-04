@@ -73,4 +73,4 @@ Y antes de firmar, comprueba el conjunto: [cuánto cuesta una web en Málaga](/b
 
 ---
 
-Si tienes claro el negocio pero no el mapa de páginas, [escríbenos](/#contacto) y te decimos cuántas necesitas de verdad. También puedes ver cómo cambia la propuesta en cada [sector](/especialidades/): la web de un restaurante no se parece a la de una asesoría.
+Si tienes claro el negocio pero no el mapa de páginas, [escríbenos](/contacto/) y te decimos cuántas necesitas de verdad. También puedes ver cómo cambia la propuesta en cada [sector](/especialidades/): la web de un restaurante no se parece a la de una asesoría.

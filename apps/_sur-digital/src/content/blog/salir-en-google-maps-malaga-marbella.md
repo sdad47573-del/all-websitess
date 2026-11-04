@@ -29,4 +29,4 @@ Primero la base: [ficha de Google Business completa y verificada](/blog/ficha-go
 
 ---
 
-Si quieres que revisemos tu ficha y te digamos en qué posición real estás para tus búsquedas, [escríbenos](/&#35;contacto): la revisión es gratis, y si además necesitas la web, mira [nuestros servicios](/servicios/) y [nuestros precios](/precios/).
+Si quieres que revisemos tu ficha y te digamos en qué posición real estás para tus búsquedas, [escríbenos](/contacto/): la revisión es gratis, y si además necesitas la web, mira [nuestros servicios](/servicios/) y [nuestros precios](/precios/).

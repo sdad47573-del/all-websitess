@@ -24,7 +24,7 @@ El plazo es la segunda pregunta después del precio, y la que más decepciones c
 
 ## Nuestro proceso, día por día
 
-Día 1: brief de 20 minutos y recogida de material (o lo redactamos nosotros). Días 2–3: primer borrador navegable. Días 4–5: tu ronda de cambios, ajustada en 24–48h. Días 6–7: lanzamiento con alta en Google, métricas y credenciales a tu nombre. El detalle está en [cómo trabajamos](/#contenido) y en cada [propuesta por sector](/especialidades/).
+Día 1: brief de 20 minutos y recogida de material (o lo redactamos nosotros). Días 2–3: primer borrador navegable. Días 4–5: tu ronda de cambios, ajustada en 24–48h. Días 6–7: lanzamiento con alta en Google, métricas y credenciales a tu nombre. El detalle está en [cómo trabajamos](/servicios/) y en cada [propuesta por sector](/especialidades/).
 
 ## Cómo acelerar tu proyecto (con nosotros o sin nosotros)
 
@@ -32,4 +32,4 @@ Ten listo antes de empezar: logo (o dinos que lo hacemos), 10–15 fotos reales 
 
 ---
 
-¿Tienes fecha límite (apertura, campaña, temporada)? [Dínosla](/&#35;contacto) y te confirmamos entrega por escrito antes de empezar.
+¿Tienes fecha límite (apertura, campaña, temporada)? [Dínosla](/contacto/) y te confirmamos entrega por escrito antes de empezar.

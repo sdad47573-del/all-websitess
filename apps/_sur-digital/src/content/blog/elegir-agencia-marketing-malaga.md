@@ -39,6 +39,6 @@ Pide propuesta a dos o tres, hazles las mismas preguntas y compara respuestas po
 
 Antes de firmar, comprueba quién será titular del dominio y de las cuentas de Google: si el día de mañana quieres cambiar, [así se hace el traspaso sin perder posiciones](/blog/cambiar-de-agencia-web-sin-perder-google/).
 
-¿Quieres una segunda opinión sobre una propuesta que ya tienes? [Escríbenos](/&#35;contacto) y la revisamos gratis contigo, aunque la hayas firmado con otro.
+¿Quieres una segunda opinión sobre una propuesta que ya tienes? [Escríbenos](/contacto/) y la revisamos gratis contigo, aunque la hayas firmado con otro.
 
 Y si lo que necesitas antes es una web que aguante todo eso, mira [nuestros servicios](/servicios/) y [nuestros precios](/precios/).

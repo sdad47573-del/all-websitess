@@ -45,4 +45,4 @@ Tienes el detalle de la propuesta en [web para talleres mecánicos](/web-para-ta
 
 ---
 
-¿Quieres ver cómo quedaría tu taller con citas online? [Cuéntanoslo por LinkedIn](/&#35;contacto) y te lo enseñamos sin compromiso.
+¿Quieres ver cómo quedaría tu taller con citas online? [Cuéntanoslo por LinkedIn](/contacto/) y te lo enseñamos sin compromiso.

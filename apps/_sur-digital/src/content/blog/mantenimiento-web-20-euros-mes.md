@@ -49,7 +49,7 @@ Se queda desactualizada y vulnerable, carga más lento y Google la entiende peor
 
 ---
 
-¿Pagas un mantenimiento del que no tienes noticias? [Escríbenos](/#contacto) y te decimos gratis si tiene sentido.
+¿Pagas un mantenimiento del que no tienes noticias? [Escríbenos](/contacto/) y te decimos gratis si tiene sentido.
 
 Y si el navegador te avisa de que la web no es segura, esto es [lo que está pasando](/blog/web-no-segura-https/).
 

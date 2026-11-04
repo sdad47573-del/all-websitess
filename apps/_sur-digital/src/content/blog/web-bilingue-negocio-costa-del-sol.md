@@ -69,4 +69,4 @@ En Search Console, filtra por país (Reino Unido, Irlanda, Países Bajos) y por 
 
 ---
 
-¿Tienes negocio en la costa y no sabes si el inglés te va a traer clientes o solo trabajo? [Escríbenos](/#contacto) y te lo decimos con tu sector delante. Si estás comparando precios, empieza por [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/).
+¿Tienes negocio en la costa y no sabes si el inglés te va a traer clientes o solo trabajo? [Escríbenos](/contacto/) y te lo decimos con tu sector delante. Si estás comparando precios, empieza por [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/).
