@@ -23,6 +23,7 @@ import { SECTORS_EXTRA_2 } from "./sectors-extra-2";
 import { SECTORS_EXTRA_3 } from "./sectors-extra-3";
 import { SECTORS_EXTRA_4 } from "./sectors-extra-4";
 import { SECTORS_EXTRA_5 } from "./sectors-extra-5";
+import { SECTORS_EXTRA_6 } from "./sectors-extra-6";
 
 export const SECTORS_BASE: SectorPage[] = [
   {
@@ -511,4 +512,5 @@ export const SECTORS: SectorPage[] = [
   ...SECTORS_EXTRA_3,
   ...SECTORS_EXTRA_4,
   ...SECTORS_EXTRA_5,
+  ...SECTORS_EXTRA_6,
 ];

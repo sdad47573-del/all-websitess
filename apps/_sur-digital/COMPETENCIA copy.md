@@ -80,7 +80,6 @@ Condiciones declaradas: precio cerrado por escrito, IVA desglosado, dominio/host
 
 5. **Contra el Kit Digital.** Casi todos los competidores malagueños son agentes digitalizadores (bono de 2.000 € para web y otros 2.000 € para SEO). Sur Digital renuncia a ese cliente por principios (burocracia, IVA fuera, plantillas cerradas) y lo argumenta en el blog. Es una postura coherente, pero deja fuera a un segmento con presupuesto subvencionado.
 
-
 7. **Tecnología propia frente a WordPress.** El argumento de Zaliza y WOM es la autonomía del cliente («lo editas tú, cambias de proveedor cuando quieras»). Sur Digital gana en rendimiento y Core Web Vitals, pero pierde ese argumento si no demuestra un panel sencillo y formación. WordPress es el estándar con el que se compara todo.
 
 8. **Canal y confianza.** Casi toda la competencia ofrece teléfono y WhatsApp. Sur Digital solo LinkedIn y formulario, con portfolio de prototipos sin enlaces reales. En un mercado de pymes locales, esa fricción pesa más que la calidad del código.
