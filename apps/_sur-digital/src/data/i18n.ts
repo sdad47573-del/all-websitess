@@ -60,6 +60,8 @@ export interface LocaleContent {
   ctaLead: string;
   ctaButton: string;
   summaryNote: string;
+  // Texto del enlace a la versión española que cierra la nota de resumen
+  summaryLink: string;
   formatPrice: (price: number) => string;
 }
 
@@ -152,6 +154,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     ctaButton: "Write to us on LinkedIn",
     summaryNote:
       "This page is a summary in your language. The rest of the site (services, blog and sector pages) is in Spanish — and we work with you in English.",
+    summaryLink: "Read the full site in Spanish",
     formatPrice: (price) => (price === 0 ? "Free" : `€${price}`),
   },
 
@@ -243,6 +246,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     ctaButton: "Über LinkedIn schreiben",
     summaryNote:
       "Diese Seite ist eine Zusammenfassung in Ihrer Sprache. Der Rest der Website (Leistungen, Blog und Branchenseiten) ist auf Spanisch – wir arbeiten aber auf Deutsch mit Ihnen.",
+    summaryLink: "Die ganze Website auf Spanisch ansehen",
     formatPrice: (price) => (price === 0 ? "Gratis" : `${price} €`),
   },
 
@@ -334,6 +338,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     ctaButton: "Écrire sur LinkedIn",
     summaryNote:
       "Cette page est un résumé dans votre langue. Le reste du site (services, blog et pages par secteur) est en espagnol — et nous travaillons avec vous en français.",
+    summaryLink: "Voir le site complet en espagnol",
     formatPrice: (price) => (price === 0 ? "Gratuit" : `${price} €`),
   },
 
@@ -425,6 +430,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     ctaButton: "Escrever no LinkedIn",
     summaryNote:
       "Esta página é um resumo na sua língua. O resto do site (serviços, blog e páginas por setor) está em espanhol — e trabalhamos consigo em português.",
+    summaryLink: "Ver o site completo em espanhol",
     formatPrice: (price) => (price === 0 ? "Grátis" : `${price} €`),
   },
 
@@ -516,6 +522,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     ctaButton: "Написать в LinkedIn",
     summaryNote:
       "Эта страница — краткое описание на русском. Остальной сайт (услуги, блог и страницы по сферам) на испанском, но работаем с вами мы на русском.",
+    summaryLink: "Полная версия сайта на испанском",
     formatPrice: (price) => (price === 0 ? "Бесплатно" : `${price} €`),
   },
 };

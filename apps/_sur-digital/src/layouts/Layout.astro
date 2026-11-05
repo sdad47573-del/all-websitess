@@ -65,7 +65,14 @@ const HREFLANG: Record<string, string> = {
   ru: "ru-RU",
 };
 const ogLocale = OG_LOCALE[lang] ?? "es_ES";
-const ogLocaleAlternate = lang === "es" ? undefined : "es_ES";
+// Todos los idiomas equivalentes, no solo el español: las landings
+// traducidas comparten con las redes que existen en las seis lenguas.
+const ogLocaleAlternates = [
+  ...new Set([lang, ...translations.map((t) => t.lang)]),
+]
+  .filter((code) => code !== lang)
+  .map((code) => OG_LOCALE[code])
+  .filter((value): value is string => Boolean(value));
 
 // hreflang: Google exige que la página se declare a sí misma como alternate
 // además de a su equivalente, así que la propia URL entra en la lista. El
@@ -171,9 +178,9 @@ const xDefaultHref =
     <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:image:type" content="image/png" />
     {
-      ogLocaleAlternate && (
-        <meta property="og:locale:alternate" content={ogLocaleAlternate} />
-      )
+      ogLocaleAlternates.map((code) => (
+        <meta property="og:locale:alternate" content={code} />
+      ))
     }
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />

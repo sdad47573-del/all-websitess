@@ -1,5 +1,6 @@
 import { OGImageRoute } from "astro-og-canvas";
 import { getCollection } from "astro:content";
+import { LOCALE_CONTENT, LOCALES } from "../../data/i18n";
 import { SECTORS } from "../../data/sectors";
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -37,6 +38,18 @@ const pages: Record<string, { title: string; description: string }> = {
       ", "
     )}: propuesta especializada para cada sector.`,
   },
+  // Una imagen por idioma: el texto va en su idioma, no en español. Sale del
+  // mismo diccionario que la página, así que no hay copy duplicado que se
+  // quede atrás.
+  ...Object.fromEntries(
+    LOCALES.map((lang) => [
+      `${lang}.png`,
+      {
+        title: `${LOCALE_CONTENT[lang].h1} ${LOCALE_CONTENT[lang].h1Accent}`,
+        description: LOCALE_CONTENT[lang].description,
+      },
+    ])
+  ),
   // Una imagen por artículo: /og/blog/<slug>.png
   ...Object.fromEntries(
     posts.map((post) => [
@@ -82,10 +95,14 @@ export const { getStaticPaths, GET } = await OGImageRoute({
       },
       // 👆 Los pesos dependen de la fuente cargada en `fonts`
     },
-    // Tipografía del sistema con soporte de acentos español (ñ, á, é…)
+    // Noto Sans COMPLETA (latina + cirílica) en un solo archivo. Los subsets
+    // de Fontsource (latin-400, cyrillic-400…) se registran como una única
+    // familia y solo se usa el primer archivo: la tarjeta rusa salía con
+    // cuadros en lugar de letras. Con los TTF completos hay una sola familia
+    // que cubre los seis idiomas, acentos incluidos.
     fonts: [
-      "https://api.fontsource.org/v1/fonts/noto-sans/latin-400-normal.ttf",
-      "https://api.fontsource.org/v1/fonts/noto-sans/latin-700-normal.ttf",
+      "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSans/NotoSans-Regular.ttf",
+      "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSans/NotoSans-Bold.ttf",
     ],
   }),
 });

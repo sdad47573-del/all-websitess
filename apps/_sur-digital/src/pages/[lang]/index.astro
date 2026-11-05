@@ -31,6 +31,7 @@ export function getStaticPaths() {
 const { lang } = Astro.params as { lang: Locale };
 const t = LOCALE_CONTENT[lang];
 const htmlLang = LOCALE_HTML_LANG[lang];
+const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
 const path = `/${lang}/`;
 
 const plans = t.plans.map((copy, i) => {
@@ -64,6 +65,7 @@ const translations = languageLinks
   description={t.description}
   lang={htmlLang}
   path={path}
+  image={`/og/${lang}.png`}
   translations={translations}
 >
   <script
@@ -78,6 +80,40 @@ const translations = languageLinks
         "@type": "Question",
         name: f.q,
         acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    })}
+  />
+
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `${t.h1} ${t.h1Accent}`,
+      serviceType: "Web design",
+      inLanguage: htmlLang,
+      availableLanguage: ["es", ...LOCALES],
+      areaServed: { "@type": "City", name: "Málaga" },
+      provider: {
+        "@type": "ProfessionalService",
+        name: "Sur Digital",
+        url: new URL("/", site).href,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: CONTACT.address,
+          addressLocality: "Málaga",
+          addressCountry: "ES",
+        },
+      },
+      // Los importes son los mismos que se ven en la página (DATA.plans).
+      offers: plans.map((plan) => ({
+        "@type": "Offer",
+        name: plan.name,
+        price: String(plan.price),
+        priceCurrency: "EUR",
+        url: new URL(path, site).href,
       })),
     })}
   />
@@ -310,10 +346,30 @@ const translations = languageLinks
           }
         </div>
 
+        <!-- Enlace contextual al sitio español: es el único enlace interno
+             con intención de navegación (el resto va en el footer), así que
+             lleva el texto del ancla en español. -->
         <p class="text-center text-sm text-base-content/60 mt-8">
           <DoneIcon class="inline-block me-2 align-middle" />
-          {t.summaryNote}
+          {t.summaryNote}{" "}
+          <a href="/" hreflang="es" lang="es" class="link link-primary font-bold">
+            {t.summaryLink}
+          </a>.
         </p>
+
+        {
+          lang === "en" && (
+            <p class="text-center text-sm text-base-content/60 mt-3">
+              Looking for Marbella?{" "}
+              <a
+                href="/web-design-marbella/"
+                class="link link-primary font-bold"
+              >
+                See our English page for Marbella →
+              </a>
+            </p>
+          )
+        }
       </div>
     </section>
 
@@ -321,7 +377,7 @@ const translations = languageLinks
     <section class="container mx-auto px-6 max-w-3xl" data-reveal>
       <div class="card brand-surface shadow-lg">
         <div class="card-body items-center text-center gap-3">
-          <p class="text-2xl font-bold">{t.ctaTitle}</p>
+          <h2 class="text-2xl font-bold">{t.ctaTitle}</h2>
           <p class="text-sm max-w-xl">{t.ctaLead}</p>
           <a
             href={CONTACT.linkedin}
