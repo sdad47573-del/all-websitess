@@ -14,10 +14,8 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     emoji: "🔧",
     navLabel: "Web para oficios",
     tagline: "Avisos, presupuestos y zonas",
-    title:
-      "Web para electricistas y fontaneros",
-    description:
-      "Webs para electricistas, fontaneros y climatización en Málaga: avisos por servicio, presupuestos por foto y zonas de trabajo. Desde 0€, en menos de 7 días.",
+    title: "Web para electricistas y fontaneros en Málaga desde 0€",
+    description: "Webs para electricistas y fontaneros en Málaga: avisos por servicio, presupuesto por foto y zonas de trabajo. Desde 0€ en 7 días.",
     h1Prefix: "Tu oficio",
     h1Accent: "con avisos cada semana",
     intro:
@@ -68,10 +66,8 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     emoji: "🚦",
     navLabel: "Web para autoescuelas",
     tagline: "Matrículas, permisos y prácticas",
-    title:
-      "Web para autoescuelas: matrículas",
-    description:
-      "Webs para autoescuelas en Málaga: precios por permiso, matrícula online, horarios de clases teóricas y prácticas. Desde 0€, entrega en menos de 7 días.",
+    title: "Web para autoescuelas en Málaga desde 0€: matrícula",
+    description: "Webs para autoescuelas en Málaga: precios por permiso, matrícula online y horarios de teóricas y prácticas. Desde 0€ y online en 7 días.",
     h1Prefix: "Tu autoescuela",
     h1Accent: "con el aula llena",
     intro:
@@ -122,10 +118,8 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     emoji: "🧠",
     navLabel: "Web para psicólogos",
     tagline: "Cita previa y confianza",
-    title:
-      "Web para psicólogos: cita previa",
-    description:
-      "Webs para psicólogos y centros de salud mental en Málaga: áreas de terapia, primera cita, modalidad online y confidencialidad. Desde 0€, sin promesas vacías.",
+    title: "Web para psicólogos en Málaga desde 0€: cita online",
+    description: "Webs para psicólogos en Málaga: áreas de terapia, primera cita, modalidad online y confidencialidad. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu consulta",
     h1Accent: "con la primera cita fácil",
     intro:
@@ -176,10 +170,8 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     emoji: "🧸",
     navLabel: "Web para escuelas infantiles",
     tagline: "Plazas, ratios y matrícula",
-    title:
-      "Web para guarderías: plazas y matrícula",
-    description:
-      "Webs para escuelas infantiles y guarderías en Málaga: proyecto educativo, ratios por aula, precios, horarios ampliados y solicitud de plaza online. Desde 0€.",
+    title: "Web para guarderías en Málaga desde 0€: plazas",
+    description: "Webs para guarderías en Málaga: proyecto educativo, ratios por aula, precios y solicitud de plaza online. Desde 0€ en 7 días.",
     h1Prefix: "Tu escuela infantil",
     h1Accent: "con las plazas llenas",
     intro:
@@ -230,10 +222,8 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     emoji: "🧘",
     navLabel: "Web para yoga y pilates",
     tagline: "Horarios, bonos y clases",
-    title:
-      "Web para yoga y pilates: horarios",
-    description:
-      "Webs para estudios de yoga, pilates y bienestar en Málaga: horarios por clase, bonos y cuotas, profesores y reserva de plaza. Desde 0€, en menos de 7 días.",
+    title: "Web para yoga y pilates en Málaga desde 0€",
+    description: "Webs para estudios de yoga y pilates en Málaga: horarios por clase, bonos y cuotas y reserva de plaza. Desde 0€ en 7 días.",
     h1Prefix: "Tu estudio",
     h1Accent: "con las clases llenas",
     intro:
@@ -284,10 +274,8 @@ export const SECTORS_EXTRA_2: SectorPage[] = [
     emoji: "💐",
     navLabel: "Web para floristerías",
     tagline: "Ramos, encargos y reparto",
-    title:
-      "Web para floristerías: pedidos y reparto",
-    description:
-      "Webs para floristerías en Málaga: catálogo por ocasión, pedido online, reparto el mismo día y suscripciones. Desde 0€, entrega en menos de 7 días.",
+    title: "Web para floristerías en Málaga desde 0€: reparto hoy",
+    description: "Webs para floristerías en Málaga: catálogo por ocasión, pedido online y reparto el mismo día. Desde 0€ y online en menos de 7 días.",
     h1Prefix: "Tu floristería",
     h1Accent: "con pedidos todo el año",
     intro:

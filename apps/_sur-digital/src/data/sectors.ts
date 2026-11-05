@@ -32,9 +32,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🍽️",
     navLabel: "Web para restaurantes",
     tagline: "Carta QR, reservas y Google Maps",
-    title: "Web para restaurantes: carta QR y reservas",
-    description:
-      "Webs para restaurantes en Málaga: carta digital con QR, reservas online y posicionamiento en Google Maps. Desde 0€, entrega en menos de 7 días.",
+    title: "Web para restaurantes en Málaga desde 0€: carta QR",
+    description: "Webs para restaurantes en Málaga: carta digital con QR que actualizas al instante, reservas sin comisión y Google Maps optimizado. Desde 0€ en 7 días.",
     h1Prefix: "Tu restaurante",
     h1Accent: "en la mesa de Google",
     intro:
@@ -85,9 +84,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🏋️",
     navLabel: "Web para gimnasios",
     tagline: "Horarios, planes y prueba gratis",
-    title: "Diseño web para gimnasios: prueba gratis",
-    description:
-      "Webs para gimnasios en Málaga: horarios y clases, planes de precios, inscripción online y captación de socios con prueba gratuita. Desde 0€.",
+    title: "Web para gimnasios en Málaga desde 0€: prueba gratis",
+    description: "Webs para gimnasios en Málaga: horarios y clases, planes de precios e inscripción online con prueba gratis. Desde 0€ en 7 días.",
     h1Prefix: "Llena tu gimnasio",
     h1Accent: "desde Google",
     intro:
@@ -138,9 +136,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "⚖️",
     navLabel: "Web para abogados",
     tagline: "Áreas de práctica y cita previa",
-    title: "Web para abogados: áreas de práctica y citas",
-    description:
-      "Webs para abogados y despachos en Málaga: áreas de práctica, primera consulta, blog jurídico con SEO local y cita previa online. Imagen sobria y de confianza.",
+    title: "Web para abogados en Málaga desde 0€: cita previa",
+    description: "Webs para abogados y despachos en Málaga: áreas de práctica, primera consulta y blog jurídico con SEO local. Imagen sobria. Desde 0€ en 7 días.",
     h1Prefix: "Un despacho",
     h1Accent: "que transmite confianza",
     intro:
@@ -191,9 +188,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "💇",
     navLabel: "Web para peluquerías",
     tagline: "Servicios, precios y cita online",
-    title: "Web para peluquerías: cita online y precios",
-    description:
-      "Webs para peluquerías y barberías en Málaga: menú de servicios con precios, cita previa online y galería de trabajos. Desde 0€, entrega en menos de 7 días.",
+    title: "Web para peluquerías en Málaga desde 0€: cita online",
+    description: "Webs para peluquerías y barberías en Málaga: servicios con precios, cita previa online y galería de trabajos. Desde 0€ en 7 días.",
     h1Prefix: "Tu peluquería",
     h1Accent: "con la agenda llena",
     intro:
@@ -244,9 +240,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🐾",
     navLabel: "Web para veterinarias",
     tagline: "Servicios, urgencias y cita previa",
-    title: "Web para veterinarios: cita online",
-    description:
-      "Webs para clínicas veterinarias en Málaga: servicios y tarifas, contacto de urgencias 24h, cita previa online y ficha de Google Maps optimizada. Desde 0€.",
+    title: "Web para veterinarias en Málaga desde 0€: urgencias",
+    description: "Webs para clínicas veterinarias en Málaga: tarifas, urgencias 24h, cita online y Google Maps. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu clínica",
     h1Accent: "en el primer mapa de Google",
     intro:
@@ -297,9 +292,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🦷",
     navLabel: "Web para clínicas dentales",
     tagline: "Tratamientos, primera visita y reseñas",
-    title: "Web para clínicas dentales: primera visita",
-    description:
-      "Webs para clínicas dentales en Málaga: tratamientos con precios orientativos, primera visita gratis, reseñas de pacientes y cita previa online. Desde 0€.",
+    title: "Web para dentistas en Málaga desde 0€: cita online",
+    description: "Webs para clínicas dentales en Málaga: tratamientos con precios orientativos, primera visita gratis y cita online. Desde 0€ en 7 días.",
     h1Prefix: "Tu clínica dental",
     h1Accent: "con la agenda completa",
     intro:
@@ -350,9 +344,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "💪",
     navLabel: "Web para fisioterapeutas",
     tagline: "Cita online, especialidades y bonos",
-    title: "Web para fisioterapeutas: cita online",
-    description:
-      "Webs para clínicas de fisioterapia en Málaga: especialidades, precios de sesión y bonos, cita online y reseñas de pacientes. Desde 0€, en menos de 7 días.",
+    title: "Web para fisioterapia en Málaga desde 0€: cita online",
+    description: "Webs para clínicas de fisioterapia en Málaga: especialidades, precios de sesión y bonos, cita online y reseñas. Desde 0€ en 7 días.",
     h1Prefix: "Tu clínica de fisioterapia",
     h1Accent: "sin depender del boca a boca",
     intro:
@@ -403,9 +396,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🎓",
     navLabel: "Web para academias",
     tagline: "Grupos, horarios y matrícula online",
-    title: "Web para academias: matrícula online",
-    description:
-      "Webs para academias y centros de clases en Málaga: grupos y horarios, temario por asignatura, matrícula online y captación de alumnos. Desde 0€.",
+    title: "Web para academias en Málaga desde 0€: matrícula online",
+    description: "Webs para academias en Málaga: grupos y horarios, temario por asignatura y matrícula online. Capta alumnos con SEO local. Desde 0€ en 7 días.",
     h1Prefix: "Llena tus grupos",
     h1Accent: "antes de empezar el curso",
     intro:
@@ -456,9 +448,8 @@ export const SECTORS_BASE: SectorPage[] = [
     emoji: "🏢",
     navLabel: "Web para inmobiliarias",
     tagline: "Escaparate de inmuebles y captación",
-    title: "Web para inmobiliarias: más propietarios",
-    description:
-      "Webs para inmobiliarias y agentes en Málaga: escaparate de inmuebles, captación de propietarios, valoración gratuita y solicitud de visitas. Desde 0€.",
+    title: "Web para inmobiliarias en Málaga desde 0€: inmuebles",
+    description: "Webs para inmobiliarias en Málaga: escaparate de inmuebles, captación de propietarios y visitas online. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu inmobiliaria",
     h1Accent: "captando propietarios",
     intro:

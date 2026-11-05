@@ -16,10 +16,8 @@ export const SECTORS_EXTRA: SectorPage[] = [
     emoji: "🚗",
     navLabel: "Web para talleres",
     tagline: "Citas, presupuestos y confianza",
-    title:
-      "Web para talleres: citas y presupuestos",
-    description:
-      "Webs para talleres mecánicos y de chapa en Málaga: cita previa por servicio, presupuesto sin compromiso, pre-ITV y recambios. Desde 0€, en menos de 7 días.",
+    title: "Web para talleres en Málaga desde 0€: citas online",
+    description: "Webs para talleres mecánicos en Málaga: cita previa por servicio, presupuesto con matrícula y aviso de pre-ITV. Desde 0€ y online en menos de 7 días.",
     h1Prefix: "Tu taller",
     h1Accent: "con la agenda llena",
     intro:
@@ -70,10 +68,8 @@ export const SECTORS_EXTRA: SectorPage[] = [
     emoji: "💅",
     navLabel: "Web para centros de estética",
     tagline: "Servicios, bonos y cita online",
-    title:
-      "Web para estética: cita online",
-    description:
-      "Webs para centros de estética y belleza en Málaga: servicios con precios, bonos, antes y después y cita online. Desde 0€, entrega en menos de 7 días.",
+    title: "Web para estética en Málaga desde 0€: cita online",
+    description: "Webs para centros de estética en Málaga: servicios con precios, bonos, antes y después y cita online. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu centro de estética",
     h1Accent: "con la agenda completa",
     intro:
@@ -124,10 +120,8 @@ export const SECTORS_EXTRA: SectorPage[] = [
     emoji: "📊",
     navLabel: "Web para gestorías",
     tagline: "Servicios fiscales y cita previa",
-    title:
-      "Web para asesorías: cita previa",
-    description:
-      "Webs para gestorías, asesorías y despachos contables en Málaga: áreas fiscal, laboral y contable, cuota mensual clara y cita previa. Desde 0€.",
+    title: "Web para asesorías en Málaga desde 0€: cita previa",
+    description: "Webs para gestorías y asesorías en Málaga: áreas fiscal, laboral y contable, cuota clara y cita previa online. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu asesoría",
     h1Accent: "que transmite rigor",
     intro:
@@ -178,10 +172,8 @@ export const SECTORS_EXTRA: SectorPage[] = [
     emoji: "👓",
     navLabel: "Web para ópticas",
     tagline: "Revisión, catálogo y cita previa",
-    title:
-      "Web para ópticas: revisión y cita",
-    description:
-      "Webs para ópticas en Málaga: revisión de la vista con cita previa, catálogo de gafas y lentes, taller propio y ficha de Google Maps optimizada. Desde 0€.",
+    title: "Web para ópticas en Málaga desde 0€: revisión",
+    description: "Webs para ópticas en Málaga: revisión con cita previa, catálogo de gafas y lentes y taller propio. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu óptica",
     h1Accent: "con cita todos los días",
     intro:
@@ -232,10 +224,8 @@ export const SECTORS_EXTRA: SectorPage[] = [
     emoji: "🔨",
     navLabel: "Web para empresas de reformas",
     tagline: "Presupuestos, obras y confianza",
-    title:
-      "Web para reformas: presupuestos",
-    description:
-      "Webs para empresas de reformas y construcción en Málaga: servicios por estancia, galería de obras reales y solicitud de presupuesto. Desde 0€, en menos de 7 días.",
+    title: "Web para reformas en Málaga desde 0€: presupuestos",
+    description: "Webs para empresas de reformas en Málaga: servicios por estancia, galería de obras y presupuesto online. Desde 0€ en 7 días.",
     h1Prefix: "Tu empresa de reformas",
     h1Accent: "con presupuestos que cierran",
     intro:
@@ -286,10 +276,8 @@ export const SECTORS_EXTRA: SectorPage[] = [
     emoji: "🏨",
     navLabel: "Web para alojamientos",
     tagline: "Reservas directas sin comisión",
-    title:
-      "Web para apartamentos: reserva directa",
-    description:
-      "Webs para apartamentos turísticos, casas rurales y hoteles en Málaga: reserva directa sin comisión, galería, entorno y normas de la casa. Desde 0€.",
+    title: "Web para apartamentos en Málaga desde 0€: reservas",
+    description: "Webs para apartamentos turísticos y casas rurales en Málaga: reserva directa sin comisión, galería y normas de la casa. Desde 0€ en 7 días.",
     h1Prefix: "Tu alojamiento",
     h1Accent: "con reservas sin comisión",
     intro:

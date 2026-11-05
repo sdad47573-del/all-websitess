@@ -17,9 +17,8 @@ export const SECTORS_EXTRA_5: SectorPage[] = [
     emoji: "🥗",
     navLabel: "Web para nutricionistas",
     tagline: "Primera cita que entra sola",
-    title: "Diseño Web para Nutricionistas en Málaga | Sur Digital",
-    description:
-      "Webs para nutricionistas en Málaga: servicios y planes con precios, primera cita online, modalidad presencial y online. Desde 0€, en menos de 7 días.",
+    title: "Web para nutricionistas en Málaga desde 0€: dietas",
+    description: "Webs para nutricionistas en Málaga: planes con precios, primera cita online y consulta presencial u online. Desde 0€ en 7 días.",
     h1Prefix: "Tu consulta",
     h1Accent: "llena cada semana",
     intro:
@@ -70,9 +69,8 @@ export const SECTORS_EXTRA_5: SectorPage[] = [
     emoji: "💪",
     navLabel: "Web para entrenadores",
     tagline: "Bonos y planes que se venden solos",
-    title: "Diseño Web para Entrenadores en Málaga | Sur Digital",
-    description:
-      "Webs para entrenadores personales en Málaga: bonos y planes con precios, reserva de sesión, antes y después. Desde 0€, en menos de 7 días.",
+    title: "Web para entrenadores en Málaga desde 0€: bonos",
+    description: "Webs para entrenadores personales en Málaga: bonos con precios, reserva de sesión y antes/después. Desde 0€ y online en menos de 7 días.",
     h1Prefix: "Tus sesiones",
     h1Accent: "vendidas por adelantado",
     intro:
@@ -123,9 +121,8 @@ export const SECTORS_EXTRA_5: SectorPage[] = [
     emoji: "👗",
     navLabel: "Web para tiendas de ropa",
     tagline: "Catálogo que vende sin depender solo de Instagram",
-    title: "Diseño Web para Tiendas de Ropa en Málaga | Sur Digital",
-    description:
-      "Webs para tiendas de ropa en Málaga: catálogo con fotos, novedades, tienda online y recogida en tienda. Desde 0€, en menos de 7 días.",
+    title: "Web para tiendas de ropa en Málaga desde 0€",
+    description: "Webs para tiendas de ropa en Málaga: catálogo con fotos, novedades, tienda online y recogida en tienda. Desde 0€ en 7 días.",
     h1Prefix: "Tu tienda",
     h1Accent: "abierta 24 horas",
     intro:
@@ -176,9 +173,8 @@ export const SECTORS_EXTRA_5: SectorPage[] = [
     emoji: "🌳",
     navLabel: "Web para jardinería",
     tagline: "Presupuestos por foto en tu zona",
-    title: "Diseño Web para Jardinería en Málaga | Sur Digital",
-    description:
-      "Webs para jardinería y piscinas en Málaga: presupuesto por foto, mantenimiento por cuota, zonas de servicio y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para jardinería en Málaga desde 0€: piscinas",
+    description: "Webs para jardinería y piscinas en Málaga: presupuesto por foto, mantenimiento por cuota y zonas de servicio. Desde 0€ en 7 días.",
     h1Prefix: "Tus jardines",
     h1Accent: "cuidados todo el año",
     intro:
@@ -229,9 +225,8 @@ export const SECTORS_EXTRA_5: SectorPage[] = [
     emoji: "🐩",
     navLabel: "Web para peluquería canina",
     tagline: "Citas por tamaño y servicio",
-    title: "Diseño Web Peluquería Canina Málaga | Sur Digital",
-    description:
-      "Webs para peluquería canina en Málaga: servicios por tamaño, precios claros, cita online y fotos de clientes. Desde 0€, en menos de 7 días.",
+    title: "Web para peluquería canina en Málaga desde 0€",
+    description: "Webs para peluquería canina en Málaga: servicios por tamaño, precios claros, cita online y fotos de clientes. Desde 0€ en 7 días.",
     h1Prefix: "Tus tijeras",
     h1Accent: "con agenda llena",
     intro:

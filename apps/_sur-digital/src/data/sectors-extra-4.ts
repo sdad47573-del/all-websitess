@@ -16,9 +16,8 @@ export const SECTORS_EXTRA_4: SectorPage[] = [
     emoji: "💊",
     navLabel: "Web para farmacias",
     tagline: "Guardias, encargos y parafarmacia",
-    title: "Diseño Web para Farmacias en Málaga | Sur Digital",
-    description:
-      "Webs para farmacias en Málaga: turnos de guardia, encargos por WhatsApp, catálogo de parafarmacia y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para farmacias en Málaga desde 0€: guardias",
+    description: "Webs para farmacias en Málaga: turnos de guardia, encargos por WhatsApp y catálogo de parafarmacia. Desde 0€ y online en 7 días.",
     h1Prefix: "Tu farmacia",
     h1Accent: "siempre de guardia",
     intro:
@@ -69,9 +68,8 @@ export const SECTORS_EXTRA_4: SectorPage[] = [
     emoji: "🔑",
     navLabel: "Web para cerrajeros",
     tagline: "Urgencias 24h que llaman solas",
-    title: "Diseño Web para Cerrajeros en Málaga | Sur Digital",
-    description:
-      "Webs para cerrajeros en Málaga: urgencias 24h visibles, botón de llamada, zonas de servicio y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para cerrajeros en Málaga desde 0€: urgencias 24h",
+    description: "Webs para cerrajeros en Málaga: urgencias 24h visibles, botón de llamada y zonas de servicio. Desde 0€ y online en menos de 7 días.",
     h1Prefix: "Tu teléfono",
     h1Accent: "sonando de noche",
     intro:
@@ -122,9 +120,8 @@ export const SECTORS_EXTRA_4: SectorPage[] = [
     emoji: "📦",
     navLabel: "Web para mudanzas",
     tagline: "Presupuestos que entran solos",
-    title: "Diseño Web para Mudanzas en Málaga | Sur Digital",
-    description:
-      "Webs para mudanzas en Málaga: presupuesto online, zonas y servicios, fotos de trabajos y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para mudanzas en Málaga desde 0€: presupuesto",
+    description: "Webs para mudanzas en Málaga: presupuesto online, zonas y servicios y fotos de trabajos reales. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tus camiones",
     h1Accent: "siempre cargados",
     intro:
@@ -175,9 +172,8 @@ export const SECTORS_EXTRA_4: SectorPage[] = [
     emoji: "📸",
     navLabel: "Web para fotógrafos",
     tagline: "Portfolio que reserva fechas",
-    title: "Diseño Web para Fotógrafos en Málaga | Sur Digital",
-    description:
-      "Webs para fotógrafos en Málaga: portfolio por tipo de sesión, packs con precios, reservas de fecha y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para fotógrafos en Málaga desde 0€: portfolio",
+    description: "Webs para fotógrafos en Málaga: portfolio por tipo de sesión, packs con precios y reserva de fecha. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tus fotos",
     h1Accent: "vendiendo solas",
     intro:
@@ -228,9 +224,8 @@ export const SECTORS_EXTRA_4: SectorPage[] = [
     emoji: "🥖",
     navLabel: "Web para panaderías",
     tagline: "Encargos sin llamar",
-    title: "Diseño Web para Panaderías en Málaga | Sur Digital",
-    description:
-      "Webs para panaderías y pastelerías en Málaga: encargos por WhatsApp, obrador propio, tartas por encargo y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para panaderías en Málaga desde 0€: encargos",
+    description: "Webs para panaderías y pastelerías en Málaga: encargos por WhatsApp, obrador propio y tartas por encargo. Desde 0€ en 7 días.",
     h1Prefix: "Tu obrador",
     h1Accent: "vendiendo a diario",
     intro:
@@ -281,9 +276,8 @@ export const SECTORS_EXTRA_4: SectorPage[] = [
     emoji: "🎉",
     navLabel: "Web para catering",
     tagline: "Bodas y eventos que entran solos",
-    title: "Diseño Web para Catering en Málaga | Sur Digital",
-    description:
-      "Webs para catering en Málaga: menús por evento, galería de bodas, solicitud de presupuesto y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para catering en Málaga desde 0€: menús",
+    description: "Webs para catering en Málaga: menús por evento, galería de bodas y solicitud de presupuesto. Desde 0€ y online en menos de 7 días.",
     h1Prefix: "Tus eventos",
     h1Accent: "reservados con meses",
     intro:

@@ -4,7 +4,6 @@ import Layout from "../layouts/Layout.astro";
 import Topbar from "../components/Topbar.astro";
 import Footer from "../components/Footer.astro";
 import DoneIcon from "../icons/DoneIcon.astro";
-import { pageTitle } from "../lib/blog";
 import { getCollection } from "astro:content";
 
 export function getStaticPaths() {
@@ -24,7 +23,9 @@ const relatedSectorPosts = (
   .filter((p) => `/blog/${p.id}/` !== sector.blogPost)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
-const site = Astro.site?.toString() ?? "https://sur-digital.vercel.app";
+const site = (
+  Astro.site?.toString() ?? "https://sur-digital.vercel.app"
+).replace(/\/$/, "");
 const pageUrl = `${site}/web-para-${sector.slug}/`;
 
 const breadcrumbs = {
@@ -67,7 +68,9 @@ const faqSchema = {
 ---
 
 <Layout
-  title={pageTitle(sector.title.replace(/\s*\|\s*Sur Digital$/, ""))}
+  // Sin sufijo de marca: el título de cada sector ya lleva ciudad, precio y
+  // gancho, y agregar «| Sur Digital» lo truncaba a 60 caracteres.
+  title={sector.title}
   description={sector.description}
   image={`${site}/og/web-para-${sector.slug}.png`}
   path={`/web-para-${sector.slug}/`}

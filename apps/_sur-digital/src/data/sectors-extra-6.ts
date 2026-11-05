@@ -16,9 +16,8 @@ export const SECTORS_EXTRA_6: SectorPage[] = [
     emoji: "📐",
     navLabel: "Web para arquitectos",
     tagline: "Obra publicada que genera encargos",
-    title: "Diseño Web para Arquitectos en Málaga | Sur Digital",
-    description:
-      "Webs para estudios de arquitectura en Málaga: portfolio de proyectos, servicios por tipo de encargo, formulario de brief y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para arquitectos en Málaga desde 0€: portfolio",
+    description: "Webs para estudios de arquitectura en Málaga: portfolio de proyectos, servicios por tipo de encargo y formulario de brief. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu estudio",
     h1Accent: "con la obra a la vista",
     intro:
@@ -69,9 +68,8 @@ export const SECTORS_EXTRA_6: SectorPage[] = [
     emoji: "🚗",
     navLabel: "Web para concesionarios",
     tagline: "Stock propio sin pagar por cada contacto",
-    title: "Diseño Web para Concesionarios en Málaga | Sur Digital",
-    description:
-      "Webs para concesionarios y compraventas en Málaga: stock con fichas y filtros, financiación, cita de taller y SEO local. Desde 0€, en menos de 7 días.",
+    title: "Web para concesionarios en Málaga desde 0€: stock",
+    description: "Webs para concesionarios y compraventas en Málaga: stock con filtros, financiación y cita de taller. Desde 0€ en menos de 7 días.",
     h1Prefix: "Tu stock",
     h1Accent: "sin pagar por cada contacto",
     intro:
