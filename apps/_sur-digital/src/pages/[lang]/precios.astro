@@ -1,0 +1,512 @@
+---
+// Precios en los cinco idiomas. Los importes NO se escriben aquí: salen de
+// DATA.plans, DATA.extras, DATA.retainers, DATA.maintenanceTiers y
+// DATA.enterprise, emparejados por posición con las traducciones. Si alguien
+// reordena los datos, el build falla (ver comprobaciones de longitud).
+//
+// Las comparativas con proveedores concretos (mercado de Málaga, mercado
+// nacional y matriz de 34 funciones) siguen en español: se enlazan al ancla
+// correspondiente de /precios/ con hreflang="es".
+import { DATA } from "../../data/data.astro";
+import { CONTACT } from "../../data/contact";
+import { LOCALES, LOCALE_CONTENT, LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
+import { PRECIOS_DE } from "../../i18n/pages/precios/de";
+import { PRECIOS_EN } from "../../i18n/pages/precios/en";
+import { PRECIOS_FR } from "../../i18n/pages/precios/fr";
+import { PRECIOS_PT } from "../../i18n/pages/precios/pt";
+import { PRECIOS_RU } from "../../i18n/pages/precios/ru";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+import DoneIcon from "../../icons/DoneIcon.astro";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Exclude<Locale, "es"> };
+const COPY = {
+  en: PRECIOS_EN,
+  de: PRECIOS_DE,
+  fr: PRECIOS_FR,
+  pt: PRECIOS_PT,
+  ru: PRECIOS_RU,
+};
+const t = COPY[lang];
+const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
+const path = `/${lang}/precios/`;
+
+// Cada lista traducida debe tener la misma longitud que su fuente española.
+const check = (label: string, a: number, b: number) => {
+  if (a !== b) throw new Error(`Precios ${lang}: ${label} ${a} frente a ${b} en español`);
+};
+check("planes", t.plans.length, DATA.plans.length);
+check("extras", t.extras.length, DATA.extras.length);
+check("cuotas", t.retainers.length, DATA.retainers.length);
+check("mantenimiento", t.tiers.length, DATA.maintenanceTiers.length);
+check("enterprise", t.enterpriseFeatures.length, DATA.enterprise.features.length);
+check("SLA", t.slaRows.length, DATA.enterprise.sla.length);
+check("comparativa", t.comparisonRows.length, DATA.comparison.length);
+// Las exclusiones y la guía viven en la página española, no en DATA.
+check("exclusiones", t.exclusions.length, 6);
+check("guía", t.guideRows.length, 4);
+
+const priceLabel = (price: number) =>
+  price === 0 ? t.freeLabel : `${LOCALE_CONTENT[lang].formatPrice(price)}`;
+
+// 2.500 € se escribe distinto en cada idioma (€2,500 / 2 500 €); el precio de
+// entrada enterprise va con el formato del idioma, no con el español.
+const enterprisePrice = new Intl.NumberFormat(lang, {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+}).format(DATA.enterprise.price);
+
+const plans = DATA.plans.map((plan, i) => ({
+  ...plan,
+  copy: LOCALE_CONTENT[lang].plans[i],
+  detail: t.plans[i],
+}));
+
+const guideRows = t.guideRows.map((row) => ({
+  ...row,
+  name: LOCALE_CONTENT[lang].plans[row.planIndex].name,
+  price: priceLabel(DATA.plans[row.planIndex].price),
+}));
+
+const translations = [
+  { lang: "es", path: "/precios/" },
+  ...LOCALES.filter((code) => code !== lang).map((code) => ({
+    lang: code,
+    path: `/${code}/precios/`,
+  })),
+];
+
+const pageUrl = new URL(path, site).href;
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: t.crumbHome, item: new URL("/", site).href },
+    { "@type": "ListItem", position: 2, name: t.crumb, item: pageUrl },
+  ],
+};
+
+const offers = {
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  name: `${t.plansTitle} — Sur Digital`,
+  url: pageUrl,
+  provider: { "@type": "ProfessionalService", name: "Sur Digital", url: new URL("/", site).href },
+  itemListElement: [
+    ...plans.map((plan) => ({
+      "@type": "Offer",
+      name: plan.copy.name,
+      price: String(plan.price),
+      priceCurrency: "EUR",
+      url: pageUrl,
+    })),
+    ...DATA.retainers.map((plan, i) => ({
+      "@type": "Offer",
+      name: t.retainers[i].name,
+      price: String(plan.price),
+      priceCurrency: "EUR",
+      url: pageUrl,
+    })),
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  inLanguage: LOCALE_HTML_LANG[lang],
+  mainEntity: t.faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+
+const cellClass = "text-center text-xs md:text-sm";
+const mark = (value: string | boolean) =>
+  value === true ? "yes" : value === false ? "no" : "text";
+---
+
+<Layout
+  title={t.metaTitle}
+  description={t.metaDescription}
+  lang={LOCALE_HTML_LANG[lang]}
+  path={path}
+  image={`/og/${lang}.png`}
+  translations={translations}
+>
+  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbs)} />
+  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(offers)} />
+  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <Topbar lang={lang} />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <!-- Hero -->
+    <section class="container mx-auto px-6 max-w-4xl text-center mb-10" data-reveal>
+      <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
+        <a href={lang === "es" ? "/" : `/${lang}/`} class="link link-hover">{t.crumbHome}</a> · {t.crumb}
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        {t.heroTitle} <span class="text-wave">{t.heroAccent}</span>
+      </h1>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">{t.heroLead}</p>
+    </section>
+
+    <!-- Guía rápida -->
+    <section class="container mx-auto px-6 max-w-4xl mb-8" data-reveal>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content text-center mb-2">{t.guideTitle}</h2>
+      <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-6">{t.guideLead}</p>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {
+          guideRows.map((row) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <a href="#planes" class="card-body py-4 gap-1">
+                <span class="text-sm text-base-content/70">{row.need}</span>
+                <span class="font-bold">{row.name} · {row.price}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Planes -->
+    <section id="planes" class="pt-10 pb-16 flex flex-col items-center">
+      <div class="container mx-auto px-6 text-center">
+        <ul data-reveal-group class="pricing-plans grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 justify-items-center items-stretch max-w-6xl mx-auto">
+          {
+            plans.map((plan) => (
+              <li
+                class:list={[
+                  "card bg-base-100 w-full",
+                  plan.popular
+                    ? "shadow-lg border-2 border-secondary relative"
+                    : "shadow-sm border-2 border-transparent hover:border-secondary transition-all",
+                ]}
+              >
+                {plan.popular && (
+                  <span class="absolute -top-3 left-1/2 -translate-x-1/2 badge badge-secondary badge-sm font-bold">
+                    {t.popularLabel}
+                  </span>
+                )}
+                <div class="card-body items-center text-center">
+                  <p class="text-lg font-bold whitespace-nowrap text-base-content/70">{plan.copy.name}</p>
+                  <p class="min-h-10 text-sm leading-snug text-base-content/60">{plan.detail.tagline}</p>
+                  <p class="text-4xl font-black whitespace-nowrap">
+                    {LOCALE_CONTENT[lang].formatPrice(plan.price)}
+                    <span class="mt-1 block text-xs font-normal text-base-content/60">{plan.copy.unit}</span>
+                  </p>
+                  <ul class="text-start text-sm flex flex-col gap-2 mt-2">
+                    {plan.detail.features.map((feature) => (
+                      <li><DoneIcon />{feature}</li>
+                    ))}
+                  </ul>
+                  <a
+                    href={CONTACT.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class:list={["btn w-full mt-4 whitespace-nowrap", plan.popular ? "btn-primary" : "btn-outline btn-primary"]}
+                  >
+                    {plan.price === 0 ? t.ctaFree : t.ctaPaid}
+                  </a>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="text-xs text-base-content/60 mt-6 max-w-2xl mx-auto">{t.vatNote}</p>
+      </div>
+    </section>
+
+    <!-- Extras -->
+    <section class="container mx-auto px-6 max-w-3xl mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-2 text-center" data-reveal>{t.extrasTitle}</h2>
+      <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-8" data-reveal>{t.extrasLead}</p>
+      <ul data-reveal-group class="flex flex-col gap-3">
+        {
+          t.extras.map((extra, i) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <div class="card-body py-4 flex-row flex-wrap items-center gap-3">
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold">{extra.name}</p>
+                  <p class="text-sm text-base-content/70">{extra.note}</p>
+                </div>
+                <span class="font-black text-lg text-secondary shrink-0">{extra.price}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Cuotas mensuales -->
+    <section class="pt-14 pb-20 flex flex-col items-center">
+      <div class="container mx-auto px-6 text-center">
+        <h2 data-reveal class="text-3xl md:text-4xl font-bold text-base-content mb-2">
+          {t.retainersTitle} <span class="text-wave">{t.retainersAccent}</span>
+        </h2>
+        <p data-reveal class="text-base-content/70 max-w-2xl mx-auto mb-10">{t.retainersLead}</p>
+        <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch text-start">
+          {
+            t.retainers.map((retainer, i) => (
+              <li class="card bg-base-100 shadow-sm border-2 border-base-300 hover:border-secondary transition-colors">
+                <div class="card-body items-center text-center">
+                  <p class="font-bold text-lg text-base-content/70">{retainer.name}</p>
+                  <p class="text-sm text-base-content/60 min-h-10">{retainer.tagline}</p>
+                  <p class="text-4xl font-black">
+                    {DATA.retainers[i].price}€
+                    <span class="text-sm font-normal text-base-content/60">{t.monthSuffix}</span>
+                  </p>
+                  <ul class="text-start text-sm flex flex-col gap-2 mt-2">
+                    {retainer.features.map((feature) => (
+                      <li><DoneIcon />{feature}</li>
+                    ))}
+                  </ul>
+                  <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-primary w-full mt-4">
+                    {t.retainerCta}
+                  </a>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Mantenimiento anual -->
+        <div class="mt-16" data-reveal>
+          <h3 class="text-2xl md:text-3xl font-bold text-base-content mb-2">{t.tiersTitle}</h3>
+          <p class="text-base-content/70 max-w-2xl mx-auto mb-8">{t.tiersLead}</p>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto text-start">
+            {
+              t.tiers.map((tier, i) => (
+                <li class="card bg-base-100 shadow-sm border border-base-300">
+                  <div class="card-body">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <p class="font-bold text-lg text-base-content/70">{tier.name}</p>
+                      <p class="text-2xl font-black">
+                        {DATA.maintenanceTiers[i].price}€
+                        <span class="text-sm font-normal text-base-content/60">{t.yearSuffix}</span>
+                      </p>
+                    </div>
+                    <p class="text-sm text-base-content/60">{tier.note}</p>
+                    <ul class="text-start text-sm flex flex-col gap-2 mt-2">
+                      {tier.features.map((feature) => (
+                        <li><DoneIcon />{feature}</li>
+                      ))}
+                    </ul>
+                    <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-primary w-full mt-4">
+                      {t.retainerCta}
+                    </a>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enterprise -->
+    <section class="pt-14 pb-20 flex flex-col items-center">
+      <div class="container mx-auto px-6 max-w-5xl">
+        <div data-reveal class="text-center mb-10">
+          <p class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-primary mb-4">
+            {t.enterpriseBadge}
+          </p>
+          <h2 class="text-3xl md:text-4xl font-bold text-base-content mb-3">
+            {t.enterpriseTitle} <span class="text-wave">{t.enterpriseAccent}</span>
+          </h2>
+          <p class="text-base-content/70 max-w-2xl mx-auto">{t.enterpriseLead}</p>
+        </div>
+
+        <ul data-reveal-group class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto text-start">
+          {
+            t.enterpriseFeatures.map((feature) => (
+              <li class="card bg-base-100 shadow-sm border border-base-300">
+                <div class="card-body gap-2">
+                  <DoneIcon class="size-5 mb-1" />
+                  <h3 class="card-title text-lg">{feature.title}</h3>
+                  <p class="text-sm text-base-content/70 leading-relaxed">{feature.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div data-reveal class="card bg-base-100 shadow-md border border-base-300 mt-10">
+          <div class="card-body gap-4">
+            <div class="flex flex-wrap items-baseline justify-between gap-3">
+              <h3 class="card-title text-xl">{t.slaTitle}</h3>
+              <p class="text-2xl font-black">
+                {t.slaFrom} {enterprisePrice}
+                <span class="text-sm font-normal text-base-content/60">{t.slaPerProject}</span>
+              </p>
+            </div>
+            <p class="text-sm text-base-content/70">{t.slaLead}</p>
+            <div class="overflow-x-auto">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    {t.slaHeaders.map((header) => (
+                      <th scope="col">{header}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {t.slaRows.map((row) => (
+                    <tr class="border-b-base-200">
+                      <th scope="row" class="font-bold text-sm text-start">{row.level}</th>
+                      <td class="text-sm font-bold text-primary">{row.response}</td>
+                      <td class="text-sm text-base-content/70">{row.detail}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="text-xs text-base-content/50">{t.slaNote}</p>
+          </div>
+        </div>
+
+        <p data-reveal class="text-center mt-8">
+          <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+            {t.enterpriseCta}
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Qué no incluye -->
+    <section class="container mx-auto px-6 max-w-3xl mt-16 mb-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-2 text-center" data-reveal>{t.exclusionsTitle}</h2>
+      <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-8" data-reveal>{t.exclusionsLead}</p>
+      <ul data-reveal-group class="flex flex-col gap-3">
+        {
+          t.exclusions.map((item) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <div class="card-body py-4 flex-row items-start gap-3">
+                <span class="font-black shrink-0 text-base-content/40" aria-hidden="true">—</span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold">{item.name}</p>
+                  <p class="text-sm text-base-content/70">{item.note}</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Cambios tras el lanzamiento -->
+    <section class="pt-14 pb-20 bg-gradient-to-b from-base-200 to-base-100 flex flex-col items-center">
+      <div data-reveal class="container mx-auto px-6 text-center max-w-3xl">
+        <p class="text-sm font-bold uppercase tracking-wide text-secondary mb-3">{t.cambiosEyebrow}</p>
+        <h2 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+          {t.cambiosTitle} <span class="text-wave">{t.cambiosAccent}</span>
+        </h2>
+        <p class="text-base-content/70 max-w-2xl mx-auto">{t.cambiosLead}</p>
+        <ul data-reveal-group class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl mx-auto mt-8 text-sm">
+          {
+            t.cambiosChips.map((chip, i) => (
+              <li class="card bg-base-100 shadow-sm border border-base-300 py-3 px-4">
+                {["📝", "📷", "💶", "🎨", "🧩", "📍"][i]} <span class="font-bold">{chip}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p data-reveal class="text-sm text-base-content/60 max-w-xl mx-auto mt-8">{t.cambiosNote}</p>
+        <a data-reveal href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg mt-6">
+          {t.cambiosCta}
+        </a>
+      </div>
+    </section>
+
+    <!-- Comparativa agencia / DIY / nosotros -->
+    <section class="pt-14 pb-20 bg-gradient-to-b from-base-200 to-base-100 flex flex-col items-center">
+      <div class="container mx-auto px-6 flex flex-col items-center">
+        <h2 data-reveal class="text-4xl md:text-5xl font-bold text-base-content text-center">
+          {t.comparisonTitle} <span class="text-wave">{t.comparisonAccent}</span>
+        </h2>
+        <p data-reveal class="text-base-content/70 text-center max-w-2xl mt-3 mb-12">{t.comparisonLead}</p>
+        <p data-reveal class="md:hidden text-xs text-base-content/50 mb-4 -mt-8 text-center">{t.comparisonSwipe}</p>
+        <div
+          data-reveal
+          role="region"
+          aria-label={t.comparisonTitle}
+          tabindex="0"
+          class="overflow-x-auto w-full max-w-4xl shadow-lg rounded-box border border-base-300 bg-base-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+        >
+          <table class="table table-sm md:table-md">
+            <thead>
+              <tr class="border-b-base-300">
+                <th class="bg-transparent"></th>
+                <th class="bg-transparent text-center font-bold">
+                  <span class="text-sm md:text-base">{t.comparisonHeaders[0]}</span>
+                  <span class="block text-[10px] font-normal text-base-content/50">{t.comparisonHeaders[1]}</span>
+                </th>
+                <th class="bg-transparent text-center font-bold">
+                  <span class="text-sm md:text-base">{t.comparisonHeaders[2]}</span>
+                  <span class="block text-[10px] font-normal text-base-content/50">{t.comparisonHeaders[3]}</span>
+                </th>
+                <th class="bg-transparent text-center font-bold text-primary">
+                  <span class="text-sm md:text-base">{t.comparisonHeaders[4]}</span>
+                  <span class="block text-[10px] font-normal text-primary/60">{t.comparisonHeaders[5]}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                t.comparisonRows.map((row) => (
+                  <tr class="border-b-base-200 hover:bg-base-200/40">
+                    <th scope="row" class="font-bold text-sm text-start">{row.feature}</th>
+                    {[row.agency, row.diy, row.us].map((value, i) => (
+                      <td class={cellClass}>
+                        {mark(value) === "yes" ? (
+                          <span class="text-success text-lg" aria-label="✓">✓</span>
+                        ) : mark(value) === "no" ? (
+                          <span class="text-error text-lg" aria-label="✗">✗</span>
+                        ) : (
+                          <span class:list={["text-xs text-base-content/60", i === 2 && "font-bold text-primary"]}>{value}</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <p data-reveal class="text-xs text-base-content/50 mt-6 text-center max-w-xl">{t.comparisonNote}</p>
+
+        <p data-reveal class="text-sm text-base-content/60 mt-8 text-center max-w-xl">
+          {t.marketNote}{" "}
+          <a href="/precios/#comparativa-mercado" hreflang="es" class="link link-primary font-bold">{t.marketLink}</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container mx-auto px-6 max-w-3xl mt-16">
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content mb-6 text-center" data-reveal>{t.faqTitle}</h2>
+      <div data-reveal-group class="flex flex-col gap-3">
+        {
+          t.faq.map((item) => (
+            <details class="collapse collapse-arrow bg-base-100 shadow-sm">
+              <summary class="collapse-title font-bold">{item.q}</summary>
+              <div class="collapse-content text-base-content/70">{item.a}</div>
+            </details>
+          ))
+        }
+      </div>
+      <p class="text-center mt-8" data-reveal>
+        <a href={CONTACT.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">{t.finalCta}</a>
+      </p>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>
