@@ -2,31 +2,29 @@
 // Glosario en los cinco idiomas: mismo contenido y misma estructura que la
 // página española, con los términos traducidos (src/i18n/pages/glosario.ts) y
 // las guías del blog enlazadas en español, marcadas con hreflang="es".
-import { TERMINOS } from "../../../data/glosario";
-import { LOCALES, LOCALE_HTML_LANG, type Locale } from "../../../data/i18n";
-import { GLOSARIO, TERMINOS_HREFS } from "../../../i18n/pages/glosario";
-import Layout from "../../../layouts/Layout.astro";
-import Topbar from "../../../components/Topbar.astro";
-import Footer from "../../../components/Footer.astro";
-import Fab from "../../../components/Fab.astro";
-import MobileCta from "../../../components/MobileCta.astro";
-import { CONTACT } from "../../../data/contact";
-import { isTranslated } from "../../../i18n/routes";
+import { TERMINOS } from "../../data/glosario";
+import { LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
+import { GLOSARIO, TERMINOS_HREFS } from "../../i18n/pages/glosario";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+import Fab from "../../components/Fab.astro";
+import MobileCta from "../../components/MobileCta.astro";
+import { CONTACT } from "../../data/contact";
+import { isTranslated, localizedPath, localize } from "../../i18n/routes";
 
-export function getStaticPaths() {
-  return LOCALES.map((lang) => ({ params: { lang } }));
+interface Props {
+  lang: Locale;
 }
-
-const { lang } = Astro.params as { lang: Locale };
+const { lang } = Astro.props;
 const t = GLOSARIO[lang];
 const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
-// La URL pública no lleva idioma (ver src/i18n/routes.ts).
-const path = "/glosario/";
+const path = localizedPath("glosario", lang);
 
-// Enlaces de la página: la ruta es la misma en todos los idiomas y la cookie
-// decide el HTML. Si esa página solo existe en español, se marca con hreflang.
+// Enlaces de la página: a la URL del idioma si esa página está traducida y, si
+// no, a la española, marcada con hreflang="es".
 const link = (p: string) => ({
-  href: p,
+  href: localize(p, lang),
   hreflang: isTranslated(p, lang) ? undefined : "es",
 });
 const homeLink = link("/");

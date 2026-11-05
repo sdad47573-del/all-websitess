@@ -4,6 +4,7 @@ import "../styles/reveal.css";
 import { CONTACT } from "../data/contact";
 import type { Crumb } from "../data/breadcrumbs";
 import { ui } from "../i18n/ui";
+import { alternatePaths, pageFromPath } from "../i18n/routes";
 
 interface Props {
   title: string;
@@ -42,6 +43,18 @@ const {
 // la página; el resto del <head> no depende del idioma.
 const t = ui(lang);
 
+// Alternates de idioma: las páginas con slug propio en cada idioma
+// (/precios/, /preise/, /prices/…) se declaran solas desde la tabla de rutas,
+// sin que cada página tenga que pasar la lista. La prop `translations` sigue
+// sirviendo para pares sueltos que no están en la tabla (Marbella ES ↔ EN).
+const page = pageFromPath(path);
+const alternates =
+  translations.length > 0
+    ? translations
+    : page && page !== "home"
+      ? alternatePaths(page, lang)
+      : [];
+
 // El dominio sale de astro.config.mjs (site), no de una URL escrita a mano.
 const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
 const absoluteUrl = new URL(path, site).href;
@@ -73,7 +86,7 @@ const ogLocale = OG_LOCALE[lang] ?? "es_ES";
 // Todos los idiomas equivalentes, no solo el español: las landings
 // traducidas comparten con las redes que existen en las seis lenguas.
 const ogLocaleAlternates = [
-  ...new Set([lang, ...translations.map((t) => t.lang)]),
+  ...new Set([lang, ...alternates.map((t) => t.lang)]),
 ]
   .filter((code) => code !== lang)
   .map((code) => OG_LOCALE[code])
@@ -84,8 +97,8 @@ const ogLocaleAlternates = [
 // código va como es-ES / en-GB para coincidir con og:locale. x-default apunta
 // a la versión española (el sitio es español por defecto).
 const hreflangCode = (l: string) => HREFLANG[l] ?? l;
-const hreflangLinks = translations.length
-  ? [{ lang, path }, ...translations].map((t) => ({
+const hreflangLinks = alternates.length
+  ? [{ lang, path }, ...alternates].map((t) => ({
       hreflang: hreflangCode(t.lang),
       href: new URL(t.path, site).href,
     }))

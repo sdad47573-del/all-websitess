@@ -5,7 +5,12 @@ import { twJoin } from "tailwind-merge";
 import { DATA } from "../data/data.astro";
 import { CONTACT } from "../data/contact";
 import { LOCALES, LOCALE_LABELS } from "../data/i18n";
-import { isTranslated } from "../i18n/routes";
+import {
+  isTranslated,
+  localizedPath,
+  localize,
+  pageFromPath,
+} from "../i18n/routes";
 import { ui } from "../i18n/ui";
 
 import Logo from "../assets/logoreverse-optimized.png";
@@ -22,7 +27,7 @@ const localized = lang !== "es";
 
 // Enlaces que aún viven solo en español se marcan con hreflang.
 const esLink = (path: string) => ({
-  href: path,
+  href: localize(path, lang),
   hreflang: isTranslated(path, lang) ? undefined : "es",
 });
 
@@ -33,13 +38,15 @@ const serviceLinks = [
   { path: "/especialidades/", label: t.footer.specialitiesAll },
 ].map((item) => ({ ...item, ...esLink(item.path) }));
 
-// El idioma no va en la URL: cada enlace recarga la home con la cookie del
-// idioma elegido (ver el script de Layout y los rewrites de vercel.json). Aquí
-// se apunta a la home y no a la página actual porque solo hay cinco páginas
-// traducidas.
+// Cada idioma tiene su slug; si la página actual no está traducida, el enlace
+// lleva a la home de ese idioma (que se resuelve con la cookie).
+const page = pageFromPath(Astro.url.pathname);
 const languageLinks = [
-  { code: "es", href: "/" },
-  ...LOCALES.map((code) => ({ code, href: "/" })),
+  { code: "es", href: localizedPath(page ?? "home", "es") },
+  ...LOCALES.map((code) => ({
+    code,
+    href: localizedPath(page ?? "home", code),
+  })),
 ];
 ---
 

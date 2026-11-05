@@ -29,9 +29,10 @@ export default defineConfig({
           pathname !== "/social-kit/"
         );
       },
-      customPages: ["/", "/contacto/", "/faq/", "/glosario/", "/precios/"].map(
-        (path) => new URL(path, SITE).href
-      ),
+      // Solo la home: se compila en /i18n/<lang>/ y su URL pública es /, que
+      // no existe como archivo. Las demás páginas traducidas tienen archivo
+      // propio en su slug (/precios/, /preise/, /prices/…).
+      customPages: [new URL("/", SITE).href],
     }),
     pagefind(),
     // Tarjetas cuadradas 1080×1080 para Instagram a partir de las OG

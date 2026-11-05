@@ -7,24 +7,24 @@
 // Las comparativas con proveedores concretos (mercado de Málaga, mercado
 // nacional y matriz de 34 funciones) siguen en español: se enlazan al ancla
 // correspondiente de /precios/ con hreflang="es".
-import { DATA } from "../../../data/data.astro";
-import { CONTACT } from "../../../data/contact";
-import { LOCALES, LOCALE_CONTENT, LOCALE_HTML_LANG, type Locale } from "../../../data/i18n";
-import { PRECIOS_DE } from "../../../i18n/pages/precios/de";
-import { PRECIOS_EN } from "../../../i18n/pages/precios/en";
-import { PRECIOS_FR } from "../../../i18n/pages/precios/fr";
-import { PRECIOS_PT } from "../../../i18n/pages/precios/pt";
-import { PRECIOS_RU } from "../../../i18n/pages/precios/ru";
-import Layout from "../../../layouts/Layout.astro";
-import Topbar from "../../../components/Topbar.astro";
-import Footer from "../../../components/Footer.astro";
-import DoneIcon from "../../../icons/DoneIcon.astro";
+import { DATA } from "../../data/data.astro";
+import { CONTACT } from "../../data/contact";
+import { LOCALE_CONTENT, LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
+import { PRECIOS_DE } from "../../i18n/pages/precios/de";
+import { PRECIOS_EN } from "../../i18n/pages/precios/en";
+import { PRECIOS_FR } from "../../i18n/pages/precios/fr";
+import { PRECIOS_PT } from "../../i18n/pages/precios/pt";
+import { PRECIOS_RU } from "../../i18n/pages/precios/ru";
+import { localizedPath } from "../../i18n/routes";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+import DoneIcon from "../../icons/DoneIcon.astro";
 
-export function getStaticPaths() {
-  return LOCALES.map((lang) => ({ params: { lang } }));
+interface Props {
+  lang: Exclude<Locale, "es">;
 }
-
-const { lang } = Astro.params as { lang: Exclude<Locale, "es"> };
+const { lang } = Astro.props;
 const COPY = {
   en: PRECIOS_EN,
   de: PRECIOS_DE,
@@ -34,8 +34,7 @@ const COPY = {
 };
 const t = COPY[lang];
 const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
-// La URL pública no lleva idioma (ver src/i18n/routes.ts).
-const path = "/precios/";
+const path = localizedPath("precios", lang);
 
 // Cada lista traducida debe tener la misma longitud que su fuente española.
 const check = (label: string, a: number, b: number) => {
@@ -476,11 +475,9 @@ const mark = (value: string | boolean) =>
 
         <p data-reveal class="text-sm text-base-content/60 mt-8 text-center max-w-xl">
           {t.marketNote}{" "}
-          <!-- La comparativa de mercado solo está en la página española: el
-               enlace cambia la cookie a español y salta al ancla. -->
+          <!-- La comparativa de mercado solo existe en la página española. -->
           <a
             href="/precios/#comparativa-mercado"
-            data-lang="es"
             hreflang="es"
             class="link link-primary font-bold">{t.marketLink}</a
           >.

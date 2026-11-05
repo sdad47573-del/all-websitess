@@ -1,0 +1,53 @@
+---
+// Las cuatro páginas traducidas, cada una en la URL de su idioma:
+// /precios/ (es), /prices/ (en), /preise/ (de), /tarifs/ (fr), /precos/ (pt),
+// /ceny/ (ru)… Los slugs salen de src/i18n/routes.ts, que es la única fuente:
+// si se añade una página traducida, se añade allí y aquí se genera sola.
+//
+// La home no pasa por aquí: vive en / y su idioma lo decide la cookie (ver
+// vercel.json y tools/clean-urls.ts).
+import { LOCALIZED_PAGES, SUBPAGES, type Lang, type PageKey } from "../i18n/routes";
+import { LANGS } from "../i18n/routes";
+import ContactoEs from "../templates/contacto/Es.astro";
+import ContactoLang from "../templates/contacto/Lang.astro";
+import FaqEs from "../templates/faq/Es.astro";
+import FaqLang from "../templates/faq/Lang.astro";
+import GlosarioEs from "../templates/glosario/Es.astro";
+import GlosarioLang from "../templates/glosario/Lang.astro";
+import PreciosEs from "../templates/precios/Es.astro";
+import PreciosLang from "../templates/precios/Lang.astro";
+
+export function getStaticPaths() {
+  return SUBPAGES.flatMap((page) =>
+    LANGS.map((lang) => ({
+      params: { slug: LOCALIZED_PAGES[page][lang].replace(/\//g, "") },
+      props: { page, lang },
+    }))
+  );
+}
+
+interface Props {
+  page: Exclude<PageKey, "home">;
+  lang: Lang;
+}
+const { page, lang } = Astro.props;
+---
+
+{
+  page === "precios" && (
+    <>{lang === "es" ? <PreciosEs /> : <PreciosLang lang={lang} />}</>
+  )
+}
+{
+  page === "contacto" && (
+    <>{lang === "es" ? <ContactoEs /> : <ContactoLang lang={lang} />}</>
+  )
+}
+{
+  page === "faq" && <>{lang === "es" ? <FaqEs /> : <FaqLang lang={lang} />}</>
+}
+{
+  page === "glosario" && (
+    <>{lang === "es" ? <GlosarioEs /> : <GlosarioLang lang={lang} />}</>
+  )
+}

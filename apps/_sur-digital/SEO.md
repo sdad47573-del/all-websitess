@@ -453,27 +453,35 @@ Tres huecos más, ninguno solapado con lo publicado:
 Enlazados desde `cuantas-paginas-debe-tener-tu-web`, `whatsapp-en-tu-web` y
 `seo-local-malaga-negocios`, además del índice y la categoría.
 
-## 21. El idioma sale de la URL (5 nov 2026)
+## 21. URLs propias por idioma (5 nov 2026)
 
-Las versiones en inglés, alemán, francés, portugués y ruso vivían en
-`/en/`, `/de/`, `/fr/`, `/pt/` y `/ru/`. Ahora la URL es la misma para los seis
-idiomas (`/precios/`, `/contacto/`, `/faq/`, `/glosario/` y `/`): el idioma se
-guarda en la cookie `lang` y lo aplica Vercel con rewrites (español si no hay
-cookie).
+Las versiones en inglés, alemán, francés, portugués y ruso vivían en `/en/`,
+`/de/`, `/fr/`, `/pt/` y `/ru/` con el slug en español detrás
+(`/de/precios/`). Ahora cada idioma tiene su slug, sin prefijo de idioma:
 
-- Cada idioma se compila en `/i18n/<lang>/…`, una carpeta privada: no se
-  enlaza, va excluida del sitemap y en `robots.txt`.
-- Canonical y `og:url` apuntan siempre a la URL limpia. Se dejan de emitir los
-  hreflang entre idiomas porque ya comparten URL; solo queda el par ES ↔ EN de
-  `/web-design-marbella/` ↔ `/blog/diseno-web-marbella/`, que sí son URLs
-  distintas.
-- Las URLs antiguas con prefijo devuelven 301 a la limpia (conservan el
-  enlazado y el historial). `/de/precios/` → `/precios/`.
-- Googlebot no envía la cookie: indexa siempre la versión española, que es la
-  que se posiciona. El contenido traducido queda para quien elige idioma.
-- El selector de idioma ya no navega a otra ruta: escribe la cookie y recarga.
-  Sin JS se queda en el idioma actual.
+| Página   | es          | en                           | de                | fr                    | pt                     | ru            |
+| -------- | ----------- | ---------------------------- | ----------------- | --------------------- | ---------------------- | ------------- |
+| Precios  | `/precios/` | `/prices/`                   | `/preise/`        | `/tarifs/`            | `/precos/`             | `/ceny/`      |
+| Contacto | `/contacto/`| `/contact/`                  | `/kontakt/`       | `/nous-contacter/`    | `/fale-connosco/`      | `/kontakty/`  |
+| FAQ      | `/faq/`     | `/frequently-asked-questions/` | `/haeufige-fragen/` | `/questions-frequentes/` | `/perguntas-frequentes/` | `/voprosy/` |
+| Glosario | `/glosario/`| `/glossary/`                 | `/glossar/`       | `/glossaire/`         | `/glossario/`          | `/slovar/`    |
 
-El build sigue siendo 100 % estático (sin funciones). En local, `astro dev`
-resuelve las URLs limpias con `tools/clean-urls.ts`; `astro preview` no aplica
-la cookie y sirve la versión española.
+- La tabla vive en `src/i18n/routes.ts` y de ahí salen las rutas, los enlaces
+del menú y del footer, el selector y el hreflang: un slug nuevo se añade en un
+solo sitio y `src/pages/[slug].astro` la genera. Los slugs tienen que ser
+únicos en todo el sitio, de ahí `/nous-contacter/` en vez de `/contact/`
+(que ya usa el inglés) o `/perguntas-frequentes/` en portugués.
+- Canonical y `og:url` son la URL del idioma, y cada página declara los otros
+cinco como alternates (los calcula `Layout` desde la tabla); `x-default` apunta
+al español.
+- La home es la única sin slug: vive en `/` para los seis idiomas y el idioma
+se guarda en la cookie `lang`, que Vercel aplica con un rewrite a
+`/i18n/<lang>/`. El selector escribe esa cookie al navegar (también el logo),
+así que la home sigue el idioma elegido.
+- `/i18n/<lang>/` es una carpeta privada (solo las homes): no se enlaza, va
+  fuera del sitemap y en `robots.txt`.
+- Las URLs antiguas (`/en/precios/`, `/de/glosario/`…) devuelven 301 a la nueva
+  del idioma.
+- El build sigue siendo 100 % estático (sin funciones). En local, `astro dev`
+  resuelve `/` con `tools/clean-urls.ts`; `astro preview` no lee la cookie y
+  sirve la home española.

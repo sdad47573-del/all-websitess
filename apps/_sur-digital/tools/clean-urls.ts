@@ -7,7 +7,7 @@
 // local.
 import type { IncomingMessage } from "node:http";
 import type { Plugin } from "vite";
-import { LANG_COOKIE, normalizeLang, TRANSLATED_PATHS } from "../src/i18n/routes";
+import { LANG_COOKIE, normalizeLang } from "../src/i18n/routes";
 
 const cookieLang = (header?: string): string | undefined => {
   const match = header?.match(new RegExp(`(?:^|;\\s*)${LANG_COOKIE}=([^;]+)`));
@@ -16,10 +16,11 @@ const cookieLang = (header?: string): string | undefined => {
 
 const rewrite = (req: IncomingMessage) => {
   const url = new URL(req.url ?? "/", "http://localhost");
-  const path = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
-  if (!TRANSLATED_PATHS.includes(path)) return;
+  // Las páginas traducidas tienen archivo propio en su slug; solo la home se
+  // compila por idioma en /i18n/<lang>/ y hay que resolverla con la cookie.
+  if (url.pathname !== "/") return;
   const lang = normalizeLang(cookieLang(req.headers.cookie));
-  req.url = `/i18n/${lang}${path}${url.search}`;
+  req.url = `/i18n/${lang}/${url.search}`;
 };
 
 export const cleanUrls = (): Plugin => ({
