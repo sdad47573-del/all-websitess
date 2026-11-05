@@ -3,80 +3,191 @@ import { Image } from "astro:assets";
 import { twJoin } from "tailwind-merge";
 
 import { DATA } from "../data/data.astro";
+import { CONTACT } from "../data/contact";
+import { LOCALES, LOCALE_LABELS } from "../data/i18n";
+import { localize } from "../i18n/routes";
+import { ui } from "../i18n/ui";
 
 import Logo from "../assets/logoreverse-optimized.png";
+
+// En español se mantiene el footer completo con los sectores. En el resto de
+// idiomas se muestra una versión reducida (servicios, contacto, idiomas) con
+// los textos traducidos y enlaces a la versión que exista de cada página.
+interface Props {
+  lang?: string;
+}
+const { lang = "es" } = Astro.props;
+const t = ui(lang);
+const localized = lang !== "es";
+
+// Enlaces que aún viven solo en español se marcan con hreflang.
+const esLink = (path: string) => {
+  const href = localize(path, lang);
+  return { href, hreflang: href === path && lang !== "es" ? "es" : undefined };
+};
+
+const serviceLinks = [
+  { path: "/servicios/", label: t.footer.servicesAll },
+  { path: "/precios/", label: t.footer.pricing },
+  { path: "/glosario/", label: t.footer.glossary },
+  { path: "/especialidades/", label: t.footer.specialitiesAll },
+].map((item) => ({ ...item, ...esLink(item.path) }));
+
+const languageLinks = [
+  { code: "es", href: localize("/", "es") },
+  ...LOCALES.map((code) => ({ code, href: `/${code}/` })),
+];
 ---
 
 <footer class="brand-surface pt-8 pb-24 md:pb-8 md:pt-10 px-6">
   <div class="container mx-auto flex flex-col gap-8 md:gap-10">
-    <div
-      class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 w-full"
-    >
-      <div class="col-span-2 sm:col-span-3 lg:col-span-1 flex flex-col gap-3">
-        <Image
-          src={Logo}
-          alt="Sur Digital"
-          widths={[128, 256]}
-          sizes="112px"
-          class="w-28 h-auto object-contain"
-        />
-        <!-- Sin opacidad: el blanco al 80 % sobre el azul de marca se queda en
-             ~3,7:1 y no pasa AA. El blanco puro da 4,69:1. -->
-        <p class="max-w-60 text-sm">
-          Webs rápidas para negocios de Málaga. Desde 0€, en menos de 7 días.
-        </p>
-      </div>
-      {
-        DATA.footer.map(({ title, items }) => (
-          <nav aria-label={title} class="flex flex-col">
+    {
+      localized ? (
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 lg:gap-6 w-full">
+          <div class="col-span-2 sm:col-span-3 lg:col-span-1 flex flex-col gap-3">
+            <Image
+              src={Logo}
+              alt="Sur Digital"
+              widths={[128, 256]}
+              sizes="112px"
+              class="w-28 h-auto object-contain"
+            />
+            <p class="max-w-60 text-sm">{t.footer.strap}</p>
+          </div>
+
+          <nav aria-label={t.footer.servicesHead} class="flex flex-col">
             <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
-              {title}
+              {t.footer.servicesHead}
             </p>
             <ul class="flex flex-col gap-1 text-sm">
-              {items.map((item) => {
-                const Icon = "icon" in item ? item.icon : null;
-                const href = "href" in item ? item.href : undefined;
-                const external =
-                  "external" in item && item.external ? true : undefined;
-                // min-h-12/min-w-12: Lighthouse pide áreas táctiles de 48 px.
-                // Antes eran enlaces de ~20 px de alto separados por 4 px.
-                const classes = twJoin(
-                  "flex min-h-12 min-w-12 items-center gap-1.5 leading-snug",
-                  href && "link link-hover"
-                );
-                return (
-                  <li>
-                    {href ? (
-                      <a
-                        href={href}
-                        class={classes}
-                        target={external ? "_blank" : undefined}
-                        rel={external ? "noopener noreferrer" : undefined}
-                      >
-                        {Icon && <Icon class="min-w-5 max-w-5" />}
-                        <span set:html={item.label} />
-                      </a>
-                    ) : (
-                      <p class={classes}>
-                        {Icon && <Icon class="min-w-5 max-w-5" />}
-                        <span set:html={item.label} />
-                      </p>
-                    )}
-                  </li>
-                );
-              })}
+              {serviceLinks.map(({ href, label, hreflang }) => (
+                <li>
+                  <a
+                    href={href}
+                    hreflang={hreflang}
+                    class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
-        ))
-      }
-    </div>
+
+          <nav aria-label={t.footer.contactHead} class="flex flex-col">
+            <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
+              {t.footer.contactHead}
+            </p>
+            <ul class="flex flex-col gap-1 text-sm">
+              <li>
+                <a
+                  href={CONTACT.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
+                >
+                  {t.footer.linkedin}
+                </a>
+              </li>
+              <li class="flex min-h-12 items-center leading-snug">
+                {t.footer.hoursHead}: {t.footer.hours}
+              </li>
+            </ul>
+          </nav>
+
+          <nav aria-label={t.footer.languagesHead} class="flex flex-col">
+            <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
+              {t.footer.languagesHead}
+            </p>
+            <ul class="flex flex-col gap-1 text-sm">
+              {languageLinks.map(({ code, href }) => (
+                <li>
+                  <a
+                    href={href}
+                    hreflang={code}
+                    lang={code}
+                    class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
+                    aria-current={code === lang ? "true" : undefined}
+                  >
+                    {LOCALE_LABELS[code as keyof typeof LOCALE_LABELS]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      ) : (
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 w-full">
+          <div class="col-span-2 sm:col-span-3 lg:col-span-1 flex flex-col gap-3">
+            <Image
+              src={Logo}
+              alt="Sur Digital"
+              widths={[128, 256]}
+              sizes="112px"
+              class="w-28 h-auto object-contain"
+            />
+            <!-- Sin opacidad: el blanco al 80 % sobre el azul de marca se queda en
+                 ~3,7:1 y no pasa AA. El blanco puro da 4,69:1. -->
+            <p class="max-w-60 text-sm">{t.footer.strap}</p>
+          </div>
+          {DATA.footer.map(({ title, items }) => (
+            <nav aria-label={title} class="flex flex-col">
+              <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
+                {title}
+              </p>
+              <ul class="flex flex-col gap-1 text-sm">
+                {items.map((item) => {
+                  const Icon = "icon" in item ? item.icon : null;
+                  const href = "href" in item ? item.href : undefined;
+                  const external =
+                    "external" in item && item.external ? true : undefined;
+                  // min-h-12/min-w-12: Lighthouse pide áreas táctiles de 48 px.
+                  const classes = twJoin(
+                    "flex min-h-12 min-w-12 items-center gap-1.5 leading-snug",
+                    href && "link link-hover"
+                  );
+                  return (
+                    <li>
+                      {href ? (
+                        <a
+                          href={href}
+                          class={classes}
+                          target={external ? "_blank" : undefined}
+                          rel={external ? "noopener noreferrer" : undefined}
+                        >
+                          {Icon && <Icon class="min-w-5 max-w-5" />}
+                          <span set:html={item.label} />
+                        </a>
+                      ) : (
+                        <p class={classes}>
+                          {Icon && <Icon class="min-w-5 max-w-5" />}
+                          <span set:html={item.label} />
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          ))}
+        </div>
+      )
+    }
     <div
       class="flex flex-col items-center justify-center gap-1 border-t border-white/20 pt-4 text-sm sm:flex-row sm:gap-4"
     >
-      <p>© {new Date().getFullYear()} Sur Digital - Todos los derechos reservados.</p>
+      <p>© {new Date().getFullYear()} Sur Digital - {t.footer.rights}</p>
       <p class="flex justify-center gap-4">
-        <a href="/aviso-legal/" class="link link-hover inline-flex min-h-12 items-center px-1">Aviso legal</a>
-        <a href="/politica-privacidad/" class="link link-hover inline-flex min-h-12 items-center px-1">Privacidad</a>
+        <a
+          href="/aviso-legal/"
+          hreflang="es"
+          class="link link-hover inline-flex min-h-12 items-center px-1">{t.footer.legal}</a
+        >
+        <a
+          href="/politica-privacidad/"
+          hreflang="es"
+          class="link link-hover inline-flex min-h-12 items-center px-1">{t.footer.privacy}</a
+        >
       </p>
     </div>
   </div>

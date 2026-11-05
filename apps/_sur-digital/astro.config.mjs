@@ -13,6 +13,23 @@ export default defineConfig({
     sitemap({
       // Páginas que no deben anunciarse como indexables
       filter: (page) => !page.endsWith("/404/") && !page.endsWith("/social-kit/"),
+      // hreflang también en el sitemap (xhtml:link). Solo afecta a las rutas que
+      // existen en varios idiomas: el plugin agrupa por ruta sin el prefijo de
+      // idioma y solo emite alternates si hay más de una URL en el grupo. Hoy eso
+      // son las seis raíces (/, /en/, /de/, /fr/, /pt/, /ru/); el resto de
+      // páginas son únicas y no se anotan, así que no se inventan /en/precios/ ni
+      // similares. Los códigos coinciden con los hreflang del <head>.
+      i18n: {
+        defaultLocale: "es",
+        locales: {
+          es: "es-ES",
+          en: "en-GB",
+          de: "de-DE",
+          fr: "fr-FR",
+          pt: "pt-PT",
+          ru: "ru-RU",
+        },
+      },
     }),
     pagefind(),
     // Tarjetas cuadradas 1080×1080 para Instagram a partir de las OG

@@ -10,6 +10,9 @@
 import { Image } from "astro:assets";
 import Logo from "../../assets/logo-optimized.png";
 import Footer from "../../components/Footer.astro";
+import Fab from "../../components/Fab.astro";
+import MobileCta from "../../components/MobileCta.astro";
+import Topbar from "../../components/Topbar.astro";
 import DoneIcon from "../../icons/DoneIcon.astro";
 import LinkedInIcon from "../../icons/LinkedInIcon.astro";
 import { CONTACT } from "../../data/contact";
@@ -118,55 +121,10 @@ const translations = languageLinks
     })}
   />
 
-  <!-- Cabecera propia (no la Topbar española): logo, selector de idioma y CTA.
-       Así no aparecen enlaces del sitio español con etiquetas en español. -->
-  <header class="fixed w-full bg-base-100/90 backdrop-blur-sm z-50 shadow-sm top-0">
-    <nav class="container mx-auto px-6 py-4 flex items-center justify-between gap-3">
-      <a href="/" class="flex shrink-0 items-center" aria-label="Sur Digital">
-        <Image
-          src={Logo}
-          alt="Sur Digital"
-          widths={[96, 192, 288]}
-          sizes="96px"
-          class="h-8 w-auto"
-        />
-      </a>
-
-      <div class="flex items-center gap-1 sm:gap-2">
-        <ul class="flex items-center gap-1 text-xs font-bold" aria-label={t.contactCta}>
-          {
-            languageLinks.map((link) => (
-              <li>
-                <a
-                  href={link.href}
-                  hreflang={link.code}
-                  lang={link.code}
-                  aria-current={link.code === lang ? "true" : undefined}
-                  class:list={[
-                    "rounded-btn px-2 py-1 transition-colors",
-                    link.code === lang
-                      ? "bg-primary text-primary-content"
-                      : "text-base-content/70 hover:text-primary",
-                  ]}
-                >
-                  {link.code.toUpperCase()}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <a
-          href={CONTACT.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn btn-primary btn-sm gap-2"
-        >
-          <LinkedInIcon class="size-4" />
-          <span class="hidden sm:inline">{t.contactCta}</span>
-        </a>
-      </div>
-    </nav>
-  </header>
+  <!-- Misma cabecera que el resto del sitio: navegación y textos traducidos,
+       con los enlaces que aún no tienen versión en este idioma apuntando a la
+       página española (marcados con hreflang="es"). -->
+  <Topbar lang={lang} />
 
   <main id="contenido" class="pb-20 bg-gradient-to-b from-base-100 to-base-200">
     <!-- Hero -->
@@ -209,7 +167,13 @@ const translations = languageLinks
               <LinkedInIcon class="size-5" />
               {t.ctaPrimary}
             </a>
-            <a href="/clientes/" class="btn btn-ghost btn-lg">{t.ctaSecondary} →</a>
+            <!-- Los casos de clientes aún solo existen en español: el enlace
+                 avisa del idioma del destino con hreflang. -->
+            <a
+              href="/clientes/"
+              hreflang="es"
+              class="btn btn-ghost btn-lg">{t.ctaSecondary} →</a
+            >
           </div>
 
           <ul
@@ -393,5 +357,7 @@ const translations = languageLinks
     </section>
   </main>
 
-  <Footer />
+  <Fab lang={lang} />
+  <MobileCta lang={lang} />
+  <Footer lang={lang} />
 </Layout>
