@@ -5,31 +5,33 @@ import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import pagefind from "astro-pagefind";
 import { socialCards } from "./integrations/social-cards.ts";
+import { cleanUrls } from "./tools/clean-urls.ts";
+
+// Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
+// no existen como archivo (las versiones por idioma viven en /i18n/<lang>/ y la
+// URL limpia la sirve Vercel según la cookie).
+const SITE = "https://sur-digital.vercel.app";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://sur-digital.vercel.app",
+  site: SITE,
   integrations: [
     sitemap({
-      // Páginas que no deben anunciarse como indexables
-      filter: (page) => !page.endsWith("/404/") && !page.endsWith("/social-kit/"),
-      // hreflang también en el sitemap (xhtml:link). Solo afecta a las rutas que
-      // existen en varios idiomas: el plugin agrupa por ruta sin el prefijo de
-      // idioma y solo emite alternates si hay más de una URL en el grupo. Hoy eso
-      // son las seis raíces (/, /en/, /de/, /fr/, /pt/, /ru/); el resto de
-      // páginas son únicas y no se anotan, así que no se inventan /en/precios/ ni
-      // similares. Los códigos coinciden con los hreflang del <head>.
-      i18n: {
-        defaultLocale: "es",
-        locales: {
-          es: "es-ES",
-          en: "en-GB",
-          de: "de-DE",
-          fr: "fr-FR",
-          pt: "pt-PT",
-          ru: "ru-RU",
-        },
+      // Páginas que no deben anunciarse como indexables. Tampoco las versiones
+      // por idioma: se compilan en /i18n/<lang>/ (carpeta privada, la resuelve
+      // vercel.json según la cookie). La URL pública es la misma para los seis
+      // idiomas y, como no existe como archivo, se añade a mano más abajo.
+      filter: (page) => {
+        const { pathname } = new URL(page);
+        return (
+          !pathname.startsWith("/i18n/") &&
+          pathname !== "/404/" &&
+          pathname !== "/social-kit/"
+        );
       },
+      customPages: ["/", "/contacto/", "/faq/", "/glosario/", "/precios/"].map(
+        (path) => new URL(path, SITE).href
+      ),
     }),
     pagefind(),
     // Tarjetas cuadradas 1080×1080 para Instagram a partir de las OG
@@ -75,7 +77,7 @@ export default defineConfig({
     "/5": "/",
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), cleanUrls()],
     server: {
       // En .tmp viven los perfiles de Chrome de las comprobaciones locales: son
       // miles de archivos que el watcher no necesita y que Windows bloquea

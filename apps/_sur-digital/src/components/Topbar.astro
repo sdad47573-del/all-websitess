@@ -5,7 +5,7 @@ import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { LOCALES, LOCALE_LABELS } from "../data/i18n";
-import { localize } from "../i18n/routes";
+import { isTranslated, publicPath } from "../i18n/routes";
 import { ui } from "../i18n/ui";
 
 // `lang` traduce la navegación. Los enlaces apuntan a la versión localizada
@@ -25,35 +25,31 @@ const NAV = [
   { href: "/precios/", label: t.nav.pricing },
   { href: "/faq/", label: t.nav.faq },
   { href: "/blog/", label: t.nav.blog },
-].map((item) => {
-  const href = localize(item.href, lang);
-  // Si el enlace aún apunta a la página española, se marca como tal para que
-  // Google no lo tome por contenido de este idioma.
-  const hreflang = href === item.href && lang !== "es" ? "es" : undefined;
-  return { ...item, href, hreflang };
-});
+].map((item) => ({
+  ...item,
+  // La URL es la misma para todos los idiomas: el idioma va en la cookie, no
+  // en la ruta. Solo se marca el idioma del destino cuando esa página aún no
+  // existe traducida y el enlace lleva a la española.
+  hreflang: isTranslated(item.href, lang) ? undefined : "es",
+}));
 
-// Cambio de idioma conservando la página en la que está el visitante.
-const currentPath = Astro.url.pathname;
-const pathWithoutLang =
-  lang === "es"
-    ? currentPath
-    : currentPath.replace(new RegExp(`^/${lang}(?=/|$)`), "") || "/";
-const langHref = (code: string) =>
-  code === "es" ? pathWithoutLang : localize(pathWithoutLang, code);
+// Cambio de idioma conservando la página en la que está el visitante: la ruta
+// pública es la misma (sin el /i18n/<lang> con el que se compila), así que el
+// enlace recarga esta misma URL con la cookie del idioma elegido.
+const currentPath = publicPath(Astro.url.pathname);
 
-const logoHref = lang === "es" ? "/" : `/${lang}/`;
+const logoHref = "/";
 const currentCode = lang.toUpperCase();
 
 // Idiomas del selector: nombre nativo + código, con el idioma actual marcado.
 // La misma lista se usa en escritorio y en el menú móvil (antes el móvil no
 // ofrecía volver al español).
 const languageOptions = [
-  { code: "es", label: LOCALE_LABELS.es, href: langHref("es") },
+  { code: "es", label: LOCALE_LABELS.es, href: currentPath },
   ...LOCALES.map((code) => ({
     code,
     label: LOCALE_LABELS[code],
-    href: langHref(code),
+    href: currentPath,
   })),
 ].map((option) => ({ ...option, current: option.code === lang }));
 ---
@@ -158,7 +154,7 @@ const languageOptions = [
                   <li>
                     <a
                       href={option.href}
-                      hreflang={option.code}
+                      data-lang={option.code}
                       lang={option.code}
                       aria-current={option.current ? "true" : undefined}
                       class:list={[

@@ -2,13 +2,13 @@
 // Preguntas frecuentes en los cinco idiomas: las 32 preguntas de DATA.faq
 // traducidas (src/i18n/pages/faq/) y el mismo JSON-LD FAQPage que la versión
 // española, para que cada idioma pueda salir con rich snippets.
-import { DATA } from "../../data/data.astro";
-import { CONTACT } from "../../data/contact";
-import { LOCALES, LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
-import { faq } from "../../i18n/pages/faq";
-import Layout from "../../layouts/Layout.astro";
-import Topbar from "../../components/Topbar.astro";
-import Footer from "../../components/Footer.astro";
+import { DATA } from "../../../data/data.astro";
+import { CONTACT } from "../../../data/contact";
+import { LOCALES, LOCALE_HTML_LANG, type Locale } from "../../../data/i18n";
+import { faq } from "../../../i18n/pages/faq";
+import Layout from "../../../layouts/Layout.astro";
+import Topbar from "../../../components/Topbar.astro";
+import Footer from "../../../components/Footer.astro";
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -16,7 +16,8 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Locale };
 const t = faq(lang);
-const path = `/${lang}/faq/`;
+// La URL pública no lleva idioma (ver src/i18n/routes.ts).
+const path = "/faq/";
 
 // Si alguien añade una pregunta en DATA.faq y no la traduce, el build falla en
 // vez de publicar una FAQ distinta en cada idioma.
@@ -26,13 +27,6 @@ if (t.entries.length !== DATA.faq.length) {
   );
 }
 
-const translations = [
-  { lang: "es", path: "/faq/" },
-  ...LOCALES.filter((code) => code !== lang).map((code) => ({
-    lang: code,
-    path: `/${code}/faq/`,
-  })),
-];
 ---
 
 <Layout
@@ -41,7 +35,6 @@ const translations = [
   lang={LOCALE_HTML_LANG[lang]}
   path={path}
   image={`/og/${lang}.png`}
-  translations={translations}
 >
   <script
     is:inline

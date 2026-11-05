@@ -7,18 +7,18 @@
 // Las comparativas con proveedores concretos (mercado de Málaga, mercado
 // nacional y matriz de 34 funciones) siguen en español: se enlazan al ancla
 // correspondiente de /precios/ con hreflang="es".
-import { DATA } from "../../data/data.astro";
-import { CONTACT } from "../../data/contact";
-import { LOCALES, LOCALE_CONTENT, LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
-import { PRECIOS_DE } from "../../i18n/pages/precios/de";
-import { PRECIOS_EN } from "../../i18n/pages/precios/en";
-import { PRECIOS_FR } from "../../i18n/pages/precios/fr";
-import { PRECIOS_PT } from "../../i18n/pages/precios/pt";
-import { PRECIOS_RU } from "../../i18n/pages/precios/ru";
-import Layout from "../../layouts/Layout.astro";
-import Topbar from "../../components/Topbar.astro";
-import Footer from "../../components/Footer.astro";
-import DoneIcon from "../../icons/DoneIcon.astro";
+import { DATA } from "../../../data/data.astro";
+import { CONTACT } from "../../../data/contact";
+import { LOCALES, LOCALE_CONTENT, LOCALE_HTML_LANG, type Locale } from "../../../data/i18n";
+import { PRECIOS_DE } from "../../../i18n/pages/precios/de";
+import { PRECIOS_EN } from "../../../i18n/pages/precios/en";
+import { PRECIOS_FR } from "../../../i18n/pages/precios/fr";
+import { PRECIOS_PT } from "../../../i18n/pages/precios/pt";
+import { PRECIOS_RU } from "../../../i18n/pages/precios/ru";
+import Layout from "../../../layouts/Layout.astro";
+import Topbar from "../../../components/Topbar.astro";
+import Footer from "../../../components/Footer.astro";
+import DoneIcon from "../../../icons/DoneIcon.astro";
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -34,7 +34,8 @@ const COPY = {
 };
 const t = COPY[lang];
 const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
-const path = `/${lang}/precios/`;
+// La URL pública no lleva idioma (ver src/i18n/routes.ts).
+const path = "/precios/";
 
 // Cada lista traducida debe tener la misma longitud que su fuente española.
 const check = (label: string, a: number, b: number) => {
@@ -73,14 +74,6 @@ const guideRows = t.guideRows.map((row) => ({
   name: LOCALE_CONTENT[lang].plans[row.planIndex].name,
   price: priceLabel(DATA.plans[row.planIndex].price),
 }));
-
-const translations = [
-  { lang: "es", path: "/precios/" },
-  ...LOCALES.filter((code) => code !== lang).map((code) => ({
-    lang: code,
-    path: `/${code}/precios/`,
-  })),
-];
 
 const pageUrl = new URL(path, site).href;
 const breadcrumbs = {
@@ -138,7 +131,6 @@ const mark = (value: string | boolean) =>
   lang={LOCALE_HTML_LANG[lang]}
   path={path}
   image={`/og/${lang}.png`}
-  translations={translations}
 >
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(breadcrumbs)} />
   <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(offers)} />
@@ -150,7 +142,7 @@ const mark = (value: string | boolean) =>
     <!-- Hero -->
     <section class="container mx-auto px-6 max-w-4xl text-center mb-10" data-reveal>
       <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
-        <a href={lang === "es" ? "/" : `/${lang}/`} class="link link-hover">{t.crumbHome}</a> · {t.crumb}
+        <a href="/" class="link link-hover">{t.crumbHome}</a> · {t.crumb}
       </p>
       <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
         {t.heroTitle} <span class="text-wave">{t.heroAccent}</span>
@@ -484,7 +476,14 @@ const mark = (value: string | boolean) =>
 
         <p data-reveal class="text-sm text-base-content/60 mt-8 text-center max-w-xl">
           {t.marketNote}{" "}
-          <a href="/precios/#comparativa-mercado" hreflang="es" class="link link-primary font-bold">{t.marketLink}</a>.
+          <!-- La comparativa de mercado solo está en la página española: el
+               enlace cambia la cookie a español y salta al ancla. -->
+          <a
+            href="/precios/#comparativa-mercado"
+            data-lang="es"
+            hreflang="es"
+            class="link link-primary font-bold">{t.marketLink}</a
+          >.
         </p>
       </div>
     </section>

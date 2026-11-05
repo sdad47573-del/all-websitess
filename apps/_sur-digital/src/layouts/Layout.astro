@@ -279,6 +279,20 @@ const xDefaultHref =
       // Salto al contenido sin fragmento en la URL: al pulsar se enfoca el
       // <main> para que el siguiente Tab siga dentro del contenido y no
       // vuelva a recorrer la cabecera.
+      // Selector de idioma: el idioma vive en la cookie `lang` (ver
+      // src/i18n/routes.ts y los rewrites de vercel.json), no en la URL. Todos
+      // los enlaces de idioma apuntan a la misma página; aquí solo se escribe
+      // la cookie y el navegador sigue el enlace, que el servidor resuelve con
+      // el HTML del idioma elegido. Sin JS, el visitante se queda en el idioma
+      // en el que está.
+      for (const link of document.querySelectorAll<HTMLElement>("[data-lang]")) {
+        link.addEventListener("click", () => {
+          const lang = link.dataset.lang;
+          if (!lang) return;
+          document.cookie = `lang=${lang}; path=/; max-age=31536000; samesite=lax`;
+        });
+      }
+
       const skipLink = document.querySelector<HTMLElement>("[data-skip-link]");
       skipLink?.addEventListener("click", () => {
         const main = document.getElementById("contenido");

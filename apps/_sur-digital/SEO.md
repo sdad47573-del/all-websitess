@@ -452,3 +452,28 @@ Tres huecos más, ninguno solapado con lo publicado:
 
 Enlazados desde `cuantas-paginas-debe-tener-tu-web`, `whatsapp-en-tu-web` y
 `seo-local-malaga-negocios`, además del índice y la categoría.
+
+## 21. El idioma sale de la URL (5 nov 2026)
+
+Las versiones en inglés, alemán, francés, portugués y ruso vivían en
+`/en/`, `/de/`, `/fr/`, `/pt/` y `/ru/`. Ahora la URL es la misma para los seis
+idiomas (`/precios/`, `/contacto/`, `/faq/`, `/glosario/` y `/`): el idioma se
+guarda en la cookie `lang` y lo aplica Vercel con rewrites (español si no hay
+cookie).
+
+- Cada idioma se compila en `/i18n/<lang>/…`, una carpeta privada: no se
+  enlaza, va excluida del sitemap y en `robots.txt`.
+- Canonical y `og:url` apuntan siempre a la URL limpia. Se dejan de emitir los
+  hreflang entre idiomas porque ya comparten URL; solo queda el par ES ↔ EN de
+  `/web-design-marbella/` ↔ `/blog/diseno-web-marbella/`, que sí son URLs
+  distintas.
+- Las URLs antiguas con prefijo devuelven 301 a la limpia (conservan el
+  enlazado y el historial). `/de/precios/` → `/precios/`.
+- Googlebot no envía la cookie: indexa siempre la versión española, que es la
+  que se posiciona. El contenido traducido queda para quien elige idioma.
+- El selector de idioma ya no navega a otra ruta: escribe la cookie y recarga.
+  Sin JS se queda en el idioma actual.
+
+El build sigue siendo 100 % estático (sin funciones). En local, `astro dev`
+resuelve las URLs limpias con `tools/clean-urls.ts`; `astro preview` no aplica
+la cookie y sirve la versión española.

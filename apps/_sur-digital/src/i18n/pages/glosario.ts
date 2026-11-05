@@ -4,7 +4,7 @@
 // `TERMINOS_HREFS`, en el mismo orden que `TERMINOS` de src/data/glosario.ts, y
 // cada idioma solo traduce término y definición. Si alguien añade un término
 // nuevo en español y no lo traduce aquí, el build falla en vez de publicar una
-// página mezclada (ver la comprobación de longitud en [lang]/glosario.astro).
+// página mezclada (ver src/pages/i18n/[lang]/glosario.astro).
 import type { Locale } from "../../data/i18n";
 
 export type GlosarioTermino = { term: string; text: string };

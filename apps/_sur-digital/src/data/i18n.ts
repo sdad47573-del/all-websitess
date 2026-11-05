@@ -528,7 +528,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
 };
 
 // El orden de LOCALE_CONTENT[...].plans debe coincidir con DATA.plans. Esto lo
-// verifica la página en build (ver src/pages/[lang]/index.astro): si alguien
+// verifica la página en build (ver src/pages/i18n/[lang]/index.astro): si alguien
 // reordena los planes, el build falla en vez de emparejar precios y nombres
 // equivocados.
 export const PLAN_KEYS = ["Landing Gratis", "Portfolio", "Web Completa", "Pro + Tienda"];

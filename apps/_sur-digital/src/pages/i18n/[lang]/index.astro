@@ -8,24 +8,23 @@
 // emparejan por posición con PLAN_KEYS. Si alguien reordena los planes, el
 // build falla en vez de publicar precios cruzados.
 import { Image } from "astro:assets";
-import Logo from "../../assets/logo-optimized.png";
-import Footer from "../../components/Footer.astro";
-import Fab from "../../components/Fab.astro";
-import MobileCta from "../../components/MobileCta.astro";
-import Topbar from "../../components/Topbar.astro";
-import DoneIcon from "../../icons/DoneIcon.astro";
-import LinkedInIcon from "../../icons/LinkedInIcon.astro";
-import { CONTACT } from "../../data/contact";
-import { DATA } from "../../data/data.astro";
+import Logo from "../../../assets/logo-optimized.png";
+import Footer from "../../../components/Footer.astro";
+import Fab from "../../../components/Fab.astro";
+import MobileCta from "../../../components/MobileCta.astro";
+import Topbar from "../../../components/Topbar.astro";
+import DoneIcon from "../../../icons/DoneIcon.astro";
+import LinkedInIcon from "../../../icons/LinkedInIcon.astro";
+import { CONTACT } from "../../../data/contact";
+import { DATA } from "../../../data/data.astro";
 import {
   LOCALES,
   LOCALE_CONTENT,
   LOCALE_HTML_LANG,
-  LOCALE_LABELS,
   PLAN_KEYS,
   type Locale,
-} from "../../data/i18n";
-import Layout from "../../layouts/Layout.astro";
+} from "../../../data/i18n";
+import Layout from "../../../layouts/Layout.astro";
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -35,7 +34,8 @@ const { lang } = Astro.params as { lang: Locale };
 const t = LOCALE_CONTENT[lang];
 const htmlLang = LOCALE_HTML_LANG[lang];
 const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
-const path = `/${lang}/`;
+// La URL pública es la misma para los seis idiomas: el idioma va en la cookie.
+const path = "/";
 
 const plans = t.plans.map((copy, i) => {
   const plan = DATA.plans[i];
@@ -47,20 +47,6 @@ const plans = t.plans.map((copy, i) => {
   return { ...copy, price: plan.price };
 });
 
-// Selector de idioma: el español es la raíz del sitio.
-const languageLinks = [
-  { code: "es", href: "/", label: LOCALE_LABELS.es },
-  ...LOCALES.map((code) => ({
-    code,
-    href: `/${code}/`,
-    label: LOCALE_LABELS[code],
-  })),
-];
-
-// hreflang: cada idioma declara a los otros cinco y al español.
-const translations = languageLinks
-  .filter((link) => link.code !== lang)
-  .map((link) => ({ lang: link.code, path: link.href }));
 ---
 
 <Layout
@@ -69,7 +55,6 @@ const translations = languageLinks
   lang={htmlLang}
   path={path}
   image={`/og/${lang}.png`}
-  translations={translations}
 >
   <script
     is:inline
@@ -316,7 +301,15 @@ const translations = languageLinks
         <p class="text-center text-sm text-base-content/60 mt-8">
           <DoneIcon class="inline-block me-2 align-middle" />
           {t.summaryNote}{" "}
-          <a href="/" hreflang="es" lang="es" class="link link-primary font-bold">
+          <!-- El resto del sitio solo existe en español: el enlace cambia la
+               cookie a español (ver el script de Layout) y recarga la home. -->
+          <a
+            href="/"
+            data-lang="es"
+            hreflang="es"
+            lang="es"
+            class="link link-primary font-bold"
+          >
             {t.summaryLink}
           </a>.
         </p>

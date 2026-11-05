@@ -1,6 +1,7 @@
 // Precios en inglés. Los nombres y unidades de los planes NO se repiten aquí:
 // salen de LOCALE_CONTENT.en.plans para que la tarjeta diga lo mismo que la
-// landing /en/. El precio sale siempre de DATA.plans.
+// landing en inglés (misma URL, cookie `lang=en`). El precio sale siempre de
+// DATA.plans.
 import type { PreciosCopy } from "./types";
 
 export const PRECIOS_EN: PreciosCopy = {

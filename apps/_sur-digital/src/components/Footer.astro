@@ -5,7 +5,7 @@ import { twJoin } from "tailwind-merge";
 import { DATA } from "../data/data.astro";
 import { CONTACT } from "../data/contact";
 import { LOCALES, LOCALE_LABELS } from "../data/i18n";
-import { localize } from "../i18n/routes";
+import { isTranslated } from "../i18n/routes";
 import { ui } from "../i18n/ui";
 
 import Logo from "../assets/logoreverse-optimized.png";
@@ -21,10 +21,10 @@ const t = ui(lang);
 const localized = lang !== "es";
 
 // Enlaces que aún viven solo en español se marcan con hreflang.
-const esLink = (path: string) => {
-  const href = localize(path, lang);
-  return { href, hreflang: href === path && lang !== "es" ? "es" : undefined };
-};
+const esLink = (path: string) => ({
+  href: path,
+  hreflang: isTranslated(path, lang) ? undefined : "es",
+});
 
 const serviceLinks = [
   { path: "/servicios/", label: t.footer.servicesAll },
@@ -33,9 +33,13 @@ const serviceLinks = [
   { path: "/especialidades/", label: t.footer.specialitiesAll },
 ].map((item) => ({ ...item, ...esLink(item.path) }));
 
+// El idioma no va en la URL: cada enlace recarga la home con la cookie del
+// idioma elegido (ver el script de Layout y los rewrites de vercel.json). Aquí
+// se apunta a la home y no a la página actual porque solo hay cinco páginas
+// traducidas.
 const languageLinks = [
-  { code: "es", href: localize("/", "es") },
-  ...LOCALES.map((code) => ({ code, href: `/${code}/` })),
+  { code: "es", href: "/" },
+  ...LOCALES.map((code) => ({ code, href: "/" })),
 ];
 ---
 
@@ -104,7 +108,7 @@ const languageLinks = [
                 <li>
                   <a
                     href={href}
-                    hreflang={code}
+                    data-lang={code}
                     lang={code}
                     class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
                     aria-current={code === lang ? "true" : undefined}
