@@ -139,7 +139,7 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
   // y se pausa fuera de pantalla o con la pestaña oculta. El logo se balancea
   // solo, se puede arrastrar para girarlo y da una vuelta completa al hacer
   // clic.
-  import type { Mesh, Object3D, Texture } from "three";
+  import type { Mesh, MeshStandardMaterial, Object3D, Texture } from "three";
 
   const host = document.querySelector<HTMLElement>("[data-model3d]");
   const canvas = host?.querySelector<HTMLCanvasElement>("[data-model3d-canvas]");
@@ -162,6 +162,8 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
 
       const loading = host.querySelector<HTMLElement>("[data-model3d-loading]");
       const errorLabel = host.querySelector<HTMLElement>("[data-model3d-error]");
+      // Un reintento tras un fallo anterior no debe arrastrar el aviso viejo.
+      if (errorLabel) errorLabel.hidden = true;
 
       try {
         // El modelo se pide a la vez que los módulos: son 36 KB que se bajan
@@ -179,13 +181,28 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         // Los cuatro módulos se piden a la vez. Antes iban en serie y el GLB
         // no empezaba a descargarse hasta terminar el último; ahora la red
         // trabaja en paralelo desde el primer momento.
-        const [THREE, { RoomEnvironment }, { GLTFLoader }, { MeshoptDecoder }] =
-          await Promise.all([
+        //
+        // En desarrollo, Vite devuelve 504 mientras reoptimiza dependencias y
+        // el primer import dinámico falla. Como ahora la carga la dispara el
+        // visitante, ese 504 dejaba el aviso de error fijo: se reintenta una
+        // vez sin recargar y, si el fallo es real, el siguiente gesto sobre el
+        // logo vuelve a intentarlo.
+        const loadModules = () =>
+          Promise.all([
             import("three"),
-            import("three/examples/jsm/environments/RoomEnvironment.js"),
             import("three/examples/jsm/loaders/GLTFLoader.js"),
             import("three/examples/jsm/libs/meshopt_decoder.module.js"),
           ]);
+
+        let modules: Awaited<ReturnType<typeof loadModules>>;
+        try {
+          modules = await loadModules();
+        } catch (error) {
+          console.warn("Reintentando la carga de los módulos 3D…", error);
+          await new Promise((resolve) => setTimeout(resolve, 800));
+          modules = await loadModules();
+        }
+        const [THREE, { GLTFLoader }, { MeshoptDecoder }] = modules;
 
         const renderer = new THREE.WebGLRenderer({
           canvas,
@@ -200,30 +217,79 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         // Sin tone mapping las luces altas se recortan a blanco plano y los
         // metales quedan sin matices. ACES comprime el rango como una cámara.
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.15;
+        // El póster se renderizó con mucha más luz que la que daba el entorno
+        // anterior: sin subir la exposición el azul salía casi negro al lado
+        // de la imagen estática.
+        renderer.toneMappingExposure = 1.65;
         renderer.setClearAlpha(0);
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 60);
 
+        // Entorno de estudio propio en vez de RoomEnvironment. La sala gris
+        // genérica de Three.js dejaba el logo plano y con reflejos sucios;
+        // este degradado con softboxes dibuja franjas de luz limpias y
+        // alargadas en el marco y en los cantos, como en una foto de producto.
+        // Se genera en un canvas y se precomputa una sola vez con PMREM.
         const pmrem = new THREE.PMREMGenerator(renderer);
-        scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-        scene.environmentIntensity = 0.7;
+        const envCanvas = document.createElement("canvas");
+        envCanvas.width = 1024;
+        envCanvas.height = 512;
+        const envContext = envCanvas.getContext("2d");
+        if (envContext) {
+          const room = envContext.createLinearGradient(0, 0, 0, 512);
+          room.addColorStop(0, "#eaf4ff");
+          room.addColorStop(0.4, "#8fa6bf");
+          room.addColorStop(0.58, "#33455a");
+          room.addColorStop(1, "#0a141f");
+          envContext.fillStyle = room;
+          envContext.fillRect(0, 0, 1024, 512);
+
+          // Los softboxes se pintan con blur: si no, su reflejo en el modelo
+          // tendría el borde duro de un rectángulo.
+          const softbox = (x: number, y: number, width: number, height: number, color: string) => {
+            envContext.save();
+            envContext.filter = "blur(26px)";
+            envContext.fillStyle = color;
+            envContext.beginPath();
+            if (envContext.roundRect) {
+              envContext.roundRect(x - width / 2, y - height / 2, width, height, height / 2);
+            } else {
+              envContext.rect(x - width / 2, y - height / 2, width, height);
+            }
+            envContext.fill();
+            envContext.restore();
+          };
+          // Cálido a la izquierda, frío a la derecha y una tira cenital: los
+          // tres acentos que separan el azul del logo del fondo oscuro.
+          softbox(215, 155, 360, 84, "rgba(255, 224, 182, 0.92)");
+          softbox(815, 145, 320, 104, "rgba(186, 224, 255, 0.95)");
+          softbox(512, 42, 460, 54, "rgba(255, 255, 255, 0.85)");
+        }
+        const envTexture = new THREE.CanvasTexture(envCanvas);
+        envTexture.mapping = THREE.EquirectangularReflectionMapping;
+        envTexture.colorSpace = THREE.SRGBColorSpace;
+        scene.environment = pmrem.fromEquirectangular(envTexture).texture;
+        scene.environmentIntensity = 1.35;
+        envTexture.dispose();
         pmrem.dispose();
 
         // Luz de estudio: relleno frío + clave + dos rim lights de marca. El
         // entorno ya aporta luz base, así que el hemisférico baja.
-        scene.add(new THREE.HemisphereLight(0xffffff, 0x16273a, 0.55));
+        // El relleno de suelo más claro es lo que ilumina las paredes
+        // internas del marco (miran hacia abajo) y evita la línea negra que
+        // quedaba dentro del borde superior.
+        scene.add(new THREE.HemisphereLight(0xffffff, 0x4a6480, 1.2));
 
-        const key = new THREE.DirectionalLight(0xffffff, 2.4);
+        const key = new THREE.DirectionalLight(0xffffff, 3.4);
         key.position.set(3.2, 4.2, 4.8);
         scene.add(key);
 
-        const rimWarm = new THREE.PointLight(0xffb066, 20, 26, 2);
+        const rimWarm = new THREE.PointLight(0xffb066, 24, 26, 2);
         rimWarm.position.set(-3.2, 1.4, 3.2);
         scene.add(rimWarm);
 
-        const rimCool = new THREE.PointLight(0x2b9bff, 14, 26, 2);
+        const rimCool = new THREE.PointLight(0x2b9bff, 18, 26, 2);
         rimCool.position.set(3.4, -1.4, 2.4);
         scene.add(rimCool);
 
@@ -272,6 +338,25 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         // El GLB llega comprimido con meshoptimizer (36 KB frente a 131 KB en
         // claro). Como ya se está descargando desde que arrancó el script,
         // aquí solo se esperan esos bytes y se parsean: nada de red.
+        // El GLB trae materiales planos: poca cosa para un logo que se mira de
+        // cerca. Se les sube un poco el reflejo del entorno y se les baja la
+        // rugosidad, que es lo que marca el brillo de los cantos biselados
+        // (los dos tonos de azul se mantienen tal cual).
+        const polishMaterials = (object: Object3D) => {
+          object.traverse((node) => {
+            const mesh = node as Mesh;
+            if (!mesh.isMesh) return;
+            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            for (const material of materials) {
+              const standard = material as MeshStandardMaterial;
+              if (!standard.isMeshStandardMaterial) continue;
+              standard.envMapIntensity = 1.25;
+              standard.roughness = Math.max(0.18, standard.roughness * 0.72);
+              standard.needsUpdate = true;
+            }
+          });
+        };
+
         const loadObject = async (src: string): Promise<Object3D> => {
           const loader = new GLTFLoader();
           // Sin este decodificador el archivo no abre.
@@ -288,7 +373,9 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
                   return response.arrayBuffer();
                 });
 
-          return (await loader.parseAsync(data, "")).scene;
+          const loaded = (await loader.parseAsync(data, "")).scene;
+          polishMaterials(loaded);
+          return loaded;
         };
 
         // Liberar geometría, materiales y texturas del modelo que se va: los
@@ -322,6 +409,10 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         // Huella del modelo y altura de su base, para dimensionar la sombra.
         let shadowFootprint = 0;
         let shadowBottom = -1;
+        // Tamaño base de la sombra en el lienzo; el flote la encoge y la aclara
+        // un poco en el aire y la devuelve al bajar.
+        let shadowWidth = 0;
+        let shadowHeight = 0;
 
         // --- Encuadre ---
         // Ajusta la distancia de cámara al radio real y al aspecto: el modelo
@@ -346,6 +437,8 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
           const halfWidth = halfHeight * camera.aspect;
           const width = Math.min(shadowFootprint * 1.3, halfWidth * 1.72);
           const height = Math.min(width * 0.24, halfHeight * 0.8);
+          shadowWidth = width;
+          shadowHeight = height;
           contactShadow.scale.set(width, height, 1);
           // Centrada justo bajo la base: se lee como apoyo y no como una
           // mancha detrás del logo.
@@ -527,7 +620,20 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
           stage.rotation.y = BASE_Y + spin + yaw + Math.sin(elapsed * 0.55) * 0.3 * ambient;
           stage.rotation.x = BASE_X + pitch + Math.sin(elapsed * 0.42) * 0.035 * ambient;
           stage.rotation.z = Math.cos(elapsed * 0.37) * 0.02 * ambient;
-          stage.position.y = Math.sin(elapsed * 0.7) * 0.05 * ambient;
+          const floatY = Math.sin(elapsed * 0.7) * 0.05 * ambient;
+          stage.position.y = floatY;
+
+          // La sombra de contacto sigue al flote: cuando el logo sube se
+          // encoge y se aclara; al bajar vuelve a su sitio. Es lo que hace que
+          // el movimiento se lea como levitación y no como un recorte pegado.
+          if (shadowWidth) {
+            contactShadow.scale.set(
+              shadowWidth * (1 - floatY * 0.7),
+              shadowHeight * (1 - floatY * 0.7),
+              1
+            );
+            (contactShadow.material as THREE.SpriteMaterial).opacity = 0.8 - floatY * 2.2;
+          }
 
           // Entrada del modelo: escala de 0,9 a 1 y sube desde un poco abajo.
           if (pivot && enter < 1) {
@@ -608,6 +714,9 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         void showModel(modelSrc);
       } catch (error) {
         console.warn("El modelo 3D del hero no se ha podido cargar.", error);
+        // Que un fallo puntual (red, módulos) no deje el logo muerto hasta
+        // recargar: el siguiente gesto vuelve a intentar el arranque.
+        booted = false;
         if (loading) loading.hidden = true;
         if (errorLabel) errorLabel.hidden = false;
       }
@@ -624,10 +733,9 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
       // cambio, el motor 3D (186 KB) y el modelo (36 KB) no se descargan en la
       // carga inicial ni se evalúan en mitad del LCP. En táctil, pointerenter
       // no dispara y el primer toque arranca la carga.
+      // Los listeners se quedan puestos: si el arranque falla, el siguiente
+      // gesto lo reintenta (boot sale solo si ya está en marcha).
       const start = () => {
-        host.removeEventListener("pointerenter", onEnter);
-        host.removeEventListener("pointerdown", start);
-        host.removeEventListener("focusin", start);
         boot();
       };
       const onEnter = (event: PointerEvent) => {
