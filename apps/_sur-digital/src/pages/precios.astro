@@ -89,6 +89,21 @@ const exclusiones = [
   },
 ];
 
+// Guía "¿qué plan te toca?": traduce la necesidad del visitante a un plan
+// concreto antes de enseñar las cuatro tarjetas. El nombre y el precio se
+// buscan en DATA.plans (única fuente), así que si un plan cambia de nombre el
+// build falla aquí en vez de publicar una guía desactualizada.
+const guiaPlanes = [
+  { necesidad: "Quiero empezar sin gastar nada", plan: "Landing Gratis" },
+  { necesidad: "Soy fotógrafo, arquitecto o marca personal", plan: "Portfolio" },
+  { necesidad: "Tengo un negocio y quiero hasta 5 páginas", plan: "Web Completa" },
+  { necesidad: "Quiero vender online o una web grande", plan: "Pro + Tienda" },
+].map(({ necesidad, plan }) => {
+  const found = DATA.plans.find((item) => item.name === plan);
+  if (!found) throw new Error(`Guía de precios: no existe el plan "${plan}"`);
+  return { necesidad, name: found.name, price: found.price };
+});
+
 const breadcrumbs = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -211,6 +226,32 @@ const offersSchema = {
       </p>
     </section>
 
+    <!-- Guía rápida: el visitante se reconoce en una línea y baja directo a
+         la tarjeta que le toca, en vez de leer los cuatro planes enteros. -->
+    <section class="container mx-auto px-6 max-w-4xl mb-8" data-reveal>
+      <h2 class="text-2xl md:text-3xl font-bold text-base-content text-center mb-2">
+        ¿Qué plan te toca?
+      </h2>
+      <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-6">
+        Busca tu caso. Cada tarjeta de abajo dice para quién es, qué incluye y
+        cuánto cuesta.
+      </p>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {
+          guiaPlanes.map(({ necesidad, name, price }) => (
+            <li class="card bg-base-100 shadow-sm border border-base-300">
+              <a href="#planes" class="card-body py-4 gap-1">
+                <span class="text-sm text-base-content/70">{necesidad}</span>
+                <span class="font-bold">
+                  {name} · {price === 0 ? "gratis" : `${price}€`}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
     <!-- Planes (reutiliza el componente de la home, sin cabecera) -->
     <div id="planes">
       <Pricing compact />
@@ -222,8 +263,8 @@ const offersSchema = {
         Extras y servicios sueltos
       </h2>
       <p class="text-base-content/70 text-center max-w-2xl mx-auto mb-8" data-reveal>
-        Cosas que no entran en los planes pero puedes añadir cuando quieras,
-        con su precio a la vista.
+        Cosas que no entran en los planes pero puedes añadir a cualquiera de
+        ellos, con su precio a la vista.
       </p>
       <ul data-reveal-group class="flex flex-col gap-3">
         {
