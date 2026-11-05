@@ -3,113 +3,175 @@
 // velocidad (plazos ya publicados en DATA.process). Los chips de plazo usan
 // las mismas cifras del sitio (día 1, días 2–3, días 4–7): no inventan nada.
 // Canal único LinkedIn (ver src/data/contact.ts): nada de WhatsApp.
+//
+// Con `compact` se pinta solo el resumen (cuatro tarjetas: cuándo, qué pasa y
+// qué tienes que hacer tú) para la home; sin ella, la línea de tiempo completa
+// con el detalle, que es la que vive en /servicios/.
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+
+const pasos = [
+  {
+    plazo: "Día 1",
+    icono: "✅",
+    titulo: "Reunión / Brief",
+    resumen: "Hablamos 20 minutos",
+    corto: "Sales con precio cerrado y fecha de entrega.",
+    texto:
+      "Hablamos sobre tus objetivos y lo que quieres lograr. Definimos juntos las necesidades y el enfoque del proyecto.",
+    detalle:
+      "20 minutos por videollamada o café, sin compromiso. Nos pasas logo, fotos y textos (o los redactamos nosotros) y sales con precio cerrado y fecha de entrega.",
+    detalleAncho: true,
+  },
+  {
+    plazo: "Días 2–3",
+    icono: "🎨",
+    titulo: "Diseño y desarrollo",
+    resumen: "Ves el primer borrador",
+    corto: "Lo ajustamos contigo hasta que digas «este es».",
+    texto:
+      "Creamos un sitio atractivo, funcional y adaptado a todos los dispositivos.",
+    detalle:
+      "En 2–3 días tienes el primer borrador navegable. Ajustamos textos, colores y fotos contigo hasta que digas \"este es\".",
+  },
+  {
+    plazo: "Días 4–7",
+    icono: "🚀",
+    titulo: "Entrega + optimización",
+    resumen: "Tu web, online",
+    corto: "Publicada, en Google y con las cuentas a tu nombre.",
+    texto:
+      "Lanzamos tu web lista para funcionar, ajustando detalles para maximizar velocidad y experiencia de usuario.",
+    detalle:
+      "Dominio y hosting a tu nombre, alta en Google Search Console, Google Business optimizado y medición de visitas lista. Todo incluido en el precio.",
+    detalleAncho: true,
+  },
+  {
+    plazo: "Después",
+    icono: "🤝",
+    titulo: "Soporte",
+    resumen: "Seguimos ahí",
+    corto: "El primer mes, cambios gratis. Luego, 39 €/mes si quieres.",
+    texto:
+      "Te acompañamos con mantenimiento, actualizaciones y mejoras continuas.",
+    detalle:
+      "Cambios de textos, fotos y precios por 39€/mes. O por LinkedIn, cuando quieras: la web es tuya y no hay permanencia.",
+  },
+];
 ---
 
-<section
-  class="pt-14 pb-20 bg-gradient-to-b from-base-100 to-base-200 flex flex-col items-center"
->
-  <div class="container mx-auto px-6 text-center" data-reveal>
-    <h2 class="text-4xl md:text-5xl font-bold text-base-content">
-      Tu web online <span class="text-wave">en 7 días</span>
-    </h2>
-    <p class="text-base-content/70 max-w-2xl mx-auto mb-6">
-      Te enseñamos el proceso
-      <span class="font-bold text-wave text-lg"> de principio a fin </span>
-    </p>
-    <ul
-      class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical"
+{
+  compact ? (
+    <section
+      id="proceso"
+      class="pt-14 pb-20 bg-gradient-to-b from-base-200 to-base-100 flex flex-col items-center"
     >
-      <!-- Paso 1 -->
-      <li>
-        <div class="timeline-middle text-2xl">✅</div>
-        <div
-          class="timeline-start mb-10 md:text-end flex flex-col items-center md:items-end w-full"
-        >
-          <p>
-            <time class="font-mono italic">Paso 1</time>
-            <span class="badge badge-sm badge-secondary font-bold ml-2">Día 1</span>
-          </p>
-          <div class="text-lg font-black">Reunión / Brief</div>
-          <p class="max-w-[450px]">
-            Hablamos sobre tus objetivos y lo que quieres lograr. Definimos juntos las <span class="font-bold">necesidades y el enfoque del proyecto</span>.
-          </p>
-          <p class="max-w-[450px] text-sm text-base-content/60 mt-2">
-            20 minutos por videollamada o café, sin compromiso. Nos pasas
-            logo, fotos y textos (o los redactamos nosotros) y sales con
-            precio cerrado y fecha de entrega.
+      <div class="container mx-auto px-6">
+        <div data-reveal class="text-center mb-10">
+          <h2 class="text-4xl md:text-5xl font-bold text-base-content">
+            Así funciona: <span class="text-wave">4 pasos y una semana</span>
+          </h2>
+          <p class="text-base-content/70 max-w-2xl mx-auto mt-3">
+            Tú solo dedicas 20 minutos el primer día. Del resto nos ocupamos
+            nosotros y el precio se cierra antes de empezar.
           </p>
         </div>
-        <hr />
-      </li>
 
-      <!-- Paso 2 -->
-      <li>
-        <hr />
-        <div class="timeline-middle text-2xl">🎨</div>
-        <div
-          class="timeline-end mb-10 md:text-start w-full md:items-start items-center flex flex-col"
-        >
-          <p>
-            <time class="font-mono italic">Paso 2</time>
-            <span class="badge badge-sm badge-secondary font-bold ml-2">Días 2–3</span>
-          </p>
-          <div class="text-lg font-black">Diseño y desarrollo</div>
-          <p class="max-w-[350px]">
-            Creamos un <span class="font-bold">sitio atractivo, funcional y adaptado a todos los dispositivos</span>.
-          </p>
-          <p class="max-w-[350px] text-sm text-base-content/60 mt-2">
-            En 2–3 días tienes el primer borrador navegable. Ajustamos
-            textos, colores y fotos contigo hasta que digas "este es".
-          </p>
-        </div>
-        <hr />
-      </li>
+        <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          {pasos.map((paso, i) => (
+            <li
+              data-reveal
+              class="card bg-base-100 shadow-sm border border-base-300"
+            >
+              <div class="card-body gap-1 items-start text-start">
+                <span class="badge badge-secondary badge-sm font-bold">
+                  {i + 1}. {paso.plazo}
+                </span>
+                <span class="text-3xl pt-2" aria-hidden="true">
+                  {paso.icono}
+                </span>
+                <p class="font-bold">{paso.resumen}</p>
+                <p class="text-sm text-base-content/70">{paso.corto}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
 
-      <!-- Paso 3 -->
-      <li>
-        <hr />
-        <div class="timeline-middle text-2xl">🚀</div>
-        <div
-          class="timeline-start mb-10 md:text-end flex flex-col items-center md:items-end w-full"
-        >
-          <p>
-            <time class="font-mono italic">Paso 3</time>
-            <span class="badge badge-sm badge-secondary font-bold ml-2">Días 4–7</span>
-          </p>
-          <div class="text-lg font-black">Entrega + optimización</div>
-          <p class="max-w-[450px]">
-            Lanzamos tu web <span class="font-bold">lista para funcionar</span>, ajustando detalles para <span class="font-bold">maximizar velocidad y experiencia de usuario.</span>
-          </p>
-          <p class="max-w-[450px] text-sm text-base-content/60 mt-2">
-            Dominio y hosting a tu nombre, alta en Google Search Console,
-            Google Business optimizado y medición de visitas lista. Todo
-            incluido en el precio.
-          </p>
-        </div>
-        <hr />
-      </li>
-
-      <!-- Paso 4 -->
-      <li>
-        <hr />
-        <div class="timeline-middle text-2xl">🤝</div>
-        <div
-          class="timeline-end mb-10 md:text-start w-full md:items-start items-center flex flex-col"
-        >
-          <p>
-            <time class="font-mono italic">Paso 4</time>
-            <span class="badge badge-sm badge-ghost font-bold ml-2">Tras el lanzamiento</span>
-          </p>
-          <div class="text-lg font-black">Soporte</div>
-          <p class="max-w-[385px]">
-            Te acompañamos con <span class="font-bold">mantenimiento, actualizaciones y mejoras continuas.</span>
-          </p>
-          <p class="max-w-[385px] text-sm text-base-content/60 mt-2">
-            Cambios de textos, fotos y precios por 39€/mes. O por LinkedIn,
-            cuando quieras: la web es tuya y no hay permanencia.
-          </p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
+        <p class="text-center mt-8" data-reveal>
+          <a
+            href="/servicios/#proceso"
+            class="link link-primary font-bold text-sm"
+          >
+            Ver el proceso completo, paso a paso →
+          </a>
+        </p>
+      </div>
+    </section>
+  ) : (
+    <section
+      id="proceso"
+      class="pt-14 pb-20 bg-gradient-to-b from-base-100 to-base-200 flex flex-col items-center"
+    >
+      <div class="container mx-auto px-6 text-center" data-reveal>
+        <h2 class="text-4xl md:text-5xl font-bold text-base-content">
+          Tu web online <span class="text-wave">en 7 días</span>
+        </h2>
+        <p class="text-base-content/70 max-w-2xl mx-auto mb-6">
+          Te enseñamos el proceso
+          <span class="font-bold text-wave text-lg"> de principio a fin </span>
+        </p>
+        <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+          {pasos.map((paso, i) => (
+            <li>
+              {i > 0 && <hr />}
+              <div class="timeline-middle text-2xl" aria-hidden="true">
+                {paso.icono}
+              </div>
+              <div
+                class:list={[
+                  i % 2 === 0
+                    ? "timeline-start mb-10 md:text-end flex flex-col items-center md:items-end"
+                    : "timeline-end mb-10 md:text-start flex flex-col items-center md:items-start",
+                  "w-full",
+                  i === pasos.length - 1 && "mb-0",
+                ]}
+              >
+                <p>
+                  <time class="font-mono italic">Paso {i + 1}</time>
+                  <span
+                    class:list={[
+                      "badge badge-sm font-bold ml-2",
+                      i === pasos.length - 1 ? "badge-ghost" : "badge-secondary",
+                    ]}
+                  >
+                    {paso.plazo}
+                  </span>
+                </p>
+                <div class="text-lg font-black">{paso.titulo}</div>
+                <p
+                  class:list={[
+                    paso.detalleAncho ? "max-w-[450px]" : "max-w-[350px]",
+                  ]}
+                >
+                  {paso.texto}
+                </p>
+                <p
+                  class:list={[
+                    "text-sm text-base-content/60 mt-2",
+                    paso.detalleAncho ? "max-w-[450px]" : "max-w-[385px]",
+                  ]}
+                >
+                  {paso.detalle}
+                </p>
+              </div>
+              {i < pasos.length - 1 && <hr />}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
