@@ -17,6 +17,17 @@ const CATEGORIES = [
 // proyectos (Tapas, Teatinos, Peluquería…) se amontonan y la fila se ensucia.
 const MAX_TAGS = 2;
 
+// La home pinta solo las tarjetas visibles (6) y deja el resto para cuando el
+// visitante filtra o pulsa «Ver todos»: son ~90 tarjetas y ~300 KB de HTML que
+// engordaban el DOM sin verse. /clientes/ no pasa límite y conserva la lista
+// completa, que es de donde el script pide las que faltan.
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+const renderedProjects =
+  typeof limit === "number" ? PORTFOLIO.slice(0, limit) : PORTFOLIO;
+
 const slugify = (s: string) =>
   s
     .toLowerCase()
@@ -40,7 +51,8 @@ const slugify = (s: string) =>
       </p>
     </div>
 
-    <!-- Filtros por categoría. Sin JS todos los clientes quedan visibles. -->
+    <!-- Filtros por categoría. Sin JS los filtros no actúan y el listado
+         completo queda en /clientes/, enlazado desde aquí debajo. -->
     <div data-reveal-group
       class="flex flex-wrap justify-center gap-2 mt-8"
       role="group"
@@ -82,10 +94,11 @@ const slugify = (s: string) =>
       data-reveal-group
       data-portfolio-grid
       data-visible-count="6"
+      data-total={PORTFOLIO.length}
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 max-w-6xl w-full mt-8 grid-flow-row-dense"
     >
       {
-        PORTFOLIO.map(
+        renderedProjects.map(
           ({ title, sector, category, description, tags, accent, url, preview, destacado }) => (
           <li
             data-category={slugify(category)}
@@ -119,9 +132,13 @@ const slugify = (s: string) =>
                   alt={`Captura de la web de ${title}`}
                   widths={destacado ? [480, 640, 800, 1200] : [320, 480, 640, 800]}
                   sizes={
+                    // En escritorio la rejilla va topada a max-w-6xl (1152 px),
+                    // así que una card mide ~370 px y la destacada ~760. Con
+                    // 33vw/60vw el navegador pedía la variante de 800/1200 px
+                    // para pintarla a 634/1152 y sobraba un tercio del archivo.
                     destacado
-                      ? "(max-width: 639px) 100vw, (max-width: 1023px) 100vw, 60vw"
-                      : "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                      ? "(max-width: 639px) 100vw, (max-width: 1023px) 100vw, 780px"
+                      : "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 380px"
                   }
                   loading="lazy"
                   class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transform-none motion-reduce:transition-none"
@@ -205,17 +222,17 @@ const slugify = (s: string) =>
       }
     </ul>
 
-    <!-- Resumen: con JS se muestran 6 y este botón amplía. Sin JS el botón
-         no aparece y la lista completa queda visible. -->
-    <button
-      type="button"
+    <!-- Resumen: con JS se muestran 6 y este enlace amplía en el sitio,
+         pidiendo el resto a /clientes/. Sin JS es un enlace normal a la
+         página de clientes, que sí trae la lista completa. -->
+    <a
+      href="/clientes/"
       class="btn btn-primary mt-8"
       data-show-more
-      hidden
       aria-controls="portafolio-grid"
     >
       Ver todos los clientes ({PORTFOLIO.length})
-    </button>
+    </a>
 
     <dialog
       id="portfolio-quick-view"
@@ -319,50 +336,61 @@ const slugify = (s: string) =>
   );
   const status = document.querySelector<HTMLElement>("[data-portfolio-count]");
   const empty = document.querySelector<HTMLElement>("[data-portfolio-empty]");
-  const showMore = document.querySelector<HTMLButtonElement>("[data-show-more]");
+  const showMore = document.querySelector<HTMLAnchorElement>("[data-show-more]");
+  const showMoreLabel = showMore?.textContent?.trim() ?? "";
   // Resumen del inicio: solo se ven las primeras tarjetas hasta pulsar
   // «Ver más». Una sola dirección (ampliar): los filtros trabajan siempre
   // sobre la lista completa para no dejar resultados escondidos.
   let expanded = false;
   let currentFilter = "todos";
-  const portfolioDialog = document.querySelector<HTMLDialogElement>("[data-portfolio-dialog]");
-  const quickViewButtons = Array.from(
-    document.querySelectorAll<HTMLButtonElement>("[data-quick-view]")
-  );
+  // Tarjetas pintadas ahora mismo. Crece cuando se carga el resto.
+  let cards: HTMLElement[] = [];
 
-  if (portfolioDialog) {
+  const portfolioDialog = document.querySelector<HTMLDialogElement>("[data-portfolio-dialog]");
+
+  const openQuickView = (button: HTMLButtonElement) => {
+    if (!portfolioDialog) return;
     const dialogImage = portfolioDialog.querySelector<HTMLImageElement>("[data-dialog-image]");
     const dialogSector = portfolioDialog.querySelector<HTMLElement>("[data-dialog-sector]");
     const dialogTitle = portfolioDialog.querySelector<HTMLElement>("[data-dialog-title]");
     const dialogDescription = portfolioDialog.querySelector<HTMLElement>("[data-dialog-description]");
     const dialogTags = portfolioDialog.querySelector<HTMLUListElement>("[data-dialog-tags]");
     const dialogLink = portfolioDialog.querySelector<HTMLAnchorElement>("[data-dialog-link]");
+    if (!dialogImage || !dialogSector || !dialogTitle || !dialogDescription || !dialogTags || !dialogLink) return;
 
-    for (const button of quickViewButtons) {
-      button.addEventListener("click", () => {
-        if (!dialogImage || !dialogSector || !dialogTitle || !dialogDescription || !dialogTags || !dialogLink) return;
+    const title = button.dataset.title ?? "Cliente";
+    const cardImage = button.closest<HTMLElement>("[data-category]")
+      ?.querySelector<HTMLImageElement>("img");
+    dialogImage.src = cardImage?.currentSrc ?? cardImage?.src ?? "";
+    dialogImage.alt = `Captura de la web de ${title}`;
+    dialogSector.textContent = button.dataset.sector ?? "";
+    dialogTitle.textContent = title;
+    dialogDescription.textContent = button.dataset.description ?? "";
+    dialogLink.href = button.dataset.url ?? "#";
+    dialogTags.replaceChildren(
+      ...(button.dataset.tags ?? "").split("|").filter(Boolean).map((tag) => {
+        const item = document.createElement("li");
+        item.className = "badge badge-outline";
+        item.textContent = tag;
+        return item;
+      })
+    );
+    portfolioDialog.showModal();
+  };
 
-        const title = button.dataset.title ?? "Cliente";
-        const cardImage = button.closest<HTMLElement>("[data-category]")
-          ?.querySelector<HTMLImageElement>("img");
-        dialogImage.src = cardImage?.currentSrc ?? cardImage?.src ?? "";
-        dialogImage.alt = `Captura de la web de ${title}`;
-        dialogSector.textContent = button.dataset.sector ?? "";
-        dialogTitle.textContent = title;
-        dialogDescription.textContent = button.dataset.description ?? "";
-        dialogLink.href = button.dataset.url ?? "#";
-        dialogTags.replaceChildren(
-          ...(button.dataset.tags ?? "").split("|").filter(Boolean).map((tag) => {
-            const item = document.createElement("li");
-            item.className = "badge badge-outline";
-            item.textContent = tag;
-            return item;
-          })
-        );
-        portfolioDialog.showModal();
-      });
+  // La vista rápida se engancha también a las tarjetas que llegan después:
+  // se llama al arrancar y otra vez al cargar el resto del portfolio.
+  const bindQuickViews = (root: ParentNode) => {
+    for (const button of root.querySelectorAll<HTMLButtonElement>("[data-quick-view]")) {
+      if (button.dataset.quickViewBound === "true") continue;
+      button.dataset.quickViewBound = "true";
+      button.addEventListener("click", () => openQuickView(button));
     }
+  };
 
+  bindQuickViews(document);
+
+  if (portfolioDialog) {
     portfolioDialog.querySelector("[data-dialog-close]")?.addEventListener("click", () => {
       portfolioDialog.close();
     });
@@ -376,7 +404,48 @@ const slugify = (s: string) =>
     // El mosaico lo resuelve el CSS (grid + grid-flow-row-dense + estirado de
     // las destacadas a 2×2): no hay que medir alturas ni recolocar nada al
     // redimensionar, y sin JavaScript la rejilla también se ve bien.
-    const cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-category]"));
+    cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-category]"));
+    const total = Number.parseInt(portfolioGrid.dataset.total ?? "", 10);
+    // En la home solo vienen pintadas las 6 visibles: hasta que no se piden
+    // las demás, filtrar daría un resultado incompleto.
+    let restLoaded = !Number.isFinite(total) || cards.length >= total;
+
+    // El resto de tarjetas se pide a /clientes/ la primera vez que hace falta.
+    // Se reutiliza esa página porque la pinta este mismo componente: llegan con
+    // sus imágenes adaptables y su vista rápida, sin duplicar maquetación.
+    const loadRest = async () => {
+      if (restLoaded) return true;
+      try {
+        const response = await fetch("/clientes/", { credentials: "same-origin" });
+        if (!response.ok) {
+          throw new Error(`${response.status} al pedir /clientes/`);
+        }
+        const remote = new DOMParser().parseFromString(
+          await response.text(),
+          "text/html"
+        );
+        const remoteCards = Array.from(
+          remote.querySelectorAll<HTMLElement>("[data-portfolio-grid] [data-category]")
+        );
+        if (remoteCards.length <= cards.length) {
+          throw new Error("La lista de clientes ha llegado incompleta");
+        }
+
+        for (const card of remoteCards.slice(cards.length)) {
+          const node = document.importNode(card, true) as HTMLElement;
+          node.hidden = true;
+          node.classList.remove("portfolio-card-enter");
+          portfolioGrid.append(node);
+          cards.push(node);
+        }
+        bindQuickViews(portfolioGrid);
+        restLoaded = true;
+        return true;
+      } catch (error) {
+        console.warn("No se ha podido cargar el resto del portfolio.", error);
+        return false;
+      }
+    };
 
     function apply(filter: string) {
       currentFilter = filter;
@@ -430,7 +499,17 @@ const slugify = (s: string) =>
     }
 
     for (const button of buttons) {
-      button.addEventListener("click", () => apply(button.dataset.filter ?? "todos"));
+      button.addEventListener("click", async () => {
+        const filter = button.dataset.filter ?? "todos";
+        // Cualquier filtro que no sea «todos» necesita la lista completa.
+        if (filter !== "todos" && !restLoaded) {
+          button.setAttribute("aria-busy", "true");
+          const loaded = await loadRest();
+          button.removeAttribute("aria-busy");
+          if (!loaded) return;
+        }
+        apply(filter);
+      });
     }
 
     // aria-controls apunta a la lista filtrada, no a la sección completa.
@@ -438,7 +517,24 @@ const slugify = (s: string) =>
       button.setAttribute("aria-controls", portfolioGrid.id);
     }
 
-    showMore?.addEventListener("click", () => {
+    showMore?.addEventListener("click", async (event) => {
+      // Sin JS el enlace lleva a /clientes/; con JS se amplía aquí mismo.
+      // Con modificador se deja navegar (abrir en otra pestaña, etc.).
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+
+      if (!restLoaded) {
+        showMore.setAttribute("aria-busy", "true");
+        showMore.textContent = "Cargando clientes…";
+        const loaded = await loadRest();
+        showMore.removeAttribute("aria-busy");
+        showMore.textContent = showMoreLabel;
+        if (!loaded) {
+          window.location.href = showMore.href;
+          return;
+        }
+      }
+
       expanded = true;
       apply(currentFilter);
       showMore.hidden = true;
