@@ -22,13 +22,11 @@ import Layout from '../layouts/Layout.astro';
 	description={`Consultora web en Málaga: diseño web, SEO local y tiendas online. Primera landing gratis, web completa 490€ y tienda 890€. ${PORTFOLIO.length} proyectos con precio cerrado.`}
 >
 	<JsonLd slot="head" />
-	<!-- Gate de red del hero 3D. En 4G o mejor se adelantan con el HTML las
-	     descargas que antes arrancaban al ejecutarse el script del hero (el
-	     motor Three.js, que es el 90 % de la espera en móvil, y el modelo).
-	     En 2G/3G o con ahorro de datos no se pide nada: el hero se queda con
-	     la imagen estática, que ahorra unos 205 KB.
-	     La lista de chunks la escribe el plugin preloadHero3d al construir,
-	     porque sus nombres llevan hash. -->
+	<!-- Gate de red del hero 3D. En 2G/3G o con ahorro de datos el logo se
+	     queda como imagen estática y no se descarga nada al interactuar: son
+	     ~205 KB de Three.js + modelo. Ya no se precarga nada en el <head>: el
+	     3D solo se pide cuando el visitante interactúa con el logo, así que
+	     adelantar 190 KB competía con la imagen del LCP sin acelerar nada. -->
 	<script is:inline>
 		(function () {
 			var connection = navigator.connection || {};
@@ -41,20 +39,6 @@ import Layout from '../layouts/Layout.astro';
 			// Ojo: no usar data-model3d, que es el selector del propio hero
 			// (document.querySelector lo encontraría antes en <html>).
 			document.documentElement.dataset.hero3d = lite ? "lite" : "full";
-			if (lite) return;
-			var chunks = /*PRELOAD_CHUNKS*/[];
-			for (var i = 0; i < chunks.length; i++) {
-				var module = document.createElement("link");
-				module.rel = "modulepreload";
-				module.href = chunks[i];
-				document.head.appendChild(module);
-			}
-			var model = document.createElement("link");
-			model.rel = "preload";
-			model.as = "fetch";
-			model.href = "/models/logo-sur-digital.glb";
-			model.crossOrigin = "anonymous";
-			document.head.appendChild(model);
 		})();
 	</script>
 

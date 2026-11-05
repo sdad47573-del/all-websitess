@@ -4,11 +4,15 @@
 // base-content), botones del tema y tarjeta con borde y sombra como el resto
 // de secciones. Sin tipografías ni paleta propias.
 //
-// Three.js y el logo se cargan en diferido, solo cuando el hero entra en
-// pantalla. El logo se balancea solo para dejar ver el volumen, se puede
-// arrastrar para girarlo y da una vuelta completa al hacer clic. Con
-// `prefers-reduced-motion` se apaga el balanceo ambiental, pero el arrastre y
-// el giro se mantienen porque los provoca el visitante.
+// El hero pinta primero el póster (mismo encuadre, luz y sombra que el 3D).
+// Three.js y el modelo se descargan solo cuando el visitante interactúa con el
+// logo: pasar el ratón por encima, pulsar o arrastrar. Así 220 KB de motor 3D
+// no compiten con el LCP ni bloquean el hilo principal durante la carga, que
+// era el mayor problema de rendimiento de la home. Una vez cargado, el logo se
+// balancea solo, se puede arrastrar para girarlo y da una vuelta completa al
+// hacer clic. Con `prefers-reduced-motion` se apaga el balanceo ambiental.
+import { Image } from "astro:assets";
+import posterLogo from "../assets/logo-sur-digital-3d.webp";
 import { CONTACT } from "../data/contact";
 import LinkedInIcon from "../icons/LinkedInIcon.astro";
 
@@ -90,14 +94,16 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
         aria-label="Logo 3D interactivo. Se balancea solo, gira al arrastrarlo y da una vuelta completa al hacer clic."
       >
         <!-- Imagen estática del logo con el mismo encuadre, luz y sombra que el
-             modelo 3D. Tapa el hueco mientras se descarga Three.js, y en redes
-             lentas o con ahorro de datos se queda como imagen definitiva. -->
-        <img
+             modelo 3D. Es lo que se ve al cargar (y lo único en redes lentas o
+             con ahorro de datos). Se sirve adaptada al tamaño real de la
+             columna: 280 px en móvil, 384 en tablet y ~490 en escritorio. -->
+        <Image
           data-model3d-poster
-          src="/img/logo-sur-digital-3d.webp"
+          src={posterLogo}
+          widths={[280, 384, 490, 720]}
+          sizes="(max-width: 639px) 280px, (max-width: 1023px) 384px, 490px"
           alt=""
-          width="720"
-          height="720"
+          loading="eager"
           fetchpriority="high"
           decoding="async"
           class="absolute inset-0 h-full w-full object-contain transition-opacity duration-700"
@@ -159,8 +165,7 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
 
       try {
         // El modelo se pide a la vez que los módulos: son 36 KB que se bajan
-        // mientras llega Three.js, y el <head> de la home los adelanta con un
-        // preload en las redes rápidas.
+        // mientras llega Three.js, en paralelo.
         const modelBytes = fetch(modelSrc).then((response) => {
           if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText} al pedir ${modelSrc}`);
@@ -613,19 +618,24 @@ const MODEL_SRC = "/models/logo-sur-digital.glb";
       canvas.classList.add("hidden");
       // Sin 3D no hay nada que arrastrar: la etiqueta no debe prometerlo.
       host.setAttribute("aria-label", "Logo de Sur Digital");
-    } else if ("IntersectionObserver" in window) {
-      const near = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
-            near.disconnect();
-            boot();
-          }
-        },
-        { rootMargin: "300px" }
-      );
-      near.observe(host);
     } else {
-      boot();
+      // Nada de Three.js hasta que el visitante muestra intención. El póster
+      // ocupa su sitio y se ve idéntico, así que esperar no cuesta nada; a
+      // cambio, el motor 3D (186 KB) y el modelo (36 KB) no se descargan en la
+      // carga inicial ni se evalúan en mitad del LCP. En táctil, pointerenter
+      // no dispara y el primer toque arranca la carga.
+      const start = () => {
+        host.removeEventListener("pointerenter", onEnter);
+        host.removeEventListener("pointerdown", start);
+        host.removeEventListener("focusin", start);
+        boot();
+      };
+      const onEnter = (event: PointerEvent) => {
+        if (event.pointerType === "mouse") start();
+      };
+      host.addEventListener("pointerenter", onEnter);
+      host.addEventListener("pointerdown", start);
+      host.addEventListener("focusin", start);
     }
   }
 </script>
