@@ -64,6 +64,14 @@
     display: inline-flex;
   }
 
+  /* Cambio de tema instantáneo: desactiva cualquier transición mientras se
+     aplica el tema nuevo (ver el script de abajo). */
+  html.theme-switching *,
+  html.theme-switching *::before,
+  html.theme-switching *::after {
+    transition: none !important;
+  }
+
   /* Giro suave al pasar el cursor: el icono responde sin animar el cambio de
      tema entero. */
   .theme-toggle svg {
@@ -92,8 +100,15 @@
 <script>
   const KEY = "theme";
 
+  const root = document.documentElement;
+
   function apply(theme: string, persist = true) {
-    document.documentElement.dataset.theme = theme;
+    // El cambio de tema tiene que ser instantáneo. Los elementos con
+    // transition-all o transition-colors (tarjetas, enlaces, topbar) fundían
+    // el color nuevo y daba la impresión de que el cambio llegaba tarde.
+    // Mientras se repinta el tema, se apagan las transiciones.
+    root.classList.add("theme-switching");
+    root.dataset.theme = theme;
     if (persist) {
       try {
         localStorage.setItem(KEY, theme);
@@ -101,13 +116,20 @@
         /* sin persistencia: el cambio dura esta sesión */
       }
     }
+    // Fuerza el recálculo de estilos con el tema ya aplicado y sin
+    // transición; después se vuelven a permitir (dos frames para que el
+    // navegador no llegue a animar nada).
+    void root.offsetHeight;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => root.classList.remove("theme-switching"));
+    });
   }
 
   // La Topbar renderiza el toggle 2 veces (desktop + móvil). Como los ids
   // deben ser únicos, usamos una clase y adjuntamos el listener a todas.
   document.querySelectorAll(".theme-toggle").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const current = document.documentElement.dataset.theme;
+      const current = root.dataset.theme;
       apply(current === "malaga-dark" ? "malaga-light" : "malaga-dark");
     });
   });
