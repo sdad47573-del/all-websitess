@@ -1,0 +1,247 @@
+---
+// Glosario en los cinco idiomas: mismo contenido y misma estructura que la
+// página española, con los términos traducidos (src/i18n/pages/glosario.ts) y
+// las guías del blog enlazadas en español, marcadas con hreflang="es".
+import { TERMINOS } from "../../data/glosario";
+import { LOCALES, LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
+import { GLOSARIO, TERMINOS_HREFS } from "../../i18n/pages/glosario";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+import Fab from "../../components/Fab.astro";
+import MobileCta from "../../components/MobileCta.astro";
+import { CONTACT } from "../../data/contact";
+import { localize } from "../../i18n/routes";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = GLOSARIO[lang];
+const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
+const path = `/${lang}/glosario/`;
+
+// Enlaces de la página: a la versión localizada si ya existe y, si no, a la
+// española, que se marca con hreflang="es".
+const link = (p: string) => {
+  const href = localize(p, lang);
+  return { href, hreflang: href === p && lang !== "es" ? "es" : undefined };
+};
+const homeLink = link("/");
+const servicesLink = link("/servicios/");
+const pricingLink = link("/precios/");
+const blogLink = link("/blog/");
+const sectorsLink = link("/especialidades/");
+
+// Un término nuevo en español sin traducir rompería la página: mejor fallar en
+// el build que publicar una lista a medias o con definiciones cruzadas.
+if (t.terms.length !== TERMINOS.length || TERMINOS_HREFS.length !== TERMINOS.length) {
+  throw new Error(
+    `Glosario ${lang}: ${t.terms.length} términos traducidos frente a ${TERMINOS.length} en español`
+  );
+}
+
+// Anclas válidas también en cirílico: se conservan letras y números Unicode.
+const toSlug = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/(^-|-$)/g, "");
+
+const collator = new Intl.Collator(lang);
+const terminos = t.terms
+  .map((termino, i) => ({
+    ...termino,
+    href: TERMINOS_HREFS[i],
+    id: toSlug(termino.term),
+    letter: toSlug(termino.term)[0]?.toUpperCase() ?? "#",
+  }))
+  .sort((a, b) => collator.compare(a.term, b.term));
+
+const letters = [...new Set(terminos.map((term) => term.letter))];
+
+const translations = [
+  { lang: "es", path: "/glosario/" },
+  ...LOCALES.filter((code) => code !== lang).map((code) => ({
+    lang: code,
+    path: `/${code}/glosario/`,
+  })),
+];
+
+const definedTermSet = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: `${t.h1} ${t.h1Accent} — Sur Digital`,
+  description: t.metaDescription,
+  url: new URL(path, site).href,
+  inLanguage: LOCALE_HTML_LANG[lang],
+  hasDefinedTerm: terminos.map((term) => ({
+    "@type": "DefinedTerm",
+    name: term.term,
+    description: term.text,
+    inDefinedTermSet: new URL(path, site).href,
+  })),
+};
+
+const breadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: t.crumbHome,
+      item: new URL(lang === "es" ? "/" : `/${lang}/`, site).href,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: t.crumb,
+      item: new URL(path, site).href,
+    },
+  ],
+};
+---
+
+<Layout
+  title={t.metaTitle}
+  description={t.metaDescription}
+  lang={LOCALE_HTML_LANG[lang]}
+  path={path}
+  image={`/og/${lang}.png`}
+  translations={translations}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(definedTermSet)}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(breadcrumbs)}
+  />
+
+  <Topbar lang={lang} />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <p class="text-sm text-base-content/60 font-bold uppercase tracking-wide mb-3">
+        <a href={homeLink.href} class="link link-hover">{t.crumbHome}</a> · {t.crumb}
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        {t.h1} <span class="text-wave">{t.h1Accent}</span>
+      </h1>
+      <p class="text-lg text-base-content/70 mb-6">{t.leadStart}</p>
+
+      <nav aria-label={t.indexLabel} class="flex flex-wrap gap-2 mb-12">
+        {
+          letters.map((letter) => (
+            <button
+              type="button"
+              data-letter={`letra-${letter.toLowerCase()}`}
+              class="badge badge-lg badge-outline font-bold cursor-pointer"
+            >
+              {letter}
+            </button>
+          ))
+        }
+      </nav>
+
+      {
+        letters.map((letter) => (
+          <section id={`letra-${letter.toLowerCase()}`} class="mb-12 scroll-mt-28">
+            <h2 class="text-2xl font-bold text-base-content mb-4">{letter}</h2>
+            <dl class="flex flex-col gap-4">
+              {terminos
+                .filter((term) => term.letter === letter)
+                .map((term) => (
+                  <div class="card bg-base-100 shadow-sm border border-base-300 scroll-mt-28">
+                    <div class="card-body p-5 gap-2">
+                      <dt
+                        id={term.id}
+                        class="font-bold text-base text-base-content scroll-mt-28"
+                      >
+                        {term.term}
+                      </dt>
+                      <dd class="text-sm text-base-content/70 leading-relaxed">
+                        {term.text}
+                        {term.href && (
+                          <>
+                            {" "}
+                            <a href={term.href} hreflang="es" class="link link-primary font-bold">
+                              {t.readGuide}
+                            </a>
+                          </>
+                        )}
+                      </dd>
+                    </div>
+                  </div>
+                ))}
+            </dl>
+          </section>
+        ))
+      }
+
+      <aside class="card brand-surface shadow-lg border-0 mb-12">
+        <div class="card-body items-center text-center gap-3">
+          <p class="text-xl font-bold">{t.missingTitle}</p>
+          <p class="text-sm">{t.missingText}</p>
+          <a
+            href={CONTACT.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary mt-1">{t.missingCta}</a
+          >
+        </div>
+      </aside>
+
+      <nav aria-label={t.nextIntro} class="text-sm text-base-content/70">
+        {t.nextIntro}
+        <a
+          href={servicesLink.href}
+          hreflang={servicesLink.hreflang}
+          class="link link-primary font-bold">{t.nextServices}</a
+        >, <a
+          href={pricingLink.href}
+          hreflang={pricingLink.hreflang}
+          class="link link-primary font-bold">{t.nextPricing}</a
+        >
+        {" · "}
+        <a
+          href={blogLink.href}
+          hreflang={blogLink.hreflang}
+          class="link link-primary font-bold">{t.nextBlog}</a
+        >.
+        {" · "}
+        <a
+          href={sectorsLink.href}
+          hreflang={sectorsLink.hreflang}
+          class="link link-primary font-bold">{t.nextSectors}</a
+        >
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    // Índice alfabético sin fragmento en la URL: desplaza a la sección de la
+    // letra sin cambiar la dirección.
+    for (const button of document.querySelectorAll<HTMLElement>("[data-letter]")) {
+      button.addEventListener("click", () => {
+        const target = button.dataset.letter;
+        if (target) {
+          document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+  </script>
+
+  <Fab lang={lang} />
+  <MobileCta lang={lang} />
+  <Footer lang={lang} />
+</Layout>

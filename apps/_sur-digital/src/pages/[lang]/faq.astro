@@ -1,0 +1,119 @@
+---
+// Preguntas frecuentes en los cinco idiomas: las 32 preguntas de DATA.faq
+// traducidas (src/i18n/pages/faq/) y el mismo JSON-LD FAQPage que la versión
+// española, para que cada idioma pueda salir con rich snippets.
+import { DATA } from "../../data/data.astro";
+import { CONTACT } from "../../data/contact";
+import { LOCALES, LOCALE_HTML_LANG, type Locale } from "../../data/i18n";
+import { faq } from "../../i18n/pages/faq";
+import Layout from "../../layouts/Layout.astro";
+import Topbar from "../../components/Topbar.astro";
+import Footer from "../../components/Footer.astro";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = faq(lang);
+const path = `/${lang}/faq/`;
+
+// Si alguien añade una pregunta en DATA.faq y no la traduce, el build falla en
+// vez de publicar una FAQ distinta en cada idioma.
+if (t.entries.length !== DATA.faq.length) {
+  throw new Error(
+    `FAQ ${lang}: ${t.entries.length} preguntas traducidas frente a ${DATA.faq.length} en español`
+  );
+}
+
+const translations = [
+  { lang: "es", path: "/faq/" },
+  ...LOCALES.filter((code) => code !== lang).map((code) => ({
+    lang: code,
+    path: `/${code}/faq/`,
+  })),
+];
+---
+
+<Layout
+  title={t.metaTitle}
+  description={t.metaDescription}
+  lang={LOCALE_HTML_LANG[lang]}
+  path={path}
+  image={`/og/${lang}.png`}
+  translations={translations}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      inLanguage: LOCALE_HTML_LANG[lang],
+      mainEntity: t.entries.map((entry) => ({
+        "@type": "Question",
+        name: entry.q,
+        acceptedAnswer: { "@type": "Answer", text: entry.a },
+      })),
+    })}
+  />
+
+  <Topbar lang={lang} />
+
+  <main id="contenido" class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <section class="container mx-auto px-6 max-w-3xl text-center mb-2" data-reveal>
+      <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+        {t.h1} <span class="text-wave">{t.h1Accent}</span>
+      </h1>
+      <p class="text-lg text-base-content/70 max-w-2xl mx-auto">{t.lead}</p>
+    </section>
+
+    <section class="pt-14 pb-20 flex flex-col items-center">
+      <div class="container mx-auto px-6 text-center">
+        <h2 data-reveal class="text-4xl md:text-5xl font-bold text-base-content mb-2">
+          {t.sectionTitle} <span class="text-wave">{t.sectionAccent}</span>
+        </h2>
+        <p class="text-base-content/70 max-w-2xl mx-auto mb-10">
+          {t.sectionLead}
+          <a
+            href={CONTACT.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link link-hover font-bold text-secondary">{t.askLink}</a
+          >.
+        </p>
+
+        <div data-reveal-group class="flex flex-col gap-3 max-w-3xl mx-auto text-start">
+          {
+            t.entries.map((entry) => (
+              <details class="collapse collapse-arrow bg-base-100 shadow-sm">
+                <summary class="collapse-title font-bold">{entry.q}</summary>
+                <div class="collapse-content text-base-content/70">
+                  {entry.a}
+                  {entry.links && (
+                    <ul class="mt-2 flex flex-col gap-1">
+                      {entry.links.map((link) => (
+                        <li>
+                          <a
+                            href={link.href}
+                            hreflang="es"
+                            class="link link-primary font-bold text-sm"
+                          >
+                            {link.label} →
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

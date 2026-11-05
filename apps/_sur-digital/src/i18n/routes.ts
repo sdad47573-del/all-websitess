@@ -5,6 +5,8 @@
 export const TRANSLATED_PATHS: readonly string[] = [
   "/",
   "/contacto/",
+  "/glosario/",
+  "/faq/",
 ];
 
 /**
