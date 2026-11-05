@@ -1,0 +1,341 @@
+---
+// Landing resumen en cada idioma (en/de/fr/pt/ru). El sitio completo se queda
+// en español: aquí vive lo que necesita alguien que busca "web design in
+// Málaga" en su idioma — qué hacemos, qué cuesta, cuánto tarda y cómo
+// contactar — y desde aquí pasa al sitio español o escribe directamente.
+//
+// Los precios NO se escriben en esta página: se leen de DATA.plans y se
+// emparejan por posición con PLAN_KEYS. Si alguien reordena los planes, el
+// build falla en vez de publicar precios cruzados.
+import { Image } from "astro:assets";
+import Logo from "../../assets/logo-optimized.png";
+import Footer from "../../components/Footer.astro";
+import DoneIcon from "../../icons/DoneIcon.astro";
+import LinkedInIcon from "../../icons/LinkedInIcon.astro";
+import { CONTACT } from "../../data/contact";
+import { DATA } from "../../data/data.astro";
+import {
+  LOCALES,
+  LOCALE_CONTENT,
+  LOCALE_HTML_LANG,
+  LOCALE_LABELS,
+  PLAN_KEYS,
+  type Locale,
+} from "../../data/i18n";
+import Layout from "../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = LOCALE_CONTENT[lang];
+const htmlLang = LOCALE_HTML_LANG[lang];
+const path = `/${lang}/`;
+
+const plans = t.plans.map((copy, i) => {
+  const plan = DATA.plans[i];
+  if (!plan || plan.name !== PLAN_KEYS[i]) {
+    throw new Error(
+      `Traducciones: el plan ${i + 1} de DATA.plans no es "${PLAN_KEYS[i]}"`
+    );
+  }
+  return { ...copy, price: plan.price };
+});
+
+// Selector de idioma: el español es la raíz del sitio.
+const languageLinks = [
+  { code: "es", href: "/", label: LOCALE_LABELS.es },
+  ...LOCALES.map((code) => ({
+    code,
+    href: `/${code}/`,
+    label: LOCALE_LABELS[code],
+  })),
+];
+
+// hreflang: cada idioma declara a los otros cinco y al español.
+const translations = languageLinks
+  .filter((link) => link.code !== lang)
+  .map((link) => ({ lang: link.code, path: link.href }));
+---
+
+<Layout
+  title={t.title}
+  description={t.description}
+  lang={htmlLang}
+  path={path}
+  translations={translations}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      inLanguage: htmlLang,
+      mainEntity: t.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    })}
+  />
+
+  <!-- Cabecera propia (no la Topbar española): logo, selector de idioma y CTA.
+       Así no aparecen enlaces del sitio español con etiquetas en español. -->
+  <header class="fixed w-full bg-base-100/90 backdrop-blur-sm z-50 shadow-sm top-0">
+    <nav class="container mx-auto px-6 py-4 flex items-center justify-between gap-3">
+      <a href="/" class="flex shrink-0 items-center" aria-label="Sur Digital">
+        <Image
+          src={Logo}
+          alt="Sur Digital"
+          widths={[96, 192, 288]}
+          sizes="96px"
+          class="h-8 w-auto"
+        />
+      </a>
+
+      <div class="flex items-center gap-1 sm:gap-2">
+        <ul class="flex items-center gap-1 text-xs font-bold" aria-label={t.contactCta}>
+          {
+            languageLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  hreflang={link.code}
+                  lang={link.code}
+                  aria-current={link.code === lang ? "true" : undefined}
+                  class:list={[
+                    "rounded-btn px-2 py-1 transition-colors",
+                    link.code === lang
+                      ? "bg-primary text-primary-content"
+                      : "text-base-content/70 hover:text-primary",
+                  ]}
+                >
+                  {link.code.toUpperCase()}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a
+          href={CONTACT.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-sm gap-2"
+        >
+          <LinkedInIcon class="size-4" />
+          <span class="hidden sm:inline">{t.contactCta}</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenido" class="pb-20 bg-gradient-to-b from-base-100 to-base-200">
+    <!-- Hero -->
+    <section
+      class="hero-banner relative overflow-hidden bg-gradient-to-br from-base-200 via-base-100 to-base-100 pb-12 md:pb-16"
+    >
+      <div
+        class="container mx-auto grid max-w-6xl items-center gap-8 px-6 lg:grid-cols-[1.05fr_0.95fr]"
+      >
+        <div class="text-center lg:text-left">
+          <p
+            class="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-base-100/80 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-primary shadow-sm"
+          >
+            <span class="size-2 rounded-full bg-secondary" aria-hidden="true"
+            ></span>
+            {t.eyebrow}
+          </p>
+
+          <h1
+            class="mb-5 text-balance text-4xl font-black leading-[1.08] tracking-tight text-base-content sm:text-5xl"
+          >
+            {t.h1} <span class="text-wave">{t.h1Accent}</span>
+          </h1>
+
+          <p
+            class="mx-auto mb-6 max-w-xl text-lg leading-relaxed text-base-content/70 lg:mx-0"
+          >
+            {t.lead}
+          </p>
+
+          <div
+            class="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start"
+          >
+            <a
+              href={CONTACT.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary btn-lg shadow-lg shadow-primary/15"
+            >
+              <LinkedInIcon class="size-5" />
+              {t.ctaPrimary}
+            </a>
+            <a href="/clientes/" class="btn btn-ghost btn-lg">{t.ctaSecondary} →</a>
+          </div>
+
+          <ul
+            class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-base-content/70 lg:justify-start"
+          >
+            {
+              t.chips.map((chip) => (
+                <li class="flex items-center gap-2">
+                  <span class="font-black text-success" aria-hidden="true">
+                    ✓
+                  </span>
+                  {chip}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="mx-auto w-full max-w-[240px] lg:max-w-sm">
+          <Image
+            src={Logo}
+            alt=""
+            widths={[240, 384]}
+            sizes="(max-width: 1023px) 240px, 384px"
+            class="h-auto w-full"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Cómo funciona -->
+    <section class="pt-14 pb-16 flex flex-col items-center">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-10" data-reveal>
+          <h2 class="text-3xl md:text-4xl font-bold text-base-content">
+            {t.processTitle} <span class="text-wave">{t.processAccent}</span>
+          </h2>
+          <p class="text-base-content/70 max-w-2xl mx-auto mt-3">
+            {t.processLead}
+          </p>
+        </div>
+
+        <ol
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto"
+        >
+          {
+            t.steps.map((step, i) => (
+              <li
+                data-reveal
+                class="card bg-base-100 shadow-sm border border-base-300"
+              >
+                <div class="card-body gap-1 items-start text-start">
+                  <span class="badge badge-secondary badge-sm font-bold">
+                    {i + 1}. {step.when}
+                  </span>
+                  <p class="font-bold pt-2">{step.title}</p>
+                  <p class="text-sm text-base-content/70">{step.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- Precios -->
+    <section id="precios" class="pt-14 pb-16 flex flex-col items-center">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-10" data-reveal>
+          <h2 class="text-3xl md:text-4xl font-bold text-base-content">
+            {t.pricingTitle} <span class="text-wave">{t.pricingAccent}</span>
+          </h2>
+          <p class="text-base-content/70 max-w-2xl mx-auto mt-3">
+            {t.pricingLead}
+          </p>
+        </div>
+
+        <ul
+          data-reveal-group
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+        >
+          {
+            plans.map((plan, i) => (
+              <li
+                class:list={[
+                  "card bg-base-100 w-full",
+                  i === 2
+                    ? "shadow-lg border-2 border-secondary relative"
+                    : "shadow-sm border border-base-300",
+                ]}
+              >
+                <div class="card-body items-center text-center">
+                  <p class="text-lg font-bold text-base-content/70">
+                    {plan.name}
+                  </p>
+                  <p class="text-sm leading-snug text-base-content/60 min-h-10">
+                    {plan.note}
+                  </p>
+                  <p class="text-4xl font-black whitespace-nowrap">
+                    {t.formatPrice(plan.price)}
+                  </p>
+                  <span class="mt-1 text-xs text-base-content/60">
+                    {plan.unit}
+                  </span>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        <p class="text-center text-xs text-base-content/60 mt-6">{t.pricingNote}</p>
+      </div>
+    </section>
+
+    <!-- Preguntas -->
+    <section class="pt-14 pb-16 flex flex-col items-center">
+      <div class="container mx-auto px-6 max-w-3xl">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-base-content text-center mb-8"
+          data-reveal
+        >
+          {t.faqTitle}
+        </h2>
+        <div data-reveal-group class="flex flex-col gap-3 text-start">
+          {
+            t.faq.map((item) => (
+              <details class="collapse collapse-arrow bg-base-100 shadow-sm">
+                <summary class="collapse-title font-bold">{item.q}</summary>
+                <div class="collapse-content text-base-content/70">
+                  <p>{item.a}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+
+        <p class="text-center text-sm text-base-content/60 mt-8">
+          <DoneIcon class="inline-block me-2 align-middle" />
+          {t.summaryNote}
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA final -->
+    <section class="container mx-auto px-6 max-w-3xl" data-reveal>
+      <div class="card brand-surface shadow-lg">
+        <div class="card-body items-center text-center gap-3">
+          <p class="text-2xl font-bold">{t.ctaTitle}</p>
+          <p class="text-sm max-w-xl">{t.ctaLead}</p>
+          <a
+            href={CONTACT.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary mt-1"
+          >
+            <LinkedInIcon class="size-4" />
+            {t.ctaButton}
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

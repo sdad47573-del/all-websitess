@@ -46,14 +46,32 @@ const ogAlt = `${title} — Sur Digital`;
 // `og:locale` describe el idioma del CONTENIDO, no el del sitio: la página
 // inglesa de Marbella se anunciaba como es_ES y además repetía ese mismo valor
 // en `og:locale:alternate`, que debe ser el idioma alternativo (no el propio).
-const ogLocale = lang === "en" ? "en_GB" : "es_ES";
-const ogLocaleAlternate = lang === "en" ? "es_ES" : undefined;
+// Un idioma nuevo (en/de/fr/pt/ru) se añade en estos dos mapas y ya hereda
+// og:locale, og:locale:alternate y hreflang en todas sus páginas.
+const OG_LOCALE: Record<string, string> = {
+  es: "es_ES",
+  en: "en_GB",
+  de: "de_DE",
+  fr: "fr_FR",
+  pt: "pt_PT",
+  ru: "ru_RU",
+};
+const HREFLANG: Record<string, string> = {
+  es: "es-ES",
+  en: "en-GB",
+  de: "de-DE",
+  fr: "fr-FR",
+  pt: "pt-PT",
+  ru: "ru-RU",
+};
+const ogLocale = OG_LOCALE[lang] ?? "es_ES";
+const ogLocaleAlternate = lang === "es" ? undefined : "es_ES";
 
 // hreflang: Google exige que la página se declare a sí misma como alternate
 // además de a su equivalente, así que la propia URL entra en la lista. El
 // código va como es-ES / en-GB para coincidir con og:locale. x-default apunta
 // a la versión española (el sitio es español por defecto).
-const hreflangCode = (l: string) => (l === "en" ? "en-GB" : "es-ES");
+const hreflangCode = (l: string) => HREFLANG[l] ?? l;
 const hreflangLinks = translations.length
   ? [{ lang, path }, ...translations].map((t) => ({
       hreflang: hreflangCode(t.lang),
