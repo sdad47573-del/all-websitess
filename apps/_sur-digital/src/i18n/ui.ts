@@ -51,9 +51,20 @@ export interface FooterStrings {
   rights: string;
 }
 
+// Textos de accesibilidad del logo 3D del hero: el aria-label que promete el
+// arrastre, la versión corta cuando no hay 3D (red lenta) y los avisos de
+// carga y error.
+export interface Hero3dStrings {
+  label: string;
+  labelLite: string;
+  loading: string;
+  error: string;
+}
+
 export interface LocaleStrings {
   nav: NavStrings;
   common: { skip: string; languages: string; prices: string };
+  hero3d: Hero3dStrings;
   contact: ContactStrings;
   footer: FooterStrings;
 }
@@ -70,6 +81,13 @@ export const UI: Record<UiLang, LocaleStrings> = {
       contact: "Escríbenos",
     },
     common: { skip: "Saltar al contenido", languages: "Idiomas", prices: "Precios" },
+    hero3d: {
+      label:
+        "Logo 3D interactivo. Se balancea solo, gira al arrastrarlo y da una vuelta completa al hacer clic.",
+      labelLite: "Logo de Sur Digital",
+      loading: "Cargando modelo 3D…",
+      error: "No se ha podido cargar el modelo 3D",
+    },
     contact: {
       metaTitle: "Contacto: hablemos de tu web | Sur Digital",
       metaDescription:
@@ -118,6 +136,13 @@ export const UI: Record<UiLang, LocaleStrings> = {
       contact: "Get in touch",
     },
     common: { skip: "Skip to content", languages: "Languages", prices: "Pricing" },
+    hero3d: {
+      label:
+        "Interactive 3D logo. It sways on its own, turns when you drag it and does a full spin on click.",
+      labelLite: "Sur Digital logo",
+      loading: "Loading 3D model…",
+      error: "The 3D model could not be loaded",
+    },
     contact: {
       metaTitle: "Contact: let's talk about your website | Sur Digital",
       metaDescription:
@@ -165,6 +190,13 @@ export const UI: Record<UiLang, LocaleStrings> = {
       contact: "Schreiben Sie uns",
     },
     common: { skip: "Zum Inhalt springen", languages: "Sprachen", prices: "Preise" },
+    hero3d: {
+      label:
+        "Interaktives 3D-Logo. Es wiegt sich von selbst, dreht sich beim Ziehen und macht beim Klick eine volle Umdrehung.",
+      labelLite: "Sur-Digital-Logo",
+      loading: "3D-Modell wird geladen…",
+      error: "Das 3D-Modell konnte nicht geladen werden",
+    },
     contact: {
       metaTitle: "Kontakt: sprechen wir über Ihre Website | Sur Digital",
       metaDescription:
@@ -213,6 +245,13 @@ export const UI: Record<UiLang, LocaleStrings> = {
       contact: "Nous écrire",
     },
     common: { skip: "Aller au contenu", languages: "Langues", prices: "Tarifs" },
+    hero3d: {
+      label:
+        "Logo 3D interactif. Il se balance seul, tourne quand on le fait glisser et fait un tour complet au clic.",
+      labelLite: "Logo de Sur Digital",
+      loading: "Chargement du modèle 3D…",
+      error: "Le modèle 3D n'a pas pu être chargé",
+    },
     contact: {
       metaTitle: "Contact : parlons de votre site | Sur Digital",
       metaDescription:
@@ -260,6 +299,13 @@ export const UI: Record<UiLang, LocaleStrings> = {
       contact: "Fale connosco",
     },
     common: { skip: "Ir para o conteúdo", languages: "Idiomas", prices: "Preços" },
+    hero3d: {
+      label:
+        "Logótipo 3D interativo. Balança sozinho, roda ao arrastar e dá uma volta completa ao clicar.",
+      labelLite: "Logótipo da Sur Digital",
+      loading: "A carregar o modelo 3D…",
+      error: "Não foi possível carregar o modelo 3D",
+    },
     contact: {
       metaTitle: "Contacto: falemos do seu site | Sur Digital",
       metaDescription:
@@ -307,6 +353,13 @@ export const UI: Record<UiLang, LocaleStrings> = {
       contact: "Написать нам",
     },
     common: { skip: "Перейти к содержимому", languages: "Языки", prices: "Цены" },
+    hero3d: {
+      label:
+        "Интерактивный 3D-логотип. Покачивается сам, вращается при перетаскивании и делает полный оборот по клику.",
+      labelLite: "Логотип Sur Digital",
+      loading: "Загрузка 3D-модели…",
+      error: "Не удалось загрузить 3D-модель",
+    },
     contact: {
       metaTitle: "Контакты: поговорим о вашем сайте | Sur Digital",
       metaDescription:

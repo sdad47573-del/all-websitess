@@ -7,10 +7,9 @@
 // Los precios NO se escriben en esta página: se leen de DATA.plans y se
 // emparejan por posición con PLAN_KEYS. Si alguien reordena los planes, el
 // build falla en vez de publicar precios cruzados.
-import { Image } from "astro:assets";
-import Logo from "../../../assets/logo-optimized.png";
 import Footer from "../../../components/Footer.astro";
 import Fab from "../../../components/Fab.astro";
+import Logo3D from "../../../components/Logo3D.astro";
 import MobileCta from "../../../components/MobileCta.astro";
 import Topbar from "../../../components/Topbar.astro";
 import DoneIcon from "../../../icons/DoneIcon.astro";
@@ -24,6 +23,7 @@ import {
   PLAN_KEYS,
   type Locale,
 } from "../../../data/i18n";
+import { ui } from "../../../i18n/ui";
 import Layout from "../../../layouts/Layout.astro";
 
 export function getStaticPaths() {
@@ -32,6 +32,9 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Locale };
 const t = LOCALE_CONTENT[lang];
+// Mismo logo 3D que la home española, con las etiquetas de accesibilidad de
+// este idioma.
+const copy3d = ui(lang).hero3d;
 const htmlLang = LOCALE_HTML_LANG[lang];
 const site = Astro.site ?? new URL("https://sur-digital.vercel.app");
 // La URL pública es la misma para los seis idiomas: el idioma va en la cookie.
@@ -177,15 +180,7 @@ const plans = t.plans.map((copy, i) => {
           </ul>
         </div>
 
-        <div class="mx-auto w-full max-w-[240px] lg:max-w-sm">
-          <Image
-            src={Logo}
-            alt=""
-            widths={[240, 384]}
-            sizes="(max-width: 1023px) 240px, 384px"
-            class="h-auto w-full"
-          />
-        </div>
+        <Logo3D {...copy3d} />
       </div>
     </section>
 
