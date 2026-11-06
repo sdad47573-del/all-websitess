@@ -12,12 +12,14 @@ export default function Dashboard() {
 	const [sites] = createResource(fetchSites);
 	const [query, setQuery] = createSignal("");
 	const [estado, setEstado] = createSignal<Estado>("todas");
+	const [order, setOrder] = createSignal<"nombre" | "recientes" | "fotos">("nombre");
 	const [page, setPage] = createSignal(1);
 
 	// Cualquier cambio de búsqueda o filtro vuelve a la primera página.
 	createEffect(() => {
 		query();
 		estado();
+		order();
 		setPage(1);
 	});
 
@@ -43,9 +45,16 @@ export default function Dashboard() {
 		});
 	});
 
-	const totalPages = createMemo(() => Math.max(1, Math.ceil(filtered().length / PAGE_SIZE)));
+	const sorted = createMemo(() => {
+		const list = [...filtered()];
+		if (order() === "recientes") list.sort((a, b) => b.updatedAt - a.updatedAt);
+		else if (order() === "fotos") list.sort((a, b) => b.photoCount - a.photoCount);
+		return list;
+	});
+
+	const totalPages = createMemo(() => Math.max(1, Math.ceil(sorted().length / PAGE_SIZE)));
 	const rows = createMemo(() =>
-		filtered().slice((page() - 1) * PAGE_SIZE, page() * PAGE_SIZE),
+		sorted().slice((page() - 1) * PAGE_SIZE, page() * PAGE_SIZE),
 	);
 
 	return (
@@ -86,6 +95,15 @@ export default function Dashboard() {
 					<option value="todas">Todas</option>
 					<option value="legal">Legales pendientes</option>
 					<option value="fotos">Sin fotos</option>
+				</select>
+				<select
+					value={order()}
+					onInput={(event) => setOrder(event.currentTarget.value as "nombre" | "recientes" | "fotos")}
+					aria-label="Ordenar"
+				>
+					<option value="nombre">A–Z</option>
+					<option value="recientes">Recientes</option>
+					<option value="fotos">Más fotos</option>
 				</select>
 				<button type="submit">Filtrar</button>
 				<Show when={query() || estado() !== "todas"}>

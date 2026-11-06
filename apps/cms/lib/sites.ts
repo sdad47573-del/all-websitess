@@ -1,8 +1,9 @@
 import { existsSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync, unlinkSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
+import { snapshot } from "./history";
+import { DEFAULT_APPS_DIR } from "./paths";
 
-/** Carpeta `apps/` del repositorio. */
-export const DEFAULT_APPS_DIR = resolve(import.meta.dir, "../..");
+export { DEFAULT_APPS_DIR };
 
 /** Campos que el CMS se atreve a tocar. */
 export const EDITABLE_FIELDS = [
@@ -13,6 +14,8 @@ export const EDITABLE_FIELDS = [
 	"postalCode",
 	"city",
 	"siteUrl",
+	"lat",
+	"lng",
 ] as const;
 export type EditableField = (typeof EDITABLE_FIELDS)[number];
 
@@ -28,6 +31,8 @@ const FIELD_KEYS: Record<EditableField, string[]> = {
 	postalCode: ["postalCode"],
 	city: ["city"],
 	siteUrl: ["siteUrl"],
+	lat: ["lat"],
+	lng: ["lng"],
 };
 
 const SUMMARY_KEYS = ["summary", "description", "tagline", "claim"];
@@ -41,6 +46,8 @@ export interface Site {
 	postalCode: string;
 	phone: string;
 	siteUrl: string;
+	lat: string;
+	lng: string;
 	category: string;
 	summary: string;
 	legalPending: boolean;
@@ -146,6 +153,45 @@ function readFirst(source: string, keys: string[], from: number, to: number): Li
 	return null;
 }
 
+/** Bloque `geo: { lat: …, lng: … }` dentro de BUSINESS. */
+function geoRange(
+	source: string,
+	business: { start: number; end: number } | null,
+): { start: number; end: number } | null {
+	if (!business) return null;
+	const match = /\bgeo\s*:\s*\{/.exec(source.slice(business.start, business.end));
+	if (!match) return null;
+
+	const start = business.start + match.index + match[0].length - 1;
+	let depth = 0;
+	for (let index = start; index <= business.end; index += 1) {
+		if (source[index] === "{") depth += 1;
+		else if (source[index] === "}") {
+			depth -= 1;
+			if (depth === 0) return { start, end: index };
+		}
+	}
+	return null;
+}
+
+interface NumberLiteral {
+	start: number;
+	end: number;
+	value: string;
+}
+
+/** Literal numérico de una clave (`lat: 36.7236`) dentro de un rango. */
+function findNumber(source: string, key: string, from: number, to: number): NumberLiteral | null {
+	const pattern = new RegExp(`(?:^|[\\s,{])${key}\\s*:\\s*(-?\\d+(?:\\.\\d+)?)`, "g");
+	const slice = source.slice(from, to);
+	const match = pattern.exec(slice);
+	if (!match) return null;
+
+	const value = match[1];
+	const start = from + match.index + match[0].length - value.length;
+	return { start, end: start + value.length, value };
+}
+
 function categoryOf(source: string): string {
 	const google = /\bgoogleCategory:\s*'([^']+)'/.exec(source)?.[1];
 	if (google) return google;
@@ -176,8 +222,14 @@ function parse(slug: string, source: string, appDir: string, updatedAt: number):
 		"";
 	const summary = readFirst(source, SUMMARY_KEYS, from, to)?.value ?? values.tagline?.value ?? "";
 
+	const geo = geoRange(source, block);
+	const lat = geo ? findNumber(source, "lat", geo.start, geo.end) : null;
+	const lng = geo ? findNumber(source, "lng", geo.start, geo.end) : null;
+
 	const editable = {} as Record<EditableField, boolean>;
 	for (const field of EDITABLE_FIELDS) editable[field] = Boolean(values[field]);
+	editable.lat = Boolean(lat);
+	editable.lng = Boolean(lng);
 
 	return {
 		slug,
@@ -188,6 +240,8 @@ function parse(slug: string, source: string, appDir: string, updatedAt: number):
 		postalCode: values.postalCode?.value ?? "",
 		phone: values.phone?.value ?? "",
 		siteUrl,
+		lat: lat?.value ?? "",
+		lng: lng?.value ?? "",
 		category: categoryOf(source),
 		summary,
 		legalPending: /\[pendiente de completar\]/.test(source),
@@ -285,6 +339,18 @@ export function validateValue(field: EditableField, raw: string): string | null 
 			return /^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(\/\S*)?$/i.test(value)
 				? null
 				: "La URL debe empezar por https:// y ser un dominio válido.";
+		case "lat": {
+			const number = Number(value.replace(",", "."));
+			return Number.isFinite(number) && Math.abs(number) <= 90
+				? null
+				: "La latitud debe ser un número entre -90 y 90.";
+		}
+		case "lng": {
+			const number = Number(value.replace(",", "."));
+			return Number.isFinite(number) && Math.abs(number) <= 180
+				? null
+				: "La longitud debe ser un número entre -180 y 180.";
+		}
 	}
 }
 
@@ -302,6 +368,42 @@ export interface UpdateResult {
 	ok: boolean;
 	error?: string;
 	previous?: string;
+}
+
+/** Reescribe la latitud o la longitud del bloque `geo` sin tocar nada más. */
+function updateGeoField(
+	file: string,
+	source: string,
+	business: { start: number; end: number },
+	field: "lat" | "lng",
+	value: string,
+	slug: string,
+	appsDir: string,
+): UpdateResult {
+	const geo = geoRange(source, business);
+	if (!geo) return { ok: false, error: "Esta plantilla no declara BUSINESS.geo." };
+
+	const literal = findNumber(source, field, geo.start, geo.end);
+	if (!literal) return { ok: false, error: `No se encuentra «${field}» dentro de geo.` };
+	if (literal.value === value) return { ok: true, previous: literal.value };
+
+	const updated = source.slice(0, literal.start) + value + source.slice(literal.end);
+	snapshot(slug, "data/site.ts", source, appsDir);
+	try {
+		writeFileSync(file, updated, "utf8");
+	} catch (error) {
+		return { ok: false, error: `No se ha podido escribir: ${String(error)}` };
+	}
+
+	const check = findNumber(updated, field, geo.start, geo.end);
+	if (!check || check.value !== value) {
+		writeFileSync(file, source, "utf8");
+		cache.delete(file);
+		return { ok: false, error: "La verificación ha fallado; se ha restaurado el fichero." };
+	}
+
+	cache.delete(file);
+	return { ok: true, previous: literal.value };
 }
 
 /**
@@ -329,6 +431,10 @@ export function updateSiteField(
 	const block = businessBlock(source);
 	if (!block) return { ok: false, error: "No se encuentra el bloque BUSINESS." };
 
+	if (field === "lat" || field === "lng") {
+		return updateGeoField(file, source, block, field, value, slug, appsDir);
+	}
+
 	const literal = readFirst(source, FIELD_KEYS[field], block.start + 1, block.end);
 	if (!literal) return { ok: false, error: "Este campo no es un literal editable en esta plantilla." };
 	if (literal.value === value) return { ok: true, previous: literal.value };
@@ -338,6 +444,8 @@ export function updateSiteField(
 
 	const updated =
 		source.slice(0, literal.start) + quote + value + quote + source.slice(literal.end + 1);
+
+	snapshot(slug, "data/site.ts", source, appsDir);
 
 	const temporary = `${file}.cms-${process.pid}.tmp`;
 	try {

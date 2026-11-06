@@ -3,6 +3,18 @@
  *
  * El cliente se compila con Vite a `dist/` y este servidor lo sirve junto a la
  * API. En desarrollo, Vite corre aparte (puerto 4401) y reenvía /api aquí.
+ *
+ * Endpoints:
+ *   GET    /api/sites                        listado completo
+ *   GET    /api/sites/:slug                  ficha
+ *   PATCH  /api/sites/:slug                  edita campos de BUSINESS (incl. geo)
+ *   GET    /api/sites/:slug/files            árbol de plantillas
+ *   GET    /api/sites/:slug/files?path=…     contenido de una plantilla
+ *   PUT    /api/sites/:slug/files            guarda una plantilla
+ *   GET    /api/sites/:slug/media            imágenes y en qué plantilla se usan
+ *   GET    /api/sites/:slug/media/:name      bytes de una imagen
+ *   POST   /api/sites/:slug/media            sube o reemplaza una imagen
+ *   DELETE /api/sites/:slug/media/:name      borra una imagen sin referencias
  */
 import {
 	EDITABLE_FIELDS,
@@ -11,6 +23,16 @@ import {
 	listSites,
 	updateSiteField,
 } from "./lib/sites";
+import {
+	deleteMedia,
+	listMedia,
+	listSourceFiles,
+	mediaFile,
+	readSourceFile,
+	saveMedia,
+	writeSourceFile,
+} from "./lib/files";
+import { listSnapshots, readSnapshot } from "./lib/history";
 
 const PORT = Number(process.env.PORT ?? 4400);
 const DIST = new URL("./dist/", import.meta.url);
@@ -23,26 +45,24 @@ const LABELS: Record<EditableField, string> = {
 	postalCode: "Código postal",
 	city: "Ciudad",
 	siteUrl: "URL canónica",
+	lat: "Latitud",
+	lng: "Longitud",
 };
 
 const json = (data: unknown, status = 200) =>
 	Response.json(data, { status, headers: { "cache-control": "no-store" } });
 
-async function api(request: Request, url: URL): Promise<Response> {
-	if (url.pathname === "/api/sites") {
-		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
-		return json({ sites: listSites() });
-	}
+const errorResponse = (error: unknown, status = 400) =>
+	json({ error: error instanceof Error ? error.message : String(error) }, status);
 
-	const match = url.pathname.match(/^\/api\/sites\/([a-z0-9-]+)$/);
-	if (!match) return json({ error: "Ruta no encontrada" }, 404);
+async function siteRoute(request: Request, slug: string, rest: string[]): Promise<Response> {
+	const site = getSite(slug);
 
-	const site = getSite(match[1]);
-	if (!site) return json({ error: "No existe ninguna web con ese slug" }, 404);
+	if (rest.length === 0) {
+		if (!site) return json({ error: "No existe ninguna web con ese slug" }, 404);
+		if (request.method === "GET") return json({ site });
+		if (request.method !== "PATCH") return json({ error: "Método no permitido" }, 405);
 
-	if (request.method === "GET") return json({ site });
-
-	if (request.method === "PATCH") {
 		let payload: { fields?: Record<string, unknown> };
 		try {
 			payload = (await request.json()) as { fields?: Record<string, unknown> };
@@ -70,7 +90,129 @@ async function api(request: Request, url: URL): Promise<Response> {
 		return json({ ok: errors.length === 0, errors, site: getSite(site.slug) });
 	}
 
-	return json({ error: "Método no permitido" }, 405);
+	if (!site) return json({ error: "No existe ninguna web con ese slug" }, 404);
+
+	if (rest[0] === "files") {
+		try {
+			if (request.method === "GET") {
+				const path = new URL(request.url).searchParams.get("path");
+				return path
+					? json({ file: readSourceFile(site.slug, path) })
+					: json({ files: listSourceFiles(site.slug) });
+			}
+
+			if (request.method === "PUT") {
+				let payload: { path?: unknown; content?: unknown };
+				try {
+					payload = (await request.json()) as { path?: unknown; content?: unknown };
+				} catch {
+					return json({ error: "El cuerpo debe ser JSON" }, 400);
+				}
+				if (typeof payload.path !== "string" || typeof payload.content !== "string") {
+					return json({ error: "Faltan path y content" }, 400);
+				}
+				return json({ ok: true, file: writeSourceFile(site.slug, payload.path, payload.content) });
+			}
+
+			return json({ error: "Método no permitido" }, 405);
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	if (rest[0] === "history") {
+		try {
+			const path = new URL(request.url).searchParams.get("path");
+			if (!path) return json({ error: "Falta el parámetro path" }, 400);
+
+			if (rest.length === 1) {
+				if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+				return json({ snapshots: listSnapshots(site.slug, path) });
+			}
+
+			const id = decodeURIComponent(rest[1]);
+			if (rest.length === 2 && request.method === "GET") {
+				return json({ content: readSnapshot(site.slug, path, id) });
+			}
+
+			if (rest.length === 3 && rest[2] === "restore" && request.method === "POST") {
+				// writeSourceFile guarda a su vez la versión actual antes de escribir.
+				writeSourceFile(site.slug, path, readSnapshot(site.slug, path, id));
+				return json({ ok: true });
+			}
+
+			return json({ error: "Método no permitido" }, 405);
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	if (rest[0] === "media") {
+		try {
+			if (rest.length === 1) {
+				if (request.method === "GET") return json({ media: listMedia(site.slug) });
+
+				if (request.method === "POST") {
+					let form: FormData;
+					try {
+						form = await request.formData();
+					} catch {
+						return json({ error: "Se esperaba multipart/form-data" }, 400);
+					}
+					const file = form.get("file");
+					const name = form.get("name");
+					if (!(file instanceof File)) return json({ error: "Falta el archivo" }, 400);
+
+					const bytes = new Uint8Array(await file.arrayBuffer());
+					const saved = saveMedia(
+						site.slug,
+						typeof name === "string" && name.trim() ? name : file.name,
+						bytes,
+					);
+					return json({ ok: true, ...saved });
+				}
+
+				return json({ error: "Método no permitido" }, 405);
+			}
+
+			const name = decodeURIComponent(rest[1]);
+
+			if (request.method === "GET") {
+				const file = Bun.file(mediaFile(site.slug, name));
+				return new Response(file, { headers: { "cache-control": "no-store" } });
+			}
+
+			if (request.method === "DELETE") {
+				deleteMedia(site.slug, name);
+				return json({ ok: true });
+			}
+
+			return json({ error: "Método no permitido" }, 405);
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	return json({ error: "Ruta no encontrada" }, 404);
+}
+
+async function api(request: Request, url: URL): Promise<Response> {
+	const parts = url.pathname.split("/").filter(Boolean);
+	// parts: ["api", "sites", slug, …]
+
+	if (parts.length === 2) {
+		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		return json({ sites: listSites() });
+	}
+
+	if (parts.length === 1) return json({ error: "Ruta no encontrada" }, 404);
+
+	const slug = parts[2] ?? "";
+	if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) {
+		return json({ error: "Web no válida" }, 400);
+	}
+
+	return siteRoute(request, slug, parts.slice(3));
 }
 
 async function staticFile(pathname: string): Promise<Response> {

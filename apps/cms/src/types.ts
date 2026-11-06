@@ -1,5 +1,5 @@
-/** Copia de los tipos de `lib/sites.ts` para el cliente: ese módulo usa `node:fs`
- * y no puede entrar en el bundle del navegador. */
+/** Copia de los tipos de `lib/` para el cliente: esos módulos usan `node:fs`
+ * y no pueden entrar en el bundle del navegador. */
 export const EDITABLE_FIELDS = [
 	"name",
 	"tagline",
@@ -8,6 +8,8 @@ export const EDITABLE_FIELDS = [
 	"postalCode",
 	"city",
 	"siteUrl",
+	"lat",
+	"lng",
 ] as const;
 
 export type EditableField = (typeof EDITABLE_FIELDS)[number];
@@ -21,6 +23,8 @@ export interface Site {
 	postalCode: string;
 	phone: string;
 	siteUrl: string;
+	lat: string;
+	lng: string;
 	category: string;
 	summary: string;
 	legalPending: boolean;
@@ -46,3 +50,19 @@ export const FIELD_FORM: FieldDefinition[] = [
 	{ field: "city", label: "Ciudad" },
 	{ field: "siteUrl", label: "URL canónica", type: "url" },
 ];
+
+export const GEO_FORM: FieldDefinition[] = [
+	{ field: "lat", label: "Latitud", hint: "Decimal, por ejemplo 36.7213", type: "number" },
+	{ field: "lng", label: "Longitud", hint: "Decimal, por ejemplo -4.4214", type: "number" },
+];
+
+export interface MediaItem {
+	name: string;
+	size: number;
+	referencedIn: string[];
+}
+
+export interface SourceFile {
+	path: string;
+	size: number;
+}
