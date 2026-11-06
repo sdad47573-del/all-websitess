@@ -55,6 +55,94 @@ export interface Quote {
 /** Mismo formato que el resto del sitio: sin decimales y con el euro detrás. */
 export const formatEuros = (value: number) => `${value}€`;
 
+/** Plan que la calculadora trae preseleccionado. */
+export const CALCULATOR_PLAN = "Web Completa";
+
+/** Extras que la calculadora busca por nombre en DATA.extras. */
+export const CALCULATOR_EXTRAS = {
+  page: "Página adicional",
+  language: "Idioma adicional",
+  logo: "Logo e identidad básica",
+  maintenance: "Mantenimiento mensual",
+} as const;
+
+export interface PricePlan {
+  name: string;
+  price: number;
+}
+
+export interface PriceExtra {
+  name: string;
+  amount: number;
+  monthly?: boolean;
+}
+
+export interface CalculatorPrices {
+  /** DATA.extras: precio de cada página adicional. */
+  pagePrice: number;
+  language: number;
+  logo: number;
+  maintenance: number;
+  /** true si en DATA el mantenimiento está marcado como cuota mensual. */
+  maintenanceMonthly: boolean;
+  /** Índice de CALCULATOR_PLAN dentro de DATA.plans. */
+  defaultPlanIndex: number;
+}
+
+/**
+ * Importes que necesita la calculadora, resueltos desde DATA.
+ *
+ * Lanza si algo no encaja: un extra renombrado o un plan preseleccionado que ya
+ * no existe publicarían una estimación a 0 € en vez de fallar. El build cae
+ * aquí y tests/presupuesto-datos.test.ts lo detecta antes.
+ */
+export const getCalculatorPrices = (
+  plans: readonly PricePlan[],
+  extras: readonly PriceExtra[]
+): CalculatorPrices => {
+  const extra = (name: string): PriceExtra => {
+    const found = extras.find((item) => item.name === name);
+    if (!found) {
+      throw new Error(`Calculadora: no existe el extra "${name}"`);
+    }
+    if (!Number.isFinite(found.amount) || found.amount < 0) {
+      throw new Error(
+        `Calculadora: el extra "${name}" no tiene un importe válido`
+      );
+    }
+    return found;
+  };
+
+  const defaultPlanIndex = plans.findIndex(
+    (plan) => plan.name === CALCULATOR_PLAN
+  );
+  const defaultPlan = plans[defaultPlanIndex];
+  if (!defaultPlan) {
+    throw new Error(`Calculadora: no existe el plan "${CALCULATOR_PLAN}"`);
+  }
+  // Las páginas extra solo tienen sentido en un plan de pago (buildQuote usa
+  // price > 0): si el plan por defecto fuese gratis, el campo se desactivaría.
+  if (!(defaultPlan.price > 0)) {
+    throw new Error(
+      `Calculadora: el plan "${CALCULATOR_PLAN}" debe ser de pago para admitir páginas extra`
+    );
+  }
+
+  const page = extra(CALCULATOR_EXTRAS.page);
+  const language = extra(CALCULATOR_EXTRAS.language);
+  const logo = extra(CALCULATOR_EXTRAS.logo);
+  const maintenance = extra(CALCULATOR_EXTRAS.maintenance);
+
+  return {
+    pagePrice: page.amount,
+    language: language.amount,
+    logo: logo.amount,
+    maintenance: maintenance.amount,
+    maintenanceMonthly: maintenance.monthly === true,
+    defaultPlanIndex,
+  };
+};
+
 // Number("") es 0, Number("abc") es NaN y Number.isFinite descarta ambos.
 const clampPages = (value: number | undefined): number => {
   if (!Number.isFinite(value)) return 0;

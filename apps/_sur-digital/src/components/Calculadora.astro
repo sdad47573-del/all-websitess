@@ -5,26 +5,19 @@
 // cambia de nombre, el build falla en vez de calcular mal.
 import { CONTACT } from "../data/contact";
 import { DATA } from "../data/data.astro";
+import { getCalculatorPrices } from "../lib/presupuesto";
 
-// Busca el importe numérico de un extra por su nombre (única fuente de precios)
-const extra = (name: string) => {
-  const found = DATA.extras.find((item) => item.name === name);
-  if (!found) throw new Error(`Calculadora: no existe el extra "${name}"`);
-  return found.amount;
-};
-
-const paginaExtra = extra("Página adicional");
-const idiomaExtra = extra("Idioma adicional");
-const logoExtra = extra("Logo e identidad básica");
-const mantenimientoExtra = extra("Mantenimiento mensual");
-
-// El plan preseleccionado es Web Completa. Antes era el índice fijo 1; al
-// añadir el plan Portfolio ese índice pasó a apuntar a otro plan y el total
-// inicial cambiaba sin que nadie tocara la calculadora.
-const defaultPlanIndex = Math.max(
-  0,
-  DATA.plans.findIndex((plan) => plan.name === "Web Completa")
-);
+// Los importes salen de DATA (única fuente de precios); la resolución de los
+// nombres vive en src/lib/presupuesto.ts para poder probarla sin Astro. Si un
+// extra o el plan preseleccionado cambian de nombre, el build falla aquí en vez
+// de publicar una estimación a 0 €.
+const {
+  pagePrice: paginaExtra,
+  language: idiomaExtra,
+  logo: logoExtra,
+  maintenance: mantenimientoExtra,
+  defaultPlanIndex,
+} = getCalculatorPrices(DATA.plans, DATA.extras);
 ---
 
 <section

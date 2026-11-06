@@ -706,8 +706,35 @@ const {
         if (event.pointerType === "mouse") start();
       };
       host.addEventListener("pointerenter", onEnter);
+      // pointerenter solo llega al cruzar el borde: no dispara al recargar con
+      // el cursor ya encima ni cuando el logo pasa por debajo al hacer scroll.
+      // pointermove sí, y es igual de barato (boot sale si ya está en marcha).
+      host.addEventListener("pointermove", onEnter);
       host.addEventListener("pointerdown", start);
       host.addEventListener("focusin", start);
+
+      // Los gestos son el atajo, no el único camino: si nadie pasa por encima,
+      // el 3D se carga igualmente cuando el hero entra en pantalla y el
+      // navegador queda ocioso. Antes dependía de pointerenter, así que con el
+      // cursor ya encima (recarga, volver atrás, ancla) no cargaba nunca, y el
+      // estado :hover no sobrevive a una recarga. El póster queda como respaldo
+      // hasta el primer frame.
+      const schedule = (task: () => void) => {
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(task, { timeout: 2000 });
+        } else {
+          window.setTimeout(task, 600);
+        }
+      };
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          observer.disconnect();
+          schedule(start);
+        },
+        { rootMargin: "200px" },
+      );
+      observer.observe(host);
     }
   }
 </script>
