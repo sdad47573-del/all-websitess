@@ -52,6 +52,15 @@ const ANCLAS: Partial<Record<SectionType, string>> = {
 const anclasDe = (section: Section) =>
 	[section.id, ANCLAS[section.tipo]].filter((id): id is string => Boolean(id));
 
+/** Anchos de pantalla que se pueden simular en la vista previa. */
+const SCREENS = [
+	{ id: "desktop", label: "Escritorio", width: 0 },
+	{ id: "tablet", label: "Tablet", width: 768 },
+	{ id: "mobile", label: "Móvil", width: 390 },
+] as const;
+
+type ScreenId = (typeof SCREENS)[number]["id"];
+
 function blank(tipo: SectionType): Section {
 	const id = `pieza-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 5)}`;
 	const base: Section = { id, tipo, visible: true, titulo: "" };
@@ -229,25 +238,69 @@ function ImageField(props: {
 	label: string;
 	value?: string;
 	media: MediaItem[];
+	slug: string;
 	onInput: (value: string) => void;
+	/** El botón de vaciar sobra cuando la fila ya tiene su propio «Quitar». */
+	clearable?: boolean;
 }) {
+	const current = () => props.media.find((item) => item.name === props.value);
+	const missing = () => Boolean(props.value) && !current();
+	const size = () => {
+		const bytes = current()?.size ?? 0;
+		if (bytes <= 0) return "";
+		return bytes > 1024 * 1024
+			? `${(bytes / 1024 / 1024).toFixed(1)} MB`
+			: `${Math.max(1, Math.round(bytes / 1024))} KB`;
+	};
+
 	return (
-		<label class="field">
-			<span class="name">{props.label}</span>
-			<select
-				class="role-select"
-				value={props.value ?? ""}
-				onChange={(event) => props.onInput(event.currentTarget.value)}
-			>
-				<option value="">Sin imagen</option>
-				<Show when={props.value && !props.media.some((item) => item.name === props.value)}>
-					<option value={props.value}>{props.value} (falta)</option>
+		<div class="field media-field">
+			<span class="field-head">
+				<span class="name">{props.label}</span>
+				<Show when={props.value && props.clearable !== false}>
+					<button type="button" class="link-button danger" onClick={() => props.onInput("")}>
+						Quitar
+					</button>
 				</Show>
-				<For each={props.media}>
-					{(item) => <option value={item.name}>{item.name}</option>}
-				</For>
-			</select>
-		</label>
+			</span>
+			<div class="media-picker">
+				<span class="media-shot" classList={{ empty: !props.value, missing: missing() }}>
+					<Show when={missing() ? undefined : props.value}>
+						{(name) => <img src={mediaUrl(props.slug, name())} alt="" loading="lazy" />}
+					</Show>
+					<Show when={missing()}>
+						<span class="media-missing" aria-hidden="true">
+							?
+						</span>
+					</Show>
+				</span>
+				<div class="media-controls">
+					<select
+						class="role-select"
+						value={props.value ?? ""}
+						aria-label={props.label}
+						onChange={(event) => props.onInput(event.currentTarget.value)}
+					>
+						<option value="">Sin imagen</option>
+						<Show when={missing()}>
+							<option value={props.value}>{props.value} (falta)</option>
+						</Show>
+						<For each={props.media}>
+							{(item) => <option value={item.name}>{item.name}</option>}
+						</For>
+					</select>
+					<span class="hint">
+						{missing()
+							? `${props.value} no está en /images: la web usará otra foto.`
+							: props.value
+								? size()
+									? `${props.value} · ${size()}`
+									: props.value
+								: "Sin imagen: la web usa la primera de la carpeta."}
+					</span>
+				</div>
+			</div>
+		</div>
 	);
 }
 
@@ -337,6 +390,12 @@ export default function SectionsTab(props: {
 	const previewSrc = createMemo(
 		() => `/preview/${props.site.slug}/?v=${previewReload()}`,
 	);
+	// Ancho simulado: el iframe adopta esa medida y la web responde con sus
+	// propias media queries. No recarga: solo cambia el tamaño del marco.
+	const [screen, setScreen] = createSignal<ScreenId>("desktop");
+	const screenWidth = createMemo(
+		() => SCREENS.find((item) => item.id === screen())?.width ?? 0,
+	);
 	let frame: HTMLIFrameElement | undefined;
 
 	createEffect(() => {
@@ -356,20 +415,58 @@ export default function SectionsTab(props: {
 	);
 	const dirty = createMemo(() => JSON.stringify(draft()) !== savedJson());
 
-	// Lleva la vista previa hasta la pieza abierta. El iframe es del mismo origen,
-	// así que se desplaza por dentro; se reintenta varias veces porque las fotos
-	// del build terminan de colocar la página después del `load`.
+	// La vista previa enseña solo la pieza abierta: dentro del iframe se oculta
+	// todo lo que no sea ella (cabecera, otras secciones, pie y flotantes) pero
+	// se conservan sus contenedores, para mantener el fondo y los márgenes del
+	// sitio. El iframe es del mismo origen, así que se puede manipular su DOM.
 	const [previewNote, setPreviewNote] = createSignal("");
 	let timers: Array<ReturnType<typeof setTimeout>> = [];
+	let hidden: Array<{ element: HTMLElement; display: string }> = [];
+	let isolated: HTMLElement | null = null;
+
+	const restorePreview = () => {
+		for (const item of hidden) item.element.style.display = item.display;
+		hidden = [];
+		isolated = null;
+	};
+
+	const hideSibling = (element: Element) => {
+		if (["SCRIPT", "STYLE", "LINK", "META", "TEMPLATE", "NOSCRIPT"].includes(element.tagName)) {
+			return;
+		}
+		const node = element as HTMLElement;
+		hidden.push({ element: node, display: node.style.display });
+		node.style.display = "none";
+	};
+
+	const isolatePiece = (doc: Document, win: Window, target: HTMLElement) => {
+		if (isolated === target) return;
+		restorePreview();
+		// Sube desde la pieza hasta el body escondiendo los hermanos de cada nivel:
+		// así solo queda la rama que la contiene.
+		let node: Element | null = target;
+		while (node && node.parentElement && node !== doc.body) {
+			for (const sibling of Array.from(node.parentElement.children)) {
+				if (sibling !== node) hideSibling(sibling);
+			}
+			node = node.parentElement;
+		}
+		isolated = target;
+		win.scrollTo({ top: 0 });
+	};
+
+	/** Elemento de la pieza dentro del documento de la vista previa. */
+	const findPiece = (doc: Document, section: Section) =>
+		anclasDe(section)
+			.map((id) => doc.getElementById(id))
+			.find((node): node is HTMLElement => Boolean(node));
 
 	const jumpToPiece = () => {
 		const doc = frame?.contentDocument;
 		const win = frame?.contentWindow;
 		const section = selected();
 		if (!doc || !win || !section) return; // aún cargando: lo reintenta el `onLoad`
-		const target = anclasDe(section)
-			.map((id) => doc.getElementById(id))
-			.find((node): node is HTMLElement => Boolean(node));
+		const target = findPiece(doc, section);
 		if (!target) {
 			setPreviewNote(
 				"Esta pieza no aparece en la vista previa: puede estar oculta o faltar el build.",
@@ -377,20 +474,159 @@ export default function SectionsTab(props: {
 			return;
 		}
 		setPreviewNote("");
-		const header = doc.querySelector<HTMLElement>(".topbar");
-		const offset =
-			header && win.getComputedStyle(header).position !== "static"
-				? header.getBoundingClientRect().height
-				: 0;
-		// El margen deja hueco a la barra fija de la web, que si no tapa el bloque.
-		target.style.scrollMarginTop = `${Math.round(offset + 8)}px`;
-		target.scrollIntoView({ behavior: "smooth", block: "start" });
+		isolatePiece(doc, win, target);
+		syncPiece(target, section);
 	};
 
 	const focusPreview = () => {
 		for (const timer of timers) clearTimeout(timer);
-		timers = [0, 120, 400, 900, 1600, 2600].map((delay) => setTimeout(jumpToPiece, delay));
+		restorePreview();
+		jumpToPiece();
+		timers = [60, 300, 900, 1800].map((delay) => setTimeout(jumpToPiece, delay));
 	};
+
+	// Vuelca el borrador en la pieza: los componentes marcan con `data-campo` qué
+	// nodo pinta cada campo, así lo que escribes se ve al momento sin guardar ni
+	// reconstruir la web.
+	const replaceText = (node: HTMLElement, value: string) => {
+		const texts = Array.from(node.childNodes).filter(
+			(child): child is Text => child.nodeType === 3,
+		);
+		if (!texts.length) {
+			node.append(value);
+			return;
+		}
+		// El texto editable es el más largo: los spans decorativos (el punto de la
+		// etiqueta, la flecha del enlace) se quedan como están.
+		const longest = texts.reduce((first, next) =>
+			next.data.trim().length > first.data.trim().length ? next : first,
+		);
+		// Se conservan los espacios que separaban el texto de esos spans.
+		const next = `${/^\s/.test(longest.data) ? " " : ""}${value}${/\s$/.test(longest.data) ? " " : ""}`;
+		if (longest.data !== next) longest.data = next;
+	};
+
+	const applyLinkNode = (node: HTMLElement, link?: SectionLink) => {
+		replaceText(node, link?.texto ?? "");
+		const href = link?.href || "#";
+		if (node.getAttribute("href") !== href) node.setAttribute("href", href);
+	};
+
+	const applyLink = (target: HTMLElement, field: string, link?: SectionLink) => {
+		for (const node of Array.from(
+			target.querySelectorAll<HTMLElement>(`[data-campo="${field}"]`),
+		)) {
+			applyLinkNode(node, link);
+		}
+	};
+
+	const fieldText = (target: HTMLElement, field: string, value?: string) => {
+		for (const node of Array.from(
+			target.querySelectorAll<HTMLElement>(`[data-campo="${field}"]`),
+		)) {
+			if (field === "titulo") {
+				// Los títulos admiten <br /> y <em>, como en la web.
+				if (node.innerHTML !== (value ?? "")) node.innerHTML = value ?? "";
+			} else {
+				replaceText(node, value ?? "");
+			}
+		}
+	};
+
+	/** Ajusta una lista: rellena, oculta las sobrantes y clona si faltan huecos. */
+	const syncList = (
+		target: HTMLElement,
+		selector: string,
+		count: number,
+		fill: (node: HTMLElement, index: number) => void,
+	) => {
+		const nodes = Array.from(target.querySelectorAll<HTMLElement>(selector));
+		const first = nodes[0];
+		if (!first?.parentElement) return;
+		nodes.forEach((node, index) => {
+			node.hidden = index >= count;
+			if (index < count) fill(node, index);
+		});
+		for (let index = nodes.length; index < count; index++) {
+			const clone = first.cloneNode(true) as HTMLElement;
+			clone.hidden = false;
+			fill(clone, index);
+			first.parentElement.append(clone);
+		}
+	};
+
+	const syncPiece = (target: HTMLElement, section: Section) => {
+		fieldText(target, "titulo", section.titulo);
+		fieldText(target, "etiqueta", section.etiqueta);
+		fieldText(target, "texto", section.texto);
+		fieldText(target, "nota", section.nota);
+		fieldText(target, "notaHorario", section.notaHorario);
+		fieldText(target, "pieFoto", section.pieFoto);
+		fieldText(target, "distintivo", section.distintivo);
+		fieldText(target, "mapaEtiqueta", section.mapaEtiqueta);
+		applyLink(target, "boton", section.boton);
+		applyLink(target, "botonSecundario", section.botonSecundario);
+		applyLink(target, "galeriaEnlace", section.enlaceGaleria);
+
+		const parrafos = section.parrafos ?? [];
+		syncList(target, '[data-campo="parrafo"]', parrafos.length, (node, index) =>
+			replaceText(node, parrafos[index] ?? ""),
+		);
+
+		const datos = section.datos ?? [];
+		syncList(target, '[data-campo="dato"]', datos.length, (node, index) => {
+			const html = datos[index]?.html ?? "";
+			if (node.innerHTML !== html) node.innerHTML = html;
+		});
+
+		const destacados = section.items ?? [];
+		syncList(target, '[data-campo="destacado"]', destacados.length, (node, index) => {
+			for (const title of Array.from(
+				node.querySelectorAll<HTMLElement>('[data-campo="itemTitulo"]'),
+			)) {
+				replaceText(title, destacados[index]?.titulo ?? "");
+			}
+			for (const text of Array.from(
+				node.querySelectorAll<HTMLElement>('[data-campo="itemTexto"]'),
+			)) {
+				replaceText(text, destacados[index]?.texto ?? "");
+			}
+		});
+
+		const preguntas = section.preguntas ?? [];
+		syncList(target, '[data-campo="pregunta"]', preguntas.length, (node, index) => {
+			for (const question of Array.from(
+				node.querySelectorAll<HTMLElement>('[data-campo="preguntaTexto"]'),
+			)) {
+				replaceText(question, preguntas[index]?.pregunta ?? "");
+			}
+			for (const answer of Array.from(
+				node.querySelectorAll<HTMLElement>('[data-campo="respuesta"]'),
+			)) {
+				replaceText(answer, preguntas[index]?.respuesta ?? "");
+			}
+		});
+
+		const enlaces = section.enlaces ?? [];
+		syncList(target, '[data-campo="enlace"]', enlaces.length, (node, index) =>
+			applyLinkNode(node, enlaces[index]),
+		);
+	};
+
+	const syncPreview = () => {
+		const doc = frame?.contentDocument;
+		const section = selected();
+		if (!doc || !section) return;
+		const target = findPiece(doc, section);
+		if (target) syncPiece(target, section);
+	};
+
+	// Cualquier cambio del formulario se refleja al momento en la pieza aislada.
+	createEffect(() => {
+		selectedId();
+		draft();
+		untrack(syncPreview);
+	});
 
 	onCleanup(() => {
 		for (const timer of timers) clearTimeout(timer);
@@ -780,6 +1016,7 @@ export default function SectionsTab(props: {
 												label="Imagen de portada"
 												value={section().imagen}
 												media={media() ?? []}
+												slug={props.site.slug}
 												onInput={(value) => patch({ imagen: value })}
 											/>
 											<TextField
@@ -1070,29 +1307,21 @@ export default function SectionsTab(props: {
 												</div>
 												<For each={section().fotos ?? []}>
 													{(foto, index) => (
-														<div class="field-row">
-															<label class="field">
-																<span class="name">Imagen</span>
-																<select
-																	class="role-select"
-																	value={foto.imagen}
-																	onChange={(event) =>
-																		setList(
-																			"fotos",
-																			(section().fotos ?? []).map((entry, position) =>
-																				position === index()
-																					? { ...entry, imagen: event.currentTarget.value }
-																					: entry,
-																			),
-																		)
-																	}
-																>
-																	<option value="">Sin imagen</option>
-																	<For each={media() ?? []}>
-																		{(item) => <option value={item.name}>{item.name}</option>}
-																	</For>
-																</select>
-															</label>
+														<div class="field-row">								<ImageField
+									label="Imagen"
+									value={foto.imagen}
+									media={media() ?? []}
+									slug={props.site.slug}
+									clearable={false}
+									onInput={(value) =>
+										setList(
+											"fotos",
+											(section().fotos ?? []).map((entry, position) =>
+												position === index() ? { ...entry, imagen: value } : entry,
+											),
+										)
+									}
+								/>
 															<label class="field">
 																<span class="name">Texto alternativo</span>
 																<input
@@ -1454,6 +1683,24 @@ export default function SectionsTab(props: {
 							</div>
 						</div>
 
+						<div class="sections-preview-sizes" role="group" aria-label="Tamaño de pantalla">
+							<For each={SCREENS}>
+								{(item) => (
+									<button
+										type="button"
+										classList={{ "size-button": true, active: screen() === item.id }}
+										aria-pressed={screen() === item.id}
+										onClick={() => setScreen(item.id)}
+									>
+										{item.label}
+										<Show when={item.width > 0}>
+											<span>{item.width} px</span>
+										</Show>
+									</button>
+								)}
+							</For>
+						</div>
+
 						<Show
 							when={props.site.hasBuild}
 							fallback={
@@ -1463,11 +1710,15 @@ export default function SectionsTab(props: {
 								</p>
 							}
 						>
-							<div class="sections-preview-frame">
+							<div
+								class="sections-preview-frame"
+								classList={{ device: screenWidth() > 0 }}
+							>
 								<iframe
 									ref={(element) => (frame = element)}
 									src={previewSrc()}
 									title={`Vista previa de ${props.site.name}`}
+									style={{ width: screenWidth() ? `${screenWidth()}px` : "100%" }}
 									onLoad={focusPreview}
 								/>
 							</div>
@@ -1475,8 +1726,8 @@ export default function SectionsTab(props: {
 								<p class="hint">{previewNote()}</p>
 							</Show>
 							<p class="hint">
-								Es el último build de la web: guarda, lanza el build y pulsa Recargar para
-								ver los cambios.
+								Se muestra solo la pieza abierta y se actualiza al escribir; «Abrir ↗» carga
+								la web completa. Guarda y lanza el build para publicarla.
 							</p>
 						</Show>
 						</aside>
