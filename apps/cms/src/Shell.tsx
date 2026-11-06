@@ -3,7 +3,13 @@ import { Show } from "solid-js";
 import { logoutUser } from "./api";
 import { type AuthUser, ROLE_LABELS } from "./types";
 
-export default function Shell(props: { title: string; user: AuthUser; children: JSX.Element }) {
+export default function Shell(props: {
+	title: string;
+	user: AuthUser;
+	/** Ocupa todo el ancho: lo usan las pantallas con vista previa al lado. */
+	wide?: boolean;
+	children: JSX.Element;
+}) {
 	const leave = async () => {
 		try {
 			await logoutUser();
@@ -35,7 +41,7 @@ export default function Shell(props: { title: string; user: AuthUser; children: 
 					</button>
 				</div>
 			</header>
-			<main>{props.children}</main>
+			<main classList={{ wide: props.wide }}>{props.children}</main>
 			<footer class="foot">
 				Panel local: lee y escribe en <code>apps/&lt;web&gt;/src/data/site.ts</code>. Los cambios
 				se guardan en el repositorio, sin commit.

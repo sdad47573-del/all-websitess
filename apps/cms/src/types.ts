@@ -178,17 +178,22 @@ export const SECTION_LABELS: Record<SectionType, string> = {
 	cta: "Llamada a la acción",
 };
 
-/** Tipos que el panel puede añadir a una página ya montada. */
-export const SECTION_CATALOG: Array<{
+/** Una pieza real de otra página, para enseñar cómo se usa el tipo. */
+export interface SectionCatalogExample {
+	web: string;
+	slug: string;
+	titulo: string;
+}
+
+/** Catálogo de piezas que ya existen en las páginas publicadas. */
+export interface SectionCatalogEntry {
 	tipo: SectionType;
 	label: string;
 	descripcion: string;
-}> = [
-	{ tipo: "texto", label: "Texto", descripcion: "Título y párrafos" },
-	{ tipo: "destacados", label: "Destacados", descripcion: "Puntos con título y texto" },
-	{ tipo: "faq", label: "Preguntas", descripcion: "Preguntas y respuestas" },
-	{ tipo: "cta", label: "Llamada a la acción", descripcion: "Texto y botón" },
-];
+	/** Webs que ya tienen un bloque de este tipo. */
+	usos: number;
+	ejemplos: SectionCatalogExample[];
+}
 
 export interface ShopProduct {
 	id: string;

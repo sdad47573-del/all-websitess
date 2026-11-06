@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
 
-// Cliente Solid. La API la sirve `server.ts` con Bun: en desarrollo Vite
-// reenvía /api al puerto del servidor para que el navegador vea un solo origen.
+// Cliente Solid. La API y las vistas previas las sirve `server.ts` con Bun: en
+// desarrollo Vite reenvía /api y /preview al puerto del servidor para que el
+// navegador vea un solo origen (sin esto, /preview cae en el index.html del CMS).
 export default defineConfig({
 	plugins: [solid()],
 	server: {
@@ -10,6 +11,7 @@ export default defineConfig({
 		strictPort: true,
 		proxy: {
 			"/api": "http://127.0.0.1:4400",
+			"/preview": "http://127.0.0.1:4400",
 		},
 	},
 	build: {

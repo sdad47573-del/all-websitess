@@ -4,6 +4,7 @@ import type {
 	MediaItem,
 	Role,
 	Section,
+	SectionCatalogEntry,
 	SectionFile,
 	SeoAudit,
 	Shop,
@@ -163,6 +164,12 @@ export async function fetchSections(slug: string): Promise<SectionFile | null> {
 	const response = await fetch(`/api/sites/${slug}/secciones`);
 	if (!response.ok) throw new Error(await readError(response));
 	return ((await response.json()) as { secciones: SectionFile | null }).secciones;
+}
+
+export async function fetchSectionCatalog(): Promise<SectionCatalogEntry[]> {
+	const response = await fetch("/api/sections/catalog");
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { catalogo: SectionCatalogEntry[] }).catalogo;
 }
 
 export async function saveSections(slug: string, secciones: Section[]): Promise<SectionFile> {

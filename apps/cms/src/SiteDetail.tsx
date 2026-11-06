@@ -95,7 +95,7 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 	};
 
 	return (
-		<Shell title={site()?.name ?? "Ficha"} user={props.user}>
+		<Shell title={site()?.name ?? "Ficha"} user={props.user} wide={tab() === "secciones"}>
 			<p class="back">
 				<a href="/">← Todas las webs</a>
 			</p>
