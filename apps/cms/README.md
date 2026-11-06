@@ -18,8 +18,11 @@ bun run start   # http://127.0.0.1:4400
 
 ## Qué se gestiona
 
-Cada web tiene cuatro pestañas:
+Cada web tiene cinco pestañas:
 
+- **Vista previa**: iframe con el prerender real de `dist/`, con ancho de
+escritorio, tablet o móvil, recarga y apertura en pestaña nueva. Si la web no
+se ha construido, avisa con el comando y enlaza a la versión publicada.
 - **Datos**: nombre, lema, teléfono, calle, código postal, ciudad y URL canónica.
   Se escribe solo el literal que cambia dentro de `BUSINESS`.
 - **Mapas**: latitud y longitud (`BUSINESS.geo`), con vista previa del mapa y
@@ -33,8 +36,16 @@ Cada web tiene cuatro pestañas:
   (`.astro`, `.ts`, `.css`, `.md`, `.json`), con lista de ficheros, guardado
   (también con Ctrl/⌘ + S) e historial.
 
-La pestaña activa queda en la URL (`#mapas`, `#imagenes`, `#codigo`), así que
-recargar o volver atrás mantiene el sitio donde estabas.
+La pestaña activa queda en la URL (`#vista`, `#mapas`, `#imagenes`, `#codigo`),
+así que recargar o volver atrás mantiene el sitio donde estabas.
+
+### Vista previa
+
+`GET /preview/<slug>/…` sirve el build de `apps/<slug>/dist` desde el propio
+CMS. El HTML y el CSS se reescriben al vuelo para prefijar las rutas absolutas
+(`/_astro/…`): sin eso el iframe pediría los assets al CMS y saldría sin
+estilos. Si no existe `dist/index.html`, la ruta responde 404 con una página
+que explica cómo construirlo.
 
 ### Historial
 
@@ -44,9 +55,10 @@ de ese fichero: se pueden ver en el editor o restaurar, y la versión que se
 sustituye queda también guardada. Vive en `apps/cms/.history`, fuera de las
 webs.
 
-Además, el listado general permite buscar por nombre, slug, ciudad o calle,
+El listado se puede ver en **tarjetas** (con la imagen OG de cada web como
+miniatura) o en **tabla**, y permite buscar por nombre, slug, ciudad o calle,
 filtrar por legales pendientes y por webs sin fotos, y ordenar por A–Z, por
-última modificación o por número de fotos.
+última modificación o por número de fotos. La vista elegida se recuerda.
 
 ## Cómo guarda
 

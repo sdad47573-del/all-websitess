@@ -33,6 +33,8 @@ import {
 	writeSourceFile,
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
+import { hasBuild, ogImage, resolvePreview, rewriteCss, rewriteHtml } from "./lib/preview";
+import { readFileSync } from "node:fs";
 
 const PORT = Number(process.env.PORT ?? 4400);
 const DIST = new URL("./dist/", import.meta.url);
@@ -60,7 +62,7 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 
 	if (rest.length === 0) {
 		if (!site) return json({ error: "No existe ninguna web con ese slug" }, 404);
-		if (request.method === "GET") return json({ site });
+		if (request.method === "GET") return json({ site: { ...site, hasBuild: hasBuild(site.slug) } });
 		if (request.method !== "PATCH") return json({ error: "Método no permitido" }, 405);
 
 		let payload: { fields?: Record<string, unknown> };
@@ -118,6 +120,15 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 		} catch (error) {
 			return errorResponse(error);
 		}
+	}
+
+	if (rest[0] === "og") {
+		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		const image = ogImage(site.slug);
+		if (!image) return json({ error: "Esta web no tiene imagen OG" }, 404);
+		return new Response(Bun.file(image), {
+			headers: { "cache-control": "public, max-age=3600" },
+		});
 	}
 
 	if (rest[0] === "history") {
@@ -241,6 +252,54 @@ async function staticFile(pathname: string): Promise<Response> {
 	});
 }
 
+/** Sirve el build de una web bajo /preview/<slug>/ con las rutas reescritas. */
+async function previewPage(pathname: string): Promise<Response> {
+	const parts = pathname.split("/").filter(Boolean);
+	const slug = parts[1] ?? "";
+	const rest = parts.slice(2).join("/");
+
+	// Solo la raíz sin barra final; los assets (_astro/…) se sirven tal cual.
+	if (parts.length === 2 && !pathname.endsWith("/")) {
+		return new Response(null, { status: 302, headers: { location: `/preview/${slug}/` } });
+	}
+
+	const target = resolvePreview(slug, rest);
+
+	// Una página de directorio sin barra final rompería las rutas relativas.
+	if (
+		target?.kind === "html" &&
+		rest !== "" &&
+		!rest.endsWith("/") &&
+		!rest.endsWith(".html")
+	) {
+		return new Response(null, {
+			status: 302,
+			headers: { location: `/preview/${slug}/${rest}/` },
+		});
+	}
+
+	if (!target) {
+		return new Response(
+			`<!doctype html><meta charset="utf-8"><title>Sin build</title><body style="font-family:system-ui;background:#0b1220;color:#e6edf7;padding:40px"><h1>No hay build de ${slug}</h1><p>Ejecuta <code>bun run build</code> en <code>apps/${slug}</code> y recarga.</p><p><a style="color:#38a3ff" href="/site/${slug}">Volver a la ficha</a></p></body>`,
+			{ status: 404, headers: { "content-type": "text/html; charset=utf-8" } },
+		);
+	}
+
+	if (target.kind === "html") {
+		return new Response(rewriteHtml(readFileSync(target.file, "utf8"), slug), {
+			headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+		});
+	}
+
+	if (target.kind === "css") {
+		return new Response(rewriteCss(readFileSync(target.file, "utf8"), slug), {
+			headers: { "content-type": "text/css; charset=utf-8", "cache-control": "no-store" },
+		});
+	}
+
+	return new Response(Bun.file(target.file), { headers: { "cache-control": "no-store" } });
+}
+
 const server = Bun.serve({
 	port: PORT,
 	hostname: "127.0.0.1",
@@ -250,6 +309,7 @@ const server = Bun.serve({
 		if (request.method !== "GET" && request.method !== "HEAD") {
 			return new Response("Método no permitido", { status: 405 });
 		}
+		if (url.pathname.startsWith("/preview/")) return previewPage(url.pathname);
 		return staticFile(url.pathname);
 	},
 });

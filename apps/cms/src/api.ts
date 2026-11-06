@@ -7,6 +7,10 @@ export async function fetchSites(): Promise<Site[]> {
 	return data.sites;
 }
 
+export const ogUrl = (slug: string) => `/api/sites/${slug}/og`;
+
+export const previewUrl = (slug: string) => `/preview/${slug}/`;
+
 export async function fetchSite(slug: string): Promise<Site> {
 	const response = await fetch(`/api/sites/${slug}`);
 	if (response.status === 404) throw new Error("No existe ninguna web con ese slug.");

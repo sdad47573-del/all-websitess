@@ -1,18 +1,37 @@
 import { createEffect, createMemo, createResource, createSignal, For, Show } from "solid-js";
-import { fetchSites } from "./api";
+import { fetchSites, ogUrl } from "./api";
 import Shell from "./Shell";
 
 const PAGE_SIZE = 40;
 
 const formatDate = (ms: number) => new Date(ms).toISOString().slice(0, 10);
 
+const initials = (name: string) =>
+	name
+		.split(/\s+/)
+		.filter(Boolean)
+		.slice(0, 2)
+		.map((word) => word[0]?.toLocaleUpperCase("es") ?? "")
+		.join("");
+
 type Estado = "todas" | "legal" | "fotos";
+type View = "tarjetas" | "tabla";
+type Order = "nombre" | "recientes" | "fotos";
+
+const readView = (): View => {
+	try {
+		return localStorage.getItem("cms-view") === "tabla" ? "tabla" : "tarjetas";
+	} catch {
+		return "tarjetas";
+	}
+};
 
 export default function Dashboard() {
 	const [sites] = createResource(fetchSites);
 	const [query, setQuery] = createSignal("");
 	const [estado, setEstado] = createSignal<Estado>("todas");
-	const [order, setOrder] = createSignal<"nombre" | "recientes" | "fotos">("nombre");
+	const [order, setOrder] = createSignal<Order>("nombre");
+	const [view, setView] = createSignal<View>(readView());
 	const [page, setPage] = createSignal(1);
 
 	// Cualquier cambio de búsqueda o filtro vuelve a la primera página.
@@ -21,6 +40,14 @@ export default function Dashboard() {
 		estado();
 		order();
 		setPage(1);
+	});
+
+	createEffect(() => {
+		try {
+			localStorage.setItem("cms-view", view());
+		} catch {
+			/* modo privado: solo se pierde la preferencia */
+		}
 	});
 
 	const stats = createMemo(() => {
@@ -98,7 +125,7 @@ export default function Dashboard() {
 				</select>
 				<select
 					value={order()}
-					onInput={(event) => setOrder(event.currentTarget.value as "nombre" | "recientes" | "fotos")}
+					onInput={(event) => setOrder(event.currentTarget.value as Order)}
 					aria-label="Ordenar"
 				>
 					<option value="nombre">A–Z</option>
@@ -118,6 +145,24 @@ export default function Dashboard() {
 						Limpiar
 					</button>
 				</Show>
+				<div class="view-toggle" role="group" aria-label="Vista del listado">
+					<button
+						type="button"
+						classList={{ tab: true, active: view() === "tarjetas" }}
+						aria-pressed={view() === "tarjetas"}
+						onClick={() => setView("tarjetas")}
+					>
+						Tarjetas
+					</button>
+					<button
+						type="button"
+						classList={{ tab: true, active: view() === "tabla" }}
+						aria-pressed={view() === "tabla"}
+						onClick={() => setView("tabla")}
+					>
+						Tabla
+					</button>
+				</div>
 			</form>
 
 			<Show
@@ -125,54 +170,97 @@ export default function Dashboard() {
 				fallback={<p class="count">Cargando las webs…</p>}
 			>
 				<Show when={!sites.error} fallback={<p class="flash error">{String(sites.error)}</p>}>
-					<p class="count">{filtered().length} resultado(s)</p>
+					<p class="count">
+						{filtered().length} resultado(s) · página {page()} de {totalPages()}
+					</p>
 
-					<div class="table-wrap">
-						<table>
-							<thead>
-								<tr>
-									<th>Web</th>
-									<th>Ciudad</th>
-									<th>Teléfono</th>
-									<th>Fotos</th>
-									<th>Legal</th>
-									<th>Actualizado</th>
-								</tr>
-							</thead>
-							<tbody>
-								<For
-									each={rows()}
-									fallback={
+					<Show
+						when={view() === "tarjetas"}
+						fallback={
+							<div class="table-wrap">
+								<table>
+									<thead>
 										<tr>
-											<td colspan="6" class="empty">
-												Ninguna web coincide con el filtro.
-											</td>
+											<th>Web</th>
+											<th>Ciudad</th>
+											<th>Teléfono</th>
+											<th>Fotos</th>
+											<th>Legal</th>
+											<th>Actualizado</th>
 										</tr>
-									}
-								>
+									</thead>
+									<tbody>
+										<For
+											each={rows()}
+											fallback={
+												<tr>
+													<td colspan="6" class="empty">
+														Ninguna web coincide con el filtro.
+													</td>
+												</tr>
+											}
+										>
+											{(site) => (
+												<tr>
+													<td>
+														<a class="site" href={`/site/${site.slug}`}>
+															<strong>{site.name}</strong>
+															<span>{site.slug}</span>
+														</a>
+													</td>
+													<td>{site.city || "—"}</td>
+													<td class="mono">{site.phone || "—"}</td>
+													<td class="num">{site.photoCount}</td>
+													<td>
+														<span classList={{ chip: true, warn: site.legalPending, ok: !site.legalPending }}>
+															{site.legalPending ? "pendiente" : "completo"}
+														</span>
+													</td>
+													<td class="mono dim">{formatDate(site.updatedAt)}</td>
+												</tr>
+											)}
+										</For>
+									</tbody>
+								</table>
+							</div>
+						}
+					>
+						<Show
+							when={rows().length > 0}
+							fallback={<p class="empty panel">Ninguna web coincide con el filtro.</p>}
+						>
+							<div class="site-grid">
+								<For each={rows()}>
 									{(site) => (
-										<tr>
-											<td>
-												<a class="site" href={`/site/${site.slug}`}>
-													<strong>{site.name}</strong>
-													<span>{site.slug}</span>
-												</a>
-											</td>
-											<td>{site.city || "—"}</td>
-											<td class="mono">{site.phone || "—"}</td>
-											<td class="num">{site.photoCount}</td>
-											<td>
-												<span classList={{ chip: true, warn: site.legalPending, ok: !site.legalPending }}>
-													{site.legalPending ? "pendiente" : "completo"}
-												</span>
-											</td>
-											<td class="mono dim">{formatDate(site.updatedAt)}</td>
-										</tr>
+										<a class="site-card" href={`/site/${site.slug}`}>
+											<div class="thumb">
+												<span class="thumb-fallback">{initials(site.name)}</span>
+												<img
+													src={ogUrl(site.slug)}
+													alt=""
+													loading="lazy"
+													onError={(event) => {
+														event.currentTarget.style.display = "none";
+													}}
+												/>
+												<span class="thumb-city">{site.city || site.slug}</span>
+											</div>
+											<div class="site-card-body">
+												<strong>{site.name}</strong>
+												<span class="hint">{site.category || "Sin categoría"}</span>
+												<div class="site-card-meta">
+													<span class="chip">{site.photoCount} fotos</span>
+													<span classList={{ chip: true, warn: site.legalPending, ok: !site.legalPending }}>
+														{site.legalPending ? "legal pendiente" : "legal ok"}
+													</span>
+												</div>
+											</div>
+										</a>
 									)}
 								</For>
-							</tbody>
-						</table>
-					</div>
+							</div>
+						</Show>
+					</Show>
 
 					<Show when={totalPages() > 1}>
 						<div class="pager">

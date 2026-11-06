@@ -5,10 +5,12 @@ import CodeTab from "./tabs/CodeTab";
 import DataTab from "./tabs/DataTab";
 import MapTab from "./tabs/MapTab";
 import MediaTab from "./tabs/MediaTab";
+import PreviewTab from "./tabs/PreviewTab";
 
-type Tab = "datos" | "mapas" | "imagenes" | "codigo";
+type Tab = "vista" | "datos" | "mapas" | "imagenes" | "codigo";
 
 const TABS: Array<{ id: Tab; label: string }> = [
+	{ id: "vista", label: "Vista previa" },
 	{ id: "datos", label: "Datos" },
 	{ id: "mapas", label: "Mapas" },
 	{ id: "imagenes", label: "Imágenes" },
@@ -19,7 +21,7 @@ export default function SiteDetail(props: { slug: string }) {
 	const [site, { refetch }] = createResource(() => props.slug, fetchSite);
 	const requested = window.location.hash.replace("#", "") as Tab;
 	const [tab, setTab] = createSignal<Tab>(
-		TABS.some((item) => item.id === requested) ? requested : "datos",
+		TABS.some((item) => item.id === requested) ? requested : "vista",
 	);
 
 	// La pestaña activa va en la URL: recargar o volver atrás mantiene el sitio
@@ -82,6 +84,9 @@ export default function SiteDetail(props: { slug: string }) {
 						</div>
 
 						<div class="tab-panel">
+							<Show when={tab() === "vista"}>
+								<PreviewTab site={current()} />
+							</Show>
 							<Show when={tab() === "datos"}>
 								<DataTab site={current()} onSaved={refetch} />
 							</Show>

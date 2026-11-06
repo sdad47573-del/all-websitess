@@ -30,6 +30,8 @@ export interface Site {
 	legalPending: boolean;
 	photoCount: number;
 	hasLegalPage: boolean;
+	/** Solo lo envía la ficha: existe `dist/index.html` para la vista previa. */
+	hasBuild?: boolean;
 	updatedAt: number;
 	editable: Record<EditableField, boolean>;
 }
