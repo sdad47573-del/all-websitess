@@ -16,6 +16,31 @@ bun run build
 bun run start   # http://127.0.0.1:4400
 ```
 
+## Acceso y roles
+
+El panel pide usuario y contraseña. En el primer arranque crea un
+administrador: si defines `CMS_ADMIN_PASSWORD` (mínimo 8 caracteres) usa esa
+contraseña; si no, genera una y la imprime en la consola **una sola vez**.
+
+```bash
+CMS_ADMIN_PASSWORD='mi-clave-larga' bun run dev
+```
+
+Los usuarios viven en `apps/cms/.auth/users.json` con la contraseña hasheada
+(argon2id, nunca en claro) y el secreto que firma la sesión en
+`apps/cms/.auth/secret`. La cookie es `HttpOnly`, `SameSite=Strict` y dura 7
+días; cambiar una contraseña invalida las sesiones abiertas de ese usuario.
+
+| Rol | Puede |
+|---|---|
+| `admin` | Datos, mapas, imágenes, OG, SEO, código, historial y usuarios |
+| `editor` | Datos, mapas, imágenes, OG y SEO; no edita plantillas ni gestiona usuarios |
+
+Los administradores crean usuarios, cambian roles y restablecen contraseñas en
+`/usuarios`. No hay registro público ni recuperación por email.
+
+Sigue escuchando solo en `127.0.0.1`: el login protege el panel, no lo publica.
+
 ## Qué se gestiona
 
 Cada web tiene cinco pestañas:
@@ -118,6 +143,10 @@ filtrar por legales pendientes y por webs sin fotos, y ordenar por A–Z, por
 - Las plantillas usan nombres de campo distintos (`street`/`address`,
   `phone`/`phoneDisplay`…). El panel reconoce los sinónimos conocidos y bloquea
   lo que esa plantilla no declara.
+- No hay registro público ni recuperación de contraseña por email: las cuentas
+  se crean y se restablecen desde `/usuarios`.
+- Los roles son globales, no por web, y el historial no anota quién hizo cada
+  cambio.
 
 ## Comprobaciones
 

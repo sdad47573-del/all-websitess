@@ -1,6 +1,7 @@
 import { createEffect, createMemo, createResource, createSignal, For, Show } from "solid-js";
 import { fetchSites, generateOg, ogUrl } from "./api";
 import Shell from "./Shell";
+import type { AuthUser } from "./types";
 
 const PAGE_SIZE = 40;
 
@@ -26,7 +27,7 @@ const readView = (): View => {
 	}
 };
 
-export default function Dashboard() {
+export default function Dashboard(props: { user: AuthUser }) {
 	const [sites] = createResource(fetchSites);
 	const [query, setQuery] = createSignal("");
 	const [estado, setEstado] = createSignal<Estado>("todas");
@@ -136,7 +137,7 @@ export default function Dashboard() {
 	};
 
 	return (
-		<Shell title="Webs">
+		<Shell title="Webs" user={props.user}>
 			<section class="head">
 				<h1>{stats().total} webs de negocio</h1>
 				<p>

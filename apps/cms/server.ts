@@ -36,6 +36,23 @@ import {
 	writeSourceFile,
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
+import {
+	type Capability,
+	type Role,
+	type StoredUser,
+	authenticate,
+	can,
+	clearedSessionCookie,
+	createUser,
+	deleteUser,
+	ensureAdmin,
+	listUsers,
+	sessionCookie,
+	signSession,
+	toPublicUser,
+	updateUser,
+	userFromRequest,
+} from "./lib/auth";
 import { hasBuild, ogImage, resolvePreview, rewriteCss, rewriteHtml } from "./lib/preview";
 import { generateOgImage } from "./lib/og";
 import { auditSeo } from "./lib/seo";
@@ -56,13 +73,49 @@ const LABELS: Record<EditableField, string> = {
 	lng: "Longitud",
 };
 
-const json = (data: unknown, status = 200) =>
-	Response.json(data, { status, headers: { "cache-control": "no-store" } });
+const json = (data: unknown, status = 200, headers: Record<string, string> = {}) =>
+	Response.json(data, { status, headers: { "cache-control": "no-store", ...headers } });
 
 const errorResponse = (error: unknown, status = 400) =>
 	json({ error: error instanceof Error ? error.message : String(error) }, status);
 
-async function siteRoute(request: Request, slug: string, rest: string[]): Promise<Response> {
+const unauthorized = () => json({ error: "Inicia sesión para continuar." }, 401);
+const forbidden = () => json({ error: "Tu rol no permite esta acción." }, 403);
+const deny = (role: Role, capability: Capability) => (can(role, capability) ? null : forbidden());
+
+/**
+ * El servidor solo escucha en loopback, pero cualquier web abierta en el
+ * navegador puede lanzar un POST a 127.0.0.1. Con cookie SameSite=Strict el
+ * navegador ya no la envía, y este filtro cierra el resto.
+ */
+const sameLocalOrigin = (request: Request): boolean => {
+	const origin = request.headers.get("origin");
+	if (!origin) return true;
+	try {
+		const { hostname } = new URL(origin);
+		return (
+			hostname === "127.0.0.1" ||
+			hostname === "localhost" ||
+			hostname === "[::1]" ||
+			hostname === "::1"
+		);
+	} catch {
+		return false;
+	}
+};
+
+// 5 fallos en 10 minutos bloquean ese usuario un rato: frena las pruebas de
+// contraseña sin dejar fuera a quien simplemente se equivoca una vez.
+const LOGIN_MAX_FAILURES = 5;
+const LOGIN_WINDOW_MS = 10 * 60 * 1000;
+const loginFailures = new Map<string, { count: number; until: number }>();
+
+async function siteRoute(
+	request: Request,
+	slug: string,
+	rest: string[],
+	role: Role,
+): Promise<Response> {
 	const site = getSite(slug);
 
 	if (rest.length === 0) {
@@ -73,6 +126,9 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 			});
 		}
 		if (request.method !== "PATCH") return json({ error: "Método no permitido" }, 405);
+
+		const denied = deny(role, "editContent");
+		if (denied) return denied;
 
 		let payload: { fields?: Record<string, unknown> };
 		try {
@@ -113,6 +169,9 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 			}
 
 			if (request.method === "PUT") {
+				const denied = deny(role, "editCode");
+				if (denied) return denied;
+
 				let payload: { path?: unknown; content?: unknown };
 				try {
 					payload = (await request.json()) as { path?: unknown; content?: unknown };
@@ -133,6 +192,9 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 
 	if (rest[0] === "og") {
 		if (request.method === "POST") {
+			const denied = deny(role, "editContent");
+			if (denied) return denied;
+
 			try {
 				const generated = await generateOgImage(site.slug);
 				return json({ ok: true, ...generated });
@@ -173,6 +235,9 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 			}
 
 			if (rest.length === 3 && rest[2] === "restore" && request.method === "POST") {
+				const denied = deny(role, "editCode");
+				if (denied) return denied;
+
 				// writeSourceFile guarda a su vez la versión actual antes de escribir.
 				writeSourceFile(site.slug, path, readSnapshot(site.slug, path, id));
 				return json({ ok: true });
@@ -190,6 +255,9 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 				if (request.method === "GET") return json({ media: listMedia(site.slug) });
 
 				if (request.method === "POST") {
+					const denied = deny(role, "editContent");
+					if (denied) return denied;
+
 					let form: FormData;
 					try {
 						form = await request.formData();
@@ -220,6 +288,9 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 			}
 
 			if (request.method === "DELETE") {
+				const denied = deny(role, "editContent");
+				if (denied) return denied;
+
 				deleteMedia(site.slug, name);
 				return json({ ok: true });
 			}
@@ -233,9 +304,145 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 	return json({ error: "Ruta no encontrada" }, 404);
 }
 
+async function authRoute(request: Request, url: URL): Promise<Response> {
+	const action = url.pathname.split("/").filter(Boolean)[2] ?? "";
+
+	if (action === "me") {
+		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		const user = userFromRequest(request);
+		if (!user) return unauthorized();
+		return json({ user: toPublicUser(user) });
+	}
+
+	if (action === "login") {
+		if (request.method !== "POST") return json({ error: "Método no permitido" }, 405);
+
+		let payload: { username?: unknown; password?: unknown };
+		try {
+			payload = (await request.json()) as { username?: unknown; password?: unknown };
+		} catch {
+			return json({ error: "El cuerpo debe ser JSON" }, 400);
+		}
+
+		const username =
+			typeof payload.username === "string" ? payload.username.trim().toLowerCase() : "";
+		const password = typeof payload.password === "string" ? payload.password : "";
+		if (!username || !password) return json({ error: "Faltan usuario y contraseña." }, 400);
+
+		const now = Date.now();
+		const attempt = loginFailures.get(username);
+		if (attempt && attempt.until > now) {
+			const seconds = Math.ceil((attempt.until - now) / 1000);
+			return json({ error: `Demasiados intentos. Prueba de nuevo en ${seconds} s.` }, 429);
+		}
+
+		const user = await authenticate(username, password);
+		if (!user) {
+			const previous = attempt && attempt.until > 0 && attempt.until <= now ? 0 : (attempt?.count ?? 0);
+			const count = previous + 1;
+			loginFailures.set(username, {
+				count,
+				until: count >= LOGIN_MAX_FAILURES ? now + LOGIN_WINDOW_MS : 0,
+			});
+			return json({ error: "Usuario o contraseña incorrectos." }, 401);
+		}
+
+		loginFailures.delete(username);
+		return json(
+			{ user: toPublicUser(user) },
+			200,
+			{ "set-cookie": sessionCookie(signSession(user)) },
+		);
+	}
+
+	if (action === "logout") {
+		if (request.method !== "POST") return json({ error: "Método no permitido" }, 405);
+		return json({ ok: true }, 200, { "set-cookie": clearedSessionCookie() });
+	}
+
+	return json({ error: "Ruta no encontrada" }, 404);
+}
+
+async function usersRoute(
+	request: Request,
+	url: URL,
+	user: StoredUser,
+): Promise<Response> {
+	if (!can(user.role, "manageUsers")) return forbidden();
+
+	const id = url.pathname.split("/").filter(Boolean)[2];
+
+	if (!id) {
+		if (request.method === "GET") return json({ users: listUsers(), currentId: user.id });
+		if (request.method !== "POST") return json({ error: "Método no permitido" }, 405);
+
+		let payload: { username?: unknown; name?: unknown; password?: unknown; role?: unknown };
+		try {
+			payload = (await request.json()) as typeof payload;
+		} catch {
+			return json({ error: "El cuerpo debe ser JSON" }, 400);
+		}
+
+		try {
+			const created = await createUser({
+				username: String(payload.username ?? ""),
+				name: typeof payload.name === "string" ? payload.name : undefined,
+				password: String(payload.password ?? ""),
+				role: payload.role as Role,
+			});
+			return json({ user: created }, 201);
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	if (request.method === "PATCH") {
+		let payload: { name?: unknown; role?: unknown; password?: unknown };
+		try {
+			payload = (await request.json()) as typeof payload;
+		} catch {
+			return json({ error: "El cuerpo debe ser JSON" }, 400);
+		}
+
+		try {
+			const updated = await updateUser(id, {
+				name: typeof payload.name === "string" ? payload.name : undefined,
+				role: typeof payload.role === "string" ? (payload.role as Role) : undefined,
+				password: typeof payload.password === "string" ? payload.password : undefined,
+			});
+			return json({ user: updated });
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	if (request.method === "DELETE") {
+		if (id === user.id) return json({ error: "No puedes borrar tu propio usuario." }, 400);
+		try {
+			deleteUser(id);
+			return json({ ok: true });
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	return json({ error: "Método no permitido" }, 405);
+}
+
 async function api(request: Request, url: URL): Promise<Response> {
 	const parts = url.pathname.split("/").filter(Boolean);
-	// parts: ["api", "sites", slug, …]
+	// parts: ["api", "auth" | "users" | "sites", …]
+
+	if (request.method !== "GET" && request.method !== "HEAD" && !sameLocalOrigin(request)) {
+		return json({ error: "Origen no permitido." }, 403);
+	}
+
+	if (parts[1] === "auth") return authRoute(request, url);
+
+	const user = userFromRequest(request);
+	if (!user) return unauthorized();
+
+	if (parts[1] === "users") return usersRoute(request, url, user);
 
 	if (parts.length === 2) {
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
@@ -249,7 +456,7 @@ async function api(request: Request, url: URL): Promise<Response> {
 		return json({ error: "Web no válida" }, 400);
 	}
 
-	return siteRoute(request, slug, parts.slice(3));
+	return siteRoute(request, slug, parts.slice(3), user.role);
 }
 
 async function staticFile(pathname: string): Promise<Response> {
@@ -326,6 +533,16 @@ async function previewPage(pathname: string): Promise<Response> {
 	return new Response(Bun.file(target.file), { headers: { "cache-control": "no-store" } });
 }
 
+const admin = await ensureAdmin(undefined, {
+	username: process.env.CMS_ADMIN_USER,
+	password: process.env.CMS_ADMIN_PASSWORD,
+});
+if (admin.created) {
+	console.log(`\nUsuario «${admin.user?.username}» creado.`);
+	console.log(`Contraseña: ${admin.password}`);
+	console.log("Se muestra solo esta vez. Guárdala y crea el resto en /usuarios.\n");
+}
+
 const server = Bun.serve({
 	port: PORT,
 	hostname: "127.0.0.1",
@@ -335,7 +552,15 @@ const server = Bun.serve({
 		if (request.method !== "GET" && request.method !== "HEAD") {
 			return new Response("Método no permitido", { status: 405 });
 		}
-		if (url.pathname.startsWith("/preview/")) return previewPage(url.pathname);
+		if (url.pathname.startsWith("/preview/")) {
+			if (!userFromRequest(request)) {
+				return new Response("Inicia sesión para ver la vista previa.", {
+					status: 401,
+					headers: { "content-type": "text/plain; charset=utf-8" },
+				});
+			}
+			return previewPage(url.pathname);
+		}
 		return staticFile(url.pathname);
 	},
 });

@@ -1,8 +1,17 @@
-import type { EditableField, MediaItem, SeoAudit, Site, SourceFile } from "./types";
+import type {
+	AuthUser,
+	EditableField,
+	MediaItem,
+	Role,
+	SeoAudit,
+	Site,
+	SourceFile,
+	UserSummary,
+} from "./types";
 
 export async function fetchSites(): Promise<Site[]> {
 	const response = await fetch("/api/sites");
-	if (!response.ok) throw new Error(`No se ha podido cargar el listado (HTTP ${response.status}).`);
+	if (!response.ok) throw new Error(await readError(response));
 	const data = (await response.json()) as { sites: Site[] };
 	return data.sites;
 }
@@ -58,6 +67,7 @@ export async function saveSite(
 }
 
 async function readError(response: Response): Promise<string> {
+	if (response.status === 401) return "Tu sesión ha caducado. Vuelve a entrar.";
 	try {
 		const data = (await response.json()) as { error?: string; errors?: string[] };
 		return data.error ?? data.errors?.join(" · ") ?? `HTTP ${response.status}`;
@@ -143,5 +153,67 @@ export async function writeFile(slug: string, path: string, content: string): Pr
 		headers: { "content-type": "application/json" },
 		body: JSON.stringify({ path, content }),
 	});
+	if (!response.ok) throw new Error(await readError(response));
+}
+
+export async function fetchMe(): Promise<AuthUser | null> {
+	const response = await fetch("/api/auth/me");
+	if (response.status === 401) return null;
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { user: AuthUser }).user;
+}
+
+export async function loginUser(username: string, password: string): Promise<AuthUser> {
+	const response = await fetch("/api/auth/login", {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({ username, password }),
+	});
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { user: AuthUser }).user;
+}
+
+export async function logoutUser(): Promise<void> {
+	await fetch("/api/auth/logout", { method: "POST" });
+}
+
+export async function fetchUsers(): Promise<UserSummary[]> {
+	const response = await fetch("/api/users");
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { users: UserSummary[] }).users;
+}
+
+export interface NewUser {
+	username: string;
+	name?: string;
+	password: string;
+	role: Role;
+}
+
+export async function createUser(input: NewUser): Promise<UserSummary> {
+	const response = await fetch("/api/users", {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(input),
+	});
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { user: UserSummary }).user;
+}
+
+export async function updateUser(
+	id: string,
+	patch: { name?: string; role?: Role; password?: string },
+): Promise<UserSummary> {
+	const response = await fetch(`/api/users/${encodeURIComponent(id)}`, {
+		method: "PATCH",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(patch),
+	});
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { user: UserSummary }).user;
+}
+
+export async function deleteUser(id: string): Promise<void> {
+	const response = await fetch(`/api/users/${encodeURIComponent(id)}`, { method: "DELETE" });
 	if (!response.ok) throw new Error(await readError(response));
 }

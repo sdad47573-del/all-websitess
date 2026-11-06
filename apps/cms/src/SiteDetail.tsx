@@ -1,6 +1,7 @@
 import { createResource, createSignal, For, Show } from "solid-js";
 import { fetchSite, generateOg, ogUrl } from "./api";
 import Shell from "./Shell";
+import { type AuthUser, hasCapability } from "./types";
 import CodeTab from "./tabs/CodeTab";
 import DataTab from "./tabs/DataTab";
 import MapTab from "./tabs/MapTab";
@@ -10,7 +11,7 @@ import SeoTab from "./tabs/SeoTab";
 
 type Tab = "vista" | "datos" | "mapas" | "seo" | "imagenes" | "codigo";
 
-const TABS: Array<{ id: Tab; label: string }> = [
+const ALL_TABS: Array<{ id: Tab; label: string }> = [
 	{ id: "vista", label: "Vista previa" },
 	{ id: "datos", label: "Datos" },
 	{ id: "mapas", label: "Mapas" },
@@ -19,11 +20,14 @@ const TABS: Array<{ id: Tab; label: string }> = [
 	{ id: "codigo", label: "Layout y código" },
 ];
 
-export default function SiteDetail(props: { slug: string }) {
+export default function SiteDetail(props: { slug: string; user: AuthUser }) {
+	const canEditCode = () => hasCapability(props.user, "editCode");
+	const tabs = () => ALL_TABS.filter((item) => item.id !== "codigo" || canEditCode());
+
 	const [site, { refetch }] = createResource(() => props.slug, fetchSite);
 	const requested = window.location.hash.replace("#", "") as Tab;
 	const [tab, setTab] = createSignal<Tab>(
-		TABS.some((item) => item.id === requested) ? requested : "vista",
+		tabs().some((item) => item.id === requested) ? requested : "vista",
 	);
 
 	// La pestaña activa va en la URL: recargar o volver atrás mantiene el sitio
@@ -63,7 +67,7 @@ export default function SiteDetail(props: { slug: string }) {
 	};
 
 	return (
-		<Shell title={site()?.name ?? "Ficha"}>
+		<Shell title={site()?.name ?? "Ficha"} user={props.user}>
 			<p class="back">
 				<a href="/">← Todas las webs</a>
 			</p>
@@ -133,7 +137,7 @@ export default function SiteDetail(props: { slug: string }) {
 						</section>
 
 						<div class="tabs" role="tablist">
-							<For each={TABS}>
+							<For each={tabs()}>
 								{(item) => (
 									<button
 										type="button"
@@ -164,7 +168,7 @@ export default function SiteDetail(props: { slug: string }) {
 							<Show when={tab() === "imagenes"}>
 								<MediaTab site={current()} onSaved={refetch} />
 							</Show>
-							<Show when={tab() === "codigo"}>
+							<Show when={tab() === "codigo" && canEditCode()}>
 								<CodeTab site={current()} onSaved={refetch} />
 							</Show>
 						</div>

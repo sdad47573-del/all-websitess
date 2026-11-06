@@ -89,3 +89,31 @@ export interface SourceFile {
 	path: string;
 	size: number;
 }
+
+export const ROLES = ["admin", "editor"] as const;
+export type Role = (typeof ROLES)[number];
+
+export type Capability = "read" | "editContent" | "editCode" | "manageUsers";
+
+export const ROLE_LABELS: Record<Role, string> = {
+	admin: "Administrador",
+	editor: "Editor",
+};
+
+export interface AuthUser {
+	id: string;
+	username: string;
+	name: string;
+	role: Role;
+	createdAt: number;
+	capabilities: Capability[];
+}
+
+export type UserSummary = Omit<AuthUser, "capabilities">;
+
+export function hasCapability(
+	user: Pick<AuthUser, "capabilities"> | null | undefined,
+	capability: Capability,
+): boolean {
+	return user?.capabilities.includes(capability) ?? false;
+}
