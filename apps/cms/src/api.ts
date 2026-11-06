@@ -4,6 +4,7 @@ import type {
 	MediaItem,
 	Role,
 	SeoAudit,
+	Shop,
 	Site,
 	SourceFile,
 	UserSummary,
@@ -215,5 +216,36 @@ export async function updateUser(
 
 export async function deleteUser(id: string): Promise<void> {
 	const response = await fetch(`/api/users/${encodeURIComponent(id)}`, { method: "DELETE" });
+	if (!response.ok) throw new Error(await readError(response));
+}
+
+export interface ShopState {
+	shop: Shop | null;
+	page: boolean;
+}
+
+export async function fetchShop(slug: string): Promise<ShopState> {
+	const response = await fetch(`/api/sites/${slug}/tienda`);
+	if (!response.ok) throw new Error(await readError(response));
+	return (await response.json()) as ShopState;
+}
+
+export async function saveShop(slug: string, shop: Shop): Promise<{ shop: Shop }> {
+	const response = await fetch(`/api/sites/${slug}/tienda`, {
+		method: "PUT",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(shop),
+	});
+	if (!response.ok) throw new Error(await readError(response));
+	return (await response.json()) as { shop: Shop };
+}
+
+export async function publishShop(slug: string): Promise<void> {
+	const response = await fetch(`/api/sites/${slug}/tienda/publicar`, { method: "POST" });
+	if (!response.ok) throw new Error(await readError(response));
+}
+
+export async function unpublishShop(slug: string): Promise<void> {
+	const response = await fetch(`/api/sites/${slug}/tienda/publicar`, { method: "DELETE" });
 	if (!response.ok) throw new Error(await readError(response));
 }

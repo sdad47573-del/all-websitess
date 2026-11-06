@@ -117,3 +117,33 @@ export function hasCapability(
 ): boolean {
 	return user?.capabilities.includes(capability) ?? false;
 }
+
+export interface ShopProduct {
+	id: string;
+	nombre: string;
+	descripcion: string;
+	precio: number;
+	imagen: string;
+	stock: number;
+	visible: boolean;
+}
+
+export interface Shop {
+	activa: boolean;
+	titulo: string;
+	moneda: string;
+	recogida: string;
+	nota: string;
+	whatsapp: string;
+	productos: ShopProduct[];
+}
+
+export const DEFAULT_SHOP: Shop = {
+	activa: true,
+	titulo: "Tienda",
+	moneda: "EUR",
+	recogida: "",
+	nota: "",
+	whatsapp: "",
+	productos: [],
+};

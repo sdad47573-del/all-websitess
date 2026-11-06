@@ -8,8 +8,9 @@ import MapTab from "./tabs/MapTab";
 import MediaTab from "./tabs/MediaTab";
 import PreviewTab from "./tabs/PreviewTab";
 import SeoTab from "./tabs/SeoTab";
+import ShopTab from "./tabs/ShopTab";
 
-type Tab = "vista" | "datos" | "mapas" | "seo" | "imagenes" | "codigo";
+type Tab = "vista" | "datos" | "mapas" | "seo" | "imagenes" | "tienda" | "codigo";
 
 const ALL_TABS: Array<{ id: Tab; label: string }> = [
 	{ id: "vista", label: "Vista previa" },
@@ -17,6 +18,7 @@ const ALL_TABS: Array<{ id: Tab; label: string }> = [
 	{ id: "mapas", label: "Mapas" },
 	{ id: "seo", label: "SEO y compartir" },
 	{ id: "imagenes", label: "Imágenes" },
+	{ id: "tienda", label: "Tienda" },
 	{ id: "codigo", label: "Layout y código" },
 ];
 
@@ -167,6 +169,9 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 							</Show>
 							<Show when={tab() === "imagenes"}>
 								<MediaTab site={current()} onSaved={refetch} />
+							</Show>
+							<Show when={tab() === "tienda"}>
+								<ShopTab site={current()} onSaved={refetch} />
 							</Show>
 							<Show when={tab() === "codigo" && canEditCode()}>
 								<CodeTab site={current()} onSaved={refetch} />

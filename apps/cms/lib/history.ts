@@ -15,6 +15,10 @@ const MAX_SNAPSHOTS = 20;
 const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
 const ID_PATTERN = /^[a-z0-9-]+$/;
 
+// Dos guardados en el mismo milisegundo empatan en `mtimeMs`. El contador va en
+// el id para que el orden siga siendo el de escritura, no el aleatorio.
+let sequence = 0;
+
 export interface Snapshot {
 	id: string;
 	savedAt: number;
@@ -57,7 +61,8 @@ export function snapshot(
 	appsDir = DEFAULT_APPS_DIR,
 ): void {
 	const dir = directoryFor(slug, relativePath, appsDir, true);
-	const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+	sequence = (sequence + 1) % 46656;
+	const id = `${Date.now().toString(36)}-${sequence.toString(36).padStart(3, "0")}-${Math.random().toString(36).slice(2, 6)}`;
 	writeFileSync(join(dir, `${id}.bak`), content, "utf8");
 
 	for (const old of listSnapshots(slug, relativePath, appsDir).slice(MAX_SNAPSHOTS)) {
@@ -83,7 +88,7 @@ export function listSnapshots(
 				size: stat.size,
 			};
 		})
-		.sort((a, b) => b.savedAt - a.savedAt);
+		.sort((a, b) => b.savedAt - a.savedAt || b.id.localeCompare(a.id));
 }
 
 export function readSnapshot(

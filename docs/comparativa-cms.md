@@ -35,7 +35,7 @@ cambian; al final están las fuentes.
 | Nº de sitios por instancia | ~638 webs en un solo panel | 1 (o red multisite) | 1 tienda por suscripción | 1 proyecto por instancia |
 | Frontend | Astro estático, prerenderizado | PHP renderizado en servidor | Tema Liquid o headless (Hydrogen) | Libre: Next, Astro, móvil… |
 | Idiomas | No: una web por locale | Plugins (WPML, Polylang) | Translate & Adapt | i18n nativo |
-| Comercio | No | WooCommerce | Núcleo del producto | No |
+| Comercio | Catálogo, carrito y pedido por WhatsApp; sin pagos | WooCommerce | Núcleo del producto | No |
 | Licencia | Privada, interna | GPLv2 | Propietaria | Open source; edición Community gratuita |
 
 ### Edición y experiencia de autor
@@ -167,9 +167,12 @@ Este es el punto donde la comparación se rompe del todo:
 
 Solo Shopify lo trae de serie: catálogo, variantes, inventario, pagos, envíos,
 impuestos, devoluciones y punto de venta. WordPress lo consigue con
-WooCommerce, que es un plugin enorme con su propio mantenimiento. El CMS del
-repo y Strapi no venden nada: si una landing necesitara cobrar, habría que
-integrar una pasarela aparte.
+WooCommerce, que es un plugin enorme con su propio mantenimiento.
+
+El CMS del repo cubre la mitad barata: catálogo por web, stock, carrito en el
+navegador y pedido por WhatsApp con el mensaje ya escrito. No cobra, no calcula
+envíos ni impuestos y no guarda pedidos: eso sigue siendo trabajo de Shopify o
+de una pasarela integrada aparte. Strapi tampoco vende nada por sí solo.
 
 ### 8. Rendimiento
 
@@ -213,6 +216,7 @@ Tres economías distintas:
 | Editar datos y plantillas de las 638 landings desde un solo sitio | **CMS del repo** |
 | Que una persona no técnica publique sin compilar ni tocar Git | **WordPress** o **Shopify** |
 | Vender productos con pagos, stock y envíos | **Shopify** |
+| Catálogo y encargos sin cobrar online | **CMS del repo** |
 | Web de contenido con blog, formularios y plugins ya hechos | **WordPress** |
 | Frontend propio (Next, Astro, app) con contenido por API | **Strapi** |
 | Contenido versionado en el mismo repo que el código | **CMS del repo** o Strapi + Git |

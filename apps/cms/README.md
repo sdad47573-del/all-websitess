@@ -60,6 +60,10 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
 - **Layout y código**: editor de las plantillas, datos y estilos de la web
   (`.astro`, `.ts`, `.css`, `.md`, `.json`), con lista de ficheros, guardado
   (también con Ctrl/⌘ + S) e historial.
+- **Tienda**: catálogo de productos por web (precio, stock, imagen y
+  visibilidad) y publicación de `src/pages/tienda.astro`. La página usa el
+  componente compartido `LocalShop`: carrito en el navegador y pedido por
+  WhatsApp con el mensaje ya escrito. No cobra ni guarda pedidos.
 
 La pestaña activa queda en la URL (`#vista`, `#mapas`, `#imagenes`, `#codigo`),
 así que recargar o volver atrás mantiene el sitio donde estabas.
@@ -147,6 +151,10 @@ filtrar por legales pendientes y por webs sin fotos, y ordenar por A–Z, por
   se crean y se restablecen desde `/usuarios`.
 - Los roles son globales, no por web, y el historial no anota quién hizo cada
   cambio.
+- La tienda no tiene pasarela de pago ni pedidos en servidor: el encargo se
+  cierra por WhatsApp o teléfono. Envíos, impuestos y facturación quedan fuera.
+- La tienda se publica escribiendo `src/pages/tienda.astro`, pero no se enlaza
+  sola desde la home: el enlace hay que añadirlo en la plantilla de la web.
 
 ## Comprobaciones
 

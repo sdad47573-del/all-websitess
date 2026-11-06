@@ -53,6 +53,13 @@ import {
 	updateUser,
 	userFromRequest,
 } from "./lib/auth";
+import {
+	publishShop,
+	readShop,
+	saveShop,
+	shopPageExists,
+	unpublishShop,
+} from "./lib/shop";
 import { hasBuild, ogImage, resolvePreview, rewriteCss, rewriteHtml } from "./lib/preview";
 import { generateOgImage } from "./lib/og";
 import { auditSeo } from "./lib/seo";
@@ -247,6 +254,53 @@ async function siteRoute(
 		} catch (error) {
 			return errorResponse(error);
 		}
+	}
+
+	if (rest[0] === "tienda") {
+		try {
+			if (rest.length === 1) {
+				if (request.method === "GET") {
+					return json({
+						shop: readShop(site.slug),
+						page: shopPageExists(site.slug),
+					});
+				}
+
+				if (request.method === "PUT") {
+					const denied = deny(role, "editContent");
+					if (denied) return denied;
+
+					let payload: unknown;
+					try {
+						payload = await request.json();
+					} catch {
+						return json({ error: "El cuerpo debe ser JSON" }, 400);
+					}
+
+					const shop = saveShop(site.slug, payload);
+					return json({ ok: true, shop });
+				}
+
+				return json({ error: "Método no permitido" }, 405);
+			}
+
+			if (rest[1] === "publicar") {
+				const denied = deny(role, "editContent");
+				if (denied) return denied;
+
+				if (request.method === "POST") {
+					return json({ ok: true, ...publishShop(site.slug) });
+				}
+				if (request.method === "DELETE") {
+					return json({ ok: true, ...unpublishShop(site.slug) });
+				}
+				return json({ error: "Método no permitido" }, 405);
+			}
+		} catch (error) {
+			return errorResponse(error);
+		}
+
+		return json({ error: "Ruta no encontrada" }, 404);
 	}
 
 	if (rest[0] === "media") {
