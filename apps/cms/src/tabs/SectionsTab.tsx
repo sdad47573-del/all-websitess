@@ -166,9 +166,36 @@ function TextField(props: {
 	maxlength?: number;
 	onInput: (value: string) => void;
 }) {
+	let area: HTMLTextAreaElement | undefined;
+	const length = () => (props.value ?? "").length;
+
+	// El textarea crece con el texto: así se lee el título o la entradilla enteros
+	// en vez de asomarse por una ventana de 52 px con barra interna.
+	const fit = () => {
+		if (!area) return;
+		area.style.height = "auto";
+		area.style.height = `${area.scrollHeight + 2}px`;
+	};
+	createEffect(() => {
+		props.value;
+		fit();
+	});
+
 	return (
 		<label class="field">
-			<span class="name">{props.label}</span>
+			<span class="field-head">
+				<span class="name">{props.label}</span>
+				<Show when={props.maxlength}>
+					<span
+						classList={{
+							"char-count": true,
+							full: length() >= (props.maxlength ?? 0),
+						}}
+					>
+						{length()}/{props.maxlength}
+					</span>
+				</Show>
+			</span>
 			<Show
 				when={props.multiline}
 				fallback={
@@ -181,10 +208,14 @@ function TextField(props: {
 				}
 			>
 				<textarea
+					ref={(element) => (area = element)}
 					class="section-textarea"
 					maxlength={props.maxlength}
 					value={props.value ?? ""}
-					onInput={(event) => props.onInput(event.currentTarget.value)}
+					onInput={(event) => {
+						props.onInput(event.currentTarget.value);
+						fit();
+					}}
 				/>
 			</Show>
 			<Show when={props.hint}>
