@@ -12,18 +12,22 @@ import {
   pageFromPath,
 } from "../i18n/routes";
 import { ui } from "../i18n/ui";
+import LinkedInIcon from "../icons/LinkedInIcon.astro";
+import MapIcon from "../icons/MapIcon.astro";
 
 import Logo from "../assets/logoreverse-optimized.png";
 
 // En español se mantiene el footer completo con los sectores. En el resto de
-// idiomas se muestra una versión reducida (servicios, contacto, idiomas) con
-// los textos traducidos y enlaces a la versión que exista de cada página.
+// idiomas se muestra una versión reducida (servicios, empresa, contacto,
+// idiomas) con los textos traducidos y enlaces a la versión que exista de cada
+// página.
 interface Props {
   lang?: string;
 }
 const { lang = "es" } = Astro.props;
 const t = ui(lang);
 const localized = lang !== "es";
+const year = new Date().getFullYear();
 
 // Enlaces que aún viven solo en español se marcan con hreflang.
 const esLink = (path: string) => ({
@@ -38,6 +42,15 @@ const serviceLinks = [
   { path: "/especialidades/", label: t.footer.specialitiesAll },
 ].map((item) => ({ ...item, ...esLink(item.path) }));
 
+// El pie también enlaza las páginas que solo estaban en la cabecera: clientes,
+// blog y FAQ. Clientes y blog siguen en español (hreflang); FAQ tiene versión
+// propia en cada idioma.
+const companyLinks = [
+  { path: "/clientes/", label: t.nav.clients },
+  { path: "/blog/", label: t.nav.blog },
+  { path: "/faq/", label: t.nav.faq },
+].map((item) => ({ ...item, ...esLink(item.path) }));
+
 // Cada idioma tiene su slug; si la página actual no está traducida, el enlace
 // lleva a la home de ese idioma (que se resuelve con la cookie).
 const page = pageFromPath(Astro.url.pathname);
@@ -48,36 +61,84 @@ const languageLinks = [
     href: localizedPath(page ?? "home", code),
   })),
 ];
+
+// Cabeceras de columna: pequeñas y espaciadas, con una línea fina que separa
+// el título de los enlaces. Se repiten en las dos versiones del footer.
+const headClass =
+  "mb-2 border-b border-white/20 pb-2 text-xs font-bold uppercase tracking-[0.14em] md:mb-3 md:pb-3";
+const linkClass =
+  "flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover";
 ---
 
-<footer class="brand-surface pt-8 pb-24 md:pb-8 md:pt-10 px-6">
+<footer class="brand-surface pt-10 pb-24 md:pb-10 md:pt-12 px-6">
   <div class="container mx-auto flex flex-col gap-8 md:gap-10">
     {
       localized ? (
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 lg:gap-6 w-full">
-          <div class="col-span-2 sm:col-span-3 lg:col-span-1 flex flex-col gap-3">
-            <Image
-              src={Logo}
-              alt="Sur Digital"
-              widths={[128, 256]}
-              sizes="112px"
-              class="w-28 h-auto object-contain"
-            />
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-8 w-full">
+          <div class="col-span-2 sm:col-span-3 lg:col-span-2 flex flex-col gap-3">
+            <a
+              href="/"
+              data-lang={lang}
+              aria-label="Sur Digital"
+              class="inline-flex w-fit"
+            >
+              <Image
+                src={Logo}
+                alt="Sur Digital"
+                widths={[128, 256]}
+                sizes="112px"
+                class="w-28 h-auto object-contain"
+              />
+            </a>
             <p class="max-w-60 text-sm">{t.footer.strap}</p>
+            <p class="max-w-60 text-xs leading-relaxed">
+              {CONTACT.name} · {t.contact.role}
+            </p>
+            <ul class="flex items-center gap-2 pt-1">
+              <li>
+                <a
+                  href={CONTACT.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.footer.linkedin}
+                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
+                >
+                  <LinkedInIcon class="size-4" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={CONTACT.maps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={CONTACT.address}
+                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
+                >
+                  <MapIcon class="size-4" />
+                </a>
+              </li>
+            </ul>
           </div>
 
           <nav aria-label={t.footer.servicesHead} class="flex flex-col">
-            <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
-              {t.footer.servicesHead}
-            </p>
-            <ul class="flex flex-col gap-1 text-sm">
+            <h2 class={headClass}>{t.footer.servicesHead}</h2>
+            <ul class="flex flex-col text-sm">
               {serviceLinks.map(({ href, label, hreflang }) => (
                 <li>
-                  <a
-                    href={href}
-                    hreflang={hreflang}
-                    class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
-                  >
+                  <a href={href} hreflang={hreflang} class={linkClass}>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label={t.footer.companyHead} class="flex flex-col">
+            <h2 class={headClass}>{t.footer.companyHead}</h2>
+            <ul class="flex flex-col text-sm">
+              {companyLinks.map(({ href, label, hreflang }) => (
+                <li>
+                  <a href={href} hreflang={hreflang} class={linkClass}>
                     {label}
                   </a>
                 </li>
@@ -86,18 +147,27 @@ const languageLinks = [
           </nav>
 
           <nav aria-label={t.footer.contactHead} class="flex flex-col">
-            <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
-              {t.footer.contactHead}
-            </p>
-            <ul class="flex flex-col gap-1 text-sm">
+            <h2 class={headClass}>{t.footer.contactHead}</h2>
+            <ul class="flex flex-col text-sm">
               <li>
                 <a
                   href={CONTACT.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
+                  class={linkClass}
                 >
                   {t.footer.linkedin}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={CONTACT.maps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={linkClass}
+                >
+                  <MapIcon class="min-w-5 max-w-5 shrink-0" />
+                  <span>{CONTACT.address}</span>
                 </a>
               </li>
               <li class="flex min-h-12 items-center leading-snug">
@@ -107,17 +177,15 @@ const languageLinks = [
           </nav>
 
           <nav aria-label={t.footer.languagesHead} class="flex flex-col">
-            <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
-              {t.footer.languagesHead}
-            </p>
-            <ul class="flex flex-col gap-1 text-sm">
+            <h2 class={headClass}>{t.footer.languagesHead}</h2>
+            <ul class="flex flex-col text-sm">
               {languageLinks.map(({ code, href }) => (
                 <li>
                   <a
                     href={href}
                     data-lang={code}
                     lang={code}
-                    class="flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover"
+                    class={linkClass}
                     aria-current={code === lang ? "true" : undefined}
                   >
                     {LOCALE_LABELS[code as keyof typeof LOCALE_LABELS]}
@@ -128,25 +196,71 @@ const languageLinks = [
           </nav>
         </div>
       ) : (
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 w-full">
-          <div class="col-span-2 sm:col-span-3 lg:col-span-1 flex flex-col gap-3">
-            <Image
-              src={Logo}
-              alt="Sur Digital"
-              widths={[128, 256]}
-              sizes="112px"
-              class="w-28 h-auto object-contain"
-            />
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-8 w-full">
+          <div class="col-span-2 sm:col-span-3 lg:col-span-2 flex flex-col gap-3">
+            <a
+              href="/"
+              data-lang={lang}
+              aria-label="Sur Digital"
+              class="inline-flex w-fit"
+            >
+              <Image
+                src={Logo}
+                alt="Sur Digital"
+                widths={[128, 256]}
+                sizes="112px"
+                class="w-28 h-auto object-contain"
+              />
+            </a>
             <!-- Sin opacidad: el blanco al 80 % sobre el azul de marca se queda en
                  ~3,7:1 y no pasa AA. El blanco puro da 4,69:1. -->
             <p class="max-w-60 text-sm">{t.footer.strap}</p>
+            <p class="max-w-60 text-xs leading-relaxed">
+              {CONTACT.name} · {t.contact.role}
+            </p>
+            <ul class="flex items-center gap-2 pt-1">
+              <li>
+                <a
+                  href={CONTACT.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.footer.linkedin}
+                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
+                >
+                  <LinkedInIcon class="size-4" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href={CONTACT.maps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={CONTACT.address}
+                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
+                >
+                  <MapIcon class="size-4" />
+                </a>
+              </li>
+            </ul>
           </div>
-          {DATA.footer.map(({ title, items }) => (
-            <nav aria-label={title} class="flex flex-col">
-              <p class="pb-2 text-sm font-bold uppercase tracking-wide md:pb-3">
-                {title}
-              </p>
-              <ul class="flex flex-col gap-1 text-sm">
+          {DATA.footer.map((column) => {
+            const { title, items } = column;
+            const wide = "wide" in column && column.wide;
+            const split = "split" in column && column.split;
+            return (
+            <nav
+              aria-label={title}
+              class:list={["flex flex-col", wide && "col-span-2 sm:col-span-1"]}
+            >
+              <h2 class={headClass}>{title}</h2>
+              <ul
+                class:list={[
+                  "text-sm",
+                  split
+                    ? "grid grid-cols-2 gap-x-6 sm:flex sm:flex-col"
+                    : "flex flex-col",
+                ]}
+              >
                 {items.map((item) => {
                   const Icon = "icon" in item ? item.icon : null;
                   const href = "href" in item ? item.href : undefined;
@@ -180,24 +294,25 @@ const languageLinks = [
                 })}
               </ul>
             </nav>
-          ))}
+            );
+          })}
         </div>
       )
     }
     <div
-      class="flex flex-col items-center justify-center gap-1 border-t border-white/20 pt-4 text-sm sm:flex-row sm:gap-4"
+      class="flex flex-col items-center justify-center gap-2 border-t border-white/20 pt-5 text-sm sm:flex-row sm:justify-between sm:gap-6"
     >
-      <p>© {new Date().getFullYear()} Sur Digital - {t.footer.rights}</p>
-      <p class="flex justify-center gap-4">
+      <p>© {year} Sur Digital · {t.footer.rights}</p>
+      <p class="flex justify-center gap-5">
         <a
           href="/aviso-legal/"
           hreflang="es"
-          class="link link-hover inline-flex min-h-12 items-center px-1">{t.footer.legal}</a
+          class="link link-hover inline-flex min-h-12 items-center">{t.footer.legal}</a
         >
         <a
           href="/politica-privacidad/"
           hreflang="es"
-          class="link link-hover inline-flex min-h-12 items-center px-1">{t.footer.privacy}</a
+          class="link link-hover inline-flex min-h-12 items-center">{t.footer.privacy}</a
         >
       </p>
     </div>

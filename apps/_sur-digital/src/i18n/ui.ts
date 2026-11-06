@@ -38,6 +38,7 @@ export interface FooterStrings {
   strap: string;
   servicesHead: string;
   servicesAll: string;
+  companyHead: string;
   pricing: string;
   glossary: string;
   specialitiesAll: string;
@@ -111,6 +112,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       strap: "Webs rápidas para negocios de Málaga. Desde 0€, en menos de 7 días.",
       servicesHead: "Servicios",
       servicesAll: "Todos los servicios",
+      companyHead: "Empresa",
       pricing: "Precios y extras",
       glossary: "Glosario web",
       specialitiesAll: "Especialidades",
@@ -165,6 +167,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       strap: "Fast websites for businesses in Málaga. From €0, in under 7 days.",
       servicesHead: "Services",
       servicesAll: "All services",
+      companyHead: "Company",
       pricing: "Pricing and extras",
       glossary: "Web glossary",
       specialitiesAll: "Sectors",
@@ -220,6 +223,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       strap: "Schnelle Websites für Unternehmen in Málaga. Ab 0 €, in unter 7 Tagen.",
       servicesHead: "Leistungen",
       servicesAll: "Alle Leistungen",
+      companyHead: "Unternehmen",
       pricing: "Preise und Extras",
       glossary: "Web-Glossar",
       specialitiesAll: "Branchen",
@@ -274,6 +278,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       strap: "Des sites rapides pour les entreprises de Málaga. Dès 0 €, en moins de 7 jours.",
       servicesHead: "Services",
       servicesAll: "Tous les services",
+      companyHead: "Entreprise",
       pricing: "Tarifs et options",
       glossary: "Glossaire web",
       specialitiesAll: "Secteurs",
@@ -328,6 +333,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       strap: "Sites rápidos para negócios em Málaga. Desde 0 €, em menos de 7 dias.",
       servicesHead: "Serviços",
       servicesAll: "Todos os serviços",
+      companyHead: "Empresa",
       pricing: "Preços e extras",
       glossary: "Glossário web",
       specialitiesAll: "Setores",
@@ -382,6 +388,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       strap: "Быстрые сайты для бизнеса в Малаге. От 0 €, меньше чем за 7 дней.",
       servicesHead: "Услуги",
       servicesAll: "Все услуги",
+      companyHead: "Компания",
       pricing: "Цены и дополнения",
       glossary: "Словарь терминов",
       specialitiesAll: "Сферы",
