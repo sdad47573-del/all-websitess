@@ -111,6 +111,7 @@ const defaultPlanIndex = Math.max(
                 type="checkbox"
                 name="addon"
                 data-amount={idiomaExtra}
+                data-label="Segundo idioma"
                 class="checkbox checkbox-secondary checkbox-sm mt-1 shrink-0"
               />
               <span>
@@ -127,6 +128,7 @@ const defaultPlanIndex = Math.max(
                 type="checkbox"
                 name="addon"
                 data-amount={logoExtra}
+                data-label="Logo e identidad básica"
                 class="checkbox checkbox-secondary checkbox-sm mt-1 shrink-0"
               />
               <span>
@@ -143,6 +145,7 @@ const defaultPlanIndex = Math.max(
                 type="checkbox"
                 name="addon"
                 data-amount={mantenimientoExtra}
+                data-label="Mantenimiento mensual"
                 data-monthly="true"
                 class="checkbox checkbox-secondary checkbox-sm mt-1 shrink-0"
               />
@@ -159,12 +162,39 @@ const defaultPlanIndex = Math.max(
 
         <div class="divider my-0"></div>
 
-        <div class="text-center" aria-live="polite">
+        <div class="text-center">
+          <!-- Desglose de lo marcado. Se rellena con JS; sin JS queda oculto y
+               el total inicial sigue siendo el del plan preseleccionado. -->
+          <ul
+            id="calc-breakdown"
+            class="mx-auto mb-4 max-w-sm space-y-1 text-start text-sm text-base-content/70"
+            hidden
+          ></ul>
           <p class="text-sm text-base-content/60">Estimación orientativa</p>
-          <p id="calc-total" class="text-4xl md:text-5xl font-black">
+          <!-- aria-live aquí y no en el contenedor: así solo se anuncia el
+               importe cuando cambia, no el desglose entero en cada pulsación. -->
+          <p
+            id="calc-total"
+            class="text-4xl md:text-5xl font-black"
+            aria-live="polite"
+          >
             {DATA.plans[defaultPlanIndex].price}€
           </p>
           <p id="calc-monthly" class="h-5 text-sm font-bold text-secondary"></p>
+          <button
+            type="button"
+            id="calc-copy"
+            class="btn btn-outline btn-sm mt-4"
+            aria-describedby="calc-copy-status"
+          >
+            Copiar resumen
+          </button>
+          <p
+            id="calc-copy-status"
+            role="status"
+            aria-live="polite"
+            class="mt-2 min-h-4 text-xs text-base-content/60"
+          ></p>
         </div>
 
         <a
@@ -187,6 +217,10 @@ const defaultPlanIndex = Math.max(
 </section>
 
 <script>
+  // El cálculo vive en src/lib/presupuesto.ts, sin DOM, para poder probarlo con
+  // `bun test` (ver tests/presupuesto.test.ts). Aquí solo se pinta el resultado.
+  import { buildQuote, formatEuros } from "../lib/presupuesto";
+
   const calc = document.getElementById("calc");
 
   if (calc) {
@@ -202,37 +236,78 @@ const defaultPlanIndex = Math.max(
     );
     const totalEl = calc.querySelector<HTMLElement>("#calc-total");
     const monthlyEl = calc.querySelector<HTMLElement>("#calc-monthly");
+    const breakdownEl = calc.querySelector<HTMLElement>("#calc-breakdown");
+    const copyButton = calc.querySelector<HTMLButtonElement>("#calc-copy");
+    const copyStatus = calc.querySelector<HTMLElement>("#calc-copy-status");
+
+    // Resumen en texto plano listo para pegar en el mensaje de LinkedIn: el CTA
+    // solo lleva al perfil, así que sin esto hay que reescribir a mano lo que
+    // se acaba de marcar.
+    let summary = "";
 
     function update() {
-      const plan = root.querySelector<HTMLInputElement>(
+      const planInput = root.querySelector<HTMLInputElement>(
         'input[name="plan"]:checked'
       );
-      let total = Number(plan?.dataset.amount ?? 0);
-      let monthly = 0;
+      // Todo el cálculo (plan, páginas extra, extras y resumen) está en
+      // src/lib/presupuesto.ts: aquí solo se traduce el formulario a datos.
+      const quote = buildQuote({
+        plan: planInput
+          ? {
+              name: planInput.value,
+              price: Number(planInput.dataset.amount ?? 0),
+            }
+          : null,
+        extraPages: Number(pages?.value ?? 0),
+        extraPagePrice: pagePrice,
+        addons: [...addons]
+          .filter((addon) => addon.checked)
+          .map((addon) => ({
+            name: addon.dataset.label ?? "Extra",
+            amount: Number(addon.dataset.amount ?? 0),
+            monthly: addon.dataset.monthly === "true",
+          })),
+      });
 
-      // Las páginas extra solo tienen sentido a partir del plan de pago
-      const pagesAllowed = plan?.dataset.pages === "true";
       if (pages) {
-        pages.disabled = !pagesAllowed;
-        if (!pagesAllowed) pages.value = "0";
-        total += Number(pages.value) * pagePrice;
+        pages.disabled = !quote.pagesAllowed;
+        // El módulo acota el valor (0–10 y entero): se refleja en el campo para
+        // que lo que se ve sea exactamente lo que se cobra.
+        const value = String(quote.extraPages);
+        if (pages.value !== value) pages.value = value;
       }
       if (pagesField) {
-        pagesField.classList.toggle("opacity-40", !pagesAllowed);
+        pagesField.classList.toggle("opacity-40", !quote.pagesAllowed);
       }
 
-      for (const addon of addons) {
-        if (!addon.checked) continue;
-        const amount = Number(addon.dataset.amount ?? 0);
-        if (addon.dataset.monthly === "true") monthly += amount;
-        else total += amount;
-      }
-
-      if (totalEl) totalEl.textContent = `${total}€`;
+      if (totalEl) totalEl.textContent = formatEuros(quote.total);
       if (monthlyEl) {
         monthlyEl.textContent =
-          monthly > 0 ? `+ ${monthly}€/mes de mantenimiento` : "";
+          quote.monthly > 0
+            ? `+ ${formatEuros(quote.monthly)}/mes de mantenimiento`
+            : "";
       }
+
+      if (breakdownEl) {
+        breakdownEl.replaceChildren(
+          ...quote.lines.map((line) => {
+            const item = document.createElement("li");
+            item.className =
+              "flex items-baseline justify-between gap-4 border-b border-base-300/60 pb-1 last:border-0 last:pb-0";
+            const name = document.createElement("span");
+            name.textContent = line.label;
+            const value = document.createElement("span");
+            value.className = "font-bold whitespace-nowrap";
+            value.textContent = line.value;
+            item.append(name, value);
+            return item;
+          })
+        );
+        // Con un solo concepto el total ya lo dice todo: la lista sobra.
+        breakdownEl.hidden = quote.lines.length <= 1;
+      }
+
+      summary = quote.summary;
     }
 
     for (const input of [...plans, ...addons, pages]) {
@@ -240,5 +315,42 @@ const defaultPlanIndex = Math.max(
       input?.addEventListener("change", update);
     }
     update();
+
+    // Copiar el resumen. Clipboard API cuando existe; si no (HTTP o navegador
+    // antiguo), el textarea temporal de siempre. El botón confirma durante unos
+    // segundos y el cambio se anuncia por el role="status" del texto de estado.
+    copyButton?.addEventListener("click", async () => {
+      const reset = () => {
+        copyButton.textContent = "Copiar resumen";
+        if (copyStatus) copyStatus.textContent = "";
+      };
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(summary);
+        } else {
+          const area = document.createElement("textarea");
+          area.value = summary;
+          area.setAttribute("readonly", "");
+          area.className = "sr-only";
+          root.append(area);
+          area.select();
+          const copied = document.execCommand("copy");
+          area.remove();
+          if (!copied) throw new Error("No se ha podido copiar");
+        }
+        copyButton.textContent = "Copiado ✓";
+        if (copyStatus) {
+          copyStatus.textContent =
+            "Resumen copiado. Pégalo en tu mensaje de LinkedIn.";
+        }
+        window.setTimeout(reset, 3000);
+      } catch {
+        if (copyStatus) {
+          copyStatus.textContent =
+            "No se ha podido copiar automáticamente. Selecciona el resumen y cópialo a mano.";
+        }
+      }
+    });
   }
 </script>
