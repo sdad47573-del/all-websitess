@@ -304,6 +304,37 @@ export async function ensureAdmin(
 	return { created: true, password, user: toPublicUser(user) };
 }
 
+export const DEV_USERNAME = "dev";
+const DEV_USER_ID = "dev-local";
+
+/**
+ * Usuario del botón de acceso directo en desarrollo. La contraseña es aleatoria
+ * y no se guarda: solo se entra por la sesión que firma el servidor en modo dev.
+ * Es admin para no tener que cambiar de cuenta mientras se prueba el panel.
+ */
+export async function ensureDevUser(dir = defaultAuthDir()): Promise<StoredUser> {
+	const users = readUsers(dir);
+	const existing = users.find((user) => user.id === DEV_USER_ID);
+	if (existing) return existing;
+
+	if (users.some((user) => user.username === DEV_USERNAME)) {
+		throw new Error(`Ya existe un usuario «${DEV_USERNAME}» que no es el de desarrollo.`);
+	}
+
+	const user: StoredUser = {
+		id: DEV_USER_ID,
+		username: DEV_USERNAME,
+		name: "Dev",
+		role: "admin",
+		passwordHash: await hashPassword(randomBytes(24).toString("base64url")),
+		tokenVersion: 1,
+		createdAt: Date.now(),
+	};
+
+	writeUsers(dir, [...users, user]);
+	return user;
+}
+
 function sessionSecret(dir: string): string {
 	const file = secretPath(dir);
 	if (existsSync(file)) {

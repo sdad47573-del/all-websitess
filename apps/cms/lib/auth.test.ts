@@ -8,6 +8,7 @@ import {
 	createUser,
 	deleteUser,
 	ensureAdmin,
+	ensureDevUser,
 	listUsers,
 	readSession,
 	signSession,
@@ -102,6 +103,31 @@ describe("usuarios y contraseñas", () => {
 			await updateUser(admin.id, { role: "admin" }, dir);
 			deleteUser(second.id, dir);
 			expect(listUsers(dir)).toHaveLength(1);
+		});
+	});
+});
+
+describe("usuario de desarrollo", () => {
+	test("se crea una sola vez, es admin y no tiene contraseña usable", async () => {
+		await withAuth(async (dir) => {
+			const user = await ensureDevUser(dir);
+			expect(user.username).toBe("dev");
+			expect(user.role).toBe("admin");
+			expect(can(user.role, "editCode")).toBe(true);
+
+			expect((await ensureDevUser(dir)).id).toBe(user.id);
+			expect(listUsers(dir)).toHaveLength(1);
+
+			// La contraseña es aleatoria y no se guarda: el formulario no sirve.
+			expect(await authenticate("dev", "dev", dir)).toBeNull();
+			expect(await authenticate("dev", "", dir)).toBeNull();
+		});
+	});
+
+	test("no se apropia de un usuario «dev» creado a mano", async () => {
+		await withAuth(async (dir) => {
+			await createUser({ username: "dev", password: PASSWORD, role: "editor" }, dir);
+			await expect(ensureDevUser(dir)).rejects.toThrow(/ya existe/i);
 		});
 	});
 });

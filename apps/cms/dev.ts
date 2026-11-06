@@ -4,6 +4,8 @@
  */
 const api = Bun.spawn(["bun", "--watch", "server.ts"], {
 	cwd: import.meta.dir,
+	// Habilita el botón de acceso directo: con `bun run start` no existe.
+	env: { ...process.env, CMS_DEV_MODE: "1" },
 	stdout: "inherit",
 	stderr: "inherit",
 });

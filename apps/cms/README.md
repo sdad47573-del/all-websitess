@@ -26,6 +26,12 @@ contraseña; si no, genera una y la imprime en la consola **una sola vez**.
 CMS_ADMIN_PASSWORD='mi-clave-larga' bun run dev
 ```
 
+En desarrollo el login muestra además un botón **Entrar como dev**: crea (o
+reutiliza) el usuario `dev`, admin, y abre sesión sin contraseña. Ese usuario
+tiene una contraseña aleatoria que no se guarda, así que solo se entra por el
+botón. La ruta `/api/auth/dev` solo existe con `bun run dev`; con
+`bun run start` responde 404 y el botón no aparece.
+
 Los usuarios viven en `apps/cms/.auth/users.json` con la contraseña hasheada
 (argon2id, nunca en claro) y el secreto que firma la sesión en
 `apps/cms/.auth/secret`. La cookie es `HttpOnly`, `SameSite=Strict` y dura 7
@@ -43,11 +49,19 @@ Sigue escuchando solo en `127.0.0.1`: el login protege el panel, no lo publica.
 
 ## Qué se gestiona
 
-Cada web tiene cinco pestañas:
+Cada web tiene estas pestañas:
 
 - **Vista previa**: iframe con el prerender real de `dist/`, con ancho de
 escritorio, tablet o móvil, recarga y apertura en pestaña nueva. Si la web no
 se ha construido, avisa con el comando y enlaza a la versión publicada.
+- **Secciones** (pestaña de inicio): las piezas de la portada en orden. Se selecciona una en la
+  lista y se rellenan sus campos a la derecha (título, entradilla, párrafos,
+  fotos, botones, preguntas…), con subir/bajar y quitar. «Añadir pieza» suma
+  bloques de texto, destacados, preguntas o llamada a la acción al final. Se
+  guarda en `src/data/secciones.json`; la página los pinta con el componente
+  `<Secciones>`. Solo aparece para las webs que ya usan ese fichero; en el
+  resto se explica cómo activarlo. Los enlaces admiten atajos
+  `maps:place`, `maps:directions` y `maps:streetView`.
 - **Datos**: nombre, lema, teléfono, calle, código postal, ciudad y URL canónica.
   Se escribe solo el literal que cambia dentro de `BUSINESS`.
 - **Mapas**: latitud y longitud (`BUSINESS.geo`), con vista previa del mapa y
@@ -57,9 +71,11 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
   plantilla se usa cada archivo. Permite subir una imagen nueva, reemplazar una
   existente conservando el nombre y borrar solo las que no referencia ninguna
   plantilla. Formatos: jpg, png, webp, avif, gif y svg (máx. 15 MB).
-- **Layout y código**: editor de las plantillas, datos y estilos de la web
+- **Código (avanzado)**: editor de las plantillas, datos y estilos de la web
   (`.astro`, `.ts`, `.css`, `.md`, `.json`), con lista de ficheros, guardado
-  (también con Ctrl/⌘ + S) e historial.
+  (también con Ctrl/⌘ + S) e historial. En las webs con piezas no aparece como
+  pestaña: se llega desde «Editar código de la plantilla», al final de
+  Secciones, y hay un botón para volver a la edición visual.
 - **Tienda**: catálogo de productos por web (precio, stock, imagen y
   visibilidad) y publicación de `src/pages/tienda.astro`. La página usa el
   componente compartido `LocalShop`: carrito en el navegador y pedido por
@@ -123,6 +139,9 @@ filtrar por legales pendientes y por webs sin fotos, y ordenar por A–Z, por
   no queda como se esperaba, restaura el original.
 - **Plantillas**: escritura atómica, acotada a `src/`, con extensiones y tamaño
   máximos. El panel no compila: un error de sintaxis se detecta al hacer build.
+- **Piezas de portada**: se validan enteras (ids únicos, tipos y campos
+  permitidos, imágenes existentes, URLs con esquema permitido, longitudes),
+  se escriben de forma atómica y la versión anterior va al historial.
 - **Historial**: copia del contenido anterior antes de cada escritura, con
   rotación a 20 versiones por fichero.
 - **Imágenes**: nombre normalizado (minúsculas y guiones), escritura atómica y
@@ -136,6 +155,7 @@ filtrar por legales pendientes y por webs sin fotos, y ordenar por A–Z, por
   `/api` a este servidor.
 - `lib/sites.ts`: escaneo, parseo y escritura de `site.ts` (datos y geo).
 - `lib/files.ts`: plantillas e imágenes, con todas las guardas de rutas.
+- `lib/sections.ts`: validación y escritura de las piezas de portada.
 - Los tests de ambos módulos corren con `bun test`.
 
 ## Qué no hace
@@ -149,6 +169,8 @@ filtrar por legales pendientes y por webs sin fotos, y ordenar por A–Z, por
   lo que esa plantilla no declara.
 - No hay registro público ni recuperación de contraseña por email: las cuentas
   se crean y se restablecen desde `/usuarios`.
+- El usuario `dev` y su botón son solo de desarrollo: no existen con
+  `bun run start` y no deben usarse en una instalación real.
 - Los roles son globales, no por web, y el historial no anota quién hizo cada
   cambio.
 - La tienda no tiene pasarela de pago ni pedidos en servidor: el encargo se

@@ -3,6 +3,8 @@ import type {
 	EditableField,
 	MediaItem,
 	Role,
+	Section,
+	SectionFile,
 	SeoAudit,
 	Shop,
 	Site,
@@ -157,6 +159,22 @@ export async function writeFile(slug: string, path: string, content: string): Pr
 	if (!response.ok) throw new Error(await readError(response));
 }
 
+export async function fetchSections(slug: string): Promise<SectionFile | null> {
+	const response = await fetch(`/api/sites/${slug}/secciones`);
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { secciones: SectionFile | null }).secciones;
+}
+
+export async function saveSections(slug: string, secciones: Section[]): Promise<SectionFile> {
+	const response = await fetch(`/api/sites/${slug}/secciones`, {
+		method: "PUT",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({ secciones }),
+	});
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { secciones: SectionFile }).secciones;
+}
+
 export async function fetchMe(): Promise<AuthUser | null> {
 	const response = await fetch("/api/auth/me");
 	if (response.status === 401) return null;
@@ -170,6 +188,18 @@ export async function loginUser(username: string, password: string): Promise<Aut
 		headers: { "content-type": "application/json" },
 		body: JSON.stringify({ username, password }),
 	});
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { user: AuthUser }).user;
+}
+
+export async function fetchDevAccess(): Promise<boolean> {
+	const response = await fetch("/api/auth/dev");
+	if (!response.ok) return false;
+	return ((await response.json()) as { enabled: boolean }).enabled;
+}
+
+export async function loginDev(): Promise<AuthUser> {
+	const response = await fetch("/api/auth/dev", { method: "POST" });
 	if (!response.ok) throw new Error(await readError(response));
 	return ((await response.json()) as { user: AuthUser }).user;
 }

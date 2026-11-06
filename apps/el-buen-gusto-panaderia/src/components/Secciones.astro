@@ -1,0 +1,245 @@
+---
+import type { ImageMetadata } from 'astro';
+import { LocalAbout, LocalFaq, LocalGallery, LocalHero, LocalVisit } from '@astro-components';
+import { BUSINESS, HOURS, MAPS } from '../data/site';
+
+interface Enlace {
+	texto: string;
+	href: string;
+	externo?: boolean;
+	primario?: boolean;
+}
+
+interface Seccion {
+	id: string;
+	tipo: string;
+	visible?: boolean;
+	etiqueta?: string;
+	titulo?: string;
+	texto?: string;
+	nota?: string;
+	notaHorario?: string;
+	pieFoto?: string;
+	distintivo?: string;
+	mapaEtiqueta?: string;
+	imagen?: string;
+	imagenAlt?: string;
+	boton?: Enlace;
+	botonSecundario?: Enlace;
+	enlaceGaleria?: Enlace;
+	datos?: { etiqueta: string; html: string }[];
+	parrafos?: string[];
+	enlaces?: Enlace[];
+	items?: { titulo: string; texto: string }[];
+	fotos?: { imagen: string; alt: string }[];
+	preguntas?: { pregunta: string; respuesta: string }[];
+}
+
+interface Props {
+	secciones: Seccion[];
+	fotos: Record<string, ImageMetadata>;
+}
+
+const { secciones, fotos } = Astro.props;
+
+// Los enlaces del JSON pueden apuntar a la ficha, a las indicaciones o a
+// Street View con `maps:clave`; así el panel no obliga a pegar URLs enormes.
+const destino = (href: string) =>
+	href.startsWith('maps:') ? (MAPS as Record<string, string>)[href.slice(5)] ?? '#' : href;
+
+const enlace = (item: Enlace) => ({
+	label: item.texto,
+	href: destino(item.href),
+	external: item.externo ?? item.href.startsWith('maps:'),
+});
+
+const foto = (nombre?: string) =>
+	(nombre ? fotos[nombre] : undefined) ?? Object.values(fotos)[0];
+
+const visibles = secciones.filter((seccion) => seccion.visible !== false);
+---
+
+{
+	visibles.map((seccion) => {
+		switch (seccion.tipo) {
+			case 'hero':
+				return (
+					<LocalHero
+						eyebrow={seccion.etiqueta ?? ''}
+						title={seccion.titulo ?? ''}
+						lede={seccion.texto ?? ''}
+						image={foto(seccion.imagen)}
+						imageAlt={seccion.imagenAlt ?? ''}
+						primaryCta={
+							seccion.boton
+								? enlace(seccion.boton)
+								: { label: 'Cómo llegar', href: MAPS.directions }
+						}
+						secondaryCta={
+							seccion.botonSecundario
+								? enlace(seccion.botonSecundario)
+								: { label: 'Ficha y fotos en Google', href: MAPS.place, external: true }
+						}
+						facts={(seccion.datos ?? []).map((dato) => ({
+							label: dato.etiqueta,
+							html: dato.html,
+						}))}
+						galleryHref={seccion.enlaceGaleria ? destino(seccion.enlaceGaleria.href) : MAPS.streetView}
+						photoCredit={seccion.pieFoto}
+						galleryLinkLabel={seccion.enlaceGaleria?.texto}
+						tag={seccion.distintivo}
+					/>
+				);
+
+			case 'about':
+				return (
+					<LocalAbout
+						label={seccion.etiqueta ?? ''}
+						title={seccion.titulo ?? ''}
+						paragraphs={seccion.parrafos ?? []}
+						note={seccion.nota}
+						links={(seccion.enlaces ?? []).map(enlace)}
+					/>
+				);
+
+			case 'destacados':
+				return (
+					<section class="three section-pad" id={seccion.id} aria-labelledby={`${seccion.id}-title`}>
+						<div class="wrap">
+							<div class="three-head">
+								<p class="eyebrow">
+									<span aria-hidden="true" /> {seccion.etiqueta}
+								</p>
+								<h2 id={`${seccion.id}-title`} set:html={seccion.titulo} />
+							</div>
+							<div class="three-grid">
+								{(seccion.items ?? []).map((item, index) => (
+									<article class="three-card">
+										<span class="three-num" aria-hidden="true">
+											{String(index + 1).padStart(2, '0')}
+										</span>
+										<h3>{item.titulo}</h3>
+										<p>{item.texto}</p>
+									</article>
+								))}
+							</div>
+						</div>
+					</section>
+				);
+
+			case 'galeria':
+				return (
+					<LocalGallery
+						eyebrow={seccion.etiqueta ?? ''}
+						title={seccion.titulo ?? ''}
+						description={seccion.texto ?? ''}
+						images={(seccion.fotos ?? []).map((item) => ({
+							src: foto(item.imagen),
+							alt: item.alt,
+						}))}
+						cta={
+							seccion.boton
+								? enlace(seccion.boton)
+								: { label: 'Ver todas en Google', href: MAPS.place }
+						}
+						note={seccion.nota ?? ''}
+					/>
+				);
+
+			case 'visita':
+				return (
+					<LocalVisit
+						eyebrow={seccion.etiqueta ?? ''}
+						title={seccion.titulo ?? ''}
+						addressLines={[
+							BUSINESS.street,
+							`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+						]}
+						hours={HOURS}
+						hoursCaption="Horario no publicado en Google"
+						hoursNote={seccion.notaHorario ?? ''}
+						mapTitle={`Mapa de ${BUSINESS.name} en ${BUSINESS.district}, ${BUSINESS.city}`}
+						mapEmbedUrl={MAPS.embed}
+						mapLabel={seccion.mapaEtiqueta ?? `${BUSINESS.name} · ${BUSINESS.street}`}
+						mapHref={MAPS.place}
+						links={(seccion.enlaces ?? []).map((item) => ({
+							...enlace(item),
+							variant: item.primario ? ('primary' as const) : ('ghost' as const),
+						}))}
+						contactLink={{ label: 'Ver la ficha en Google ↗', href: MAPS.place, external: true }}
+						reserveNote={seccion.nota ?? ''}
+					/>
+				);
+
+			case 'faq':
+				return (
+					<LocalFaq
+						eyebrow={seccion.etiqueta}
+						title={seccion.titulo}
+						items={(seccion.preguntas ?? []).map((item) => ({
+							q: item.pregunta,
+							a: item.respuesta,
+						}))}
+					/>
+				);
+
+			case 'texto':
+				return (
+					<section class="about section-pad wrap" id={seccion.id}>
+						<p class="section-label">
+							<span aria-hidden="true" /> {seccion.etiqueta}
+						</p>
+						<div class="about-grid">
+							<h2 set:html={seccion.titulo} />
+							<div class="about-copy">
+								{(seccion.parrafos ?? []).map((parrafo) => (
+									<p>{parrafo}</p>
+								))}
+								{(seccion.enlaces ?? []).length > 0 && (
+									<div class="about-links">
+										{(seccion.enlaces ?? []).map((item) => (
+											<a
+												class="simple-link"
+												href={destino(item.href)}
+												target={item.externo ? '_blank' : undefined}
+												rel={item.externo ? 'noreferrer' : undefined}
+											>
+												{item.texto} {item.externo && <span aria-hidden="true">↗</span>}
+											</a>
+										))}
+									</div>
+								)}
+							</div>
+						</div>
+					</section>
+				);
+
+			case 'cta':
+				return (
+					<section class="about section-pad wrap" id={seccion.id}>
+						<div class="about-grid">
+							<h2 set:html={seccion.titulo} />
+							<div class="about-copy">
+								<p>{seccion.texto}</p>
+								<div class="about-links">
+									{seccion.boton && (
+										<a
+											class="button button-primary"
+											href={destino(seccion.boton.href)}
+											target={seccion.boton.externo ? '_blank' : undefined}
+											rel={seccion.boton.externo ? 'noreferrer' : undefined}
+										>
+											{seccion.boton.texto}
+										</a>
+									)}
+								</div>
+							</div>
+						</div>
+					</section>
+				);
+
+			default:
+				return null;
+		}
+	})
+}

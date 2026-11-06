@@ -14,6 +14,8 @@
  *   GET    /api/sites/:slug/files            árbol de plantillas
  *   GET    /api/sites/:slug/files?path=…     contenido de una plantilla
  *   PUT    /api/sites/:slug/files            guarda una plantilla
+ *   GET    /api/sites/:slug/secciones        piezas de la portada
+ *   PUT    /api/sites/:slug/secciones        guarda las piezas ordenadas
  *   GET    /api/sites/:slug/media            imágenes y en qué plantilla se usan
  *   GET    /api/sites/:slug/media/:name      bytes de una imagen
  *   POST   /api/sites/:slug/media            sube o reemplaza una imagen
@@ -36,6 +38,7 @@ import {
 	writeSourceFile,
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
+import { readSections, saveSections } from "./lib/sections";
 import {
 	type Capability,
 	type Role,
@@ -46,6 +49,7 @@ import {
 	createUser,
 	deleteUser,
 	ensureAdmin,
+	ensureDevUser,
 	listUsers,
 	sessionCookie,
 	signSession,
@@ -66,6 +70,9 @@ import { auditSeo } from "./lib/seo";
 import { readFileSync } from "node:fs";
 
 const PORT = Number(process.env.PORT ?? 4400);
+// Solo `bun run dev` levanta la API con acceso directo; con `bun run start`
+// (build servido) la ruta no existe y el botón no aparece en el login.
+const DEV_MODE = process.env.CMS_DEV_MODE === "1";
 const DIST = new URL("./dist/", import.meta.url);
 
 const LABELS: Record<EditableField, string> = {
@@ -128,8 +135,22 @@ async function siteRoute(
 	if (rest.length === 0) {
 		if (!site) return json({ error: "No existe ninguna web con ese slug" }, 404);
 		if (request.method === "GET") {
+			// Una web con piezas se edita visualmente: el código queda como acceso
+			// avanzado dentro de Secciones. Un JSON roto no debe esconderlo.
+			const hasSections = (() => {
+				try {
+					return readSections(site.slug) !== null;
+				} catch {
+					return false;
+				}
+			})();
 			return json({
-				site: { ...site, hasBuild: hasBuild(site.slug), hasOg: ogImage(site.slug) !== null },
+				site: {
+					...site,
+					hasBuild: hasBuild(site.slug),
+					hasOg: ogImage(site.slug) !== null,
+					hasSections,
+				},
 			});
 		}
 		if (request.method !== "PATCH") return json({ error: "Método no permitido" }, 405);
@@ -248,6 +269,34 @@ async function siteRoute(
 				// writeSourceFile guarda a su vez la versión actual antes de escribir.
 				writeSourceFile(site.slug, path, readSnapshot(site.slug, path, id));
 				return json({ ok: true });
+			}
+
+			return json({ error: "Método no permitido" }, 405);
+		} catch (error) {
+			return errorResponse(error);
+		}
+	}
+
+	if (rest[0] === "secciones") {
+		try {
+			if (rest.length !== 1) return json({ error: "Ruta no encontrada" }, 404);
+
+			if (request.method === "GET") {
+				return json({ secciones: readSections(site.slug) });
+			}
+
+			if (request.method === "PUT") {
+				const denied = deny(role, "editContent");
+				if (denied) return denied;
+
+				let payload: unknown;
+				try {
+					payload = await request.json();
+				} catch {
+					return json({ error: "El cuerpo debe ser JSON" }, 400);
+				}
+
+				return json({ ok: true, secciones: saveSections(site.slug, payload) });
 			}
 
 			return json({ error: "Método no permitido" }, 405);
@@ -412,6 +461,25 @@ async function authRoute(request: Request, url: URL): Promise<Response> {
 	if (action === "logout") {
 		if (request.method !== "POST") return json({ error: "Método no permitido" }, 405);
 		return json({ ok: true }, 200, { "set-cookie": clearedSessionCookie() });
+	}
+
+	// Atajo de desarrollo: entra como «dev» sin contraseña. Fuera de `bun run
+	// dev` responde 404 para que no se pueda usar en el build servido.
+	if (action === "dev") {
+		if (!DEV_MODE) return json({ error: "Ruta no encontrada" }, 404);
+		if (request.method === "GET") return json({ enabled: true, username: "dev" });
+		if (request.method !== "POST") return json({ error: "Método no permitido" }, 405);
+
+		try {
+			const user = await ensureDevUser();
+			return json(
+				{ user: toPublicUser(user) },
+				200,
+				{ "set-cookie": sessionCookie(signSession(user)) },
+			);
+		} catch (error) {
+			return errorResponse(error);
+		}
 	}
 
 	return json({ error: "Ruta no encontrada" }, 404);
@@ -586,6 +654,8 @@ async function previewPage(pathname: string): Promise<Response> {
 
 	return new Response(Bun.file(target.file), { headers: { "cache-control": "no-store" } });
 }
+
+if (DEV_MODE) console.log("Acceso directo de desarrollo activo (usuario «dev»).");
 
 const admin = await ensureAdmin(undefined, {
 	username: process.env.CMS_ADMIN_USER,

@@ -1,4 +1,4 @@
-import { createResource, createSignal, For, Show } from "solid-js";
+import { createEffect, createResource, createSignal, For, Show } from "solid-js";
 import { fetchSite, generateOg, ogUrl } from "./api";
 import Shell from "./Shell";
 import { type AuthUser, hasCapability } from "./types";
@@ -7,29 +7,46 @@ import DataTab from "./tabs/DataTab";
 import MapTab from "./tabs/MapTab";
 import MediaTab from "./tabs/MediaTab";
 import PreviewTab from "./tabs/PreviewTab";
+import SectionsTab from "./tabs/SectionsTab";
 import SeoTab from "./tabs/SeoTab";
 import ShopTab from "./tabs/ShopTab";
 
-type Tab = "vista" | "datos" | "mapas" | "seo" | "imagenes" | "tienda" | "codigo";
+type Tab =
+	| "vista"
+	| "secciones"
+	| "datos"
+	| "mapas"
+	| "seo"
+	| "imagenes"
+	| "tienda"
+	| "codigo";
 
 const ALL_TABS: Array<{ id: Tab; label: string }> = [
+	{ id: "secciones", label: "Secciones" },
 	{ id: "vista", label: "Vista previa" },
 	{ id: "datos", label: "Datos" },
 	{ id: "mapas", label: "Mapas" },
 	{ id: "seo", label: "SEO y compartir" },
 	{ id: "imagenes", label: "Imágenes" },
 	{ id: "tienda", label: "Tienda" },
-	{ id: "codigo", label: "Layout y código" },
+	// El código queda al final y marcado como avanzado: el camino normal es
+	// editar las piezas con inputs.
+	{ id: "codigo", label: "Código (avanzado)" },
 ];
 
 export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 	const canEditCode = () => hasCapability(props.user, "editCode");
-	const tabs = () => ALL_TABS.filter((item) => item.id !== "codigo" || canEditCode());
-
 	const [site, { refetch }] = createResource(() => props.slug, fetchSite);
+
+	// En las webs con piezas el editor de código no es una pestaña: queda detrás
+	// de «Editar código», dentro de Secciones, para no confundir el camino normal.
+	const tabs = () =>
+		ALL_TABS.filter(
+			(item) => item.id !== "codigo" || (canEditCode() && !site()?.hasSections),
+		);
 	const requested = window.location.hash.replace("#", "") as Tab;
 	const [tab, setTab] = createSignal<Tab>(
-		tabs().some((item) => item.id === requested) ? requested : "vista",
+		tabs().some((item) => item.id === requested) ? requested : "secciones",
 	);
 
 	// La pestaña activa va en la URL: recargar o volver atrás mantiene el sitio
@@ -38,6 +55,15 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 		setTab(id);
 		window.history.replaceState(null, "", `#${id}`);
 	};
+
+	// Si se llega con un #codigo antiguo a una web con piezas, se abre la
+	// edición visual. Solo se corrige una vez, al cargar la ficha.
+	let normalized = false;
+	createEffect(() => {
+		if (!site() || normalized) return;
+		normalized = true;
+		if (!tabs().some((item) => item.id === tab())) selectTab("secciones");
+	});
 
 	const [ogVersion, setOgVersion] = createSignal(0);
 	const [ogState, setOgState] = createSignal<boolean | null>(null);
@@ -158,6 +184,13 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 							<Show when={tab() === "vista"}>
 								<PreviewTab site={current()} />
 							</Show>
+							<Show when={tab() === "secciones"}>
+								<SectionsTab
+									site={current()}
+									onSaved={refetch}
+									onEditCode={canEditCode() ? () => selectTab("codigo") : undefined}
+								/>
+							</Show>
 							<Show when={tab() === "datos"}>
 								<DataTab site={current()} onSaved={refetch} />
 							</Show>
@@ -174,6 +207,17 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 								<ShopTab site={current()} onSaved={refetch} />
 							</Show>
 							<Show when={tab() === "codigo" && canEditCode()}>
+								<p class="note code-advanced">
+									<button
+										type="button"
+										class="ghost-button"
+										onClick={() => selectTab("secciones")}
+									>
+										← Volver a la edición visual
+									</button>{" "}
+									Estás en el editor de código avanzado; los textos y las fotos se cambian en
+									«Secciones».
+								</p>
 								<CodeTab site={current()} onSaved={refetch} />
 							</Show>
 						</div>

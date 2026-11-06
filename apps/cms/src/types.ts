@@ -34,6 +34,8 @@ export interface Site {
 	hasBuild?: boolean;
 	/** Solo lo envía la ficha: la web ya tiene alguna imagen OG. */
 	hasOg?: boolean;
+	/** Solo lo envía la ficha: la web tiene `src/data/secciones.json`. */
+	hasSections?: boolean;
 	updatedAt: number;
 	editable: Record<EditableField, boolean>;
 }
@@ -117,6 +119,76 @@ export function hasCapability(
 ): boolean {
 	return user?.capabilities.includes(capability) ?? false;
 }
+
+export type SectionType =
+	| "hero"
+	| "about"
+	| "destacados"
+	| "galeria"
+	| "visita"
+	| "faq"
+	| "texto"
+	| "cta";
+
+export interface SectionLink {
+	texto: string;
+	href: string;
+	externo?: boolean;
+	primario?: boolean;
+}
+
+export interface Section {
+	id: string;
+	tipo: SectionType;
+	visible: boolean;
+	etiqueta?: string;
+	titulo: string;
+	texto?: string;
+	nota?: string;
+	notaHorario?: string;
+	pieFoto?: string;
+	distintivo?: string;
+	mapaEtiqueta?: string;
+	imagen?: string;
+	imagenAlt?: string;
+	boton?: SectionLink;
+	botonSecundario?: SectionLink;
+	enlaceGaleria?: SectionLink;
+	datos?: { etiqueta: string; html: string }[];
+	parrafos?: string[];
+	enlaces?: SectionLink[];
+	items?: { titulo: string; texto: string }[];
+	fotos?: { imagen: string; alt: string }[];
+	preguntas?: { pregunta: string; respuesta: string }[];
+}
+
+export interface SectionFile {
+	version: number;
+	secciones: Section[];
+}
+
+export const SECTION_LABELS: Record<SectionType, string> = {
+	hero: "Portada",
+	about: "La casa",
+	destacados: "Destacados",
+	galeria: "Galería",
+	visita: "Visítanos",
+	faq: "Preguntas frecuentes",
+	texto: "Texto libre",
+	cta: "Llamada a la acción",
+};
+
+/** Tipos que el panel puede añadir a una página ya montada. */
+export const SECTION_CATALOG: Array<{
+	tipo: SectionType;
+	label: string;
+	descripcion: string;
+}> = [
+	{ tipo: "texto", label: "Texto", descripcion: "Título y párrafos" },
+	{ tipo: "destacados", label: "Destacados", descripcion: "Puntos con título y texto" },
+	{ tipo: "faq", label: "Preguntas", descripcion: "Preguntas y respuestas" },
+	{ tipo: "cta", label: "Llamada a la acción", descripcion: "Texto y botón" },
+];
 
 export interface ShopProduct {
 	id: string;
