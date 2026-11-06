@@ -32,6 +32,8 @@ export interface Site {
 	hasLegalPage: boolean;
 	/** Solo lo envía la ficha: existe `dist/index.html` para la vista previa. */
 	hasBuild?: boolean;
+	/** Solo lo envía la ficha: la web ya tiene alguna imagen OG. */
+	hasOg?: boolean;
 	updatedAt: number;
 	editable: Record<EditableField, boolean>;
 }

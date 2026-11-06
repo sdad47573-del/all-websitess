@@ -9,6 +9,14 @@ export async function fetchSites(): Promise<Site[]> {
 
 export const ogUrl = (slug: string) => `/api/sites/${slug}/og`;
 
+export async function generateOg(
+	slug: string,
+): Promise<{ width: number; height: number; size: number }> {
+	const response = await fetch(ogUrl(slug), { method: "POST" });
+	if (!response.ok) throw new Error(await readError(response));
+	return (await response.json()) as { width: number; height: number; size: number };
+}
+
 export const previewUrl = (slug: string) => `/preview/${slug}/`;
 
 export async function fetchSite(slug: string): Promise<Site> {

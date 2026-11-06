@@ -7,6 +7,8 @@
  * Endpoints:
  *   GET    /api/sites                        listado completo
  *   GET    /api/sites/:slug                  ficha
+ *   POST   /api/sites/:slug/og               genera public/og.jpg de la web
+ *   GET    /api/sites/:slug/og               miniatura OG
  *   PATCH  /api/sites/:slug                  edita campos de BUSINESS (incl. geo)
  *   GET    /api/sites/:slug/files            árbol de plantillas
  *   GET    /api/sites/:slug/files?path=…     contenido de una plantilla
@@ -34,6 +36,7 @@ import {
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
 import { hasBuild, ogImage, resolvePreview, rewriteCss, rewriteHtml } from "./lib/preview";
+import { generateOgImage } from "./lib/og";
 import { readFileSync } from "node:fs";
 
 const PORT = Number(process.env.PORT ?? 4400);
@@ -62,7 +65,11 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 
 	if (rest.length === 0) {
 		if (!site) return json({ error: "No existe ninguna web con ese slug" }, 404);
-		if (request.method === "GET") return json({ site: { ...site, hasBuild: hasBuild(site.slug) } });
+		if (request.method === "GET") {
+			return json({
+				site: { ...site, hasBuild: hasBuild(site.slug), hasOg: ogImage(site.slug) !== null },
+			});
+		}
 		if (request.method !== "PATCH") return json({ error: "Método no permitido" }, 405);
 
 		let payload: { fields?: Record<string, unknown> };
@@ -123,11 +130,21 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 	}
 
 	if (rest[0] === "og") {
+		if (request.method === "POST") {
+			try {
+				const generated = await generateOgImage(site.slug);
+				return json({ ok: true, ...generated });
+			} catch (error) {
+				return errorResponse(error, 500);
+			}
+		}
+
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
 		const image = ogImage(site.slug);
 		if (!image) return json({ error: "Esta web no tiene imagen OG" }, 404);
 		return new Response(Bun.file(image), {
-			headers: { "cache-control": "public, max-age=3600" },
+			// Se regenera desde el panel: sin caché, el navegador enseñaría la anterior.
+			headers: { "cache-control": "no-store" },
 		});
 	}
 

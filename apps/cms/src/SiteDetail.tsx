@@ -1,5 +1,5 @@
 import { createResource, createSignal, For, Show } from "solid-js";
-import { fetchSite } from "./api";
+import { fetchSite, generateOg, ogUrl } from "./api";
 import Shell from "./Shell";
 import CodeTab from "./tabs/CodeTab";
 import DataTab from "./tabs/DataTab";
@@ -29,6 +29,33 @@ export default function SiteDetail(props: { slug: string }) {
 	const selectTab = (id: Tab) => {
 		setTab(id);
 		window.history.replaceState(null, "", `#${id}`);
+	};
+
+	const [ogVersion, setOgVersion] = createSignal(0);
+	const [ogState, setOgState] = createSignal<boolean | null>(null);
+	const [ogBusy, setOgBusy] = createSignal(false);
+	const [ogFlash, setOgFlash] = createSignal<{ kind: "ok" | "error"; text: string } | null>(null);
+
+	const generate = async (slug: string) => {
+		setOgBusy(true);
+		setOgFlash(null);
+		try {
+			const info = await generateOg(slug);
+			setOgState(true);
+			setOgVersion(ogVersion() + 1);
+			setOgFlash({
+				kind: "ok",
+				text: `Miniatura generada (${Math.max(1, Math.round(info.size / 1024))} KB).`,
+			});
+			await refetch();
+		} catch (error) {
+			setOgFlash({
+				kind: "error",
+				text: String(error instanceof Error ? error.message : error),
+			});
+		} finally {
+			setOgBusy(false);
+		}
 	};
 
 	return (
@@ -65,6 +92,40 @@ export default function SiteDetail(props: { slug: string }) {
 									{current().legalPending ? "legales pendientes" : "legales completos"}
 								</span>
 							</p>
+
+							<div class="og-card">
+								<Show
+									when={ogState() ?? current().hasOg}
+									fallback={<div class="og-placeholder">Sin miniatura</div>}
+								>
+									<img
+										class="og-thumb"
+										src={`${ogUrl(current().slug)}?v=${ogVersion()}`}
+										alt={`Miniatura OG de ${current().name}`}
+									/>
+								</Show>
+								<div class="og-actions">
+									<button
+										type="button"
+										disabled={ogBusy()}
+										onClick={() => void generate(current().slug)}
+									>
+										{ogBusy()
+											? "Generando…"
+											: (ogState() ?? current().hasOg)
+												? "Regenerar miniatura"
+												: "Generar miniatura"}
+									</button>
+									<span class="hint">1200 × 630 JPG · escribe public/og.jpg</span>
+									<Show when={ogFlash()}>
+										{(message) => (
+											<span classList={{ flash: true, [message().kind]: true }}>
+												{message().text}
+											</span>
+										)}
+									</Show>
+								</div>
+							</div>
 						</section>
 
 						<div class="tabs" role="tablist">

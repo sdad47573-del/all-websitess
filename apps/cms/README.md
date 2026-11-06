@@ -39,6 +39,13 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
 La pestaña activa queda en la URL (`#vista`, `#mapas`, `#imagenes`, `#codigo`),
 así que recargar o volver atrás mantiene el sitio donde estabas.
 
+### Miniatura OG
+
+La cabecera de cada ficha muestra su imagen Open Graph y un botón para generarla
+o regenerarla sin salir del panel. `POST /api/sites/<slug>/og` crea
+`public/og.jpg` (1200×630) con la plantilla de `scripts/lib/og-card.mjs`,
+compartida con `scripts/generate-og.mjs`. Sustituye la imagen anterior.
+
 ### Vista previa
 
 `GET /preview/<slug>/…` sirve el build de `apps/<slug>/dist` desde el propio
