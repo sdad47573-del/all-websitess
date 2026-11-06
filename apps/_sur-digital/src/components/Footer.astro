@@ -12,15 +12,14 @@ import {
   pageFromPath,
 } from "../i18n/routes";
 import { ui } from "../i18n/ui";
-import LinkedInIcon from "../icons/LinkedInIcon.astro";
-import MapIcon from "../icons/MapIcon.astro";
 
 import Logo from "../assets/logoreverse-optimized.png";
 
-// En español se mantiene el footer completo con los sectores. En el resto de
-// idiomas se muestra una versión reducida (servicios, empresa, contacto,
-// idiomas) con los textos traducidos y enlaces a la versión que exista de cada
-// página.
+// Estructura tomada de la referencia: una columna ancha de marca (logo,
+// descripción, autor y dirección) y dos columnas de enlaces con títulos en
+// caja normal. En español las columnas son Especialidades y Servicios; en el
+// resto de idiomas, Servicios y Empresa, con los textos traducidos y enlaces a
+// la versión que exista de cada página.
 interface Props {
   lang?: string;
 }
@@ -42,9 +41,6 @@ const serviceLinks = [
   { path: "/especialidades/", label: t.footer.specialitiesAll },
 ].map((item) => ({ ...item, ...esLink(item.path) }));
 
-// El pie también enlaza las páginas que solo estaban en la cabecera: clientes,
-// blog y FAQ. Clientes y blog siguen en español (hreflang); FAQ tiene versión
-// propia en cada idioma.
 const companyLinks = [
   { path: "/clientes/", label: t.nav.clients },
   { path: "/blog/", label: t.nav.blog },
@@ -62,214 +58,110 @@ const languageLinks = [
   })),
 ];
 
-// Cabeceras de columna: pequeñas y espaciadas, con una línea fina que separa
-// el título de los enlaces. Se repiten en las dos versiones del footer.
-const headClass =
-  "mb-2 border-b border-white/20 pb-2 text-xs font-bold uppercase tracking-[0.14em] md:mb-3 md:pb-3";
+const headClass = "mb-3 text-base font-bold";
 const linkClass =
-  "flex min-h-12 min-w-12 items-center gap-1.5 leading-snug link link-hover";
+  "flex min-h-10 min-w-10 items-center leading-snug link link-hover";
 ---
 
-<footer class="brand-surface pt-10 pb-24 md:pb-10 md:pt-12 px-6">
-  <div class="container mx-auto flex flex-col gap-8 md:gap-10">
-    {
-      localized ? (
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-8 w-full">
-          <div class="col-span-2 sm:col-span-3 lg:col-span-2 flex flex-col gap-3">
-            <a
-              href="/"
-              data-lang={lang}
-              aria-label="Sur Digital"
-              class="inline-flex w-fit"
+<footer class="brand-surface px-6 pt-12 pb-24 md:pb-8">
+  <div class="container mx-auto">
+    <div class="grid gap-10 md:grid-cols-12">
+      <!-- Marca: ocupa más ancho que las columnas de enlaces, como en la
+           referencia, y sustituye la antigua columna de contacto. -->
+      <div class="flex flex-col gap-4 md:col-span-5">
+        <a
+          href="/"
+          data-lang={lang}
+          aria-label="Sur Digital"
+          class="inline-flex w-fit"
+        >
+          <Image
+            src={Logo}
+            alt="Sur Digital"
+            widths={[128, 256]}
+            sizes="112px"
+            class="w-28 h-auto object-contain"
+          />
+        </a>
+        <p class="max-w-md text-sm leading-relaxed">{t.footer.strap}</p>
+        <p class="text-sm leading-relaxed">
+          {CONTACT.name} · {t.contact.role}
+        </p>
+        <p class="flex flex-col items-start gap-1 text-sm leading-relaxed">
+          <a
+            href={CONTACT.maps}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link link-hover"
+          >
+            {CONTACT.address}
+          </a>
+          <a
+            href={CONTACT.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link link-hover"
+          >
+            {t.footer.linkedin}
+          </a>
+        </p>
+      </div>
+
+      {
+        localized ? (
+          <>
+            <nav
+              aria-label={t.footer.servicesHead}
+              class="flex flex-col md:col-span-4"
             >
-              <Image
-                src={Logo}
-                alt="Sur Digital"
-                widths={[128, 256]}
-                sizes="112px"
-                class="w-28 h-auto object-contain"
-              />
-            </a>
-            <p class="max-w-60 text-sm">{t.footer.strap}</p>
-            <p class="max-w-60 text-xs leading-relaxed">
-              {CONTACT.name} · {t.contact.role}
-            </p>
-            <ul class="flex items-center gap-2 pt-1">
-              <li>
-                <a
-                  href={CONTACT.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={t.footer.linkedin}
-                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
-                >
-                  <LinkedInIcon class="size-4" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href={CONTACT.maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={CONTACT.address}
-                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
-                >
-                  <MapIcon class="size-4" />
-                </a>
-              </li>
-            </ul>
-          </div>
+              <h2 class={headClass}>{t.footer.servicesHead}</h2>
+              <ul class="flex flex-col text-sm">
+                {serviceLinks.map(({ href, label, hreflang }) => (
+                  <li>
+                    <a href={href} hreflang={hreflang} class={linkClass}>
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          <nav aria-label={t.footer.servicesHead} class="flex flex-col">
-            <h2 class={headClass}>{t.footer.servicesHead}</h2>
-            <ul class="flex flex-col text-sm">
-              {serviceLinks.map(({ href, label, hreflang }) => (
-                <li>
-                  <a href={href} hreflang={hreflang} class={linkClass}>
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label={t.footer.companyHead} class="flex flex-col">
-            <h2 class={headClass}>{t.footer.companyHead}</h2>
-            <ul class="flex flex-col text-sm">
-              {companyLinks.map(({ href, label, hreflang }) => (
-                <li>
-                  <a href={href} hreflang={hreflang} class={linkClass}>
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label={t.footer.contactHead} class="flex flex-col">
-            <h2 class={headClass}>{t.footer.contactHead}</h2>
-            <ul class="flex flex-col text-sm">
-              <li>
-                <a
-                  href={CONTACT.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class={linkClass}
-                >
-                  {t.footer.linkedin}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={CONTACT.maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class={linkClass}
-                >
-                  <MapIcon class="min-w-5 max-w-5 shrink-0" />
-                  <span>{CONTACT.address}</span>
-                </a>
-              </li>
-              <li class="flex min-h-12 items-center leading-snug">
-                {t.footer.hoursHead}: {t.footer.hours}
-              </li>
-            </ul>
-          </nav>
-
-          <nav aria-label={t.footer.languagesHead} class="flex flex-col">
-            <h2 class={headClass}>{t.footer.languagesHead}</h2>
-            <ul class="flex flex-col text-sm">
-              {languageLinks.map(({ code, href }) => (
-                <li>
-                  <a
-                    href={href}
-                    data-lang={code}
-                    lang={code}
-                    class={linkClass}
-                    aria-current={code === lang ? "true" : undefined}
-                  >
-                    {LOCALE_LABELS[code as keyof typeof LOCALE_LABELS]}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      ) : (
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-8 w-full">
-          <div class="col-span-2 sm:col-span-3 lg:col-span-2 flex flex-col gap-3">
-            <a
-              href="/"
-              data-lang={lang}
-              aria-label="Sur Digital"
-              class="inline-flex w-fit"
+            <nav
+              aria-label={t.footer.companyHead}
+              class="flex flex-col md:col-span-3"
             >
-              <Image
-                src={Logo}
-                alt="Sur Digital"
-                widths={[128, 256]}
-                sizes="112px"
-                class="w-28 h-auto object-contain"
-              />
-            </a>
-            <!-- Sin opacidad: el blanco al 80 % sobre el azul de marca se queda en
-                 ~3,7:1 y no pasa AA. El blanco puro da 4,69:1. -->
-            <p class="max-w-60 text-sm">{t.footer.strap}</p>
-            <p class="max-w-60 text-xs leading-relaxed">
-              {CONTACT.name} · {t.contact.role}
-            </p>
-            <ul class="flex items-center gap-2 pt-1">
-              <li>
-                <a
-                  href={CONTACT.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={t.footer.linkedin}
-                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
-                >
-                  <LinkedInIcon class="size-4" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href={CONTACT.maps}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={CONTACT.address}
-                  class="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-white/60 hover:bg-white/10"
-                >
-                  <MapIcon class="size-4" />
-                </a>
-              </li>
-            </ul>
-          </div>
-          {DATA.footer.map((column) => {
-            const { title, items } = column;
-            const wide = "wide" in column && column.wide;
-            const split = "split" in column && column.split;
-            return (
+              <h2 class={headClass}>{t.footer.companyHead}</h2>
+              <ul class="flex flex-col text-sm">
+                {companyLinks.map(({ href, label, hreflang }) => (
+                  <li>
+                    <a href={href} hreflang={hreflang} class={linkClass}>
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </>
+        ) : (
+          DATA.footer.map(({ title, items }, index) => (
             <nav
               aria-label={title}
-              class:list={["flex flex-col", wide && "col-span-2 sm:col-span-1"]}
+              class:list={[
+                "flex flex-col",
+                index === 0 ? "md:col-span-4" : "md:col-span-3",
+              ]}
             >
               <h2 class={headClass}>{title}</h2>
-              <ul
-                class:list={[
-                  "text-sm",
-                  split
-                    ? "grid grid-cols-2 gap-x-6 sm:flex sm:flex-col"
-                    : "flex flex-col",
-                ]}
-              >
+              <ul class="flex flex-col text-sm">
                 {items.map((item) => {
-                  const Icon = "icon" in item ? item.icon : null;
                   const href = "href" in item ? item.href : undefined;
                   const external =
                     "external" in item && item.external ? true : undefined;
-                  // min-h-12/min-w-12: Lighthouse pide áreas táctiles de 48 px.
+                  const bold = "bold" in item && item.bold;
                   const classes = twJoin(
-                    "flex min-h-12 min-w-12 items-center gap-1.5 leading-snug",
-                    href && "link link-hover"
+                    "flex min-h-10 min-w-10 items-center leading-snug",
+                    href && "link link-hover",
+                    bold && "font-semibold"
                   );
                   return (
                     <li>
@@ -280,12 +172,10 @@ const linkClass =
                           target={external ? "_blank" : undefined}
                           rel={external ? "noopener noreferrer" : undefined}
                         >
-                          {Icon && <Icon class="min-w-5 max-w-5" />}
                           <span set:html={item.label} />
                         </a>
                       ) : (
                         <p class={classes}>
-                          {Icon && <Icon class="min-w-5 max-w-5" />}
                           <span set:html={item.label} />
                         </p>
                       )}
@@ -294,27 +184,53 @@ const linkClass =
                 })}
               </ul>
             </nav>
-            );
-          })}
-        </div>
-      )
-    }
+          ))
+        )
+      }
+    </div>
+
     <div
-      class="flex flex-col items-center justify-center gap-2 border-t border-white/20 pt-5 text-sm sm:flex-row sm:justify-between sm:gap-6"
+      class="mt-10 flex flex-col gap-3 border-t border-white/15 pt-5 text-sm sm:flex-row sm:items-center sm:justify-between"
     >
-      <p>© {year} Sur Digital · {t.footer.rights}</p>
-      <p class="flex justify-center gap-5">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
         <a
           href="/aviso-legal/"
           hreflang="es"
-          class="link link-hover inline-flex min-h-12 items-center">{t.footer.legal}</a
+          class="underline underline-offset-4 hover:no-underline"
+          >{t.footer.legal}</a
         >
+        <span aria-hidden="true">·</span>
         <a
           href="/politica-privacidad/"
           hreflang="es"
-          class="link link-hover inline-flex min-h-12 items-center">{t.footer.privacy}</a
+          class="underline underline-offset-4 hover:no-underline"
+          >{t.footer.privacy}</a
         >
-      </p>
+        {
+          localized && (
+            <>
+              <span aria-hidden="true">·</span>
+              <nav
+                aria-label={t.footer.languagesHead}
+                class="flex flex-wrap items-center gap-x-3"
+              >
+                {languageLinks.map(({ code, href }) => (
+                  <a
+                    href={href}
+                    data-lang={code}
+                    lang={code}
+                    class="link link-hover inline-flex min-h-9 items-center"
+                    aria-current={code === lang ? "true" : undefined}
+                  >
+                    {LOCALE_LABELS[code as keyof typeof LOCALE_LABELS]}
+                  </a>
+                ))}
+              </nav>
+            </>
+          )
+        }
+      </div>
+      <p>© {year} Sur Digital</p>
     </div>
   </div>
 </footer>
