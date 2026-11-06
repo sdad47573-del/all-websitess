@@ -79,6 +79,19 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss(), cleanUrls()],
+    // Three.js y sus loaders entran por un import() dinámico en el hero. Si
+    // Vite los descubre en caliente, reoptimiza y responde 504 a la URL que el
+    // navegador ya tenía cacheada («Outdated Optimize Dep»): el hero se queda
+    // en póster con el aviso de error y en dev parece que el modelo no carga,
+    // porque el reintento pide la misma URL obsoleta. Declararlos aquí los
+    // prebundlea al arrancar, antes de que ningún script los pida.
+    optimizeDeps: {
+      include: [
+        "three",
+        "three/examples/jsm/loaders/GLTFLoader.js",
+        "three/examples/jsm/libs/meshopt_decoder.module.js",
+      ],
+    },
     server: {
       // En .tmp viven los perfiles de Chrome de las comprobaciones locales: son
       // miles de archivos que el watcher no necesita y que Windows bloquea

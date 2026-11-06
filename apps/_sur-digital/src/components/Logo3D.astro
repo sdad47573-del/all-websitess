@@ -549,7 +549,8 @@ const {
         let raf = 0;
         let elapsed = 0;
         let slowFrames = 0;
-        const clock = new THREE.Clock();
+        // Timer sustituye a Clock en three: getDelta sigue devolviendo segundos.
+        const timer = new THREE.Timer();
 
         const draw = (delta: number) => {
           elapsed += delta;
@@ -623,7 +624,8 @@ const {
           lastTick = now;
 
           if (document.hidden) {
-            clock.getDelta();
+            // Consumir el tiempo acumulado para que al volver no haya un salto.
+            timer.update(now);
             return;
           }
 
@@ -644,7 +646,8 @@ const {
           const frameMs = dragging || spinTarget !== spin ? 1000 / 60 : FRAME_MS;
           if (now - lastFrame < frameMs) return;
           lastFrame = now;
-          draw(Math.min(clock.getDelta(), 0.05));
+          timer.update(now);
+          draw(Math.min(timer.getDelta(), 0.05));
         };
 
         // setSize limpia el lienzo: cuando el bucle está parado (fuera de
