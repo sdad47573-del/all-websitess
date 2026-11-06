@@ -2,12 +2,13 @@ import { describe, expect, test } from "bun:test";
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-// Pruebas de humo del hero 3D en un navegador real. El modelo ya falló una vez
-// en silencio: solo arrancaba con pointerenter, así que con el cursor ya encima
-// al recargar (o sin tocar nada) el hero se quedaba en póster y ningún test lo
-// veía. Se cubren los dos escenarios con lo mínimo exigible: canvas visible y
-// GLB descargado con 200, sin excepciones. Sin Chrome instalado se saltan
-// (CHROME_PATH para apuntar a uno concreto).
+// Pruebas de humo del hero 3D en un navegador real. El 3D ya no se descarga al
+// cargar: Three.js (186 KB) y el GLB solo se piden con intención del visitante,
+// porque en la carga inicial metían 905 ms de cadena crítica y ~3 s de hilo
+// principal. Se cubren los tres escenarios con lo mínimo exigible: la carga
+// inicial se queda en el póster, el ratón arranca el 3D y en táctil lo arranca
+// el primer toque. Sin Chrome instalado se saltan (CHROME_PATH para apuntar a
+// uno concreto).
 
 const APP_ROOT = join(import.meta.dir, "..");
 const DIST = join(APP_ROOT, "dist");
@@ -170,6 +171,30 @@ const MODEL_LOADED = `performance.getEntriesByType("resource").some((entry) => e
   MODEL_PATH
 )}))`;
 
+// La carga inicial debe quedarse en el póster: se espera a que exista el hero,
+// se deja pasar el margen en el que antes arrancaba por idle y se lee el estado.
+async function waitForHeroIdle(page: Page) {
+  let state: HeroState | null = null;
+  const deadline = Date.now() + 15_000;
+
+  while (Date.now() < deadline) {
+    const evaluation = await page("Runtime.evaluate", {
+      expression: READ_HERO,
+      returnByValue: true,
+    });
+    state = evaluation.result.value as HeroState | null;
+    if (state) break;
+    await Bun.sleep(100);
+  }
+
+  await Bun.sleep(1500);
+  const settled = await page("Runtime.evaluate", {
+    expression: READ_HERO,
+    returnByValue: true,
+  });
+  return settled.result.value as HeroState | null;
+}
+
 // Mientras el hero no exista todavía (HTML a medio ejecutar) se sigue
 // esperando: null no es un fallo, es que aún no hay nada que mirar.
 async function waitForHero(page: Page) {
@@ -312,29 +337,31 @@ describe("hero 3D", () => {
   const run = chromePath ? test : test.skip;
 
   run(
-    "muestra el canvas y descarga el modelo sin tocar nada",
+    "la carga inicial se queda en el póster y no pide el modelo",
     async () => {
       await withHeroPage("hero3d-inicial", async ({ page, events }) => {
-        const state = await waitForHero(page);
-        const responses = modelResponses(events);
+        const state = await waitForHeroIdle(page);
+        const modelLoaded = await page("Runtime.evaluate", {
+          expression: MODEL_LOADED,
+          returnByValue: true,
+        });
 
         expect(state).not.toBeNull();
         expect(state?.errorShown).toBe(false);
-        expect(state?.canvasVisible).toBe(true);
-        expect(responses.length).toBeGreaterThan(0);
-        expect(responses[0]?.status).toBe(200);
+        expect(state?.canvasVisible).toBe(false);
+        expect(modelLoaded.result.value).toBe(false);
+        expect(modelResponses(events)).toHaveLength(0);
       });
     },
-    300_000
+    120_000
   );
 
   run(
-    "sigue cargando tras recargar con el cursor ya encima del logo",
+    "carga el 3D al pasar el ratón por el logo",
     async () => {
-      await withHeroPage("hero3d-recarga", async ({ page }) => {
-        // Primera carga: el visitante deja el ratón sobre el logo.
-        const before = await waitForHero(page);
-        expect(before?.canvasVisible).toBe(true);
+      await withHeroPage("hero3d-hover", async ({ page, events }) => {
+        const idle = await waitForHeroIdle(page);
+        expect(idle?.canvasVisible).toBe(false);
 
         const center = await page("Runtime.evaluate", {
           expression: HERO_CENTER,
@@ -343,24 +370,17 @@ describe("hero 3D", () => {
         const { x, y } = center.result.value as { x: number; y: number };
         await page("Input.dispatchMouseEvent", { type: "mouseMoved", x: 2, y: 2, buttons: 0 });
         await page("Input.dispatchMouseEvent", { type: "mouseMoved", x, y, buttons: 0 });
-        await Bun.sleep(500);
 
-        // Recarga sin mover el ratón: el cursor sigue encima, así que Chrome no
-        // emite pointerenter. Era la causa exacta del fallo, y el 3D debe
-        // arrancar igualmente (carga diferida por visibilidad + idle).
-        await page("Page.reload");
-        const after = await waitForHero(page);
-        const modelLoaded = await page("Runtime.evaluate", {
-          expression: MODEL_LOADED,
-          returnByValue: true,
-        });
+        const state = await waitForHero(page);
+        const responses = modelResponses(events);
 
-        expect(after?.errorShown).toBe(false);
-        expect(after?.canvasVisible).toBe(true);
-        expect(modelLoaded.result.value).toBe(true);
+        expect(state?.errorShown).toBe(false);
+        expect(state?.canvasVisible).toBe(true);
+        expect(responses.length).toBeGreaterThan(0);
+        expect(responses[0]?.status).toBe(200);
       });
     },
-    300_000
+    120_000
   );
 
   run(
@@ -404,6 +424,6 @@ describe("hero 3D", () => {
         }
       );
     },
-    300_000
+    120_000
   );
 });

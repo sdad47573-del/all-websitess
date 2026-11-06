@@ -716,28 +716,14 @@ const {
       host.addEventListener("pointerdown", start);
       host.addEventListener("focusin", start);
 
-      // Los gestos son el atajo, no el único camino: si nadie pasa por encima,
-      // el 3D se carga igualmente cuando el hero entra en pantalla y el
-      // navegador queda ocioso. Antes dependía de pointerenter, así que con el
-      // cursor ya encima (recarga, volver atrás, ancla) no cargaba nunca, y el
-      // estado :hover no sobrevive a una recarga. El póster queda como respaldo
-      // hasta el primer frame.
-      const schedule = (task: () => void) => {
-        if ("requestIdleCallback" in window) {
-          window.requestIdleCallback(task, { timeout: 2000 });
-        } else {
-          window.setTimeout(task, 600);
-        }
-      };
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          observer.disconnect();
-          schedule(start);
-        },
-        { rootMargin: "200px" },
-      );
-      observer.observe(host);
+      // Solo con intención del visitante. Antes se arrancaba también cuando el
+      // hero entraba en pantalla y el navegador quedaba ocioso, y eso metía
+      // Three.js (186 KB) en la cadena crítica de la carga: 905 ms de latencia
+      // y ~3 s de trabajo del hilo principal en Lighthouse, además de 93 KB de
+      // JavaScript sin usar. El póster es idéntico al primer frame, así que
+      // cargar el motor antes de que nadie toque el logo no aporta nada.
+      // Con el cursor ya encima tras recargar (o al volver atrás), el primer
+      // pointermove lo arranca; el estado :hover no sobrevive a una recarga.
     }
   }
 </script>
