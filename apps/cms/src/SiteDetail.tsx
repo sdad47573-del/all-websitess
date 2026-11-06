@@ -6,13 +6,15 @@ import DataTab from "./tabs/DataTab";
 import MapTab from "./tabs/MapTab";
 import MediaTab from "./tabs/MediaTab";
 import PreviewTab from "./tabs/PreviewTab";
+import SeoTab from "./tabs/SeoTab";
 
-type Tab = "vista" | "datos" | "mapas" | "imagenes" | "codigo";
+type Tab = "vista" | "datos" | "mapas" | "seo" | "imagenes" | "codigo";
 
 const TABS: Array<{ id: Tab; label: string }> = [
 	{ id: "vista", label: "Vista previa" },
 	{ id: "datos", label: "Datos" },
 	{ id: "mapas", label: "Mapas" },
+	{ id: "seo", label: "SEO y compartir" },
 	{ id: "imagenes", label: "Imágenes" },
 	{ id: "codigo", label: "Layout y código" },
 ];
@@ -45,7 +47,9 @@ export default function SiteDetail(props: { slug: string }) {
 			setOgVersion(ogVersion() + 1);
 			setOgFlash({
 				kind: "ok",
-				text: `Miniatura generada (${Math.max(1, Math.round(info.size / 1024))} KB).`,
+				text: `Miniatura generada (${Math.max(1, Math.round(info.size / 1024))} KB).${
+					info.backup ? " La anterior se ha guardado." : ""
+				}`,
 			});
 			await refetch();
 		} catch (error) {
@@ -153,6 +157,9 @@ export default function SiteDetail(props: { slug: string }) {
 							</Show>
 							<Show when={tab() === "mapas"}>
 								<MapTab site={current()} onSaved={refetch} />
+							</Show>
+							<Show when={tab() === "seo"}>
+								<SeoTab site={current()} />
 							</Show>
 							<Show when={tab() === "imagenes"}>
 								<MediaTab site={current()} onSaved={refetch} />

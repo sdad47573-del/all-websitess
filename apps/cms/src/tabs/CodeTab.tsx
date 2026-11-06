@@ -7,6 +7,7 @@ import {
 	restoreSnapshot,
 	writeFile,
 } from "../api";
+import { diffLines, diffStats, type DiffLine } from "../diff";
 import type { Site } from "../types";
 
 const formatMoment = (ms: number) =>
@@ -25,6 +26,12 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 	const [saving, setSaving] = createSignal(false);
 	const [showHistory, setShowHistory] = createSignal(false);
 	const [flash, setFlash] = createSignal<{ kind: "ok" | "error"; text: string } | null>(null);
+	const [compare, setCompare] = createSignal<{
+		id: string;
+		savedAt: number;
+		lines: DiffLine[];
+	} | null>(null);
+	const [comparing, setComparing] = createSignal(false);
 
 	createEffect(() => {
 		const loaded = content();
@@ -42,6 +49,7 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 		setFlash(null);
 		try {
 			await writeFile(props.site.slug, selected(), draft());
+			setCompare(null);
 			setSaved(draft());
 			setFlash({ kind: "ok", text: `${selected()} guardado.` });
 			await refetchHistory();
@@ -58,6 +66,7 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 		setFlash(null);
 		try {
 			await restoreSnapshot(props.site.slug, selected(), id);
+			setCompare(null);
 			setFlash({ kind: "ok", text: "Versión restaurada." });
 			const [fresh] = await Promise.all([readFile(props.site.slug, selected()), refetchHistory()]);
 			setDraft(fresh);
@@ -65,6 +74,23 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 			await props.onSaved();
 		} catch (error) {
 			setFlash({ kind: "error", text: String(error instanceof Error ? error.message : error) });
+		}
+	};
+
+	const compareVersion = async (version: { id: string; savedAt: number }) => {
+		setComparing(true);
+		setFlash(null);
+		try {
+			const before = await readSnapshot(props.site.slug, selected(), version.id);
+			setCompare({
+				id: version.id,
+				savedAt: version.savedAt,
+				lines: diffLines(before, saved()),
+			});
+		} catch (error) {
+			setFlash({ kind: "error", text: String(error instanceof Error ? error.message : error) });
+		} finally {
+			setComparing(false);
 		}
 	};
 
@@ -102,6 +128,7 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 												classList={{ "file-button": true, active: selected() === file.path }}
 												onClick={() => {
 													setFlash(null);
+													setCompare(null);
 													setSelected(file.path);
 												}}
 											>
@@ -139,6 +166,14 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 											<span class="history-actions">
 												<button type="button" class="link-button" onClick={() => preview(version.id)}>
 													Ver
+												</button>
+												<button
+													type="button"
+													class="link-button"
+													disabled={comparing()}
+													onClick={() => void compareVersion(version)}
+												>
+													Comparar
 												</button>
 												<button type="button" class="link-button" onClick={() => restore(version.id)}>
 													Restaurar
@@ -198,6 +233,41 @@ export default function CodeTab(props: { site: Site; onSaved: () => unknown }) {
 						</button>
 						<span class="hint">Ctrl/⌘ + S guarda</span>
 					</div>
+
+					<Show when={compare()}>
+						{(diff) => (
+							<section class="diff-panel">
+								<div class="diff-head">
+									<h3>Cambios desde {formatMoment(diff().savedAt)}</h3>
+									<div class="diff-meta">
+										<span class="chip ok">+{diffStats(diff().lines).added}</span>
+										<span class="chip danger">−{diffStats(diff().lines).removed}</span>
+										<button
+											type="button"
+											class="link-button"
+											onClick={() => setCompare(null)}
+										>
+											Cerrar
+										</button>
+									</div>
+								</div>
+								<div class="diff">
+									<For each={diff().lines}>
+										{(line) => (
+											<span classList={{ "diff-line": true, [line.type]: true }}>
+												<span class="diff-num">{line.oldLine ?? ""}</span>
+												<span class="diff-num">{line.newLine ?? ""}</span>
+												<span class="diff-sign">
+													{line.type === "add" ? "+" : line.type === "remove" ? "−" : " "}
+												</span>
+												<span>{line.text || " "}</span>
+											</span>
+										)}
+									</For>
+								</div>
+							</section>
+						)}
+					</Show>
 				</section>
 			</div>
 		</>

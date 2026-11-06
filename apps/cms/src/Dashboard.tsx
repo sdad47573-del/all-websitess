@@ -1,5 +1,5 @@
 import { createEffect, createMemo, createResource, createSignal, For, Show } from "solid-js";
-import { fetchSites, ogUrl } from "./api";
+import { fetchSites, generateOg, ogUrl } from "./api";
 import Shell from "./Shell";
 
 const PAGE_SIZE = 40;
@@ -33,6 +33,11 @@ export default function Dashboard() {
 	const [order, setOrder] = createSignal<Order>("nombre");
 	const [view, setView] = createSignal<View>(readView());
 	const [page, setPage] = createSignal(1);
+
+	const [selected, setSelected] = createSignal<Set<string>>(new Set());
+	const [bulk, setBulk] = createSignal(false);
+	const [bulkMessage, setBulkMessage] = createSignal<string | null>(null);
+	const [thumbVersion, setThumbVersion] = createSignal(0);
 
 	// Cualquier cambio de búsqueda o filtro vuelve a la primera página.
 	createEffect(() => {
@@ -83,6 +88,52 @@ export default function Dashboard() {
 	const rows = createMemo(() =>
 		sorted().slice((page() - 1) * PAGE_SIZE, page() * PAGE_SIZE),
 	);
+
+	const allPageSelected = createMemo(
+		() => rows().length > 0 && rows().every((site) => selected().has(site.slug)),
+	);
+
+	const toggle = (slug: string) => {
+		const next = new Set(selected());
+		if (next.has(slug)) next.delete(slug);
+		else next.add(slug);
+		setSelected(next);
+	};
+
+	const togglePage = (checked: boolean) => {
+		const next = new Set(selected());
+		for (const site of rows()) {
+			if (checked) next.add(site.slug);
+			else next.delete(site.slug);
+		}
+		setSelected(next);
+	};
+
+	const generateSelected = async () => {
+		const slugs = [...selected()];
+		if (slugs.length === 0) return;
+
+		setBulk(true);
+		setBulkMessage(null);
+		const failed: string[] = [];
+		let done = 0;
+
+		for (const slug of slugs) {
+			try {
+				await generateOg(slug);
+				done += 1;
+			} catch {
+				failed.push(slug);
+			}
+		}
+
+		setBulk(false);
+		setThumbVersion(thumbVersion() + 1);
+		setSelected(new Set<string>());
+		setBulkMessage(
+			`Miniaturas regeneradas: ${done}${failed.length ? ` · fallos: ${failed.join(", ")}` : ""}.`,
+		);
+	};
 
 	return (
 		<Shell title="Webs">
@@ -174,6 +225,27 @@ export default function Dashboard() {
 						{filtered().length} resultado(s) · página {page()} de {totalPages()}
 					</p>
 
+					<Show when={selected().size > 0}>
+						<div class="bulk-bar">
+							<strong>{selected().size} seleccionada(s)</strong>
+							<button type="button" disabled={bulk()} onClick={() => void generateSelected()}>
+								{bulk() ? "Generando miniaturas…" : "Generar miniaturas"}
+							</button>
+							<button
+								type="button"
+								class="link-button"
+								disabled={bulk()}
+								onClick={() => setSelected(new Set<string>())}
+							>
+								Quitar selección
+							</button>
+						</div>
+					</Show>
+
+					<Show when={bulkMessage()}>
+						{(message) => <p class="flash ok">{message()}</p>}
+					</Show>
+
 					<Show
 						when={view() === "tarjetas"}
 						fallback={
@@ -181,6 +253,14 @@ export default function Dashboard() {
 								<table>
 									<thead>
 										<tr>
+											<th class="select-col">
+												<input
+													type="checkbox"
+													checked={allPageSelected()}
+													aria-label="Seleccionar esta página"
+													onChange={(event) => togglePage(event.currentTarget.checked)}
+												/>
+											</th>
 											<th>Web</th>
 											<th>Ciudad</th>
 											<th>Teléfono</th>
@@ -194,14 +274,22 @@ export default function Dashboard() {
 											each={rows()}
 											fallback={
 												<tr>
-													<td colspan="6" class="empty">
+													<td colspan="7" class="empty">
 														Ninguna web coincide con el filtro.
 													</td>
 												</tr>
 											}
 										>
 											{(site) => (
-												<tr>
+												<tr classList={{ selected: selected().has(site.slug) }}>
+													<td class="select-col">
+														<input
+															type="checkbox"
+															checked={selected().has(site.slug)}
+															aria-label={`Seleccionar ${site.name}`}
+															onChange={() => toggle(site.slug)}
+														/>
+													</td>
 													<td>
 														<a class="site" href={`/site/${site.slug}`}>
 															<strong>{site.name}</strong>
@@ -232,30 +320,40 @@ export default function Dashboard() {
 							<div class="site-grid">
 								<For each={rows()}>
 									{(site) => (
-										<a class="site-card" href={`/site/${site.slug}`}>
-											<div class="thumb">
-												<span class="thumb-fallback">{initials(site.name)}</span>
-												<img
-													src={ogUrl(site.slug)}
-													alt=""
-													loading="lazy"
-													onError={(event) => {
-														event.currentTarget.style.display = "none";
-													}}
+										<div classList={{ "site-card": true, selected: selected().has(site.slug) }}>
+											<label class="select-box">
+												<input
+													type="checkbox"
+													checked={selected().has(site.slug)}
+													aria-label={`Seleccionar ${site.name}`}
+													onChange={() => toggle(site.slug)}
 												/>
-												<span class="thumb-city">{site.city || site.slug}</span>
-											</div>
-											<div class="site-card-body">
-												<strong>{site.name}</strong>
-												<span class="hint">{site.category || "Sin categoría"}</span>
-												<div class="site-card-meta">
-													<span class="chip">{site.photoCount} fotos</span>
-													<span classList={{ chip: true, warn: site.legalPending, ok: !site.legalPending }}>
-														{site.legalPending ? "legal pendiente" : "legal ok"}
-													</span>
+											</label>
+											<a class="site-card-link" href={`/site/${site.slug}`}>
+												<div class="thumb">
+													<span class="thumb-fallback">{initials(site.name)}</span>
+													<img
+														src={`${ogUrl(site.slug)}?v=${thumbVersion()}`}
+														alt=""
+														loading="lazy"
+														onError={(event) => {
+															event.currentTarget.style.display = "none";
+														}}
+													/>
+													<span class="thumb-city">{site.city || site.slug}</span>
 												</div>
-											</div>
-										</a>
+												<div class="site-card-body">
+													<strong>{site.name}</strong>
+													<span class="hint">{site.category || "Sin categoría"}</span>
+													<div class="site-card-meta">
+														<span class="chip">{site.photoCount} fotos</span>
+														<span classList={{ chip: true, warn: site.legalPending, ok: !site.legalPending }}>
+															{site.legalPending ? "legal pendiente" : "legal ok"}
+														</span>
+													</div>
+												</div>
+											</a>
+										</div>
 									)}
 								</For>
 							</div>

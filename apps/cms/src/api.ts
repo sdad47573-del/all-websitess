@@ -1,4 +1,4 @@
-import type { EditableField, MediaItem, Site, SourceFile } from "./types";
+import type { EditableField, MediaItem, SeoAudit, Site, SourceFile } from "./types";
 
 export async function fetchSites(): Promise<Site[]> {
 	const response = await fetch("/api/sites");
@@ -9,12 +9,23 @@ export async function fetchSites(): Promise<Site[]> {
 
 export const ogUrl = (slug: string) => `/api/sites/${slug}/og`;
 
-export async function generateOg(
-	slug: string,
-): Promise<{ width: number; height: number; size: number }> {
+export async function fetchSeo(slug: string): Promise<SeoAudit> {
+	const response = await fetch(`/api/sites/${slug}/seo`);
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { seo: SeoAudit }).seo;
+}
+
+export interface GeneratedOg {
+	width: number;
+	height: number;
+	size: number;
+	backup: { name: string; size: number; savedAt: number } | null;
+}
+
+export async function generateOg(slug: string): Promise<GeneratedOg> {
 	const response = await fetch(ogUrl(slug), { method: "POST" });
 	if (!response.ok) throw new Error(await readError(response));
-	return (await response.json()) as { width: number; height: number; size: number };
+	return (await response.json()) as GeneratedOg;
 }
 
 export const previewUrl = (slug: string) => `/preview/${slug}/`;

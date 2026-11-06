@@ -13,7 +13,9 @@ import {
 	generateOgCard,
 	readOgData,
 } from "../../../scripts/lib/og-card.mjs";
+import { backupOg, type OgBackup } from "./og-backup";
 import { DEFAULT_APPS_DIR } from "./paths";
+import { ogImage } from "./preview";
 
 const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -24,6 +26,8 @@ export interface GeneratedOg {
 	width: number;
 	height: number;
 	size: number;
+	/** Copia de la imagen anterior; null en la primera generación. */
+	backup: OgBackup | null;
 }
 
 export async function generateOgImage(
@@ -49,6 +53,11 @@ export async function generateOgImage(
 		throw new Error("No se encuentra sharp. Ejecuta `pnpm install` en la raíz y reintenta.");
 	}
 
+	// La copia se hace antes de escribir: si algo falla después, la imagen
+	// anterior sigue disponible en .og-history.
+	const previous = ogImage(slug, appsDir);
+	const backup = previous ? backupOg(slug, previous, appsDir) : null;
+
 	const info = await generateOgCard({ sharp, appRoot, data });
-	return { width: info.width, height: info.height, size: info.size };
+	return { width: info.width, height: info.height, size: info.size, backup };
 }

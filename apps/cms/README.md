@@ -39,12 +39,32 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
 La pestaña activa queda en la URL (`#vista`, `#mapas`, `#imagenes`, `#codigo`),
 así que recargar o volver atrás mantiene el sitio donde estabas.
 
+### SEO y compartir
+
+La pestaña «SEO y compartir» audita el `dist/index.html` real (título, meta
+descripción, canonical, og:image, twitter:card, H1, idioma, noindex, enlace
+legal, JSON-LD y alt de las imágenes) y muestra cómo se verá en Google y al
+compartir el enlace. Si no hay build, avisa y enseña los datos de partida.
+
+### Revisiones
+
+Cada versión del historial se puede ver, restaurar o **comparar** con el fichero
+actual: el diff es por líneas, con numeración y marcas de añadido/eliminado.
+
+### Acciones en bloque
+
+El listado permite seleccionar webs (tarjetas o tabla, incluida la página
+completa) y regenerar sus miniaturas OG de una vez, con el progreso y el
+resultado en el propio listado.
+
 ### Miniatura OG
 
 La cabecera de cada ficha muestra su imagen Open Graph y un botón para generarla
 o regenerarla sin salir del panel. `POST /api/sites/<slug>/og` crea
 `public/og.jpg` (1200×630) con la plantilla de `scripts/lib/og-card.mjs`,
-compartida con `scripts/generate-og.mjs`. Sustituye la imagen anterior.
+compartida con `scripts/generate-og.mjs`. Antes de sustituirla, la imagen
+anterior se copia a `.og-history/<slug>/` (máximo 10 copias por web), así que
+regenerar no borra la que había.
 
 ### Vista previa
 

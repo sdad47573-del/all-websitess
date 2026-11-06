@@ -9,6 +9,7 @@
  *   GET    /api/sites/:slug                  ficha
  *   POST   /api/sites/:slug/og               genera public/og.jpg de la web
  *   GET    /api/sites/:slug/og               miniatura OG
+ *   GET    /api/sites/:slug/seo              auditoría SEO del HTML construido
  *   PATCH  /api/sites/:slug                  edita campos de BUSINESS (incl. geo)
  *   GET    /api/sites/:slug/files            árbol de plantillas
  *   GET    /api/sites/:slug/files?path=…     contenido de una plantilla
@@ -37,6 +38,7 @@ import {
 import { listSnapshots, readSnapshot } from "./lib/history";
 import { hasBuild, ogImage, resolvePreview, rewriteCss, rewriteHtml } from "./lib/preview";
 import { generateOgImage } from "./lib/og";
+import { auditSeo } from "./lib/seo";
 import { readFileSync } from "node:fs";
 
 const PORT = Number(process.env.PORT ?? 4400);
@@ -146,6 +148,13 @@ async function siteRoute(request: Request, slug: string, rest: string[]): Promis
 			// Se regenera desde el panel: sin caché, el navegador enseñaría la anterior.
 			headers: { "cache-control": "no-store" },
 		});
+	}
+
+	if (rest[0] === "seo") {
+		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		const audit = auditSeo(site.slug);
+		if (!audit) return json({ error: "No se ha podido auditar la web" }, 404);
+		return json({ seo: audit });
 	}
 
 	if (rest[0] === "history") {

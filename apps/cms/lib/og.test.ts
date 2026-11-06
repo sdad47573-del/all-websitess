@@ -1,8 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { buildOgSvg, generateOgImage, readOgData } from "./og";
+import { backupOg, backupRoot, listOgBackups } from "./og-backup";
 
 async function withApp(run: (appsDir: string, appRoot: string) => Promise<void>) {
 	const appsDir = mkdtempSync(join(tmpdir(), "cms-og-"));
@@ -67,6 +68,37 @@ describe("miniatura OG", () => {
 			expect(info.height).toBe(630);
 			expect(info.size).toBeGreaterThan(1000);
 			expect(existsSync(join(appRoot, "public/og.jpg"))).toBe(true);
+		});
+	});
+
+	test("guarda la imagen anterior antes de regenerar", async () => {
+		await withApp(async (appsDir, appRoot) => {
+			const first = await generateOgImage("bar-pepe", appsDir);
+			expect(first.backup).toBeNull();
+
+			const previous = readFileSync(join(appRoot, "public/og.jpg"));
+			const second = await generateOgImage("bar-pepe", appsDir);
+
+			expect(second.backup?.size).toBe(previous.length);
+			const backups = listOgBackups("bar-pepe", appsDir);
+			expect(backups).toHaveLength(1);
+			expect(backups[0].name).toBe(second.backup?.name);
+
+			const saved = readFileSync(join(backupRoot(appsDir), "bar-pepe", backups[0].name));
+			expect(saved.equals(previous)).toBe(true);
+		});
+	});
+
+	test("rota a las 10 copias más recientes", async () => {
+		await withApp(async (appsDir, appRoot) => {
+			const source = join(appRoot, "public/og.jpg");
+			writeFileSync(source, "imagen de prueba");
+
+			for (let index = 0; index < 12; index += 1) {
+				backupOg("bar-pepe", source, appsDir);
+			}
+
+			expect(listOgBackups("bar-pepe", appsDir)).toHaveLength(10);
 		});
 	});
 

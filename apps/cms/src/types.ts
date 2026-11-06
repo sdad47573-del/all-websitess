@@ -60,6 +60,25 @@ export const GEO_FORM: FieldDefinition[] = [
 	{ field: "lng", label: "Longitud", hint: "Decimal, por ejemplo -4.4214", type: "number" },
 ];
 
+export type SeoStatus = "ok" | "warn" | "error" | "info";
+
+export interface SeoCheck {
+	id: string;
+	label: string;
+	status: SeoStatus;
+	detail: string;
+}
+
+export interface SeoAudit {
+	hasBuild: boolean;
+	title: string;
+	description: string;
+	canonical: string;
+	siteUrl: string;
+	hasOg: boolean;
+	checks: SeoCheck[];
+}
+
 export interface MediaItem {
 	name: string;
 	size: number;
