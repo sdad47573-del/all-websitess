@@ -87,6 +87,9 @@ const collage = [
  * Se cuenta en vez de escribirlo a mano para que el texto no se desincronice si la ficha cambia.
  */
 const numeroResenas = reviews.length;
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -168,11 +171,7 @@ const numeroResenas = reviews.length;
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Ciudad Real · Calle Lanza, 9</p>
-						<h1 id="hero-title">
-							Taberna Napoletana,
-							<br />
-							<em>pizzería y cocina napolitana.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Taberna Napoletana está en la Calle Lanza, 9, con código postal 13004, en Ciudad
 							Real. Google lo clasifica como restaurante napolitano, italiano y mediterráneo y
@@ -300,21 +299,14 @@ const numeroResenas = reviews.length;
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La casa <em>por dentro.</em>
-					</h2>
-					<p class="lead">
-						Son las diez fotografías que Taberna Napoletana publica en su ficha de Google Maps,
-						todas atribuidas al propio negocio. La ficha no trae una descripción del contenido
-						de estas fotos, así que no se inventa ninguna y los textos alternativos solo avisan
-						de dónde salen.
-					</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -341,11 +333,7 @@ const numeroResenas = reviews.length;
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Calle Lanza, 9,
-							<br />
-							<em>13004 Ciudad Real.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -421,14 +409,12 @@ const numeroResenas = reviews.length;
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

@@ -87,6 +87,9 @@ const numeroResenas = reviews.length;
 
 /** Cuántas de las entradas de accesibilidad figuran como disponibles. */
 const accesibles = accesibilidad.filter((item) => item.disponible);
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -169,11 +172,7 @@ const accesibles = accesibilidad.filter((item) => item.disponible);
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Isla Cristina · Plaza San Francisco, 1</p>
-						<h1 id="hero-title">
-							Restaurante La Purísima,
-							<br />
-							<em>brasa, arroz y cocina andaluza.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Restaurante La Purísima está en la Pl. San Francisco, 1, con código postal
 							21410, en Isla Cristina (Huelva). Google lo clasifica a la vez como restaurante
@@ -306,10 +305,7 @@ const accesibles = accesibilidad.filter((item) => item.disponible);
 					<h2 class="title" id="palabras-title">
 						La ficha, <em>palabra por palabra.</em>
 					</h2>
-					<p class="lead">
-						Descripción que el propio local publica en su ficha de Google Maps, reproducida
-						literal. Esta web no la corrige ni la amplía.
-					</p>
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="descripcion-local">{descripcionLocal}</div>
 				</div>
 			</section>
@@ -317,9 +313,7 @@ const accesibles = accesibilidad.filter((item) => item.disponible);
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La casa <em>por dentro.</em>
-					</h2>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
 					<p class="lead">
 						Son las diez fotografías que Restaurante La Purísima publica en su ficha de Google
 						Maps. El manifiesto de la descarga quedó sin autor, así que se publican sin pie de
@@ -327,11 +321,11 @@ const accesibles = accesibilidad.filter((item) => item.disponible);
 						descripción.
 					</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -357,11 +351,7 @@ const accesibles = accesibilidad.filter((item) => item.disponible);
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Plaza San Francisco, 1,
-							<br />
-							<em>21410 Isla Cristina.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<p class="addr-note">
 							En el bloque de dirección la ficha publica además esta línea del titular: «
 							{notaLocal}».
@@ -446,14 +436,12 @@ const accesibles = accesibilidad.filter((item) => item.disponible);
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

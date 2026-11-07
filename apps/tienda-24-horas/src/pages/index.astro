@@ -71,6 +71,9 @@ const galeria = [
 
 // La ficha tiene reseñas, pero no cita ningún extracto: `reviews` queda vacío y el bloque de
 // citas de la portada solo enseña la tarjeta con la valoración.
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -152,11 +155,7 @@ const galeria = [
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Málaga · Distrito Centro · Calle Jaboneros, 9</p>
-						<h1 id="hero-title">
-							Tienda 24 horas,
-							<br />
-							<em>en Málaga.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Tienda 24 horas está en la Calle Jaboneros, 9, con
 							código postal 29009, en Málaga, en Distrito Centro. Google la clasifica
@@ -275,21 +274,14 @@ no incluía ningún extracto literal, así que aquí no se reproduce ninguno.
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La tienda <em>en fotos.</em>
-					</h2>
-					<p class="lead">
-						Son las diez fotografías de la portada de la galería que Tienda 24 horas
-						publica en su ficha de Google Maps. El manifiesto de la descarga no las atribuye a un autor con
-						nombre, así que se publica sin pie y sin atribución. La ficha no describe su
-						contenido y aquí no se inventa ninguna descripción.
-					</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -315,11 +307,7 @@ no incluía ningún extracto literal, así que aquí no se reproduce ninguno.
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Calle Jaboneros, 9,
-							<br />
-							<em>29009 Málaga.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -340,9 +328,7 @@ no incluía ningún extracto literal, así que aquí no se reproduce ninguno.
 								))}
 							</tbody>
 						</table>
-						<p class="hours-note">
-							La tienda publica <strong>abierto 24 horas, todos los días</strong>, de lunes a domingo. Conviene confirmar por teléfono antes de ir.
-						</p>
+						<p class="hours-note">{piezas.horario.nota}</p>
 						{accesibilidad.length > 0 ? (
 							<ul class="access-list">
 								{accesibilidad.map((item) => (
@@ -400,14 +386,12 @@ no incluía ningún extracto literal, así que aquí no se reproduce ninguno.
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

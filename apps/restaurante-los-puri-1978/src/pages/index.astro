@@ -77,6 +77,9 @@ const collage = [
 const numeroResenas = reviews.length;
 
 /** La ficha solo declara la categoría principal, así que no hay cocinas que listar aparte. */
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -160,11 +163,7 @@ const numeroResenas = reviews.length;
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Malpartida de Cáceres · Plaza Mayor, 15</p>
-						<h1 id="hero-title">
-							Los Puri 1978,
-							<br />
-							<em>de tapas en Malpartida.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Los Puri está en la Plaza Mayor, 15, con código postal
 							10910, en Malpartida de Cáceres (Cáceres, Extremadura). Google lo clasifica
@@ -312,21 +311,14 @@ const numeroResenas = reviews.length;
 			<section class="section fotos" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La mesa <em>y la casa.</em>
-					</h2>
-					<p class="lead">
-						Son las diez fotografías que el restaurante publica en su ficha de Google
-						Maps. El manifiesto de la descarga no atribuye autor a ninguna, así que no
-						llevan pie. La ficha tampoco describe su contenido, de modo que no se inventa
-						ninguna descripción y los textos alternativos solo avisan de dónde salen.
-					</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="fotos-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="foto-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -352,11 +344,7 @@ const numeroResenas = reviews.length;
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Plaza Mayor, 15,
-							<br />
-							<em>10910 Malpartida de Cáceres.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -433,14 +421,12 @@ const numeroResenas = reviews.length;
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>venir.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

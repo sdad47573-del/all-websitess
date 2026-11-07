@@ -10,6 +10,9 @@ const photoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/fot
 const photos = Object.keys(photoModules)
   .sort()
   .map((path) => photoModules[path].default);
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <html lang="es">
@@ -58,7 +61,7 @@ const photos = Object.keys(photoModules)
   </head>
   <body>
     <main>
-      <h1>La Cocina De Ambrosía Madrid</h1>
+      <h1 set:html={piezas.portada.titulo} />
       <p><a href={MAPS_URL} rel="noopener">Ver en Google Maps</a></p>
       <section class="gallery">
         {photos.map((photo) => <Image src={photo} alt="La Cocina De Ambrosía Madrid" loading="lazy" />)}

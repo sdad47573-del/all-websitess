@@ -85,6 +85,9 @@ const numeroResenas = reviews.length;
 
 /** Días que la ficha publica abiertos, para el texto del horario. */
 const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) => item.day);
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -167,11 +170,7 @@ const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) =
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Santa Bárbara de Casa · Pl. Resolana, 2</p>
-						<h1 id="hero-title">
-							Restaurante La_Pepa,
-							<br />
-							<em>carne ibérica y pescado de lonja.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Restaurante La_Pepa está en la Pl. Resolana, 2, con código postal 21570, en
 							Santa Bárbara de Casa (Huelva). Google lo clasifica con la categoría
@@ -304,11 +303,7 @@ const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) =
 					<h2 class="title" id="palabras-title">
 						La ficha, <em>palabra por palabra.</em>
 					</h2>
-					<p class="lead">
-						Descripción que el propio local publica en su ficha de Google Maps, reproducida
-						literal: con su puntuación y con «andevalo» escrito así, sin tilde. Esta web no la
-						corrige ni la amplía.
-					</p>
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="descripcion-local">{descripcionLocal}</div>
 				</div>
 			</section>
@@ -316,9 +311,7 @@ const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) =
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						El local <em>por dentro.</em>
-					</h2>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
 					<p class="lead">
 						Son las diez fotografías que Restaurante La_Pepa publica en su ficha de Google
 						Maps. El manifiesto de la descarga atribuye las diez al propio local, así que cada
@@ -326,11 +319,11 @@ const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) =
 						inventa ninguna descripción.
 					</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -357,11 +350,7 @@ const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) =
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Pl. Resolana, 2,
-							<br />
-							<em>21570 Santa Bárbara de Casa.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -438,14 +427,12 @@ const diasAbiertos = hours.filter((item) => item.shifts.length > 0).map((item) =
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

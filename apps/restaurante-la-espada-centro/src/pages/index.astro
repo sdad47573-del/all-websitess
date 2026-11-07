@@ -82,6 +82,9 @@ const collage = [
  * si la ficha cambia.
  */
 const numeroResenas = reviews.length;
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -163,11 +166,7 @@ const numeroResenas = reviews.length;
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Jaén · Calle Francisco Martí Mora, 1</p>
-						<h1 id="hero-title">
-							Restaurante
-							<br />
-							<em>La Espadaña Centro.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Restaurante La Espadaña Centro está en la Calle Francisco Martí Mora, 1, con
 							código postal 23002, en Jaén. Google lo clasifica como restaurante, sin más, y
@@ -301,21 +300,14 @@ const numeroResenas = reviews.length;
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La casa <em>por dentro.</em>
-					</h2>
-					<p class="lead">
-						Son las diez fotografías que Restaurante La Espadaña Centro publica en su ficha de
-						Google Maps. El manifiesto de la descarga no atribuye autor a ninguna, así que no
-						llevan pie. La ficha no describe el contenido de las fotos y aquí no se inventa
-						ninguna descripción.
-					</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -341,11 +333,7 @@ const numeroResenas = reviews.length;
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Calle Francisco Martí Mora, 1,
-							<br />
-							<em>23002 Jaén.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -423,14 +411,12 @@ const numeroResenas = reviews.length;
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

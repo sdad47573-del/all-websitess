@@ -82,6 +82,9 @@ const collage = [
 	{ name: 'restaurante-el-zorro-vertical-03.jpg', clase: 'collage-item collage-item-b' },
 	{ name: 'restaurante-el-zorro-vertical-07.jpg', clase: 'collage-item collage-item-c' },
 ];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -167,11 +170,7 @@ const collage = [
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">La Guardia de Jaén · Calle Pedregal, 13</p>
-						<h1 id="hero-title">
-							La noche del pueblo
-							<br />
-							<em>empieza aquí.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							El RESTAURANTE "EL ZORRO" está en la Calle Pedregal, 13, con código
 							postal 23170, en La Guardia de Jaén. Google lo clasifica como restaurante
@@ -299,21 +298,14 @@ const collage = [
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La casa <em>por dentro.</em>
-					</h2>
-					<p class="lead">
-						Son las diez fotografías que el RESTAURANTE "EL ZORRO" publica en su ficha
-						de Google Maps. La ficha no trae una descripción del contenido de estas
-						fotos, así que no se inventa ninguna y los textos alternativos solo avisan
-						de dónde salen.
-					</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[320, 480, 720]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -340,11 +332,7 @@ const collage = [
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Calle Pedregal, 13,
-							<br />
-							<em>23170 La Guardia de Jaén.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -419,14 +407,12 @@ const collage = [
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>

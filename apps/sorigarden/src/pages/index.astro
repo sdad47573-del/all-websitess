@@ -81,6 +81,9 @@ const collage = [
  * está vacío y la portada solo muestra la tarjeta con la valoración junto al enlace al listado.
  */
 const textoResenas = '1 reseña';
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
 ---
 
 <!doctype html>
@@ -162,11 +165,7 @@ const textoResenas = '1 reseña';
 				<div class="hero-grid">
 					<div class="hero-copy">
 						<p class="eyebrow">Los Rosales · Sevilla · 41330</p>
-						<h1 id="hero-title">
-							Floristería Sorigarden,
-							<br />
-							<em>en Los Rosales.</em>
-						</h1>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
 						<p class="hero-lede">
 							Floristería Sorigarden está en la Calle Virgen de Fátima, 1d, con código postal
 							41330, en Los Rosales.
@@ -295,21 +294,14 @@ const textoResenas = '1 reseña';
 			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
 				<div class="wrap">
 					<p class="kicker">Las fotos</p>
-					<h2 class="title" id="fotos-title">
-						La tienda <em>en fotos.</em>
-					</h2>
-					<p class="lead">
-						Son las diez fotografías que Floristería Sorigarden publica en su ficha de
-						Google Maps. El manifiesto de la descarga no atribuye ninguna a un autor
-						con nombre, así que se publican sin pie y sin atribución. La ficha no
-						describe el contenido de las fotos y aquí no se inventa ninguna descripción.
-					</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
 					<div class="cocina-grid">
-						{galeria.map((name) => (
+						{piezas.fotos.fotos.map((item) => (
 							<figure class="cocina-item">
 								<Image
-									src={foto(name)}
-									alt={altFoto}
+									src={foto(item.imagen)}
+									alt={item.alt}
 									widths={[380, 560, 800]}
 									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
 									format="avif"
@@ -335,11 +327,7 @@ const textoResenas = '1 reseña';
 				<div class="wrap horario-grid">
 					<div>
 						<p class="kicker">Horario y ubicación</p>
-						<h2 class="title" id="horario-title">
-							Calle Virgen de Fátima, 1d,
-							<br />
-							<em>41330 Sevilla.</em>
-						</h2>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
 						<address>
 							{business.streetAddress}
 							<br />
@@ -358,10 +346,7 @@ const textoResenas = '1 reseña';
 								))}
 							</tbody>
 						</table>
-						<p class="hours-note">
-							La tienda abre <strong>de lunes a viernes</strong>, mañana de 10:00 a 14:00 y tarde de 17:30 a 20:00. El <strong>sábado</strong> abre de 10:00 a 14:00 y el <strong>domingo</strong> cierra. Conviene confirmar
-							por teléfono antes de ir.
-						</p>
+						<p class="hours-note">{piezas.horario.nota}</p>
 						{accesibilidad.length > 0 ? (
 						<ul class="access-list">
 							{accesibilidad.map((item) => (
@@ -420,14 +405,12 @@ const textoResenas = '1 reseña';
 			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
 				<div class="wrap">
 					<p class="kicker">Preguntas frecuentes</p>
-					<h2 class="title" id="faq-title">
-						Antes de <em>llamar.</em>
-					</h2>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
 					<div class="faq-list">
-						{faqs.map((faq) => (
+						{piezas.preguntas.preguntas.map((item) => (
 							<details>
-								<summary>{faq.question}</summary>
-								<p>{faq.answer}</p>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
 							</details>
 						))}
 					</div>
