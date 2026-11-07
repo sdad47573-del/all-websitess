@@ -4,64 +4,61 @@ Cada web del portfolio se publica en `https://<slug>.sur-digital.com`
 (por ejemplo `https://a-jalar.sur-digital.com`). El dominio principal
 `https://www.sur-digital.com` es el sitio de Sur Digital.
 
-## Qué queda resuelto en el repo
+## Cómo funciona (sin un DNS por cliente)
 
-- **`PORTFOLIO`** (`apps/_sur-digital/src/data/portfolio.ts`): las 96 fichas de
-  `/clientes` enlazan ya al subdominio, no al `.vercel.app` / `.netlify.app`.
-- **`site` de cada web**: las 14 apps que aún conservan `astro.config.mjs`
-  declaran `https://<slug>.sur-digital.com` como `site`, que es lo que alimenta
-  canonical, `og:url` y el sitemap. Requieren un despliegue nuevo para
-  publicarlo.
-- **`docs/subdominios-clientes.csv`**: las 96 filas con subdominio, web actual,
-  carpeta en el repo y si conserva código fuente y configuración. Es la lista
-  para trabajar en los paneles.
+El proyecto `_sur-digital` recibe un **dominio comodín** `*.sur-digital.com` y
+enruta por `Host`: una petición a `<slug>.sur-digital.com/<ruta>` se reescribe
+al despliegue real de ese cliente (`https://<slug>.vercel.app/<ruta>`).
 
-## Pasos de DNS y paneles (fuera del repo)
+Como cada web conserva su propio origen, sus rutas absolutas (`/_astro/…`,
+`/og.jpg`, sitemap…) también se resuelven: la petición llega con el mismo host
+y Vercel la reenvía al mismo destino. **No hay que reconstruir las 96 webs ni
+tocarlas una a una.**
 
-1. **DNS** en el registrador de `sur-digital.com`, un CNAME por cliente:
+Las reglas están al principio de `rewrites` en
+`apps/_sur-digital/vercel.json`, con `has: [{ type: "host", … }]`, y salen de
+la columna `web_actual` de `docs/subdominios-clientes.csv`.
 
-   ```text
-   a-jalar   CNAME   cname.vercel-dns.com.
-   ```
+## Lo único que hay que configurar (2 registros, no 96)
 
-   El valor exacto lo muestra Vercel al añadir el dominio. También se puede
-   usar un comodín (`* CNAME cname.vercel-dns.com.`), pero el certificado
-   comodín exige que el DNS lo gestione Vercel (nameservers), así que con un
-   registrador externo conviene el registro individual por subdominio.
+1. **Vercel** → proyecto de `_sur-digital` → Settings → Domains → añadir
+   `*.sur-digital.com`.
+2. **DNS**, una de estas dos opciones:
+   - **Delegar el dominio a Vercel**: cambiar en el registrador los
+     nameservers por los que indique Vercel (`ns1.vercel-dns.com`,
+     `ns2.vercel-dns.com`). Vercel crea y renueva el certificado comodín solo.
+   - **Mantener tu DNS**: crear `* CNAME cname.vercel-dns.com.` y delegar
+     `_acme-challenge.sur-digital.com` a Vercel para que pueda emitir el
+     certificado comodín (lo exige Vercel para `*.dominio`).
 
-2. **Proyecto del cliente** (Vercel → Settings → Domains): añadir
-   `a-jalar.sur-digital.com`, marcarlo como dominio principal y redirigir
-   `a-jalar.vercel.app` al nuevo para no duplicar contenido.
+No hay que añadir cada subdominio a su proyecto de Vercel/Netlify ni crear 96
+CNAME.
 
-3. **Netlify**: los subdominios comodín solo están disponibles en planes de
-   pago y hay que pedirlos al soporte. Para los sitios que solo vivan allí,
-   añadir el dominio individual al sitio con su CNAME.
+## Atajo por ruta
 
-4. Repetir por cliente. En el plan Hobby cada proyecto admite 50 dominios y aquí
-   solo necesita uno, así que el límite no estorba.
+`https://www.sur-digital.com/a-jalar` responde con una redirección permanente
+(308) a `https://a-jalar.sur-digital.com`, conservando la ruta interna
+(`/a-jalar/carta` → `/carta`). Las 96 redirecciones están en
+`apps/_sur-digital/vercel.json`. Las tarjetas de `/clientes/` enlazan directo
+al subdominio para no añadir un salto.
 
-## Lo que no se puede cerrar desde el repo
+## Límites
 
-- **63 de las 96 webs solo conservan `dist/`**: no tienen `src/` ni
-  `astro.config.mjs`, así que su despliegue está congelado y su canonical y
-  sitemap seguirán apuntando al `.vercel.app`. Para corregirlo hay que
-  recuperar el código fuente o reconstruirlas; asignar el subdominio sí
-  funciona aunque el canonical quede desactualizado.
-- Las 14 apps con configuración actualizada necesitan un despliegue nuevo para
-  emitir el canonical correcto.
-- El certificado TLS de cada subdominio lo emite la plataforma al verificarlo;
-  hasta que el CNAME propague y el dominio esté añadido, el subdominio no
-  responde.
+- **El HTML es el del despliegue original**: su canonical, `og:url` y sitemap
+  siguen apuntando al `.vercel.app` / `.netlify.app`. Las 14 apps que conservan
+  `astro.config.mjs` ya declaran el subdominio, pero necesitan un despliegue
+  nuevo; las **80 restantes no tienen código fuente** (solo `dist/`), así que
+  eso no se puede corregir desde aquí.
+- Un subdominio que no esté en la lista sirve el sitio principal.
+- Si el despliegue original contesta con una redirección absoluta a su propio
+  host, el navegador acabará en `.vercel.app` en esa ruta concreta.
+- El comodín no puede compartirse con un subdominio asignado a otro proyecto
+  de Vercel; `www` y el comodín van en el mismo proyecto.
 
 ## Comprobar
 
 ```sh
 curl -sI https://a-jalar.sur-digital.com | head -1
 curl -s https://a-jalar.sur-digital.com | grep -o '<link rel="canonical"[^>]*>'
-```
-
-En el sitio principal:
-
-```sh
-curl -s https://www.sur-digital.com/clientes/ | grep -o 'https://[a-z0-9-]*\.sur-digital\.com' | sort -u | wc -l
+curl -sI https://www.sur-digital.com/a-jalar | grep -i location
 ```
