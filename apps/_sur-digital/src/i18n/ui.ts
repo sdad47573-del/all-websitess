@@ -64,7 +64,13 @@ export interface Hero3dStrings {
 
 export interface LocaleStrings {
   nav: NavStrings;
-  common: { skip: string; languages: string; prices: string };
+  common: {
+    skip: string;
+    languages: string;
+    prices: string;
+    menu: string;
+    theme: string;
+  };
   hero3d: Hero3dStrings;
   contact: ContactStrings;
   footer: FooterStrings;
@@ -81,7 +87,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       blog: "Blog",
       contact: "Escríbenos",
     },
-    common: { skip: "Saltar al contenido", languages: "Idiomas", prices: "Precios" },
+    common: { skip: "Saltar al contenido", languages: "Idiomas", prices: "Precios" , menu: "Menú", theme: "Cambiar tema claro/oscuro" },
     hero3d: {
       label:
         "Logo 3D interactivo. Se balancea solo, gira al arrastrarlo y da una vuelta completa al hacer clic.",
@@ -137,7 +143,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       blog: "Blog",
       contact: "Get in touch",
     },
-    common: { skip: "Skip to content", languages: "Languages", prices: "Pricing" },
+    common: { skip: "Skip to content", languages: "Languages", prices: "Pricing" , menu: "Menu", theme: "Switch light/dark theme" },
     hero3d: {
       label:
         "Interactive 3D logo. It sways on its own, turns when you drag it and does a full spin on click.",
@@ -192,7 +198,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       blog: "Blog",
       contact: "Schreiben Sie uns",
     },
-    common: { skip: "Zum Inhalt springen", languages: "Sprachen", prices: "Preise" },
+    common: { skip: "Zum Inhalt springen", languages: "Sprachen", prices: "Preise" , menu: "Menü", theme: "Hell-/Dunkelmodus wechseln" },
     hero3d: {
       label:
         "Interaktives 3D-Logo. Es wiegt sich von selbst, dreht sich beim Ziehen und macht beim Klick eine volle Umdrehung.",
@@ -248,7 +254,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       blog: "Blog",
       contact: "Nous écrire",
     },
-    common: { skip: "Aller au contenu", languages: "Langues", prices: "Tarifs" },
+    common: { skip: "Aller au contenu", languages: "Langues", prices: "Tarifs" , menu: "Menu", theme: "Changer de thème clair/sombre" },
     hero3d: {
       label:
         "Logo 3D interactif. Il se balance seul, tourne quand on le fait glisser et fait un tour complet au clic.",
@@ -303,7 +309,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       blog: "Blog",
       contact: "Fale connosco",
     },
-    common: { skip: "Ir para o conteúdo", languages: "Idiomas", prices: "Preços" },
+    common: { skip: "Ir para o conteúdo", languages: "Idiomas", prices: "Preços" , menu: "Menu", theme: "Alternar tema claro/escuro" },
     hero3d: {
       label:
         "Logótipo 3D interativo. Balança sozinho, roda ao arrastar e dá uma volta completa ao clicar.",
@@ -358,7 +364,7 @@ export const UI: Record<UiLang, LocaleStrings> = {
       blog: "Блог",
       contact: "Написать нам",
     },
-    common: { skip: "Перейти к содержимому", languages: "Языки", prices: "Цены" },
+    common: { skip: "Перейти к содержимому", languages: "Языки", prices: "Цены" , menu: "Меню", theme: "Переключить светлую или тёмную тему" },
     hero3d: {
       label:
         "Интерактивный 3D-логотип. Покачивается сам, вращается при перетаскивании и делает полный оборот по клику.",

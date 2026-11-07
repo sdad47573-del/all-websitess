@@ -22,6 +22,11 @@ interface Props {
 const { lang = "es" } = Astro.props;
 const t = ui(lang);
 
+// Ruta actual sin barra final, para marcar el enlace activo del menú.
+const trimSlash = (value: string) =>
+  value.length > 1 && value.endsWith("/") ? value.slice(0, -1) : value;
+const currentPath = trimSlash(Astro.url.pathname);
+
 // Enlaces de navegación: una sola lista para escritorio y móvil.
 const NAV = [
   { href: "/servicios/", label: t.nav.services },
@@ -30,13 +35,19 @@ const NAV = [
   { href: "/precios/", label: t.nav.pricing },
   { href: "/faq/", label: t.nav.faq },
   { href: "/blog/", label: t.nav.blog },
-].map((item) => ({
-  ...item,
+].map((item) => {
   // Cada idioma tiene su slug (/precios/ → /preise/). Lo que todavía no está
   // traducido enlaza a la página española y se marca con hreflang="es".
-  href: localize(item.href, lang),
-  hreflang: isTranslated(item.href, lang) ? undefined : "es",
-}));
+  const href = localize(item.href, lang);
+  return {
+    ...item,
+    href,
+    hreflang: isTranslated(item.href, lang) ? undefined : "es",
+    // Página actual: aria-current para el lector de pantalla y color para
+    // quien navega a ojo. Las anclas no cuentan como página distinta.
+    active: trimSlash(href) === currentPath,
+  };
+});
 
 // Cambio de idioma conservando la página: cada página traducida tiene su slug
 // en cada idioma (/precios/ → /preise/). En una página que solo existe en
@@ -102,11 +113,17 @@ const languageOptions = [
            enlazan desde el hub, la home y el footer. -->
       <div class="hidden lg:flex space-x-6 items-center">
         {
-          NAV.map(({ href, label, hreflang }) => (
+          NAV.map(({ href, label, hreflang, active }) => (
             <a
               href={href}
               hreflang={hreflang}
-              class="text-base-content/70 hover:text-primary transition-colors"
+              aria-current={active ? "page" : undefined}
+              class:list={[
+                "transition-colors",
+                active
+                  ? "font-semibold text-primary underline decoration-2 underline-offset-8"
+                  : "text-base-content/70 hover:text-primary",
+              ]}
             >
               {label}
             </a>
@@ -120,7 +137,7 @@ const languageOptions = [
           aria-label={t.contact.button}
           ><LinkedInIcon class="size-4" /><span>{t.nav.contact}</span></a
         >
-        <ThemeToggle />
+        <ThemeToggle lang={lang} />
 
         <!-- Selector de idioma (escritorio): píldora con el código actual y
              panel con los seis idiomas en su nombre nativo, con check en el
@@ -221,7 +238,7 @@ const languageOptions = [
 
       <!-- Tema + menú + CTA compacto en móvil -->
       <div class="flex lg:hidden items-center gap-1">
-        <ThemeToggle />
+        <ThemeToggle lang={lang} />
         <a
           href={CONTACT.linkedin}
           target="_blank"
@@ -236,7 +253,7 @@ const languageOptions = [
         <div class="dropdown dropdown-end" data-dropdown>
           <button
             type="button"
-            aria-label={t.common.languages}
+            aria-label={t.common.menu}
             aria-expanded="false"
             aria-controls="menu-movil"
             class="btn btn-ghost btn-square"
@@ -262,9 +279,16 @@ const languageOptions = [
             class="dropdown-content menu bg-base-100 rounded-box border border-base-300 shadow-lg z-50 w-64 p-2 mt-2"
           >
             {
-              NAV.map(({ href, label, hreflang }) => (
+              NAV.map(({ href, label, hreflang, active }) => (
                 <li>
-                  <a href={href} hreflang={hreflang}>{label}</a>
+                  <a
+                    href={href}
+                    hreflang={hreflang}
+                    aria-current={active ? "page" : undefined}
+                    class={active ? "font-bold text-primary" : undefined}
+                  >
+                    {label}
+                  </a>
                 </li>
               ))
             }
