@@ -16,7 +16,9 @@
  *   PUT    /api/sites/:slug/files            guarda una plantilla
  *   GET    /api/sites/:slug/secciones        piezas de la portada
  *   PUT    /api/sites/:slug/secciones        guarda las piezas ordenadas
+ *   POST   /api/sites/:slug/secciones/importar copia una pieza de otra web
  *   GET    /api/sections/catalog             catálogo de piezas de las webs
+ *   GET    /api/sections/library             piezas reales extraídas de las webs
  *   GET    /api/sites/:slug/media            imágenes y en qué plantilla se usan
  *   GET    /api/sites/:slug/media/:name      bytes de una imagen
  *   POST   /api/sites/:slug/media            sube o reemplaza una imagen
@@ -39,8 +41,9 @@ import {
 	writeSourceFile,
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
-import { readSections, saveSections } from "./lib/sections";
+import { importSection, readSections, saveSections } from "./lib/sections";
 import { readSectionCatalog } from "./lib/catalog";
+import { readSectionLibrary } from "./lib/library";
 import {
 	type Capability,
 	type Role,
@@ -288,6 +291,25 @@ async function siteRoute(
 
 	if (rest[0] === "secciones") {
 		try {
+			if (rest.length === 2 && rest[1] === "importar") {
+				if (request.method !== "POST") return json({ error: "Método no permitido" }, 405);
+
+				const denied = deny(role, "editContent");
+				if (denied) return denied;
+
+				let payload: { source?: unknown; id?: unknown };
+				try {
+					payload = (await request.json()) as { source?: unknown; id?: unknown };
+				} catch {
+					return json({ error: "El cuerpo debe ser JSON" }, 400);
+				}
+				if (typeof payload.source !== "string" || typeof payload.id !== "string") {
+					return json({ error: "Faltan source e id" }, 400);
+				}
+
+				return json({ ok: true, ...importSection(site.slug, payload.source, payload.id) });
+			}
+
 			if (rest.length !== 1) return json({ error: "Ruta no encontrada" }, 404);
 
 			if (request.method === "GET") {
@@ -579,6 +601,12 @@ async function api(request: Request, url: URL): Promise<Response> {
 		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
 		return json({ catalogo: readSectionCatalog() });
+	}
+
+	if (parts[1] === "sections" && parts[2] === "library") {
+		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
+		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		return json({ piezas: readSectionLibrary() });
 	}
 
 	if (parts.length === 2) {

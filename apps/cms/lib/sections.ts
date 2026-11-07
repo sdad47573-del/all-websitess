@@ -11,7 +11,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { listMedia } from "./files";
+import { listMedia, mediaFile, saveMedia } from "./files";
 import { snapshot } from "./history";
 import { DEFAULT_APPS_DIR } from "./paths";
 
@@ -426,6 +426,12 @@ function writeAtomic(file: string, content: string): void {
 	}
 }
 
+export interface ImportedSection {
+	secciones: Secciones;
+	/** Id de la copia dentro de la web de destino. */
+	id: string;
+}
+
 export function readSections(slug: string, appsDir = DEFAULT_APPS_DIR): Secciones | null {
 	const file = jsonPath(slug, appsDir);
 	if (!existsSync(file)) return null;
@@ -457,4 +463,65 @@ export function saveSections(
 
 	writeAtomic(file, `${JSON.stringify(data, null, "\t")}\n`);
 	return data;
+}
+
+/**
+ * Copia una pieza de otra web dentro de esta, con sus imágenes.
+ *
+ * La pieza se valida al guardar la página entera, igual que cualquier edición
+ * del panel. Las fotos que falten se copian de `src/assets/fotos` de la web de
+ * origen; si el destino ya tiene una con el mismo nombre, se reutiliza.
+ */
+export function importSection(
+	targetSlug: string,
+	sourceSlug: string,
+	sectionId: string,
+	appsDir = DEFAULT_APPS_DIR,
+): ImportedSection {
+	if (!/^[a-z0-9][a-z0-9-]*$/.test(sourceSlug)) throw new Error("Web de origen no válida.");
+	if (!ID_PATTERN.test(sectionId)) throw new Error("Pieza de origen no válida.");
+
+	const source = readSections(sourceSlug, appsDir);
+	if (!source) throw new Error("La web de origen no tiene piezas.");
+	const original = source.secciones.find((section) => section.id === sectionId);
+	if (!original) throw new Error("No existe esa pieza en la web de origen.");
+	if (original.visible === false) throw new Error("Esa pieza está oculta en la web de origen.");
+
+	const copy = JSON.parse(JSON.stringify(original)) as Seccion;
+	const targetMedia = new Set(listMedia(targetSlug, appsDir).map((item) => item.name));
+
+	const copyImage = (name: string): string => {
+		if (targetMedia.has(name)) return name;
+		const saved = saveMedia(
+			targetSlug,
+			name,
+			readFileSync(mediaFile(sourceSlug, name, appsDir)),
+			appsDir,
+		);
+		targetMedia.add(saved.name);
+		return saved.name;
+	};
+
+	if (copy.imagen) copy.imagen = copyImage(copy.imagen);
+	if (copy.fotos?.length) {
+		copy.fotos = copy.fotos.map((photo) => ({ ...photo, imagen: copyImage(photo.imagen) }));
+	}
+
+	const current = readSections(targetSlug, appsDir)?.secciones ?? [];
+	const ids = new Set(current.map((section) => section.id));
+	const seed = ID_PATTERN.test(copy.id) ? copy.id : "pieza";
+	const base = `${seed.slice(0, 30).replace(/-+$/, "")}-copia`;
+	let id = base;
+	let suffix = 2;
+	while (ids.has(id)) id = `${base}-${suffix++}`;
+
+	copy.id = id;
+	copy.visible = true;
+
+	const secciones = saveSections(
+		targetSlug,
+		{ version: 1, secciones: [...current, copy] },
+		appsDir,
+	);
+	return { secciones, id };
 }

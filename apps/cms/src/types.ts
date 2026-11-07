@@ -201,6 +201,17 @@ export interface SectionCatalogEntry {
 	ejemplos: SectionCatalogExample[];
 }
 
+/** Una pieza real extraída de otra web, lista para copiar en esta. */
+export interface SectionLibraryPiece {
+	clave: string;
+	tipo: SectionType;
+	titulo: string;
+	web: string;
+	slug: string;
+	id: string;
+	resumen: string;
+}
+
 export interface ShopProduct {
 	id: string;
 	nombre: string;

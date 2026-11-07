@@ -6,6 +6,7 @@ import type {
 	Section,
 	SectionCatalogEntry,
 	SectionFile,
+	SectionLibraryPiece,
 	SeoAudit,
 	Shop,
 	Site,
@@ -172,6 +173,12 @@ export async function fetchSectionCatalog(): Promise<SectionCatalogEntry[]> {
 	return ((await response.json()) as { catalogo: SectionCatalogEntry[] }).catalogo;
 }
 
+export async function fetchSectionLibrary(): Promise<SectionLibraryPiece[]> {
+	const response = await fetch("/api/sections/library");
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { piezas: SectionLibraryPiece[] }).piezas;
+}
+
 export async function saveSections(slug: string, secciones: Section[]): Promise<SectionFile> {
 	const response = await fetch(`/api/sites/${slug}/secciones`, {
 		method: "PUT",
@@ -180,6 +187,20 @@ export async function saveSections(slug: string, secciones: Section[]): Promise<
 	});
 	if (!response.ok) throw new Error(await readError(response));
 	return ((await response.json()) as { secciones: SectionFile }).secciones;
+}
+
+export async function importSection(
+	slug: string,
+	source: string,
+	id: string,
+): Promise<{ secciones: SectionFile; id: string }> {
+	const response = await fetch(`/api/sites/${slug}/secciones/importar`, {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({ source, id }),
+	});
+	if (!response.ok) throw new Error(await readError(response));
+	return (await response.json()) as { secciones: SectionFile; id: string };
 }
 
 export async function fetchMe(): Promise<AuthUser | null> {

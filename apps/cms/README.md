@@ -63,6 +63,9 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
   galería, visita, preguntas, texto y llamada a la acción). Se guarda en
   `src/data/secciones.json` y la página las pinta con `<LocalSecciones>`. Los
   enlaces admiten atajos `maps:place`, `maps:directions` y `maps:streetView`.
+  El catálogo incluye además una **biblioteca de piezas reales** extraídas de
+  los `secciones.json` de todas las webs: se filtra por tipo o texto y, al usar
+  una, se copia en la web actual con sus imágenes y se abre para ajustarla.
 - **Datos**: nombre, lema, teléfono, calle, código postal, ciudad y URL canónica.
   Se escribe solo el literal que cambia dentro de `BUSINESS`.
 - **Mapas**: latitud y longitud (`BUSINESS.geo`), con vista previa del mapa y

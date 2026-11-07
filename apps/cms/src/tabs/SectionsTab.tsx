@@ -10,17 +10,32 @@ import {
 	Show,
 	untrack,
 } from "solid-js";
-import { fetchMedia, fetchSectionCatalog, fetchSections, mediaUrl, saveSections } from "../api";
+import {
+	fetchMedia,
+	fetchSectionCatalog,
+	fetchSectionLibrary,
+	fetchSections,
+	importSection,
+	mediaUrl,
+	saveSections,
+} from "../api";
 import {
 	SECTION_LABELS,
 	type MediaItem,
 	type Section,
+	type SectionLibraryPiece,
 	type SectionLink,
 	type SectionType,
 	type Site,
 } from "../types";
 
 const plain = (html?: string) => (html ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+const normalize = (value: string) =>
+	value
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toLowerCase();
 
 const LINK_PLACEHOLDER = "maps:directions o https://…";
 
@@ -377,9 +392,11 @@ export default function SectionsTab(props: {
 	onEditCode?: () => void;
 }) {
 	const [state, { refetch }] = createResource(() => props.site.slug, fetchSections);
-	const [media] = createResource(() => props.site.slug, fetchMedia);
+	const [media, { refetch: refetchMedia }] = createResource(() => props.site.slug, fetchMedia);
 	// Catálogo de piezas que ya existen en las webs publicadas.
 	const [catalog] = createResource(fetchSectionCatalog);
+	// Biblioteca de piezas reales, con su contenido, extraídas de las webs.
+	const [library] = createResource(fetchSectionLibrary);
 
 	const [draft, setDraft] = createSignal<Section[]>([]);
 	const [savedJson, setSavedJson] = createSignal("[]");
@@ -420,6 +437,30 @@ export default function SectionsTab(props: {
 	const selectedIndex = createMemo(() =>
 		draft().findIndex((section) => section.id === selectedId()),
 	);
+
+	// Biblioteca: búsqueda por texto y filtro por tipo; se pintan por tandas.
+	const [libraryQuery, setLibraryQuery] = createSignal("");
+	const [libraryTipo, setLibraryTipo] = createSignal<SectionType | "todos">("todos");
+	const [libraryLimit, setLibraryLimit] = createSignal(24);
+	const [importing, setImporting] = createSignal<string | null>(null);
+
+	const libraryFiltered = createMemo(() => {
+		const query = normalize(libraryQuery().trim());
+		const tipo = libraryTipo();
+		return (library() ?? []).filter((piece) => {
+			if (tipo !== "todos" && piece.tipo !== tipo) return false;
+			if (!query) return true;
+			return normalize(`${piece.titulo} ${piece.web} ${piece.slug} ${piece.resumen}`).includes(
+				query,
+			);
+		});
+	});
+
+	createEffect(() => {
+		libraryQuery();
+		libraryTipo();
+		setLibraryLimit(24);
+	});
 
 	// La vista previa enseña solo la pieza abierta: dentro del iframe se oculta
 	// todo lo que no sea ella (cabecera, otras secciones, pie y flotantes) pero
@@ -714,6 +755,35 @@ export default function SectionsTab(props: {
 		setView("editor");
 	};
 
+	/** Copia una pieza real de otra web, con sus imágenes, dentro de esta. */
+	const importPiece = async (piece: SectionLibraryPiece) => {
+		if (importing()) return;
+		setImporting(piece.clave);
+		setFlash(null);
+		try {
+			const result = await importSection(props.site.slug, piece.slug, piece.id);
+			setDraft(result.secciones.secciones);
+			setSavedJson(JSON.stringify(result.secciones.secciones));
+			setSelectedId(result.id);
+			setView("editor");
+			setFlash({
+				kind: "ok",
+				text: "Pieza copiada. Las imágenes que faltaban se han añadido a esta web; revisa los textos y guarda si haces cambios.",
+			});
+			setPreviewReload((value) => value + 1);
+			await refetch();
+			await refetchMedia();
+			await props.onSaved();
+		} catch (error) {
+			setFlash({
+				kind: "error",
+				text: error instanceof Error ? error.message : String(error),
+			});
+		} finally {
+			setImporting(null);
+		}
+	};
+
 	const open = (id: string) => {
 		setSelectedId(id);
 		setView("editor");
@@ -982,6 +1052,95 @@ export default function SectionsTab(props: {
 								</div>
 							)}
 						</Show>
+
+						<div class="library-block">
+							<div class="library-head">
+								<div>
+									<h3>Piezas de otras webs</h3>
+									<p class="note">
+										Secciones reales extraídas de los <code>secciones.json</code> de las webs.
+										Al usar una, se copia aquí con sus imágenes y se abre para ajustarla.
+									</p>
+								</div>
+								<div class="library-tools">
+									<input
+										type="search"
+										placeholder="Buscar por título, web o texto…"
+										aria-label="Buscar piezas"
+										value={libraryQuery()}
+										onInput={(event) => setLibraryQuery(event.currentTarget.value)}
+									/>
+									<select
+										class="role-select"
+										aria-label="Tipo de pieza"
+										value={libraryTipo()}
+										onChange={(event) =>
+											setLibraryTipo(event.currentTarget.value as SectionType | "todos")
+										}
+									>
+										<option value="todos">Todos los tipos</option>
+										<For each={Object.keys(SECTION_LABELS) as SectionType[]}>
+											{(tipo) => <option value={tipo}>{SECTION_LABELS[tipo]}</option>}
+										</For>
+									</select>
+								</div>
+							</div>
+
+							<Show when={library.loading}>
+								<p class="hint">Cargando la biblioteca…</p>
+							</Show>
+							<Show when={library.error}>
+								<p class="flash error">No se ha podido cargar la biblioteca de piezas.</p>
+							</Show>
+							<Show when={library()}>
+								<Show
+									when={libraryFiltered().length > 0}
+									fallback={
+										<p class="hint">
+											No hay piezas que coincidan. Prueba con otra búsqueda o tipo.
+										</p>
+									}
+								>
+									<p class="hint">
+										{libraryFiltered().length}{" "}
+										{libraryFiltered().length === 1 ? "pieza" : "piezas"} encontradas
+									</p>
+									<div class="library-grid">
+										<For each={libraryFiltered().slice(0, libraryLimit())}>
+											{(piece) => (
+												<article class="library-card">
+													<div class="library-card-head">
+														<span class="chip">{SECTION_LABELS[piece.tipo]}</span>
+														<span class="hint">{piece.web}</span>
+													</div>
+													<h4>{plain(piece.titulo)}</h4>
+													<Show when={piece.resumen}>
+														<p>{piece.resumen}</p>
+													</Show>
+													<button
+														type="button"
+														class="add-sections"
+														disabled={Boolean(importing())}
+														onClick={() => void importPiece(piece)}
+													>
+														{importing() === piece.clave ? "Copiando…" : "Usar esta pieza"}
+													</button>
+												</article>
+											)}
+										</For>
+									</div>
+									<Show when={libraryFiltered().length > libraryLimit()}>
+										<button
+											type="button"
+											class="link-button"
+											onClick={() => setLibraryLimit((value) => value + 24)}
+										>
+											Mostrar más piezas
+										</button>
+									</Show>
+								</Show>
+							</Show>
+						</div>
 					</section>
 				</Show>
 
