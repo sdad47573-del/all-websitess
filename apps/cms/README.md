@@ -58,8 +58,10 @@ CMS_SITE_SLUG='mi-web' CMS_ADMIN_PASSWORD='mi-clave-larga' bun run start
 
 Con `CMS_SITE_SLUG`, el panel entra directamente en esa ficha, sin listado, y
 la API solo devuelve esa web: `/api/sites/<otra>` y `/preview/<otra>` responden
-404, y el catálogo y la biblioteca se limitan a sus propias piezas. El slug
-tiene que existir en `apps/` o el servidor no arranca.
+404, y el catálogo de tipos se limita a sus propias piezas. La biblioteca de
+piezas de ejemplo es compartida, de solo lectura: el propietario puede copiar
+una pieza en su web, pero no editar la web de origen. El slug tiene que existir
+en `apps/` o el servidor no arranca.
 
 Sin la variable, el CMS sigue en modo inventario para desarrollo y conserva el
 listado completo de webs.
@@ -80,9 +82,11 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
   galería, visita, preguntas, texto y llamada a la acción). Se guarda en
   `src/data/secciones.json` y la página las pinta con `<LocalSecciones>`. Los
   enlaces admiten atajos `maps:place`, `maps:directions` y `maps:streetView`.
-  El catálogo incluye además una **biblioteca de piezas reales** extraídas de
-  los `secciones.json` de todas las webs: se filtra por tipo o texto y, al usar
-  una, se copia en la web actual con sus imágenes y se abre para ajustarla.
+  El catálogo incluye además una **biblioteca de piezas reales** extraída de
+  los `secciones.json` y del HTML estático de las portadas escritas a mano: se
+  filtra por tipo o texto y, al usar una, se copia en la web actual con sus
+  imágenes y se abre para ajustarla. Las piezas extraídas del HTML pueden no
+  traer fotos: el editor enseña qué falta antes de guardar.
 - **Datos**: nombre, lema, teléfono, calle, código postal, ciudad y URL canónica.
   Se escribe solo el literal que cambia dentro de `BUSINESS`.
 - **Mapas**: latitud y longitud (`BUSINESS.geo`), con vista previa del mapa y

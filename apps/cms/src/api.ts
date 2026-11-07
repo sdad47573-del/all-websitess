@@ -191,13 +191,12 @@ export async function saveSections(slug: string, secciones: Section[]): Promise<
 
 export async function importSection(
 	slug: string,
-	source: string,
-	id: string,
+	clave: string,
 ): Promise<{ secciones: SectionFile; id: string }> {
 	const response = await fetch(`/api/sites/${slug}/secciones/importar`, {
 		method: "POST",
 		headers: { "content-type": "application/json" },
-		body: JSON.stringify({ source, id }),
+		body: JSON.stringify({ clave }),
 	});
 	if (!response.ok) throw new Error(await readError(response));
 	return (await response.json()) as { secciones: SectionFile; id: string };

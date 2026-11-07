@@ -472,19 +472,14 @@ export function saveSections(
  * del panel. Las fotos que falten se copian de `src/assets/fotos` de la web de
  * origen; si el destino ya tiene una con el mismo nombre, se reutiliza.
  */
-export function importSection(
+export function copySection(
 	targetSlug: string,
 	sourceSlug: string,
-	sectionId: string,
+	original: Seccion,
 	appsDir = DEFAULT_APPS_DIR,
 ): ImportedSection {
 	if (!/^[a-z0-9][a-z0-9-]*$/.test(sourceSlug)) throw new Error("Web de origen no válida.");
-	if (!ID_PATTERN.test(sectionId)) throw new Error("Pieza de origen no válida.");
-
-	const source = readSections(sourceSlug, appsDir);
-	if (!source) throw new Error("La web de origen no tiene piezas.");
-	const original = source.secciones.find((section) => section.id === sectionId);
-	if (!original) throw new Error("No existe esa pieza en la web de origen.");
+	if (!original || typeof original !== "object") throw new Error("Pieza de origen no válida.");
 	if (original.visible === false) throw new Error("Esa pieza está oculta en la web de origen.");
 
 	const copy = JSON.parse(JSON.stringify(original)) as Seccion;
@@ -524,4 +519,21 @@ export function importSection(
 		appsDir,
 	);
 	return { secciones, id };
+}
+
+export function importSection(
+	targetSlug: string,
+	sourceSlug: string,
+	sectionId: string,
+	appsDir = DEFAULT_APPS_DIR,
+): ImportedSection {
+	if (!/^[a-z0-9][a-z0-9-]*$/.test(sourceSlug)) throw new Error("Web de origen no válida.");
+	if (!ID_PATTERN.test(sectionId)) throw new Error("Pieza de origen no válida.");
+
+	const source = readSections(sourceSlug, appsDir);
+	if (!source) throw new Error("La web de origen no tiene piezas.");
+	const original = source.secciones.find((section) => section.id === sectionId);
+	if (!original) throw new Error("No existe esa pieza en la web de origen.");
+
+	return copySection(targetSlug, sourceSlug, original, appsDir);
 }

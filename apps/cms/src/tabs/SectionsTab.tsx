@@ -390,7 +390,7 @@ export default function SectionsTab(props: {
 	site: Site;
 	onSaved: () => unknown;
 	onEditCode?: () => void;
-	/** Instalación de un propietario: la biblioteca de otras webs no se muestra. */
+	/** Instalación de un propietario: entra directo en su web. */
 	singleSite?: boolean;
 }) {
 	const [state, { refetch }] = createResource(() => props.site.slug, fetchSections);
@@ -763,7 +763,7 @@ export default function SectionsTab(props: {
 		setImporting(piece.clave);
 		setFlash(null);
 		try {
-			const result = await importSection(props.site.slug, piece.slug, piece.id);
+			const result = await importSection(props.site.slug, piece.clave);
 			setDraft(result.secciones.secciones);
 			setSavedJson(JSON.stringify(result.secciones.secciones));
 			setSelectedId(result.id);
@@ -1056,14 +1056,15 @@ export default function SectionsTab(props: {
 							)}
 						</Show>
 
-						<Show when={!props.singleSite}>
 						<div class="library-block">
 							<div class="library-head">
 								<div>
-									<h3>Piezas de otras webs</h3>
+									<h3>Piezas de ejemplo de las webs</h3>
 									<p class="note">
-										Secciones reales extraídas de los <code>secciones.json</code> de las webs.
-										Al usar una, se copia aquí con sus imágenes y se abre para ajustarla.
+										Secciones reales extraídas de los <code>secciones.json</code> y del HTML
+										estático de las portadas. Al usar una, se copia aquí con sus imágenes (si
+										las tiene) y se abre para ajustarla. Revisa nombres, fotos y datos antes de
+										guardar.
 									</p>
 								</div>
 								<div class="library-tools">
@@ -1145,7 +1146,6 @@ export default function SectionsTab(props: {
 								</Show>
 							</Show>
 						</div>
-						</Show>
 					</section>
 				</Show>
 

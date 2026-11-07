@@ -1,10 +1,11 @@
 /**
  * Biblioteca de piezas reales sacadas de las webs.
  *
- * Recorre los `src/data/secciones.json` de las apps y devuelve un resumen de
- * cada sección visible que tenga contenido suficiente para reutilizarse. El
- * CMS la usa para copiar una pieza completa (textos, listas, fotos…) en otra
- * web sin inventarse el contenido.
+ * Recorre los `src/data/secciones.json` de las apps y, en las webs que aún
+ * tienen la portada escrita a mano, extrae también sus secciones estáticas del
+ * HTML. Devuelve un resumen de cada pieza con contenido suficiente para
+ * reutilizarse. El CMS la usa para copiar una pieza completa (textos, listas,
+ * fotos…) en otra web sin inventarse el contenido.
  *
  * Se deduplica por tipo y contenido, así que las familias de webs que repiten
  * la misma sección no llenan la biblioteca de copias. El resultado se cachea
@@ -12,8 +13,15 @@
  */
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { extractPieces } from "./extract";
 import { DEFAULT_APPS_DIR } from "./paths";
-import { SECTION_TYPES, type Seccion, type SectionType } from "./sections";
+import {
+	copySection,
+	SECTION_TYPES,
+	type ImportedSection,
+	type Seccion,
+	type SectionType,
+} from "./sections";
 
 export interface LibraryPiece {
 	/** `slug:id` de la pieza original; estable mientras no cambie el JSON. */
@@ -28,6 +36,10 @@ export interface LibraryPiece {
 	id: string;
 	/** Primer texto útil, sin HTML, para enseñar la pieza en el catálogo. */
 	resumen: string;
+}
+
+interface LibraryEntry extends LibraryPiece {
+	seccion: Seccion;
 }
 
 const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
@@ -137,8 +149,8 @@ function webName(slug: string, appsDir: string): string {
 	return slug;
 }
 
-function build(appsDir: string, onlySlug: string | null): LibraryPiece[] {
-	const pieces: LibraryPiece[] = [];
+function build(appsDir: string, onlySlug: string | null): LibraryEntry[] {
+	const pieces: LibraryEntry[] = [];
 	if (!existsSync(appsDir)) return pieces;
 
 	const seen = new Set<string>();
@@ -148,40 +160,73 @@ function build(appsDir: string, onlySlug: string | null): LibraryPiece[] {
 
 	for (const app of apps) {
 		if (onlySlug && app.name !== onlySlug) continue;
+		const web = webName(app.name, appsDir);
 		const file = join(appsDir, app.name, "src", "data", "secciones.json");
-		if (!existsSync(file)) continue;
+		let sections: Seccion[] = [];
 
-		let parsed: { secciones?: unknown };
-		try {
-			parsed = JSON.parse(readFileSync(file, "utf8")) as { secciones?: unknown };
-		} catch {
-			continue;
+		if (existsSync(file)) {
+			let parsed: { secciones?: unknown };
+			try {
+				parsed = JSON.parse(readFileSync(file, "utf8")) as { secciones?: unknown };
+			} catch {
+				parsed = {};
+			}
+			if (Array.isArray(parsed.secciones)) {
+				sections = parsed.secciones.filter(
+					(raw): raw is Seccion => Boolean(raw) && typeof raw === "object",
+				);
+			}
 		}
-		if (!Array.isArray(parsed.secciones)) continue;
 
-		for (const raw of parsed.secciones) {
-			if (!raw || typeof raw !== "object") continue;
-			const section = raw as Seccion;
-			if (typeof section.tipo !== "string") continue;
-			if (!(SECTION_TYPES as readonly string[]).includes(section.tipo)) continue;
-			if (section.visible === false) continue;
-			if (typeof section.id !== "string" || !ID_PATTERN.test(section.id)) continue;
-			if (typeof section.titulo !== "string" || !section.titulo.trim()) continue;
-			if (!useful(section)) continue;
+		const add = (section: Seccion) => {
+			if (typeof section.tipo !== "string") return;
+			if (!(SECTION_TYPES as readonly string[]).includes(section.tipo)) return;
+			if (section.visible === false) return;
+			if (typeof section.id !== "string" || !ID_PATTERN.test(section.id)) return;
+			if (typeof section.titulo !== "string" || !section.titulo.trim()) return;
+			if (!useful(section)) return;
 
 			const key = `${section.tipo}|${signature(section)}`;
-			if (seen.has(key)) continue;
+			if (seen.has(key)) return;
 			seen.add(key);
 
 			pieces.push({
 				clave: `${app.name}:${section.id}`,
 				tipo: section.tipo,
 				titulo: section.titulo,
-				web: webName(app.name, appsDir),
+				web,
 				slug: app.name,
 				id: section.id,
 				resumen: summary(section),
+				seccion: section,
 			});
+		};
+
+		for (const section of sections) add(section);
+
+		// Las portadas a mano no tienen varias piezas en el JSON. Extraer sus
+		// secciones estáticas amplía la biblioteca sin tocar el diseño original.
+		if (sections.length <= 1) {
+			const page = join(appsDir, app.name, "src", "pages", "index.astro");
+			if (existsSync(page)) {
+				let source = "";
+				try {
+					source = readFileSync(page, "utf8");
+				} catch {
+					source = "";
+				}
+				if (source) {
+					const usedIds = new Set(sections.map((section) => section.id));
+					for (const extracted of extractPieces(source)) {
+						const base = `html-${extracted.id}`.slice(0, 40);
+						let id = base;
+						let suffix = 2;
+						while (usedIds.has(id)) id = `${base}-${suffix++}`.slice(0, 40);
+						usedIds.add(id);
+						add({ ...extracted, id });
+					}
+				}
+			}
 		}
 	}
 
@@ -192,18 +237,46 @@ function build(appsDir: string, onlySlug: string | null): LibraryPiece[] {
 	);
 }
 
-const cache = new Map<string, { at: number; pieces: LibraryPiece[] }>();
+const cache = new Map<string, { at: number; entries: LibraryEntry[] }>();
+
+function entriesFor(appsDir: string, onlySlug: string | null): LibraryEntry[] {
+	const key = `${appsDir}\u0000${onlySlug ?? "*"}`;
+	const cached = cache.get(key);
+	if (cached && Date.now() - cached.at < CACHE_MS) return cached.entries;
+
+	const entries = build(appsDir, onlySlug);
+	cache.set(key, { at: Date.now(), entries });
+	return entries;
+}
 
 /** Resumen de todas las piezas reutilizables, ordenado por tipo y título. */
 export function readSectionLibrary(
 	appsDir = DEFAULT_APPS_DIR,
 	onlySlug: string | null = null,
 ): LibraryPiece[] {
-	const key = `${appsDir}\u0000${onlySlug ?? "*"}`;
-	const cached = cache.get(key);
-	if (cached && Date.now() - cached.at < CACHE_MS) return cached.pieces.map((piece) => ({ ...piece }));
+	return entriesFor(appsDir, onlySlug).map(({ seccion: _seccion, ...piece }) => ({ ...piece }));
+}
 
-	const pieces = build(appsDir, onlySlug);
-	cache.set(key, { at: Date.now(), pieces });
-	return pieces.map((piece) => ({ ...piece }));
+/**
+ * Busca una pieza con su contenido completo. La importación usa esto para que
+ * también funcionen las piezas extraídas del HTML, que no están en el JSON de
+ * origen.
+ */
+export function findLibraryEntry(
+	clave: string,
+	appsDir = DEFAULT_APPS_DIR,
+): LibraryEntry | null {
+	const entry = entriesFor(appsDir, null).find((item) => item.clave === clave);
+	return entry ? (JSON.parse(JSON.stringify(entry)) as LibraryEntry) : null;
+}
+
+/** Copia una pieza de la biblioteca (JSON o HTML) dentro de una web. */
+export function importLibrarySection(
+	targetSlug: string,
+	clave: string,
+	appsDir = DEFAULT_APPS_DIR,
+): ImportedSection {
+	const entry = findLibraryEntry(clave, appsDir);
+	if (!entry) throw new Error("No existe esa pieza en la biblioteca.");
+	return copySection(targetSlug, entry.slug, entry.seccion, appsDir);
 }

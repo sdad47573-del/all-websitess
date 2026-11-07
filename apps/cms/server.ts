@@ -42,9 +42,9 @@ import {
 	writeSourceFile,
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
-import { importSection, readSections, saveSections } from "./lib/sections";
+import { readSections, saveSections } from "./lib/sections";
 import { readSectionCatalog } from "./lib/catalog";
-import { readSectionLibrary } from "./lib/library";
+import { importLibrarySection, readSectionLibrary } from "./lib/library";
 import { SITE_SLUG, siteAllowed } from "./lib/scope";
 import {
 	type Capability,
@@ -300,17 +300,21 @@ async function siteRoute(
 				const denied = deny(role, "editContent");
 				if (denied) return denied;
 
-				let payload: { source?: unknown; id?: unknown };
+				let payload: { clave?: unknown };
 				try {
-					payload = (await request.json()) as { source?: unknown; id?: unknown };
+					payload = (await request.json()) as { clave?: unknown };
 				} catch {
 					return json({ error: "El cuerpo debe ser JSON" }, 400);
 				}
-				if (typeof payload.source !== "string" || typeof payload.id !== "string") {
-					return json({ error: "Faltan source e id" }, 400);
+				if (
+					typeof payload.clave !== "string" ||
+					!payload.clave.trim() ||
+					payload.clave.length > 160
+				) {
+					return json({ error: "Falta la pieza que quieres copiar" }, 400);
 				}
 
-				return json({ ok: true, ...importSection(site.slug, payload.source, payload.id) });
+				return json({ ok: true, ...importLibrarySection(site.slug, payload.clave) });
 			}
 
 			if (rest.length !== 1) return json({ error: "Ruta no encontrada" }, 404);
@@ -615,7 +619,7 @@ async function api(request: Request, url: URL): Promise<Response> {
 	if (parts[1] === "sections" && parts[2] === "library") {
 		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
-		return json({ piezas: readSectionLibrary(undefined, SITE_SLUG) });
+		return json({ piezas: readSectionLibrary() });
 	}
 
 	if (parts.length === 2) {

@@ -2,6 +2,7 @@ import { afterAll, describe, expect, test } from "bun:test";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { importLibrarySection, readSectionLibrary } from "./library";
 import { importSection } from "./sections";
 
 const root = mkdtempSync(join(tmpdir(), "cms-importar-"));
@@ -36,6 +37,11 @@ app("destino", [
 ]);
 
 writeFileSync(join(appsDir, "origen", "src", "assets", "fotos", "fachada.jpg"), "jpeg");
+mkdirSync(join(appsDir, "origen", "src", "pages"), { recursive: true });
+writeFileSync(
+	join(appsDir, "origen", "src", "pages", "index.astro"),
+	`<section id="casa"><h2>La casa</h2><p>Un párrafo suficientemente largo para entrar en la biblioteca.</p></section>`,
+);
 
 describe("importar una pieza", () => {
 	test("la copia con un id nuevo y trae sus imágenes", () => {
@@ -65,5 +71,18 @@ describe("importar una pieza", () => {
 		expect(() => importSection("destino", "origen", "no-existe", appsDir)).toThrow(
 			"No existe esa pieza en la web de origen.",
 		);
+	});
+
+	test("importa una pieza extraída del HTML por su clave de biblioteca", () => {
+		const piece = readSectionLibrary(appsDir).find(
+			(item) => item.slug === "origen" && item.id.startsWith("html-"),
+		);
+		expect(piece).toBeDefined();
+
+		const result = importLibrarySection("destino", piece?.clave ?? "", appsDir);
+		const imported = result.secciones.secciones.find((section) => section.id === result.id);
+		expect(imported?.tipo).toBe("about");
+		expect(imported?.titulo).toBe("La casa");
+		expect(imported?.parrafos?.[0]).toContain("suficientemente largo");
 	});
 });
