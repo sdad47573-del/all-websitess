@@ -41,7 +41,7 @@ export interface LibraryPiece {
 	imagenAlt?: string;
 }
 
-interface LibraryEntry extends LibraryPiece {
+export interface LibraryEntry extends LibraryPiece {
 	seccion: Seccion;
 }
 
@@ -273,6 +273,12 @@ export function readSectionLibrary(
  * también funcionen las piezas extraídas del HTML, que no están en el JSON de
  * origen.
  */
+export function readLibraryEntries(appsDir = DEFAULT_APPS_DIR): LibraryEntry[] {
+	return entriesFor(appsDir, null).map(
+		(entry) => JSON.parse(JSON.stringify(entry)) as LibraryEntry,
+	);
+}
+
 export function findLibraryEntry(
 	clave: string,
 	appsDir = DEFAULT_APPS_DIR,

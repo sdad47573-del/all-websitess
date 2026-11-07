@@ -16,6 +16,41 @@ bun run build
 bun run start   # http://127.0.0.1:4400
 ```
 
+## API Hono con SQLite
+
+El CMS incluye una API nueva en `api/` construida con **Hono** y **SQLite**.
+No recorre `apps/` en tiempo de ejecución: el contenido se importa una vez y
+luego se sirve desde `apps/cms/data/cms.sqlite`.
+
+```bash
+bun run api:seed   # importa webs, piezas, biblioteca y catálogo
+CMS_API_TOKEN='mi-token-largo' bun run api   # http://127.0.0.1:4402
+```
+
+Sin `CMS_API_TOKEN` la API solo escucha en `127.0.0.1` y no pide token. Con la
+variable, todas las rutas menos `/api/health` exigen
+`Authorization: Bearer <token>` o `X-API-Key`.
+
+| Ruta | Qué hace |
+|---|---|
+| `GET /api/health` | Comprobación de vida |
+| `GET /api/config` | Modo inventario o una sola web |
+| `GET /api/sites` | Lista de webs |
+| `GET /api/sites/:slug` | Ficha de una web |
+| `PATCH /api/sites/:slug` | Edita los campos de negocio |
+| `GET /api/sites/:slug/secciones` | Piezas de la portada |
+| `PUT /api/sites/:slug/secciones` | Guarda la lista completa |
+| `POST /api/sites/:slug/secciones/importar` | Copia una pieza de la biblioteca |
+| `GET /api/sections/library` | Biblioteca de modelos |
+| `GET /api/sections/catalog` | Catálogo por tipo |
+
+La importación inicial (`api:seed`) es el único paso que lee el repositorio. Si
+cambias una web en Git y quieres llevarla a la API, vuelve a ejecutarla. La API
+no escribe en `apps/` ni copia imágenes: guarda contenido en SQLite. El panel
+actual (`server.ts`) sigue leyendo los ficheros para no romper la vista previa,
+el editor de código ni las imágenes; apuntar el cliente a esta API es el
+siguiente paso de la migración.
+
 ## Acceso y roles
 
 El panel pide usuario y contraseña. En el primer arranque crea un
@@ -61,7 +96,8 @@ la API solo devuelve esa web: `/api/sites/<otra>` y `/preview/<otra>` responden
 404, y el catálogo de tipos se limita a sus propias piezas. La biblioteca de
 piezas de ejemplo es compartida, de solo lectura: el propietario puede copiar
 una pieza en su web, pero no editar la web de origen. El slug tiene que existir
-en `apps/` o el servidor no arranca.
+en `apps/` o el servidor no arranca. La API Hono también respeta
+`CMS_SITE_SLUG`.
 
 Sin la variable, el CMS sigue en modo inventario para desarrollo y conserva el
 listado completo de webs.
