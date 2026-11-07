@@ -1,5 +1,5 @@
 import { createAstroConfig } from '@astro-config';
 
 export default createAstroConfig({
-	site: 'https://taberna-la-charata.sur-digital.com',
+	site: 'https://taberna-la-charata.netlify.app',
 });

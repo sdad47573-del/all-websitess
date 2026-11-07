@@ -233,8 +233,9 @@ dominio cambie.
 el sitio se publica, pero con las URLs canónicas de Vercel.
 
 Ojo con el nombre del sitio en Netlify: no siempre coincide con el nombre de la carpeta.
-Por ejemplo la carpeta `bar-el-anzuelo` está en `elanzuelo.vercel.app`, y
-`a-fuego-braseria` en `a-fuego-braseria-cordoba.vercel.app`.
+Por ejemplo la carpeta `bar-el-anzuelo` está en `elanzuelo.vercel.app`.
+La carpeta `a-fuego-braseria` está en `a-fuego-braseria.vercel.app`
+(`a-fuego-braseria-cordoba.vercel.app` devuelve 404).
 
 ## Qué NO cubre
 

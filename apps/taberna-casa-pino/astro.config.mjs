@@ -1,5 +1,5 @@
 import { createAstroConfig } from '@astro-config';
 
 export default createAstroConfig({
-	site: 'https://taberna-casa-pino.sur-digital.com',
+	site: 'https://taberna-casa-pino.netlify.app',
 });
