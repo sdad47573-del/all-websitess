@@ -121,10 +121,10 @@ https://anabel-vegara-estetica.netlify.app
 https://ama-leku.netlify.app
 https://el-garbanzo-negro.netlify.app
 
-## Pendientes de acceso público
+## Públicas, fuera del portfolio
 
-Estas devuelven `401 Login Redirect` (Netlify Edge Access), así que no se han
-añadido al portfolio hasta que sean públicas o se indique su dominio propio:
+El 7 nov 2026 responden 200 (antes devolvían `401 Login Redirect` de Netlify
+Edge Access). Siguen fuera del portfolio porque no tienen ficha ni captura:
 
 https://los-mena.netlify.app
 https://cafe-restaurante-andalucia.netlify.app
