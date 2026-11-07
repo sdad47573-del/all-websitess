@@ -15,7 +15,7 @@ export async function GET(context: APIContext) {
     title: "Blog de Sur Digital",
     description:
       "SEO local, diseño web y consejos para que tu negocio de Málaga venda más online.",
-    site: context.site ?? "https://sur-digital.vercel.app",
+    site: context.site ?? "https://www.sur-digital.com",
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,

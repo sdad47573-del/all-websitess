@@ -124,7 +124,7 @@ export const PORTFOLIO: Project[] = [
 			'Cafetería y bakery en Teatinos: desayunos y meriendas con pitufos, bocadillos, bollería y una gran variedad de pan, además de tartas artesanales por encargo.',
 		tags: ['Bakery', 'Tartas por encargo', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://1111-coffee-and-bakery.netlify.app',
+		url: 'https://1111-coffee-and-bakery.sur-digital.com',
 		preview: coffee111Preview,
 	},
 	{
@@ -135,7 +135,7 @@ export const PORTFOLIO: Project[] = [
 			'Parrilla de carbón de encina en Córdoba con carnes seleccionadas, pescados a la brasa y verduras de la huerta.',
 		tags: ['Brasa de encina', 'Carnes', 'Córdoba'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://a-fuego-braseria.vercel.app',
+		url: 'https://a-fuego-braseria.sur-digital.com',
 		preview: aFuegoPreview,
 	},
 	{
@@ -146,7 +146,7 @@ export const PORTFOLIO: Project[] = [
 			'Kebab artesanal en Teatinos con carne fresca, pan casero y rollos, medias lunas y campers.',
 		tags: ['Kebab artesanal', 'Pan casero', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://a-jalar.vercel.app',
+		url: 'https://a-jalar.sur-digital.com',
 		preview: aJalarPreview,
 	},
 	{
@@ -158,7 +158,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Cejas', 'Piel y uñas', 'Cruz de Humilladero'],
 		accent: 'bg-neutral/15 text-neutral',
 		destacado: true,
-		url: 'https://a-style-beauty-salon.vercel.app',
+		url: 'https://a-style-beauty-salon.sur-digital.com',
 		preview: aStylePreview,
 	},
 	{
@@ -169,7 +169,7 @@ export const PORTFOLIO: Project[] = [
 			'Taberna de tapeo en la C. Arco del Consuelo de Jaén, con 4,6★ y 194 reseñas en Google. Abre a mediodía de martes a domingo.',
 		tags: ['Tapeo', '4,6★ en Google', 'Jaén'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://adrizale.netlify.app',
+		url: 'https://adrizale.sur-digital.com',
 		preview: adrizalePreview,
 	},
 	{
@@ -180,7 +180,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina española de picoteo en Teatinos, con producto ibérico, tapas y una amplia carta de vinos.',
 		tags: ['Cocina española', 'Tapas', 'Teatinos'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://agustin-el-picoteo.vercel.app',
+		url: 'https://agustin-el-picoteo.sur-digital.com',
 		preview: agustinPreview,
 	},
 	{
@@ -191,7 +191,7 @@ export const PORTFOLIO: Project[] = [
 			'Estudio de peluquería en Teatinos especializado en corte, color y tratamientos capilares.',
 		tags: ['Corte y peinado', 'Color', 'Tratamientos'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://am-industria-del-estilo.netlify.app',
+		url: 'https://am-industria-del-estilo.sur-digital.com',
 		preview: amIndustriaPreview,
 	},
 	{
@@ -203,7 +203,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Helado artesanal', 'Sin gluten', 'Teatinos'],
 		accent: 'bg-neutral/15 text-neutral',
 		destacado: true,
-		url: 'https://amorato-malaga.netlify.app',
+		url: 'https://amorato-malaga.sur-digital.com',
 		preview: amoratoPreview,
 	},
 	{
@@ -214,7 +214,7 @@ export const PORTFOLIO: Project[] = [
 			'Salón de peluquería y belleza unisex en Teatinos, Málaga, para cortar, peinar y cuidar tu imagen.',
 		tags: ['Peluquería unisex', 'Color', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://ar-professional.vercel.app',
+		url: 'https://ar-professional.sur-digital.com',
 		preview: arProfessionalPreview,
 	},
 	{
@@ -225,7 +225,7 @@ export const PORTFOLIO: Project[] = [
 			'Asador de cocina argentina en Las Lagunas de Mijas con empanadas caseras, milanesa y cortes a la parrilla.',
 		tags: ['Parrilla argentina', 'Empanadas', 'Las Lagunas'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://asador-la-granja.vercel.app',
+		url: 'https://asador-la-granja.sur-digital.com',
 		preview: asadorGranjaPreview,
 	},
 	{
@@ -236,7 +236,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina venezolana en Mijas Costa: platos para compartir, sabores de casa y una bienvenida cercana.',
 		tags: ['Cocina venezolana', 'Para compartir', 'Mijas Costa'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://autana-restaurant.netlify.app',
+		url: 'https://autana-restaurant.sur-digital.com',
 		preview: autanaPreview,
 	},
 	{
@@ -248,7 +248,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Tapas', 'Vistas al mar', 'Benalmádena'],
 		accent: 'bg-secondary/15 text-neutral',
 		destacado: true,
-		url: 'https://bacchus-terrace.vercel.app',
+		url: 'https://bacchus-terrace.sur-digital.com',
 		preview: bacchusPreview,
 	},
 	{
@@ -259,7 +259,7 @@ export const PORTFOLIO: Project[] = [
 			'Cien años de cocina casera andaluza en el barrio del Naranjo: bacalao, pijotas, carnes a la brasa y guisos de siempre en un patio entoldado.',
 		tags: ['Cocina casera', 'Desde 1924', 'Córdoba'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://la-primera-del-naranjo.netlify.app',
+		url: 'https://la-primera-del-naranjo.sur-digital.com',
 		preview: naranjoPreview,
 	},
 	{
@@ -270,7 +270,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar familiar en La Cala de Mijas con cocina española, pescados, mariscos y raciones generosas.',
 		tags: ['Pescado y marisco', 'Raciones', 'La Cala'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://bar-los-granainos-miguel.vercel.app',
+		url: 'https://bar-los-granainos-miguel.sur-digital.com',
 		preview: granainosPreview,
 	},
 	{
@@ -281,7 +281,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar restaurante en el Club Natación de Almería, con 4,4★ y 796 reseñas en Google. Abierto todos los días menos los lunes.',
 		tags: ['Club Natación', '796 reseñas', 'Almería'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://grand-pere.netlify.app',
+		url: 'https://grand-pere.sur-digital.com',
 		preview: grandPerePreview,
 	},
 	{
@@ -292,7 +292,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina española en el Paraje Pisaica de la Virgen, en Viator (Almería), con desayunos desde primera hora y menú del día.',
 		tags: ['Cocina española', 'Menú del día', 'Viator'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://restaurante-natursur.netlify.app',
+		url: 'https://restaurante-natursur.sur-digital.com',
 		preview: natursurPreview,
 	},
 	{
@@ -304,7 +304,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Cortes', 'Barba y cejas', 'Teatinos'],
 		accent: 'bg-neutral/15 text-neutral',
 		destacado: true,
-		url: 'https://barberia-hair-cool.netlify.app',
+		url: 'https://barberia-hair-cool.sur-digital.com',
 		preview: barberiaHairCoolPreview,
 	},
 	{
@@ -315,7 +315,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante familiar en Torrenueva, La Cala de Mijas, con cocina internacional moderna, ingredientes locales y platos caseros.',
 		tags: ['Cocina internacional', 'Producto local', 'La Cala de Mijas'],
 		accent: 'bg-accent/15 text-neutral',
-		url: 'https://benavra.netlify.app',
+		url: 'https://benavra.sur-digital.com',
 		preview: benavraPreview,
 	},
 	{
@@ -326,7 +326,7 @@ export const PORTFOLIO: Project[] = [
 			'Desayunos, comida casera, menú del día, raciones y platos combinados en la Carretera de la Sierra, 73, en Granada.',
 		tags: ['Desayunos', 'Menú del día', 'Granada'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://cuatro-caminos-granada.vercel.app',
+		url: 'https://cuatro-caminos-granada.sur-digital.com',
 		preview: cuatroCaminosPreview,
 	},
 	{
@@ -338,7 +338,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Taller', 'Motos', 'Málaga'],
 		accent: 'bg-neutral/15 text-neutral',
 		destacado: true,
-		url: 'https://carbikemotor.vercel.app',
+		url: 'https://carbikemotor.sur-digital.com',
 		preview: carbikemotoPreview,
 	},
 	{
@@ -350,7 +350,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Charcutería', 'Alimentación', 'Comercio local'],
 		accent: 'bg-secondary/15 text-neutral',
 		destacado: true,
-		url: 'https://comestibles-pepe.vercel.app',
+		url: 'https://comestibles-pepe.sur-digital.com',
 		preview: comestiblesPepePreview,
 	},
 	{
@@ -361,7 +361,7 @@ export const PORTFOLIO: Project[] = [
 			'Cafetería y bar de tapes en Teatinos: tartas caseras, gofres, café y copas hasta la madrugada.',
 		tags: ['Tartas caseras', 'Gofres', 'Teatinos'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://el-destello.netlify.app',
+		url: 'https://el-destello.sur-digital.com',
 		preview: destelloPreview,
 	},
 	{
@@ -372,7 +372,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante asturiano y sidrería en Rincón de la Victoria: cachopo, gildas, croquetas caseras y sidra natural.',
 		tags: ['Cocina asturiana', 'Cachopo', 'Rincón de la Victoria'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://el-gallu.netlify.app',
+		url: 'https://el-gallu.sur-digital.com',
 		preview: elGalluPreview,
 	},
 	{
@@ -383,7 +383,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina mediterránea marinera en La Carihuela: pescados, mariscos, arroces y menú del día.',
 		tags: ['Pescados y mariscos', 'Arroces', 'La Carihuela'],
 		accent: 'bg-accent/15 text-neutral',
-		url: 'https://el-manjar-playa.vercel.app',
+		url: 'https://el-manjar-playa.sur-digital.com',
 		preview: manjarPlayaPreview,
 	},
 	{
@@ -394,7 +394,7 @@ export const PORTFOLIO: Project[] = [
 			'Asador argentino en Rincón de la Victoria: pollo asado al espiedo, milanesas y empanadas caseras, con take away y delivery.',
 		tags: ['Pollo al espiedo', 'Empanadas', 'Rincón de la Victoria'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://el-pollito-lio.netlify.app',
+		url: 'https://el-pollito-lio.sur-digital.com',
 		preview: pollitoLioPreview,
 	},
 	{
@@ -405,7 +405,7 @@ export const PORTFOLIO: Project[] = [
 			'Tapas, jamón asado, comida casera, raciones y menú del día en la calle Marqués de Mondéjar, 13, en el centro de Granada.',
 		tags: ['Jamón asado', 'Comida casera', 'Granada'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://el-tinglao-granada.vercel.app',
+		url: 'https://el-tinglao-granada.sur-digital.com',
 		preview: tinglaoPreview,
 	},
 	{
@@ -417,7 +417,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Milanesa', 'Empanadas', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
 		destacado: true,
-		url: 'https://gastrobar-1947-teatinos.vercel.app',
+		url: 'https://gastrobar-1947-teatinos.sur-digital.com',
 		preview: gastrobar1947Preview,
 	},
 	{
@@ -428,7 +428,7 @@ export const PORTFOLIO: Project[] = [
 			'Salón de uñas en la Plaza del Teatro, en pleno centro de Málaga: manicura, pedicura, semipermanente y acrílico, sin cita previa.',
 		tags: ['Sin cita previa', 'Semipermanente', 'Centro'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://merci-nails.netlify.app',
+		url: 'https://merci-nails.sur-digital.com',
 		preview: merciNailsPreview,
 	},
 	{
@@ -439,7 +439,7 @@ export const PORTFOLIO: Project[] = [
 			'Pescado y marisco fresco, gambas, frituras y tapas en la calle Pedro Antonio de Alarcón, 41, en Granada.',
 		tags: ['Pescado y marisco', 'Frituras', 'Granada'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://meson-luis-granada.vercel.app',
+		url: 'https://meson-luis-granada.sur-digital.com',
 		preview: mesonLuisPreview,
 	},
 	{
@@ -450,7 +450,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina casera española en la calle Sófocles, 8 (Teatinos): guisos de siempre, albóndigas y pescado y calamar según la selección del día.',
 		tags: ['Cocina casera', 'Guisos', 'Teatinos'],
 		accent: 'bg-accent/15 text-neutral',
-		url: 'https://casa-alfonso-teatinos.netlify.app',
+		url: 'https://casa-alfonso-teatinos.sur-digital.com',
 		preview: casaAlfonsoPreview,
 	},
 	{
@@ -461,7 +461,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante en Aguilar de la Frontera con carnes a la brasa, cocina casera y menú del día.',
 		tags: ['Carnes a la brasa', 'Cocina casera', 'Aguilar'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://el-nido-aguilar.vercel.app',
+		url: 'https://el-nido-aguilar.sur-digital.com',
 		preview: nidoAguilarPreview,
 	},
 	{
@@ -472,7 +472,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Brasa', 'Paellas', 'Marbella'],
 		accent: 'bg-primary/15 text-primary',
 		destacado: true,
-		url: 'https://restaurante-la-barbacana.vercel.app',
+		url: 'https://restaurante-la-barbacana.sur-digital.com',
 		preview: barbacanaPreview,
 	},
 	{
@@ -483,7 +483,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante de cocina española y mediterránea en el Conde de Barcelona de El Ejido, con 4,5★ y 184 reseñas en Google.',
 		tags: ['Cocina española', 'Mediterránea', 'El Ejido'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://restaurante-la-masia.netlify.app',
+		url: 'https://restaurante-la-masia.sur-digital.com',
 		preview: masiaPreview,
 	},
 	{
@@ -494,7 +494,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina mediterránea y española con tapas y menú del día en la calle Rauda, 2, a un paso de la Alhambra.',
 		tags: ['Cocina mediterránea', 'Menú del día', 'Granada'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://restaurante-puerta-de-la-alhambra.vercel.app',
+		url: 'https://restaurante-puerta-de-la-alhambra.sur-digital.com',
 		preview: puertaAlhambraPreview,
 	},
 	{
@@ -505,7 +505,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina gallega en Cabra (Córdoba): pulpo a la brasa, chuletón de rubia gallega, marisco y croquetas caseras, con terraza y patio interior.',
 		tags: ['Pulpo a la brasa', 'Marisco', 'Cabra'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://rincon-gallego-egabrense-cabra.vercel.app',
+		url: 'https://rincon-gallego-egabrense-cabra.sur-digital.com',
 		preview: rinconGallegoPreview,
 	},
 	{
@@ -516,7 +516,7 @@ export const PORTFOLIO: Project[] = [
 			'Peluquería y estética en el mismo local en Carlos Haya (Málaga): cortes, color, uñas y tratamientos, con cita online y sin esperas.',
 		tags: ['Cita online', 'Pelo y uñas', 'Carlos Haya'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://sami-beauty.netlify.app',
+		url: 'https://sami-beauty.sur-digital.com',
 		preview: samiBeautyPreview,
 	},
 	{
@@ -527,7 +527,7 @@ export const PORTFOLIO: Project[] = [
 			'Tapas, raciones y parrilla en Teatinos, con gildas, croquetas caseras y platos para compartir.',
 		tags: ['Tapas', 'Parrilla', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://sazon-teatinos.vercel.app',
+		url: 'https://sazon-teatinos.sur-digital.com',
 		preview: sazonTeatinosPreview,
 	},
 	{
@@ -539,7 +539,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Derecho civil', 'Penal y familia', 'Lucena'],
 		accent: 'bg-primary/15 text-primary',
 		destacado: true,
-		url: 'https://sergiocruzchacon.vercel.app',
+		url: 'https://sergiocruzchacon.sur-digital.com',
 		preview: cruzChaconPreview,
 	},
 	{
@@ -550,7 +550,7 @@ export const PORTFOLIO: Project[] = [
 			'Salón de belleza en Mesonero Romanos (Teatinos, Málaga): manicuras, diseños de uñas y esmaltados, con cita previa y 5,0★ en Google.',
 		tags: ['Manicuras', 'Diseño de uñas', 'Teatinos'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://sofia-garcia-total-beauty.netlify.app',
+		url: 'https://sofia-garcia-total-beauty.sur-digital.com',
 		preview: sofiaGarciaPreview,
 	},
 	{
@@ -561,7 +561,7 @@ export const PORTFOLIO: Project[] = [
 			'Helado café en C. Pirandello (Teatinos): helado artesanal, café, tartas y bocadillos, con terraza en la calle y 4,9★ en Google.',
 		tags: ['Helado artesanal', 'Terraza', 'Teatinos'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://sur-helado-cafe.netlify.app',
+		url: 'https://sur-helado-cafe.sur-digital.com',
 		preview: surHeladoPreview,
 	},
 	{
@@ -573,7 +573,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Tapas y vinos', 'Música en directo', 'La Cala de Mijas'],
 		accent: 'bg-accent/15 text-primary',
 		destacado: true,
-		url: 'https://taberna-casa-pino.netlify.app',
+		url: 'https://taberna-casa-pino.sur-digital.com',
 		preview: casaPinoPreview,
 	},
 	{
@@ -584,7 +584,7 @@ export const PORTFOLIO: Project[] = [
 			'Taberna en Villarrubia especializada en carnes maduradas a la brasa y cocina tradicional.',
 		tags: ['Carnes maduradas', 'Brasa', 'Cocina tradicional'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://taberna-el-chato.vercel.app',
+		url: 'https://taberna-el-chato.sur-digital.com',
 		preview: chatoPreview,
 	},
 	{
@@ -594,7 +594,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Taberna familiar en Rincón de la Victoria con tapas, guisos y recetas caseras.',
 		tags: ['Tapas', 'Cocina casera', 'Rincón de la Victoria'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://taberna-la-charata.netlify.app',
+		url: 'https://taberna-la-charata.sur-digital.com',
 		preview: charataPreview,
 	},
 	{
@@ -606,7 +606,7 @@ export const PORTFOLIO: Project[] = [
 		tags: ['Salmorejo', 'Rabo de toro', 'Córdoba'],
 		accent: 'bg-accent/15 text-primary',
 		destacado: true,
-		url: 'https://taberna-pura-cepa-cordoba.vercel.app',
+		url: 'https://taberna-pura-cepa-cordoba.sur-digital.com',
 		preview: puraCepaPreview,
 	},
 	{
@@ -617,7 +617,7 @@ export const PORTFOLIO: Project[] = [
 			'Taller de coches en la avenida Carlos Haya de Málaga, dentro de la red Eurotaller, para el mantenimiento y la reparación de tu vehículo.',
 		tags: ['Eurotaller', 'Mantenimiento', 'Carlos Haya'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://talleres-caldado.netlify.app',
+		url: 'https://talleres-caldado.sur-digital.com',
 		preview: talleresCaldadoPreview,
 	},
 	{
@@ -628,7 +628,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante en La Cala del Moral: pizza al horno de leña, pasta, carnes y desayunos, con terraza.',
 		tags: ['Horno de leña', 'Terraza', 'La Cala del Moral'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://the-boss-restaurant.netlify.app',
+		url: 'https://the-boss-restaurant.sur-digital.com',
 		preview: theBossPreview,
 	},
 	{
@@ -639,7 +639,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina casera y tradición malagueña en La Cala de Mijas, con su famoso bocadillo de lomo en manteca.',
 		tags: ['Lomo en manteca', 'Cocina malagueña', 'La Cala de Mijas'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://venta-la-butibamba.vercel.app',
+		url: 'https://venta-la-butibamba.sur-digital.com',
 		preview: butibambaPreview,
 	},
 	{
@@ -650,7 +650,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar de tapas y marisquería en Isla Cristina, con 4,8★ y 317 reseñas en Google. Noches de martes a domingo.',
 		tags: ['Tapas y marisco', 'Isla Cristina'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://bar-albero-tapas.netlify.app',
+		url: 'https://bar-albero-tapas.sur-digital.com',
 		preview: barAlberoPreview,
 	},
 	{
@@ -661,7 +661,7 @@ export const PORTFOLIO: Project[] = [
 			'Parrilla vasca en Cruces, Barakaldo, con pescados a la parrilla en la Plaza Inmaculada 23.',
 		tags: ['Parrilla vasca', 'Barakaldo'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://bar-bermeotarrak.netlify.app',
+		url: 'https://bar-bermeotarrak.sur-digital.com',
 		preview: barBermeoPreview,
 	},
 	{
@@ -672,7 +672,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar cafetería en Villanueva de los Castillejos (Huelva), con 4,6★ y 121 reseñas en Google.',
 		tags: ['Desayunos', 'Villanueva de los Castillejos'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://bar-cafeteria-sebastian.netlify.app',
+		url: 'https://bar-cafeteria-sebastian.sur-digital.com',
 		preview: barSebastianPreview,
 	},
 	{
@@ -683,7 +683,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar de cocina castellana con comida casera manchega en Ciudad Real, con 4,6★ y 149 reseñas en Google.',
 		tags: ['Comida casera', 'Ciudad Real'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://bar-de-esteban.netlify.app',
+		url: 'https://bar-de-esteban.sur-digital.com',
 		preview: barEstebanPreview,
 	},
 	{
@@ -694,7 +694,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante en Benidorm, con 4,3★ y 252 reseñas en Google. Abierto todos los días de 8:00 a 1:00.',
 		tags: ['Restaurante', 'Benidorm'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://bar-pallares.netlify.app',
+		url: 'https://bar-pallares.sur-digital.com',
 		preview: barPallaresPreview,
 	},
 	{
@@ -704,7 +704,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Tapas y cocina andaluza en Pechina (Almería), con 4,5★ y 942 reseñas en Google.',
 		tags: ['Cocina andaluza', 'Pechina'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://restaurante-sierra-alhamilla.netlify.app',
+		url: 'https://restaurante-sierra-alhamilla.sur-digital.com',
 		preview: sierraAlhamillaPreview,
 	},
 	{
@@ -714,7 +714,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Bar restaurante en el Paseo de España de Jaén, con 4,4★ y 729 reseñas en Google.',
 		tags: ['Bar restaurante', 'Jaén'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://restaurante-ya-lo-sabes.netlify.app',
+		url: 'https://restaurante-ya-lo-sabes.sur-digital.com',
 		preview: yaLoSabesPreview,
 	},
 	{
@@ -725,7 +725,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar restaurante en Calañas (Huelva), con 4,6★ y 208 reseñas en Google. Abre de lunes a sábado.',
 		tags: ['Bar restaurante', 'Calañas'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://bar-seoane.netlify.app',
+		url: 'https://bar-seoane.sur-digital.com',
 		preview: barSeoanePreview,
 	},
 	{
@@ -736,7 +736,7 @@ export const PORTFOLIO: Project[] = [
 			'Clínica dental en la Avenida de Andalucía de Málaga: odontología para adultos y niños.',
 		tags: ['Dentista', 'Málaga'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://clinica-dental-daniela-torres.netlify.app',
+		url: 'https://clinica-dental-daniela-torres.sur-digital.com',
 		preview: dentalTorresPreview,
 	},
 	{
@@ -747,7 +747,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar de tapas y tienda de vinos en Cartagena, con 4,2★ y más de 3.800 reseñas en Google.',
 		tags: ['Tapas y vinos', 'Cartagena'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://bodega-la-fuente.netlify.app',
+		url: 'https://bodega-la-fuente.sur-digital.com',
 		preview: bodegaFuentePreview,
 	},
 	{
@@ -757,7 +757,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Hamburguesería en Isla Cristina, con 4,8★ en Google. Cenas de 21:00 a 24:00.',
 		tags: ['Smash burgers', 'Isla Cristina'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://delito-smash.netlify.app',
+		url: 'https://delito-smash.sur-digital.com',
 		preview: delitoSmashPreview,
 	},
 	{
@@ -767,7 +767,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Hamburguesería en Tharsis (Huelva), con 5,0★ en Google.',
 		tags: ['Hamburguesas', 'Tharsis'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://el-aserradero-tharsis.netlify.app',
+		url: 'https://el-aserradero-tharsis.sur-digital.com',
 		preview: aserraderoPreview,
 	},
 	{
@@ -778,7 +778,7 @@ export const PORTFOLIO: Project[] = [
 			'Taberna de cocina casera malagueña en Teatinos: guisos a fuego lento, producto fresco y tapas para compartir.',
 		tags: ['Cocina malagueña', 'Teatinos'],
 		accent: 'bg-accent/15 text-neutral',
-		url: 'https://bar-taberna-la-new.netlify.app',
+		url: 'https://bar-taberna-la-new.sur-digital.com',
 		preview: tabernaNewPreview,
 	},
 	{
@@ -788,7 +788,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Restaurante con zona infantil en Jaén, con 4,4★ y 588 reseñas en Google.',
 		tags: ['Zona infantil', 'Jaén'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://restaurante-el-sotano.netlify.app',
+		url: 'https://restaurante-el-sotano.sur-digital.com',
 		preview: elSotanoPreview,
 	},
 	{
@@ -799,7 +799,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante marroquí de cocina casera en Ciudad Real, con 4,7★ y 303 reseñas en Google.',
 		tags: ['Cocina marroquí', 'Ciudad Real'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://cuevas-ali-baba.netlify.app',
+		url: 'https://cuevas-ali-baba.sur-digital.com',
 		preview: aliBabaPreview,
 	},
 	{
@@ -810,7 +810,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar restaurante en la Avenida de Andalucía de Benidorm, abierto todos los días de 11:00 a 1:00.',
 		tags: ['Bar restaurante', 'Benidorm'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://restaurante-new-naranjo.netlify.app',
+		url: 'https://restaurante-new-naranjo.sur-digital.com',
 		preview: newNaranjoPreview,
 	},
 	{
@@ -821,7 +821,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina francesa en Benidorm, con 4,9★ y 106 reseñas en Google. Terraza con vistas al mar y bar de cócteles.',
 		tags: ['Cocina francesa', 'Benidorm'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://bistrot-senseo.netlify.app',
+		url: 'https://bistrot-senseo.sur-digital.com',
 		preview: senseoPreview,
 	},
 	{
@@ -832,7 +832,7 @@ export const PORTFOLIO: Project[] = [
 			'Tapas y cocina española tradicional junto al Albaicín de Granada, a un paso de Plaza Nueva.',
 		tags: ['Tapas', 'Albaicín'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://boabdil-restaurante.netlify.app',
+		url: 'https://boabdil-restaurante.sur-digital.com',
 		preview: boabdilPreview,
 	},
 	{
@@ -842,7 +842,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Café-bar de desayunos y cocina casera con menú del día y terraza.',
 		tags: ['Desayunos', 'Menú del día'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://cafe-bar-la-carretera.netlify.app',
+		url: 'https://cafe-bar-la-carretera.sur-digital.com',
 		preview: laCarreteraPreview,
 	},
 	{
@@ -852,7 +852,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Restaurante de cocina española con pescados, mariscos y menú del día.',
 		tags: ['Pescados y mariscos', 'Menú del día'],
 		accent: 'bg-accent/15 text-neutral',
-		url: 'https://restaurante-las-rias.netlify.app',
+		url: 'https://restaurante-las-rias.sur-digital.com',
 		preview: lasRiasPreview,
 	},
 	{
@@ -863,7 +863,7 @@ export const PORTFOLIO: Project[] = [
 			'Carnicería y tienda de alimentación con producto fresco, embutidos y elaborados caseros.',
 		tags: ['Carnicería', 'Comercio local'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://carniceria-jose-luis.netlify.app',
+		url: 'https://carniceria-jose-luis.sur-digital.com',
 		preview: joseLuisPreview,
 	},
 	{
@@ -874,7 +874,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar restaurante en el Paseo Jardín Botánico de Sanlúcar de Barrameda: tapas, raciones y arroces, con 4,3★ y 118 reseñas en Google.',
 		tags: ['Tapas y raciones', 'Sanlúcar de Barrameda'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://bar-restaurante-la-tapita.vercel.app',
+		url: 'https://bar-restaurante-la-tapita.sur-digital.com',
 		preview: laTapitaPreview,
 	},
 	{
@@ -885,7 +885,7 @@ export const PORTFOLIO: Project[] = [
 			'Pizzería y restaurante en Mértola (Portugal), con pizzas de horno y cocina tradicional. Abre de martes a domingo.',
 		tags: ['Pizzería', 'Mértola', 'Portugal'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://restaurante-pizzaria-a-paragem.netlify.app',
+		url: 'https://restaurante-pizzaria-a-paragem.sur-digital.com',
 		preview: aParagemPreview,
 	},
 	{
@@ -896,7 +896,7 @@ export const PORTFOLIO: Project[] = [
 			'Abacería de tapas y cocina tradicional en el Paseo de la Estación de Jaén, con producto de despensa y vinos.',
 		tags: ['Tapas', 'Jaén', 'Vinos'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://abaceria-tinta-de-toro.netlify.app',
+		url: 'https://abaceria-tinta-de-toro.sur-digital.com',
 		preview: tintaDeToroPreview,
 	},
 	{
@@ -907,7 +907,7 @@ export const PORTFOLIO: Project[] = [
 			'Peluquería y estética en el barrio Noroeste de Córdoba: corte, color y tratamientos con trato personalizado.',
 		tags: ['Peluquería', 'Córdoba', 'Estética'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://actitud-centro-belleza.netlify.app',
+		url: 'https://actitud-centro-belleza.sur-digital.com',
 		preview: actitudPreview,
 	},
 	{
@@ -918,7 +918,7 @@ export const PORTFOLIO: Project[] = [
 			'Parrilla de brasa en la Puerta del Sol de Jaén, con carnes a la parrilla y comidas de martes a domingo.',
 		tags: ['Parrilla', 'Jaén', 'Carnes'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://asador-de-camilo.netlify.app',
+		url: 'https://asador-de-camilo.sur-digital.com',
 		preview: asadorCamiloPreview,
 	},
 	{
@@ -929,7 +929,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina española y cafetería en Ciudad Real, con espacio para gastronomía, arte y entretenimiento.',
 		tags: ['Restaurante', 'Ciudad Real', 'Cafetería'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://la-bendita-restaurante.netlify.app',
+		url: 'https://la-bendita-restaurante.sur-digital.com',
 		preview: laBenditaPreview,
 	},
 	{
@@ -940,7 +940,7 @@ export const PORTFOLIO: Project[] = [
 			'Centro de belleza en Ciudad Jardín (Málaga): tratamientos faciales y corporales con cita previa.',
 		tags: ['Belleza', 'Málaga', 'Facial'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://carolina-centro-belleza.netlify.app',
+		url: 'https://carolina-centro-belleza.sur-digital.com',
 		preview: carolinaPreview,
 	},
 	{
@@ -951,7 +951,7 @@ export const PORTFOLIO: Project[] = [
 			'Barbería en Teatinos (Málaga): corte, barba y afeitado clásico con reserva online.',
 		tags: ['Barbería', 'Teatinos', 'Málaga'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://barberia-teatinos.netlify.app',
+		url: 'https://barberia-teatinos.sur-digital.com',
 		preview: barberiaTeatinosPreview,
 	},
 	{
@@ -962,7 +962,7 @@ export const PORTFOLIO: Project[] = [
 			'Barbería en Teatinos con corte, ritual de barba y packs combinados; reserva por Booksy o teléfono.',
 		tags: ['Barbería', 'Teatinos', 'Reservas'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://bquarters.netlify.app',
+		url: 'https://bquarters.sur-digital.com',
 		preview: bquartersPreview,
 	},
 	{
@@ -973,7 +973,7 @@ export const PORTFOLIO: Project[] = [
 			'Barbería en el centro de Málaga especializada en corte con carácter, barba y afeitado.',
 		tags: ['Barbería', 'Málaga', 'Barba'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://barbershop-guillermo-val.netlify.app',
+		url: 'https://barbershop-guillermo-val.sur-digital.com',
 		preview: guillermoValPreview,
 	},
 	{
@@ -984,7 +984,7 @@ export const PORTFOLIO: Project[] = [
 			'Medicina estética en La Malagueta (Málaga): tratamientos faciales y corporales con asesoramiento previo.',
 		tags: ['Estética', 'Málaga', 'Facial'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://bbells-salon-belleza.netlify.app',
+		url: 'https://bbells-salon-belleza.sur-digital.com',
 		preview: medicinaBellezaPreview,
 	},
 	{
@@ -995,7 +995,7 @@ export const PORTFOLIO: Project[] = [
 			'Bar con terraza en Cartagena, más de 150 cervezas, tapas y hamburguesas; abierto todos los días.',
 		tags: ['Cervezas', 'Cartagena', 'Terraza'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://el-rincon-del-perlita.netlify.app',
+		url: 'https://el-rincon-del-perlita.sur-digital.com',
 		preview: perlitaPreview,
 	},
 	{
@@ -1006,7 +1006,7 @@ export const PORTFOLIO: Project[] = [
 			'Restaurante y bar en el centro de Jaén con tapeo, mediodía y cenas de martes a sábado.',
 		tags: ['Tapas', 'Jaén', 'Restaurante'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://la-talega.netlify.app',
+		url: 'https://la-talega.sur-digital.com',
 		preview: laTalegaPreview,
 	},
 	{
@@ -1017,7 +1017,7 @@ export const PORTFOLIO: Project[] = [
 			'Street food americana en Ciudad Real: hamburguesas, alitas y raciones, con dos turnos de servicio.',
 		tags: ['Hamburguesas', 'Ciudad Real', 'Street food'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://gigantes-street-food.netlify.app',
+		url: 'https://gigantes-street-food.sur-digital.com',
 		preview: gigantesPreview,
 	},
 	{
@@ -1028,7 +1028,7 @@ export const PORTFOLIO: Project[] = [
 			'Parrilla y desayunos en Instinción (Almería), con carnes a la brasa y menús de mediodía.',
 		tags: ['Parrilla', 'Almería', 'Desayunos'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://el-chuleton.netlify.app',
+		url: 'https://el-chuleton.sur-digital.com',
 		preview: chuletonPreview,
 	},
 	{
@@ -1039,7 +1039,7 @@ export const PORTFOLIO: Project[] = [
 			'Menú del día y cocina de siempre en Huelva, de lunes a viernes desde primera hora.',
 		tags: ['Menú del día', 'Huelva', 'Cocina casera'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://la-nicoba.netlify.app',
+		url: 'https://la-nicoba.sur-digital.com',
 		preview: laNicobaPreview,
 	},
 	{
@@ -1050,7 +1050,7 @@ export const PORTFOLIO: Project[] = [
 			'Desayunos, tapas y comidas en Cruz de Humilladero (Málaga), con terraza y calamares fritos.',
 		tags: ['Desayunos', 'Málaga', 'Terraza'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://el-terrazeo-del-guinda.netlify.app',
+		url: 'https://el-terrazeo-del-guinda.sur-digital.com',
 		preview: terrazeoPreview,
 	},
 	{
@@ -1061,7 +1061,7 @@ export const PORTFOLIO: Project[] = [
 			'Gimnasio de barrio en Teatinos (Málaga): musculación, cardio y monitores para entrenar a tu ritmo.',
 		tags: ['Gimnasio', 'Teatinos', 'Musculación'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://gym-krono.netlify.app',
+		url: 'https://gym-krono.sur-digital.com',
 		preview: gymKronoPreview,
 	},
 	{
@@ -1072,7 +1072,7 @@ export const PORTFOLIO: Project[] = [
 			'Hamburguesería en Cáceres con burgers a la parrilla, menús y servicio para llevar.',
 		tags: ['Hamburguesas', 'Cáceres', 'Para llevar'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://78-street-burguer.netlify.app',
+		url: 'https://78-street-burguer.sur-digital.com',
 		preview: street78Preview,
 	},
 	{
@@ -1083,7 +1083,7 @@ export const PORTFOLIO: Project[] = [
 			'Floristería en Córdoba: ramos, plantas y arreglos florales para eventos y regalos.',
 		tags: ['Floristería', 'Córdoba', 'Ramos'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://la-mimosa-atelier.netlify.app',
+		url: 'https://la-mimosa-atelier.sur-digital.com',
 		preview: mimosaPreview,
 	},
 	{
@@ -1094,7 +1094,7 @@ export const PORTFOLIO: Project[] = [
 			'Gastroteca en Cáceres con cocina de mercado, tapas y una carta pensada para compartir.',
 		tags: ['Gastroteca', 'Cáceres', 'Tapas'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://alcaravan-gastroteca.netlify.app',
+		url: 'https://alcaravan-gastroteca.sur-digital.com',
 		preview: alcaravanPreview,
 	},
 	{
@@ -1104,7 +1104,7 @@ export const PORTFOLIO: Project[] = [
 		description: 'Floristería en Málaga con ramos personalizados, plantas y entrega a domicilio.',
 		tags: ['Floristería', 'Málaga', 'Plantas'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://alexflor.netlify.app',
+		url: 'https://alexflor.sur-digital.com',
 		preview: alexflorPreview,
 	},
 	{
@@ -1115,7 +1115,7 @@ export const PORTFOLIO: Project[] = [
 			'Supermercado 24 horas en el centro de Málaga: alimentación, bebidas y compra rápida.',
 		tags: ['Supermercado', 'Málaga', '24 horas'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://alimentacion-asia.netlify.app',
+		url: 'https://alimentacion-asia.sur-digital.com',
 		preview: alimentacionAsiaPreview,
 	},
 	{
@@ -1126,7 +1126,7 @@ export const PORTFOLIO: Project[] = [
 			'Floristería en Aluche (Madrid) con ramos, plantas y servicio de entrega para ocasiones especiales.',
 		tags: ['Floristería', 'Madrid', 'Ramos'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://amparo-aluche.netlify.app',
+		url: 'https://amparo-aluche.sur-digital.com',
 		preview: amparoPreview,
 	},
 	{
@@ -1137,7 +1137,7 @@ export const PORTFOLIO: Project[] = [
 			'Floristería en Leganés (Madrid) especializada en ramos, bodas y arreglos para eventos.',
 		tags: ['Floristería', 'Leganés', 'Eventos'],
 		accent: 'bg-primary/15 text-primary',
-		url: 'https://floristeria-ana-maria.netlify.app',
+		url: 'https://floristeria-ana-maria.sur-digital.com',
 		preview: anaMariaPreview,
 	},
 	{
@@ -1148,7 +1148,7 @@ export const PORTFOLIO: Project[] = [
 			'Centro de estética y bienestar en Nou Barris (Barcelona): facial, corporal y tratamientos personalizados.',
 		tags: ['Estética', 'Barcelona', 'Bienestar'],
 		accent: 'bg-secondary/15 text-neutral',
-		url: 'https://anabel-vegara-estetica.netlify.app',
+		url: 'https://anabel-vegara-estetica.sur-digital.com',
 		preview: anabelPreview,
 	},
 	{
@@ -1159,7 +1159,7 @@ export const PORTFOLIO: Project[] = [
 			'Cocina vasca en el centro de Zaragoza: pescado del Cantábrico, tapas y menú del día.',
 		tags: ['Cocina vasca', 'Zaragoza', 'Pescado'],
 		accent: 'bg-accent/15 text-primary',
-		url: 'https://ama-leku.netlify.app',
+		url: 'https://ama-leku.sur-digital.com',
 		preview: amaLekuPreview,
 	},
 	{
@@ -1170,7 +1170,7 @@ export const PORTFOLIO: Project[] = [
 			'Menú del día casero en el centro de Cádiz, con cocina tradicional y servicio de mediodía.',
 		tags: ['Menú del día', 'Cádiz', 'Cocina casera'],
 		accent: 'bg-neutral/15 text-neutral',
-		url: 'https://el-garbanzo-negro.netlify.app',
+		url: 'https://el-garbanzo-negro.sur-digital.com',
 		preview: garbanzoNegroPreview,
 	},
 ];

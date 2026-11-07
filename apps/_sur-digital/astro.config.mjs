@@ -10,7 +10,7 @@ import { cleanUrls } from "./tools/clean-urls.ts";
 // Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
 // no existen como archivo (las versiones por idioma viven en /i18n/<lang>/ y la
 // URL limpia la sirve Vercel según la cookie).
-const SITE = "https://sur-digital.vercel.app";
+const SITE = "https://www.sur-digital.com";
 
 // https://astro.build/config
 export default defineConfig({

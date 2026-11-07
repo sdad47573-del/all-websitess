@@ -9,7 +9,7 @@ export const LEGAL = {
   nif: (import.meta.env.PUBLIC_LEGAL_NIF ?? "").trim(),
   email: (import.meta.env.PUBLIC_LEGAL_EMAIL ?? "").trim(),
   address: CONTACT.address,
-  website: "sur-digital.vercel.app",
+  website: "www.sur-digital.com",
   activity:
     "Diseño y desarrollo web, tiendas online, posicionamiento SEO local y consultoría digital",
   updated: "4 de noviembre de 2026",

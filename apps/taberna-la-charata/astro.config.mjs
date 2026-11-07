@@ -1,5 +1,5 @@
 import { createAstroConfig } from '@astro-config';
 
 export default createAstroConfig({
-	site: 'https://taberna-la-charata-malaga.vercel.app',
+	site: 'https://taberna-la-charata.sur-digital.com',
 });

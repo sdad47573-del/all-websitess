@@ -1,5 +1,5 @@
 import { createAstroConfig } from '@astro-config';
 
 export default createAstroConfig({
-	site: 'https://taberna-lanew.vercel.app',
+	site: 'https://bar-taberna-la-new.sur-digital.com',
 });
