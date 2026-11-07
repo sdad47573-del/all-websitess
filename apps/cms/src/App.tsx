@@ -10,10 +10,17 @@ import Users from "./Users";
 // nada se pregunta quién está dentro.
 export default function App() {
 	const [user, { refetch }] = createResource(fetchMe);
-	const [config] = createResource(fetchConfig);
+	const [config, { refetch: refetchConfig }] = createResource(fetchConfig);
 
 	return (
-		<Show when={!user.loading} fallback={<p class="count gate">Comprobando sesión…</p>}>
+		<Show
+			when={!user.loading && !config.loading}
+			fallback={
+				<p class="count gate">
+					{user.loading ? "Comprobando sesión…" : "Cargando el CMS…"}
+				</p>
+			}
+		>
 			<Show
 				when={!user.error}
 				fallback={
@@ -24,9 +31,27 @@ export default function App() {
 			>
 				<Show when={user()} fallback={<Login onLogged={() => void refetch()} />}>
 					{(current) => {
-						if (config.loading) return <p class="count gate">Cargando el CMS…</p>;
+						if (config.error) {
+							return (
+								<div class="gate">
+									<p class="flash error">
+										No se ha podido cargar la configuración del CMS:{" "}
+										{String(config.error)}
+									</p>
+									<button type="button" onClick={() => void refetchConfig()}>
+										Reintentar
+									</button>
+								</div>
+							);
+						}
 
 						const scope = config();
+						if (!scope) {
+							return (
+								<p class="flash error gate">No se ha podido cargar la configuración del CMS.</p>
+							);
+						}
+
 						const path = window.location.pathname;
 
 						// Modo propietario: una sola web, sin listado ni fichas ajenas.

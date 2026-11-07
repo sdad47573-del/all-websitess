@@ -7,6 +7,9 @@ import solid from "vite-plugin-solid";
 export default defineConfig({
 	plugins: [solid()],
 	server: {
+		// `bun run dev` anuncia 127.0.0.1: este host explícito evita que Vite
+		// escuche solo en ::1 y el navegador se quede esperando la API.
+		host: "127.0.0.1",
 		port: 4401,
 		strictPort: true,
 		proxy: {

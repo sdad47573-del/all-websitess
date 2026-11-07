@@ -6,7 +6,7 @@ pública: el servidor escucha solo en `127.0.0.1`.
 
 ```bash
 cd apps/cms
-bun run dev     # cliente en http://127.0.0.1:4401 (API en 4400)
+bun run dev     # cliente 4401, API del panel 4400 y API Hono 4402
 ```
 
 Para servir el build y la API juntos, en un solo puerto:
@@ -21,6 +21,10 @@ bun run start   # http://127.0.0.1:4400
 El CMS incluye una API nueva en `api/` construida con **Hono** y **SQLite**.
 No recorre `apps/` en tiempo de ejecución: el contenido se importa una vez y
 luego se sirve desde `apps/cms/data/cms.sqlite`.
+
+`bun run dev` también levanta esta API en `http://127.0.0.1:4402`. Si
+`apps/cms/data/cms.sqlite` no existe, la importa una vez antes de arrancar; si
+ya existe, no vuelve a leer `apps/`.
 
 ```bash
 bun run api:seed   # importa webs, piezas, biblioteca y catálogo

@@ -215,7 +215,7 @@ export interface CmsConfig {
 }
 
 export async function fetchConfig(): Promise<CmsConfig> {
-	const response = await fetch("/api/config");
+	const response = await fetch("/api/config", { signal: AbortSignal.timeout(10_000) });
 	if (!response.ok) throw new Error(await readError(response));
 	return (await response.json()) as CmsConfig;
 }
