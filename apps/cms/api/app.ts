@@ -283,6 +283,16 @@ export function createCmsApi(db: Database, options: CmsApiOptions = {}) {
 		return c.json({ piezas });
 	});
 
+	app.get("/api/sections/library/:clave", (c) => {
+		const row = db
+			.query("SELECT payload FROM library WHERE clave = ?")
+			.get(c.req.param("clave")) as PayloadRow | null;
+		const entry = payload<LibraryEntry | null>(row, null);
+		return entry
+			? c.json({ pieza: entry })
+			: c.json({ error: "No existe esa pieza en la biblioteca." }, 404);
+	});
+
 	app.get("/api/sections/catalog", (c) => {
 		const row = db.query("SELECT payload FROM catalog WHERE id = 1").get() as PayloadRow | null;
 		return c.json({ catalogo: payload<CatalogEntry[]>(row, []) });

@@ -167,6 +167,11 @@ describe("API Hono del CMS", () => {
 		expect(libraryBody.piezas[0]?.clave).toBe("origen:casa");
 		expect(libraryBody.piezas[0]?.seccion).toBeUndefined();
 
+		const full = await app.request("/api/sections/library/origen%3Acasa", { headers: auth });
+		expect(full.status).toBe(200);
+		const fullBody = (await full.json()) as { pieza: { seccion: { tipo: string } } };
+		expect(fullBody.pieza.seccion.tipo).toBe("about");
+
 		const catalog = await app.request("/api/sections/catalog", { headers: auth });
 		const catalogBody = (await catalog.json()) as { catalogo: Array<{ usos: number }> };
 		expect(catalogBody.catalogo[0]?.usos).toBe(1);

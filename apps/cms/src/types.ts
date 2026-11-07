@@ -217,6 +217,11 @@ export interface SectionLibraryPiece {
 	imagenAlt?: string;
 }
 
+/** La misma pieza con todos sus campos, para la vista previa completa. */
+export interface SectionLibraryEntry extends SectionLibraryPiece {
+	seccion: Section;
+}
+
 export interface ShopProduct {
 	id: string;
 	nombre: string;

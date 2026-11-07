@@ -120,9 +120,11 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
   enlaces admiten atajos `maps:place`, `maps:directions` y `maps:streetView`.
   El catálogo incluye además una **biblioteca de piezas reales** extraída de
   los `secciones.json` y del HTML estático de las portadas escritas a mano: se
-  filtra por tipo o texto y, al usar una, se copia en la web actual con sus
-  imágenes y se abre para ajustarla. Las piezas extraídas del HTML pueden no
-  traer fotos: el editor enseña qué falta antes de guardar.
+  filtra por tipo, texto o «Solo con foto» y cada tarjeta tiene «Ver pieza»
+  para revisar el contenido completo antes de copiarlo. Al usar una, se copia
+  en la web actual con sus imágenes y se abre para ajustarla. Las piezas
+  extraídas del HTML pueden no traer fotos: el editor enseña qué falta antes
+  de guardar.
 - **Datos**: nombre, lema, teléfono, calle, código postal, ciudad y URL canónica.
   Se escribe solo el literal que cambia dentro de `BUSINESS`.
 - **Mapas**: latitud y longitud (`BUSINESS.geo`), con vista previa del mapa y

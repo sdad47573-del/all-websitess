@@ -11,6 +11,7 @@ import {
 	untrack,
 } from "solid-js";
 import {
+	fetchLibraryPiece,
 	fetchMedia,
 	fetchSectionCatalog,
 	fetchSectionLibrary,
@@ -399,6 +400,11 @@ export default function SectionsTab(props: {
 	const [catalog] = createResource(fetchSectionCatalog);
 	// Biblioteca de piezas reales, con su contenido, extraídas de las webs.
 	const [library] = createResource(fetchSectionLibrary);
+	const [previewKey, setPreviewKey] = createSignal<string | null>(null);
+	const [previewPiece] = createResource(
+		() => previewKey() ?? undefined,
+		(clave) => fetchLibraryPiece(clave),
+	);
 
 	const [draft, setDraft] = createSignal<Section[]>([]);
 	const [savedJson, setSavedJson] = createSignal("[]");
@@ -443,6 +449,7 @@ export default function SectionsTab(props: {
 	// Biblioteca: búsqueda por texto y filtro por tipo; se pintan por tandas.
 	const [libraryQuery, setLibraryQuery] = createSignal("");
 	const [libraryTipo, setLibraryTipo] = createSignal<SectionType | "todos">("todos");
+	const [libraryConFoto, setLibraryConFoto] = createSignal(false);
 	const [libraryLimit, setLibraryLimit] = createSignal(24);
 	const [importing, setImporting] = createSignal<string | null>(null);
 
@@ -451,6 +458,7 @@ export default function SectionsTab(props: {
 		const tipo = libraryTipo();
 		return (library() ?? []).filter((piece) => {
 			if (tipo !== "todos" && piece.tipo !== tipo) return false;
+			if (libraryConFoto() && !piece.imagen) return false;
 			if (!query) return true;
 			return normalize(`${piece.titulo} ${piece.web} ${piece.slug} ${piece.resumen}`).includes(
 				query,
@@ -461,6 +469,7 @@ export default function SectionsTab(props: {
 	createEffect(() => {
 		libraryQuery();
 		libraryTipo();
+		libraryConFoto();
 		setLibraryLimit(24);
 	});
 
@@ -768,6 +777,7 @@ export default function SectionsTab(props: {
 			setSavedJson(JSON.stringify(result.secciones.secciones));
 			setSelectedId(result.id);
 			setView("editor");
+			setPreviewKey(null);
 			setFlash({
 				kind: "ok",
 				text: "Pieza copiada. Las imágenes que faltaban se han añadido a esta web; revisa los textos y guarda si haces cambios.",
@@ -1104,6 +1114,14 @@ export default function SectionsTab(props: {
 											{(tipo) => <option value={tipo}>{SECTION_LABELS[tipo]}</option>}
 										</For>
 									</select>
+									<label class="library-check">
+										<input
+											type="checkbox"
+											checked={libraryConFoto()}
+											onChange={(event) => setLibraryConFoto(event.currentTarget.checked)}
+										/>
+										Solo con foto
+									</label>
 								</div>
 							</div>
 
@@ -1148,14 +1166,23 @@ export default function SectionsTab(props: {
 													<Show when={piece.resumen}>
 														<p>{piece.resumen}</p>
 													</Show>
-													<button
-														type="button"
-														class="add-sections"
-														disabled={Boolean(importing())}
-														onClick={() => void importPiece(piece)}
-													>
-														{importing() === piece.clave ? "Copiando…" : "Usar esta pieza"}
-													</button>
+													<div class="library-card-actions">
+														<button
+															type="button"
+															class="link-button"
+															onClick={() => setPreviewKey(piece.clave)}
+														>
+															Ver pieza
+														</button>
+														<button
+															type="button"
+															class="add-sections"
+															disabled={Boolean(importing())}
+															onClick={() => void importPiece(piece)}
+														>
+															{importing() === piece.clave ? "Copiando…" : "Usar esta pieza"}
+														</button>
+													</div>
 												</article>
 											)}
 										</For>
@@ -2235,9 +2262,147 @@ export default function SectionsTab(props: {
 							</p>
 						</Show>
 						</aside>
+					</div>			</Show>
+		</Show>
+
+		<Show when={previewKey()}>
+			{(clave) => (
+				<div
+					class="library-modal"
+					role="dialog"
+					aria-modal="true"
+					aria-label="Vista previa de la pieza"
+					onClick={(event) => {
+						if (event.target === event.currentTarget) setPreviewKey(null);
+					}}
+				>
+					<div class="library-modal-card">
+						<div class="library-modal-head">
+							<div>
+								<span class="chip">
+									{previewPiece() ? SECTION_LABELS[previewPiece()!.tipo] : "Pieza"}
+								</span>
+								<span class="hint">{previewPiece()?.web ?? "Cargando…"}</span>
+							</div>
+							<button
+								type="button"
+								class="link-button"
+								onClick={() => setPreviewKey(null)}
+							>
+								Cerrar ✕
+							</button>
+						</div>
+
+						<Show when={previewPiece.loading}>
+							<p class="hint">Cargando la pieza…</p>
+						</Show>
+						<Show when={previewPiece.error}>
+							<p class="flash error">No se ha podido cargar la pieza.</p>
+						</Show>
+						<Show when={previewPiece()}>
+							{(entry) => (
+								<>
+									<div class="library-modal-body">
+										<Show when={entry().seccion.imagen}>
+											{(name) => (
+												<img
+													src={mediaUrl(entry().slug, name())}
+													alt={entry().seccion.imagenAlt ?? ""}
+												/>
+											)}
+										</Show>
+										<Show when={entry().seccion.etiqueta}>
+											<p class="library-kicker">{plain(entry().seccion.etiqueta)}</p>
+										</Show>
+										<h3>{plain(entry().seccion.titulo)}</h3>
+										<Show when={entry().seccion.texto}>
+											<p>{plain(entry().seccion.texto)}</p>
+										</Show>
+										<For each={entry().seccion.parrafos ?? []}>
+											{(paragraph) => <p>{plain(paragraph)}</p>}
+										</For>
+										<Show when={entry().seccion.nota}>
+											<p class="hint">{plain(entry().seccion.nota)}</p>
+										</Show>
+										<Show when={entry().seccion.notaHorario}>
+											<p class="hint">{plain(entry().seccion.notaHorario)}</p>
+										</Show>
+										<Show when={(entry().seccion.chips?.length ?? 0) > 0}>
+											<div class="library-modal-chips">
+												<For each={entry().seccion.chips ?? []}>
+													{(chip) => <span class="chip">{chip}</span>}
+												</For>
+											</div>
+										</Show>
+										<Show when={(entry().seccion.preguntas?.length ?? 0) > 0}>
+											<dl class="library-modal-faq">
+												<For each={entry().seccion.preguntas ?? []}>
+													{(question) => (
+														<>
+															<dt>{plain(question.pregunta)}</dt>
+															<dd>{plain(question.respuesta)}</dd>
+														</>
+													)}
+												</For>
+											</dl>
+										</Show>
+										<Show when={(entry().seccion.items?.length ?? 0) > 0}>
+											<ul class="library-modal-list">
+												<For each={entry().seccion.items ?? []}>
+													{(item) => (
+														<li>
+															<strong>{plain(item.titulo)}</strong>
+															<span>{plain(item.texto)}</span>
+														</li>
+													)}
+												</For>
+											</ul>
+										</Show>
+										<Show when={(entry().seccion.grupos?.length ?? 0) > 0}>
+											<div class="library-modal-menu">
+												<For each={entry().seccion.grupos ?? []}>
+													{(group) => (
+														<div>
+															<strong>{plain(group.titulo)}</strong>
+															<ul>
+																<For each={group.items}>
+																	{(dish) => (
+																		<li>
+																			{plain(dish.nombre)}
+																			{dish.precio ? ` · ${dish.precio}` : ""}
+																		</li>
+																		)}
+																	</For>
+																</ul>
+														</div>
+													)}
+												</For>
+											</div>
+										</Show>
+									</div>
+									<div class="library-modal-actions">
+										<button
+											type="button"
+											disabled={Boolean(importing())}
+											onClick={() => void importPiece(entry())}
+										>
+											{importing() === entry().clave ? "Copiando…" : "Usar esta pieza"}
+										</button>
+										<button
+											type="button"
+											class="link-button"
+											onClick={() => setPreviewKey(null)}
+										>
+											Cancelar
+										</button>
+									</div>
+								</>
+							)}
+						</Show>
 					</div>
-				</Show>
-			</Show>
+				</div>
+			)}
+		</Show>
 		</>
 	);
 }

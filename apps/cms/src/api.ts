@@ -6,6 +6,7 @@ import type {
 	Section,
 	SectionCatalogEntry,
 	SectionFile,
+	SectionLibraryEntry,
 	SectionLibraryPiece,
 	SeoAudit,
 	Shop,
@@ -177,6 +178,12 @@ export async function fetchSectionLibrary(): Promise<SectionLibraryPiece[]> {
 	const response = await fetch("/api/sections/library");
 	if (!response.ok) throw new Error(await readError(response));
 	return ((await response.json()) as { piezas: SectionLibraryPiece[] }).piezas;
+}
+
+export async function fetchLibraryPiece(clave: string): Promise<SectionLibraryEntry> {
+	const response = await fetch(`/api/sections/library/${encodeURIComponent(clave)}`);
+	if (!response.ok) throw new Error(await readError(response));
+	return ((await response.json()) as { pieza: SectionLibraryEntry }).pieza;
 }
 
 export async function saveSections(slug: string, secciones: Section[]): Promise<SectionFile> {

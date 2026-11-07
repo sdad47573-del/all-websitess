@@ -44,7 +44,7 @@ import {
 import { listSnapshots, readSnapshot } from "./lib/history";
 import { pageUsesSections, readSections, saveSections } from "./lib/sections";
 import { readSectionCatalog } from "./lib/catalog";
-import { importLibrarySection, readSectionLibrary } from "./lib/library";
+import { findLibraryEntry, importLibrarySection, readSectionLibrary } from "./lib/library";
 import { SITE_SLUG, siteAllowed } from "./lib/scope";
 import {
 	type Capability,
@@ -622,8 +622,19 @@ async function api(request: Request, url: URL): Promise<Response> {
 	}
 
 	if (parts[1] === "sections" && parts[2] === "library") {
-		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		if (parts.length === 4) {
+			let clave: string;
+			try {
+				clave = decodeURIComponent(parts[3]);
+			} catch {
+				return json({ error: "Pieza no válida" }, 400);
+			}
+			const entry = findLibraryEntry(clave);
+			if (!entry) return json({ error: "No existe esa pieza en la biblioteca." }, 404);
+			return json({ pieza: entry });
+		}
+		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
 		return json({ piezas: readSectionLibrary() });
 	}
 

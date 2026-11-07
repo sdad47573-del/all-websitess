@@ -2,7 +2,7 @@ import { afterAll, describe, expect, test } from "bun:test";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { readSectionLibrary } from "./library";
+import { findLibraryEntry, readSectionLibrary } from "./library";
 
 const root = mkdtempSync(join(tmpdir(), "cms-biblioteca-"));
 const appsDir = join(root, "apps");
@@ -96,5 +96,11 @@ describe("biblioteca de piezas", () => {
 		const only = readSectionLibrary(appsDir, "beta");
 		expect(only.length).toBeGreaterThan(0);
 		expect(only.every((piece) => piece.slug === "beta")).toBe(true);
+	});
+
+	test("devuelve la pieza completa para la vista previa", () => {
+		const entry = findLibraryEntry("alfa:portada", appsDir);
+		expect(entry?.seccion.tipo).toBe("hero");
+		expect(entry?.seccion.imagen).toBe("fachada.jpg");
 	});
 });
