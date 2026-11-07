@@ -448,6 +448,17 @@ export function readSections(slug: string, appsDir = DEFAULT_APPS_DIR): Seccione
 	return parsed as Secciones;
 }
 
+/** ¿La portada pinta la lista con `<LocalSecciones>` o `<Secciones>`? */
+export function pageUsesSections(slug: string, appsDir = DEFAULT_APPS_DIR): boolean {
+	const page = join(appDirectory(slug, appsDir), "src", "pages", "index.astro");
+	if (!existsSync(page)) return false;
+	try {
+		return /<(?:Local)?Secciones\b/.test(readFileSync(page, "utf8"));
+	} catch {
+		return false;
+	}
+}
+
 export function saveSections(
 	slug: string,
 	input: unknown,

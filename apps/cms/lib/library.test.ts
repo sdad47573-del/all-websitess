@@ -84,6 +84,8 @@ describe("biblioteca de piezas", () => {
 		expect(hero?.resumen).toBe("De la casa.");
 		expect(hero?.web).toBe("Alfa");
 		expect(hero?.titulo).toContain("<br />");
+		expect(hero?.imagen).toBe("fachada.jpg");
+		expect(hero?.imagenAlt).toBe("Fachada");
 	});
 
 	test("ordena por tipo y título", () => {

@@ -169,6 +169,8 @@ export interface Section {
 export interface SectionFile {
 	version: number;
 	secciones: Section[];
+	/** Solo lo envía la lectura: la portada pinta las piezas con `<LocalSecciones>`. */
+	usesPieces?: boolean;
 }
 
 export const SECTION_LABELS: Record<SectionType, string> = {
@@ -210,6 +212,9 @@ export interface SectionLibraryPiece {
 	slug: string;
 	id: string;
 	resumen: string;
+	/** Primera foto de la pieza, si la tiene. */
+	imagen?: string;
+	imagenAlt?: string;
 }
 
 export interface ShopProduct {

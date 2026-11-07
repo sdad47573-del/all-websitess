@@ -42,7 +42,7 @@ import {
 	writeSourceFile,
 } from "./lib/files";
 import { listSnapshots, readSnapshot } from "./lib/history";
-import { readSections, saveSections } from "./lib/sections";
+import { pageUsesSections, readSections, saveSections } from "./lib/sections";
 import { readSectionCatalog } from "./lib/catalog";
 import { importLibrarySection, readSectionLibrary } from "./lib/library";
 import { SITE_SLUG, siteAllowed } from "./lib/scope";
@@ -320,7 +320,12 @@ async function siteRoute(
 			if (rest.length !== 1) return json({ error: "Ruta no encontrada" }, 404);
 
 			if (request.method === "GET") {
-				return json({ secciones: readSections(site.slug) });
+				const secciones = readSections(site.slug);
+				return json({
+					secciones: secciones
+						? { ...secciones, usesPieces: pageUsesSections(site.slug) }
+						: null,
+				});
 			}
 
 			if (request.method === "PUT") {

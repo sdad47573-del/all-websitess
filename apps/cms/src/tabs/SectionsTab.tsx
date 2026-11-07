@@ -853,6 +853,22 @@ export default function SectionsTab(props: {
 				{(message) => <p classList={{ flash: true, [message().kind]: true }}>{message().text}</p>}
 			</Show>
 
+			<Show when={state()?.usesPieces === false}>
+				<div class="panel notice">
+					<h2>La portada está escrita a mano</h2>
+					<p>
+						<b>{props.site.slug}</b> sigue pintando su portada en{" "}
+						<code>src/pages/index.astro</code>. Las piezas que añadas se guardan en{" "}
+						<code>secciones.json</code>, pero no aparecerán en la web hasta que la página use{" "}
+						<code>&lt;LocalSecciones&gt;</code>.
+					</p>
+					<p class="hint">
+						Para verlas, sustituye el contenido de <code>&lt;main&gt;</code> por{" "}
+						<code>&lt;LocalSecciones&gt;</code> desde «Editar código».
+					</p>
+				</div>
+			</Show>
+
 			<Show when={state.loading}>
 				<p class="count">Cargando las piezas…</p>
 			</Show>
@@ -868,7 +884,7 @@ export default function SectionsTab(props: {
 							<h2>Esta web aún no usa piezas</h2>
 							<p>
 								La pestaña funciona con <code>src/data/secciones.json</code> y una página que
-								pinta las secciones con <code>&lt;Secciones&gt;</code>.{" "}
+								pinta las secciones con <code>&lt;LocalSecciones&gt;</code>.{" "}
 								<b>{props.site.slug}</b> todavía guarda su portada escrita a mano en{" "}
 								<code>src/pages/index.astro</code>, así que aquí solo se puede editar desde{" "}
 								<code>Layout y código</code>.
@@ -1114,6 +1130,16 @@ export default function SectionsTab(props: {
 										<For each={libraryFiltered().slice(0, libraryLimit())}>
 											{(piece) => (
 												<article class="library-card">
+													<Show when={piece.imagen}>
+														{(name) => (
+															<img
+																class="library-shot"
+																src={mediaUrl(piece.slug, name())}
+																alt={piece.imagenAlt ?? ""}
+																loading="lazy"
+															/>
+														)}
+													</Show>
 													<div class="library-card-head">
 														<span class="chip">{SECTION_LABELS[piece.tipo]}</span>
 														<span class="hint">{piece.web}</span>

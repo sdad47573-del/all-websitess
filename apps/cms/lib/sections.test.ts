@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { listSnapshots } from "./history";
-import { readSections, saveSections } from "./sections";
+import { pageUsesSections, readSections, saveSections } from "./sections";
 
 function withSite(run: (appsDir: string) => void) {
 	const root = mkdtempSync(join(tmpdir(), "cms-secciones-"));
@@ -46,6 +46,25 @@ describe("piezas de portada", () => {
 	test("sin fichero devuelve null", () => {
 		withSite((appsDir) => {
 			expect(readSections("bar-pepe", appsDir)).toBeNull();
+		});
+	});
+
+	test("detecta si la portada pinta las piezas", () => {
+		withSite((appsDir) => {
+			const pages = join(appsDir, "bar-pepe", "src", "pages");
+			mkdirSync(pages, { recursive: true });
+
+			writeFileSync(
+				join(pages, "index.astro"),
+				"<main><LocalSecciones secciones={secciones} /></main>",
+			);
+			expect(pageUsesSections("bar-pepe", appsDir)).toBe(true);
+
+			writeFileSync(
+				join(pages, "index.astro"),
+				"<main><h1>{piezas.portada.titulo}</h1></main>",
+			);
+			expect(pageUsesSections("bar-pepe", appsDir)).toBe(false);
 		});
 	});
 

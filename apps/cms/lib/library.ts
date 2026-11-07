@@ -36,6 +36,9 @@ export interface LibraryPiece {
 	id: string;
 	/** Primer texto útil, sin HTML, para enseñar la pieza en el catálogo. */
 	resumen: string;
+	/** Primera foto de la pieza, si la tiene. */
+	imagen?: string;
+	imagenAlt?: string;
 }
 
 interface LibraryEntry extends LibraryPiece {
@@ -190,6 +193,8 @@ function build(appsDir: string, onlySlug: string | null): LibraryEntry[] {
 			if (seen.has(key)) return;
 			seen.add(key);
 
+			const imagen = section.imagen ?? section.fotos?.[0]?.imagen;
+			const imagenAlt = section.imagenAlt ?? section.fotos?.[0]?.alt;
 			pieces.push({
 				clave: `${app.name}:${section.id}`,
 				tipo: section.tipo,
@@ -198,6 +203,8 @@ function build(appsDir: string, onlySlug: string | null): LibraryEntry[] {
 				slug: app.name,
 				id: section.id,
 				resumen: summary(section),
+				...(imagen ? { imagen } : {}),
+				...(imagenAlt ? { imagenAlt } : {}),
 				seccion: section,
 			});
 		};
@@ -216,14 +223,18 @@ function build(appsDir: string, onlySlug: string | null): LibraryEntry[] {
 					source = "";
 				}
 				if (source) {
-					const usedIds = new Set(sections.map((section) => section.id));
-					for (const extracted of extractPieces(source)) {
-						const base = `html-${extracted.id}`.slice(0, 40);
-						let id = base;
-						let suffix = 2;
-						while (usedIds.has(id)) id = `${base}-${suffix++}`.slice(0, 40);
-						usedIds.add(id);
-						add({ ...extracted, id });
+					try {
+						const usedIds = new Set(sections.map((section) => section.id));
+						for (const extracted of extractPieces(source)) {
+							const base = `html-${extracted.id}`.slice(0, 40);
+							let id = base;
+							let suffix = 2;
+							while (usedIds.has(id)) id = `${base}-${suffix++}`.slice(0, 40);
+							usedIds.add(id);
+							add({ ...extracted, id });
+						}
+					} catch {
+						// Una portada con una forma rara no puede tumbar toda la biblioteca.
 					}
 				}
 			}
