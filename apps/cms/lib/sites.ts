@@ -70,9 +70,9 @@ interface Literal {
 const IMAGE_EXTENSIONS = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
 const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
 
-/** Posición del bloque `export const BUSINESS = { … }` (llaves incluidas). */
+/** Posición del bloque de datos del negocio (llaves incluidas). */
 function businessBlock(source: string): { start: number; end: number } | null {
-	const match = /export\s+const\s+BUSINESS\s*=\s*\{/.exec(source);
+	const match = /export\s+const\s+(?:BUSINESS|business|NEGOCIO)\s*=\s*\{/.exec(source);
 	if (!match) return null;
 
 	let depth = 0;
@@ -381,7 +381,7 @@ function updateGeoField(
 	appsDir: string,
 ): UpdateResult {
 	const geo = geoRange(source, business);
-	if (!geo) return { ok: false, error: "Esta plantilla no declara BUSINESS.geo." };
+	if (!geo) return { ok: false, error: "Esta plantilla no declara geo dentro del bloque de negocio." };
 
 	const literal = findNumber(source, field, geo.start, geo.end);
 	if (!literal) return { ok: false, error: `No se encuentra «${field}» dentro de geo.` };
@@ -429,7 +429,7 @@ export function updateSiteField(
 
 	const source = readFileSync(file, "utf8");
 	const block = businessBlock(source);
-	if (!block) return { ok: false, error: "No se encuentra el bloque BUSINESS." };
+	if (!block) return { ok: false, error: "No se encuentra el bloque de datos del negocio (BUSINESS, business o NEGOCIO)." };
 
 	if (field === "lat" || field === "lng") {
 		return updateGeoField(file, source, block, field, value, slug, appsDir);

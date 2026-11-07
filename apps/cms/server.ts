@@ -90,7 +90,14 @@ const LABELS: Record<EditableField, string> = {
 };
 
 const json = (data: unknown, status = 200, headers: Record<string, string> = {}) =>
-	Response.json(data, { status, headers: { "cache-control": "no-store", ...headers } });
+	Response.json(data, {
+		status,
+		headers: {
+			"cache-control": "no-store",
+			"x-content-type-options": "nosniff",
+			...headers,
+		},
+	});
 
 const errorResponse = (error: unknown, status = 400) =>
 	json({ error: error instanceof Error ? error.message : String(error) }, status);
@@ -680,7 +687,14 @@ const server = Bun.serve({
 	hostname: "127.0.0.1",
 	async fetch(request) {
 		const url = new URL(request.url);
-		if (url.pathname.startsWith("/api/")) return api(request, url);
+		if (url.pathname.startsWith("/api/")) {
+			try {
+				return await api(request, url);
+			} catch (error) {
+				console.error("[cms] error no controlado en la API:", error);
+				return json({ error: "Error interno del CMS." }, 500);
+			}
+		}
 		if (request.method !== "GET" && request.method !== "HEAD") {
 			return new Response("Método no permitido", { status: 405 });
 		}
@@ -691,7 +705,15 @@ const server = Bun.serve({
 					headers: { "content-type": "text/plain; charset=utf-8" },
 				});
 			}
-			return previewPage(url.pathname);
+			try {
+				return await previewPage(url.pathname);
+			} catch (error) {
+				console.error("[cms] error no controlado en la vista previa:", error);
+				return new Response("No se ha podido cargar la vista previa.", {
+					status: 500,
+					headers: { "content-type": "text/plain; charset=utf-8" },
+				});
+			}
 		}
 		return staticFile(url.pathname);
 	},

@@ -396,8 +396,6 @@ export const entorno = {
 
 	// 1) JSON validado por el CMS.
 	const { saveSections } = await import("../lib/sections.ts");
-	const media = new Set([...images.values()]);
-	void media;
 	saveSections(slug, { version: 1, secciones }, ROOT);
 
 	// 2) Página con LocalSecciones.
@@ -437,8 +435,11 @@ export const entorno = {
 const apps = readdirSync(ROOT).filter((name) => name !== "cms" && (!ONLY || ONLY.has(name)));
 const razones = new Map<string, number>();
 let ok = 0;
-let done = 0;
+let processed = 0;
 for (const slug of apps) {
+	if (processed >= LIMIT) break;
+	processed++;
+
 	let result: { ok: boolean; motivo?: string };
 	try {
 		result = await migrar(slug);
@@ -448,11 +449,9 @@ for (const slug of apps) {
 	if (result.ok) {
 		ok++;
 		if (result.motivo) console.log("aviso", slug, result.motivo);
-		done++;
-	} else if (result.motivo !== "props no evaluables" || true) {
+	} else {
 		razones.set(result.motivo ?? "?", (razones.get(result.motivo ?? "?") ?? 0) + 1);
 	}
-	if (done >= LIMIT) break;
 }
 
 console.log(`\n${APPLY ? "migradas" : "convertibles"}: ${ok}`);

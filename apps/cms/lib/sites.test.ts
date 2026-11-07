@@ -60,6 +60,29 @@ describe("parseo de site.ts", () => {
 		expect(site.editable.tagline).toBe(true);
 	});
 
+	test("reconoce business y NEGOCIO, no solo BUSINESS", () => {
+		const lower = parseSiteSource(
+			"bar-bajo",
+			`export const business = {
+	name: 'Bar Bajo',
+	city: 'Cáceres',
+	geo: { lat: 39.47, lng: -6.37 },
+};`,
+		);
+		expect(lower.name).toBe("Bar Bajo");
+		expect(lower.city).toBe("Cáceres");
+		expect(lower.editable.name).toBe(true);
+		expect(lower.lat).toBe("39.47");
+		expect(lower.editable.lat).toBe(true);
+
+		const other = parseSiteSource(
+			"bar-otro",
+			`export const NEGOCIO = { name: 'Bar Otro', city: 'Badajoz' };`,
+		);
+		expect(other.name).toBe("Bar Otro");
+		expect(other.city).toBe("Badajoz");
+	});
+
 	test("acepta address/phoneDisplay y una URL fuera de BUSINESS", () => {
 		const source = `export const SITE_URL = 'https://otra.vercel.app';
 
@@ -127,6 +150,24 @@ describe("edición", () => {
 			expect(updated).toContain("import logo from '../assets/fotos/logo.svg';");
 			expect(updated).toContain("hours: [");
 			expect(parseSiteSource("bar-pepe", updated).city).toBe("Torremolinos");
+		});
+	});
+
+	test("edita un fichero con business en minúscula", () => {
+		withAppsDir((appsDir) => {
+			const file = writeSite(
+				appsDir,
+				"bar-bajo",
+				`export const business = {
+	name: 'Bar Bajo',
+	city: 'Cáceres',
+};`,
+			);
+			const result = updateSiteField("bar-bajo", "city", "Trujillo", appsDir);
+
+			expect(result.ok).toBe(true);
+			expect(result.previous).toBe("Cáceres");
+			expect(readFileSync(file, "utf8")).toContain("city: 'Trujillo'");
 		});
 	});
 
