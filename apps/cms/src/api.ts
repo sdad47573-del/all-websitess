@@ -203,6 +203,17 @@ export async function importSection(
 	return (await response.json()) as { secciones: SectionFile; id: string };
 }
 
+export interface CmsConfig {
+	singleSite: boolean;
+	siteSlug: string | null;
+}
+
+export async function fetchConfig(): Promise<CmsConfig> {
+	const response = await fetch("/api/config");
+	if (!response.ok) throw new Error(await readError(response));
+	return (await response.json()) as CmsConfig;
+}
+
 export async function fetchMe(): Promise<AuthUser | null> {
 	const response = await fetch("/api/auth/me");
 	if (response.status === 401) return null;

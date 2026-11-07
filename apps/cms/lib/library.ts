@@ -137,7 +137,7 @@ function webName(slug: string, appsDir: string): string {
 	return slug;
 }
 
-function build(appsDir: string): LibraryPiece[] {
+function build(appsDir: string, onlySlug: string | null): LibraryPiece[] {
 	const pieces: LibraryPiece[] = [];
 	if (!existsSync(appsDir)) return pieces;
 
@@ -147,6 +147,7 @@ function build(appsDir: string): LibraryPiece[] {
 		.sort((a, b) => a.name.localeCompare(b.name, "es"));
 
 	for (const app of apps) {
+		if (onlySlug && app.name !== onlySlug) continue;
 		const file = join(appsDir, app.name, "src", "data", "secciones.json");
 		if (!existsSync(file)) continue;
 
@@ -194,11 +195,15 @@ function build(appsDir: string): LibraryPiece[] {
 const cache = new Map<string, { at: number; pieces: LibraryPiece[] }>();
 
 /** Resumen de todas las piezas reutilizables, ordenado por tipo y título. */
-export function readSectionLibrary(appsDir = DEFAULT_APPS_DIR): LibraryPiece[] {
-	const cached = cache.get(appsDir);
+export function readSectionLibrary(
+	appsDir = DEFAULT_APPS_DIR,
+	onlySlug: string | null = null,
+): LibraryPiece[] {
+	const key = `${appsDir}\u0000${onlySlug ?? "*"}`;
+	const cached = cache.get(key);
 	if (cached && Date.now() - cached.at < CACHE_MS) return cached.pieces.map((piece) => ({ ...piece }));
 
-	const pieces = build(appsDir);
-	cache.set(appsDir, { at: Date.now(), pieces });
+	const pieces = build(appsDir, onlySlug);
+	cache.set(key, { at: Date.now(), pieces });
 	return pieces.map((piece) => ({ ...piece }));
 }

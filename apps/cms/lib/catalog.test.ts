@@ -77,4 +77,11 @@ describe("catálogo de piezas", () => {
 	test("ignora las piezas ocultas", () => {
 		expect(find("texto")?.usos).toBe(0);
 	});
+
+	test("puede limitarse a una sola web", () => {
+		const only = readSectionCatalog(root, "beta");
+		expect(only.find((item) => item.tipo === "hero")?.usos).toBe(1);
+		expect(only.find((item) => item.tipo === "about")?.usos).toBe(0);
+		expect(only.find((item) => item.tipo === "cta")?.usos).toBe(1);
+	});
 });

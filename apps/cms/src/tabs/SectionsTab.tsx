@@ -390,6 +390,8 @@ export default function SectionsTab(props: {
 	site: Site;
 	onSaved: () => unknown;
 	onEditCode?: () => void;
+	/** Instalación de un propietario: la biblioteca de otras webs no se muestra. */
+	singleSite?: boolean;
 }) {
 	const [state, { refetch }] = createResource(() => props.site.slug, fetchSections);
 	const [media, { refetch: refetchMedia }] = createResource(() => props.site.slug, fetchMedia);
@@ -1010,8 +1012,9 @@ export default function SectionsTab(props: {
 							</button>
 						</div>
 						<p class="note">
-							Piezas que ya usan las webs existentes. Al elegir una se añade al final y se
-							abre para rellenarla.
+							{props.singleSite
+								? "Piezas que ya usa esta web. Al elegir una se añade al final y se abre para rellenarla."
+								: "Piezas que ya usan las webs existentes. Al elegir una se añade al final y se abre para rellenarla."}
 						</p>
 						<Show
 							when={catalog()}
@@ -1053,6 +1056,7 @@ export default function SectionsTab(props: {
 							)}
 						</Show>
 
+						<Show when={!props.singleSite}>
 						<div class="library-block">
 							<div class="library-head">
 								<div>
@@ -1141,6 +1145,7 @@ export default function SectionsTab(props: {
 								</Show>
 							</Show>
 						</div>
+						</Show>
 					</section>
 				</Show>
 

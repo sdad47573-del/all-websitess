@@ -89,4 +89,10 @@ describe("biblioteca de piezas", () => {
 	test("ordena por tipo y título", () => {
 		expect(pieces.map((piece) => piece.tipo)).toEqual(["hero", "about", "cta"]);
 	});
+
+	test("puede limitarse a una sola web", () => {
+		const only = readSectionLibrary(appsDir, "beta");
+		expect(only.length).toBeGreaterThan(0);
+		expect(only.every((piece) => piece.slug === "beta")).toBe(true);
+	});
 });

@@ -47,6 +47,23 @@ Los administradores crean usuarios, cambian roles y restablecen contraseñas en
 
 Sigue escuchando solo en `127.0.0.1`: el login protege el panel, no lo publica.
 
+## Una web por propietario
+
+Cada propietario debe gestionar **una sola web**. Para una instalación de ese
+tipo, arranca el panel con el slug de su web:
+
+```bash
+CMS_SITE_SLUG='mi-web' CMS_ADMIN_PASSWORD='mi-clave-larga' bun run start
+```
+
+Con `CMS_SITE_SLUG`, el panel entra directamente en esa ficha, sin listado, y
+la API solo devuelve esa web: `/api/sites/<otra>` y `/preview/<otra>` responden
+404, y el catálogo y la biblioteca se limitan a sus propias piezas. El slug
+tiene que existir en `apps/` o el servidor no arranca.
+
+Sin la variable, el CMS sigue en modo inventario para desarrollo y conserva el
+listado completo de webs.
+
 ## Qué se gestiona
 
 Cada web tiene estas pestañas:

@@ -34,7 +34,12 @@ const ALL_TABS: Array<{ id: Tab; label: string }> = [
 	{ id: "codigo", label: "Código (avanzado)" },
 ];
 
-export default function SiteDetail(props: { slug: string; user: AuthUser }) {
+export default function SiteDetail(props: {
+	slug: string;
+	user: AuthUser;
+	/** Instalación de un propietario: no hay listado de otras webs. */
+	singleSite?: boolean;
+}) {
 	const canEditCode = () => hasCapability(props.user, "editCode");
 	const [site, { refetch }] = createResource(() => props.slug, fetchSite);
 
@@ -95,10 +100,17 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 	};
 
 	return (
-		<Shell title={site()?.name ?? "Ficha"} user={props.user} wide={tab() === "secciones"}>
-			<p class="back">
-				<a href="/">← Todas las webs</a>
-			</p>
+		<Shell
+			title={site()?.name ?? "Ficha"}
+			user={props.user}
+			wide={tab() === "secciones"}
+			singleSite={props.singleSite}
+		>
+			<Show when={!props.singleSite}>
+				<p class="back">
+					<a href="/">← Todas las webs</a>
+				</p>
+			</Show>
 
 			<Show when={site.loading}>
 				<p class="count">Cargando la ficha…</p>
@@ -189,6 +201,7 @@ export default function SiteDetail(props: { slug: string; user: AuthUser }) {
 									site={current()}
 									onSaved={refetch}
 									onEditCode={canEditCode() ? () => selectTab("codigo") : undefined}
+									singleSite={props.singleSite}
 								/>
 							</Show>
 							<Show when={tab() === "datos"}>

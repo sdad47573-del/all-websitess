@@ -5,7 +5,8 @@
  * API. En desarrollo, Vite corre aparte (puerto 4401) y reenvía /api aquí.
  *
  * Endpoints:
- *   GET    /api/sites                        listado completo
+ *   GET    /api/config                       modo del panel y web configurada
+ *   GET    /api/sites                        listado visible
  *   GET    /api/sites/:slug                  ficha
  *   POST   /api/sites/:slug/og               genera public/og.jpg de la web
  *   GET    /api/sites/:slug/og               miniatura OG
@@ -44,6 +45,7 @@ import { listSnapshots, readSnapshot } from "./lib/history";
 import { importSection, readSections, saveSections } from "./lib/sections";
 import { readSectionCatalog } from "./lib/catalog";
 import { readSectionLibrary } from "./lib/library";
+import { SITE_SLUG, siteAllowed } from "./lib/scope";
 import {
 	type Capability,
 	type Role,
@@ -142,6 +144,7 @@ async function siteRoute(
 	rest: string[],
 	role: Role,
 ): Promise<Response> {
+	if (!siteAllowed(slug)) return json({ error: "No existe ninguna web con ese slug" }, 404);
 	const site = getSite(slug);
 
 	if (rest.length === 0) {
@@ -590,6 +593,12 @@ async function api(request: Request, url: URL): Promise<Response> {
 		return json({ error: "Origen no permitido." }, 403);
 	}
 
+	if (parts[1] === "config") {
+		if (parts.length !== 2) return json({ error: "Ruta no encontrada" }, 404);
+		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
+		return json({ singleSite: Boolean(SITE_SLUG), siteSlug: SITE_SLUG });
+	}
+
 	if (parts[1] === "auth") return authRoute(request, url);
 
 	const user = userFromRequest(request);
@@ -600,18 +609,21 @@ async function api(request: Request, url: URL): Promise<Response> {
 	if (parts[1] === "sections" && parts[2] === "catalog") {
 		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
-		return json({ catalogo: readSectionCatalog() });
+		return json({ catalogo: readSectionCatalog(undefined, SITE_SLUG) });
 	}
 
 	if (parts[1] === "sections" && parts[2] === "library") {
 		if (parts.length !== 3) return json({ error: "Ruta no encontrada" }, 404);
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
-		return json({ piezas: readSectionLibrary() });
+		return json({ piezas: readSectionLibrary(undefined, SITE_SLUG) });
 	}
 
 	if (parts.length === 2) {
 		if (request.method !== "GET") return json({ error: "Método no permitido" }, 405);
-		return json({ sites: listSites() });
+		const sites = listSites();
+		return json({
+			sites: SITE_SLUG ? sites.filter((site) => site.slug === SITE_SLUG) : sites,
+		});
 	}
 
 	if (parts.length === 1) return json({ error: "Ruta no encontrada" }, 404);
@@ -654,6 +666,7 @@ async function staticFile(pathname: string): Promise<Response> {
 async function previewPage(pathname: string): Promise<Response> {
 	const parts = pathname.split("/").filter(Boolean);
 	const slug = parts[1] ?? "";
+	if (!siteAllowed(slug)) return new Response("No encontrado", { status: 404 });
 	const rest = parts.slice(2).join("/");
 
 	// Solo la raíz sin barra final; los assets (_astro/…) se sirven tal cual.
@@ -699,6 +712,20 @@ async function previewPage(pathname: string): Promise<Response> {
 }
 
 if (DEV_MODE) console.log("Acceso directo de desarrollo activo (usuario «dev»).");
+
+if (SITE_SLUG) {
+	let exists = false;
+	try {
+		exists = Boolean(getSite(SITE_SLUG));
+	} catch {
+		exists = false;
+	}
+	if (!exists) {
+		console.error(`CMS_SITE_SLUG="${SITE_SLUG}" no corresponde a ninguna web de apps/.`);
+		process.exit(1);
+	}
+	console.log(`Modo una sola web: ${SITE_SLUG}`);
+}
 
 const admin = await ensureAdmin(undefined, {
 	username: process.env.CMS_ADMIN_USER,

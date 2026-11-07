@@ -8,6 +8,8 @@ export default function Shell(props: {
 	user: AuthUser;
 	/** Ocupa todo el ancho: lo usan las pantallas con vista previa al lado. */
 	wide?: boolean;
+	/** Instalación de un propietario: solo gestiona su web. */
+	singleSite?: boolean;
 	children: JSX.Element;
 }) {
 	const leave = async () => {
@@ -23,7 +25,7 @@ export default function Shell(props: {
 			<header class="top">
 				<a class="brand" href="/">
 					<span class="mark">SD</span>
-					<span>CMS de webs</span>
+					<span>{props.singleSite ? "CMS de tu web" : "CMS de webs"}</span>
 				</a>
 				<nav class="crumbs">{props.title}</nav>
 				<div class="session">
@@ -43,8 +45,17 @@ export default function Shell(props: {
 			</header>
 			<main classList={{ wide: props.wide }}>{props.children}</main>
 			<footer class="foot">
-				Panel local: lee y escribe en <code>apps/&lt;web&gt;/src/data/site.ts</code>. Los cambios
-				se guardan en el repositorio, sin commit.
+				{props.singleSite ? (
+					<>
+						Panel de <strong>{props.title}</strong>: los cambios se guardan en el
+						repositorio, sin commit.
+					</>
+				) : (
+					<>
+						Panel local: lee y escribe en <code>apps/&lt;web&gt;/src/data/site.ts</code>. Los
+						cambios se guardan en el repositorio, sin commit.
+					</>
+				)}
 			</footer>
 		</>
 	);

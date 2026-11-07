@@ -94,7 +94,7 @@ function pieces(file: string): Piece[] {
 	}
 }
 
-function build(appsDir: string): CatalogEntry[] {
+function build(appsDir: string, onlySlug: string | null): CatalogEntry[] {
 	const entries = new Map<SectionType, CatalogEntry>(
 		SECTION_TYPES.map((tipo) => [tipo, { tipo, ...META[tipo], usos: 0, ejemplos: [] }]),
 	);
@@ -113,6 +113,7 @@ function build(appsDir: string): CatalogEntry[] {
 
 	for (const entry of readdirSync(appsDir, { withFileTypes: true })) {
 		if (!entry.isDirectory() || !SLUG_PATTERN.test(entry.name)) continue;
+		if (onlySlug && entry.name !== onlySlug) continue;
 
 		const root = join(appsDir, entry.name);
 		// Una web cuenta una vez por tipo aunque repita el bloque.
@@ -160,11 +161,15 @@ const copy = (entries: CatalogEntry[]): CatalogEntry[] =>
 	}));
 
 /** Catálogo de piezas por tipo, con las webs que lo usan y ejemplos reales. */
-export function readSectionCatalog(appsDir = DEFAULT_APPS_DIR): CatalogEntry[] {
-	const cached = cache.get(appsDir);
+export function readSectionCatalog(
+	appsDir = DEFAULT_APPS_DIR,
+	onlySlug: string | null = null,
+): CatalogEntry[] {
+	const key = `${appsDir}\u0000${onlySlug ?? "*"}`;
+	const cached = cache.get(key);
 	if (cached && Date.now() - cached.at < CACHE_MS) return copy(cached.entries);
 
-	const entries = build(appsDir);
-	cache.set(appsDir, { at: Date.now(), entries });
+	const entries = build(appsDir, onlySlug);
+	cache.set(key, { at: Date.now(), entries });
 	return copy(entries);
 }
