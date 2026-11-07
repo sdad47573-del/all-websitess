@@ -34,13 +34,20 @@ la columna `web_actual` de `docs/subdominios-clientes.csv`.
 No hay que añadir cada subdominio a su proyecto de Vercel/Netlify ni crear 96
 CNAME.
 
-## Atajo por ruta
+## También por ruta, sin salir del dominio
 
-`https://www.sur-digital.com/a-jalar` responde con una redirección permanente
-(308) a `https://a-jalar.sur-digital.com`, conservando la ruta interna
-(`/a-jalar/carta` → `/carta`). Las 96 redirecciones están en
-`apps/_sur-digital/vercel.json`. Las tarjetas de `/clientes/` enlazan directo
-al subdominio para no añadir un salto.
+`https://www.sur-digital.com/a-jalar` **sirve la web**, no redirige. Las 96
+rutas (`/<slug>` y `/<slug>/…`) se reescriben en `vercel.json` al endpoint
+`/api/proxy/<slug>/…`, que pide el despliegue original, reescribe sus rutas
+absolutas (`/_astro/…`, `srcset`, CSS, JS) y las de su propio dominio
+(canonical, `og:url`, JSON-LD) a `https://www.sur-digital.com/<slug>/` y
+devuelve un 200. Por eso la web conserva fotos, estilos y scripts sin
+reconstruirla y sin tocar su proyecto.
+
+El mapa `slug → despliegue real` vive en
+`apps/_sur-digital/src/data/proxy-origins.ts`, generado desde la columna
+`web_actual` de `docs/subdominios-clientes.csv`. Los subdominios siguen
+funcionando por su cuenta.
 
 ## Límites
 
