@@ -11,11 +11,23 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import hamburguesa from '../assets/fotos/papola-take-away-apaisada-01.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Papola // Take Away · Hamburguesas en Retiro';
 const description =
@@ -134,6 +146,13 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"papola-take-away-apaisada-01.jpg": hamburguesa,
+};
 ---
 
 <!doctype html>
@@ -203,137 +222,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Calle de Andrés Torrejón, 17 · Retiro, Madrid"
-				title="Hamburguesas <br /><em>para llevar.</em>"
-				lede={`Papola es una tienda de comida rápida para recoger en la calle de Andrés Torrejón, en Retiro. La ficha lo describe en dos palabras: «comida para recoger». Hamburguesas y perros salen de la plancha, y el local aguanta hasta la madrugada los viernes y los sábados. Sus ${RATING.count} reseñas de Google le dan ${RATING.label} sobre 5.`}
-				image={hamburguesa}
-				imageAlt="Una hamburguesa doble con queso y una caja de patatas fritas con salsa, en el local de Papola"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>Desde las 12:00</b> · hasta la madrugada el fin de semana' },
-					{ label: 'Servicio', html: '<b>Para recoger</b> · comida rápida' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Take away"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Papola" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Andrés Torrejón, 17. <br /><em>Para recoger.</em>"
-				paragraphs={[
-					'Papola está en la calle de Andrés Torrejón, 17, en el distrito de Retiro. Es un local de comida rápida en el que todo se prepara para llevar: la descripción de la ficha de Google es literal, «comida para recoger».',
-					'La carta se centra en la plancha. Las reseñas de Google hablan de hamburguesas y de perros, y de una atención que se repite en las opiniones: «atención muy buena». La única foto del perfil enseña una hamburguesa doble con queso, patatas fritas con salsa y las bebidas, servidas en cajas de cartón.',
-					'El horario es de los que alargan la noche: de lunes a jueves cierra a medianoche, el domingo a las 23:00 y los viernes y sábados a la 1:30 de la madrugada. Abre todos los días a las 12:00.',
-					`La ficha reúne ${RATING.count} reseñas con una media de ${RATING.label} sobre 5 (octubre de 2026). Son pocas opiniones todavía, pero todas de cinco estrellas. Los pedidos se atienden en el ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica carta ni precios. Los platos de esta página son los que aparecen en la descripción del local y en sus reseñas; confirma precios, disponibilidad y horario por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver la foto', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> La plancha y la noche</p>
-					<h2 id="highlights-title">Hamburguesas, perros <br /><em>y madrugada.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo que sale <br /><em>de la plancha.</em>"
-				description="La ficha no publica una carta. Estos son los platos que aparecen en su descripción y en las reseñas de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Sin precios publicados: la ficha no incluye carta ni tarifas. Llama al 642 41 43 13 para saber qué hay, cuánto cuesta y hasta qué hora se puede pedir."
-			/>
-
-			<LocalGallery
-				eyebrow="Foto de Google Maps"
-				title="La hamburguesa <br /><em>y las patatas.</em>"
-				description="La única fotografía del perfil de Papola en Google Maps: una hamburguesa doble con queso y una caja de patatas fritas con salsa, listas para llevar."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imagen alojada en esta página y proveniente del perfil del establecimiento en Google Maps. Si tienes los derechos y quieres que se retire, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">5,0 sobre 5, <em>con 5 reseñas.</em></h2>
-						<p>
-							Google publica una media de 5,0 con 5 opiniones (octubre de 2026). Son pocas
-							todavía y todas de cinco estrellas: las reseñas hablan de las hamburguesas, de
-							los perros y de volver a pedir.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>5,0</strong>
-						<span>★★★★★</span>
-						<small>5 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
-				title="En Retiro, <br /><em>Andrés Torrejón 17.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de lunes a jueves de 12:00 a 24:00, viernes y sábado de 12:00 a 1:30, y domingo de 12:00 a 23:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Papola en la calle de Andrés Torrejón, 17, Retiro, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Andrés Torrejón, 17 · Retiro"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Pedidos por teléfono y recogida en el local: la ficha no publica reservas, pedidos online ni reparto a domicilio. Tampoco publica datos de accesibilidad, así que conviene llamar antes si necesitas ayuda."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

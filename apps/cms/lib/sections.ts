@@ -24,6 +24,8 @@ export const SECTION_TYPES = [
 	"faq",
 	"texto",
 	"cta",
+	"chips",
+	"menu",
 ] as const;
 export type SectionType = (typeof SECTION_TYPES)[number];
 
@@ -54,6 +56,17 @@ export interface SectionQuestion {
 	respuesta: string;
 }
 
+export interface SectionMenuDish {
+	nombre: string;
+	nota: string;
+	precio?: string;
+}
+
+export interface SectionMenuGroup {
+	titulo: string;
+	items: SectionMenuDish[];
+}
+
 export interface Seccion {
 	id: string;
 	tipo: SectionType;
@@ -76,6 +89,8 @@ export interface Seccion {
 	items?: SectionItem[];
 	fotos?: SectionPhoto[];
 	preguntas?: SectionQuestion[];
+	chips?: string[];
+	grupos?: SectionMenuGroup[];
 }
 
 export interface Secciones {
@@ -124,6 +139,8 @@ const ALLOWED: Record<SectionType, string[]> = {
 	faq: ["etiqueta", "titulo", "preguntas"],
 	texto: ["etiqueta", "titulo", "parrafos", "enlaces"],
 	cta: ["etiqueta", "titulo", "texto", "boton"],
+	chips: ["etiqueta", "titulo", "chips"],
+	menu: ["etiqueta", "titulo", "texto", "boton", "grupos", "nota"],
 };
 
 function text(value: unknown, label: string, max: number, required = false): string {
@@ -207,6 +224,22 @@ function photos(value: unknown, label: string, media: Set<string>): SectionPhoto
 		return {
 			imagen,
 			alt: text(item.alt, `${label} ${position}: el texto alternativo`, 220, true),
+		};
+	});
+}
+
+function menuGroups(value: unknown, label: string): SectionMenuGroup[] {
+	return listOf(value, label, 12, (group, position) => {
+		const platos = group.items;
+		if (!Array.isArray(platos)) throw new Error(`${label} ${position}: faltan los platos.`);
+		return {
+			titulo: text(group.titulo, `${label} ${position}: el título`, 90, true),
+			items: listOf(platos, `${label} ${position}`, 40, (dish, dishPosition) => ({
+				nombre: text(dish.nombre, `${label} ${position}.${dishPosition}: el nombre`, 120, true),
+				nota: text(dish.nota, `${label} ${position}.${dishPosition}: la nota`, 300, true),
+				precio:
+					text(dish.precio, `${label} ${position}.${dishPosition}: el precio`, 40) || undefined,
+			})),
 		};
 	});
 }
@@ -297,6 +330,19 @@ function validateSection(
 					media,
 				);
 				break;
+			case "chips":
+				(section as Record<string, unknown>)[field] = strings(
+					rawValue,
+					`La pieza «${id}»: los chips`,
+					24,
+				);
+				break;
+			case "grupos":
+				(section as Record<string, unknown>)[field] = menuGroups(
+					rawValue,
+					`La pieza «${id}»: la carta`,
+				);
+				break;
 			case "preguntas":
 				(section as Record<string, unknown>)[field] = questions(
 					rawValue,
@@ -332,6 +378,13 @@ function validateSection(
 		throw new Error("La pieza de llamada a la acción necesita un botón.");
 	}
 
+	if (section.tipo === "chips" && !section.chips?.length) {
+		throw new Error("La pieza de chips necesita al menos un texto.");
+	}
+	if (section.tipo === "menu" && !section.grupos?.length) {
+		throw new Error("La pieza de carta necesita al menos un grupo.");
+	}
+
 	return section;
 }
 
@@ -346,9 +399,6 @@ function validateSecciones(input: unknown, media: Set<string>): Secciones {
 
 	const ids = new Set<string>();
 	const secciones = list.map((item, index) => validateSection(item, index + 1, ids, media));
-	if (!secciones.some((section) => section.tipo === "hero")) {
-		throw new Error("La página necesita una pieza de portada.");
-	}
 
 	return { version: 1, secciones };
 }

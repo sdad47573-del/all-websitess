@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/atalaya-catering-apaisada-04.jpg';
@@ -179,6 +180,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"atalaya-catering-apaisada-04.jpg": fachada,
+	"atalaya-catering-apaisada-01.jpg": comedor,
+	"atalaya-catering-apaisada-02.jpg": gambas,
+	"atalaya-catering-apaisada-05.jpg": bogavante,
+	"atalaya-catering-apaisada-07.jpg": datiles,
+	"atalaya-catering-apaisada-09.jpg": carne,
+	"atalaya-catering-apaisada-10.jpg": evento,
+	"atalaya-catering-vertical-06.jpg": marisco,
+	"atalaya-catering-vertical-08.jpg": edificio,
+	"atalaya-catering-apaisada-03.jpg": comedorAmplio,
+};
 ---
 
 <!doctype html>
@@ -248,137 +265,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer Garganes · Altea (Alicante)"
-				title="Paellas y tapas, <br /><em>a tu mesa.</em>"
-				lede={`Atalaya Catering es un local de Carrer Garganes, en Altea, con el cartel de «paellas y tapas para llevar» en la puerta y servicio a domicilio. Dentro hay un comedor amplio con mesas de mantel marrón, y la sala se usa también para jornadas y celebraciones. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas y abre todos los días de 9:00 a 16:00.`}
-				image={fachada}
-				imageAlt="La fachada de Atalaya Catering en Carrer Garganes, con el cartel del local y el de paellas y tapas para llevar"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:00–16:00</b> · todos los días' },
-					{ label: 'Servicio', html: '<b>Para llevar</b> · y a domicilio' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Servicio a domicilio"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Atalaya Catering" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Carrer Garganes. <br /><em>Un comedor y una cocina.</em>"
-				paragraphs={[
-					'Atalaya Catering está en el número de Carrer Garganes que la ficha de Google sitúa en las coordenadas 38.6030887, -0.0452091, en Altea. En la acera, la fachada blanca muestra el rótulo del local con el teléfono y el correo, el cartel de «Paellas y tapas para llevar» y, en el escaparate, la lista completa de platos pegada al cristal.',
-					'Dentro hay una sala diáfana de techos altos, con pilares blancos, cortinas corridas y mesas vestidas de marrón con servilleta color crema y copas puestas. Esa misma sala aparece en las fotos del perfil ocupada por el público de una «Feria de Eventos», con sillas alineadas y una pantalla al fondo, así que el espacio sirve tanto de comedor como de lugar de celebraciones.',
-					'La ficha la clasifica como «servicio de catering» y «restaurante mediterráneo». En las fotos del perfil hay bandejas de gambas y cigalas, una ensalada de bogavante, dátiles envueltos en bacon y carne a la brasa con patatas panadera: la cocina de mar y de brasa que se espera en la Marina Baixa.',
-					`Las opiniones que se ven en Google hablan de «un variado desayuno» y de «buena comida casera», y destacan la relación calidad-precio. La media es de ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}; en el cartel de la fachada aparece además el ${BUSINESS.phoneSign} y el correo ${BUSINESS.email}.`,
-				]}
-				note="La ficha no publica carta con todos los platos ni precios. Lo que aparece en esta página es lo que anuncia el cartel de la fachada, lo que cuenta la propia ficha y los platos que se reconocen en las fotos del perfil; confirma disponibilidad, precios y encargos por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la cocina a la mesa</p>
-					<h2 id="highlights-title">Para llevar, a domicilio <br /><em>o en la sala.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La cocina"
-				title="Lo que sale <br /><em>de esta cocina.</em>"
-				description="Sin carta publicada: esta lista reúne lo que anuncia el cartel de la fachada (paellas y tapas para llevar, servicio a domicilio) y los platos que se reconocen en las fotos del perfil de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`Ni la ficha ni el escaparate publican precios. Llama al ${BUSINESS.phone} (o al ${BUSINESS.phoneSign}, el del cartel) para saber el menú del día, el precio de la paella y el plazo de encargo.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, el comedor <br /><em>y los platos.</em>"
-				description="Diez fotografías del perfil de Atalaya Catering: la fachada con el cartel de paellas y tapas, el comedor de manteles marrones, la sala durante una feria de eventos, las bandejas de gambas y cigalas, la ensalada de bogavante, los dátiles con bacon, la carne a la brasa y el edificio desde el jardín."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,0 sobre 5, <em>con 104 reseñas.</em></h2>
-						<p>
-							Google publica una media de 4,0 con 104 opiniones (noviembre de 2026). Entre las
-							reseñas que se ven en la ficha, las hay que elogian los desayunos variados, la
-							comida casera, la atención y la relación calidad-precio.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,0</strong>
-						<span>★★★★☆</span>
-						<small>104 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Altea, <br /><em>calle Garganes.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Alicante)`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: todos los días de 9:00 a 16:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Atalaya Catering en Carrer Garganes, Altea"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Carrer Garganes · Altea"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Pedidos y encargos por teléfono. La ficha publica el ${BUSINESS.phone}; el cartel de la fachada muestra además el ${BUSINESS.phoneSign} y el correo ${BUSINESS.email}. El local enlaza en Google su propia página de pedidos, atalayacatering.readyme.app, y tiene pegatina de Just Eat en la puerta. No publica área de reparto ni horario de entrega.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurante-casa-raul-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import rincon from '../assets/fotos/restaurante-casa-raul-vertical-08.jpg';
 import mesa from '../assets/fotos/restaurante-casa-raul-vertical-09.jpg';
 import chuletillas from '../assets/fotos/restaurante-casa-raul-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante Casa Raúl en Plasencia (Cáceres): menú diario, menú especial por 30 €, parrilla, raciones y terraza. Av. Martín Palomino, 88. Tel. 927 42 29 55.';
@@ -201,6 +209,22 @@ const nav = [
 ];
 
 const title = 'Casa Raúl · Restaurante y parrilla en Plasencia';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-casa-raul-apaisada-01.jpg": fachada,
+	"restaurante-casa-raul-vertical-03.jpg": parrilla,
+	"restaurante-casa-raul-apaisada-04.jpg": comedor,
+	"restaurante-casa-raul-apaisada-10.jpg": chuletillas,
+	"restaurante-casa-raul-cuadrada-05.jpg": terraza,
+	"restaurante-casa-raul-vertical-06.jpg": menuEspecial,
+	"restaurante-casa-raul-apaisada-07.jpg": sala,
+	"restaurante-casa-raul-vertical-09.jpg": mesa,
+	"restaurante-casa-raul-apaisada-02.jpg": vitrina,
+	"restaurante-casa-raul-vertical-08.jpg": rincon,
+};
 ---
 
 <!doctype html>
@@ -256,84 +280,19 @@ const title = 'Casa Raúl · Restaurante y parrilla en Plasencia';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Martín Palomino, 88 · Plasencia"
-				title="Parrilla, menú<br /><em>y terraza.</em>"
-				lede={`Restaurante Casa Raúl está en la avenida Martín Palomino, 88, de Plasencia (Cáceres), con terraza de verano e invierno y comedor cerrado y climatizado. Menú diario, menú especial, raciones, bocadillos y hamburguesas, con parrilla y guisos de la casa. Abre todos los días de 7:00 a 24:00, y los viernes y sábados hasta la 1:00. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={fachada}
-				imageAlt="Fachada de Restaurante Casa Raúl con el toldo amarillo y palmeras en la avenida Martín Palomino"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{
-						label: 'Nota',
-						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
-					},
-					{ label: 'Horario', html: 'Lun–jue 7:00–24:00 · vie y sáb hasta la 1:00' },
-					{ label: 'Menú especial', html: '<b>30,00 €</b> con primero, segundo, bebida y postre' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante Casa Raúl" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un clásico<br /><em>de Plasencia.</em>"
-				paragraphs={[
-					'Restaurante Casa Raúl está en la avenida Martín Palomino, 88, de Plasencia (Cáceres). Google lo clasifica como restaurante de cocina española y parrilla, y también como bar, bar restaurante, cafetería, bar de tapas y restaurante de cocina contemporánea europea.',
-					'El edificio es de piedra clara, con un gran ventanal y un toldo amarillo con el rótulo «Restaurante Casa Raúl», palmeras delante y una terraza con mesas y sillas blancas. La ficha lo describe como «restaurante con terraza de verano e invierno y comedor cerrado y climatizado».',
-					'Dentro, el comedor es amplio y luminoso: manteles naranjas, sillas de tapicería granate con estructura dorada, lámparas de pared y cuadros de puentes y paisajes. Hay también mesas de mantel de azulejos y tronas para los más pequeños.',
-					'Su ficha de Google reúne 2.174 reseñas y una nota media de 4,2 sobre 5. Las reseñas hablan del menú diario, de las raciones y bocadillos, de la calidad de los aperitivos y tostadas y, sobre todo, del cochinillo y de la ensalada Casa Raúl.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo resume así: «cochinillo excelente y ensalada casa Raúl buenísima... para repetir».`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Menú especial<br /><em>y parrilla.</em>"
-				description="El restaurante publica su menú especial en la galería de su ficha de Google: primeros, segundos y bebida, pan, postre y café por 30,00 €. La ficha no publica el resto de la carta ni precios."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="El menú especial y el menú del día cambian de un día a otro. Llama al 927 42 29 55 para saber qué hay hoy y si queda mesa."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada,<br /><em>la mesa y la brasa.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante Casa Raúl en Google Maps: la fachada con el toldo amarillo, la terraza, los dos comedores, la vitrina de aperitivos, las chuletillas a la brasa y el cartel del menú especial."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en la terraza.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: de 7:00 a 24:00 de lunes a jueves, viernes y sábado hasta la 1:00, y domingo cerrado. Para comidas de grupo conviene llamar antes."
-				mapTitle="Mapa de Restaurante Casa Raúl en la avenida Martín Palomino, 88, Plasencia (Cáceres)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Restaurante Casa Raúl · Plasencia"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al 927 42 29 55. La ficha de Google marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados. Está en la avenida Martín Palomino, 88, de Plasencia."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

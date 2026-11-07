@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import bandeja from '../assets/fotos/face-wok-apaisada-05.jpg';
@@ -180,6 +181,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"face-wok-apaisada-05.jpg": bandeja,
+	"face-wok-apaisada-01.jpg": fachadaNoche,
+	"face-wok-vertical-02.jpg": rotulo,
+	"face-wok-vertical-03.jpg": caja,
+	"face-wok-vertical-06.jpg": comedor,
+	"face-wok-vertical-09.jpg": ventana,
+	"face-wok-vista-4-04.jpg": carta,
+	"face-wok-vertical-10.jpg": pared,
+};
 ---
 
 <!doctype html>
@@ -249,134 +264,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Autonomia Kalea, 2 · Abando (Bilbao)"
-				title="Wok, arroz <br /><em>y para llevar.</em>"
-				lede={`Face Wok es el wok de Autonomia Kalea, en Abando: tallarines y arroces al fuego, entrantes y sushi, servidos en las cajas de cartón de la casa o en la mesa, con sillas amarillas y pared de madera. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días de 11:30 a 16:30 y vuelve desde las 19:15.`}
-				image={bandeja}
-				imageAlt="Bandeja de Face Wok con arroz en la caja de cartón, empanadillas y salsas"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>11:30–16:30</b> · y 19:15–23:45' },
-					{ label: 'Pedidos', html: '<b>Para llevar</b> · y en el local' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Salsa gratis"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Face Wok" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Abando. <br /><em>Wok y caja de cartón.</em>"
-				paragraphs={[
-					'Face Wok está en Autonomia Kalea, 2, en el barrio de Abando, Bilbao. La ficha de Google sitúa el local en las coordenadas 43.2574699, -2.9350086. La fachada tiene el rótulo luminoso de «WOK» en amarillo sobre la puerta y la carta completa pegada en la ventana, con las fotos de cada plato y su precio.',
-					'Dentro hay mesas de madera con sillas amarillas, zócalo y pared de listones de madera, el techo oscuro con lámparas colgantes y una pared blanca con tarjetas de caracteres chinos sujetas con pinzas. Es un local pequeño, de los de pedir en la barra y sentarse si queda sitio.',
-					'La ficha lo clasifica como restaurante asiático, chino y de comida rápida. En las fotos del perfil aparecen las cajas de cartón blancas de Face Wok con arroz tres delicias y con tallarines y pato asado, las empanadillas a la plancha con su salsa de soja, las bandejas de sushi variado y la comida servida en bandeja, con los palillos y las salsas aparte.',
-					`Las reseñas que se ven en Google hablan de los pedidos de siempre: «comimos arroz tres delicias, pintxo moruno de pollo, ensalada china y pan chino». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica carta ni precios, y el local no tiene web propia. Lo que aparece en esta página es lo que dice la ficha, lo que se lee en la carta de la ventana y lo que se reconoce en las fotos; para el precio del día y los pedidos, hay que llamar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> En la caja</p>
-					<h2 id="highlights-title">Wok, arroz <br /><em>y una salsa.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Tallarines, arroces <br /><em>y sushi.</em>"
-				description="Sin precios publicados: esta lista reúne lo que se lee en la carta de la ventana y lo que se reconoce en las fotos del perfil de Google. Cada plato se pide en tamaño pequeño o grande, y con el pedido se elige una salsa gratis."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`Los pedidos se hacen por teléfono, en el ${BUSINESS.phone}, o en el propio local. La salsa va incluida: curry, agripicante, cebolla, tres delicias, soya o cacahuete. Los precios están en la carta de la ventana y se confirman al encargar.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, las cajas <br /><em>y el comedor.</em>"
-				description="Ocho fotografías del perfil de Face Wok: la bandeja con el arroz en su caja, la fachada de noche con el rótulo luminoso, el cartel amarillo de WOK, la caja con tallarines y pato junto al sushi, el comedor de mesas de madera y sillas amarillas, la carta de la ventana, un detalle de los platos y la pared con caracteres chinos."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,1 sobre 5, <em>con 484 reseñas.</em></h2>
-						<p>
-							Google publica una media de 4,1 con 484 opiniones (noviembre de 2026). Entre las
-							reseñas que se ven en la ficha, las hay que cuentan pedidos de arroz tres delicias,
-							pincho moruno de pollo, ensalada china y pan chino.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<small>Reseña publicada en Google</small>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,1</strong>
-						<span>★★★★☆</span>
-						<small>484 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Bilbao, <br /><em>Abando.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Bizkaia)`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: mediodía de 11:30 a 16:30 y noches desde las 19:15, hasta las 23:45 de domingo a jueves y hasta las 24:00 miércoles, viernes y sábado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Face Wok en Autonomia Kalea, Bilbao"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Autonomia Kalea, 2 · Bilbao"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Los pedidos se hacen por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni pedidos online. La ficha marca acceso para sillas de ruedas, pero no aseo ni aparcamiento adaptados. En el mediodía del jueves la ficha muestra un horario raro, así que llama antes de ir.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

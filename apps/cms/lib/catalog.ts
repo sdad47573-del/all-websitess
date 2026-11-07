@@ -39,6 +39,8 @@ const META: Record<SectionType, { label: string; descripcion: string }> = {
 	faq: { label: "Preguntas", descripcion: "Preguntas y respuestas" },
 	texto: { label: "Texto", descripcion: "Titular y párrafos" },
 	cta: { label: "Llamada a la acción", descripcion: "Texto y un botón" },
+	chips: { label: "Chips", descripcion: "Fila de etiquetas cortas" },
+	menu: { label: "Carta", descripcion: "Grupos de platos, notas y precios" },
 };
 
 /** Componente compartido que pinta cada tipo en las webs ya publicadas. */

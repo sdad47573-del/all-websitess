@@ -9,6 +9,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/la-cocina-artesana-apaisada-01.jpg';
@@ -19,7 +20,15 @@ import gratinado from '../assets/fotos/la-cocina-artesana-apaisada-06.jpg';
 import ensaladilla from '../assets/fotos/la-cocina-artesana-apaisada-08.jpg';
 import pimientos from '../assets/fotos/la-cocina-artesana-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+} from '../data/site';
 
 const galeria = [
 	{ src: clams, alt: 'Espaguetis con almejas en una bandeja blanca' },
@@ -39,6 +48,19 @@ const nav = [
 	{ label: 'Fotos', href: '#galeria' },
 	{ label: 'Visitar', href: '#visitanos' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-cocina-artesana-apaisada-01.jpg": fachada,
+	"la-cocina-artesana-apaisada-02.jpg": clams,
+	"la-cocina-artesana-apaisada-03.jpg": bandejas,
+	"la-cocina-artesana-apaisada-05.jpg": pescado,
+	"la-cocina-artesana-apaisada-06.jpg": gratinado,
+	"la-cocina-artesana-apaisada-08.jpg": ensaladilla,
+	"la-cocina-artesana-apaisada-10.jpg": pimientos,
+};
 ---
 
 <!doctype html>
@@ -108,62 +130,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Cocina artesana, <br /><em>para llevar.</em>"
-				lede={`La Cocina Artesana está en la Avenida Reino de Murcia, en Altorreal. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="Fachada de La Cocina Artesana en Altorreal"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Servicio', html: '<b>Comida para llevar</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalMenu
-				eyebrow="La cocina"
-				title="Lo que se ve <br /><em>en las fotos.</em>"
-				description="La ficha no publica carta. Esta lista reúne los platos que aparecen en las fotografías del perfil de Google Maps."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Sin precios publicados. Llama para saber el menú del día y los precios."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Platos <br /><em>de la casa.</em>"
-				description="Fotografías del perfil de La Cocina Artesana en Google Maps."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Altorreal, <br /><em>junto a la avenida.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Cocina Artesana en Avenida Reino de Murcia, Altorreal"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Avenida Reino de Murcia · Altorreal"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Pedidos por teléfono: la ficha no enlaza una web propia ni un sistema de pedidos online."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

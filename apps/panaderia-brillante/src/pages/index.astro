@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import dulces from '../assets/fotos/panaderia-brillante-apaisada-04.jpg';
@@ -139,6 +140,17 @@ const galeria = [
 		alt: 'Cartel de empanadas por encargo del local, con tamaños y lista de rellenos',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-brillante-apaisada-04.jpg": dulces,
+	"panaderia-brillante-apaisada-01.jpg": interior,
+	"panaderia-brillante-vertical-10.jpg": rotulo,
+	"panaderia-brillante-vertical-08.jpg": tarta,
+	"panaderia-brillante-vertical-06.jpg": empanadas,
+};
 ---
 
 <!doctype html>
@@ -200,106 +212,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Centro · 14010 Córdoba"
-				title="Panadería <br /><em>y confitería.</em>"
-				lede={`El Brillante está en la Ronda de la Manca, 4, con un rótulo clásico que anuncia «Panadería El Brillante · Confitería». Dentro hay vitrina de bollería y dulces, cafetera y mesas, y en la pared, el cartel de empanadas por encargo del obrador La Abuela Luisa. Abre de lunes a viernes de 6:00 a 15:00 y de 18:00 a 20:00, y los sábados de 8:00 a 15:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={dulces}
-				imageAlt="Bandeja de dulces de El Brillante con piezas espolvoreadas con azúcar y bañadas de chocolate"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 39 reseñas' },
-					{ label: 'Horario', html: '<b>L–V</b> 6:00–15:00 y 18:00–20:00' },
-					{ label: 'Zona', html: '<b>Centro</b> · 14010' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · confitería · empanadas"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en El Brillante" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un obrador <br /><em>de barrio.</em>"
-				paragraphs={[
-					'El Brillante está en la Ronda de la Manca, 4 (14010 Córdoba). El rótulo de la fachada anuncia «Panadería El Brillante · Confitería», con un sol y una caja de regalo dibujados en el centro.',
-					'Dentro, el local tiene vitrina de bollería y dulces, cafetera, estanterías y unas mesas para tomar algo. En las fotos del perfil se ven las bandejas con dulces espolvoreados con azúcar y bañados de chocolate.',
-					'En la pared hay un cartel de empanadas del obrador La Abuela Luisa que invita a encargarlas en el local, con rellenos normales (atún y tomate, atún y pisto, jamón york y queso) y especiales (atún y pimiento morrón, salmón y philadelphia, bacon y dátiles, jamón york y roquefort o carbonara, entre otros).',
-					'Las reseñas hablan de «los pitufos de jamón una delicia, trato familiar y un gran precio», y hay de todo: alguna celebra una tarta que «estaba buenísima» y otra se queja de que el pan le pareció duro y seco. El horario es de los madrugadores: abre a las 6:00 de lunes a viernes.',
-				]}
-				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta ni precios. El cartel de empanadas del local lleva importes, pero cambian, así que esta web no los repite."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 957 44 19 53', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Confitería, <br />
-							<em>empanadas y encargos.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin precios publicados: esto es lo que muestran las fotos y los carteles del local, y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. Las empanadas y las tartas se encargan en el local: conviene llamar con antelación."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: el interior, el rótulo, una tarta y el cartel de empanadas."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Ronda <br /><em>de la Manca.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Brillante en la Ronda de la Manca, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Panadería Brillante · Centro"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 957 44 19 53. No publica web propia ni redes. Indica acceso para sillas de ruedas; no informa sobre el aparcamiento adaptado, el mostrador ni el aseo, así que esta página no lo afirma. Para empanadas o tartas por encargo, conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

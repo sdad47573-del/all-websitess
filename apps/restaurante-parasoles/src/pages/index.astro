@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import paellaMarisco from '../assets/fotos/restaurante-parasoles-apaisada-05.jpg';
@@ -22,7 +23,15 @@ import sangria from '../assets/fotos/restaurante-parasoles-vertical-09.jpg';
 import postre from '../assets/fotos/restaurante-parasoles-vertical-06.jpg';
 import comedor from '../assets/fotos/restaurante-parasoles-apaisada-01.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante Parasoles, cocina mediterránea y marisquería en primera línea de Platja d’en Bossa (Ibiza). Arroces, marisco y vistas al mar. Tel. 971 30 52 31.';
@@ -164,6 +173,20 @@ const nav = [
 ];
 
 const title = 'Parasoles · Arroces y marisco en Playa d’en Bossa';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-parasoles-apaisada-05.jpg": paellaMarisco,
+	"restaurante-parasoles-apaisada-03.jpg": mesaArena,
+	"restaurante-parasoles-apaisada-10.jpg": mariscada,
+	"restaurante-parasoles-vertical-07.jpg": fideua,
+	"restaurante-parasoles-apaisada-04.jpg": nachos,
+	"restaurante-parasoles-vertical-09.jpg": sangria,
+	"restaurante-parasoles-vertical-06.jpg": postre,
+	"restaurante-parasoles-apaisada-01.jpg": comedor,
+};
 ---
 
 <!doctype html>
@@ -219,84 +242,19 @@ const title = 'Parasoles · Arroces y marisco en Playa d’en Bossa';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Ses Begonies, 1-2 · Playa d’en Bossa"
-				title="Arroces con<br /><em>el mar detrás.</em>"
-				lede={`Parasoles es un restaurante mediterráneo y marisquería en primera línea de Platja d’en Bossa (Sant Josep de sa Talaia, Ibiza). En sus mesas, muchas de ellas en la arena, salen la paella de marisco, el arroz negro y la fideuá, la mariscada, el pescado a la plancha, la fritura, las gambas al ajillo y las ensaladas. El propio restaurante se define como «restaurante familiar con buena comida y buen ambiente, ideal para comidas familiares y bonitas vistas al mar». Abre todos los días de 11:30 a 18:00. Teléfono: ${BUSINESS.phoneDisplay}.`}
-				image={paellaMarisco}
-				imageAlt="Paella de marisco y mariscada con mejillones, langostinos y pescado a la plancha sobre una mesa con vistas al mar"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{
-						label: 'Nota',
-						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsLabel} reseñas)`,
-					},
-					{ label: 'Cocina', html: 'Mediterránea · arroces y marisco' },
-					{ label: 'Horario', html: 'Todos los días · 11:30–18:00' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante Parasoles" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Sombrillas, mesa<br /><em>y agua cerca.</em>"
-				paragraphs={[
-					'Parasoles está en Ses Begonies, 1-2, en primera línea de Platja d’en Bossa, el arenal largo que va de Ibiza a Sant Josep de sa Talaia. La ficha de Google lo clasifica como restaurante mediterráneo y marisquería, y el propio negocio lo cuenta así: «restaurante familiar con buena comida y buen ambiente, ideal para comidas familiares y bonitas vistas al mar».',
-					'La casa ocupa la arena y la terraza: mesas vestidas de blanco, sillas de madera, copas altas y el mar justo detrás. En las fotos del perfil hay mesas a pleno sol de mediodía y también mesas al atardecer, con las lámparas encendidas y la sangría servida. Dentro, el comedor repite el blanco en los manteles y los platos.',
-					'La cocina es de arroces y pescado: paella de marisco, arroz negro en la paellera, fideuá con langostinos y mejillones, mariscada con almejas, calamares y gambas, pescado entero a la plancha y fritura de pescado. Para picar salen nachos con guacamole, patatas bravas y gambas al ajillo, y de postre, tarta de zanahoria con caramelo.',
-					'Sus reseñas hablan de la mesa larga y del servicio: «a destacar el gazpacho, mejillones marinera, mariscada y el surtido de tartas», «buenísima paella y camareros muy buenos» y «ensaladas correctas (sencillas, grandes y frescas)». Google le da 4,4 sobre 5 con 1.155 reseñas.',
-				]}
-				note={`${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsLabel} reseñas en Google. Una de ellas: «${REVIEWS[0]}»`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Paellas, mariscada<br /><em>y pescado a la plancha.</em>"
-				description="La ficha de Google no publica carta ni precios: esto es lo que aparece en las fotos del perfil y lo que citan sus reseñas."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No hay precios publicados. Llama al 971 30 52 31 para reservar mesa o preguntar por los arroces y el pescado del día."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La mesa, la arena<br /><em>y la paellera.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante Parasoles en Google Maps: la paella de marisco y la mariscada con el mar al fondo, las mesas en la arena, la fideuá, las gambas al ajillo con nachos, la sangría del atardecer, la tarta de zanahoria y el comedor de noche."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Te esperamos<br /><em>en la orilla.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Sant Josep de sa Talaia · Islas Baleares',
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: todos los días de 11:30 a 18:00. Es un restaurante de mediodía, así que en temporada alta conviene llamar antes para mesa."
-				mapTitle="Mapa de Restaurante Parasoles en Ses Begonies, Playa d’en Bossa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Parasoles · Playa d’en Bossa"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se llama al 971 30 52 31. La ficha de Google marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

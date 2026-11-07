@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/mi-fogon-vista-1-01.jpg';
@@ -24,7 +25,14 @@ import arrozCarne from '../assets/fotos/mi-fogon-apaisada-08.jpg';
 import fiambreras from '../assets/fotos/mi-fogon-vertical-09.jpg';
 import fachadaCerrada from '../assets/fotos/mi-fogon-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Mi Fogón · Comidas caseras para llevar en Fuente Álamo';
 const description = BUSINESS.description;
@@ -162,6 +170,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"mi-fogon-vista-1-01.jpg": fachada,
+	"mi-fogon-vertical-02.jpg": polloGuisado,
+	"mi-fogon-vertical-09.jpg": fiambreras,
+	"mi-fogon-apaisada-08.jpg": arrozCarne,
+	"mi-fogon-vertical-03.jpg": fajitas,
+	"mi-fogon-vertical-06.jpg": berenjenas,
+	"mi-fogon-vertical-05.jpg": hojaldres,
+	"mi-fogon-vertical-04.jpg": sardinas,
+	"mi-fogon-apaisada-07.jpg": tartaOreo,
+	"mi-fogon-vertical-10.jpg": fachadaCerrada,
+};
 ---
 
 <!doctype html>
@@ -219,111 +243,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Cocina casera, <br /><em>de fogón.</em>"
-				lede="Mi Fogón hace comidas para llevar en Rda. Pte. 7, en Fuente Álamo. El negocio lo resume en su ficha: «Cocina casera, platos típicos con toques personales en algunas recetas». Abre de 8:00 a 16:00 de miércoles a domingo, cierra lunes y martes, y los pedidos se hacen en el 641 23 67 43."
-				image={fachada}
-				imageAlt="Fachada de Mi Fogón con el rótulo de olla humeante y el letrero de comidas para llevar, en Fuente Álamo"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,8</b> en Google · 12 reseñas' },
-					{ label: 'Horario', html: '<b>8:00–16:00</b><br />Lunes y martes cerrado' },
-					{ label: 'Pedidos', html: `<b>${BUSINESS.phone}</b> comida para llevar` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Mi Fogón" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El fogón <br /><em>de Fuente Álamo.</em>"
-				paragraphs={[
-					'El local está en el número 7 de Rda. Pte., en Fuente Álamo, con la fachada blanca, el zócalo oscuro y un rótulo limpio: una olla humeante, «MI FOGÓN» y debajo, en rojo, «Comidas para llevar». El portal se ve a la derecha de la puerta.',
-					'La ficha la clasifica como restaurante de comida para llevar y el negocio firma su cocina en una línea: «Cocina casera, platos típicos con toques personales en algunas recetas». Aquí no hay servicio de mesa: se pide por teléfono, se cocina y se recoge.',
-					'Las fotos del perfil enseñan lo que sale del fogón: pollo guisado con patatas, chorizo y pimentón de Murcia; arroz con carne; sardinas a la plancha con ajo y pimiento; berenjenas rellenas gratinadas; fajitas y empanadillas de hojaldre para picar; y una tarta de galletas para el postre.',
-					'El horario es de mañana y mediodía: de 8:00 a 16:00 de miércoles a domingo, con lunes y martes de descanso. La nota de Google es 3,8 con 12 reseñas, y aquí están las tres que la ficha destaca, también la que pone una estrella.',
-				]}
-				note="La ficha no publica carta con precios ni web propia. Los platos de esta página salen de la descripción del negocio, de las categorías de Google, de las fotos de su perfil y de las reseñas destacadas; no hay importes que mostrar sin inventarlos."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Guisos, tapas <br /><em>y postre.</em>"
-				description="Sin precios publicados en la ficha, así que aquí va lo que el negocio declara, lo que se ve en sus fotos y lo que citan las reseñas."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={carta}
-				note="Nombres de platos tomados de la descripción del negocio, de las fotografías del perfil y de las reseñas destacadas. No hay carta ni precios públicos: la disponibilidad del día se confirma en el 641 23 67 43."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
-					<div class="reviews-head">
-						<h2 id="resenas-title">Como en casa, <br /><em>con matices.</em></h2>
-						<p>
-							La ficha tiene 12 reseñas y una media de 3,8. Estas son las tres que Google destaca, con
-							la puntuación que les dio su autor, incluida la de una estrella.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
-										{'★'.repeat(review.rating)}
-										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
-									</p>
-									<blockquote>{review.quote}</blockquote>
-									<figcaption>Reseña publicada en Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<p class="review-note">
-						Citas de las reseñas públicas del local, con la puntuación del autor. En la ficha de Google
-						están todas, también las que no aparecen aquí.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Nueve fotos <br /><em>del fogón.</em>"
-				description="Del perfil del local: el pollo guisado, las fiambreras de pollo con ensaladilla, el arroz, las fajitas, las berenjenas gratinadas, los hojaldres, las sardinas, la tarta de galletas y la fachada con la persiana bajada."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="De miércoles <br /><em>a domingo.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, `${BUSINESS.regionName}, España`]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: de 8:00 a 16:00 de miércoles a domingo, con lunes y martes cerrado. Es servicio de mañana y mediodía, sin cenas. En festivos puede cambiar; llama antes si vas en día señalado."
-				mapTitle="Mapa de Mi Fogón comidas para llevar en Rda. Pte. 7, Fuente Álamo, Murcia"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Mi Fogón"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Pedidos: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="Aquí se pide por teléfono y se recoge en el local: es comida para llevar, sin servicio de mesa. La ficha no enlaza ninguna plataforma de reparto ni publica datos de accesibilidad. Esta página no tramita pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/tu-asador-apaisada-07.jpg';
@@ -21,7 +22,14 @@ import carneSalsa from '../assets/fotos/tu-asador-apaisada-05.jpg';
 import bandejaCarne from '../assets/fotos/tu-asador-apaisada-10.jpg';
 import postre from '../assets/fotos/tu-asador-vertical-09.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Tu Asador · Pollo asado y comida para llevar en Sevilla';
 const description = BUSINESS.description;
@@ -129,6 +137,19 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"tu-asador-apaisada-07.jpg": fachada,
+	"tu-asador-apaisada-03.jpg": mesa,
+	"tu-asador-apaisada-01.jpg": mostrador,
+	"tu-asador-apaisada-02.jpg": polloPatatas,
+	"tu-asador-apaisada-05.jpg": carneSalsa,
+	"tu-asador-apaisada-10.jpg": bandejaCarne,
+	"tu-asador-vertical-09.jpg": postre,
+};
 ---
 
 <!doctype html>
@@ -186,84 +207,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Pollos, carnes <br /><em>y otras delicias.</em>"
-				lede="En la avenida Pueblo Saharaui, frente al Aldi, un asador de pollos y comida para llevar: pollo asado con patatas, tortillas, croquetas, carnes en salsa y postres caseros. Abre de miércoles a domingo de 9:00 a 15:00 y la ficha de Google le da 4,7 sobre 5 con 128 reseñas."
-				image={fachada}
-				imageAlt="Fachada de Tu Asador en la avenida Pueblo Saharaui, con el rótulo de pollos, carnes y otras delicias sobre el escaparate"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> en Google · 128 reseñas' },
-					{ label: 'Horario', html: '<b>9:00–15:00</b><br />Miércoles a domingo' },
-					{ label: 'Teléfono', html: `<b>955 09 86 84</b> encargos y consultas` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Tu Asador" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El horno <br /><em>y el mostrador.</em>"
-				paragraphs={[
-					'Tu Asador está en la avenida Pueblo Saharaui, frente al Aldi, con el rótulo de «Pollos / carnes y otras delicias» sobre un escaparate grande y el obrador al fondo. La ficha de Google lo clasifica como restaurante especializado en pollo y restaurante de comida para llevar.',
-					'La casa trabaja el pollo asado: sale del horno para llevarlo entero, con patatas o por raciones. En el mostrador hay además tortilla de patatas, croquetas, ensaladilla, empanadas y carnes en salsa, y entre los postres aparece el arroz con leche en tarro de cristal, con canela y una rodaja de limón.',
-					'Las reseñas de Google lo resumen bien: «buena materia prima, buen trato y precios económicos». Otra va directa a la tortilla: «la mejor tortilla casera que he probado en mi vida». No todas son perfectas —hay quien se queja del tamaño del pollo—, pero el balance de la ficha es 4,7 sobre 5 con 128 reseñas.',
-					'Abre de miércoles a domingo de 9:00 a 15:00: es un asador de mediodía, pensado para recoger la comida y comer en casa. Cierra lunes y martes, y la ficha avisa de que en festivos el horario puede cambiar.',
-				]}
-				note="La información sale de la ficha pública de Google Maps y de las fotos del perfil del establecimiento. No hay web oficial ni carta con precios publicada: confirma platos, precios y disponibilidad por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo asado <br /><em>y mostrador.</em>"
-				description="La ficha no publica carta con precios. Esta lista recoge lo que aparece en las fotos del perfil y lo que repiten las reseñas de la casa: pollo asado, carnes, tortilla, croquetas y postres."
-				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note="No hay carta oficial publicada ni precios del local, así que esta lista es orientativa: sirve para reconocer lo que se cocina aquí, no para cerrar una cuenta. Para saber qué hay ese día y cuánto cuesta, llama al asador."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El horno <br /><em>y el mostrador.</em>"
-				description="Las fotografías del perfil de Tu Asador: la mesa con el pollo y la tortilla, el obrador con el horno, el pollo con patatas, las carnes en salsa y el arroz con leche."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a <br /><em>Pueblo Saharaui.</em>"
-				addressLines={[
-					'Av. Pueblo Saharaui, frente al Aldi',
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Sevilla, España',
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: miércoles a domingo de 9:00 a 15:00, con lunes y martes cerrados. En festivos puede cambiar; la ficha avisa, por ejemplo, del día de Todos los Santos."
-				mapTitle="Mapa de Tu Asador en la avenida Pueblo Saharaui, frente al Aldi, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Pueblo Saharaui · Sevilla"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. Para encargar pollos, una bandeja o preguntar qué hay hoy, llama al teléfono del local: es el canal directo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrina from '../assets/fotos/asador-jope-panoramica-01.jpg';
@@ -24,7 +25,18 @@ import bacalao from '../assets/fotos/asador-jope-vertical-05.jpg';
 import arroz from '../assets/fotos/asador-jope-vertical-08.jpg';
 import ensalada from '../assets/fotos/asador-jope-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Asador Jope · Pollo asado y comida casera en Carretera de Cádiz';
 const description =
@@ -173,6 +185,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"asador-jope-panoramica-01.jpg": vitrina,
+	"asador-jope-panoramica-02.jpg": merluza,
+	"asador-jope-panoramica-03.jpg": ensaladilla,
+	"asador-jope-vertical-04.jpg": migas,
+	"asador-jope-vertical-05.jpg": bacalao,
+	"asador-jope-panoramica-07.jpg": verduras,
+	"asador-jope-vertical-08.jpg": arroz,
+	"asador-jope-vertical-10.jpg": ensalada,
+	"asador-jope-panoramica-06.jpg": carne,
+	"asador-jope-panoramica-09.jpg": polloEnsalada,
+};
 ---
 
 <!doctype html>
@@ -242,136 +270,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Pl. de la Luz, 8 · Carretera de Cádiz"
-				title="Pollo de asador <br /><em>y comida de casa.</em>"
-				lede={`Asador Jope es la casa de comidas de la plaza de la Luz: pollo asado, guisos de vitrina, pescado rebozado y platos de cuchara al mediodía. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={vitrina}
-				imageAlt="La vitrina de Asador Jope con bandejas de guisos, salchichas y pollo con champiñones"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>11:30–16:00</b> · mediodía' },
-					{ label: 'Cierra', html: '<b>Lunes y martes</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Cocina casera"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Asador Jope" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="La vitrina <br /><em>del mediodía.</em>"
-				paragraphs={[
-					'Asador Jope está en la plaza de la Luz, 8, en Carretera de Cádiz. Es una de esas casas de comidas de barrio que abren al mediodía, sirven rápido y se llenan de gente que quiere comer bien sin complicarse.',
-					'Google lo clasifica como restaurante especializado en pollo, y el asador es la razón de ser de la casa. A su lado, la vitrina va cambiando: pollo guisado con champiñones, carne en salsa, salchichas, migas con pimientos verdes, merluza con guisantes y bacalao rebozado.',
-					'Las fotos del local lo enseñan sin adornos: bandejas grandes de acero, cuchara de servir y platos de cuchara. La ensaladilla rusa, el arroz con surimi y huevo y la ensalada de tomate completan una barra en la que se come bien por poco dinero.',
-					'Abre de miércoles a domingo, de 11:30 a 16:00, y cierra lunes y martes. Tiene 4,8 sobre 5 con 217 reseñas; las tres opiniones publicadas dan cinco estrellas y repiten las mismas palabras: casero, rápido y económico.',
-				]}
-				note="La ficha de Google no publica descripción, carta, precios, web ni redes sociales. Los platos que se citan son los que aparecen en las fotografías del local y en las reseñas; esta página no inventa precios."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-					{ label: 'Llamar al asador', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Los platos que se ven en las fotografías del local, sin precios ni carta inventada: el menú cambia cada día."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La ficha de Google no incluye carta ni precios. Para saber qué hay hoy, cuánto cuesta el plato y si queda pollo, lo mejor es llamar al 951 15 50 25 antes de ir."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La barra <br /><em>y las bandejas.</em>"
-				description="Diez fotografías del perfil de Asador Jope: la vitrina con los guisos, la merluza con pimientos, el bacalao rebozado, las migas, el arroz y las ensaladas."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Casi <em>redondo.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							Las tres reseñas publicadas en la ficha dan cinco estrellas y coinciden en lo mismo:
-							comida casera, servicio rápido y precios bajos. La media es 4,8 porque hay 217
-							valoraciones: <a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>el resto se lee en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la plaza <br /><em>de la Luz.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de miércoles a domingo, de 11:30 a 16:00; lunes y martes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Asador Jope en la plaza de la Luz, 8, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Pl. de la Luz, 8 · Carretera de Cádiz"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Para mesa o encargos, llama al 951 15 50 25. Google marca acceso para sillas de ruedas y no publica asientos adaptados ni datos de aparcamiento."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

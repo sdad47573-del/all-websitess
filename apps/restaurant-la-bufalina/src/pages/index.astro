@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import terraza from '../assets/fotos/restaurant-la-bufalina-vertical-01.jpg';
@@ -24,7 +25,15 @@ import jamon from '../assets/fotos/restaurant-la-bufalina-vertical-08.jpg';
 import margherita from '../assets/fotos/restaurant-la-bufalina-vista-9-09.jpg';
 import terrazaCalle from '../assets/fotos/restaurant-la-bufalina-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurant la Bufalina, pizzería italiana en Passeig de Vara de Rey, 13 (Eivissa). Pizza al horno, ensaladas, bowls y piadinas, con terraza y servicio a domicilio. Tel. 971 30 28 94.';
@@ -179,6 +188,22 @@ const nav = [
 ];
 
 const title = 'La Bufalina · Pizzería italiana en Vara de Rey, Ibiza';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurant-la-bufalina-vertical-01.jpg": terraza,
+	"restaurant-la-bufalina-vertical-10.jpg": terrazaCalle,
+	"restaurant-la-bufalina-vertical-03.jpg": fachada,
+	"restaurant-la-bufalina-vertical-02.jpg": carta,
+	"restaurant-la-bufalina-vista-9-09.jpg": margherita,
+	"restaurant-la-bufalina-apaisada-04.jpg": burrata,
+	"restaurant-la-bufalina-vertical-06.jpg": burrataTabla,
+	"restaurant-la-bufalina-vista-7-07.jpg": prosciutto,
+	"restaurant-la-bufalina-vertical-08.jpg": jamon,
+	"restaurant-la-bufalina-apaisada-05.jpg": piadina,
+};
 ---
 
 <!doctype html>
@@ -236,81 +261,19 @@ const title = 'La Bufalina · Pizzería italiana en Vara de Rey, Ibiza';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Passeig de Vara de Rey, 13 · Eivissa"
-				title="Pizza italiana<br /><em>en Vara de Rey.</em>"
-				lede={`La Bufalina es una pizzería italiana en Passeig de Vara de Rey, 13, en el centro de Eivissa. Terraza con sombrillas y farolillos de bambú, pizzas al horno con burrata, prosciutto y rúcula, margherita clásica, ensaladas, bowls y piadinas. Google la presenta como «la mejor pizzería de Ibiza, ganadora del premio Eccellenze Italiane 2021-2022». Abre todos los días de 11:00 a 01:00 y sirve para llevar y a domicilio. Teléfono: ${BUSINESS.phoneDisplay}.`}
-				image={terraza}
-				imageAlt="Terraza de la Bufalina con sombrillas blancas, farolillos de bambú y sillas de mimbre en Passeig de Vara de Rey"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Cocina', html: 'Italiana · pizzería y fresh food' },
-					{ label: 'Horario', html: 'Todos los días · 11:00–01:00' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurant la Bufalina" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una pizzería<br /><em>de acera y mantel.</em>"
-				paragraphs={[
-					'La Bufalina está en Passeig de Vara de Rey, 13, en pleno centro de Eivissa, en una casa amarilla con balcones de forja. El rótulo de la fachada dice «La Bufalina · Pizza & Fresh Food», y la carta está expuesta en el escaparate y en el toldo verde de la terraza.',
-					'La descripción de su ficha de Google lo presenta así: «la mejor pizzería de Ibiza, ganadora del premio Eccellenze Italiane 2021-2022. Desde hace 10 años, excelente pizza, excelente servicio, excelente ambiente». Google la clasifica como restaurante, restaurante italiano, pizzería, restaurante mediterráneo, comida a domicilio y comida para llevar.',
-					'La terraza ocupa la acera bajo sombrillas blancas, con farolillos de bambú y sillas de mimbre. Dentro hay mesas altas y una vitrina con la carta. Abre todos los días de 11:00 a 01:00.',
-					'En las fotos del perfil aparecen la margherita con albahaca, las pizzas con burrata, prosciutto y rúcula, la pizza con prosciutto, tomate seco y albahaca, la de jamón, champiñones y alcachofas, una pizza en su caja de cartón y una piadina de fiambre y ensalada. La carta de la puerta anuncia las Maxi Ensaladas y las Maxi Bowls. Google le da 4,5 sobre 5 con 2.905 reseñas.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[0]}»`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Pedir: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pizza al horno<br /><em>y fresh food.</em>"
-				description="La ficha de Google no publica precios: esto es lo que aparece en las fotos del perfil, en la carta de la puerta y en la descripción del negocio."
-				cta={{ label: `Pedir: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Los precios están en la carta de la puerta y en la ficha de Google. Llama al 971 30 28 94 para pedir para llevar o a domicilio."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza,<br /><em>la masa y la burrata.</em>"
-				description="Estas fotografías proceden del perfil de Restaurant la Bufalina en Google Maps: la terraza de Vara de Rey, la fachada, la carta, la margherita, las pizzas con burrata y prosciutto, la pizza de jamón y alcachofas y la piadina."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Te esperamos<br /><em>en Vara de Rey.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: todos los días de 11:00 a 01:00, sin día de cierre. Para pedidos grandes conviene llamar con antelación."
-				mapTitle="Mapa de Restaurant la Bufalina en Passeig de Vara de Rey, Eivissa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Bufalina · Eivissa"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se llama al 971 30 28 94. Por teléfono también se encargan los pedidos para llevar y a domicilio. La ficha marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado, asientos adaptados y bucle magnético."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

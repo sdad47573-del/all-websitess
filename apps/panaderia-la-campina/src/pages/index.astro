@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import interior from '../assets/fotos/panaderia-la-campina-panoramica-05.jpg';
@@ -138,6 +139,17 @@ const galeria = [
 		alt: 'Barras y hogazas de pan blanco e integral en el expositor de la panadería',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-la-campina-panoramica-05.jpg": interior,
+	"panaderia-la-campina-apaisada-02.jpg": bolleria,
+	"panaderia-la-campina-apaisada-03.jpg": hojaldres,
+	"panaderia-la-campina-apaisada-08.jpg": tarta,
+	"panaderia-la-campina-apaisada-04.jpg": pan,
+};
 ---
 
 <!doctype html>
@@ -199,106 +211,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Centro · 14002 Córdoba"
-				title="Pan, bollería <br /><em>y pastelería del día.</em>"
-				lede={`La Campiña está en la Plaza del Realejo, en pleno Centro de Córdoba, con un mostrador de madera y vitrinas de pan, bollería y pasteles. Su ficha de Google lo resume así: «25 clases de pan, amplia oferta de bollería, pastelería y empanadas». Abre de lunes a viernes de 8:00 a 20:00, y el fin de semana de 8:00 a 16:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={interior}
-				imageAlt="Interior de la panadería con el mostrador de madera, las vitrinas de bollería y el expositor de pan"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,3</b> en Google · 136 reseñas' },
-					{ label: 'Horario', html: '<b>L–V</b> 8:00–20:00 · <b>SD</b> 8:00–16:00' },
-					{ label: 'Zona', html: '<b>Centro</b> · 14002' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · pastelería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La Campiña" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>del Centro.</em>"
-				paragraphs={[
-					'La Campiña está en la Plaza del Realejo, en el Centro de Córdoba (14002). La ficha de Google la clasifica como panadería y publica su teléfono.',
-					'Dentro, el local es tienda y obrador: paredes blancas, mostrador de madera y vitrinas con el pan, la bollería y los pasteles del día. En las fotos del perfil se ven barras y hogazas blancas e integrales, bandejas de napolitanas, donuts glaseados y de chocolate, y tartas cubiertas de chocolate.',
-					'La descripción de la propia ficha lo dice: «25 clases de pan, amplia oferta de bollería, pastelería y empanadas». Las reseñas añaden que también venden miel y aceite, y destacan el trato: «las empleadas son simpáticas, atentas y te aconsejan».',
-					'Abre de lunes a viernes de 8:00 a 20:00 y los sábados y domingos de 8:00 a 16:00. La ficha no publica web propia, redes, carta ni precios, así que aquí no encontrarás importes.',
-				]}
-				note="La ficha de Google publica la categoría, la dirección, el teléfono y una descripción del surtido, pero no carta, precios, métodos de pago ni reparto. Esta página solo recoge lo que dice la ficha, lo que muestran las fotos y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 957 57 66 65', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, vitrina <br />
-							<em>y despensa.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que dice la descripción de la ficha, lo que muestran las fotos del local y lo que cuentan las reseñas."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. El surtido cambia a lo largo del día: la panadería abre a las 8:00."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: la bandeja de bollería, los hojaldres, una tarta de chocolate y el expositor de pan."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Plaza <br /><em>del Realejo.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería La Campiña en la Plaza del Realejo, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Panadería La Campiña · Centro"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 957 57 66 65. No publica web propia ni redes. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el mostrador ni el aseo, así que esta página no lo afirma."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

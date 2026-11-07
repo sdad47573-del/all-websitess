@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import encargo from '../assets/fotos/artesano-cuadrada-01.jpg';
@@ -21,7 +22,15 @@ import postres from '../assets/fotos/artesano-cuadrada-07.jpg';
 import logo from '../assets/fotos/artesano-apaisada-06.jpg';
 import cartaCompleta from '../assets/fotos/artesano-vertical-03.jpg';
 
-import { BUSINESS, FAQ, HORARIO, HORARIO_AVISO, MAPS, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Artesano · Pollos asados y comida para llevar en Miguelturra';
 const description = BUSINESS.description;
@@ -210,6 +219,19 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"artesano-cuadrada-05.jpg": pollos,
+	"artesano-cuadrada-02.jpg": platos,
+	"artesano-cuadrada-04.jpg": delicias,
+	"artesano-cuadrada-07.jpg": postres,
+	"artesano-cuadrada-01.jpg": encargo,
+	"artesano-vertical-03.jpg": cartaCompleta,
+	"artesano-apaisada-06.jpg": logo,
+};
 ---
 
 <!doctype html>
@@ -267,111 +289,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city} · Ciudad Real`}
-				title="Pollos asados <br /><em>y comida para llevar.</em>"
-				lede="Artesano está en la calle Don José Mora, 7, en Miguelturra, y se presenta así en su ficha de Google: «Restaurante de comida para llevar», «Asador de pollos y comida para llevar». Abre de 12:00 a 15:30 con el martes cerrado, y los encargos se hacen en el 660 18 20 21. Tiene 4,9 sobre 5 con 28 reseñas."
-				image={pollos}
-				imageAlt="Cartel de azulejo de Artesano con los pollos asados: medio pollo, pollo entero, pollo con patatas y el combo familiar"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,9</b> en Google · 28 reseñas' },
-					{ label: 'Horario', html: '<b>12:00–15:30</b><br />Martes cerrado · solo mediodía' },
-					{ label: 'Pedidos', html: `<b>${BUSINESS.phone}</b> para llevar y por encargo` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Artesano" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El molino <br /><em>y el asador.</em>"
-				paragraphs={[
-					'El local está en la calle Don José Mora, 7, en Miguelturra, a un paso de Ciudad Real. La ficha de Google lo clasifica como restaurante de comida para llevar y como asador de pollos y comida para llevar, y el cartel del propio negocio lo deja claro: «Artesano. Pollos asados y comida para llevar», con un molino manchego y un pollo en su fuente.',
-					'La carta está pintada en azulejos azules y blancos, como las cocinas de siempre: pollos asados por medio o enteros, pollo con patatas, platos de cuchara como el magro con tomate o las albóndigas, fritos y empanadas, y postres caseros. El combo de pollo, patatas, pan y dos postres sale a 14,50 €.',
-					'Aquí no hay mesa: se pide en el mostrador o por teléfono y se recoge. El horario es de mediodía, de 12:00 a 15:30, y descansa el martes. Para días señalados, el cartel anuncia comida por encargo: paellas y fideuá, costillares, pierna, codillo, gachas, migas y tortilla de patatas entera.',
-					'Las 28 reseñas de la ficha le dan 4,9 sobre 5. Google destaca tres, todas de cinco estrellas: «Uno de los mejores sitios de comida casera para llevar que he probado», «volveremos a repetir» y un elogio concreto a la tarta de queso, «casera y bien cremosa».',
-				]}
-				note="La ficha de Google no publica carta completa ni web propia. Los platos y los precios de esta página son los de los carteles de azulejo del propio local que aparecen en su perfil de Google Maps: pueden cambiar, así que se confirman en el mostrador o en el 660 18 20 21."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo asado, <br /><em>cuchara y fritos.</em>"
-				description="La carta es la de los azulejos del local: pollos asados, platos de siempre, fritos y empanadas, postres caseros y lo que se encarga por adelantado."
-				cta={{ label: 'Ver la carta en Google Maps', href: MAPS.place }}
-				groups={carta}
-				note="Precios copiados de los carteles de azulejo del establecimiento que aparecen en su perfil de Google Maps. No hay carta con precios en la ficha. Los platos del día y la disponibilidad se confirman en el mostrador o en el 660 18 20 21."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
-					<div class="reviews-head">
-						<h2 id="resenas-title">Volver <br /><em>a repetir.</em></h2>
-						<p>
-							La ficha tiene 28 reseñas y una media de 4,9, una de las más altas del asador al que
-							pertenece. Estas son tres de las que Google destaca, con la puntuación de su autor.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							RESENAS.map((review) => (
-								<figure class="review-card">
-									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
-										{'★'.repeat(review.rating)}
-										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
-									</p>
-									<blockquote>{review.quote}</blockquote>
-									<figcaption>Reseña publicada en Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<p class="review-note">
-						Citas de las reseñas públicas del local, con la puntuación del autor. En la ficha de Google
-						están todas, incluidas las que puntúan por debajo.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La carta, <br /><em>en azulejo.</em>"
-				description="Los carteles del local, tal y como están colgados en el perfil de Google: los pollos asados, los platos principales, las delicias, los postres, la comida por encargo y la carta completa con el teléfono."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="A la hora <br /><em>del almuerzo.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Ciudad Real · España']}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Artesano en la calle Don José Mora, 7, Miguelturra"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Artesano"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Pedidos: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="Se pide en el mostrador o por teléfono y se recoge: es comida para llevar, no hay reserva de mesas. Para paellas, costillares, pierna o codillo conviene encargarlos con antelación en el 660 18 20 21. Esta página no tramita pedidos ni cobros."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
 		</main>
 
 		<LocalFooter

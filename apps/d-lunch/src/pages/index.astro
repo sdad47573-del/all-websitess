@@ -11,6 +11,7 @@ import {
 	LocalTopbar,
 	LocalVisit,
 	LocalFaq,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrina from '../assets/fotos/d-lunch-apaisada-04.jpg';
@@ -21,7 +22,14 @@ import equipo from '../assets/fotos/d-lunch-apaisada-05.jpg';
 import oferton from '../assets/fotos/d-lunch-vertical-06.jpg';
 import comidasCaseras from '../assets/fotos/d-lunch-vertical-07.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const title = "D'LUNCH · Pollo asado y comida casera en Málaga";
 const description = BUSINESS.description;
@@ -118,6 +126,19 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"d-lunch-apaisada-04.jpg": vitrina,
+	"d-lunch-vertical-01.jpg": carteles,
+	"d-lunch-vertical-07.jpg": comidasCaseras,
+	"d-lunch-apaisada-05.jpg": equipo,
+	"d-lunch-vertical-02.jpg": mostrador,
+	"d-lunch-vertical-03.jpg": estanteria,
+	"d-lunch-vertical-06.jpg": oferton,
+};
 ---
 
 <!doctype html>
@@ -175,84 +196,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
-				title="Pollo asado <br /><em>y comida de casa.</em>"
-				lede={`D'LUNCH es un asador de pollos con comida casera en la calle Eugenio Gross 16, en el Distrito Centro de Málaga. Pollo asado, raciones del día a 2,50 €, cuscús, tajine y croquetas. La ficha de Google le da 4,4 sobre 5 con 21 reseñas, aunque no publica horario: llama antes de ir.`}
-				image={vitrina}
-				imageAlt="Vitrina de D'LUNCH con recipientes de comida casera, postres y botellas de refrescos"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,4</b> en Google · 21 reseñas' },
-					{ label: 'Pollo asado', html: '<b>8,00 €</b><br />el miércoles, 5,90 €' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> encargos y horario` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de D'LUNCH" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pollo, cuscús <br /><em>y cuchara.</em>"
-				paragraphs={[
-					"D'LUNCH está en la calle Eugenio Gross 16, en el Distrito Centro de Málaga, con los carteles amarillos del asador de pollos en la puerta. Google lo clasifica como pollería y le da 4,4 sobre 5 con 21 reseñas.",
-					'La casa se presenta en sus carteles como «Asador de Pollos Rafa y Saida» y trabaja dos cocinas a la vez: el horno de pollos, con patatas y ensaladas, y el mostrador de comidas caseras que cambia cada día. La mano marroquí se nota en el tajine de pollo y en el cuscús que anuncian como «el mejor».',
-					'Las fotos del perfil enseñan la vitrina con las raciones del día, la estantería de aceitunas y pan, la nevera de refrescos y postres, y el interior amarillo con la taza de D’LUNCH en la pared. En los carteles está la carta: menús 1 y 2, medio pollo, patatas, ensaladas, croquetas, berenjenas rellenas, pisto con pollo, albóndigas o callos con garbanzos.',
-					'El local funciona sobre todo para llevar y para comer de forma sencilla. La ficha de Google no publica horario, así que esta web no lo inventa: el teléfono es la forma de confirmar cuándo está abierto y de encargar el pollo.',
-				]}
-				note="La información sale de la ficha pública de Google Maps, de las fotografías del perfil y de los carteles de la casa. No hay web oficial: los precios y la disponibilidad pueden cambiar, confírmalos en el local o por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo, menús <br /><em>y raciones.</em>"
-				description="La carta está copiada de los carteles amarillos del local: los pollos, los menús 1 y 2, las comidas caseras a 2,50 € y las ensaladas. Los precios son los de esos carteles y pueden haber cambiado."
-				cta={{ label: 'Ver los carteles en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note="Algunos precios de los carteles aparecen tapados o corregidos en las fotos, y el Menú 1 y el Menú 2 no muestran una cifra legible. Para una cuenta cerrada, llama al restaurante antes de encargar."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Seis fotos <br /><em>de la casa.</em>"
-				description="Las fotografías del perfil de D'LUNCH en Google Maps: los carteles con la carta, el mostrador, la vitrina, la cocina y el equipo del local."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a <br /><em>Eugenio Gross.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.neighbourhood} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Málaga, España',
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="La ficha de Google no publica horario de este local. Para no dar una hora falsa, la web no lo inventa: llama al teléfono y confirma antes de acercarte, sobre todo si vas a encargar pollo o cuscús."
-				mapTitle="Mapa de D'LUNCH en la calle Eugenio Gross 16, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="D'LUNCH · Málaga"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. La ficha no publica un sistema de reservas ni una web propia, así que el teléfono es el canal directo para encargar pollo, preguntar por el menú del día o confirmar el horario."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

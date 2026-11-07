@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mesa from '../assets/fotos/restaurante-asia-apaisada-03.jpg';
@@ -179,6 +180,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-asia-apaisada-03.jpg": mesa,
+	"restaurante-asia-apaisada-08.jpg": fachada,
+	"restaurante-asia-panoramica-07.jpg": comedor,
+	"restaurante-asia-panoramica-09.jpg": comedorAmplio,
+	"restaurante-asia-vertical-02.jpg": pato,
+	"restaurante-asia-vertical-06.jpg": fideos,
+	"restaurante-asia-vertical-10.jpg": fideosTernera,
+	"restaurante-asia-apaisada-04.jpg": carta,
+	"restaurante-asia-vertical-05.jpg": cartaEntrantes,
+};
 ---
 
 <!doctype html>
@@ -248,137 +264,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Pedro Martínez Artola, 12 · Errekalde (Bilbao)"
-				title="Cocina china, <br /><em>al centro de la mesa.</em>"
-				lede={`Restaurante Asia es el chino de la calle Pedro Martínez Artola, en Errekalde: arroces y tallarines al wok, pato laqueado, dim sum al vapor y marisco, en un comedor de mesas redondas para pedir varios platos y compartir. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de 12:00 a 16:00 y de 19:30 a 23:30, con el miércoles cerrado.`}
-				image={mesa}
-				imageAlt="Mesa de Restaurante Asia con dim sum, arroz frito con gambas, tallarines, costilla y pollo"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:00–16:00</b> · y 19:30–23:30' },
-					{ label: 'A domicilio', html: '<b>Gratis</b> · desde 12 €' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="A domicilio gratis"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Restaurante Asia" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Errekalde. <br /><em>Mesas redondas y wok.</em>"
-				paragraphs={[
-					'Restaurante Asia está en la calle Pedro Martínez Artola, 12, en el barrio bilbaíno de Errekalde. La ficha de Google sitúa el local en las coordenadas 43.2563478, -2.9356968. La fachada es de piedra clara, con el rótulo «品味亚洲 · RESTAURANTE ASIA» sobre la persiana metálica, y en el escaparate, la carta con las fotos de los platos y el teléfono.',
-					'Dentro hay una sala amplia con mesas redondas de mantel blanco y el disco giratorio en el centro, sillas negras de respaldo alto y suelo de madera. Al fondo, un mural de bambú con caracteres chinos y farolillos, y una pared de ladrillo visto con fotos enmarcadas. Es un comedor pensado para grupos, no para comer de paso.',
-					'La ficha lo clasifica como restaurante chino, y la carta que el propio local tiene fotografiada en su perfil se presenta como «la comida china más auténtica». En esa carta hay arroces y pastas, carnes, marisco, entrantes y postres, y en las fotos del perfil se ven el pato laqueado con su salsa, dim sum al vapor, cha siu bao, arroz frito con gambas y tallarines con ternera.',
-					`Las reseñas que se ven en Google hablan de los platos de siempre: «arroz frito, costilla, tofu y fideos eran deliciosos». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}; la carta añade el ${BUSINESS.phoneCard} y el Bizum como forma de pago.`,
-				]}
-				note="La ficha no publica carta ni precios. Lo que aparece en esta página es lo que dice la ficha, lo que se lee en la carta fotografiada en el perfil y lo que se reconoce en las fotos; el precio de cada plato se confirma al llamar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> En la mesa</p>
-					<h2 id="highlights-title">Wok, vapor <br /><em>y mesa grande.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo que sale <br /><em>del wok.</em>"
-				description="La ficha no publica precios, así que esta lista reúne los platos que aparecen en la carta impresa del perfil y los que se reconocen en las fotos de Google. Para el precio del día y el menú, hay que llamar."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`El reparto a domicilio es gratuito con un pedido mínimo de 12 €, según la carta del local. Los pedidos se hacen por teléfono, en el ${BUSINESS.phone} o en el ${BUSINESS.phoneCard} (Bizum). Los platos van al centro, así que conviene pedir varios para compartir.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La mesa, el comedor <br /><em>y la carta.</em>"
-				description="Nueve fotografías del perfil de Restaurante Asia: la mesa con dim sum y arroz frito, la fachada con el rótulo en chino, el comedor de mesas redondas y mural de bambú, el pato laqueado, los fideos de arroz con ternera y dos páginas de la carta impresa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,4 sobre 5, <em>con 236 reseñas.</em></h2>
-						<p>
-							Google publica una media de 4,4 con 236 opiniones (noviembre de 2026). Entre las
-							reseñas que se ven en la ficha, las hay que elogian el arroz frito, la costilla, el
-							tofu y los fideos, y la variedad de la carta.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,4</strong>
-						<span>★★★★☆</span>
-						<small>236 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Bilbao, <br /><em>Errekalde.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Bizkaia)`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 12:00 a 16:00 y de 19:30 a 23:30, de domingo a sábado, con el miércoles cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Restaurante Asia en la calle Pedro Martínez Artola, Bilbao"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Pedro Martínez Artola, 12 · Bilbao"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Las mesas y los pedidos se piden por teléfono, en el ${BUSINESS.phone} o en el ${BUSINESS.phoneCard} (Bizum): el restaurante no tiene web propia ni pedidos online. La ficha marca acceso para sillas de ruedas y asientos adaptados. El reparto a domicilio es gratis con un pedido mínimo de 12 €.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

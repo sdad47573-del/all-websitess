@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/ofogon-galego-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import tartaChocolate from '../assets/fotos/ofogon-galego-vista-8-08.jpg';
 import paella from '../assets/fotos/ofogon-galego-vista-9-09.jpg';
 import vitrina from '../assets/fotos/ofogon-galego-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Ofogón Galego · Comida gallega casera para llevar en Leganés';
 const description = BUSINESS.description;
@@ -164,6 +172,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"ofogon-galego-apaisada-01.jpg": fachada,
+	"ofogon-galego-vista-5-05.jpg": empanada,
+	"ofogon-galego-vista-9-09.jpg": paella,
+	"ofogon-galego-vista-3-03.jpg": tortilla,
+	"ofogon-galego-apaisada-10.jpg": vitrina,
+	"ofogon-galego-vista-6-06.jpg": empanadillas,
+	"ofogon-galego-apaisada-04.jpg": tartaQueso,
+	"ofogon-galego-vertical-02.jpg": empanadaPulpo,
+	"ofogon-galego-vista-8-08.jpg": tartaChocolate,
+	"ofogon-galego-apaisada-07.jpg": tartaQuesoHorno,
+};
 ---
 
 <!doctype html>
@@ -234,103 +258,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
-				title="Comida gallega <br /><em>de fogón y de casa.</em>"
-				lede={`Ofogón Galego es una casa de comida gallega para llevar en la calle Anita Martínez, 12, en Solagua (Leganés). Empanada artesana, tortilla de patata, croquetas caseras, pollo asado al pimentón y paellas y arroces por encargo. Abre de miércoles a domingo, de 11:30 a 16:00. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={fachada}
-				imageAlt="La fachada de Ofogón Galego en la calle Anita Martínez, con el toldo de 100% natural y los carteles de paellas y pollos asados"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> en Google · 83 reseñas' },
-					{ label: 'Horario', html: '<b>11:30–16:00</b><br />Miércoles a domingo · lunes y martes cerrado' },
-					{ label: 'Servicio', html: '<b>Para llevar</b><br />Encargos por teléfono' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Empanada y paella por encargo"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que se puede pedir en Ofogón Galego" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El sabor <br /><em>del fogón gallego.</em>"
-				paragraphs={[
-					'Ofogón Galego está en la calle Anita Martínez, 12, en el barrio de Solagua de Leganés. La fachada lo anuncia sin rodeos: «O Fogón Galego» en el toldo, «100% natural» y dos carteles, uno de paellas y arroces y otro de comida para llevar y pollos asados.',
-					'La cocina trabaja la receta gallega de siempre: empanada con la masa trenzada a mano, tortilla de patata jugosa, croquetas caseras de jamón, morcilla, pollo o variadas, callos con garbanzos, oreja en salsa, pimientos y patatas cortadas y fritas en el momento. El pollo se asa en horno de piedra con salsa de pimentón.',
-					'En la vitrina se ven las bandejas del día —pisto, pasta, bacalao con tomate— y en el cartel de la fachada están las paellas y los arroces: de verduras, mixta, de marisco, arroz a banda, arroz negro, caldoso de pollo y con bogavante. Se preparan por encargo.',
-					'Abre de miércoles a domingo de 11:30 a 16:00 y cierra lunes y martes. El teléfono de la ficha es el 652 83 81 43, el canal para encargar empanada, paella o comida para llevar. Google le da 4,7 sobre 5 con 83 reseñas.',
-				]}
-				note="La información sale de la ficha pública de Google Maps y del menú que el local publica en Uber Eats. No hay web propia en la ficha. Los precios y el horario pueden cambiar: confírmalos por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Empanada, guisos <br /><em>y arroces.</em>"
-				description="La carta que el local publica en Uber Eats, más los arroces y las empanadas del cartel de la fachada. En el local los precios pueden variar."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				groups={MENU}
-				note="Precios del menú publicado en Uber Eats y del cartel de la fachada. La empanada y las paellas se preparan por encargo y la cocina trabaja fresco cada día; confirma tamaño, precio y disponibilidad en el 652 83 81 43."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, la vitrina <br /><em>y el horno.</em>"
-				description="Nueve fotografías del perfil de Ofogón Galego en Google Maps: la empanada trenzada, la paella con bogavante, la tortilla, la vitrina del día y los postres caseros."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<section class="reviews-band section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div>
-						<p class="reviews-kicker">La ficha de Google</p>
-						<h2 id="reviews-title">4,7 sobre 5 <br /><em>en Google.</em></h2>
-						<p class="reviews-rating">
-							<strong>4,7</strong>
-							<span>★★★★★<br />83 reseñas en Google</span>
-						</p>
-						<p class="reviews-note">
-							Las reseñas de la ficha hablan de la tortilla de patata, del pollo asado con
-							salsa de pimentón, de las croquetas caseras y del trato del local. Puedes
-							leerlas todas en Google Maps.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Solagua, <br /><em>calle Anita Martínez.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: de miércoles a domingo, de 11:30 a 16:00, con lunes y martes cerrados. En festivos puede cambiar."
-				mapTitle="Mapa de Ofogón Galego en la calle Anita Martínez, 12, Leganés"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. Anita Martínez, 12"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Carta en Uber Eats', href: MAPS.delivery, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos online en esta página. El teléfono y la ficha de Google son los canales que constan; el reparto lo gestiona Uber Eats. La ficha no detalla condiciones de accesibilidad, así que conviene preguntar por teléfono si las necesitas."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
 		</main>
 
 		<LocalFooter

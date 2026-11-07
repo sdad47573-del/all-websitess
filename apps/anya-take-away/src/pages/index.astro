@@ -9,6 +9,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import portada from '../assets/fotos/anya-take-away-portada.jpg';
@@ -101,6 +102,13 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"anya-take-away-portada.jpg": portada,
+};
 ---
 
 <!doctype html>
@@ -170,110 +178,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Andorra la Vella · AD500"
-				title="Comida para llevar <br /><em>y a domicilio.</em>"
-				lede={`Anya Take Away es un negocio de comida a domicilio y restaurante familiar en Andorra la Vella. Funciona por teléfono —no hay web propia ni pedidos online—, abre de 8:00 a 22:00 de lunes a sábado y cierra a media tarde el martes y el domingo. Google le da ${RATING.label} sobre 5, aunque con solo ${RATING.count} reseñas.`}
-				image={portada}
-				imageAlt="Tarjeta de Anya Take Away con el teléfono y el dibujo de una bolsa de comida para llevar"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha en Google Maps', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>8:00–22:00</b> · de lunes a sábado' },
-					{ label: 'Servicio', html: '<b>A domicilio</b> · y para llevar' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Portada gráfica de esta web: la ficha de Google no tiene fotos"
-				galleryLinkLabel="Ver la ficha en Google Maps"
-				tag="Take away"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Anya Take Away" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Andorra la Vella, <br /><em>puerta a puerta.</em>"
-				paragraphs={[
-					'Anya Take Away es un negocio de comida para llevar y a domicilio de Andorra la Vella. La ficha de Google lo sitúa en las coordenadas 42.506709, 1.5187141, Plus Code GG49+MF, y publica el teléfono +376 666 669 como única vía de contacto.',
-					'La ficha no publica la calle: el campo de dirección solo trae «Ad500», que es el código postal. Tampoco tiene fotos en el perfil ni carta ni precios. Por eso esta web no enseña una galería de platos ni una carta inventada: lo que hay es lo que dice la ficha, y el resto se pregunta por teléfono.',
-					'Google lo clasifica con dos categorías: «Comida a domicilio» y «Restaurante familiar». La primera explica el negocio —se pide y se lleva a casa— y la segunda el tipo de cocina: comida de casa, para todos los días, no de carta larga.',
-					`El horario es amplio: de 8:00 a 22:00 de lunes a sábado, con el martes cerrando a las 15:00, y el domingo de 9:00 a 15:00. La valoración es de ${RATING.label} sobre 5, pero con solo ${RATING.count} reseñas: es una ficha nueva y no permite hablar de una media consolidada.`,
-				]}
-				note="Google no publica la dirección exacta de este negocio. Para una ubicación fiable, usa el mapa de esta página o llama al +376 666 669 antes de ir."
-				links={[
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> El servicio</p>
-					<h2 id="highlights-title">Se pide, se recoge <br /><em>o se reparte.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,9 sobre 5, <em>con solo 7 reseñas.</em></h2>
-						<p>
-							Siete opiniones son demasiado pocas para sacar conclusiones, y preferimos decirlo
-							antes que lucir un 4,9 que todavía no significa gran cosa. Lo que sí está claro es el
-							horario y el tipo de servicio: comida a domicilio y para llevar.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,9</strong>
-						<span>★★★★★</span>
-						<small>7 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow="Andorra la Vella · AD500"
-				title="Sin calle publicada, <br /><em>con mapa.</em>"
-				addressLines={[
-					'Andorra la Vella (la ficha no publica la calle)',
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Principado de Andorra',
-				]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 8:00 a 22:00 de lunes a sábado (el martes hasta las 15:00) y el domingo de 9:00 a 15:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Anya Take Away en Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Andorra la Vella · Plus Code GG49+MF"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Los pedidos se hacen por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni pedidos online. Conviene preguntar en la misma llamada por la zona de reparto, el importe mínimo y la dirección exacta de recogida.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrina from '../assets/fotos/el-horno-de-paco-vista-1-01.jpg';
@@ -123,6 +124,15 @@ const galeria = [
 		alt: 'Tartas y pasteles en el mostrador, con una tarta decorada con frambuesa y arándano',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-horno-de-paco-vista-1-01.jpg": vitrina,
+	"el-horno-de-paco-cuadrada-02.jpg": brownie,
+	"el-horno-de-paco-vertical-03.jpg": tartas,
+};
 ---
 
 <!doctype html>
@@ -185,141 +195,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Sta. Marta, 7 · Carretera de Cádiz"
-				title="Pan artesanal, <br /><em>tartas de queso.</em>"
-				lede={`El Horno de Paco está en la calle Santa Marta, 7, en la zona de Carretera de Cádiz. La ficha de Google lo clasifica como panadería, pastelería y tienda de tartas. En el mostrador hay tartas de queso enteras y porciones, mini tartas individuales, tartas decoradas y brownies de chocolate con pistacho. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={vitrina}
-				imageAlt="Mostrador de cristal con una tarta entera, porciones de tarta de queso y mini tartas en papel"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>5,0</b> en Google · 857 reseñas' },
-					{ label: 'Horario', html: '<b>L–S 8:00–14:30</b> · domingo cerrado' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Tartas · pan · pastelería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en la pastelería" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un horno <br /><em>de barrio.</em>"
-				paragraphs={[
-					'El Horno de Paco – Panadería y Pastelería Artesanal está en la calle Santa Marta, 7, en la zona de Carretera de Cádiz. La ficha de Google lo clasifica a la vez como panadería, pastelería y tienda de tartas, y el propio nombre de la casa insiste en lo artesanal.',
-					'En las fotos del perfil se ve el mostrador de cristal: una tarta entera en su bandeja, porciones de tarta de queso en platos de aluminio, mini tartas individuales en su papel y tartas decoradas con frambuesa y arándano. También hay una plancha de brownie de chocolate con pistachos y chocolate fundido por encima.',
-					'La ficha le da 5 sobre 5 con 857 reseñas. Una de ellas resume la experiencia: «Me encanta la amabilidad de los trabajadores. Pan y tartas de queso muy buenas».',
-					'Abre de lunes a sábado de 8:00 a 14:30 y cierra el domingo. La ficha no publica carta, precios ni página web, así que aquí no encontrarás importes ni un menú inventado: para saber qué hay cada día o reservar una tarta, llama al 607 82 42 51.',
-				]}
-				note={`«${REVIEW_QUOTE}» — reseña publicada en Google Maps.`}
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Horno, vitrina <br />
-							<em>y tartas.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que indica la ficha de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día. Para saber qué hay o encargar una tarta, llama al 607 82 42 51."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La vitrina, <br /><em>de cerca.</em>"
-				description="Las tres fotos de la ficha de Google Maps: el mostrador de tartas, el brownie de chocolate y pistacho y las tartas decoradas."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div class="reviews-head">
-						<div>
-							<p class="eyebrow">
-								<span aria-hidden="true"></span> Lo que dicen
-							</p>
-							<h2 id="reviews-title">
-								Una reseña <br />
-								<em>de la ficha.</em>
-							</h2>
-						</div>
-						<p>
-							5 sobre 5 con 857 reseñas en Google. Esta destaca el trato del equipo y las tartas de
-							queso.
-						</p>
-					</div>
-					<div class="review-grid">
-						<figure class="review-card">
-							<blockquote>«{REVIEW_QUOTE}»</blockquote>
-							<figcaption>Reseña de Google Maps</figcaption>
-						</figure>
-					</div>
-					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 857 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Santa Marta, <br /><em>número 7.</em>"
-				addressLines={[
-					BUSINESS.street,
-					BUSINESS.district,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de El Horno de Paco en la calle Santa Marta, 7, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Horno de Paco · Carretera de Cádiz"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha indica que el local tiene acceso para sillas de ruedas. No publica información sobre el mostrador, el aseo o el aparcamiento. El contacto es en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

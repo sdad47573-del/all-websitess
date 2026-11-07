@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import kiosco from '../assets/fotos/frankfurt-pedralbes-apaisada-06.jpg';
@@ -23,7 +24,16 @@ import barra from '../assets/fotos/frankfurt-pedralbes-vertical-08.jpg';
 import coche from '../assets/fotos/frankfurt-pedralbes-vertical-10.jpg';
 import fachada from '../assets/fotos/frankfurt-pedralbes-vista-1-01.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	MENU_NOTE,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Frankfurt Pedralbes · Frankfurts y comida rápida en Andorra la Vella';
 const description = BUSINESS.description;
@@ -162,6 +172,21 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"frankfurt-pedralbes-apaisada-06.jpg": kiosco,
+	"frankfurt-pedralbes-vista-1-01.jpg": fachada,
+	"frankfurt-pedralbes-apaisada-02.jpg": frankfurt,
+	"frankfurt-pedralbes-vertical-04.jpg": franks,
+	"frankfurt-pedralbes-vertical-03.jpg": patatas,
+	"frankfurt-pedralbes-vertical-07.jpg": cerveza,
+	"frankfurt-pedralbes-vertical-08.jpg": barra,
+	"frankfurt-pedralbes-vertical-10.jpg": coche,
+	"frankfurt-pedralbes-apaisada-05.jpg": plazaNoche,
+};
 ---
 
 <!doctype html>
@@ -219,81 +244,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="Frankfurts <br /><em>de barrio.</em>"
-				lede={`Frankfurt Pedralbes es el bar de comida rápida de la calle de la Borda, 5, en el centro de Andorra la Vella: frankfurts en pan de barra, patatas con carne y cheddar y una terraza con un Seat 600 amarillo en el tejado. Abre de martes a domingo desde las 12:00 y cierra los lunes. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={kiosco}
-				imageAlt="Kiosco amarillo de Frankfurt Pedralbes con el Seat 600 pintado en la cubierta y la terraza acristalada"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:00–23:00</b><br />Martes a domingo' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b><br />Consultas y grupos` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Low cost"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Frankfurt Pedralbes" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Amarillo por fuera, <br /><em>brasa por dentro.</em>"
-				paragraphs={[
-					'Frankfurt Pedralbes está en la calle de la Borda, 5, en Andorra la Vella. Se encuentra sin buscar: la fachada es amarilla de arriba abajo, con el nombre en letra gótica y dos leones flanqueando el escudo de la casa.',
-					'Delante hay una terraza de madera y cristal, con toldo amarillo y mesas altas dentro y fuera. En la cubierta, mirando a la calle, hay un Seat 600 amarillo pintado con el nombre Pedralbes Frankfurt y el león de la marca. Es la foto que más se repite en el perfil de Google.',
-					'Dentro el local es un bar de toda la vida: barra larga de madera, taburetes, copas colgadas, lámparas industriales y una cafetera al fondo. La ficha lo clasifica como bar y restaurante de comida rápida.',
-					`La propia ficha se presenta en el nombre como «rollo low cost está genial». Abre de martes a domingo: de 12:00 a 23:00 de martes a jueves y el domingo, y hasta las 23:30 los viernes y sábados. Los lunes cierra. La nota media es de ${RATING.label} sobre 5 con ${RATING.count} reseñas.`,
-				]}
-				note="La información sale de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento. La carta y los precios no están publicados: confírmalos en el local o por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="Qué se pide"
-				title="Frankfurt, patatas <br /><em>y cerveza.</em>"
-				description="La ficha no publica la carta, así que aquí solo aparecen los productos que se ven en las fotos del perfil: frankfurts en pan de barra, patatas con carne y cheddar, batatas y cerveza Borís."
-				cta={{ label: 'Consultar por teléfono', href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={MENU_NOTE}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Ocho fotos <br /><em>del local.</em>"
-				description="La fachada amarilla, el frankfurt con queso y bacon, la ración de batatas, las patatas con cheddar, la cerveza Borís, la barra y el Seat 600 de la terraza."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la <br /><em>calle de la Borda.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: lunes cerrado; de martes a jueves y el domingo, de 12:00 a 23:00; viernes y sábados, de 12:00 a 23:30. En festivos puede cambiar."
-				mapTitle="Mapa de Frankfurt Pedralbes en la calle de la Borda 5, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Frankfurt Pedralbes"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. Se atiende en barra y terraza; para grupos o consultas, el teléfono publicado es el +376 862 666."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

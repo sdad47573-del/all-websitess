@@ -11,13 +11,22 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import pizarra from '../assets/fotos/don-pollo-vertical-01.jpg';
 import carteles from '../assets/fotos/don-pollo-vertical-03.jpg';
 import carta from '../assets/fotos/don-pollo-apaisada-02.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Don Pollo · Pollo, pizzas y kebab en Sevilla';
 const description = BUSINESS.description;
@@ -105,6 +114,15 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"don-pollo-vertical-01.jpg": pizarra,
+	"don-pollo-vertical-03.jpg": carteles,
+	"don-pollo-apaisada-02.jpg": carta,
+};
 ---
 
 <!doctype html>
@@ -162,111 +180,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Pollo, pizzas <br /><em>y kebab.</em>"
-				lede="Don Pollo abre solo de noche en la calle Sirena Varada, en el 41013 de Sevilla: de 21:00 a 2:00, de lunes a sábado. La pizarra del local, fotografiada en su ficha de Google, anuncia pizzas de un solo tamaño a 5 €, kebab con patatas y bebida, hamburguesas, bocatas y papas asadas. Los pedidos a domicilio llevan 1,50 € de recargo y 10 € de mínimo."
-				image={pizarra}
-				imageAlt="Interior de Don Pollo con la pizarra verde de la carta sobre la pared morada y las mesas de metal"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,3</b> en Google · 51 reseñas' },
-					{ label: 'Horario', html: '<b>21:00–2:00</b><br />Lunes a sábado · domingo cerrado' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> pedidos y consultas` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Don Pollo" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pollo y pizza <br /><em>hasta las dos.</em>"
-				paragraphs={[
-					'Don Pollo es un local de barrio de la calle Sirena Varada, en el 41013 de Sevilla. Google lo clasifica como restaurante especializado en pollo y la propia pizarra del local se presenta como «Don Pollo · Cerillo», con la carta escrita en verde sobre la pared morada y los carteles de precios alrededor.',
-					'El horario es de noche: abre a las 21:00 y sirve hasta las 2:00, de lunes a sábado. El domingo figura cerrado, así que no hay servicio de mediodía ni de mañana.',
-					'La carta se organiza en pizzas de un solo tamaño, kebab con patatas y bebida, hamburguesas y bocatas, revueltos, tortillas, paninis y papas asadas con cuatro combinaciones. Los carteles que cuelgan de la pared repiten algunos de esos precios, y el más llamativo es la pizza a 5 €.',
-					'La pizarra también resuelve la duda del reparto: «Pedidos a domicilio incremento 1,50 €» y «Pedidos mínimo 10 €». Para encargar hay un teléfono publicado en la ficha, el 955 09 52 78.',
-				]}
-				note="Los precios de esta página están transcritos de la pizarra que aparece en las fotos del perfil de Google. Son los del cartel y pueden cambiar: confírmalos por teléfono antes de pedir."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="La pizarra <br /><em>del local.</em>"
-				description="Pizzas, kebab, hamburguesas, bocatas, revueltos y papas asadas, tal como están escritos en la pizarra del local y en los carteles de la pared."
-				cta={{ label: 'Ver la carta en las fotos de Google', href: MAPS.place }}
-				groups={MENU}
-				note="Precios transcritos de la pizarra del local, que aparece en las fotos de su perfil de Google. Los pedidos a domicilio llevan un incremento de 1,50 € y el mínimo es de 10 €. El kebab se anuncia con patatas y bebida y cuesta 4,50 € en todas sus variedades, según la pizarra. Confirma precios y disponibilidad al llamar."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
-					<div class="reviews-head">
-						<h2 id="resenas-title">Lo que dicen <br /><em>los vecinos.</em></h2>
-						<p>
-							Cuatro coma tres sobre cinco con 51 reseñas. Estas son las tres que Google destaca en
-							la ficha del local, con la puntuación que les dio su autor.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
-										{'★'.repeat(review.rating)}
-										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
-									</p>
-									<blockquote>{review.quote}</blockquote>
-									<figcaption>Reseña publicada en Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<p class="review-note">
-						Citas de las reseñas públicas del local, con la puntuación del autor y la puntuación del
-						texto normalizada. Puedes leerlas todas en la ficha de Google.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Tres fotos <br /><em>del local.</em>"
-				description="El perfil de Don Pollo tiene tres fotos: la pizarra verde con la carta, los carteles de precios de la pared morada y una vista de las mesas."
-				images={galeria}
-				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a la <br /><em>Sirena Varada.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: solo noche, de 21:00 a 2:00, de lunes a sábado. El domingo figura cerrado. En festivos puede cambiar; llama antes si vas en día señalado."
-				mapTitle="Mapa de Don Pollo en la calle Sirena Varada, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Don Pollo"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="Los pedidos a domicilio se hacen por teléfono: la pizarra del local marca 1,50 € de incremento y 10 € de pedido mínimo. Esta página no tramita encargos ni reservas."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

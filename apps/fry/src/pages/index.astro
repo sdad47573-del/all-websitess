@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import bandeja from '../assets/fotos/fry-apaisada-01.jpg';
@@ -24,7 +25,17 @@ import burgerMano from '../assets/fotos/fry-vertical-08.jpg';
 import burgerPapel from '../assets/fotos/fry-vertical-09.jpg';
 import cono from '../assets/fotos/fry-vertical-10.jpg';
 
-import { ALERGENOS, BUSINESS, FAQ, HOURS, MAPS, MENU, RESENAS, SERVICIOS, SOCIALS } from '../data/site';
+import {
+	ALERGENOS,
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	RESENAS,
+	SERVICIOS,
+	SOCIALS,
+} from '../data/site';
 
 const title = 'FRY. · Pollo frito picante a domicilio en Madrid';
 const description = BUSINESS.description;
@@ -170,6 +181,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"fry-apaisada-01.jpg": bandeja,
+	"fry-panoramica-06.jpg": logo,
+	"fry-vertical-02.jpg": cartelArte,
+	"fry-vertical-05.jpg": pedido,
+	"fry-vertical-10.jpg": cono,
+	"fry-vertical-03.jpg": mesas,
+	"fry-vertical-04.jpg": bandejas,
+	"fry-vertical-08.jpg": burgerMano,
+	"fry-vertical-09.jpg": burgerPapel,
+	"fry-vertical-07.jpg": cartaPoster,
+};
 ---
 
 <!doctype html>
@@ -240,149 +267,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
-				title="Pollo frito <br /><em>sin filtros.</em>"
-				lede={`FRY. es pollo frito picante con doble rebozado, hamburguesas de pollo entero, tiras, FRY BITES y salsas caseras. Solo reparto a domicilio en Madrid: envío en Villaverde por 2 € y fuera de zona se consulta. Abre todos los días de 19:30 a 23:30 y Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={bandeja}
-				imageAlt="Bandeja de pollo frito picante de FRY. con un cono de patatas, salsa y una hamburguesa de pollo"
-				primaryCta={{ label: 'Pedir por WhatsApp', href: SOCIALS.whatsapp }}
-				secondaryCta={{ label: 'Ver la carta', href: '#carta' }}
-				facts={[
-					{ label: 'Nota', html: '<b>5,0</b> en Google · 24 reseñas' },
-					{ label: 'Horario', html: '<b>19:30–23:30</b><br />Todos los días' },
-					{ label: 'Reparto', html: '<b>Villaverde 2 €</b><br />Fuera de zona, consultar' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Solo delivery"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que se puede pedir en FRY." items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pollo frito <br /><em>de verdad.</em>"
-				paragraphs={[
-					'FRY. es un negocio de reparto de pollo frito en Villaverde. La ficha lo clasifica como «comida a domicilio» y su web lo deja claro desde la portada: solo pedidos a domicilio, sin servicio de sala. La dirección que publica Google es A-42, 28021.',
-					'El pollo es pechuga entera marinada en buttermilk y doble rebozado picante. Se vende por raciones de dos piezas, en tiras grandes, en FRY BITES de 10, 20 o 30 bocaditos y en hamburguesa con 150 g de pollo rebozado entero, queso, pepinillos y pan brioche.',
-					'Acompaña con patatas fritas de tres tamaños, patatas especiales con sazón cajún y Ranch, alitas BBQ y una línea de salsas propias: la Salsa FRY. con paprika y miel, el Ranch FRY con yogur y cilantro, y miel. Bourbon, Sweet Chilli y Habanero Mango están por llegar.',
-					'El reparto cuesta 2 € en Villaverde y fuera de zona hay que consultarlo. Abre todos los días de 19:30 a 23:30 y la valoración de Google es de 5,0 sobre 5 con 24 reseñas. Los pedidos se hacen por WhatsApp, teléfono o en la web oficial.',
-				]}
-				note={ALERGENOS}
-				links={[
-					{ label: 'Web oficial de FRY.', href: MAPS.website, external: true },
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo, patatas <br /><em>y salsas.</em>"
-				description="La carta que el local publica en su web, con el cartel de precios del perfil de Google. Todo se fríe al momento y se manda a domicilio."
-				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				groups={MENU}
-				note={`Precios de la carta publicada en la web oficial y del cartel de la carta de Google Maps. Pueden cambiar. ${ALERGENOS}`}
-			/>
-
-			<section class="reparto section-pad" id="reparto" aria-labelledby="reparto-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reparto</p>
-					<h2 id="reparto-title">Solo a domicilio, <br /><em>de noche.</em></h2>
-					<ul class="reparto-grid">
-						<li>
-							<h3>Villaverde</h3>
-							<p>Envío en zona por <strong>2 €</strong>. Se pide por WhatsApp, teléfono o en la web del local.</p>
-						</li>
-						<li>
-							<h3>Fuera de zona</h3>
-							<p>Se consulta con el local según la dirección. El reparto no cubre toda la ciudad por defecto.</p>
-						</li>
-						<li>
-							<h3>Horario</h3>
-							<p>Todos los días de <strong>19:30 a 23:30</strong>. En festivos puede cambiar.</p>
-						</li>
-					</ul>
-					<div class="reparto-actions">
-						<a class="button button-primary" href={SOCIALS.whatsapp}>Pedir por WhatsApp</a>
-						<a class="button button-ghost" href={`tel:${BUSINESS.phoneHref}`}>Llamar · {BUSINESS.phone}</a>
-						<a class="button button-ghost" href={SOCIALS.tiktok} target="_blank" rel="noreferrer">
-							TikTok <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<p class="reparto-note">
-						FRY. no publica servicio de mesa ni recogida en local: la ficha lo clasifica como
-						comida a domicilio y su web lo anuncia como «solo pedidos a domicilio».
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El pollo, las cajas <br /><em>y el cartel.</em>"
-				description="Nueve fotografías del perfil de FRY. en Google Maps: el logotipo, el cartel de la marca, el pedido completo, las hamburguesas, las bandejas de pollo y patatas y la carta con los precios."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<div>
-						<p class="reviews-kicker">La ficha de Google</p>
-						<h2 id="resenas-title">5,0 sobre 5 <br /><em>en Google.</em></h2>
-						<p class="reviews-rating">
-							<strong>5,0</strong>
-							<span>★★★★★<br />24 reseñas en Google</span>
-						</p>
-						<p class="reviews-note">
-							Las 24 reseñas de la ficha puntúan con cinco estrellas. Aquí se reproduce una
-							tal como está publicada.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<ul class="reviews-list">
-						{
-							RESENAS.map((resena) => (
-								<li class="review-card">
-									<p>«{resena.texto}»</p>
-									<footer>
-										<span class="stars" aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-										</span>
-										<span>Reseña publicada en Google</span>
-									</footer>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="A-42, <br /><em>Villaverde.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: todos los días de 19:30 a 23:30. En festivos puede cambiar."
-				mapTitle="Mapa de FRY. en la A-42, Villaverde, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="A-42, 28021"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Web oficial', href: MAPS.website, external: true },
-				]}
-				contactLink={{ label: `Pedir al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="FRY. funciona solo con pedidos a domicilio: no publica mesa ni recogida en local. El pedido se hace por WhatsApp, teléfono o la web oficial. La ficha no detalla condiciones de accesibilidad del local."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

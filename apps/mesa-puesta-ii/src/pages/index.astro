@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/mesa-puesta-ii-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import bacalao from '../assets/fotos/mesa-puesta-ii-apaisada-08.jpg';
 import paella from '../assets/fotos/mesa-puesta-ii-vertical-09.jpg';
 import canelones from '../assets/fotos/mesa-puesta-ii-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Mesa Puesta II · Pollo asado y comida para llevar en Las Tablas, Madrid';
 const description = BUSINESS.description;
@@ -165,6 +173,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"mesa-puesta-ii-apaisada-01.jpg": fachada,
+	"mesa-puesta-ii-apaisada-04.jpg": pollo,
+	"mesa-puesta-ii-vertical-09.jpg": paella,
+	"mesa-puesta-ii-apaisada-05.jpg": ensaladilla,
+	"mesa-puesta-ii-apaisada-06.jpg": ternera,
+	"mesa-puesta-ii-apaisada-07.jpg": costillas,
+	"mesa-puesta-ii-apaisada-08.jpg": bacalao,
+	"mesa-puesta-ii-apaisada-10.jpg": canelones,
+	"mesa-puesta-ii-apaisada-02.jpg": fachadaLado,
+	"mesa-puesta-ii-apaisada-03.jpg": fachadaAcera,
+};
 ---
 
 <!doctype html>
@@ -235,102 +259,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}, ${BUSINESS.city}`}
-				title="Pollo asado <br /><em>y mesa puesta.</em>"
-				lede={`Mesa Puesta II es un asador de pollos y casa de comidas para llevar en la calle Isabel Colbrand, 18, en Las Tablas (Fuencarral-El Pardo). Pollo asado con patatas, menú del día, guisos caseros y paellas por encargo. Abre todos los días de 9:00 a 17:00. Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={fachada}
-				imageAlt="La fachada de Mesa Puesta II con el toldo de asador de pollos y comida para llevar"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,6</b> en Google · 312 reseñas' },
-					{ label: 'Horario', html: '<b>9:00–17:00</b><br />Todos los días' },
-					{ label: 'Servicio', html: '<b>Para llevar</b><br />Recogida en el local' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Paellas por encargo"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que se puede pedir en Mesa Puesta II" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El asador <br /><em>de Las Tablas.</em>"
-				paragraphs={[
-					'Mesa Puesta II está en la calle Isabel Colbrand, 18, en el barrio de Las Tablas (Fuencarral-El Pardo, 28050 Madrid). El toldo lo anuncia: «Asador de pollos · comida para llevar», y en la puerta hay una pizarra con las ofertas del día.',
-					'El pollo asado es la casa. Se sirve con patatas y se acompaña de alioli, y conviven con un menú del día de primeros y segundos a elegir, guisos de cuchara y platos de siempre: croquetas de jamón, ensaladilla rusa, tortilla de patata, albóndigas, ternera en salsa, costillas, bacalao, canelones, lasaña y ensalada campera.',
-					'Las paellas se preparan por encargo, en variedades como marisco, arroz negro o verduras, y sirven para grupos y celebraciones. En la galería se ven la paellera con langostinos y mejillones y las bandejas del día.',
-					'El local trabaja sobre todo con comida para llevar y recogida, sin reparto publicado. Abre todos los días de 9:00 a 17:00 y la valoración de Google es de 4,6 sobre 5 con 312 reseñas. El teléfono de la ficha es el 913 44 65 78.',
-				]}
-				note="La información sale de la ficha pública de Google Maps y de las reseñas publicadas del local. La ficha no enlaza web propia ni publica carta con precios: el menú del día y los encargos se confirman por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo, guisos <br /><em>y arroces.</em>"
-				description="Los platos que constan en fuentes públicas del local. El menú del día cambia a diario y no hay carta con precios publicada: se consulta llamando."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				groups={MENU}
-				note="La ficha de Google no publica carta con precios. Los platos listados son los que aparecen en la información pública del local y en la galería; el menú del día y los precios se confirman en el 913 44 65 78. Las paellas y encargos para grupos se preparan por encargo."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, el pollo <br /><em>y las bandejas.</em>"
-				description="Nueve fotografías del perfil de Mesa Puesta II en Google Maps: la fachada con el toldo de asador, el pollo asado con patatas, la paella, la ensaladilla, los guisos y las bandejas para llevar."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<div>
-						<p class="reviews-kicker">La ficha de Google</p>
-						<h2 id="resenas-title">4,6 sobre 5 <br /><em>en Google.</em></h2>
-						<p class="reviews-rating">
-							<strong>4,6</strong>
-							<span>★★★★★<br />312 reseñas en Google</span>
-						</p>
-						<p class="reviews-note">
-							Las reseñas de la ficha hablan del pollo asado, de las patatas, de las croquetas
-							y de las paellas por encargo. Puedes leerlas todas en Google Maps.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Las Tablas, <br /><em>Isabel Colbrand.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.neighbourhood, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: todos los días de 9:00 a 17:00. En festivos puede cambiar."
-				mapTitle="Mapa de Mesa Puesta II en la calle Isabel Colbrand, 18, Las Tablas, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. Isabel Colbrand, 18"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos online en esta página. El local trabaja sobre todo con comida para llevar y recogida; no publica reparto a domicilio. Las paellas y los encargos para grupos se hacen por teléfono. El aparcamiento en la calle es complicado según las reseñas, así que conviene ir con tiempo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

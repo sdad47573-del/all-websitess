@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import comedor from '../assets/fotos/el-cortijo-de-sanchez-apaisada-10.jpg';
@@ -21,7 +22,15 @@ import bocadillo from '../assets/fotos/el-cortijo-de-sanchez-apaisada-09.jpg';
 import sepia from '../assets/fotos/el-cortijo-de-sanchez-vertical-03.jpg';
 import calamares from '../assets/fotos/el-cortijo-de-sanchez-vista-5-05.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description = BUSINESS.description;
 
@@ -151,6 +160,19 @@ const nav = [
 
 const title = 'El Cortijo de Sánchez · Cocina mediterránea en Vila-real';
 const cita = REVIEWS[2];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-cortijo-de-sanchez-apaisada-10.jpg": comedor,
+	"el-cortijo-de-sanchez-apaisada-02.jpg": codillo,
+	"el-cortijo-de-sanchez-apaisada-06.jpg": arroz,
+	"el-cortijo-de-sanchez-apaisada-04.jpg": carne,
+	"el-cortijo-de-sanchez-vertical-03.jpg": sepia,
+	"el-cortijo-de-sanchez-apaisada-09.jpg": bocadillo,
+	"el-cortijo-de-sanchez-vista-5-05.jpg": calamares,
+};
 ---
 
 <!doctype html>
@@ -215,96 +237,19 @@ const cita = REVIEWS[2];
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer Onda, 42 · Vila-real"
-				title="Cocina de casa,<br />brasa y<br /><em>buen almuerzo.</em>"
-				lede="El Cortijo de Sánchez es el restaurante mediterráneo de la calle Onda: almuerzos con brasa y bocadillos, croquetas que se recuerdan y comida de mediodía. De lunes a domingo, con cenas los viernes y los sábados."
-				image={comedor}
-				imageAlt="Comedor de El Cortijo de Sánchez con mesas de madera, espejos y la barra al fondo"
-				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
-				tag="Almuerzos y brasa"
-				facts={[
-					{ label: 'Nota', html: '<b>4,4 en Google</b> con 345 reseñas' },
-					{ label: 'Almuerzos', html: 'brasa y <b>bocadillos</b>' },
-					{ label: 'Cenas', html: '<b>viernes y sábado</b>' },
-					{ label: 'Martes', html: '<b>Cerrado</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece El Cortijo de Sánchez" items={SERVICIOS} />
-
-			<LocalAbout
-				label="Restaurante mediterráneo en la Plana Baixa"
-				title="El almuerzo<br />de todos los días<br /><em>y la mesa de fiesta.</em>"
-				paragraphs={[
-					'En el número 42 de la calle Onda, en Vila-real, El Cortijo de Sánchez hace cocina mediterránea sin complicarse: producto de temporada, guisos de casa y una brasa que se enciende para el almuerzo y para las mesas que se alargan. El comedor es amplio, con mesas de madera y espejos, y la barra queda al fondo.',
-					'Las reseñas repiten tres cosas: los almuerzos son variados, con brasa y distintas opciones de bocadillos; las croquetas son de las que se recuerdan («el mejor surtido que he probado en mi vida», dice una); y el trato de los dueños es cercano. La cerveza, bien fría, completa el cuadro.',
-					'El horario es de mediodía de lunes a domingo, con el martes cerrado. Los viernes y los sábados hay servicio de noche, y el sábado la cocina no para de 8:00 a 24:00. Es un sitio de barrio para comer bien sin prisa y sin inventos.',
-				]}
-				note="«Los dueños muy buenas personas, las cervezas muy frescas y la comida exquisita», dice una reseña. Otra: «buenos y variados almuerzos, tanto brasa como diferentes opciones de bocadillos»."
-				links={[
-					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="De la brasa<br /><em>al comedor.</em>"
-				description="La ficha de Google no publica carta ni precios, así que esta selección sale de sus reseñas y de lo que se ve en las fotos del perfil: almuerzos con brasa y bocadillos, croquetas, cocina mediterránea, platos de cuchara y raciones para compartir."
-				cta={{ label: 'Preguntar qué hay hoy', href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Sin precios: la ficha no los publica y esta web no los inventa. La carta y las raciones se consultan en la barra o por teléfono en el 604 82 47 32."
-			/>
-
-			<section class="cita" aria-label="Opinión destacada en Google">
-				<div class="wrap">
-					<blockquote>
-						<p>“{cita.text}”</p>
-						<footer>Reseña en Google · {cita.rating} estrellas</footer>
-					</blockquote>
-					<div class="cita-nota">
-						<b>4,4</b>
-						345 reseñas en Google
-						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leerlas todas ↗</a>
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor,<br />la brasa<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de El Cortijo de Sánchez en Google Maps: el comedor, el codillo asado con patatas, el arroz de marisco, la carne con verduras, la sepia a la plancha, el bocadillo de bacon y queso y los calamares a la romana."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow="Carrer Onda, 42 · 12540 Vila-real"
-				title="Te esperamos<br /><em>en la calle Onda.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castelló · Plana Baixa']}
-				hoursCaption="Horario de la ficha de Google"
-				hours={HOURS}
-				hoursNote="Horario publicado en la ficha de Google: de 8:00 a 16:00 de lunes a domingo, con el martes cerrado; viernes también de 20:00 a 24:00 y sábado de 8:00 a 24:00. En festivos como el Día de Todos los Santos puede cambiar: llama antes."
-				mapTitle="Mapa de Restaurante El Cortijo de Sánchez en la calle Onda, 42, Vila-real"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Cortijo de Sánchez · Vila-real"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="Se reserva por teléfono, llamando al 604 82 47 32: no hay reserva online ni formulario en esta web. Para grupos y para las cenas de viernes y sábado conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} title="Antes de <em>sentarse.</em>" />
 		</main>
 
 		<LocalFooter

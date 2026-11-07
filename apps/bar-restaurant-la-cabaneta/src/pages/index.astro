@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import terraza from '../assets/fotos/bar-restaurant-la-cabaneta-terraza.jpg';
@@ -162,6 +163,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"bar-restaurant-la-cabaneta-terraza.jpg": terraza,
+	"bar-restaurant-la-cabaneta-coca.jpg": coca,
+	"bar-restaurant-la-cabaneta-parrillada-plato.jpg": parrilladaPlato,
+	"bar-restaurant-la-cabaneta-pollo.jpg": pollo,
+	"bar-restaurant-la-cabaneta-hamburguesa.jpg": hamburguesa,
+	"bar-restaurant-la-cabaneta-parrillada-sarten.jpg": parrilladaSarten,
+	"bar-restaurant-la-cabaneta-calcots.jpg": calcots,
+	"bar-restaurant-la-cabaneta-bocadillo.jpg": bocadillo,
+	"bar-restaurant-la-cabaneta-calamares.jpg": calamares,
+};
 ---
 
 <!doctype html>
@@ -231,127 +247,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carretera General 2, 75 · Canillo"
-				title="Brasa de montaña, <br /><em>en Canillo.</em>"
-				lede={`La Cabaneta es el bar restaurante de la carretera de Canillo: parrilla de brasa con pollo, costillas, butifarra y calçots de temporada, y también menú diario, bocadillos y tapas. Terraza de madera al pie de la CG-2. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas y abre todos los días de 12:00 a 24:00.`}
-				image={terraza}
-				imageAlt="Terraza de madera de La Cabaneta con una mesa alta, dos tumbonas rojas y el muro de piedra con flores"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver las fotos', href: '#galeria' }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:00–24:00</b> · todos los días' },
-					{ label: 'Especialidad', html: '<b>Parrilla</b> · y menú diario' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Parrilla"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Cabaneta" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Canillo, <br /><em>a pie de carretera.</em>"
-				paragraphs={[
-					'Bar Restaurant La Cabaneta está en la Carretera General 2, número 75, en Canillo. La ficha de Google lo sitúa en las coordenadas 42.5835359, 1.6631495, con el Plus Code HMM7+C7, y el teléfono es un fijo andorrano, el +376 727 999.',
-					'Es un bar restaurante de montaña con la parrilla como centro: en las fotos del perfil aparecen calçots sobre la brasa con llama viva, medio pollo dorado con patatas y pimientos de Padrón, costillas de cerdo en sartén de hierro y una parrillada mixta con butifarra, ensalada rusa y patata al horno.',
-					'La carta no es solo brasa. La descripción de la ficha dice «menú diario, bocadillos y tapas», y entre las fotos hay bocadillos como el de bacon y queso, calamares a la romana con limón, hamburguesa con patatas gajo y una coca de fruta confitada y piñones sobre bandeja dorada.',
-					`Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026) y lo clasifica con una sola categoría, «Parrilla». Abre los siete días de 12:00 a 24:00, y la ficha marca que se admiten perros: con la terraza de madera, es una parada cómoda de camino al Pas de la Casa.`,
-				]}
-				note="El local no tiene web ni carta en línea enlazada desde Google: los platos que se citan son los que aparecen en las fotos del perfil y en la descripción de la ficha, sin precios inventados."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la brasa</p>
-					<h2 id="highlights-title">Pollo, costillas <br /><em>y calçots.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La parrilla"
-				title="De la brasa <br /><em>a la mesa.</em>"
-				description="Lo que se ve en las fotos del perfil y lo que anuncia la descripción de la ficha de Google, ordenado en cuatro bloques. Sin precios: el local no publica carta en línea."
-				cta={{ label: `Preguntar el menú · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`El menú del día y los importes se preguntan por teléfono, en el ${BUSINESS.phone}. La oferta de parrilla cambia con la temporada: los calçots, por ejemplo, son de invierno.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La mesa y la brasa."
-				description="Ocho fotografías del perfil: la coca de fruta confitada, la parrillada mixta, el medio pollo con patatas y Padrón, la hamburguesa, las costillas en sartén, los calçots en el fuego, el bocadillo de bacon y queso y los calamares a la romana."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,3 sobre 5, <em>con 660 reseñas.</em></h2>
-						<p>
-							Un volumen alto de reseñas para un bar de carretera: 660 opiniones y una media de 4,3.
-							La ficha lo clasifica como «Parrilla» y marca que se admiten perros.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer todas las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,3</strong>
-						<span>★★★★☆</span>
-						<small>660 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la CG-2, <br /><em>todo el día.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city} (parroquia de Canillo)`,
-					'Principado de Andorra',
-				]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: todos los días de 12:00 a 24:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Bar Restaurant La Cabaneta en la Carretera General 2, Canillo"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel={`${BUSINESS.street} · Canillo`}
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Ver la galería', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Está en plena Carretera General 2, con aparcamiento en la misma entrada, y no tiene reservas ni carta en línea: las mesas y el menú del día se consultan en el ${BUSINESS.phone}.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>parar.</em>" />
 		</main>
 
 		<LocalFooter

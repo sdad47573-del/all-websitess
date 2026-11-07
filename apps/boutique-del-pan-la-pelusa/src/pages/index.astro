@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mostrador from '../assets/fotos/boutique-del-pan-la-pelusa-vertical-01.jpg';
@@ -174,6 +175,19 @@ const galeria = [
 		alt: 'Aviso de «Nuevo horario» y cartel de dos personas máximo en la puerta del local',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"boutique-del-pan-la-pelusa-vertical-02.jpg": fachada,
+	"boutique-del-pan-la-pelusa-vertical-01.jpg": mostrador,
+	"boutique-del-pan-la-pelusa-vertical-04.jpg": precios,
+	"boutique-del-pan-la-pelusa-vista-5-05.jpg": bollo,
+	"boutique-del-pan-la-pelusa-vertical-06.jpg": roscon,
+	"boutique-del-pan-la-pelusa-vertical-07.jpg": horario,
+	"boutique-del-pan-la-pelusa-vertical-03.jpg": cartel,
+};
 ---
 
 <!doctype html>
@@ -244,110 +258,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Plaza Basconia, 1 · Bailén-Miraflores"
-				title="Pan de siempre, <br /><em>hecho cada mañana.</em>"
-				lede={`La Boutique del Pan la Pelusa está en la Plaza Basconia, 1, en Bailén-Miraflores. Es una panadería de barrio con el rótulo verde de «Panificadora La Pelusa»: pan del día, bollería, dulces y empanadas. Abre de lunes a sábado de 8:30 a 14:30 y los domingos de 8:30 a 14:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Rótulo verde de la Boutique del Pan la Pelusa sobre la fachada blanca, en la Plaza Basconia"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,3</b> en Google · 20 reseñas' },
-					{ label: 'Horario', html: '<b>L–S 8:30–14:30</b> · dom 8:30–14:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> · encargos` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · empanadas · dulces"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La Pelusa" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>de toda la vida.</em>"
-				paragraphs={[
-					'La Boutique del Pan la Pelusa C.B. está en la Plaza Basconia, 1, en Bailén-Miraflores (29010 Málaga). La fachada blanca lleva el rótulo verde con el nombre y el logotipo circular de «Panificadora La Pelusa».',
-					'Dentro, el mostrador de acero comparte espacio con las vitrinas de bollería y dulces, las estanterías de madera y la zona del horno. En las fotos del perfil se ven bolsas de pan preparadas, bandejas de bollería y un cartel con los precios del pan.',
-					'Las reseñas de Google destacan el pan y el trato: «Pan exquisito y de buenísima calidad», «Muy buen trato y el pan buenísimo». Otra deja una recomendación clara: «Probad sus estupendas empanadas».',
-					'La ficha publica el teléfono 952 61 45 99 y clasifica el negocio como panadería. No indica página web, correo ni redes, así que las consultas se atienden en el mostrador o por teléfono.',
-				]}
-				note="La ficha de Google no publica carta ni precios. Esta página solo cuenta lo que muestran las fotos del perfil, lo que dicen sus rótulos y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, empanadas <br />
-							<em>y domingo.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que sale <br /><em>del horno.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo de la mañana: la panadería cierra a las 14:30 de lunes a sábado."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Siete fotos de la ficha de Google Maps: la fachada, el mostrador, la lista de precios del pan, un bollo, un roscón de Reyes y los carteles de la puerta."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Plaza <br /><em>Basconia.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Boutique del Pan la Pelusa en la Plaza Basconia, 1, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Pelusa · Plaza Basconia"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Street View', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Las consultas se atienden en el mostrador o por teléfono. La ficha de Google indica acceso para sillas de ruedas, pero no aparcamiento adaptado; tampoco detalla el mostrador ni el aseo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

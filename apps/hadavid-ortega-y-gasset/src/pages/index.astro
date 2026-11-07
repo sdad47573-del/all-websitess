@@ -11,13 +11,23 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/hadavid-ortega-y-gasset-vertical-01.jpg';
 import segundaFoto from '../assets/fotos/hadavid-ortega-y-gasset-vertical-02.jpg';
 import terceraFoto from '../assets/fotos/hadavid-ortega-y-gasset-vertical-03.jpg';
 import panoramica from '../assets/fotos/hadavid-ortega-y-gasset-apaisada-04.jpg';
-import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, MENU_GROUPS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Hadavid Ortega y Gasset · Panadería en Málaga';
 const description =
@@ -78,6 +88,16 @@ const galeria = [
 	{ src: terceraFoto, alt: 'Imagen del establecimiento de Hadavid Ortega y Gasset descargada de Google Maps' },
 	{ src: panoramica, alt: 'Fotografía apaisada del establecimiento, de la galería pública de Google Maps' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"hadavid-ortega-y-gasset-vertical-01.jpg": fachada,
+	"hadavid-ortega-y-gasset-vertical-02.jpg": segundaFoto,
+	"hadavid-ortega-y-gasset-vertical-03.jpg": terceraFoto,
+	"hadavid-ortega-y-gasset-apaisada-04.jpg": panoramica,
+};
 ---
 
 <!doctype html>
@@ -136,93 +156,19 @@ const galeria = [
 			navAriaLabel="Navegación de Hadavid Ortega y Gasset"
 		/>
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. de José Ortega y Gasset, 111 · Málaga"
-				title="Una panadería <br /><em>en el barrio.</em>"
-				lede="Hadavid Ortega y Gasset es una panadería de la avenida de José Ortega y Gasset, en Cruz de Humilladero. Aquí tienes su ubicación, teléfono, horario publicado en Google Maps y fotos de la ficha de esta dirección."
-				image={fachada}
-				imageAlt="Foto de la ficha de Hadavid Ortega y Gasset en Google Maps"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha de Google Maps', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Reseñas', html: '<b>22</b> en Google' },
-					{ label: 'Horario', html: '<b>L–V 8:30–21:00</b> · S 8:30–15:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Panadería · Málaga"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-			<LocalChips label="Hadavid Ortega y Gasset" items={SERVICIOS} />
-			<LocalAbout
-				label="La panadería"
-				title="En la avenida <br /><em>Ortega y Gasset.</em>"
-				paragraphs={[
-					'Hadavid Ortega y Gasset está en el número 111 de la avenida, en Cruz de Humilladero, 29006 Málaga. La ficha pública de Google Maps identifica este local como panadería.',
-					'En la ficha puedes consultar la ubicación, llamar al establecimiento, ver las reseñas y acceder a las fotografías publicadas para esta dirección.',
-					'El horario mostrado por Google Maps es de lunes a viernes de 8:30 a 21:00, los sábados de 8:30 a 15:00 y los domingos cerrado. Los horarios y el surtido pueden cambiar; confirma por teléfono antes de ir.',
-				]}
-				note="Esta web corresponde a la ficha de Hadavid Ortega y Gasset, en Cruz de Humilladero; es un local distinto de Hadavid Teatinos."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Datos del establecimiento</p>
-						<h2 id="three-title">Ubicación, horario <br /><em>y contacto.</em></h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-			<LocalMenu
-				eyebrow="La ficha de Google"
-				title="Datos para <br /><em>tu visita.</em>"
-				description="Una guía práctica con la información publicada para esta panadería. La ficha no muestra un catálogo completo ni precios."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note={`Para confirmar el horario y el surtido del día, llama al ${BUSINESS.phone}.`}
-			/>
-			<LocalGallery
-				eyebrow="Imágenes del perfil"
-				title="Fotos de <br /><em>esta dirección.</em>"
-				description="Las cuatro imágenes descargables de la galería pública de Hadavid Ortega y Gasset en Google Maps."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha de Google', href: MAPS.place }}
-				note="Fotografías del perfil público de Google Maps correspondiente a Av. de José Ortega y Gasset, 111."
-			/>
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Ortega <br /><em>y Gasset.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google Maps"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Hadavid Ortega y Gasset en la avenida de José Ortega y Gasset, 111, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Hadavid · Ortega y Gasset"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha de Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="El horario puede cambiar en festivos. Para confirmar que está abierto y consultar el surtido, llama antes de desplazarte."
-			/>
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 		<LocalFooter
 			mark={BUSINESS.mark}

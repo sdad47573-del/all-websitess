@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import interior from '../assets/fotos/gabrielle-algo-mas-que-comida-apaisada-01.jpg';
@@ -140,6 +141,21 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"gabrielle-algo-mas-que-comida-apaisada-01.jpg": interior,
+	"gabrielle-algo-mas-que-comida-apaisada-05.jpg": fachada,
+	"gabrielle-algo-mas-que-comida-apaisada-02.jpg": vitrina,
+	"gabrielle-algo-mas-que-comida-vertical-03.jpg": lasana,
+	"gabrielle-algo-mas-que-comida-apaisada-07.jpg": cuscus,
+	"gabrielle-algo-mas-que-comida-vertical-06.jpg": lasanaPlato,
+	"gabrielle-algo-mas-que-comida-apaisada-08.jpg": vitrinaDetalle,
+	"gabrielle-algo-mas-que-comida-apaisada-09.jpg": rotulo,
+	"gabrielle-algo-mas-que-comida-vista-10-10.jpg": logo,
+};
 ---
 
 <!doctype html>
@@ -208,134 +224,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. San Bernardo, 52 · Sevilla"
-				title="Comida de casa, <br /><em>recién hecha.</em>"
-				lede={`Gabrielle prepara cada día platos caseros para llevar en el barrio de San Bernardo: lasaña, cuscús, arroces y guisos, con ingredientes seleccionados. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={interior}
-				imageAlt="Interior de Gabrielle con el mostrador blanco, la vitrina y la pizarra de platos"
-				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Tipo', html: '<b>Comida casera</b> para llevar' },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00 – 16:00</b> de lunes a viernes' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Menú del día"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios de Gabrielle" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Algo más <br /><em>que comida.</em>"
-				paragraphs={[
-					'Gabrielle es un establecimiento de comida casera para llevar en la calle San Bernardo, 52, en pleno barrio de San Bernardo. Su lema lo dice todo: «algo más que comida».',
-					'Cada día elabora sus platos con ingredientes seleccionados y recetas tradicionales, con una propuesta variada de platos preparados para llevar: lasaña, cuscús con pollo, salmón con quinoa, arroces y guisos de la casa.',
-					'El local es nuevo y cuida la presentación: mostrador blanco, vitrina con las tarrinas del día y una pizarra con los platos. Abre de lunes a viernes a mediodía y atiende encargos por teléfono.',
-				]}
-				note="La ficha no publica carta ni precios. Los platos que aparecen en esta web son los de la descripción, las fotografías y las reseñas del establecimiento; el menú cambia cada día, así que conviene preguntarlo al llamar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="La pizarra del local"
-				title="Lasaña, cuscús <br /><em>y guisos del día.</em>"
-				description="La ficha no tiene carta publicada, pero en las fotos se ve la pizarra y la vitrina del local. Esta selección reúne los platos que aparecen en ellas y en las reseñas: principal, del día, acompañamientos y encargos."
-				cta={{ label: `Preguntar el menú de hoy · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No hay precios ni carta oficial publicados. La oferta cambia a diario y algunos platos se acaban: llama al 692 88 91 56 para confirmar el menú, encargar una bandeja o preguntar por la recogida."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="El local, la vitrina <br /><em>y los platos.</em>"
-				description="La fachada en la calle San Bernardo, el interior con la pizarra, la vitrina de tarrinas y algunos de los platos que aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de Gabrielle. Algo más que comida en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Lo que dicen <em>las reseñas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>{resena.texto}</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
-							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En San <br /><em>Bernardo.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Gabrielle en C. San Bernardo, 52, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="San Bernardo, 52 · Sevilla"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Los pedidos se atienden por teléfono en el 692 88 91 56 y se recogen en el local. Para bandejas o encargos grandes, avisa con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

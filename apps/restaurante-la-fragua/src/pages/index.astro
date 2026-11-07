@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurante-la-fragua-apaisada-01.jpg';
@@ -23,7 +24,14 @@ import empanada from '../assets/fotos/restaurante-la-fragua-apaisada-09.jpg';
 import carneTomate from '../assets/fotos/restaurante-la-fragua-apaisada-10.jpg';
 import carrillada from '../assets/fotos/restaurante-la-fragua-vertical-02.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante la Fragua, cocina extremeña en una casa de piedra del casco antiguo de Garganta la Olla (Cáceres). Migas, carnes de guiso, menú del día y tarta de queso casera. Reservas en el 927 17 95 71.';
@@ -125,6 +133,21 @@ const nav = [
 ];
 
 const title = 'Restaurante la Fragua · Cocina extremeña en Garganta la Olla (Cáceres)';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-la-fragua-apaisada-01.jpg": fachada,
+	"restaurante-la-fragua-apaisada-03.jpg": migas,
+	"restaurante-la-fragua-apaisada-04.jpg": carneGuiso,
+	"restaurante-la-fragua-apaisada-05.jpg": tarta,
+	"restaurante-la-fragua-vertical-06.jpg": ensalada,
+	"restaurante-la-fragua-apaisada-07.jpg": revuelto,
+	"restaurante-la-fragua-apaisada-09.jpg": empanada,
+	"restaurante-la-fragua-apaisada-10.jpg": carneTomate,
+	"restaurante-la-fragua-vertical-02.jpg": carrillada,
+};
 ---
 
 <!doctype html>
@@ -179,80 +202,19 @@ const title = 'Restaurante la Fragua · Cocina extremeña en Garganta la Olla (C
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Toril · Garganta la Olla"
-				title="Cocina extremeña<br /><em>en La Vera.</em>"
-				lede={`Migas con huevo, carnes de guiso y tarta de queso casera en una casa de piedra del casco antiguo de Garganta la Olla. Menú del día y cocina de siempre, todos los días desde la una. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={fachada}
-				imageAlt="Fachada de piedra de Restaurante la Fragua, con su cartel de forja, en Garganta la Olla"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Horario', html: 'Mar–Sáb 13:00–23:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece La Fragua" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El restaurante"
-				title="Piedra, fuego<br /><em>y mantel.</em>"
-				paragraphs={[
-					`La Fragua es una casa de piedra con el cartel de forja en la calle Toril, 4, en el casco antiguo de Garganta la Olla (${BUSINESS.postalCode}, Cáceres). Dentro, comedor de madera y mantel; fuera, unas mesas altas junto a la puerta.`,
-					'La cocina es extremeña y sin aspavientos: migas con huevo, revueltos de la huerta, pimientos con ventresca, chipirones, secreto y carnes en salsa. De postre, la tarta semifría de queso casera, que es lo que más se repite en las reseñas.',
-					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios, menú del día y disponibilidad se llama al restaurante.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repiten el menú «asequible y de buena calidad», las migas, los pimientos con ventresca y la tarta de queso.`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Migas, guisos<br /><em>y tarta de queso.</em>"
-				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el restaurante."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia con el mercado y la temporada. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La casa<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante la Fragua en Google Maps: la fachada, los platos de cuchara, las carnes y los postres de la casa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en la calle Toril.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google. De martes a sábado el servicio es continuo de 13:00 a 23:00; el lunes solo abre a mediodía y el domingo cierra a las 15:30."
-				mapTitle="Mapa de Restaurante la Fragua en la calle Toril, 4, Garganta la Olla (Cáceres)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Fragua · Garganta la Olla"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google solo marca asientos adaptados, así que si necesitas acceso o aseo adaptados conviene preguntar antes por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

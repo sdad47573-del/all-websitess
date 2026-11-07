@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/don-felix-lounge-apaisada-01.jpg';
@@ -23,7 +24,16 @@ import foto08 from '../assets/fotos/don-felix-lounge-vertical-08.jpg';
 import foto09 from '../assets/fotos/don-felix-lounge-apaisada-09.jpg';
 import foto10 from '../assets/fotos/don-felix-lounge-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Don Félix Lounge · Restaurante italiano en Escaldes-Engordany';
 const description = `Don Félix Lounge, Carrer Nou, 1 (AD700 Escaldes-Engordany). Restaurante italiano con ${RATING.label} sobre 5 en Google. Teléfono ${BUSINESS.phone}.`;
@@ -92,6 +102,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"don-felix-lounge-apaisada-01.jpg": fachada,
+	"don-felix-lounge-vertical-02.jpg": foto02,
+	"don-felix-lounge-cuadrada-03.jpg": foto03,
+	"don-felix-lounge-apaisada-04.jpg": foto04,
+	"don-felix-lounge-apaisada-05.jpg": foto05,
+	"don-felix-lounge-vertical-06.jpg": foto06,
+	"don-felix-lounge-cuadrada-07.jpg": foto07,
+	"don-felix-lounge-vertical-08.jpg": foto08,
+	"don-felix-lounge-apaisada-09.jpg": foto09,
+	"don-felix-lounge-vertical-10.jpg": foto10,
+};
 ---
 
 <!doctype html>
@@ -160,87 +186,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer Nou, 1 · Escaldes-Engordany"
-				title="Restaurante italiano <br /><em>en Escaldes.</em>"
-				lede={`Don Félix Lounge está en el Carrer Nou, 1, en Escaldes-Engordany. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días, con turnos de comida y cena.`}
-				image={fachada}
-				imageAlt="Fachada de Don Félix Lounge en Escaldes-Engordany"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:30–16:00</b> y <b>19:30–23:00</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Restaurante"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Don Félix Lounge" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Restaurante <br /><em>en Escaldes-Engordany.</em>"
-				paragraphs={[
-					"Don Félix Lounge está en el Carrer Nou, 1, en Escaldes-Engordany (AD700).",
-					`Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. La ficha no publica una carta online propia, así que esta web no incluye platos ni precios.`,
-				]}
-				note="La ficha no publica precios en su propio texto. Para el menú y los importes, llama por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Sobre el local</p>
-					<h2 id="highlights-title">Restaurante, <br /><em>cada día.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item) => (
-								<li>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la comida.</em>"
-				description="Diez fotografías del perfil de Don Félix Lounge en Google Maps."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el Carrer Nou, 1, <br /><em>Escaldes-Engordany.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Don Félix Lounge en el Carrer Nou, 1, Escaldes-Engordany"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Carrer Nou, 1"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Consultas y pedidos por teléfono: la ficha no publica reservas online."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

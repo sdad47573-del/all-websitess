@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/chester-apaisada-01.jpg';
@@ -24,7 +25,15 @@ import hotDog from '../assets/fotos/chester-vertical-06.jpg';
 import bravasMayo from '../assets/fotos/chester-vertical-08.jpg';
 import paredCervezas from '../assets/fotos/chester-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	MENU_NOTE,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Chester · Frankfurts, tapas y burgers en Andorra la Vella';
 const description = BUSINESS.description;
@@ -143,6 +152,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"chester-apaisada-01.jpg": fachada,
+	"chester-vertical-02.jpg": interior,
+	"chester-vertical-10.jpg": paredCervezas,
+	"chester-panoramica-09.jpg": barraCarta,
+	"chester-apaisada-04.jpg": comedor,
+	"chester-vertical-05.jpg": burger,
+	"chester-vertical-06.jpg": hotDog,
+	"chester-apaisada-07.jpg": patatasFritas,
+	"chester-vertical-03.jpg": bravas,
+	"chester-vertical-08.jpg": bravasMayo,
+};
 ---
 
 <!doctype html>
@@ -200,84 +225,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="Frankfurts, burgers <br /><em>i birra freda.</em>"
-				lede={`Chester ocupa dos arcos de piedra en la Plaça Príncep Benlloch, en el centro de Andorra la Vella. Cocina abierta de 12:00 a 23:00 todos los días: frankfurts, tapas, bocadillos, hamburguesas y ensaladas, con cerveza de grifo y terraza en la plaza. La ficha de Google le da 3,9 sobre 5 con 1.421 reseñas.`}
-				image={fachada}
-				imageAlt="Fachada de Chester en la Plaça Príncep Benlloch, con dos arcos de piedra, las letras CHESTER y FRANKFURT y mesas de terraza delante"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,9</b> en Google · 1.421 reseñas' },
-					{ label: 'Horario', html: '<b>12:00–23:00</b><br />Todos los días · cocina abierta' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> consultas y encargos` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Chester" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un bar de barrio <br /><em>con carta abierta.</em>"
-				paragraphs={[
-					'Chester está en la Plaça Príncep Benlloch 2, en pleno centro de Andorra la Vella. La fachada ocupa dos arcos de piedra con las letras «CHESTER» y «FRANKFURT» sobre los ventanales, y delante se monta la terraza con mesas y sillas de la casa. En la puerta, un cartel anuncia cocina abierta todo el día.',
-					'Dentro manda la madera: mesas y sillas macizas, paredes de tablones, bombillas colgadas y una colección de botellines que llena las estanterías. En la pared hay unos esquís antiguos, un ciervo hecho de alambre, el neón de Coca-Cola y el espejo de «BURGER BAR»; en la barra, los grifos de cerveza y las pizarras con la carta.',
-					'La casa se presenta como especialista en tapas, salchichas y bocadillos, y a eso añade hamburguesas, ensaladas y postres. La pizarra de la barra y la carta de papel recogen los frankfurts, el bocadillo de lomo, las patatas bravas, las croquetas, las alitas de pollo y los postres de la casa.',
-					'Abre de 12:00 a 23:00 todos los días, con cocina abierta durante todo el horario. Google le marca el distintivo de brunch y una nota de 3,9 sobre 5 con 1.421 reseñas. La ficha indica acceso y asientos adaptados, pero no aparcamiento adaptado.',
-				]}
-				note="La información sale de la ficha pública de Google Maps, de las fotografías del perfil del establecimiento y de su ficha en andorra.com. No hay web oficial: si algo cambia, manda lo que digan en el local o por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver Chester en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Frankfurts, tapas <br /><em>i burgers.</em>"
-				description="Lo que se lee en la pizarra de la barra y en la carta de papel: frankfurts, bocadillos, hamburguesas, raciones para picar, ensaladas y postres. Los precios son los que aparecen en las fotos del perfil."
-				cta={{ label: 'Ver la pizarra en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note={MENU_NOTE}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Nueve fotos <br /><em>de Chester.</em>"
-				description="La fachada de piedra, la terraza, el comedor de madera, la barra con la pizarra y los platos que salen de la cocina: burgers, frankfurts, patatas y bravas."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a la <br /><em>plaça.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Andorra',
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: de 12:00 a 23:00 todos los días. El cartel de la puerta anuncia cocina abierta todo el día. En festivos puede cambiar; llama antes si vas en día señalado."
-				mapTitle="Mapa de Chester en la Plaça Príncep Benlloch 2, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Chester"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página: la ficha no publica una web propia. El teléfono es el canal directo para preguntar por la mesa, la terraza o la carta del día."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

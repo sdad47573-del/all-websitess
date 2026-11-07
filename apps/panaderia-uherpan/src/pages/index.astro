@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import baguettes from '../assets/fotos/panaderia-uherpan-apaisada-01.jpg';
@@ -134,6 +135,18 @@ const galeria = [
 		alt: 'Furgoneta blanca rotulada con el logo de UHERPAN, «Pan Artesano Caseras» y el teléfono',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-uherpan-apaisada-03.jpg": hogazas,
+	"panaderia-uherpan-apaisada-01.jpg": baguettes,
+	"panaderia-uherpan-apaisada-04.jpg": carro,
+	"panaderia-uherpan-vertical-05.jpg": magdalenas,
+	"panaderia-uherpan-panoramica-06.jpg": masa,
+	"panaderia-uherpan-vista-2-02.jpg": furgoneta,
+};
 ---
 
 <!doctype html>
@@ -193,114 +206,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Polígono Las Quemadas · nave 10 · Córdoba"
-				title="Pan de obrador, <br /><em>noche y mañana.</em>"
-				lede={`UHERPAN es la panadería cooperativa que hornea en la calle Simón Carpintero, nave 10 del Polígono Las Quemadas. En sus fotos hay baguettes, hogazas enharinadas, panecillos y magdalenas recién salidas del horno, y una furgoneta rotulada con su nombre. El turno va de 22:30 a 14:00 y el domingo cierra. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={hogazas}
-				imageAlt="Hogazas redondas de pan rústico, enharinadas, sobre una bandeja del obrador"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Dirección', html: '<b>Las Quemadas</b> · nave 10' },
-					{ label: 'Turno', html: '<b>22:30–14:00</b> · domingo cerrado' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver las fotos en Google"
-				tag="Obrador · S.C.A."
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en UHERPAN" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El obrador"
-				title="Una nave, <br /><em>seis bandejas.</em>"
-				paragraphs={[
-					'UHERPAN está en la calle Simón Carpintero, parcela 13, nave 10, dentro del Polígono Industrial Las Quemadas. No es un local de calle: la ficha apunta a una nave y todas sus fotos son de dentro del obrador, con bandejas negras, carros de varillas y estanterías.',
-					'Lo que se ve es pan de verdad, sin escaparate: baguettes enharinadas con la greña abierta, hogazas redondas de corte rústico, panecillos alargados en carros de dos pisos y bandejas de magdalenas en cápsula de papel saliendo por tandas.',
-					'En otra foto aparece un carro entero de piezas de masa reposando antes de entrar al horno, y en la última, la furgoneta blanca de reparto rotulada con el logo: «UHERPAN · Pan Artesano Caseras», «Unión Hermanos Panaderos» y el teléfono. Es la pista de que el pan sale de la nave hacia otros puntos.',
-					'El horario también es de obrador: el turno empieza a las 22:30 y termina a las 14:00, con el sábado hasta las 13:30 y el domingo cerrado. La ficha de Google lo muestra partido a medianoche, en dos tramos que aquí se leen como uno solo.',
-				]}
-				note="La ficha de Google no publica carta, precios, web propia ni condiciones de venta o reparto, y no indica si la nave atiende al público. Esta página no lo afirma: si quieres comprar o encargar, llama antes al 648 12 70 20."
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas del obrador</p>
-							<h2 id="three-title">Horno, carro <br /><em>y furgoneta.</em></h2>
-						</div>
-					</div>
-					<div class="three-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="three-card">
-									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="Dentro <br /><em>de la nave.</em>"
-				description="Las seis imágenes de la ficha de Google Maps: hogazas, baguettes, dos carros de bandejas, las magdalenas y la furgoneta rotulada de la panadería."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026. Son las seis que publica la ficha."
-			/>
-
-			<section class="rating-band" aria-labelledby="rating-title">
-				<div class="wrap rating-inner">
-					<div class="rating-score">
-						<strong>4,5</strong>
-						<div>
-							<span class="rating-stars" role="img" aria-label="4,5 de 5 estrellas">★★★★★</span>
-							<p id="rating-title" style="margin:0;font-size:.78rem">8 reseñas en Google Maps</p>
-						</div>
-					</div>
-					<p class="rating-copy">
-						La nota de la ficha es 4,5 sobre 5 con 8 reseñas: pocas, pero suficientes para
-						hacerse una idea. Esta página no reproduce sus textos; se leen enteros en Google.
-					</p>
-					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Las Quemadas, <br /><em>nave 10.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Panadería UHERPAN en el Polígono Las Quemadas, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="UHERPAN · nave 10"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google no publica web propia ni datos de accesibilidad, y no confirma horario de tienda al público. El teléfono es el que figura en esa ficha. Esta página no gestiona pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
 		</main>
 
 		<LocalFooter

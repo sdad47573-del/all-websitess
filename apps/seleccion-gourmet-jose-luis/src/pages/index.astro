@@ -10,9 +10,19 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
-import { BUSINESS, FAQ, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Selección Gourmet José Luis · Carnicería y pollería en Retiro';
 const description = BUSINESS.description;
@@ -111,6 +121,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"seleccion-gourmet-jose-luis-apaisada-01.jpg": fachada,
+	"seleccion-gourmet-jose-luis-apaisada-10.jpg": rotulo,
+	"seleccion-gourmet-jose-luis-cuadrada-02.jpg": carne,
+	"seleccion-gourmet-jose-luis-cuadrada-04.jpg": ternera,
+	"seleccion-gourmet-jose-luis-cuadrada-05.jpg": embutido,
+	"seleccion-gourmet-jose-luis-cuadrada-07.jpg": pollo,
+	"seleccion-gourmet-jose-luis-cuadrada-08.jpg": jamon,
+	"seleccion-gourmet-jose-luis-vertical-09.jpg": interior,
+};
 ---
 
 <!doctype html>
@@ -179,71 +203,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. de Abtao, 22 · Retiro, Madrid"
-				title="Productos gourmet <br /><em>en Retiro.</em>"
-				lede={`Selección Gourmet José Luis es carnicería, pollería y productos gourmet en Retiro. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>Lun–vie</b> 9:00–14:00 y 17:30–20:30 · <b>Dom</b> cerrado' },
-					{ label: 'Servicio', html: '<b>A domicilio o en tienda</b>' },
-				]}
-				image={fachada}
-				imageAlt="Fachada de Selección Gourmet José Luis en la calle de Abtao, en Retiro"
-				galleryHref={MAPS.place}
-				photoCredit="Ficha de Google Maps"
-				galleryLinkLabel="Ver en Google Maps"
-				tag="Carnicería y pollería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Selección Gourmet José Luis" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La tienda"
-				title="Carnicería y <br /><em>productos gourmet.</em>"
-				paragraphs={[
-					'Selección Gourmet José Luis está en la C. de Abtao, 22, en Retiro. Su ficha de Google Maps la clasifica como carnicería y pollería, con comida a domicilio.',
-					'La ficha indica que se pueden pedir productos gourmet a domicilio o comprarlos en tienda.',
-				]}
-				note="La ficha no publica página web, redes sociales, carta con precios ni datos de accesibilidad. Para precios concretos y pedidos, llama al 915 01 13 30."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y sus productos.</em>"
-				description="Fachada, rótulo, piezas de carne, embutidos, pollo y el mostrador de la tienda."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Retiro, <br /><em>C. de Abtao.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.region]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.horas === 'Cerrado' }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: lunes a viernes de 9:00 a 14:00 y de 17:30 a 20:30; sábado de 9:00 a 14:00; domingo cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Selección Gourmet José Luis en la C. de Abtao, 22, Retiro, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. de Abtao, 22"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha no publica página web ni pedidos online: se concreta todo por teléfono, en el 915 01 13 30. No da datos de accesibilidad, así que conviene llamar antes si necesitas algo concreto."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

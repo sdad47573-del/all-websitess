@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrina from '../assets/fotos/la-tostona-apaisada-01.jpg';
@@ -153,6 +154,22 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-tostona-apaisada-01.jpg": vitrina,
+	"la-tostona-vertical-04.jpg": cartel,
+	"la-tostona-cuadrada-03.jpg": berenjenaGarbanzos,
+	"la-tostona-cuadrada-08.jpg": croquetasBacalao,
+	"la-tostona-cuadrada-07.jpg": croquetaJamon,
+	"la-tostona-cuadrada-10.jpg": empanada,
+	"la-tostona-apaisada-05.jpg": tuppers,
+	"la-tostona-vista-9-09.jpg": rebozados,
+	"la-tostona-vertical-02.jpg": espaguetis,
+	"la-tostona-vertical-06.jpg": berenjena,
+};
 ---
 
 <!doctype html>
@@ -221,135 +238,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Carlos Cañal, 10 · Casco Antiguo"
-				title="Comida casera <br /><em>para llevar.</em>"
-				lede={`La Tostona es una tienda de comidas caseras en el centro de Sevilla. La ficha de Google muestra ${RATING.label} sobre 5 con ${RATING.count} reseñas. Se prepara todo para recoger en el local: guisos, fritos, brasa, marisco y bocadillos.`}
-				image={vitrina}
-				imageAlt="Vitrina de La Tostona con ensaladillas, aliños y bandejas de comida preparada"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Menú del día', html: `<b>${MENU_DIA.price}</b> en el cartel` },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00 – 16:30</b> cada día' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Comida para recoger"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios y oferta de La Tostona" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="La Tostona, <br /><em>cocina de cada día.</em>"
-				paragraphs={[
-					'La Tostona ocupa el número 10 de la calle Carlos Cañal, en el Casco Antiguo de Sevilla, en el local del antiguo obrador Ambrosius. Google la clasifica como restaurante de comida para llevar y la describe como una tienda de comidas caseras.',
-					'La oferta que anuncia la ficha es amplia y de cuchara: guisos, aliños, fritos, brasa, marisco cocido, pescado frito, bocadillos y bebidas. Todo se prepara para recoger en el local, sin servicio de mesa según la información disponible.',
-					'En la puerta, el cartel de pizarra anuncia menú del día por 11 €: primero y segundo a elegir entre los platos fríos y calientes de la vitrina, con bebida, postre, pan, cubiertos y servilletas. También anuncia bocadillos calientes.',
-				]}
-				note="La ficha no publica una carta con precios. El precio del menú del día procede del cartel de la puerta que aparece en las fotografías; conviene confirmarlo al llamar, igual que los platos del día."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: '@latostonasevilla en Instagram', href: INSTAGRAM, external: true },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="Lo que hay en la vitrina"
-				title="Platos fríos y calientes <br /><em>para llevar.</em>"
-				description="La ficha del local y su cartel de pizarra describen la oferta: menú del día, vitrina de platos fríos y calientes, brasa, marisco y bocadillos. Esta selección es orientativa y no sustituye a lo que haya ese día."
-				cta={{ label: `Preguntar el menú · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No se publican precios salvo el menú del día del cartel (11 €). La disponibilidad cambia a diario: confirma los platos y el importe llamando al establecimiento."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="Así se ve <br /><em>La Tostona.</em>"
-				description="La vitrina, el cartel de la calle y algunos de los platos que aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de La Tostona en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Lo que cuentan <em>las reseñas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>{resena.texto}</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
-							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En pleno <br /><em>Casco Antiguo.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de La Tostona en C. Carlos Cañal, 10, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. Carlos Cañal, 10 · Sevilla"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="El servicio es para recoger en el local. Llama antes para encargar, saber qué hay en la vitrina y confirmar el horario en festivos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrina from '../assets/fotos/panificadora-la-catalana-1890-vertical-01.jpg';
@@ -179,6 +180,22 @@ const galeria = [
 		alt: 'Rótulo de madera «Panadería La Catalana · Desde 1890 · Pastelería» sobre las estanterías de pan',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panificadora-la-catalana-1890-apaisada-06.jpg": rotulo,
+	"panificadora-la-catalana-1890-apaisada-04.jpg": fachada,
+	"panificadora-la-catalana-1890-vertical-08.jpg": estanteria,
+	"panificadora-la-catalana-1890-vertical-01.jpg": vitrina,
+	"panificadora-la-catalana-1890-apaisada-07.jpg": vitrinaDulces,
+	"panificadora-la-catalana-1890-apaisada-03.jpg": tartas,
+	"panificadora-la-catalana-1890-vertical-10.jpg": milhojas,
+	"panificadora-la-catalana-1890-apaisada-05.jpg": mostrador,
+	"panificadora-la-catalana-1890-vertical-02.jpg": interior,
+	"panificadora-la-catalana-1890-vertical-09.jpg": entrada,
+};
 ---
 
 <!doctype html>
@@ -249,110 +266,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. San Pablo, 16 · Centro, Córdoba"
-				title="Panadería y pastelería <br /><em>desde 1890.</em>"
-				lede={`Panificadora La Catalana 1890 está en la calle San Pablo, 16, en el Centro de Córdoba. El rótulo de la fachada anuncia «Panificadora desde 1890» y un sello morado asegura que todos sus productos son sin lactosa y sin trazas de lactosa. Dentro hay pan, dulces y pasteles. Abre de lunes a sábado de 8:30 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={rotulo}
-				imageAlt="Rótulo de madera de Panadería La Catalana, Desde 1890, Pastelería, sobre las estanterías de pan"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> en Google · 99 reseñas' },
-					{ label: 'Horario', html: '<b>L–S 8:30–14:30</b> · domingo cerrado' },
-					{ label: 'Sin lactosa', html: '<b>Todos los productos</b> según la fachada' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · pastelería · sin lactosa"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La Catalana" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>de 1890.</em>"
-				paragraphs={[
-					'Panificadora La Catalana 1890 está en la calle San Pablo, 16, en el Centro de Córdoba (14002). En la fachada blanca, el rótulo rojo anuncia «La Catalana · Panificadora desde 1890», junto al sello morado que asegura que todos sus productos son sin lactosa y sin trazas de lactosa.',
-					'Dentro, el rótulo de madera dice «Panadería La Catalana · Desde 1890 · Pastelería». Las estanterías se llenan de barras, hogazas y panecillos, y las vitrinas de magdalenas, donuts, pasteles de chocolate, tartas y dulces de crema.',
-					'La ficha de Google la clasifica como panadería y le da 4,7 sobre 5 con 99 reseñas. Las reseñas hablan de una casa tradicional: «Panadería tradicional con unos dulces y panes estupendos», «Gran calidad en sus panes y pasteles», «Buena acogida, bien situado, variedad justa pero buena calidad y precio».',
-					'La ficha publica el teléfono 957 47 25 38, pero no web, correo ni redes. Abre de lunes a sábado, solo por la mañana, y cierra los domingos.',
-				]}
-				note="La ficha de Google no publica carta ni precios. Esta página solo cuenta lo que muestran las fotos del perfil, lo que dicen los rótulos del local y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Historia, horno <br />
-							<em>y sin lactosa.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que sale <br /><em>del horno.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las vitrinas del local y lo que cuentan las reseñas de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo de la mañana: la panadería cierra a las 14:30."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Diez fotos de la ficha de Google Maps: la fachada, el rótulo interior, las estanterías de pan, las vitrinas de pastelería y la entrada."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En San Pablo, <br /><em>en el Centro.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panificadora La Catalana 1890 en la calle San Pablo, 16, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Catalana · San Pablo"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Street View', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google indica acceso para sillas de ruedas, pero no aparcamiento adaptado; tampoco detalla el mostrador ni el aseo. Los encargos se hablan en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

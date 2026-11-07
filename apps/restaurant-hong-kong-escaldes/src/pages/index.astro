@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurant-hong-kong-escaldes-apaisada-01.jpg';
@@ -23,7 +24,16 @@ import foto08 from '../assets/fotos/restaurant-hong-kong-escaldes-apaisada-08.jp
 import foto09 from '../assets/fotos/restaurant-hong-kong-escaldes-vertical-09.jpg';
 import foto10 from '../assets/fotos/restaurant-hong-kong-escaldes-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Restaurant Hong Kong Escaldes · Restaurante en Escaldes-Engordany';
 const description = `Restaurant Hong Kong Escaldes, Passeig de l'Arnaldeta de Caboet (AD700 Escaldes-Engordany). Restaurante con ${RATING.label} sobre 5 en Google. Teléfono ${BUSINESS.phone}.`;
@@ -92,6 +102,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurant-hong-kong-escaldes-apaisada-01.jpg": fachada,
+	"restaurant-hong-kong-escaldes-vertical-02.jpg": foto02,
+	"restaurant-hong-kong-escaldes-apaisada-03.jpg": foto03,
+	"restaurant-hong-kong-escaldes-vista-4-04.jpg": foto04,
+	"restaurant-hong-kong-escaldes-apaisada-05.jpg": foto05,
+	"restaurant-hong-kong-escaldes-apaisada-06.jpg": foto06,
+	"restaurant-hong-kong-escaldes-vertical-07.jpg": foto07,
+	"restaurant-hong-kong-escaldes-apaisada-08.jpg": foto08,
+	"restaurant-hong-kong-escaldes-vertical-09.jpg": foto09,
+	"restaurant-hong-kong-escaldes-vertical-10.jpg": foto10,
+};
 ---
 
 <!doctype html>
@@ -160,88 +186,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Passeig de l'Arnaldeta de Caboet · Escaldes-Engordany"
-				title="Restaurante en Escaldes <br /><em>a mediodía y de noche.</em>"
-				lede={`Restaurant Hong Kong Escaldes está en el Passeig de l'Arnaldeta de Caboet, en Escaldes-Engordany. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre a mediodía y por la noche de martes a sábado.`}
-				image={fachada}
-				imageAlt="Fachada de Restaurant Hong Kong Escaldes en Escaldes-Engordany"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>13:00–15:30 y 20:00–23:00</b> · de martes a sábado' },
-					{ label: 'Horario', html: '<b>Martes a sábado</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Restaurante"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Hong Kong Escaldes" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Restaurante <br /><em>en Escaldes-Engordany.</em>"
-				paragraphs={[
-					"Restaurant Hong Kong Escaldes está en el Passeig de l'Arnaldeta de Caboet, en Escaldes-Engordany (AD700).",
-					`Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. La ficha no publica una carta online propia, así que esta web no incluye platos ni precios.`,
-				]}
-				note="La ficha no publica precios en su propio texto. Para el menú y los importes, llama por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Sobre el local</p>
-					<h2 id="highlights-title">Restaurante, <br /><em>a mediodía y de noche.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item) => (
-								<li>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la comida.</em>"
-				description="Diez fotografías del perfil de Restaurant Hong Kong Escaldes en Google Maps."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el Passeig de l'Arnaldeta de Caboet, <br /><em>Escaldes-Engordany.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Restaurant Hong Kong Escaldes en el Passeig de l'Arnaldeta de Caboet, Escaldes-Engordany"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Passeig de l'Arnaldeta de Caboet"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Consultas y pedidos por teléfono: la ficha no publica reservas online."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

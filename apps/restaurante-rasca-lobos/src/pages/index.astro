@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurante-rasca-lobos-apaisada-01.jpg';
@@ -24,7 +25,15 @@ import platano from '../assets/fotos/restaurante-rasca-lobos-vertical-08.jpg';
 import tarta from '../assets/fotos/restaurante-rasca-lobos-vertical-09.jpg';
 import ensalada from '../assets/fotos/restaurante-rasca-lobos-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante Rasca Lobos, mesón de cocina tradicional en Avinguda de Vicent Serra, 25 (Sant Jordi de ses Salines, Ibiza). Jardín, brasa y postres caseros. Tel. 971 39 58 60.';
@@ -167,6 +176,22 @@ const nav = [
 ];
 
 const title = 'Rasca Lobos · Mesón de cocina tradicional en Ibiza';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-rasca-lobos-apaisada-01.jpg": fachada,
+	"restaurante-rasca-lobos-vertical-05.jpg": entrada,
+	"restaurante-rasca-lobos-apaisada-06.jpg": jardin,
+	"restaurante-rasca-lobos-apaisada-04.jpg": salon,
+	"restaurante-rasca-lobos-vista-7-07.jpg": patatas,
+	"restaurante-rasca-lobos-vertical-02.jpg": verduras,
+	"restaurante-rasca-lobos-vertical-03.jpg": milanesa,
+	"restaurante-rasca-lobos-vertical-10.jpg": ensalada,
+	"restaurante-rasca-lobos-vertical-09.jpg": tarta,
+	"restaurante-rasca-lobos-vertical-08.jpg": platano,
+};
 ---
 
 <!doctype html>
@@ -224,81 +249,19 @@ const title = 'Rasca Lobos · Mesón de cocina tradicional en Ibiza';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Avinguda de Vicent Serra, 25 · Sant Jordi"
-				title="Mesón de siempre,<br /><em>jardín y mantel.</em>"
-				lede={`Rasca Lobos es un mesón de cocina tradicional en Avinguda de Vicent Serra, 25, en Sant Jordi de ses Salines (Ibiza). Jardín con suelo de guijarros bajo los árboles, salón climatizado y una carta de cuchara, brasa y postres caseros: fabada, patatas Oviedo, arroz de matanza, pollo payés, milanesa o entrecot. Sirve comidas de 13:00 a 16:00 y cenas de 20:00 a 23:00 de miércoles a domingo; lunes y martes cierra. Teléfono: ${BUSINESS.phoneDisplay}.`}
-				image={fachada}
-				imageAlt="Rótulo de neón verde de Mesón Restaurante Rasca Lobos sobre la fachada, con los dos lobos y el horario pintado en el cristal"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Cocina', html: 'Tradicional · cuchara, brasa y postres' },
-					{ label: 'Horario', html: '13:00–16:00 · 20:00–23:00 · lunes y martes cerrado' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante Rasca Lobos" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un mesón<br /><em>con jardín.</em>"
-				paragraphs={[
-					'Rasca Lobos está en Avinguda de Vicent Serra, 25, en Sant Jordi de ses Salines (Ibiza), a pocos minutos del aeropuerto y de Platja d’en Bossa. Google lo clasifica como restaurante de cocina española y su propio cartel lo anuncia como «Mesón Restaurante Rasca Lobos · Cocina Tradicional de Calidad», con el lobo dibujado a los dos lados.',
-					'La entrada es una puerta de jardín entre dos pilares de obra. Dentro, el suelo es de guijarros y las mesas blancas se reparten bajo los árboles y las palmeras. En el interior, el salón tiene paredes color terracota, estanterías con botellas de vino y mesas con mantel blanco. La ficha del negocio destaca que está climatizado con aire acondicionado en todas las zonas interiores.',
-					'Sirve comidas de 13:00 a 16:00 y cenas de 20:00 a 23:00 de miércoles a domingo; lunes y martes cierra. El horario aparece también pintado en el cristal de la fachada, junto al rótulo de neón.',
-					'En las fotos del perfil aparecen las patatas Oviedo con su cruz de pimiento y aceitunas, un salteado de verduras con jamón, una ensalada con langostinos y aguacate, la milanesa con patatas, el entrecot con pimientos de Padrón, la tarta de queso y el plátano frito con helado. Sus reseñas añaden los champis, el queso, la fabada, el arroz de matanza y el pollo payés. Google le da 4,6 sobre 5 con 527 reseñas.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[0]}»`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Cuchara, brasa<br /><em>y postre casero.</em>"
-				description="La ficha de Google no publica carta ni precios: esto es lo que aparece en las fotos del perfil y lo que citan sus reseñas."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No hay precios publicados. Llama al 971 39 58 60 para reservar mesa o preguntar por la fabada, el arroz de matanza y los postres del día."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El jardín,<br /><em>la mesa y el neón.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante Rasca Lobos en Google Maps: la fachada con el rótulo de neón, la entrada al jardín, la terraza entre árboles, el salón, las patatas Oviedo, el salteado de verduras, la milanesa, el entrecot, la ensalada de langostinos y los postres."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Te esperamos<br /><em>en Sant Jordi.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: comidas de 13:00 a 16:00 y cenas de 20:00 a 23:00, de miércoles a domingo; lunes y martes cerrado. Conviene llamar antes para mesa en el jardín."
-				mapTitle="Mapa de Restaurante Rasca Lobos en Avinguda de Vicent Serra, Sant Jordi de ses Salines (Ibiza)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Rasca Lobos · Sant Jordi"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se llama al 971 39 58 60. La ficha de Google marca acceso para sillas de ruedas y asientos adaptados."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

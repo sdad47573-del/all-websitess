@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import terraza from '../assets/fotos/restaurante-el-tozon-vertical-01.jpg';
@@ -22,7 +23,14 @@ import ensalada from '../assets/fotos/restaurante-el-tozon-apaisada-07.jpg';
 import carrillera from '../assets/fotos/restaurante-el-tozon-vertical-09.jpg';
 import carpaccio from '../assets/fotos/restaurante-el-tozon-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante El Tozón, bar restaurante con terraza en Arroyomolinos de la Vera (Cáceres). Ensalada de naranja y jamón, sepia, paella, chuletón y carrillera, con vistas al valle. Reservas en el 927 17 76 35.';
@@ -144,6 +152,20 @@ const nav = [
 ];
 
 const title = 'Restaurante El Tozón · Terraza y raciones en Arroyomolinos de la Vera';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-el-tozon-vertical-01.jpg": terraza,
+	"restaurante-el-tozon-apaisada-02.jpg": tapa,
+	"restaurante-el-tozon-apaisada-07.jpg": ensalada,
+	"restaurante-el-tozon-apaisada-03.jpg": paella,
+	"restaurante-el-tozon-vertical-06.jpg": chuleton,
+	"restaurante-el-tozon-vertical-09.jpg": carrillera,
+	"restaurante-el-tozon-vertical-10.jpg": carpaccio,
+	"restaurante-el-tozon-apaisada-05.jpg": helado,
+};
 ---
 
 <!doctype html>
@@ -198,80 +220,19 @@ const title = 'Restaurante El Tozón · Terraza y raciones en Arroyomolinos de l
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Constitución · Arroyomolinos de la Vera"
-				title="Terraza, raciones<br /><em>y vistas al valle.</em>"
-				lede={`Ensalada de naranja y jamón, sepia, paella y chuletón en un bar restaurante con terraza cubierta sobre los bancales. Abierto viernes, sábado, domingo y lunes; de martes a jueves cierra. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={terraza}
-				imageAlt="Terraza cubierta con sillas rojas y vistas al valle de Restaurante El Tozón"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Horario', html: 'Vie–Lun · desde las 10:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece El Tozón" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El bar restaurante"
-				title="Terraza<br /><em>sobre el valle.</em>"
-				paragraphs={[
-					`El Tozón está en la Avenida Constitución, 22B, en Arroyomolinos de la Vera (${BUSINESS.postalCode}, Cáceres). La terraza va cubierta, con sillas rojas y vistas a los bancales del valle; dentro, el bar y el comedor.`,
-					'Es bar restaurante: caña y tapa, raciones abundantes, ensaladas, arroces y carnes a la plancha. En las reseñas se repiten la ensalada de naranja y jamón, la sepia, la carrillera y los postres.',
-					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios y disponibilidad se llama al restaurante.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repiten las raciones abundantes, el trato, la carrillera y la ensalada de naranja.`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Raciones, arroces<br /><em>y postres.</em>"
-				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el restaurante."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia con el mercado y la temporada. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de El Tozón en Google Maps: la tapa con la caña, la ensalada de naranja, la paella, el chuletón, la carrillera, el carpaccio y el postre."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en la avenida.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google. Cierra de martes a jueves; el resto de días abre a las 10:00, con corte al mediodía el viernes y el lunes."
-				mapTitle="Mapa de Restaurante El Tozón en la Avenida Constitución, 22B, Arroyomolinos de la Vera (Cáceres)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Tozón · La Vera"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google marca acceso, aseo y asientos adaptados, y la terraza va cubierta; para grupos conviene avisar con tiempo."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mostrador from '../assets/fotos/panaderia-naty-apaisada-01.jpg';
@@ -128,6 +129,15 @@ const galeria = [
 		alt: 'Expositores de chocolates y golosinas en el mostrador de Panadería Naty',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-naty-apaisada-01.jpg": mostrador,
+	"panaderia-naty-apaisada-02.jpg": estanterias,
+	"panaderia-naty-vertical-04.jpg": expositores,
+};
 ---
 
 <!doctype html>
@@ -189,106 +199,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Poniente Norte · 14005 Córdoba"
-				title="Panadería <br /><em>y mostrador de chucherías.</em>"
-				lede={`Panadería Naty está en la calle Centro de Salud, en Poniente Norte. La ficha de Google la clasifica como panadería, pero las fotos de su perfil enseñan sobre todo el mostrador: tarros de golosinas, expositores de chucherías y estanterías de snacks y chocolates. Abre todos los días desde las 7:30, con cierre a las 21:00 de lunes a sábado y a las 18:00 los domingos. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={mostrador}
-				imageAlt="Mostrador de Panadería Naty con tarros y cajas de golosinas de colores y estanterías de chucherías"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,8</b> en Google · 12 reseñas' },
-					{ label: 'Horario', html: '<b>L–S</b> 7:30–21:00 · <b>D</b> 7:30–18:00' },
-					{ label: 'Zona', html: '<b>Poniente Norte</b> · 14005' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Chucherías · snacks · panadería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Naty" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una tienda <br /><em>de barrio.</em>"
-				paragraphs={[
-					'Panadería Naty está en la calle Centro de Salud, en Poniente Norte (14005 Córdoba). La ficha de Google la clasifica como panadería y publica su teléfono, pero no el número de la calle: el mapa de esta página abre el punto exacto.',
-					'Las fotos del perfil enseñan el local por dentro: un mostrador corrido con tarros y cajas de golosinas de colores, expositores de chuches y estanterías con bolsas de snacks, aperitivos y chocolates. También hay vitrina y cajas de dulces junto al mostrador.',
-					'La jornada es amplia y no cierra a mediodía: de lunes a sábado abre de 7:30 a 21:00, y los domingos de 7:30 a 18:00. Es de las pocas del barrio que abre todos los días.',
-					'La ficha no publica web propia, redes, carta ni precios, así que aquí no encontrarás importes. Los carteles de las fotos llevan precios, pero cambian.',
-				]}
-				note="La ficha de Google no publica el número de la calle ni fotos de pan: las imágenes del perfil corresponden al mostrador de chucherías y a las estanterías de snacks y chocolates. Esta página solo recoge lo que aparece en la ficha y en esas fotos."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 633 07 06 94', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Mostrador, <br />
-							<em>snacks y barrio.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la tienda.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del perfil y lo que dice la ficha de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. Las fotos del perfil son del mostrador de chucherías y de las estanterías, no del pan."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La tienda, <br /><em>por dentro.</em>"
-				description="Dos fotos de la ficha de Google Maps: las estanterías de snacks y los expositores de chocolates."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la calle <br /><em>Centro de Salud.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Naty en la calle Centro de Salud, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Panadería Naty · Poniente Norte"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 633 07 06 94. No publica web propia ni redes. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el mostrador ni el aseo. La ficha no publica el número de la calle, así que usa el mapa para llegar."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

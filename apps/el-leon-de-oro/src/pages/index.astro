@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import wok from '../assets/fotos/el-leon-de-oro-panoramica-03.jpg';
@@ -185,6 +186,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-leon-de-oro-panoramica-03.jpg": wok,
+	"el-leon-de-oro-apaisada-01.jpg": comedor,
+	"el-leon-de-oro-vertical-09.jpg": pato,
+	"el-leon-de-oro-vertical-05.jpg": leon,
+	"el-leon-de-oro-vertical-04.jpg": empanadillas,
+	"el-leon-de-oro-vertical-06.jpg": fideosAnchos,
+	"el-leon-de-oro-vertical-07.jpg": berenjenas,
+	"el-leon-de-oro-vertical-08.jpg": judias,
+	"el-leon-de-oro-vertical-10.jpg": sopa,
+};
 ---
 
 <!doctype html>
@@ -254,134 +270,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Fernández del Campo, 8 · Abando (Bilbao)"
-				title="Cocina china, <br /><em>en el centro de Abando.</em>"
-				lede={`El León de Oro es el chino de la calle Fernández del Campo, en Abando: pato laqueado, empanadillas a la plancha, berenjenas y judías picantes para empezar, verdura al wok y fideos para el centro de la mesa. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días de 12:00 a 16:30 y de 20:00 a 23:30.`}
-				image={wok}
-				imageAlt="Wok de coliflor y verdura salteada con ternera en El León de Oro, Bilbao"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:00–16:30</b> · y 20:00–23:30' },
-					{ label: 'Cocina', html: '<b>China</b> · al wok' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Todos los días"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece El León de Oro" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Abando. <br /><em>Mesa de madera y wok.</em>"
-				paragraphs={[
-					'El León de Oro está en la calle Fernández del Campo, 8, en el barrio de Abando, Bilbao. La ficha de Google sitúa el restaurante en las coordenadas 43.2585269, -2.9333686. La ficha lo clasifica como restaurante chino y lo sitúa en la planta baja del edificio.',
-					'El comedor tiene mesas de madera con el disco giratorio en el centro y mantel de papel, sillas oscuras de respaldo alto y suelo de gres claro. En una pared cuelga un gran relieve de paisaje chino, con el puente, el río y los árboles tallados; al fondo se ve la cocina, con la campana y los fogones, y una barra con la caja y las bebidas.',
-					'En las fotos del perfil aparecen los platos de siempre: empanadillas a la plancha con su cuenco de soja, berenjenas estofadas en salsa, judías verdes con guindilla, coliflor y verdura al wok servida en el propio wok sobre el hornillo, tallarines de arroz ancho con verdura, fideos con ternera, sopa de fideos con pollo y espinaca, y pato laqueado cortado en láminas sobre lechuga. También una gran albóndiga estofada en su salsa, rodeada de bollos al vapor.',
-					`Las reseñas que se ven en Google hablan de un servicio rápido: «nos atendieron rápido, pedimos un entrante y un plato principal para cada uno». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). El teléfono de la ficha es el ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica carta, precios ni web propia, y tampoco marca datos de accesibilidad. Lo que aparece en esta página es lo que dice la ficha y lo que se reconoce en las fotos del perfil; para el menú del día, los precios o una mesa, hay que llamar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> En la mesa</p>
-					<h2 id="highlights-title">Wok, vapor <br /><em>y mantel de papel.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo que sale <br /><em>del wok.</em>"
-				description="Sin carta publicada: esta lista reúne los platos que se reconocen en las fotos del perfil de Google y los que aparecen en las mesas del restaurante. No hay precios en la ficha, así que aquí tampoco."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`El menú del día y los precios se preguntan por teléfono, en el ${BUSINESS.phone}. Los platos llegan en fuentes grandes para compartir, así que lo habitual es pedir un entrante y un principal por persona, como cuenta una de las reseñas.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor, el pato <br /><em>y los entrantes.</em>"
-				description="Nueve fotografías del perfil de El León de Oro: el wok de coliflor y verdura, el comedor con el relieve chino y la cocina al fondo, el pato laqueado, la albóndiga con bollos al vapor, las empanadillas a la plancha, los tallarines de arroz, las berenjenas, las judías picantes y la sopa de fideos."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,1 sobre 5, <em>con 622 reseñas.</em></h2>
-						<p>
-							Google publica una media de 4,1 con 622 opiniones (noviembre de 2026). Entre las
-							reseñas que se ven en la ficha, las hay que destacan la rapidez del servicio y la
-							posibilidad de pedir un entrante y un principal por persona.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<small>Reseña publicada en Google</small>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,1</strong>
-						<span>★★★★☆</span>
-						<small>622 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Bilbao, <br /><em>Abando.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city} (Bizkaia)`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 12:00 a 16:30 y de 20:00 a 23:30 todos los días, con el jueves abriendo a las 11:30. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de El León de Oro en la calle Fernández del Campo, Bilbao"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Fernández del Campo, 8 · Bilbao"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`La mesa se pide por teléfono, en el ${BUSINESS.phone}: el restaurante no tiene web propia ni reservas online. La ficha no publica datos de accesibilidad ni de reparto a domicilio, así que conviene preguntarlo en la misma llamada.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>sentarse.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/la-casita-del-pan-apaisada-01.jpg';
@@ -144,6 +145,17 @@ const galeria = [
 		alt: 'Napolitanas de chocolate con virutas sobre la bandeja del mostrador',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-casita-del-pan-apaisada-01.jpg": fachada,
+	"la-casita-del-pan-apaisada-02.jpg": vitrina,
+	"la-casita-del-pan-apaisada-05.jpg": interior,
+	"la-casita-del-pan-vertical-06.jpg": pan,
+	"la-casita-del-pan-apaisada-09.jpg": napolitanas,
+};
 ---
 
 <!doctype html>
@@ -205,106 +217,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Sur · 14013 Córdoba"
-				title="La casita <br /><em>del pan.</em>"
-				lede={`En el Pasaje Aguilar de la Frontera hay un local blanco y rosa con terraza bajo el porche y un toldo que anuncia «PANADERÍA». La propia ficha del negocio lo cuenta así: «pan del día y recién horneado, dulces de pastelero y dulces finos, tartas de cumpleaños por encargo y empanadas». Abre todos los días por la mañana y, de lunes a viernes, también por la tarde. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de La casita del pan, con el rótulo PANADERÍA en rosa y la terraza con mesas y sillas"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 29 reseñas' },
-					{ label: 'Horario', html: '<b>Todos los días</b> desde las 8:00' },
-					{ label: 'Zona', html: '<b>Sur</b> · 14013' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · dulces · encargos"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La casita" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pan del día <br /><em>y dulces finos.</em>"
-				paragraphs={[
-					'La casita del pan está en el Pasaje Aguilar de la Frontera, en el distrito Sur de Córdoba (14013). Es un local esquinero de fachada blanca y rosa, con un porche y terraza de mesas y sillas, y el rótulo de «PANADERÍA» sobre el escaparate. El logotipo de la casa, una magdalena dentro de un círculo, se repite en el toldo y en las paredes del interior.',
-					'Dentro hay una vitrina larga con napolitanas, hojaldres, donuts bañados de chocolate y bollería rellena, además de una zona de mesas con sillas blancas y paredes rosas. En las fotos del perfil se ven también las barras de pan recién horneadas y los dulces de mostrador.',
-					'La descripción que el propio negocio publica en Google resume el surtido: «pan del día y recién horneado. Dulces de pastelero y dulces finos. Tenemos tartas de cumpleaños por encargo y empanadas».',
-					'Las reseñas hablan sobre todo del trato y del desayuno: «dos trabajadoras maravillosas, y una atención exquisita» y «buen sitio para desayunar y buena atención». También hay alguna negativa: una clienta cuenta que las pastas saladas eran congeladas.',
-				]}
-				note="La ficha de Google publica la categoría, la dirección, el teléfono, el horario y la descripción del negocio, pero no carta, precios ni métodos de pago. El surtido que se describe aquí es el de esa descripción y el de las fotos del perfil."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 647 93 88 10', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, dulces <br />
-							<em>y encargos.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin precios publicados: esto es lo que anuncia la ficha del negocio y lo que muestran las fotos del perfil de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios, así que esta web no indica importes. Las tartas de cumpleaños y las empanadas se encargan por teléfono o en el local: conviene llamar al 647 93 88 10 con antelación."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casita, <br /><em>por dentro.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: la vitrina, el interior rosa, el pan del día y las napolitanas."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el Pasaje <br /><em>Aguilar de la Frontera.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de La casita del pan en el Pasaje Aguilar de la Frontera, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La casita del pan · Sur"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 647 93 88 10. No publica web propia ni redes. Indica acceso para sillas de ruedas, pero no aparcamiento accesible; del aseo y el mostrador no dice nada, así que esta página no lo afirma. Para tartas de cumpleaños o empanadas, conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

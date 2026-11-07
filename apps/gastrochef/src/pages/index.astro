@@ -10,9 +10,20 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'GASTROCHEF · Comida para llevar en Pinto';
 const description = BUSINESS.description;
@@ -99,6 +110,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"gastrochef-apaisada-01.jpg": fachada,
+	"gastrochef-apaisada-03.jpg": vitrina,
+	"gastrochef-apaisada-04.jpg": local,
+	"gastrochef-vertical-05.jpg": plato,
+	"gastrochef-apaisada-06.jpg": bandeja,
+	"gastrochef-vertical-07.jpg": croquetas,
+	"gastrochef-vertical-08.jpg": pollo,
+	"gastrochef-vertical-10.jpg": cerdo,
+};
 ---
 
 <!doctype html>
@@ -167,71 +192,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. de las Naciones, 37, Loc · Pinto, Madrid"
-				title="Comida para llevar <br /><em>en Pinto.</em>"
-				lede={`GASTROCHEF es comida para llevar en Pinto. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>Jue–dom</b> 9:30–16:30 · <b>Lun–mié</b> cerrado' },
-					{ label: 'Servicio', html: '<b>Para llevar</b>' },
-				]}
-				image={fachada}
-				imageAlt="Fachada de GASTROCHEF en la Av. de las Naciones, en Pinto"
-				galleryHref={MAPS.place}
-				photoCredit="Ficha de Google Maps"
-				galleryLinkLabel="Ver en Google Maps"
-				tag="Comida para llevar"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece GASTROCHEF" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Comida casera <br /><em>para llevar.</em>"
-				paragraphs={[
-					'GASTROCHEF está en la Av. de las Naciones, 37, Loc, en Pinto. Su ficha de Google Maps lo clasifica como restaurante de comida para llevar.',
-					'Su ficha publica horario de jueves a domingo, de 9:30 a 16:30.',
-				]}
-				note="La ficha no publica página web, redes sociales, carta con precios ni reparto a domicilio. Para precios concretos y encargos, llama al 919 39 76 69."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la cocina.</em>"
-				description="Interior del local, vitrina de comida preparada y platos de la casa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Las fotos de la carta y de los platos de otros locales no se publican. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Pinto, <br /><em>Av. de las Naciones.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.region]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.horas === 'Cerrado' }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: jueves a domingo de 10:30 a 16:00, y de lunes a miércoles cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de GASTROCHEF en la Av. de las Naciones, 37, Pinto, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Av. de las Naciones, 37"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha no publica reparto a domicilio, encargos ni pedidos online: se concreta todo por teléfono, en el 919 39 76 69. No da datos de accesibilidad, así que conviene llamar antes si necesitas algo concreto."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

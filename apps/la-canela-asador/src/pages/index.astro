@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import pastelasHorno from '../assets/fotos/la-canela-asador-vertical-01.jpg';
@@ -24,7 +25,18 @@ import couscousVerduras from '../assets/fotos/la-canela-asador-vertical-08.jpg';
 import couscousPollo from '../assets/fotos/la-canela-asador-apaisada-09.jpg';
 import pastelas from '../assets/fotos/la-canela-asador-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'La Canela · Asador y comida casera en Palma-Palmilla';
 const description =
@@ -203,6 +215,22 @@ const nav = [
 	{ label: 'Fotos', href: '#galeria' },
 	{ label: 'Visitar', href: '#visitanos' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-canela-asador-vertical-03.jpg": fachada,
+	"la-canela-asador-apaisada-05.jpg": vitrina,
+	"la-canela-asador-vertical-10.jpg": pastelas,
+	"la-canela-asador-apaisada-09.jpg": couscousPollo,
+	"la-canela-asador-vertical-01.jpg": pastelasHorno,
+	"la-canela-asador-apaisada-04.jpg": croquetas,
+	"la-canela-asador-vertical-06.jpg": arroz,
+	"la-canela-asador-vertical-07.jpg": arrozCanela,
+	"la-canela-asador-vertical-02.jpg": pastelasAzucar,
+	"la-canela-asador-vertical-08.jpg": couscousVerduras,
+};
 ---
 
 <!doctype html>
@@ -272,147 +300,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Jane Bowles, 1, local 14 · Palma-Palmilla"
-				title="Asador y <br /><em>comida casera.</em>"
-				lede={`La Canela junta el asador andaluz y la cocina árabe en Palma-Palmilla: pollo asado con patatas, pastelas, couscous y platos halal. Todo se prepara en el local, para llevar o a domicilio. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="Fachada de La Canela con el rótulo script y la buganvilla sobre el toldo, junto a los carteles de halal y reparto"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>11:00–16:00</b> · lunes cerrado' },
-					{ label: 'Cocina', html: '<b>Halal</b> · árabe y andaluza' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Para llevar y a domicilio"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Canela" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Asador andaluz, <br /><em>mesa árabe.</em>"
-				paragraphs={[
-					'La Canela está en la avenida Jane Bowles, 1, local 14, en Palma-Palmilla. El rótulo con la flor, el toldo y la buganvilla de la puerta anuncian una casa de barrio en la que el asador convive con los tajines y las pastelas.',
-					'En el escaparate se lee «auténtica fusión árabe y andaluza» y el sello halal. La ficha de Google la clasifica a la vez como restaurante árabe, halal, mediterráneo, de comida para llevar y de comida a domicilio.',
-					'La cocina trabaja a diario: pollo asado, patatas, arroces, couscous, pastelas, croquetas y tarrinas de comida preparada en la vitrina. Las reseñas lo cuentan con nombres propios: «pollos asado con patatas, pastela y couscous, todo buenísimo».',
-					'La casa tiene 4,9 sobre 5 con 82 reseñas. La mejor tarjeta de presentación es la de siempre: buen trato, servicio rápido y precios justos.',
-				]}
-				note="La ficha no publica carta, precios, página web ni redes sociales. Esta web solo cita las preparaciones que nombran las categorías y las reseñas, y enlaza el teléfono que aparece en la propia ficha."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="pedir" id="pedir" aria-labelledby="pedir-title">
-				<div class="wrap">
-					<div class="pedir-head">
-						<div>
-							<p class="section-label section-label-light"><span aria-hidden="true"></span> Cómo pedir</p>
-							<h2 id="pedir-title">Se encarga <br /><em>por teléfono.</em></h2>
-						</div>
-						<p>
-							No hay tienda online ni reservas por la web. La ficha publica un teléfono para
-							consultar el día, encargar y confirmar el reparto.
-						</p>
-					</div>
-
-					<ol class="pedir-grid">
-						{
-							pasos.map((paso, index) => (
-								<li class="pedir-card">
-									<span aria-hidden="true">Paso 0{index + 1}</span>
-									<h3>{paso.title}</h3>
-									<p>{paso.text}</p>
-								</li>
-							))
-						}
-					</ol>
-
-					<p class="pedir-foot">
-						Pedidos y consultas en el <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>. La web no
-						publica una carta porque la ficha no la incluye.
-					</p>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Del asador <br /><em>y de la mesa árabe.</em>"
-				description="Sin carta publicada: esto es lo que nombran las categorías y las reseñas de Google. El resto cambia cada día."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La ficha de Google no incluye carta ni precios, así que esta página no inventa valores. Para saber qué hay hoy, qué incluye cada ración y cuánto cuesta, hay que llamar al teléfono del local."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El asador <br /><em>y la vitrina.</em>"
-				description="Diez fotografías del perfil de La Canela en Google Maps: la fachada, la vitrina de comida preparada, las pastelas recién hechas, el couscous, los arroces y las croquetas."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="opiniones" aria-labelledby="opiniones-title">
-				<div class="wrap opiniones-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="opiniones-title">Casi <em>perfecto.</em></h2>
-						<p class="opiniones-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas ↗
-						</a>
-					</div>
-
-					<ul class="reviews">
-						{
-							RESENAS.map((resena) => (
-								<li>
-									<p>«{resena.texto}»</p>
-									<span aria-label={`${resena.valor} de 5 estrellas`}>
-										{'★'.repeat(resena.valor)}
-										{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-									</span>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Palma-<br /><em>Palmilla.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: martes de 11:00 a 17:00; de miércoles a domingo de 11:00 a 16:00; lunes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Canela Asador en la avenida Jane Bowles, 1, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Av. Jane Bowles, 1 · local 14"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Pedidos por teléfono: la ficha no publica reservas online. Google marca el acceso para sillas de ruedas, pero no publica datos sobre aparcamiento adaptado, asientos adaptados o aseos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
 		</main>
 
 		<LocalFooter

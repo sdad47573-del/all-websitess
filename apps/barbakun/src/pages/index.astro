@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/barbakun-fachada.jpg';
@@ -166,6 +167,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"barbakun-fachada.jpg": fachada,
+	"barbakun-pizza.jpg": pizza,
+	"barbakun-hamburguesa.jpg": hamburguesa,
+	"barbakun-fritos.jpg": fritos,
+	"barbakun-patatas-asadas.jpg": patatas,
+	"barbakun-patatas-rellenas.jpg": rellenas,
+	"barbakun-comedor.jpg": comedor,
+	"barbakun-fachada-noche.jpg": noche,
+};
 ---
 
 <!doctype html>
@@ -235,128 +250,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Fiter i Rossell, 38 · Escaldes-Engordany"
-				title="Pizza, hamburguesa <br /><em>y brasa.</em>"
-				lede={`Barbakun es el local de la Avenida Fiter i Rossell, en Escaldes-Engordany, con el rótulo rojo en la puerta y la pizarra del día en la acera. Pizzas al horno, hamburguesas, fritos y parrilla, con servicio en mesa y reparto a domicilio. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de martes a domingo de 13:00 a 15:30 y de 19:30 a 23:00.`}
-				image={fachada}
-				imageAlt="Fachada de Barbakun con el rótulo negro y rojo y la pizarra del día"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>13:00–15:30</b> · y 19:30–23:00' },
-					{ label: 'Servicio', html: '<b>A domicilio</b> · y en el local' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pizza & grill"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Barbakun" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Fiter i Rossell, 38. <br /><em>Pizza y brasa.</em>"
-				paragraphs={[
-					'Barbakun está en el número 38 de la Avenida Fiter i Rossell, la calle principal de Escaldes-Engordany. La ficha de Google lo sitúa en las coordenadas 42.5137845, 1.5337382. El teléfono es un fijo andorrano, el +376 727 726.',
-					'La fachada es de piedra, con el rótulo negro de BARBAKUN letra a letra en amarillo, el marco rojo de la puerta y una pizarra en la acera que anuncia el plato del día. Dentro hay barra, vitrina de bebidas y una sala con mesas y sillas de madera junto a la parrilla.',
-					'La cocina es de horno y plancha: pizza redonda con la masa fina que sale en caja, hamburguesas en pan de sésamo con la carne a la parrilla, y una parte de fritos con empanadillas, croquetas y patatas —asadas en tandas o rellenas y pasadas por la freidora— para picar mientras se espera.',
-					`Google lo clasifica como «Comida a domicilio», así que el reparto por teléfono es parte del negocio, además del servicio en mesa. Con ${RATING.count} reseñas y una media de ${RATING.label} sobre 5 (noviembre de 2026), es una ficha pequeña, de barrio, sin web propia.`,
-				]}
-				note="La ficha no publica carta ni precios, y en el perfil no aparece la carta impresa. Los platos que se citan son los que se ven en las fotos y en la pizarra de la puerta; los nombres y los importes se confirman en el local."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> La cocina</p>
-					<h2 id="highlights-title">Horno, plancha <br /><em>y freidora.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pizzas, hamburguesas <br /><em>y fritos.</em>"
-				description="Una selección de lo que aparece en las fotos del perfil y en la pizarra, en cuatro bloques. No es la carta completa: cambia con el día y no está publicada."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`Para pedir a domicilio o preguntar por la carta del día, el teléfono es el ${BUSINESS.phone}. Los precios no se copian aquí porque la ficha no los publica.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La pizza, la hamburguesa <br /><em>y el local.</em>"
-				description="Siete fotografías del perfil de Barbakun: la pizza en su caja, la hamburguesa envuelta en papel de cuadros, las empanadillas recién fritas, las patatas asadas, las patatas rellenas, el comedor con la vitrina y la fachada de noche."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,4 sobre 5, <em>con 43 reseñas.</em></h2>
-						<p>
-							Una ficha pequeña, de barrio: 43 opiniones son pocas para sacar conclusiones firmes,
-							pero suficientes para saber que el reparto y las pizzas funcionan. Google lo clasifica
-							como comida a domicilio.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,4</strong>
-						<span>★★★★☆</span>
-						<small>43 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la avenida <br /><em>de Escaldes.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Principado de Andorra',
-				]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 13:00 a 15:30 y de 19:30 a 23:00 de martes a domingo, con el lunes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Barbakun en la Avenida Fiter i Rossell, Escaldes-Engordany"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel={`${BUSINESS.street} · Escaldes-Engordany`}
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Los pedidos y el reparto se gestionan por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni pedidos online. La ficha no da datos de aparcamiento ni de accesibilidad, así que conviene preguntarlos en la misma llamada.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import peixe from '../assets/fotos/tasca-do-beco-vertical-01.jpg';
@@ -19,7 +20,16 @@ import fachada from '../assets/fotos/tasca-do-beco-apaisada-04.jpg';
 import noite from '../assets/fotos/tasca-do-beco-vertical-03.jpg';
 import ardosia from '../assets/fotos/tasca-do-beco-vertical-05.jpg';
 
-import { BUFFET, BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+import {
+	BUFFET,
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICOS,
+} from '../data/site';
 
 const title = 'A Tasca do Béco · peixe na brasa em Arroios, Lisboa';
 const description =
@@ -113,6 +123,17 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Perguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"tasca-do-beco-vertical-01.jpg": peixe,
+	"tasca-do-beco-apaisada-02.jpg": prato,
+	"tasca-do-beco-apaisada-04.jpg": fachada,
+	"tasca-do-beco-vertical-03.jpg": noite,
+	"tasca-do-beco-vertical-05.jpg": ardosia,
+};
 ---
 
 <!doctype html>
@@ -172,124 +193,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow="Calçada de Sant'Ana, 139 · Arroios"
-				title="Peixe na brasa, <br /><em>sem cerimónia.</em>"
-				lede="Uma tasca de bairro na Calçada de Sant'Ana, em Lisboa. Grelhador aceso, prato do dia escrito à mão na porta e porções que não deixam ninguém com fome."
-				image={peixe}
-				imageAlt="Peixe grelhado inteiro com batatas e limão num prato branco, com salada de tomate ao lado"
-				primaryCta={{ label: 'Como chegar', href: MAPS.directions, external: true }}
-				secondaryCta={{ label: 'Ficha no Google Maps', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> no Google · 15 críticas' },
-					{ label: 'Peixe', html: '<b>12–14 €</b> grelhado na brasa' },
-					{ label: 'Pratos', html: '<b>10 €</b> carnes, bitoques e vegan' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto do perfil de Google Maps"
-				galleryLinkLabel="Ver a galeria"
-				tag="Prato do dia 10 €"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="O que se come em A Tasca do Béco" items={SERVICOS} />
-
-			<section class="buffet" id="tasca" aria-labelledby="tasca-title">
-				<div class="wrap">
-					<div class="buffet-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Como funciona</p>
-							<h2 id="tasca-title">Entrar, sentar, <br /><em>comer bem.</em></h2>
-						</div>
-						<p>
-							Não há carta impressa nem serviço de sala complicado: a ementa do dia está
-							escrita à mão na ardósia da porta, ao lado do número 139.
-						</p>
-					</div>
-					<div class="buffet-grid">
-						{
-							BUFFET.map((item) => (
-								<article class="buffet-card">
-									<span class="buffet-num" aria-hidden="true">{item.icon}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalAbout
-				label="A casa"
-				title="Uma porta verde <br /><em>na Calçada de Sant'Ana.</em>"
-				paragraphs={[
-					'A Tasca do Béco fica na Calçada de Sant\'Ana, 139, em Arroios. A fachada é de azulejo lavado, a porta é verde, gradeada, e por cima está pintado o número da casa. Lá dentro, a sala é pequena e as mesas estão cobertas com toalhas de papel.',
-					'É uma tasca de bairro no sentido antigo da palavra: quem entra é tratado pelo nome, a televisão passa o futebol e os reformados da zona ocupam as mesas ao almoço, como se estivessem em casa. As críticas no Google dizem-no em várias línguas.',
-					'A cozinha é portuguesa e simples. O grelhador é o centro da casa: dourada, robalo e salmão saem inteiros, com batata cozida e legumes. Há também carnes na brasa, bitoques, alheiras, sopa do dia e um prato do dia que muda consoante o que houver.',
-					'Na ficha de Google Maps o restaurante aparece com o nome genérico «Traditional restaurant». Na porta, o letreiro e a ardósia dizem outra coisa: A Tasca do Béco. É o mesmo sítio, com o mesmo grelhador.',
-				]}
-				note="Tem 4,7 sobre 5 com 15 críticas no Google. Uma delas diz: «Restaurante tradicional que serve a comida em fontes abundantes. Muito sabroso.»"
-				links={[
-					{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true },
-					{ label: 'Como chegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="A ardósia"
-				title="O que está <br /><em>escrito na porta.</em>"
-				description="Esta é a ementa copiada da ardósia que a casa pendura à entrada, fotografada a 8 de abril de 2026. O prato do dia muda todos os dias e os preços acompanham o mercado."
-				cta={{ label: 'Ver a ficha no Google', href: MAPS.place }}
-				groups={MENU}
-				note="Preços copiados da ardósia da porta; a casa não publica carta nem site. Nas carnes e nos pratos do dia a ardósia tem três colunas (meia dose, dose e dose dupla), de onde vem o intervalo de 9 € a 18 €. Confirma os valores no local."
-			/>
-
-			<section class="voices" aria-labelledby="voices-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Quem já comeu aqui</p>
-					<h2 id="voices-title">O que dizem <em>as críticas.</em></h2>
-					<div class="voice-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="voice">
-									<blockquote>{review.text}</blockquote>
-									<figcaption>{review.author} · {review.rating}/5</figcaption>
-								</figure>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Quatro fotografias <br /><em>da tasca.</em>"
-				description="As fotografias publicadas no perfil da casa em Google Maps: o peixe que sai do grelhador, a porta verde na calçada, a mesa ao fim da noite e a ardósia com os preços."
-				images={galeria}
-				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
-				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Subir a calçada <br /><em>até ao 139.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
-				hours={HOURS}
-				hoursCaption="Horário da casa"
-				hoursNote="A ficha de Google não publica horário e a casa não tem site nem telefone públicos. Antes de subir a Calçada de Sant'Ana, abre a ficha no Google Maps e confirma se está aberta — é a única informação em tempo real que existe."
-				mapTitle="Mapa de A Tasca do Béco na Calçada de Sant'Ana, 139, Lisboa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="A Tasca do Béco · Arroios"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha e críticas', href: MAPS.reviews, external: true },
-				]}
-				contactLink={{ label: 'Ver a ficha no Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="Não há reservas em linha nem telefone publicado: é chegar, entrar e esperar por uma mesa. Perto ficam o metro de Martim Moniz, o Miradouro do Torel e o Campo dos Mártires da Pátria, por isso a calçada também se sobe a pé."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

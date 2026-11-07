@@ -10,9 +10,20 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'La abuela Take Away · Comida casera para llevar en Ciudad Lineal';
 const description = BUSINESS.description;
@@ -104,6 +115,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-abuela-take-away-vertical-03.jpg": fachada,
+	"la-abuela-take-away-apaisada-01.jpg": interior,
+	"la-abuela-take-away-apaisada-02.jpg": pan,
+	"la-abuela-take-away-apaisada-05.jpg": pollo,
+	"la-abuela-take-away-panoramica-04.jpg": envases,
+	"la-abuela-take-away-panoramica-08.jpg": arroz,
+	"la-abuela-take-away-vertical-09.jpg": bocadillo,
+	"la-abuela-take-away-vertical-10.jpg": croquetas,
+};
 ---
 
 <!doctype html>
@@ -172,71 +197,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. del Santo Ángel, 2 · Ciudad Lineal, Madrid"
-				title="Comida casera <br /><em>para llevar.</em>"
-				lede={`La abuela Take Away es comida casera para llevar en Ciudad Lineal. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>Todos los días</b> 9:00–16:00' },
-					{ label: 'Servicio', html: '<b>Para llevar</b>' },
-				]}
-				image={fachada}
-				imageAlt="Fachada de La abuela Take Away en la C. del Santo Ángel, en Ciudad Lineal"
-				galleryHref={MAPS.place}
-				photoCredit="Ficha de Google Maps"
-				galleryLinkLabel="Ver en Google Maps"
-				tag="Comida casera"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La abuela" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Comida casera <br /><em>para llevar.</em>"
-				paragraphs={[
-					'La abuela Take Away está en la C. del Santo Ángel, 2, en Ciudad Lineal. Su ficha de Google Maps lo clasifica como restaurante de comida para llevar.',
-					'Su ficha publica horario todos los días, de 9:00 a 16:00, y describe comida casera, pan recién horneado y pollo asado a diario.',
-				]}
-				note="La ficha no publica página web, redes sociales, carta con precios ni reparto a domicilio. Para precios concretos y encargos, llama al 916 56 31 42."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la cocina.</em>"
-				description="Interior del local, pan recién horneado, pollo asado y platos para llevar."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Las fotos de la carta y de los platos de otros locales no se publican. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Ciudad Lineal, <br /><em>C. del Santo Ángel.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.region]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.horas === 'Cerrado' }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: todos los días de 9:00 a 16:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La abuela Take Away en la C. del Santo Ángel, 2, Ciudad Lineal, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. del Santo Ángel, 2"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha no publica reparto a domicilio, encargos ni pedidos online: se concreta todo por teléfono, en el 916 56 31 42. No da datos de accesibilidad, así que conviene llamar antes si necesitas algo concreto."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

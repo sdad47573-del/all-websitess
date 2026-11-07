@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import sala from '../assets/fotos/la-botana-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import calavera from '../assets/fotos/la-botana-vertical-08.jpg';
 import nachos from '../assets/fotos/la-botana-vertical-09.jpg';
 import tacosPlate from '../assets/fotos/la-botana-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICOS,
+} from '../data/site';
 
 const title = 'La Botana · Restaurante mexicano em Lisboa';
 const description = BUSINESS.description;
@@ -133,6 +141,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Perguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-botana-apaisada-01.jpg": sala,
+	"la-botana-vertical-03.jpg": guacamole,
+	"la-botana-apaisada-04.jpg": tacos,
+	"la-botana-vertical-09.jpg": nachos,
+	"la-botana-apaisada-06.jpg": burrito,
+	"la-botana-vertical-10.jpg": tacosPlate,
+	"la-botana-vertical-05.jpg": margarita,
+	"la-botana-vertical-02.jpg": bar,
+	"la-botana-vertical-07.jpg": mural,
+	"la-botana-vertical-08.jpg": calavera,
+};
 ---
 
 <!doctype html>
@@ -192,80 +216,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · Lisboa`}
-				title="Cozinha mexicana <br /><em>em Lisboa.</em>"
-				lede={`A La Botana é um restaurante mexicano na Av. Duque de Loulé 1E, em Lisboa, com uma sala em dois pisos cheia de plantas e murais. A ficha de Google dá-lhe 4,7 sobre 5 com 201 críticas, mas não publica horário: o telefone é a forma de o confirmar.`}
-				image={sala}
-				imageAlt="Sala da La Botana com mezanino, lâmpadas de vime, plantas suspensas e mesas de mármore"
-				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> no Google · 201 críticas' },
-					{ label: 'Horário', html: '<b>Não publicado</b> na ficha de Google' },
-					{ label: 'Telefone', html: `<b>${BUSINESS.phone}</b> contacto publicado` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto do perfil de Google Maps"
-				galleryLinkLabel="Ver a galeria"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="O que encontras na La Botana" items={SERVICOS} />
-
-			<LocalAbout
-				label="A casa"
-				title="Tacos, murais <br /><em>e margaritas.</em>"
-				paragraphs={[
-					'A La Botana fica na Av. Duque de Loulé 1E, em Lisboa (1050-085), a poucos minutos do Marquês de Pombal. A Google classifica a casa como restaurante mexicano e dá-lhe 4,7 sobre 5 com 201 críticas.',
-					'Por dentro há dois pisos: um mezanino com grade preta sobre a sala, lâmpadas de vime, plantas suspensas e chão de madeira. As mesas são de mármore e há um banco corrido de veludo verde encostado à parede.',
-					'No bar, a frente leva um padrão geométrico de losangos e a parede tem um mural de cores vivas com uma figura pré-hispânica e um dragão verde. Noutra parede da sala há uma caveira do Dia dos Mortos rodeada de flores de cempasúchil; as fotografias do perfil apanham-na ainda com uma escada e material de montagem à frente.',
-					'O que se serve vê-se nas fotografias: guacamole no molcajete com jalapeño, tacos de carne com ananás e cebola roxa, burrito com totopos, quesadilla, tostada e nachos gratinados, além de margaritas e cerveja. A ficha não publica carta, preços nem horário.',
-				]}
-				note="A informação vem da ficha pública de Google Maps e das fotografias do perfil da casa. A ficha não publica horário, carta nem site próprio, e esta página não inventa nenhum desses dados."
-				links={[
-					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver a casa no Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="A mesa"
-				title="Guacamole, tacos <br /><em>e burritos.</em>"
-				description="A ficha de Google não publica carta nem preços, e a casa não tem site próprio. O que segue é o que mostram as fotografias do perfil: os pratos e as bebidas que se vêem à mesa."
-				cta={{ label: 'Ver fotos no Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note="Não há carta publicada nem preços conhecidos. Se queres confirmar pratos, quantidades ou se está aberto, o telefone da ficha é o único canal publicado."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Dez fotografias <br /><em>da casa.</em>"
-				description="As fotografias do perfil da La Botana em Google Maps: a sala e o mezanino, o bar, os murais e os pratos que saem da cozinha."
-				images={galeria}
-				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
-				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Passa pela <br /><em>Duque de Loulé.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
-				hours={HOURS}
-				hoursCaption="Horário"
-				hoursNote="A ficha de Google não publica horário: mostra a opção «adicionar horário». Por isso esta página não indica horas — confirma-as por telefone antes de ir."
-				mapTitle="Mapa da La Botana na Av. Duque de Loulé 1E, Lisboa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Botana · Lisboa"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Ligar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="O telefone é o único canal de contacto que publica a ficha. Não há reservas nem encomendas em linha: a casa não tem site próprio nem plataforma de reservas associada. A ficha também não indica informação sobre esplanada, take-away ou acessibilidade."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
 		</main>
 
 		<LocalFooter

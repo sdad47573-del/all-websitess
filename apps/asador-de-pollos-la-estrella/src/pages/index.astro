@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import rotulo from '../assets/fotos/asador-de-pollos-la-estrella-apaisada-01.jpg';
@@ -21,7 +22,14 @@ import hornoGiratorio from '../assets/fotos/asador-de-pollos-la-estrella-vertica
 import hornoLleno from '../assets/fotos/asador-de-pollos-la-estrella-vertical-05.jpg';
 import fuente from '../assets/fotos/asador-de-pollos-la-estrella-apaisada-07.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Asador de Pollos La Estrella · Triana, Sevilla';
 const description = BUSINESS.description;
@@ -169,6 +177,19 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"asador-de-pollos-la-estrella-apaisada-01.jpg": rotulo,
+	"asador-de-pollos-la-estrella-apaisada-03.jpg": pollosHorno,
+	"asador-de-pollos-la-estrella-vertical-02.jpg": asadorPinchos,
+	"asador-de-pollos-la-estrella-vertical-04.jpg": hornoGiratorio,
+	"asador-de-pollos-la-estrella-vertical-05.jpg": hornoLleno,
+	"asador-de-pollos-la-estrella-vertical-08.jpg": asadorBandeja,
+	"asador-de-pollos-la-estrella-apaisada-07.jpg": fuente,
+};
 ---
 
 <!doctype html>
@@ -226,111 +247,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood} · ${BUSINESS.city}`}
-				title="Pollo asado <br /><em>de Triana.</em>"
-				lede="En el número 34 de la calle San Jacinto, en pleno Triana, La Estrella es un asador de los de siempre: pollo asado en el horno giratorio, patatas fritas, tortillas, aliños y ensaladilla. Abre para comer de 12:30 a 16:00 (el sábado desde las 12:00 y el domingo desde las 11:00) y añade cena los viernes y sábados, de 20:00 a 23:00. El miércoles cierra."
-				image={rotulo}
-				imageAlt="Rótulo azul de Asador de Pollos La Estrella sobre la fachada de la calle San Jacinto, con la estrella blanca"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 245 reseñas' },
-					{ label: 'Horario', html: '<b>12:30–16:00</b><br />Vie y sáb también 20:00–23:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> encargos y consultas` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de La Estrella" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El asador <br /><em>de San Jacinto.</em>"
-				paragraphs={[
-					'El Asador de Pollos La Estrella está en el número 34 de la calle San Jacinto, la arteria de Triana, con el rótulo azul de la estrella sobre la puerta. Google lo clasifica como pollería, y las fotos de su perfil enseñan el horno giratorio con los pollos ensartados y al asador sacándolos en la bandeja.',
-					'El servicio es de comidas, de 12:30 a 16:00, con dos excepciones de fin de semana: el sábado abre a las 12:00 y el domingo a las 11:00. Viernes y sábados hay también turno de noche, de 20:00 a 23:00. El miércoles figura cerrado y no hay cena ningún otro día.',
-					'Las reseñas que Google destaca hablan de raciones generosas, de patatas fritas deliciosas y de tortillas, aliños y patatas entre lo que se puede pedir. La media es de 4,5 sobre 5 con 245 reseñas, una de las más altas de la zona y con una muestra amplia.',
-					'El local está a un paso del puente de Isabel II, así que se llega andando desde el centro. La ficha marca que no hay aparcamiento adaptado ni asientos adaptados para sillas de ruedas, y no publica más datos de accesibilidad.',
-				]}
-				note="La ficha no publica carta con precios, web propia ni reparto a domicilio. Los platos de esta página salen de la categoría de Google, del nombre del asador y de lo que mencionan las reseñas que la ficha destaca; no hay importes que mostrar sin inventarlos."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el asador en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo, patatas <br /><em>y aliños.</em>"
-				description="Sin precios publicados en la ficha, así que aquí van los productos de la casa tal como los declara Google y los cuentan las reseñas."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={carta}
-				note="Esta lista sale de la categoría con la que Google clasifica el local, de su nombre y de las reseñas que la ficha destaca. No hay carta ni precios públicos: se confirman en el mostrador o llamando al 954 34 06 66."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
-					<div class="reviews-head">
-						<h2 id="resenas-title">Cuatro y medio, <br /><em>245 veces.</em></h2>
-						<p>
-							La ficha tiene 245 reseñas y una media de 4,5. Estas son las tres que Google destaca, con
-							la puntuación que les dio su autor, la buena y la mala. En la ficha están todas.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
-										{'★'.repeat(review.rating)}
-										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
-									</p>
-									<blockquote>{review.quote}</blockquote>
-									<figcaption>Reseña publicada en Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<p class="review-note">
-						Citas de las reseñas públicas del local, con la puntuación del autor y la puntuación del
-						texto normalizada. En la ficha de Google están las 245, incluidas las críticas.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Seis fotos <br /><em>del asador.</em>"
-				description="Del perfil del local: el horno giratorio con los pollos, el asador sacándolos en la bandeja y una de las fuentes de la casa."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
-				title="Ven a <br /><em>San Jacinto.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: comidas de 12:30 a 16:00, sábado desde las 12:00 y domingo desde las 11:00. Cena solo viernes y sábado, de 20:00 a 23:00. El miércoles cierra. En festivos puede cambiar; llama antes si vas en día señalado."
-				mapTitle="Mapa de Asador de Pollos La Estrella en la calle San Jacinto 34, Triana"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Estrella"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="La ficha no publica reservas ni reparto a domicilio. El pollo asado se puede encargar por teléfono y recoger en el mostrador, y para grupos grandes conviene llamar con antelación. Esta página no tramita pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

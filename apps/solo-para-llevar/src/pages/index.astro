@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/solo-para-llevar-apaisada-03.jpg';
@@ -136,6 +137,19 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"solo-para-llevar-apaisada-03.jpg": fachada,
+	"solo-para-llevar-apaisada-05.jpg": vitrina,
+	"solo-para-llevar-apaisada-04.jpg": interior,
+	"solo-para-llevar-apaisada-01.jpg": mostrador,
+	"solo-para-llevar-vertical-02.jpg": tortilla,
+	"solo-para-llevar-cuadrada-08.jpg": logo,
+	"solo-para-llevar-vertical-07.jpg": lona,
+};
 ---
 
 <!doctype html>
@@ -204,134 +218,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Atenas, 26 · Sevilla"
-				title="Comidas caseras, <br /><em>solo para llevar.</em>"
-				lede={`Solo para llevar es un local de comidas caseras en la calle Atenas, 26. Prepara tortillas, guisos y platos del día para recoger. La ficha de Google muestra ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="Fachada de Solo para llevar con la lona de comidas caseras"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Tipo', html: '<b>Comida casera</b> para llevar' },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00 – 15:30</b> de lunes a sábado' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Recién hecho"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios y oferta de Solo para llevar" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El nombre lo dice <br /><em>todo.</em>"
-				paragraphs={[
-					'Solo para llevar está en la calle Atenas, 26, en Sevilla, con un rótulo que resume el concepto: comidas caseras para recoger. Google clasifica el negocio como restaurante y el servicio es de mediodía.',
-					'En la vitrina y en las fotos de la ficha se ven tortillas de patata enteras, calamares en salsa, empanadas y bandejas gratinadas, además de pan y platos de cuchara. Todo se prepara para llevar en caja o fiambrera.',
-					'Las reseñas hablan de «buena cocina y buen trato», de un local tranquilo y limpio y, en un caso, de comida sin gluten. El horario publicado es de 10:00 a 15:30 de lunes a sábado, con cierre los domingos.',
-				]}
-				note="La ficha no publica carta ni precios, y esta web no los inventa. Los platos citados son los que aparecen en las reseñas y en las fotografías del local; pregunta por la oferta del día y por los alérgenos al llamar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="De la vitrina a la caja"
-				title="Guisos, tortillas <br /><em>y platos del día.</em>"
-				description="La ficha no publica carta, pero las reseñas y las fotos del local permiten hacerse una idea: tortilla de patata, calamares en salsa, empanadas, bandejas gratinadas y algún plato sin gluten."
-				cta={{ label: `Preguntar el menú de hoy · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Selección orientativa, sin precios: la ficha no publica carta oficial. Confirma los platos disponibles, el precio de las raciones y los alérgenos llamando al establecimiento."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="El local <br /><em>y la vitrina.</em>"
-				description="La fachada, el interior con la vitrina y algunos de los platos que aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de Solo para llevar en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Lo que cuentan <em>las reseñas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>{resena.texto}</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
-							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la calle <br /><em>Atenas.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Solo para llevar en C. Atenas, 26, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. Atenas, 26 · Sevilla"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="No hay pedidos en línea ni reparto anunciado en la ficha: se recoge en el local. Llama para encargar y confirmar qué hay ese día."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
 		</main>
 
 		<LocalFooter

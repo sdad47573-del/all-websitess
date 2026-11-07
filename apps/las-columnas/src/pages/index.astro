@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/las-columnas-apaisada-05.jpg';
@@ -141,6 +142,19 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"las-columnas-apaisada-05.jpg": fachada,
+	"las-columnas-apaisada-01.jpg": vitrina,
+	"las-columnas-apaisada-02.jpg": guisos,
+	"las-columnas-apaisada-04.jpg": vitrinaDos,
+	"las-columnas-vertical-03.jpg": tortilla,
+	"las-columnas-vertical-06.jpg": cartaPicar,
+	"las-columnas-vertical-07.jpg": cartaGuisos,
+};
 ---
 
 <!doctype html>
@@ -209,128 +223,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Conde de Barajas, 6 · Casco Antiguo"
-				title="Pollo asado y guisos, <br /><em>para llevar.</em>"
-				lede={`Las Columnas está en la esquina de Conde de Barajas con Feria, en pleno Casco Antiguo. Su carta combina pollo asado, guisos de cuchara, raciones para picar, tortillas y postres caseros, con precios desde 2,75 €. La ficha de Google marca ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="Esquina del edificio amarillo con el rótulo verde de Las Columnas comidas para llevar"
-				primaryCta={{ label: `Encargar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Pollo entero', html: '<b>12,00 €</b> en la carta' },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:00 – 22:00</b> todos los días' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Abierto todos los días"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios y oferta de Las Columnas" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Las Columnas, <br /><em>cuchara y brasa.</em>"
-				paragraphs={[
-					'Las Columnas abrió en la calle Conde de Barajas, 6, en la esquina con Feria, con un rótulo verde que lo dice claro: comidas para llevar. Google lo clasifica como restaurante de comida para llevar y abre de 9:00 a 22:00 todos los días.',
-					'La carta se organiza en para picar, ensaladas, tortillas, pollo asado, guisos de cuchara, guisos y varios, y postres. Hay desde ensaladilla rusa o patatas alioli con langostinos hasta carrillada, cola de toro, solomillo al roquefort o paella de marisco.',
-					'El pollo asado es una de las casas: entero por 12,00 €, medio por 6,50 € y contramuslo por 4,50 €. Las tortillas se venden enteras, de patatas (8,50 €) o de patatas y cebolla (9,00 €), y los postres van de 3,25 € a 5,50 €.',
-				]}
-				note="Los precios y platos proceden de la carta impresa que el local publica en su ficha de Google; pueden cambiar y no incluyen posibles suplementos. Confirma el importe y la disponibilidad al encargar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: '@lascolumnasparallevar en Instagram', href: INSTAGRAM, external: true },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="Carta del local"
-				title="De la cuchara <br /><em>al pollo asado.</em>"
-				description="Estos son los platos y precios que aparecen en la carta impresa del establecimiento: pollo asado, raciones para picar, guisos de cuchara, ensaladas, tortillas y postres."
-				cta={{ label: `Pedir por teléfono · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Selección de la carta; hay más platos en el local. Las raciones marcadas como 1/4 corresponden a cuarto de bandeja. Precios de la carta fotografiada en octubre de 2026, sujetos a cambios."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="El local <br /><em>y la vitrina.</em>"
-				description="La esquina de Conde de Barajas, la vitrina de guisos y las dos páginas de la carta tal como aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de Las Columnas en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">La valoración <br /><em>en Google.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<p>
-							La ficha de Google reúne {RATING.count} opiniones con una media de {RATING.label} sobre
-							5 en el momento de consultarla. En esta página no se reproducen los comentarios: se
-							leen directamente en la ficha oficial, donde aparecen actualizados.
-						</p>
-						<p class="notas-foot">
-							Datos consultados en octubre de 2026. <a
-								href={MAPS.reviews}
-								target="_blank"
-								rel="noreferrer">Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Conde <br /><em>de Barajas.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Las Columnas en C. Conde de Barajas, 6, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Conde de Barajas, 6 · Sevilla"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`La carta impresa añade otro número para pedidos: ${BUSINESS.secondaryPhone}. Llama para encargar el pollo, reservar bandejas o preguntar por los guisos del día.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -1,7 +1,12 @@
 ---
 import type { ImageMetadata } from 'astro';
-import { LocalAbout, LocalFaq, LocalGallery, LocalHero, LocalVisit } from '@astro-components';
-import { BUSINESS, HOURS, MAPS } from '../data/site';
+import LocalAbout from './About.astro';
+import LocalChips from './Chips.astro';
+import LocalMenu from './Menu.astro';
+import LocalFaq from './Faq.astro';
+import LocalGallery from './Gallery.astro';
+import LocalHero from './Hero.astro';
+import LocalVisit from './Visit.astro';
 
 interface Enlace {
 	texto: string;
@@ -33,19 +38,53 @@ interface Seccion {
 	items?: { titulo: string; texto: string }[];
 	fotos?: { imagen: string; alt: string }[];
 	preguntas?: { pregunta: string; respuesta: string }[];
+	chips?: string[];
+	grupos?: { titulo: string; items: { nombre: string; nota: string; precio?: string }[] }[];
+}
+
+export interface SeccionNegocio {
+	name: string;
+	street: string;
+	district: string;
+	postalCode: string;
+	city: string;
+}
+
+export interface SeccionHorario {
+	day: string;
+	value: string;
+	closed?: boolean;
+}
+
+export interface SeccionMapas {
+	place: string;
+	directions: string;
+	streetView: string;
+	embed: string;
 }
 
 interface Props {
 	secciones: Seccion[];
 	fotos: Record<string, ImageMetadata>;
+	/** Datos del negocio que no viven en secciones.json: dirección y mapa. */
+	negocio: SeccionNegocio;
+	horario?: SeccionHorario[];
+	mapas: SeccionMapas;
 }
 
-const { secciones, fotos } = Astro.props;
+const { secciones, fotos, negocio, horario = [], mapas } = Astro.props;
+
+// Hay webs con el horario como {day,value} y otras como {dia,horas}: se iguala aquí.
+const horas = (horario as Array<Record<string, unknown>>).map((hora) => ({
+	day: String(hora.day ?? hora.dia ?? ""),
+	value: String(hora.value ?? hora.horas ?? ""),
+	closed: Boolean(hora.closed),
+}));
 
 // Los enlaces del JSON pueden apuntar a la ficha, a las indicaciones o a
 // Street View con `maps:clave`; así el panel no obliga a pegar URLs enormes.
 const destino = (href: string) =>
-	href.startsWith('maps:') ? (MAPS as Record<string, string>)[href.slice(5)] ?? '#' : href;
+	href.startsWith('maps:') ? ((mapas as unknown as Record<string, string>)[href.slice(5)] ?? '#') : href;
 
 const enlace = (item: Enlace) => ({
 	label: item.texto,
@@ -73,18 +112,18 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 						primaryCta={
 							seccion.boton
 								? enlace(seccion.boton)
-								: { label: 'Cómo llegar', href: MAPS.directions }
+								: { label: 'Cómo llegar', href: mapas.directions }
 						}
 						secondaryCta={
 							seccion.botonSecundario
 								? enlace(seccion.botonSecundario)
-								: { label: 'Ficha y fotos en Google', href: MAPS.place, external: true }
+								: { label: 'Ficha y fotos en Google', href: mapas.place, external: true }
 						}
 						facts={(seccion.datos ?? []).map((dato) => ({
 							label: dato.etiqueta,
 							html: dato.html,
 						}))}
-						galleryHref={seccion.enlaceGaleria ? destino(seccion.enlaceGaleria.href) : MAPS.streetView}
+						galleryHref={seccion.enlaceGaleria ? destino(seccion.enlaceGaleria.href) : mapas.streetView}
 						photoCredit={seccion.pieFoto}
 						galleryLinkLabel={seccion.enlaceGaleria?.texto}
 						tag={seccion.distintivo}
@@ -140,7 +179,7 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 						cta={
 							seccion.boton
 								? enlace(seccion.boton)
-								: { label: 'Ver todas en Google', href: MAPS.place }
+								: { label: 'Ver todas en Google', href: mapas.place }
 						}
 						note={seccion.nota ?? ''}
 					/>
@@ -152,21 +191,21 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 						eyebrow={seccion.etiqueta ?? ''}
 						title={seccion.titulo ?? ''}
 						addressLines={[
-							BUSINESS.street,
-							`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
+							negocio.street,
+							`${negocio.district} · ${negocio.postalCode} ${negocio.city}`,
 						]}
-						hours={HOURS}
+						hours={horas}
 						hoursCaption="Horario no publicado en Google"
 						hoursNote={seccion.notaHorario ?? ''}
-						mapTitle={`Mapa de ${BUSINESS.name} en ${BUSINESS.district}, ${BUSINESS.city}`}
-						mapEmbedUrl={MAPS.embed}
-						mapLabel={seccion.mapaEtiqueta ?? `${BUSINESS.name} · ${BUSINESS.street}`}
-						mapHref={MAPS.place}
+						mapTitle={`Mapa de ${negocio.name} en ${negocio.district}, ${negocio.city}`}
+						mapEmbedUrl={mapas.embed}
+						mapLabel={seccion.mapaEtiqueta ?? `${negocio.name} · ${negocio.street}`}
+						mapHref={mapas.place}
 						links={(seccion.enlaces ?? []).map((item) => ({
 							...enlace(item),
 							variant: item.primario ? ('primary' as const) : ('ghost' as const),
 						}))}
-						contactLink={{ label: 'Ver la ficha en Google ↗', href: MAPS.place, external: true }}
+						contactLink={{ label: 'Ver la ficha en Google ↗', href: mapas.place, external: true }}
 						reserveNote={seccion.nota ?? ''}
 					/>
 				);
@@ -180,6 +219,37 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 							q: item.pregunta,
 							a: item.respuesta,
 						}))}
+					/>
+				);
+
+			case 'chips':
+				return (
+					<LocalChips
+						label={seccion.etiqueta ?? seccion.titulo ?? 'Señas'}
+						items={seccion.chips ?? []}
+					/>
+				);
+
+			case 'menu':
+				return (
+					<LocalMenu
+						eyebrow={seccion.etiqueta ?? ''}
+						title={seccion.titulo ?? ''}
+						description={seccion.texto ?? ''}
+						cta={
+							seccion.boton
+								? enlace(seccion.boton)
+								: { label: 'Ver la carta', href: mapas.place }
+						}
+						groups={(seccion.grupos ?? []).map((grupo) => ({
+							title: grupo.titulo,
+							items: grupo.items.map((dish) => ({
+								name: dish.nombre,
+								note: dish.nota,
+								price: dish.precio,
+							})),
+						}))}
+						note={seccion.nota ?? ''}
 					/>
 				);
 
@@ -200,7 +270,7 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 										{(seccion.enlaces ?? []).map((item) => (
 											<a
 												class="simple-link"
-										data-campo="enlace"
+												data-campo="enlace"
 												href={destino(item.href)}
 												target={item.externo ? '_blank' : undefined}
 												rel={item.externo ? 'noreferrer' : undefined}
@@ -226,7 +296,7 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 									{seccion.boton && (
 										<a
 											class="button button-primary"
-										data-campo="boton"
+											data-campo="boton"
 											href={destino(seccion.boton.href)}
 											target={seccion.boton.externo ? '_blank' : undefined}
 											rel={seccion.boton.externo ? 'noreferrer' : undefined}

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import terrazaHero from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-01.jpg';
@@ -23,7 +24,15 @@ import bocadillo from '../assets/fotos/cooperativa-sierra-de-espadan-vertical-06
 import dulces from '../assets/fotos/cooperativa-sierra-de-espadan-vertical-10.jpg';
 import musica from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-08.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description = BUSINESS.description;
 
@@ -175,6 +184,21 @@ const nav = [
 ];
 
 const title = 'Cooperativa Sierra de Espadán · Cocina casera en Algimia de Almonacid';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"cooperativa-sierra-de-espadan-apaisada-01.jpg": terrazaHero,
+	"cooperativa-sierra-de-espadan-apaisada-07.jpg": terrazaDia,
+	"cooperativa-sierra-de-espadan-apaisada-03.jpg": carne,
+	"cooperativa-sierra-de-espadan-apaisada-09.jpg": guiso,
+	"cooperativa-sierra-de-espadan-apaisada-04.jpg": plazaNoche,
+	"cooperativa-sierra-de-espadan-vertical-05.jpg": cafe,
+	"cooperativa-sierra-de-espadan-vertical-06.jpg": bocadillo,
+	"cooperativa-sierra-de-espadan-vertical-10.jpg": dulces,
+	"cooperativa-sierra-de-espadan-apaisada-08.jpg": musica,
+};
 ---
 
 <!doctype html>
@@ -240,119 +264,19 @@ const title = 'Cooperativa Sierra de Espadán · Cocina casera en Algimia de Alm
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Pl. de la Fuente, 24 · Algimia de Almonacid"
-				title="La Cooperativa<br /><em>Sierra de Espadán.</em>"
-				lede="El bar restaurante del pueblo, en la plaza de la Fuente, con las montañas de la Sierra de Espadán enfrente. Cocina casera y menú del día, carnes a la brasa, tapas, bocadillos y una terraza con sombrillas rojas donde el café de las ocho se alarga hasta la noche."
-				image={terrazaHero}
-				imageAlt="Terraza de la Cooperativa Sierra de Espadán con una sombrilla roja y las montañas de Algimia al fondo"
-				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
-				tag="Terraza con vistas"
-				facts={[
-					{ label: 'Nota', html: '<b>4,4 en Google</b> con 201 reseñas' },
-					{ label: 'Todos los días', html: '<b>Desde las 8:00</b>' },
-					{ label: 'Viernes y sábado', html: '<b>Hasta las 24:00</b>' },
-					{ label: 'Martes', html: '<b>Solo mañana</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece la Cooperativa" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El bar del pueblo,<br /><em>desde 2018.</em>"
-				paragraphs={[
-					'La Cooperativa está en la plaza de la Fuente, 24, en el centro de Algimia de Almonacid, en la comarca del Alto Palancia y a la entrada del parque natural de la Sierra de Espadán. Es el edificio de la Cooperativa Agrícola Sierra Espadán, que reabrió como bar restaurante en julio de 2018, y su terraza mira directamente a las montañas.',
-					'La cocina es la de casa: menú del día de primero, segundo y postre que cambia cada jornada, guisos de cuchara, arroces y fideuà, y carnes a la brasa con patatas. En la barra y en la terraza hay tapas, raciones, embutidos y bocadillos variados, y la cafetera no para desde primera hora.',
-					'El ritmo es el de un pueblo: abre a las 8:00 para el café y el almuerzo, sirve el menú a mediodía y los viernes y sábados alarga la noche hasta las 24:00. En fiestas, la plaza se llena de mesas, hogueras y música en directo, y la Cooperativa es el punto de encuentro de vecinos y excursionistas.',
-				]}
-				note="La ficha de Google reúne una nota de 4,4 sobre 5 con 201 reseñas. El local indica acceso, aseo y asientos adaptados para sillas de ruedas. No hay reserva online: se reserva por teléfono, y para grupos conviene avisar con antelación."
-				links={[
-					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo de cada día,<br /><em>hecho en casa.</em>"
-				description="La Cooperativa no publica una carta cerrada con precios: el menú cambia cada día y se consulta en la barra o por teléfono. Estos son los platos y las familias que repiten quienes vienen al pueblo."
-				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No hay precios publicados. El menú del día incluye primero, segundo y postre; para saber qué hay hoy, llama al 617 02 59 14 o pregunta en la barra. Hay opciones para picar y bocadillos a cualquier hora del servicio."
-			/>
-
-			<section class="opiniones section-pad" id="opiniones" aria-labelledby="opiniones-titulo">
-				<div class="wrap">
-					<div class="opiniones-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Opiniones en Google</p>
-							<h2 id="opiniones-titulo">Lo que se dice<br /><em>en la plaza.</em></h2>
-						</div>
-						<div class="opiniones-nota">
-							<span class="nota">4,4 <span aria-hidden="true">★</span></span>
-							<p>201 reseñas en la ficha de Google Maps. La terraza, el menú y el trato son lo que más se repite.</p>
-							<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas las reseñas ↗</a>
-						</div>
-					</div>
-					<ul class="opiniones-grid">
-						{
-							REVIEWS.map((review) => (
-								<li>
-									<blockquote>
-										<p>“{review.text}”</p>
-										<footer>
-											<span class="estrellas" aria-label={`${review.rating} de 5 estrellas`}>
-												{estrellas(review.rating)}
-											</span>
-											<span>· Reseña en Google</span>
-										</footer>
-									</blockquote>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza,<br />la plaza<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de la Cooperativa en Google Maps: la terraza con las montañas, la carne a la brasa, el guiso de cuchara, la plaza en fiestas, el café de la barra, el bocadillo, la repostería y la música en directo."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil público del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow="Pl. de la Fuente, 24 · 12414 Algimia de Almonacid"
-				title="En la plaza,<br /><em>al pie de la sierra.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.province} · ${BUSINESS.landmark}`,
-				]}
-				hoursCaption="Horario de la ficha de Google"
-				hours={HOURS}
-				hoursNote="Abre todos los días a las 8:00. El martes cierra a las 13:00, de lunes a jueves y el domingo a las 21:00, y los viernes y sábados a las 24:00. En fiestas y puentes el horario puede cambiar; si vienes de lejos, llama antes."
-				mapTitle="Mapa de la Cooperativa Sierra de Espadán en la plaza de la Fuente, Algimia de Almonacid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Cooperativa · Algimia de Almonacid"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se llama al 617 02 59 14. La terraza está en la plaza de la Fuente y en verano se llena; para grupos y comidas familiares conviene avisar con antelación. El local tiene acceso, aseo y asientos adaptados para sillas de ruedas."
-			/>
-
-			<LocalFaq items={FAQ} title="Antes de <em>subir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mostrador from '../assets/fotos/tastic-apaisada-01.jpg';
@@ -184,6 +185,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"tastic-apaisada-01.jpg": mostrador,
+	"tastic-apaisada-07.jpg": barra,
+	"tastic-apaisada-06.jpg": interior,
+	"tastic-apaisada-04.jpg": pizzaMixta,
+	"tastic-panoramica-03.jpg": pizzaBurrata,
+	"tastic-vertical-08.jpg": pizzaCarne,
+	"tastic-vertical-02.jpg": pizzaVerdura,
+	"tastic-vertical-09.jpg": empanadas,
+	"tastic-vertical-05.jpg": mesa,
+	"tastic-apaisada-10.jpg": vitrina,
+};
 ---
 
 <!doctype html>
@@ -253,128 +270,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer Dr. Vilanova, 13 · Andorra la Vella"
-				title="Hot pizza, <br /><em>hot stuff.</em>"
-				lede={`Tastic es la pizzería de al corte del centro de Andorra la Vella: porciones recién hechas, empanadas, burgers, burritos y menús de desayuno hasta las 13:00. Abre de 8:00 a 20:00 de lunes a viernes, el sábado de 9:00 a 16:00 y descansa el domingo. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={mostrador}
-				imageAlt="El mostrador de Tastic con las pizarras de precios de empanadas, burgers, burritos, pizza y cafés, y las vitrinas de bollería"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>8:00–20:00</b> · de lunes a viernes' },
-					{ label: 'Domingo', html: '<b>Cerrado</b> · sábado hasta las 16:00' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pizza al corte · Andorra"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Tastic" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Dr. Vilanova, 13. <br /><em>Corte y vitrina.</em>"
-				paragraphs={[
-					'El local está en el Carrer Dr. Vilanova, 13, en pleno centro de Andorra la Vella, a pocos minutos de la avenida Meritxell. Dentro hay dos ambientes: el mostrador con las vitrinas y las pizarras de precios, y una sala con jardín vertical, mesas de madera y sillas metálicas bajo los carteles de «All you need today is coffee» y «Hot pizza, hot stuff».',
-					'La pizarra ordena la oferta en bloques: empanadas y packs, burgers, burritos, pizza al corte y menús de desayuno, además del café. La pizza se vende por porción a 2,50 € y también entera con bebida; los burritos —de ternera, pollo o vegetal— están a 5,95 €, y las empanadas sueltas a 2,65 €.',
-					'Los desayunos son hasta las 13:00 de lunes a viernes: menú de bollería desde 2,20 €, menú picolo o flautí con café por 3,60 €. Las cajas de cartón de «A emportar» apuntan a que buena parte del negocio sale por la puerta.',
-					`El horario es de 8:00 a 20:00 de lunes a viernes y de 9:00 a 16:00 el sábado, con el domingo cerrado. Google la clasifica como «Pizzería», marca el acceso para sillas de ruedas y le da ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026).`,
-				]}
-				note="La ficha de Google no publica la carta. Los platos y precios de esta página son los que se leen en las pizarras del propio local en las fotos del perfil; cambian con las temporadas y las ofertas, así que confírmalos en el +376 845 578."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> La casa</p>
-					<h2 id="highlights-title">Porciones, packs <br /><em>y café.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo que dice <br /><em>la pizarra.</em>"
-				description="Los precios de las pizarras del local, tal como aparecen en las fotos del perfil de Google Maps: empanadas y packs, pizza al corte, burritos, burgers y los menús de desayuno con el café."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Importes leídos en las pizarras del establecimiento fotografiadas en su perfil de Google (consultado el 1 de noviembre de 2026). La ficha no publica carta oficial y los precios pueden cambiar; los menús de desayuno se sirven hasta las 13:00 de lunes a viernes."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El mostrador, <br /><em>la pizza y la vitrina.</em>"
-				description="Diez fotografías del perfil de Tastic en Google Maps: el mostrador con las pizarras, la barra con el toldo rojo, la sala con el jardín vertical, cuatro pizzas distintas, las empanadas, una mesa con porciones y bocadillo, y la vitrina de bollería."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,2 sobre 5, <em>con 149 reseñas.</em></h2>
-						<p>
-							Ciento cuarenta y nueve opiniones y una media de 4,2 sobre 5 (consultada el 1 de
-							noviembre de 2026). Es un local de paso, con mucha clientela de oficina y de compras:
-							la media refleja la experiencia habitual, con reseñas buenas y alguna más tibia.
-						</p>
-						<p>
-							Esta web no copia reseñas sueltas: para leerlas con sus fechas y sus respuestas, abre
-							la ficha en Google.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las 149 reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,2</strong>
-						<span>★★★★☆</span>
-						<small>149 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el centro <br /><em>de la capital.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.city, `${BUSINESS.postalCode} · Andorra`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 8:00 a 20:00 de lunes a viernes, el sábado de 9:00 a 16:00 y el domingo cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Tastic en el Carrer Dr. Vilanova, 13, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Dr. Vilanova, 13 · Andorra la Vella"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Pedidos y consultas por teléfono, en el +376 845 578: la ficha no publica pedidos online ni reservas, y Google solo marca el acceso para sillas de ruedas, sin datos de aparcamiento."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

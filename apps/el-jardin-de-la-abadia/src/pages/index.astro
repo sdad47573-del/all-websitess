@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/el-jardin-de-la-abadia-vertical-04.jpg';
@@ -143,6 +144,22 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-jardin-de-la-abadia-vertical-04.jpg": fachada,
+	"el-jardin-de-la-abadia-apaisada-01.jpg": escaparate,
+	"el-jardin-de-la-abadia-apaisada-05.jpg": vitrina,
+	"el-jardin-de-la-abadia-vertical-02.jpg": bandejas,
+	"el-jardin-de-la-abadia-apaisada-10.jpg": tortillas,
+	"el-jardin-de-la-abadia-apaisada-03.jpg": paella,
+	"el-jardin-de-la-abadia-apaisada-07.jpg": patatasChorizo,
+	"el-jardin-de-la-abadia-apaisada-08.jpg": garbanzos,
+	"el-jardin-de-la-abadia-apaisada-06.jpg": buffet,
+	"el-jardin-de-la-abadia-vertical-09.jpg": mesaEventos,
+};
 ---
 
 <!doctype html>
@@ -211,162 +228,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Pl. Murillo Carrera, 6 · Carretera de Cádiz"
-				title="Comida casera, <br /><em>de puchero.</em>"
-				lede={`El Jardín de la Abadía prepara comida casera en la Carretera de Cádiz: guisos, bandejas y platos preparados para llevar o a domicilio. La ficha de Google reúne ${RATING.count} reseñas con una media de ${RATING.label}; hay opiniones para todos los gustos.`}
-				image={fachada}
-				imageAlt="Fachada de El Jardín de la Abadía con el rótulo rojo de comida casera"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Tipo', html: '<b>Comida casera</b> y preparada' },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>11:00 – 16:00</b> de martes a domingo' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Para llevar o a casa"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios y oferta de El Jardín de la Abadía" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El Jardín de la Abadía, <br /><em>casero de verdad.</em>"
-				paragraphs={[
-					'El Jardín de la Abadía está en la plaza Murillo Carrera, 6, junto a la Carretera de Cádiz de Málaga. El rótulo de la fachada anuncia «comida casera» y en el cristal se anuncia el plato del día; el teléfono del local, con WhatsApp, aparece en el mismo rótulo.',
-					'Las fotos de la ficha muestran una vitrina de bandejas con guisos, carnes, arroces, tortillas y pimientos, además de paellas grandes y mesas preparadas para celebraciones. Google clasifica el negocio como servicio de comida a domicilio.',
-					'El horario publicado es de 11:00 a 16:00 de martes a domingo, con cierre los lunes. Antes de pedir conviene llamar y preguntar qué hay ese día, si se recoge en el local o si se sirve a domicilio.',
-				]}
-				note="La ficha no publica carta, precios ni descripción del negocio, y sus opiniones están divididas: hay clientes muy satisfechos con los guisos y otros que critican el uso de producto congelado. Esta web se limita a lo que consta en la ficha y en sus fotografías."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="Lo que se ve en la vitrina"
-				title="Guisos, bandejas <br /><em>y plato del día.</em>"
-				description="La ficha no publica carta, pero sus fotografías y reseñas dejan ver el tipo de comida: bandejas de guisos, arroces, tortillas, albóndigas y ensaladilla, además de mesas preparadas para celebraciones."
-				cta={{ label: `Preguntar el plato del día · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Selección orientativa: no hay precios ni carta oficial publicados en la ficha. Confirma los platos disponibles, el precio y las condiciones del reparto llamando al establecimiento."
-			/>
-
-			<section class="platos" aria-labelledby="platos-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> El cartel del escaparate</p>
-					<h2 id="platos-title">El plato de <em>cada día.</em></h2>
-					<p class="platos-intro">
-						El cartel que hay en el cristal del local anuncia una parrilla semanal. Es
-						orientativa: puede haber cambiado y no es una carta cerrada. Llama para confirmar el plato
-						antes de ir.
-					</p>
-					<dl class="platos-list">
-						{
-							PLATOS_DIA.map((item) => (
-								<div>
-									<dt>{item.day}</dt>
-									<dd>{item.dishes}</dd>
-								</div>
-							))
-						}
-					</dl>
-					<p class="platos-note">
-						El cartel indica «domingo y lunes cerrados». La ficha de Google, en cambio, marca apertura
-						de martes a domingo: confirma el horario por teléfono.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="La vitrina <br /><em>y la cocina.</em>"
-				description="La fachada, la vitrina de bandejas y algunos de los platos y mesas que aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de El Jardín de la Abadía en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Opiniones <br /><em>encontradas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★☆☆</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>{resena.texto}</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
-							de 2026 y pueden variar. Se recogen aquí elogios y críticas tal como están
-							publicados.{' '}
-							<a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Junto a la <br /><em>Carretera de Cádiz.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de El Jardín de la Abadía en Pl. Murillo Carrera, 6, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Pl. Murillo Carrera, 6 · Málaga"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="El número del rótulo tiene WhatsApp. Llama o escribe para encargar bandejas, preguntar el plato del día o consultar el reparto a domicilio."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

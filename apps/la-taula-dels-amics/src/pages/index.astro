@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/la-taula-dels-amics-apaisada-01.jpg';
@@ -23,7 +24,16 @@ import foto08 from '../assets/fotos/la-taula-dels-amics-apaisada-08.jpg';
 import foto09 from '../assets/fotos/la-taula-dels-amics-cuadrada-09.jpg';
 import foto10 from '../assets/fotos/la-taula-dels-amics-cuadrada-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'La Taula dels Amics · Pizzería en Canillo';
 const description = `La Taula dels Amics, Av. Sant Joan de Caselles, 26 (AD100 Canillo). Pizzería con ${RATING.label} sobre 5 en Google. Teléfono ${BUSINESS.phone}.`;
@@ -92,6 +102,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-taula-dels-amics-apaisada-01.jpg": fachada,
+	"la-taula-dels-amics-vertical-02.jpg": foto02,
+	"la-taula-dels-amics-apaisada-03.jpg": foto03,
+	"la-taula-dels-amics-vertical-04.jpg": foto04,
+	"la-taula-dels-amics-vertical-05.jpg": foto05,
+	"la-taula-dels-amics-vertical-06.jpg": foto06,
+	"la-taula-dels-amics-vertical-07.jpg": foto07,
+	"la-taula-dels-amics-apaisada-08.jpg": foto08,
+	"la-taula-dels-amics-cuadrada-09.jpg": foto09,
+	"la-taula-dels-amics-cuadrada-10.jpg": foto10,
+};
 ---
 
 <!doctype html>
@@ -160,87 +186,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Sant Joan de Caselles, 26 · Canillo"
-				title="Pizzería <br /><em>en Canillo.</em>"
-				lede={`La Taula dels Amics está en la Av. Sant Joan de Caselles, 26, en Canillo. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de martes a domingo al mediodía, y de noche de martes a sábado.`}
-				image={fachada}
-				imageAlt="Fachada de La Taula dels Amics en Canillo"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>13:00–16:00</b> y <b>19:30–22:00</b> · lunes cerrado' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pizzería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Taula dels Amics" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pizzería <br /><em>en Canillo.</em>"
-				paragraphs={[
-					"La Taula dels Amics está en la Av. Sant Joan de Caselles, 26, en Canillo (AD100).",
-					`Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. La ficha no publica una carta online propia, así que esta web no incluye platos ni precios.`,
-				]}
-				note="La ficha no publica precios en su propio texto. Para el menú y los importes, llama por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Sobre el local</p>
-					<h2 id="highlights-title">Pizzería, <br /><em>mediodía y noche.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item) => (
-								<li>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la comida.</em>"
-				description="Diez fotografías del perfil de La Taula dels Amics en Google Maps."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Av. Sant Joan de Caselles, 26, <br /><em>Canillo.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Taula dels Amics en la Av. Sant Joan de Caselles, 26, Canillo"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Av. Sant Joan de Caselles, 26"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Consultas y pedidos por teléfono: la ficha no publica reservas online."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

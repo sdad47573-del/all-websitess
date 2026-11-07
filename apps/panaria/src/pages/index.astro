@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/panaria-panoramica-01.jpg';
@@ -24,7 +25,16 @@ import calle from '../assets/fotos/panaria-vertical-06.jpg';
 import entrada from '../assets/fotos/panaria-vertical-08.jpg';
 import tartaQueso from '../assets/fotos/panaria-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, HORARIO_AVISO, MAPS, MENU, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Panaria · panadería-cafetería con tartas y zumos en Ciudad Real';
 const description = BUSINESS.description;
@@ -139,6 +149,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaria-apaisada-05.jpg": desayuno,
+	"panaria-apaisada-09.jpg": vitrina,
+	"panaria-vertical-10.jpg": tartaQueso,
+	"panaria-apaisada-04.jpg": cafeNata,
+	"panaria-apaisada-02.jpg": mesaDulces,
+	"panaria-apaisada-07.jpg": barra,
+	"panaria-apaisada-03.jpg": comedor,
+	"panaria-panoramica-01.jpg": fachada,
+	"panaria-vertical-06.jpg": calle,
+	"panaria-vertical-08.jpg": entrada,
+};
 ---
 
 <!doctype html>
@@ -194,83 +220,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Desayuno <br /><em>en Alarcos.</em>"
-				lede={`Panaria tiene su local en la calle de Alarcos, 3, en el centro de Ciudad Real. Panadería y cafetería a la vez: cafés y zumos, bollería recién hecha, tartas en vitrina, bocadillos y ensaladas, también con brunch y catering. La ficha de Google le da 3,8 sobre 5 con 621 reseñas.`}
-				image={desayuno}
-				imageAlt="Bandeja con tostada de jamón y tomate cherry, bol de aguacate y pollo, zumo de naranja y café"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,8</b> en Google · 621 reseñas' },
-					{
-						label: 'Horario',
-						html: '<b>No publicado</b><br />La ficha no da horas: pasa y mira',
-					},
-					{ label: 'Contacto', html: '<b>Sin teléfono</b> en la ficha · se va al local' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Panaria en Alarcos" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Vitrina, café <br /><em>y mesa.</em>"
-				paragraphs={[
-					'Panaria ocupa el número 3 de la calle de Alarcos, en pleno centro de Ciudad Real. Google lo clasifica con nueve etiquetas: cafetería, panadería, bar, restaurante de desayunos, de brunch, servicio de catering, comida rápida, pastelería y bocatería. Es, en la práctica, una panadería-cafetería con tartas y zumos.',
-					'La fachada es gris, con el rótulo blanco de Panaria y la puerta de cristal abierta sobre el escaparate de madera clara. Dentro, las fotos del perfil muestran el comedor: mesas de madera, sillas Thonet blancas y metálicas, bancos corridos contra la pared y lámparas negras colgando.',
-					'La vitrina es lo primero que se ve al entrar: tarta de zanahoria, tarta de queso, crumble y brownie, cada una con su etiqueta de Panaria, y la bollería en la balda de abajo. Hay también porciones para llevar en táper, como la tarta de queso que aparece en una de las fotos.',
-					'Para desayunar hay café en taza o en vaso, café con nata con canela, zumo de naranja, donuts glaseados y de chocolate, croissant de jamón y tostadas de jamón con tomate cherry y un bol de aguacate y pollo. Las reseñas lo resumen: «Muy buena cafetería, con gran variedad de cafés, batidos, infusiones y bollería» y «local agradable para desayunar, atienden rápido».',
-				]}
-				note="Los datos salen de la ficha pública de Google Maps y de las fotos y reseñas del perfil. La ficha no publica teléfono, horario, carta ni precios: esta web no los inventa."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Del café <br /><em>a la vitrina.</em>"
-				description="Los productos que aparecen aquí son los que enseñan las fotos del perfil y los que nombran las reseñas. El local no tiene carta publicada en Google ni web propia."
-				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note="Esta página no publica precios porque no hay carta oficial que copiar. El desayuno del día, las porciones de tarta y los importes se preguntan en el mostrador."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Diez fotos <br /><em>de la mañana.</em>"
-				description="Las fotografías del perfil de Panaria en la calle de Alarcos: la bandeja de desayuno, la vitrina de tartas, los cafés, la bollería, la barra, el comedor y la fachada."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Café en <br /><em>la esquina.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castilla-La Mancha, España']}
-				hours={HOURS}
-				hoursCaption="Horario y datos"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Panaria en la calle de Alarcos 3, Ciudad Real"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Panaria · C. de Alarcos, 3"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. Este local de Panaria no publica teléfono ni web propia, así que el único canal es el mostrador: se pide allí y se toma en la mesa o se lleva."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>desayunar.</em>" />
 		</main>
 
 		<LocalFooter

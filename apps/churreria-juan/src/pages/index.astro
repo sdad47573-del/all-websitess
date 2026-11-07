@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import churros from '../assets/fotos/churreria-juan-apaisada-02.jpg';
@@ -115,6 +116,15 @@ const galeria = [
 		alt: 'Detalle de una porra abierta, con la miga hueca y dorada por dentro',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"churreria-juan-apaisada-02.jpg": churros,
+	"churreria-juan-vertical-01.jpg": porras,
+	"churreria-juan-vertical-05.jpg": porrasDetalle,
+};
 ---
 
 <!doctype html>
@@ -172,114 +182,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Barrio Noroeste · 14011 Córdoba"
-				title="Churros, porras <br /><em>y café con leche.</em>"
-				lede={`Juan es churrería, confitería y panadería en el barrio Noroeste. En sus fotos hay un plato de churros con un vaso de café con leche y porras recién hechas sobre papel, servidas en la mesa. Abre todos los días de 6:00 a 20:00, sin cerrar a mediodía. La ficha de Google no publica ni calle ni teléfono: aquí no vas a encontrar esos datos inventados. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={churros}
-				imageAlt="Plato de churros y vaso de café con leche sobre la mesa de la terraza"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Dónde', html: '<b>Noroeste</b> · 14011 Córdoba' },
-					{ label: 'Horario', html: '<b>Todos los días</b> · 6:00–20:00' },
-					{ label: 'Teléfono', html: '<b>No publicado</b> en Google' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver las fotos en Google"
-				tag="Abierto de 6:00 a 20:00"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en la churrería" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una churrería <br /><em>de acera y mesa.</em>"
-				paragraphs={[
-					'Juan se anuncia con las tres palabras del oficio: churrería, confitería y panadería. Está en el barrio Noroeste, en el 14011 de Córdoba, y su ficha de Google no publica una dirección de calle: solo la zona y el código postal. Aquí no se rellena ese hueco con una calle inventada.',
-					'Las fotos de la ficha son de mesa: un plato de churros finos con la greña bien marcada y un vaso de café con leche, y dos imágenes de porras gruesas, doradas y con la miga hueca, recién sacadas del aceite y servidas sobre papel.',
-					'El local tiene barra con vitrina y cafetera dentro, y fuera mesas y sombrillas en la acera. Es un sitio de parar un rato: el horario va de 6:00 a 20:00 todos los días, así que sirve tanto el desayuno temprano como la merienda.',
-					'La ficha tampoco publica teléfono. En su información de accesibilidad Google indica acceso para sillas de ruedas y ausencia de aparcamiento adaptado; es lo único que consta, y la web lo dice tal cual.',
-				]}
-				note="No hay carta, precios ni web propia en la ficha, y no hay teléfono publicado. Si necesitas confirmar algo, lo más fiable es pasarte por el local o usar la ficha de Google Maps."
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
-							<h2 id="three-title">Churros, porras <br /><em>y barra.</em></h2>
-						</div>
-					</div>
-					<div class="three-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="three-card">
-									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="Las porras <br /><em>y su miga.</em>"
-				description="Dos imágenes de la ficha de Google Maps dedicadas a las porras: la ración servida sobre papel y un primer plano de la miga. La portada de esta página es la tercera foto que se usa, los churros con el café."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026. La ficha tiene cinco fotos; las otras dos son la terraza y el mostrador, con personas en el encuadre, y no se usan en esta página."
-			/>
-
-			<section class="rating-band" aria-labelledby="rating-title">
-				<div class="wrap rating-inner">
-					<div class="rating-score">
-						<strong>3,9</strong>
-						<div>
-							<span class="rating-stars" role="img" aria-label="3,9 de 5 estrellas">3,9 / 5</span>
-							<p id="rating-title" style="margin:0;font-size:.78rem">39 reseñas en Google Maps</p>
-						</div>
-					</div>
-					<p class="rating-copy">
-						La media de la ficha es 3,9 sobre 5 con 39 reseñas, con opiniones variadas.
-						Esta página no selecciona ni reproduce sus textos: se leen todas en Google.
-					</p>
-					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 39 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el Noroeste, <br /><em>sin calle publicada.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Churrería Juan en el barrio Noroeste, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Juan · barrio Noroeste"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Reseñas', href: MAPS.reviews, external: true },
-				]}
-				contactLink={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
-				reserveNote="La ficha de Google solo publica la zona (Noroeste) y el código postal, no la calle, y no publica teléfono ni web propia. El punto del mapa es el que da Google; esta página no gestiona pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>acercarse.</em>" />
 		</main>
 
 		<LocalFooter

@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import interior from '../assets/fotos/panaderia-martinez-colombiana-apaisada-01.jpg';
@@ -145,6 +146,22 @@ const galeria = [
 	{ src: bandeja, alt: 'Bandeja de bollos rellenos recién sacados del horno' },
 	{ src: berlinas, alt: 'Vitrina con berlinas y donuts rebozados de azúcar, algunos con chocolate' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-martinez-colombiana-apaisada-01.jpg": interior,
+	"panaderia-martinez-colombiana-vertical-02.jpg": panesQueso,
+	"panaderia-martinez-colombiana-vertical-03.jpg": tartas,
+	"panaderia-martinez-colombiana-vertical-04.jpg": bollos,
+	"panaderia-martinez-colombiana-apaisada-05.jpg": despensa,
+	"panaderia-martinez-colombiana-apaisada-06.jpg": nevera,
+	"panaderia-martinez-colombiana-vertical-07.jpg": empanadas,
+	"panaderia-martinez-colombiana-vertical-08.jpg": roscas,
+	"panaderia-martinez-colombiana-vertical-09.jpg": bandeja,
+	"panaderia-martinez-colombiana-apaisada-10.jpg": berlinas,
+};
 ---
 
 <!doctype html>
@@ -205,149 +222,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Martínez de la Rosa, 116 · Bailén-Miraflores"
-				title="Pan colombiano, <br /><em>de barrio.</em>"
-				lede={`Martínez está en la calle Martínez de la Rosa, 116, en Bailén-Miraflores. Una panadería colombiana con vitrina de bollería, empanadas, pan de queso y una despensa de productos del país. Abre todos los días desde las 8:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={interior}
-				imageAlt="Interior de la panadería Martínez Colombiana, con estanterías de pan y la vitrina del mostrador"
-				primaryCta={{ label: 'Llamar · 658 27 16 05', href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,9</b> en Google · 18 reseñas' },
-					{ label: 'Apertura', html: '<b>8:00</b> todos los días' },
-					{ label: 'Barrio', html: '<b>Bailén-Miraflores</b> · 29010' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Fotos de la ficha de Google Maps"
-				galleryLinkLabel="Ver todas las fotos"
-				tag="Abierto todos los días"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<section class="ticker" aria-label="Lo que hay en la panadería">
-				<div class="wrap ticker-inner">
-					<span>Pan de queso</span>
-					<span aria-hidden="true">◆</span>
-					<span>Empanadas</span>
-					<span aria-hidden="true">◆</span>
-					<span>Bollería y tartas</span>
-					<span aria-hidden="true">◆</span>
-					<span>Productos colombianos</span>
-				</div>
-			</section>
-
-			<LocalAbout
-				label="La casa"
-				title="Un mostrador <br /><em>colombiano.</em>"
-				paragraphs={[
-					'La Panadería Martínez Colombiana está en la calle Martínez de la Rosa, 116, en Bailén-Miraflores. Es un local de barrio con las estanterías de pan a la vista y una vitrina corrida en la que se van poniendo la bollería, las tartas y los fritos.',
-					'La ficha de Google no publica una descripción del negocio ni una carta. Lo que sí hay son las fotos del perfil: bandejas de panes con queso recién horneados, empanadas fritas, roscas de pan en bolsa, bollos rebozados de azúcar, berlinas con chocolate y tartas de colores.',
-					'Al fondo, la despensa: estanterías con galletas y productos colombianos envasados y una nevera con refrescos, aguas de coco y quesos. Es lo que se ve en las fotos, no un catálogo inventado.',
-					'Abre todos los días desde las 8:00, con cierre a las 21:00 de lunes a sábado y a las 19:00 el domingo. El martes cierra antes, a las 17:00. Para encargos o dudas, el teléfono de la ficha es el 658 27 16 05.',
-				]}
-				note="3,9 sobre 5 con 18 reseñas en Google. La media incluye opiniones de todo tipo; en esta página se citan tres, también la de una estrella."
-				links={[
-					{ label: 'Llamar · 658 27 16 05', href: BUSINESS.phoneHref },
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="notes section-pad" aria-labelledby="notes-title">
-				<div class="wrap notes-grid">
-					<div class="notes-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas que se ven</p>
-						<h2 id="notes-title">Del horno <br /><em>a la vitrina.</em></h2>
-					</div>
-					<div class="notes-list">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="note-row">
-									<span class="note-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<div>
-										<h3>{item.title}</h3>
-										<p>{item.text}</p>
-									</div>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del perfil y lo que citan las reseñas. La disponibilidad cambia según el día."
-				cta={{ label: 'Llamar · 658 27 16 05', href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La ficha de Google no recoge carta, precios ni métodos de pago, así que esta web no publica importes. Para saber qué hay ese día, llama al 658 27 16 05 o pásate por el mostrador."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La panadería, <br /><em>por dentro.</em>"
-				description="Diez fotos de la ficha de Google Maps: el interior, el pan de queso, las empanadas, la bollería, las tartas, la despensa y la nevera."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div class="reviews-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
-							<h2 id="reviews-title">Tres reseñas, <br /><em>sin filtro.</em></h2>
-						</div>
-						<p>
-							3,9 sobre 5 con 18 reseñas. Estas tres están publicadas en Google: dos de
-							cinco estrellas y una de una estrella. El resto, en la ficha.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class:list={['review-card', review.rating === 1 && 'review-card-low']}>
-									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
-										{'★'.repeat(review.rating)}
-										<span class="stars-empty">{'★'.repeat(5 - review.rating)}</span>
-									</span>
-									<blockquote>{review.text}</blockquote>
-									<figcaption>
-										{review.rating === 1 ? 'Reseña de 1 estrella' : 'Reseña de 5 estrellas'}
-										· Google Maps
-									</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 18 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Martínez <br /><em>de la Rosa.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Martínez Colombiana en la calle Martínez de la Rosa, 116, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Martínez · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: '658 27 16 05', href: BUSINESS.phoneHref }}
-				reserveNote="La ficha no publica información sobre accesibilidad ni aparcamiento; si necesitas un acceso concreto, llama antes. Los encargos se atienden en el propio mostrador o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

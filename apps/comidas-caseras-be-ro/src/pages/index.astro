@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/comidas-caseras-be-ro-apaisada-05.jpg';
@@ -152,6 +153,20 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"comidas-caseras-be-ro-apaisada-05.jpg": fachada,
+	"comidas-caseras-be-ro-apaisada-01.jpg": interior,
+	"comidas-caseras-be-ro-apaisada-03.jpg": vitrina,
+	"comidas-caseras-be-ro-apaisada-02.jpg": garbanzos,
+	"comidas-caseras-be-ro-vertical-07.jpg": lomo,
+	"comidas-caseras-be-ro-vertical-08.jpg": paella,
+	"comidas-caseras-be-ro-apaisada-09.jpg": tortilla,
+	"comidas-caseras-be-ro-apaisada-10.jpg": guiso,
+};
 ---
 
 <!doctype html>
@@ -220,134 +235,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Conde de Halcón, 13 · Sevilla"
-				title="Comida de casa, <br /><em>lista para llevar.</em>"
-				lede={`Be&Ro es una casa de comidas para llevar en el barrio: cocina tradicional española, un guiso distinto cada día y raciones de 1/4 desde 2,50 €. En la ficha de Google suma ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="Fachada de Comidas Caseras para llevar Be&Ro con su rótulo en azul"
-				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Tipo', html: '<b>Comida casera</b> para llevar' },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00 – 16:00</b> · domingo cerrado' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Guiso del día"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios de Comidas Caseras para llevar Be&Ro" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Cocina tradicional, <br /><em>sin complicaciones.</em>"
-				paragraphs={[
-					'Be&Ro es un local de comidas caseras para llevar en la calle Conde de Halcón, 13, en Sevilla. Su pizarra lo presenta como «cocina tradicional española»: platos de cuchara, carnes guisadas, pescados, verduras y aliños, preparados cada día para comer en casa.',
-					'El cartel de la puerta anuncia pollo asado, platos combinados, guisos caseros, hamburguesas, serranitos, postres caseros y pan. La pizarra añade la promesa de la casa: «todos los días hacemos un guiso diferente».',
-					'La atención es de mostrador: se elige en la vitrina, se pesa la ración y se lleva. Para pedir pollo asado, paella de los sábados o comida para varios, el propio cartel pide encargos en el 691 98 78 63.',
-				]}
-				note="Esta web no publica una carta oficial cerrada. Los platos y precios que aparecen más abajo se han copiado de la pizarra fotografiada en la ficha pública; la oferta cambia a diario, así que conviene confirmarla al llamar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="La pizarra del local"
-				title="Guisos de siempre, <br /><em>precios de barrio.</em>"
-				description="Una selección de la carta que Be&Ro tiene colgada en la pared, con los precios tal como aparecen. Carnes, pescados y aliños se sirven por raciones de 1/4."
-				cta={{ label: `Preguntar el guiso de hoy · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Precios copiados de la pizarra fotografiada en la ficha pública (otoño de 2026) y sujetos a cambios. La pizarra completa incluye además hamburguesas, serranitos, tortillas con ingredientes, postres y bebidas. Llama al 691 98 78 63 para confirmar el guiso del día y encargar."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="El local <br /><em>y lo que sale del mostrador.</em>"
-				description="La fachada en la calle Conde de Halcón, el interior con la pizarra y algunos de los guisos y platos que aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de Comidas Caseras para llevar Be&Ro en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Lo que dicen <em>las reseñas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>{resena.texto}</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
-							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Conde <br /><em>de Halcón.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Comidas Caseras para llevar Be&Ro en C. Conde de Halcón, 13, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Conde de Halcón, 13 · Sevilla"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Encargar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="El local trabaja para llevar y las raciones se eligen en el mostrador. Para el pollo asado, la paella de los sábados o comida para varias personas, llama antes de ir."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import baguettes from '../assets/fotos/obrador-florin-gabriel-apaisada-05.jpg';
@@ -146,6 +147,19 @@ const galeria = [
 		alt: 'Tarta rectangular con una foto comestible y decoración de nata',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"obrador-florin-gabriel-apaisada-05.jpg": baguettes,
+	"obrador-florin-gabriel-vertical-01.jpg": tartaUnicornio,
+	"obrador-florin-gabriel-apaisada-06.jpg": bollos,
+	"obrador-florin-gabriel-vertical-09.jpg": napolitanas,
+	"obrador-florin-gabriel-vertical-07.jpg": berlinas,
+	"obrador-florin-gabriel-vertical-04.jpg": pastelitos,
+	"obrador-florin-gabriel-vertical-08.jpg": tartaFoto,
+};
 ---
 
 <!doctype html>
@@ -208,112 +222,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Carraca, 5, Loc 20 · Bailén-Miraflores"
-				title="Pan y pastelería <br /><em>de obrador.</em>"
-				lede={`El obrador de Florin & Gabriel está en la calle Carraca, 5, local 20, en Bailén-Miraflores. Hacen pan, bollería y pastelería con fabricación propia, y venden tanto al público como al sector de la hostelería. En las fotos del perfil se ven baguettes, bollos glaseados, napolitanas, berlinas y tartas personalizadas con nombre o foto. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={baguettes}
-				imageAlt="Bandeja de baguettes recién hechas en el obrador, sobre la mesa de acero"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,7</b> en Google · 9 reseñas' },
-					{ label: 'Horario', html: '<b>Todos los días</b> 5:00–22:30' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · tartas"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en el obrador" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un obrador <br /><em>con horno propio.</em>"
-				paragraphs={[
-					'El OBRADOR de Panadería y Pastelería de Florin & Gabriel está en la calle Carraca, 5, local 20, en Bailén-Miraflores. La ficha lo define como obrador con fabricación propia: aquí se amasa, se hornea y se prepara la pastelería que después se vende.',
-					'La ficha explica que venden al público y «principalmente» al sector de la hostelería, con precios competitivos, y que realizan «cualquier tipo de pan y bollería que se necesite», adaptándose a los gustos comerciales del cliente.',
-					'En las fotos del perfil se ve el trabajo del obrador: bandejas de baguettes, bollos glaseados, napolitanas de chocolate, berlinas bañadas con nata, filas de pastelitos y tartas de chocolate. También hay tartas personalizadas, una con foto comestible y otra con decoración de unicornio y nombre.',
-					'Abre todos los días de 5:00 a 22:30. La ficha no publica carta, precios ni página web, así que aquí no encontrarás importes: para encargos y condiciones de hostelería, la vía es el teléfono 667 32 81 16.',
-				]}
-				note="Sin carta ni precios publicados: el mostrador recoge solo lo que muestran las fotos del perfil y lo que explica la descripción de la ficha."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Horno, obrador <br />
-							<em>y hostelería.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El obrador"
-				title="Lo que sale <br /><em>del horno.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuenta la ficha de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note={`La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. Para pan por encargo, tartas personalizadas o pedidos de hostelería, llama al ${BUSINESS.phone}.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="El obrador, <br /><em>por dentro.</em>"
-				description="Seis fotos de la ficha de Google Maps: una tarta de unicornio, los bollos, las napolitanas, las berlinas, los pastelitos y una tarta con foto."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Carraca, <br /><em>local 20.</em>"
-				addressLines={[
-					BUSINESS.street,
-					BUSINESS.district,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa del obrador de Panadería y Pastelería Florin & Gabriel en la calle Carraca, 5, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Florin & Gabriel · Carraca"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google indica acceso para sillas de ruedas y aparcamiento adaptado, pero no publica información sobre el mostrador o el aseo. Es un obrador: si vas a hacer un encargo, llama antes."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

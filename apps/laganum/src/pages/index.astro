@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import interior from '../assets/fotos/laganum-interior.jpg';
@@ -170,6 +171,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"laganum-interior.jpg": interior,
+	"laganum-fachada.jpg": fachada,
+	"laganum-pizarra.jpg": pizarra,
+	"laganum-cajas.jpg": cajas,
+	"laganum-vitrina.jpg": vitrina,
+	"laganum-raviolis.jpg": raviolis,
+	"laganum-rigatoni.jpg": rigatoni,
+	"laganum-mostrador.jpg": mostrador,
+	"laganum-pasta-fresca.jpg": pastaFresca,
+};
 ---
 
 <!doctype html>
@@ -239,127 +255,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer de la Sardana, 6 · Andorra la Vella"
-				title="Obrador de pasta, <br /><em>en el centro.</em>"
-				lede={`Laganum es pasta fresca hecha allí mismo y servida al peso: rigatoni, radiatori y raviolis rellenos en bandejas de madera, nueve salsas para elegir y bols que salen en caja kraft. Dos menús con bebida y postre —10,95 € el Clàssic y 11,95 € el Especial— y una vitrina con focaccias, lasaña, canelones y tiramisú. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={interior}
-				imageAlt="Interior de Laganum con el mostrador, las bandejas de pasta, las lámparas y la ventana a la calle"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver la pizarra', href: '#carta' }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Menús', html: '<b>10,95 €</b> y <b>11,95 €</b> · con bebida y postre' },
-					{ label: 'Horario', html: '<b>11:00–20:30</b> · lunes a sábado' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pasta fresca"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Laganum" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El obrador"
-				title="Sardana, 6. <br /><em>Pasta a la vista.</em>"
-				paragraphs={[
-					'Laganum está en el Carrer de la Sardana, número 6, en el centro de Andorra la Vella, a pocos pasos de la avenida Meritxell. La ficha de Google lo sitúa en las coordenadas 42.50737, 1.5288869 (Plus Code GG4H+WH) y el teléfono es el +376 813 870.',
-					'El rótulo de la fachada lo define: «Laganum, obrador de pasta». Dentro, el mostrador es una vitrina con bandejas de madera donde se ve la pasta fresca —rigatoni, radiatori, raviolis de masa verde y rosa— junto a carteles como el de «Ravioli». Detrás, la pared oscura con los nombres de las pastas y las lámparas colgadas sobre el mármol de la barra.',
-					'Google lo clasifica como «Restaurante italiano» y «Tienda de alimentación», y las dos cosas encajan: se puede comer con los menús de la pizarra o comprar pasta, salsas y platos de la vitrina para llevarse. En la vitrina hay focaccias, empanadas, lasaña, canelones, tiramisú y panna cotta, cada uno con su etiqueta.',
-					`Con ${RATING.count} reseñas y una media de ${RATING.label} sobre 5 (noviembre de 2026), el horario es de mediodía a tarde: de 11:00 a 20:30 de lunes a jueves y hasta las 21:00 viernes y sábado, con el domingo cerrado.`,
-				]}
-				note="Los precios de esta página son los que aparecen en la pizarra del local en las fotos del perfil; no hay carta online enlazada desde Google, así que pueden cambiar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Del obrador</p>
-					<h2 id="highlights-title">Pasta, salsas <br /><em>y vitrina.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La pizarra"
-				title="Tres formas <br /><em>de comer pasta.</em>"
-				description="Los menús completos, los bols para llevar y las nueve salsas, tal como están escritos en la pizarra del local. Los importes son los de esa pizarra, en las fotos del perfil de Google."
-				cta={{ label: `Pedir · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`El pedido se hace en el mostrador o por teléfono, en el ${BUSINESS.phone}. La pasta se elige a la vista y la salsa, de la lista; los precios pueden cambiar respecto a la pizarra.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El obrador, por dentro."
-				description="Ocho fotografías del perfil: la fachada, la pizarra con los menús y las salsas, las cajas con pasta al horno y tiramisú, la vitrina de platos preparados, los raviolis de colores, el rigatoni crudo, el mostrador y una bandeja de pasta fresca."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,8 sobre 5, <em>con 194 reseñas.</em></h2>
-						<p>
-							Una de las notas más altas de Andorra la Vella, con un volumen de reseñas que ya pesa.
-							La ficha lo clasifica como restaurante italiano y tienda de alimentación.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer todas las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,8</strong>
-						<span>★★★★★</span>
-						<small>194 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el centro, <br /><em>hasta las nueve.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city} (parroquia de Andorra la Vella)`,
-					'Principado de Andorra',
-				]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 11:00 a 20:30 de lunes a jueves, hasta las 21:00 viernes y sábado, y domingo cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Laganum en el Carrer de la Sardana, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel={`${BUSINESS.street} · Andorra la Vella`}
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Reseñas', href: MAPS.reviews, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`No hay reservas ni carta online: se pide en el mostrador o en el ${BUSINESS.phone}. El domingo cierra, así que conviene no dejarlo para el final de la semana.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

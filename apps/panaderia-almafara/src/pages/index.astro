@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/panaderia-almafara-vertical-01.jpg';
@@ -137,6 +138,14 @@ const galeria = [
 		alt: 'Fachada de Almafara con la pizarra de «Pimientos asados», cajas de fruta y verdura y la puerta abierta',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-almafara-vertical-01.jpg": fachada,
+	"panaderia-almafara-vista-2-02.jpg": escaparate,
+};
 ---
 
 <!doctype html>
@@ -195,110 +204,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. de José Ortega y Gasset, 139 · Cruz de Humilladero"
-				title="Pan, charcutería <br /><em>y la compra del día.</em>"
-				lede={`Panadería ALMAFARA está en la Avenida de José Ortega y Gasset, 139, en Cruz de Humilladero. El rótulo anuncia «Panadería - Charcutería Almafara»: dentro hay pan, embutidos, fruta y verdura, productos de despensa y el asado de pimientos y batatas que anuncia la ficha. Abre todos los días, con jornada de mañana. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de Panadería - Charcutería Almafara con la pizarra de pimientos asados y cajas de fruta y verdura"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,6</b> en Google · 13 reseñas' },
-					{ label: 'Horario', html: '<b>8:30–15:00</b> de lunes a viernes' },
-					{ label: 'Asado', html: '<b>Pimientos</b> y batatas' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · charcutería · asado"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Almafara" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una tienda <br /><em>de barrio.</em>"
-				paragraphs={[
-					'Panadería ALMAFARA está en la Avenida de José Ortega y Gasset, 139, en Cruz de Humilladero (29006 Málaga). El rótulo de la fachada anuncia «Panadería - Charcutería Almafara», y a la puerta se asoma una pizarra que dice «Pimientos asados».',
-					'En la acera, junto a la entrada, hay cajas y expositores con fruta y verdura: naranjas, plátanos, aguacates, sandías y tomates, entre otros. Dentro, las estanterías se llenan de conservas, paquetes y productos de despensa, y hay una vitrina congeladora junto al mostrador.',
-					'La ficha de Google la clasifica como panadería y tienda de alimentación, y la propia descripción del negocio añade el «asado de pimientos y batatas». Es una tienda de barrio donde se compra el pan, la charcutería y la compra del día en el mismo sitio.',
-					'Las reseñas destacan sobre todo el trato: «Trato inmejorable por parte de la dueña», «Excelente atención y muy buenos precios», «El trato de la señora que atiende siempre muy amable y con una sonrisa». La ficha no publica teléfono, web ni redes, así que las consultas se hacen en el local.',
-				]}
-				note="La ficha de Google no publica carta ni precios. Esta página solo cuenta lo que muestran las fotos del perfil, lo que dice el rótulo del local y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, despensa <br />
-							<em>y asado.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la tienda.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local, lo que anuncia la ficha y lo que cuentan las reseñas."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo de la mañana: la tienda cierra a las 15:00."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La tienda, <br /><em>a pie de calle.</em>"
-				description="Las dos fotos de la ficha de Google Maps: el escaparate con el rótulo y la fachada con la pizarra de pimientos asados y las cajas de fruta."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Ortega <br /><em>y Gasset.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería ALMAFARA en la Avenida de José Ortega y Gasset, 139, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Almafara · Cruz de Humilladero"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Street View', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="La ficha de Google no publica teléfono ni web: las consultas se hacen en el propio local. Tampoco indica datos de accesibilidad, así que conviene preguntar si necesitas acceso adaptado."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

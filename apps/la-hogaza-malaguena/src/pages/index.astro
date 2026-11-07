@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/la-hogaza-malaguena-apaisada-01.jpg';
@@ -155,6 +156,22 @@ const galeria = [
 		alt: 'Escaparate de la panadería con la persiana de malla bajada y el rótulo sobre la puerta',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-hogaza-malaguena-apaisada-01.jpg": fachada,
+	"la-hogaza-malaguena-apaisada-03.jpg": interior,
+	"la-hogaza-malaguena-apaisada-02.jpg": napolitanas,
+	"la-hogaza-malaguena-vertical-04.jpg": hogazas,
+	"la-hogaza-malaguena-vertical-07.jpg": baguettes,
+	"la-hogaza-malaguena-vertical-05.jpg": semillas,
+	"la-hogaza-malaguena-apaisada-08.jpg": croissants,
+	"la-hogaza-malaguena-apaisada-10.jpg": caracolas,
+	"la-hogaza-malaguena-apaisada-06.jpg": arcos,
+	"la-hogaza-malaguena-vertical-09.jpg": escaparate,
+};
 ---
 
 <!doctype html>
@@ -213,107 +230,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Muñoz Degraín, 4 · Carretera de Cádiz"
-				title="El pan de cada mañana, <br /><em>en Carretera de Cádiz.</em>"
-				lede={`LA HOGAZA MALAGUEÑA está en la calle Muñoz Degraín, 4, en Carretera de Cádiz. Es panadería, pastelería y tienda de tartas: hogazas, barras, pan con semillas, napolitanas, caracolas y croissants, además de tartas personalizadas y empanadas por encargo. Abre todos los días de 7:00 a 15:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de LA HOGAZA MALAGUEÑA con el rótulo azul sobre los cristales, en la calle Muñoz Degraín"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 45 reseñas' },
-					{ label: 'Horario', html: '<b>7:00–15:00</b> todos los días' },
-					{ label: 'Encargos', html: '<b>Tartas</b> y empanadas' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · tartas"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La Hogaza" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>de barrio.</em>"
-				paragraphs={[
-					'LA HOGAZA MALAGUEÑA está en la calle Muñoz Degraín, 4, en Carretera de Cádiz (29002 Málaga). El rótulo azul de la fachada anuncia «Pan La Hogaza Malagueña», y en la puerta un cartel avisa de que se hacen tartas personalizadas.',
-					'Dentro, el local tiene arcos de ladrillo, estanterías de mimbre y una vitrina de cristal. En las fotos del perfil se ven hogazas rústicas enharinadas, barras y baguettes recién hechas, panes redondos con semillas y una balanza junto al mostrador.',
-					'La bollería se muestra en bandejas: napolitanas y caracolas cubiertas de crema y azúcar glas, y croissants de hojaldre. En las estanterías hay también productos envasados, aperitivos y bebidas.',
-					'En el interior, un cartel indica «Empanadas y salatitos por encargo». Google clasifica el negocio como panadería, pastelería y tienda de tartas, y le da 4,5 sobre 5 con 45 reseñas. La ficha no publica teléfono ni web, así que los encargos y las dudas se hablan en el mostrador.',
-				]}
-				note="La ficha de Google no publica teléfono, web ni precios. Esta página solo cuenta lo que muestran las fotos del perfil, lo que dicen los rótulos del local y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, bollería <br />
-							<em>y encargos.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local, los rótulos y las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo de la mañana: la panadería abre de 7:00 a 15:00."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Diez fotos de la ficha de Google Maps: la fachada, el interior con los arcos de ladrillo, las hogazas, las barras, el pan con semillas y la bollería."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Muñoz Degraín, <br /><em>junto al mar.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de LA HOGAZA MALAGUEÑA en la calle Muñoz Degraín, 4, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Hogaza · Carretera de Cádiz"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Street View', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="La ficha de Google no publica teléfono ni web: los encargos de tartas personalizadas, empanadas y salatitos se hablan en el mostrador. Indica acceso para sillas de ruedas, pero no informa sobre el mostrador ni el aseo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

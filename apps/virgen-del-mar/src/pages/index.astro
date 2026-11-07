@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import paella from '../assets/fotos/virgen-del-mar-apaisada-02.jpg';
@@ -24,7 +25,14 @@ import pescado from '../assets/fotos/virgen-del-mar-apaisada-09.jpg';
 import solomillo from '../assets/fotos/virgen-del-mar-vertical-01.jpg';
 import carpaccio from '../assets/fotos/virgen-del-mar-vertical-06.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Virgen del Mar, restaurante de marisco y pescado en la Plaza de San Nicolás, 3 (centro de Murcia). Gamba roja, ostras, arroces y guisos de la tierra. Comidas y cenas de martes a domingo. Reservas en el 968 21 66 79.';
@@ -129,6 +137,22 @@ const nav = [
 ];
 
 const title = 'Virgen del Mar · Marisco y arroces en el centro de Murcia';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"virgen-del-mar-apaisada-02.jpg": paella,
+	"virgen-del-mar-apaisada-03.jpg": gambaRoja,
+	"virgen-del-mar-vertical-10.jpg": vitrina,
+	"virgen-del-mar-vertical-05.jpg": bunuelos,
+	"virgen-del-mar-vista-4-04.jpg": almejas,
+	"virgen-del-mar-vista-7-07.jpg": ostra,
+	"virgen-del-mar-vertical-08.jpg": vieiras,
+	"virgen-del-mar-apaisada-09.jpg": pescado,
+	"virgen-del-mar-vertical-01.jpg": solomillo,
+	"virgen-del-mar-vertical-06.jpg": carpaccio,
+};
 ---
 
 <!doctype html>
@@ -183,81 +207,19 @@ const title = 'Virgen del Mar · Marisco y arroces en el centro de Murcia';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Pl. de San Nicolás · Murcia"
-				title="Marisco fresco<br /><em>en el centro de Murcia.</em>"
-				lede={`Gamba roja, ostras, vieiras y arroces en la Plaza de San Nicolás, 3, a unos minutos de la Catedral. Comidas y cenas de martes a domingo, con la lonja como carta. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={paella}
-				imageAlt="Paella de marisco con gamba, mejillón y almeja de Virgen del Mar, Murcia"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Horario', html: 'Mar–Sáb 13:30–16:00 y 20:30–23:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Virgen del Mar" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El restaurante"
-				title="La lonja<br /><em>en el centro.</em>"
-				paragraphs={[
-					`Virgen del Mar está en la Plaza de San Nicolás, 3, bajo, en pleno casco antiguo de Murcia (30005), a unos minutos de la Catedral. Un restaurante de mantel blanco, servicio de siempre y vitrina de marisco a la vista.`,
-					'La carta la manda la lonja: gamba roja, ostras abiertas al momento, vieiras a la plancha y almejas a la marinera, además de pescado fresco y carnes. Y arroces, con la paella de marisco como uno de los platos que más se repiten en las reseñas.',
-					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios y disponibilidad del día, se pregunta en mesa.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repite la calidad del producto —«mención especial a la gamba roja»—, la ensaladilla de merluza, las cocochas al ajillo y la paella.`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
-					{ label: 'Web del restaurante', href: BUSINESS.officialSite, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Marisco, arroces<br /><em>y plancha.</em>"
-				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el local."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia con la lonja y la temporada. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El marisco<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de Virgen del Mar en Google Maps, con imágenes de la ficha y de sus clientes. En la ficha del restaurante están todas las fotos y las reseñas."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en San Nicolás.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario publicado por el restaurante en su web: comidas y cenas de martes a sábado, domingos solo a mediodía y lunes cerrado. La ficha de Google no lo muestra, así que en festivos conviene llamar antes."
-				mapTitle="Mapa de Virgen del Mar en la Plaza de San Nicolás, 3, centro de Murcia"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Virgen del Mar · San Nicolás"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Web del restaurante', href: BUSINESS.officialSite, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google indica acceso, aseo y asientos adaptados para sillas de ruedas; el local está en una plaza del casco antiguo, así que lo más cómodo es aparcar en un parking del centro."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

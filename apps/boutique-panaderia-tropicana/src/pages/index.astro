@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import bolleria from '../assets/fotos/boutique-panaderia-tropicana-panoramica-02.jpg';
@@ -129,6 +130,16 @@ const galeria = [
 		alt: 'Esquina del edificio donde está la panadería, con el rótulo sobre la puerta',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"boutique-panaderia-tropicana-panoramica-02.jpg": bolleria,
+	"boutique-panaderia-tropicana-vertical-03.jpg": fachada,
+	"boutique-panaderia-tropicana-vertical-01.jpg": interior,
+	"boutique-panaderia-tropicana-vertical-04.jpg": edificio,
+};
 ---
 
 <!doctype html>
@@ -189,106 +200,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Bailén-Miraflores · 29010 Málaga"
-				title="Pan, bollería <br /><em>y dulces de vitrina.</em>"
-				lede={`La Boutique de La Panadería Tropicana está en Bailén-Miraflores, con el rótulo «Tropicana · Panadería Pastelería» en la fachada. Dentro hay vitrinas de pan y dulces, una bandeja de napolitanas, palmeras y piezas de hojaldre, y estanterías con productos envasados. Abre todos los días de 7:30 a 20:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={bolleria}
-				imageAlt="Bandeja de napolitanas de chocolate, palmeras, dulces de nata y una pieza Kinder"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,4</b> en Google · 63 reseñas' },
-					{ label: 'Horario', html: '<b>Todos los días</b> 7:30–20:30' },
-					{ label: 'Zona', html: '<b>Bailén-Miraflores</b> · 29010' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · pastelería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Tropicana" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>de barrio.</em>"
-				paragraphs={[
-					'La Boutique de La Panadería Tropicana Pastelería está en Bailén-Miraflores, en el 29010 de Málaga. La fachada lleva el rótulo «Tropicana · Panadería Pastelería» sobre la puerta y un cartel vertical en la esquina.',
-					'Dentro, el local es tienda y obrador: vitrinas con pan y dulces, una bandeja de bollería recién hecha y estanterías con productos envasados, aperitivos y bebidas.',
-					'En las fotos del perfil se ven napolitanas de chocolate, palmeras, barras de hojaldre rellenas de nata y una pieza con etiqueta «Kinder». Las reseñas de Google destacan el pan, la variedad de dulces y las palmeras rellenas, «bastante grandes y baratas».',
-					'Abre todos los días de 7:30 a 20:30, en jornada continua. La ficha no publica la calle ni el número, ni teléfono, web o precios, así que aquí no encontrarás ni dirección exacta ni importes: el mapa de esta página lleva al punto de Google Maps.',
-				]}
-				note="La ficha de Google no publica calle, número, teléfono ni precios. El mostrador recoge solo lo que muestran las fotos del perfil y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, bollería <br />
-							<em>y tienda.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día: la panadería abre de 7:30 a 20:30."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Tres fotos de la ficha de Google Maps: la fachada, el interior con las vitrinas y la esquina del edificio."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En pleno <br /><em>Bailén-Miraflores.</em>"
-				addressLines={[BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Boutique de La Panadería Tropicana en Bailén-Miraflores, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Tropicana · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="La ficha de Google no publica calle ni número, solo el barrio y el código postal: usa el mapa para llegar. Indica acceso para sillas de ruedas y aparcamiento adaptado, pero no informa sobre el mostrador ni el aseo. Tampoco publica teléfono, así que el contacto es en el local."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

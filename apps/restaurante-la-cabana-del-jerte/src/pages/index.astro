@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import terraza from '../assets/fotos/restaurante-la-cabana-del-jerte-apaisada-01.jpg';
@@ -22,7 +23,14 @@ import plaza from '../assets/fotos/restaurante-la-cabana-del-jerte-apaisada-07.j
 import torta from '../assets/fotos/restaurante-la-cabana-del-jerte-vertical-09.jpg';
 import carnes from '../assets/fotos/restaurante-la-cabana-del-jerte-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const reviews = BUSINESS.reviewsCount.toLocaleString('es-ES');
 
@@ -122,6 +130,20 @@ const nav = [
 ];
 
 const title = 'La Cabaña del Jerte · Cocina extremeña en el Valle del Jerte (Cáceres)';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-la-cabana-del-jerte-apaisada-01.jpg": terraza,
+	"restaurante-la-cabana-del-jerte-vertical-05.jpg": migas,
+	"restaurante-la-cabana-del-jerte-vertical-09.jpg": torta,
+	"restaurante-la-cabana-del-jerte-vertical-03.jpg": quesoFrito,
+	"restaurante-la-cabana-del-jerte-vertical-04.jpg": carne,
+	"restaurante-la-cabana-del-jerte-vertical-10.jpg": carnes,
+	"restaurante-la-cabana-del-jerte-apaisada-06.jpg": pulpo,
+	"restaurante-la-cabana-del-jerte-apaisada-07.jpg": plaza,
+};
 ---
 
 <!doctype html>
@@ -176,80 +198,19 @@ const title = 'La Cabaña del Jerte · Cocina extremeña en el Valle del Jerte (
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Ramón y Cajal · Jerte"
-				title="Migas y brasa<br /><em>en el Valle del Jerte.</em>"
-				lede={`Migas con huevo, torta del Casar fundida, ensaladas y carnes a la plancha en la avenida de Jerte, con terraza cubierta. Comidas y cenas de jueves a martes. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={terraza}
-				imageAlt="Terraza cubierta con mesas y toldos de La Cabaña del Jerte, en Jerte"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${reviews} reseñas)` },
-					{ label: 'Horario', html: 'Jue–Mar · 13:30 y 20:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece La Cabaña del Jerte" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El restaurante"
-				title="Migas, quesos<br /><em>y valle.</em>"
-				paragraphs={[
-					`La Cabaña del Jerte está en la Avenida Ramón y Cajal, 17, en Jerte (${BUSINESS.postalCode}, Cáceres), a pie de la carretera que sube al valle. Terraza cubierta con toldos y mesas de mantel, y comedor dentro.`,
-					'La cocina es extremeña y sin prisas: migas con huevo y pimentón, torta del Casar fundida, queso frito con salsa dulce, croquetas y ensaladas —la gourmet y la de naranja salen en las reseñas—. De la plancha, chuletón, chuletas y pinchos con patatas.',
-					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios y disponibilidad se llama al restaurante.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${reviews} opiniones en Google. Se repiten las migas, el queso frito, el chuletón y la ensalada de naranja, y el servicio «rápido y amigable».`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Migas, quesos<br /><em>y carnes a la plancha.</em>"
-				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el restaurante."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia con el mercado y la temporada —en época de cerezas hay más gente—. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de La Cabaña del Jerte en Google Maps: la terraza, las migas, la torta del Casar, las carnes y una vista de la plaza de Jerte."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en la avenida.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: dos servicios, comidas de 13:30 a 15:30 y cenas de 20:00 a 22:00, de jueves a martes. El miércoles cierra."
-				mapTitle="Mapa de La Cabaña del Jerte en la Avenida Ramón y Cajal, 17, Jerte (Cáceres)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Cabaña del Jerte"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google marca acceso, aseo y asientos adaptados, y las fotos muestran terraza cubierta; para grupos grandes conviene avisar con tiempo."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

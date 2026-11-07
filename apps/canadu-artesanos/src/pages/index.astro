@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import interior from '../assets/fotos/canadu-artesanos-apaisada-01.jpg';
@@ -138,6 +139,17 @@ const galeria = [
 		alt: 'Fachada de Cañadú Artesanos en la Plaza Cardenal Cisneros, vista desde arriba',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"canadu-artesanos-apaisada-01.jpg": interior,
+	"canadu-artesanos-vertical-02.jpg": vitrina,
+	"canadu-artesanos-vertical-05.jpg": tarta,
+	"canadu-artesanos-vertical-03.jpg": bollos,
+	"canadu-artesanos-vertical-06.jpg": fachada,
+};
 ---
 
 <!doctype html>
@@ -199,106 +211,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Poniente Sur · 14005 Córdoba"
-				title="Pan, bollería <br /><em>y tartas con nombre.</em>"
-				lede={`Cañadú Artesanos está en la Plaza Cardenal Cisneros, en Poniente Sur, con el rótulo «Cañadú artesanos» sobre la puerta. Dentro hay vitrinas con tartas, donuts bañados y bollos rellenos de nata, y bandejas de pan. Abre de lunes a viernes de 8:00 a 15:00 y los sábados de 8:30 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={interior}
-				imageAlt="Mostrador de Cañadú Artesanos con la vitrina de bollería y tartas, el expositor de pan y las estanterías de productos envasados"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> en Google · 102 reseñas' },
-					{ label: 'Horario', html: '<b>L–V</b> 8:00–15:00 · <b>S</b> 8:30–14:30' },
-					{ label: 'Zona', html: '<b>Poniente Sur</b> · 14005' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · tartas"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Cañadú" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>de barrio.</em>"
-				paragraphs={[
-					'Cañadú Artesanos está en la Plaza Cardenal Cisneros, en Poniente Sur, en el 14005 de Córdoba. El rótulo «Cañadú artesanos» preside la fachada, en la esquina del edificio amarillo.',
-					'Dentro, el local es tienda y obrador: una vitrina larga con tartas, donuts bañados, bollos y bollería pequeña, un expositor con bandejas de pan y estanterías con productos envasados y bebidas.',
-					'En las fotos del perfil se ven tartas de nata y de fruta, bollos coronados con nata y trozos de fresa y kiwi, y tartas escritas a mano con el nombre: «Felicidades Lauri», «¡Felicidades! mamá». Una reseña destaca «los pasteles y el pan», otra «la bollería pequeña» y otra cuenta que «atienden encargos con formalidad».',
-					'Abre de lunes a viernes de 8:00 a 15:00 y los sábados de 8:30 a 14:30; los domingos cierra. La ficha publica el teléfono y la dirección, pero no web propia, redes, carta ni precios.',
-				]}
-				note="La ficha de Google solo publica la categoría «Panadería», un teléfono y la dirección. El mostrador de esta página recoge lo que muestran las fotos del perfil y lo que cuentan las reseñas, sin importes."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 614 28 15 14', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, vitrina <br />
-							<em>y encargos.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="Los cartelitos de la vitrina llevan precios escritos a mano, pero cambian: esta web no los repite. El surtido se agota a lo largo de la mañana, así que conviene ir temprano."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: la vitrina, dos de las tartas y la fachada del local."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Plaza <br /><em>Cardenal Cisneros.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Cañadú Artesanos en la Plaza Cardenal Cisneros, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Cañadú Artesanos · Poniente Sur"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 614 28 15 14. No publica web propia ni redes. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el mostrador ni el aseo. Para encargos de tartas, conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

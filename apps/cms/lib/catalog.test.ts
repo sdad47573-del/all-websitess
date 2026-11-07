@@ -49,6 +49,8 @@ describe("catálogo de piezas", () => {
 			"faq",
 			"texto",
 			"cta",
+			"chips",
+			"menu",
 		]);
 	});
 

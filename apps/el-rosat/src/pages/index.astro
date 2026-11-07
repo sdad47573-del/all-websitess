@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachadaNieve from '../assets/fotos/el-rosat-apaisada-10.jpg';
@@ -23,7 +24,15 @@ import wrap from '../assets/fotos/el-rosat-vertical-07.jpg';
 import sandwichHuevo from '../assets/fotos/el-rosat-vertical-09.jpg';
 import quiche from '../assets/fotos/el-rosat-apaisada-03.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	MENU_NOTE,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'El Rosat · Snack bar y restaurante en Pas de la Casa';
 const description = BUSINESS.description;
@@ -137,6 +146,21 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-rosat-apaisada-10.jpg": fachadaNieve,
+	"el-rosat-vertical-01.jpg": entrada,
+	"el-rosat-vertical-02.jpg": comedor,
+	"el-rosat-vertical-05.jpg": barra,
+	"el-rosat-vertical-06.jpg": chickenBurger,
+	"el-rosat-vertical-07.jpg": wrap,
+	"el-rosat-vertical-09.jpg": sandwichHuevo,
+	"el-rosat-apaisada-03.jpg": quiche,
+	"el-rosat-apaisada-04.jpg": terrazaVerano,
+};
 ---
 
 <!doctype html>
@@ -194,90 +218,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="Comer bien <br /><em>en la montaña.</em>"
-				lede={`El Rosat está en el Carrer Sant Jordi 1, a un paso del centro de Pas de la Casa y de las pistas. Abre todos los días de 8:00 a 19:00 con servicio non-stop: platos combinados, bocadillos, burgers, kebabs, galettes bretonas y crêpes. La ficha de Google le da 4,4 sobre 5 con 440 reseñas.`}
-				image={fachadaNieve}
-				imageAlt="Fachada de El Rosat nevada, con el letrero de madera «ROSAT.» y las cartas iluminadas a los lados de la puerta"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,4</b> en Google · 440 reseñas' },
-					{
-						label: 'Horario',
-						html: '<b>8:00–19:00</b><br />Todos los días · non-stop',
-					},
-					{
-						label: 'Teléfono',
-						html: `<b>${BUSINESS.phone}</b> consultas y encargos`,
-					},
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de El Rosat" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un snack bar <br /><em>de montaña.</em>"
-				paragraphs={[
-					'El Rosat es un snack bar y restaurante en el Carrer Sant Jordi 1, en pleno Pas de la Casa, la localidad andorrana de la parroquia de Encamp pegada a la frontera con España. En la fachada, de piedra y madera, cuelga un letrero con el nombre y un gato dibujado que sostiene una cuchara de madera.',
-					'Dentro hay dos ambientes: el comedor, con las letras «ROSAT» en blanco sobre las mesas y las paredes de madera, y la barra, con cafetera, cerveza de grifo, copas colgadas y un mural que empieza «Maman disait toujours… La vie, c\'est comme une boîte de chocolats». Al lado de la puerta, una pizarra anuncia zumos prensados del día: citron, orange y pamplemousse, solos o en dúo y trío.',
-					'La carta está expuesta en la puerta, en francés, y se organiza en platos combinados con ensalada y patatas de la casa, bocadillos, americanos, burgers, kebabs, paninis, galettes de trigo sarraceno y crêpes dulces. Todo se sirve de forma continua mientras el local está abierto.',
-					'El horario de la ficha es de 8:00 a 19:00 todos los días, de lunes a domingo. Delante hay una terraza cercada con valla de madera: en invierno aparece cubierta de nieve y en verano se abre como una extensión de la calle. La ficha marca además que se admiten perros.',
-				]}
-				note="La información sale de la ficha pública de Google Maps y de las fotografías del perfil del establecimiento, incluida la carta de la puerta. No hay web oficial: si algo cambia, manda lo que digan en el local o por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver El Rosat en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="La carta <br /><em>de la puerta.</em>"
-				description="Los platos y precios son los de la carta que el local tiene expuesta junto a la entrada, escrita en francés. El IGI andorrano del 4,5 % ya está incluido."
-				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note={MENU_NOTE}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Ocho fotos <br /><em>de El Rosat.</em>"
-				description="La fachada con nieve, la terraza en verano, el comedor, la barra y algunos de sus platos: burgers, wraps, bocadillos y galettes."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a <br /><em>Sant Jordi, 1.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.parish}, Andorra`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: de 8:00 a 19:00 todos los días. La carta anuncia servicio non-stop, así que se puede comer a cualquier hora dentro de ese intervalo. En temporada alta de esquí puede ampliarse; llama antes si vas en día señalado."
-				mapTitle="Mapa de El Rosat en el Carrer Sant Jordi 1, Pas de la Casa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Rosat"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página: la ficha no publica una web propia. El teléfono es el canal directo para preguntar por la mesa, el plato del día o el horario de la terraza en temporada de esquí."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

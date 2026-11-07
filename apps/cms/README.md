@@ -54,14 +54,15 @@ Cada web tiene estas pestañas:
 - **Vista previa**: iframe con el prerender real de `dist/`, con ancho de
 escritorio, tablet o móvil, recarga y apertura en pestaña nueva. Si la web no
 se ha construido, avisa con el comando y enlaza a la versión publicada.
-- **Secciones** (pestaña de inicio): las piezas de la portada en orden. Se selecciona una en la
-  lista y se rellenan sus campos a la derecha (título, entradilla, párrafos,
-  fotos, botones, preguntas…), con subir/bajar y quitar. «Añadir pieza» suma
-  bloques de texto, destacados, preguntas o llamada a la acción al final. Se
-  guarda en `src/data/secciones.json`; la página los pinta con el componente
-  `<Secciones>`. Solo aparece para las webs que ya usan ese fichero; en el
-  resto se explica cómo activarlo. Los enlaces admiten atajos
-  `maps:place`, `maps:directions` y `maps:streetView`.
+- **Secciones** (pestaña de inicio): las piezas de la portada en orden, con la
+  vista previa de la web a la derecha (recortada a la pieza que se edita y con
+  ancho de escritorio, tablet o móvil) y los campos a la izquierda. Se
+  selecciona una pieza en la lista, se editan sus campos en vivo, se sube o
+  baja, se duplica o se quita. «Añadir secciones» abre el catálogo: piezas
+  sacadas de las webs reales (portada, la casa, señas, carta, destacados,
+  galería, visita, preguntas, texto y llamada a la acción). Se guarda en
+  `src/data/secciones.json` y la página las pinta con `<LocalSecciones>`. Los
+  enlaces admiten atajos `maps:place`, `maps:directions` y `maps:streetView`.
 - **Datos**: nombre, lema, teléfono, calle, código postal, ciudad y URL canónica.
   Se escribe solo el literal que cambia dentro de `BUSINESS`.
 - **Mapas**: latitud y longitud (`BUSINESS.geo`), con vista previa del mapa y
@@ -80,6 +81,25 @@ se ha construido, avisa con el comando y enlaza a la versión publicada.
   visibilidad) y publicación de `src/pages/tienda.astro`. La página usa el
   componente compartido `LocalShop`: carrito en el navegador y pedido por
   WhatsApp con el mensaje ya escrito. No cobra ni guarda pedidos.
+
+### Piezas en todas las webs
+
+`<LocalSecciones>` (paquete `@astro-components`) pinta la portada a partir de
+`src/data/secciones.json`: portada, la casa, señas, carta, galería, visita y
+preguntas. La usan 364 de las 780 portadas; el resto son webs con maquetación
+propia (componentes `Hero`/`Galeria` locales o HTML suelto con `<Image>`), que
+habría que rediseñar una a una.
+
+`scripts/migrar-piezas.ts` convierte las portadas que usan los componentes
+compartidos: evalúa sus props reales (también las que traen los datos en línea,
+sin `src/data/site.ts`), escribe el JSON validado y cambia el `<main>` por
+`<LocalSecciones>`. Sin `--apply` solo informa de lo que haría.
+
+```bash
+bun apps/cms/scripts/migrar-piezas.ts            # qué convertiría
+bun apps/cms/scripts/migrar-piezas.ts --apply    # todas
+bun apps/cms/scripts/migrar-piezas.ts --apply --only mi-web
+```
 
 La pestaña activa queda en la URL (`#vista`, `#mapas`, `#imagenes`, `#codigo`),
 así que recargar o volver atrás mantiene el sitio donde estabas.

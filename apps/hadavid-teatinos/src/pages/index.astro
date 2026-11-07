@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/hadavid-teatinos-apaisada-01.jpg';
@@ -143,6 +144,19 @@ const galeria = [
 		alt: 'Tartaletas de frutos rojos, limón y crema en la vitrina, con barritas de hojaldre',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"hadavid-teatinos-apaisada-01.jpg": fachada,
+	"hadavid-teatinos-apaisada-04.jpg": vitrina,
+	"hadavid-teatinos-vertical-03.jpg": panes,
+	"hadavid-teatinos-vertical-02.jpg": tartas,
+	"hadavid-teatinos-vertical-08.jpg": rosca,
+	"hadavid-teatinos-vertical-05.jpg": dulces,
+	"hadavid-teatinos-vertical-06.jpg": tartaletas,
+};
 ---
 
 <!doctype html>
@@ -205,112 +219,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Franz Kafka, 15 · Teatinos-Universidad"
-				title="Pan de harinas <br /><em>con nombre propio.</em>"
-				lede={`Hadavid Teatinos está en la calle Franz Kafka, 15, con la fachada blanca, el rótulo negro de «Hadavid aromas y sabores» y el toldo a juego. Dentro, el pan se etiqueta por harina —malta con centeno y linaza, sarraceno con jengibre y cúrcuma, sarraceno con calabaza hervida— y la vitrina se llena de tartas, tartaletas y bollería. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de Hadavid Teatinos, con el rótulo negro «Hadavid aromas y sabores» y el toldo"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,8</b> en Google · 453 reseñas' },
-					{ label: 'Horario', html: '<b>L–V 8:30–21:00</b> · S 8:30–15:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Harinas · pan · pastelería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Hadavid" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Harinas, horno <br /><em>y vitrina.</em>"
-				paragraphs={[
-					'Hadavid Teatinos está en la calle Franz Kafka, 15, en Teatinos-Universidad. La fachada es blanca, con un rótulo negro que dice «Hadavid aromas y sabores» y un toldo del mismo color sobre la puerta.',
-					'La ficha lo define como «panadería pastelería especializada en diferentes tipos de harinas». En las fotos del perfil se ve el obrador con los panes etiquetados: malta con centeno y linaza, sarraceno con jengibre y cúrcuma, sarraceno con calabaza hervida y sarraceno con arroz.',
-					'La vitrina mezcla pan y dulce: tartas de chocolate, de zanahoria y con nata y fresa, tartaletas de frutos rojos, limón y crema, roscas glaseadas, donuts, napolitanas, cruasanes, cookies y brownies.',
-					'Abre de lunes a viernes de 8:30 a 21:00 y el sábado de 8:30 a 15:00; el domingo cierra. La ficha no publica carta, precios ni página web, así que aquí no encontrarás importes.',
-				]}
-				note="Sin carta ni precios publicados: el mostrador recoge solo lo que muestran las fotos del perfil —con los carteles de las harinas— y lo que cuentan las reseñas de Google."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Harinas, pan <br />
-							<em>y pastelería.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que sale <br /><em>del obrador.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note={`La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día. Para saber qué hay hoy, llama al ${BUSINESS.phone}.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Seis fotos de la ficha de Google Maps: la vitrina, los panes etiquetados por harina, las tartas, la rosca glaseada, el surtido de dulces y las tartaletas."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Franz Kafka, <br /><em>número 15.</em>"
-				addressLines={[
-					BUSINESS.street,
-					BUSINESS.district,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Hadavid Teatinos en la calle Franz Kafka, 15, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Hadavid · Teatinos"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google indica acceso para sillas de ruedas, pero no publica información sobre aparcamiento adaptado, el mostrador o el aseo. El contacto es en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

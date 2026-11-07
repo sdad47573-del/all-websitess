@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/tania-panaderia-pasteleria-apaisada-01.jpg';
@@ -153,6 +154,21 @@ const galeria = [
 	{ src: estanteria, alt: 'Estantería con panes en bolsa y bandejas de pastas y galletas' },
 	{ src: bandeja, alt: 'Bandeja de panes recién hechos en el obrador' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"tania-panaderia-pasteleria-apaisada-01.jpg": fachada,
+	"tania-panaderia-pasteleria-apaisada-02.jpg": vitrinaDulces,
+	"tania-panaderia-pasteleria-apaisada-03.jpg": mostrador,
+	"tania-panaderia-pasteleria-apaisada-04.jpg": charcuteria,
+	"tania-panaderia-pasteleria-apaisada-05.jpg": esquina,
+	"tania-panaderia-pasteleria-apaisada-07.jpg": rotulo,
+	"tania-panaderia-pasteleria-apaisada-08.jpg": vitrinaTartas,
+	"tania-panaderia-pasteleria-apaisada-09.jpg": estanteria,
+	"tania-panaderia-pasteleria-vertical-10.jpg": bandeja,
+};
 ---
 
 <!doctype html>
@@ -213,144 +229,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Poeta Ximénez Molina, 10 · Bailén-Miraflores"
-				title="Pan hecho a mano, <br /><em>dulces de barrio.</em>"
-				lede={`Tania está en la calle Poeta Ximénez Molina, 10, en Bailén-Miraflores. Pan integral 100%, blanco y de soja —este solo lunes y jueves— elaborado a mano, dulces, tartas por encargo y una despensa con charcutería al corte. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de la panadería Tania con el rótulo PANADERIA TANIA y la puerta abierta"
-				primaryCta={{ label: 'Llamar al obrador · 666 92 95 95', href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,6</b> en Google · 75 reseñas' },
-					{ label: 'Horario', html: '<b>Dos turnos</b> · mañana y tarde' },
-					{ label: 'Teléfono', html: '<b>666 92 95 95</b> · encargos' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Fotos de la ficha de Google Maps"
-				galleryLinkLabel="Ver todas las fotos"
-				tag="L–V desde las 7:15"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<section class="ticker" aria-label="Lo que hay en Tania">
-				<div class="wrap ticker-inner">
-					<span>Pan integral 100%</span>
-					<span aria-hidden="true">·</span>
-					<span>Pan de soja, lunes y jueves</span>
-					<span aria-hidden="true">·</span>
-					<span>Tartas por encargo</span>
-					<span aria-hidden="true">·</span>
-					<span>Charcutería al corte</span>
-				</div>
-			</section>
-
-			<LocalAbout
-				label="El obrador"
-				title="Lo que se hace <br /><em>cada mañana.</em>"
-				paragraphs={[
-					'La panadería y confitería Tania está en la calle Poeta Ximénez Molina, 10, en Bailén-Miraflores. Es un local de barrio con obrador propio y una despensa al lado del mostrador.',
-					'Según la descripción que el propio negocio publica en Google, el pan integral 100% y el pan blanco se elaboran a diario a mano; el de soja se hace solo lunes y jueves, así que conviene ir esos días si se busca.',
-					'La casa anuncia también variedad de dulces y tartas por encargo al gusto. Para una tarta, lo directo es llamar al obrador y concretar el tipo y el día de recogida.',
-					'Completan el local la alimentación, las bebidas y la charcutería al corte. Abre en dos turnos: por la mañana desde las 7:15 y, de lunes a sábado, también por la tarde desde las 17:30. El domingo solo hay turno de mañana.',
-				]}
-				note="4,6 sobre 5 con 75 reseñas en Google. Las tres reseñas citadas en esta página están publicadas en la ficha; la media incluye opiniones de todo tipo."
-				links={[
-					{ label: 'Llamar al obrador', href: BUSINESS.phoneHref },
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="craft section-pad" aria-labelledby="craft-title">
-				<div class="wrap">
-					<div class="craft-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
-						<h2 id="craft-title">Pan, dulces <br /><em>y despensa.</em></h2>
-					</div>
-					<div class="craft-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="craft-card">
-									<span class="craft-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta cerrada ni precios publicados: esto es lo que el negocio describe en su ficha y lo que las reseñas destacan. Para encargos, llama al obrador."
-				cta={{ label: 'Llamar · 666 92 95 95', href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La disponibilidad puede cambiar según el día. El pan de soja solo se elabora lunes y jueves. Las tartas se encargan por teléfono; esta web no publica importes porque la ficha no los recoge."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Nueve fotos de la ficha de Google Maps: la fachada, las vitrinas de dulces, el mostrador, la charcutería y el pan recién hecho."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div class="reviews-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
-							<h2 id="reviews-title">Tres reseñas <br /><em>de la ficha.</em></h2>
-						</div>
-						<p>
-							La media es 4,6 sobre 5 con 75 reseñas. Estas tres están publicadas en
-							Google; el resto se puede leer en la ficha.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
-										{'★'.repeat(review.rating)}
-										<span class="stars-empty">{'★'.repeat(5 - review.rating)}</span>
-									</span>
-									<blockquote>{review.text}</blockquote>
-									<figcaption>{review.author}</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 75 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Bailén-Miraflores, <br /><em>mañana y tarde.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Tania Panadería Pastelería en la calle Poeta Ximénez Molina, 10, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Tania · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar al obrador', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: '666 92 95 95', href: BUSINESS.phoneHref }}
-				reserveNote="Para tartas y encargos, llama al obrador. La ficha indica acceso para sillas de ruedas; no publica información sobre aparcamiento adaptado."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

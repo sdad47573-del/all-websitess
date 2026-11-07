@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/guisando-comida-para-llevar-apaisada-01.jpg';
@@ -24,7 +25,18 @@ import ensaladaAtun from '../assets/fotos/guisando-comida-para-llevar-vertical-0
 import ensaladilla from '../assets/fotos/guisando-comida-para-llevar-vertical-09.jpg';
 import hojaldres from '../assets/fotos/guisando-comida-para-llevar-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Guisando Comida para Llevar · Arroces y comida casera en Málaga';
 const description =
@@ -121,6 +133,22 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"guisando-comida-para-llevar-apaisada-01.jpg": fachada,
+	"guisando-comida-para-llevar-apaisada-02.jpg": vitrina,
+	"guisando-comida-para-llevar-vista-3-03.jpg": arroz,
+	"guisando-comida-para-llevar-vista-5-05.jpg": fritos,
+	"guisando-comida-para-llevar-vertical-06.jpg": pastaEnsalada,
+	"guisando-comida-para-llevar-apaisada-07.jpg": empanadas,
+	"guisando-comida-para-llevar-vertical-08.jpg": ensaladaAtun,
+	"guisando-comida-para-llevar-vertical-09.jpg": ensaladilla,
+	"guisando-comida-para-llevar-vertical-10.jpg": hojaldres,
+	"guisando-comida-para-llevar-vista-4-04.jpg": cartel,
+};
 ---
 
 <!doctype html>
@@ -189,134 +217,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. de la Era, 25 · Málaga-Este"
-					title="Arroces y comida <br /><em>para disfrutar.</em>"
-				lede={`Guisando Comida para Llevar es una arrocería en Málaga-Este. La ficha de Google muestra ${RATING.label} sobre 5 con ${RATING.count} reseñas. Llama para consultar los platos disponibles y el horario.`}
-				image={fachada}
-				imageAlt="Fachada de Guisando Comida para Llevar con toldo verde y rótulo de comida para llevar"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Tipo', html: '<b>Arrocería</b>' },
-					{ label: 'Valoración', html: `<b>${RATING.label}</b> · ${RATING.count} reseñas` },
-					{ label: 'Oferta', html: '<b>Arroces y pollos</b> para llevar' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver fotos y ficha"
-				tag="Comidas para llevar"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Servicios y oferta de Guisando" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Guisando, <br /><em>para disfrutar.</em>"
-				paragraphs={[
-					'En la calle de la Era, en Málaga-Este, Guisando prepara comida para llevar. Google identifica el negocio como arrocería y el rótulo de la fachada anuncia arroces y pollos asados.',
-					'En las fotos de la ficha aparecen una paella mixta, una vitrina con bandejas preparadas, pescado frito, empanadas y distintas ensaladas. La carta y la disponibilidad pueden variar; llama para saber qué hay ese día.',
-					'El rótulo exterior también anuncia congelados, frutas y verduras y catering. En la fachada se ven dos teléfonos de contacto; el 605 22 71 11 es el que figura en la ficha actual de Google.',
-				]}
-				note="La ficha de Google no publica una carta completa ni un horario semanal confirmado. Los platos citados se basan en lo que muestran las fotografías y los rótulos del establecimiento; no se indican precios."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotografías', href: '#galeria' },
-					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="Lo que muestran las fotos"
-				title="De la vitrina <br /><em>a tu mesa.</em>"
-				description="Arroz, comida preparada, pescado frito, empanadas y ensaladas aparecen en las fotos del perfil. Esta selección orientativa no sustituye a la carta del día."
-				cta={{ label: `Consultar por teléfono · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La ficha no publica una carta oficial ni precios. Los productos de las imágenes pueden no estar disponibles a diario; confirma la oferta y el horario llamando al establecimiento."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="Así se ve <br /><em>Guisando.</em>"
-				description="La fachada, la vitrina y algunos platos preparados que aparecen en las fotografías públicas del establecimiento."
-				images={galeria}
-				cta={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place }}
-				note="Imágenes descargadas del perfil público de Guisando en Google Maps y servidas desde esta página."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Lo que cuentan <em>las reseñas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer reseñas en Google ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Opinión en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La valoración y el número de reseñas corresponden a la ficha consultada en octubre
-							de 2026 y pueden variar. <a href={MAPS.reviews} target="_blank" rel="noreferrer"
-								>Consulta las opiniones actualizadas en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Málaga <br /><em>Este.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={[{ day: 'Horario', value: 'Consultar en Google o por teléfono' }]}
-				hoursCaption="Antes de venir"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Guisando Comida para Llevar en C. de la Era, 25, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. de la Era, 25 · Málaga-Este"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="En el rótulo de la fachada también aparece el 951 08 88 53. Confirma con el local qué teléfono está activo, el horario y la disponibilidad de platos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
 		</main>
 
 		<LocalFooter

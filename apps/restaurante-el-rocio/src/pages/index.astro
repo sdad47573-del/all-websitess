@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mesaPuesta from '../assets/fotos/restaurante-el-rocio-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import arrozConejo from '../assets/fotos/restaurante-el-rocio-apaisada-08.jpg';
 import gambasAjillo from '../assets/fotos/restaurante-el-rocio-apaisada-09.jpg';
 import calamares from '../assets/fotos/restaurante-el-rocio-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante "El Rocío" en Fortuna (Murcia): cocina española, arroces, carnes a la brasa y raciones generosas en la Avenida Narciso Yepes, 22. De lunes a sábado, de 9:00 a 18:00. Reservas en el 868 68 03 03.';
@@ -148,6 +156,22 @@ const nav = [
 
 const title =
 	'Restaurante "El Rocío" · Cocina española en Fortuna, Murcia';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-el-rocio-apaisada-01.jpg": mesaPuesta,
+	"restaurante-el-rocio-apaisada-08.jpg": arrozConejo,
+	"restaurante-el-rocio-apaisada-05.jpg": entrecot,
+	"restaurante-el-rocio-apaisada-02.jpg": mejillones,
+	"restaurante-el-rocio-apaisada-06.jpg": almejas,
+	"restaurante-el-rocio-apaisada-09.jpg": gambasAjillo,
+	"restaurante-el-rocio-apaisada-10.jpg": calamares,
+	"restaurante-el-rocio-apaisada-07.jpg": potaje,
+	"restaurante-el-rocio-apaisada-03.jpg": patatasAlioli,
+	"restaurante-el-rocio-apaisada-04.jpg": menuDia,
+};
 ---
 
 <!doctype html>
@@ -202,80 +226,19 @@ const title =
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Fortuna · Región de Murcia"
-				title="Cocina española<br /><em>y raciones de las de antes.</em>"
-				lede={`En la Avenida Narciso Yepes, 22, a la entrada de Fortuna. Arroces, carnes a la brasa, platos de cuchara y entrantes para compartir, con el menú del día de lunes a sábado. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={mesaPuesta}
-				imageAlt="Mesa preparada con la carta de Restaurante El Rocío y el cartel de reservado, en Fortuna"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Horario', html: 'Lunes a sábado, 9:00–18:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante El Rocío" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El restaurante"
-				title="Cocina de casa<br /><em>en Fortuna.</em>"
-				paragraphs={[
-					`Restaurante "El Rocío" está en la Avenida Narciso Yepes, 22, en Fortuna (30620, Murcia). Un restaurante de cocina española de los de mantel y servicio de siempre, con mesas grandes, carta impresa en la mesa y aparcamiento en la zona.`,
-					'Se come de todo y abundante: entrantes para compartir como mejillones, almejas a la marinera, gambas al ajillo o calamares a la plancha; arroces al fuego, entre ellos el arroz con conejo y caracoles y la paella; carnes a la brasa al punto y platos de cuchara como el potaje de alubias con chorizo y morcilla.',
-					'La ficha de Google no publica la carta completa ni los precios, así que aquí no se inventan: lo que hay en esta web es lo que se ve en sus fotos y lo que cuentan sus reseñas. Para el día a día está el menú del día, con primero, segundo y postre.',
-				]}
-				note={`La nota media en Google es ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre ${BUSINESS.reviewsCount} opiniones. Lo que más se repite es el tamaño de las raciones —hay quien las llama «enormes»— y la paella; también hay quien las considera caras para lo que son, así que pregunta precios antes de pedir de más.`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Entrantes, arroces<br /><em>y brasa.</em>"
-				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps del restaurante. No es la carta completa ni tiene precios: pídelos en el local o al reservar."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia con la temporada y el mercado. Si vas por un plato concreto, llámanos antes: no publicamos precios porque el restaurante no los tiene publicados."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Los platos<br /><em>y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante El Rocío en Google Maps, con imágenes de la ficha y de sus clientes. En la ficha del restaurante están todas las fotos y las reseñas."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} Fortuna`}
-				title="Nos vemos<br /><em>en El Rocío.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario publicado en la ficha de Google. Abre de lunes a sábado y cierra los domingos; en festivos y puentes puede cambiar, así que confírmalo por teléfono si vienes de lejos."
-				mapTitle="Mapa de Restaurante El Rocío en la Avenida Narciso Yepes, 22, Fortuna, Murcia"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Restaurante El Rocío · Fortuna"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Aparcamiento en la zona', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google indica acceso, aparcamiento, aseo y asientos adaptados para sillas de ruedas; si necesitas una mesa concreta, avisa al reservar."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

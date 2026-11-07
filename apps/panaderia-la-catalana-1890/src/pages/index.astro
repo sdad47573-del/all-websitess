@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrinas from '../assets/fotos/panaderia-la-catalana-1890-apaisada-01.jpg';
@@ -120,6 +121,17 @@ const galeria = [
 		alt: 'Carta de precios de La Catalana con la lista de bollería, dulces y tartas',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-la-catalana-1890-apaisada-01.jpg": vitrinas,
+	"panaderia-la-catalana-1890-panoramica-04.jpg": fachada,
+	"panaderia-la-catalana-1890-apaisada-02.jpg": dulces,
+	"panaderia-la-catalana-1890-apaisada-03.jpg": interior,
+	"panaderia-la-catalana-1890-vertical-05.jpg": carta,
+};
 ---
 
 <!doctype html>
@@ -181,106 +193,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Noroeste · 14011 Córdoba"
-				title="Panadería artesanal <br /><em>sin lactosa.</em>"
-				lede={`La Catalana está en la calle Atlántico, 11, en el barrio Noroeste. El rótulo de la fachada dice «La Catalana · Panadería artesanal · 1890», y el cartel de la entrada lo anuncia: «todos nuestros productos sin lactosa y sin trazas de lactosa». Dentro hay vitrinas de pan, bollería y pastelería, y estanterías con botes y botellas. Abre de lunes a sábado de 8:30 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={vitrinas}
-				imageAlt="Vitrinas de La Catalana con las bandejas de pan, bollería y pasteles y el cartel de sin lactosa"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,6</b> en Google · 35 reseñas' },
-					{ label: 'Horario', html: '<b>L–S</b> 8:30–14:30 · <b>D</b> cerrado' },
-					{ label: 'Zona', html: '<b>Noroeste</b> · 14011' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · pastelería · sin lactosa"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La Catalana" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un obrador <br /><em>desde 1890.</em>"
-				paragraphs={[
-					'La Catalana está en la calle Atlántico, 11, en el barrio Noroeste (14011 Córdoba). El rótulo de la fachada pone «La Catalana · Panadería artesanal · 1890», y en el cartel de la entrada se lee que todos sus productos son sin lactosa y sin trazas de lactosa.',
-					'Dentro, el local es amplio y luminoso: vitrinas corridas con el pan, la bollería y la pastelería del día, una zona de despacho y estanterías con botes y botellas de despensa.',
-					'En las fotos del perfil se ven bandejas de rosquillas, polvorones, tortas, bizcochos y empanadas, además de una tarta con el letrero de la inauguración del obrador en 1890. La carta del local lista bollería y dulces como el pastel cordobés, los pestiños, las magdalenas, las palmeras o los negritos.',
-					'Las reseñas lo cuentan con cariño: «pan buenísimo y la señora que atiende súper amable», «bizcochos muy regaditos y deliciosos» y «servicio excelente, amable, educada y muy simpática». Abre de lunes a sábado de 8:30 a 14:30.',
-				]}
-				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta ni precios. La carta del local lleva importes, pero cambian, así que esta web no los repite. La ficha tampoco publica la lista de alérgenos: el «sin lactosa» es lo que anuncia el propio establecimiento."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 957 02 33 45', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, bizcochos <br />
-							<em>y sin lactosa.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin precios publicados: esto es lo que muestran las fotos y la carta del local, y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. El obrador abre por la mañana y cierra a las 14:30: el surtido se agota a lo largo de la mañana."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: la fachada, la vitrina de dulces, el interior y la carta."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la calle <br /><em>Atlántico.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería La Catalana, 1890, en la calle Atlántico, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Catalana, 1890 · Noroeste"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 957 02 33 45. No publica web propia ni redes, ni información de accesibilidad, así que esta página no la afirma. Para encargos de tartas o pasteles, conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

@@ -86,7 +86,7 @@ describe("piezas de portada", () => {
 		withSite((appsDir) => {
 			const candidates = [
 				page({ secciones: [] }),
-				page({ secciones: [{ id: "casa", tipo: "about", titulo: "X", parrafos: ["Y"] }] }),
+				page({ secciones: [{ id: "casa", tipo: "about", titulo: "X", parrafos: [] }] }),
 				page({ secciones: [hero({ tipo: "inventado" })] }),
 				page({ secciones: [hero({ id: "../x" })] }),
 				page({ secciones: [hero({ titulo: "" })] }),

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import envuelto from '../assets/fotos/a-boca-2-ciudad-real-vertical-01.jpg';
@@ -18,7 +19,16 @@ import abierto from '../assets/fotos/a-boca-2-ciudad-real-vertical-02.jpg';
 import quemado from '../assets/fotos/a-boca-2-ciudad-real-vertical-03.jpg';
 import interior from '../assets/fotos/a-boca-2-ciudad-real-vertical-04.jpg';
 
-import { BUSINESS, FAQ, HOURS, HORARIO_AVISO, MAPS, MENU, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'A boca2 Ciudad Real · bocadillos y patatas en la calle de los Hidalgos';
 const description = BUSINESS.description;
@@ -107,6 +117,16 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"a-boca-2-ciudad-real-vertical-02.jpg": abierto,
+	"a-boca-2-ciudad-real-vertical-01.jpg": envuelto,
+	"a-boca-2-ciudad-real-vertical-03.jpg": quemado,
+	"a-boca-2-ciudad-real-vertical-04.jpg": interior,
+};
 ---
 
 <!doctype html>
@@ -162,87 +182,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Bocadillos <br /><em>de barra.</em>"
-				lede={`A boca2 es una bocatería en la calle de los Hidalgos, 3, en el centro de Ciudad Real. Bocadillos de lomo con queso, pollo y kebab, patatas y raciones, para comer en la barra o llevar envueltos. La ficha de Google le da 3,2 sobre 5 con 65 reseñas.`}
-				image={abierto}
-				imageAlt="Bocadillo de lomo con queso abierto sobre papel estampado, con lechuga, tomate y mayonesa"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,2</b> en Google · 65 reseñas' },
-					{
-						label: 'Horario',
-						html: '<b>No publicado</b><br />La ficha no da horas de apertura',
-					},
-					{ label: 'Contacto', html: '<b>Sin teléfono</b> en la ficha · se va al local' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de A boca2 Ciudad Real" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Barra naranja, <br /><em>papel de aluminio.</em>"
-				paragraphs={[
-					'A boca2 Ciudad Real es una bocatería en la calle de los Hidalgos, 3, en la zona del centro de Ciudad Real. Google la clasifica simplemente como bocatería, sin más etiquetas: no publica teléfono, ni horario, ni carta, ni web propia.',
-					'Las fotos del perfil las suben los clientes y enseñan el producto tal cual: la barra de pan abierta a lo largo, el lomo a la plancha con queso fundido, lechuga, tomate y mayonesa; en otra, pollo y lechuga. También hay una foto del interior, con la barra naranja corrida, taburetes altos, la nevera de refrescos y el rótulo de ABOCA2 en la pared.',
-					'Las reseñas añaden lo que no sale en las fotos: kebab, patatas fritas y patatas con carne de kebab. Y no todas son buenas. La media es 3,2 sobre 5 con 65 opiniones, con reseñas de cinco estrellas que alaban el trato —«Excelente servicio, la camarera súper simpática y amable»— junto a otras muy críticas con las patatas o con el punto del pan.',
-					'En la ficha también constan dos detalles útiles: la entrada es accesible para sillas de ruedas y se admiten perros. Lo que no hay es teléfono ni franja de horario, así que para saber si está abierto hay que pasar por la calle de los Hidalgos.',
-				]}
-				note="Los datos salen de la ficha pública de Google Maps y de las fotos y reseñas del perfil. La ficha no publica teléfono, horario, carta ni precios: esta web no los inventa."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver la bocatería en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lomo, pollo <br /><em>y kebab.</em>"
-				description="Los productos que aparecen aquí son los que enseñan las fotos del perfil y los que nombran las reseñas. La casa no tiene carta publicada en Google ni web propia."
-				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note="Esta página no publica precios porque no hay carta oficial que copiar. Lo que haya ese día, las raciones y los importes se preguntan en el mostrador."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Cuatro fotos <br /><em>del perfil.</em>"
-				description="Las cuatro fotografías que tiene el perfil de A boca2 en Google Maps: dos bocadillos de lomo, uno de pollo y el interior del local con la barra naranja."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Son fotos de clientes: si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Pasa por <br /><em>los Hidalgos.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Ciudad Real · Castilla-La Mancha',
-				]}
-				hours={HOURS}
-				hoursCaption="Lo que consta en la ficha"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de A boca2 Ciudad Real en la calle de los Hidalgos 3, Ciudad Real"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="A boca2 Ciudad Real"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. La bocatería no publica teléfono ni web propia, así que el único canal es el mostrador: se pide allí y se come en la barra o se lleva."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
 		</main>
 
 		<LocalFooter

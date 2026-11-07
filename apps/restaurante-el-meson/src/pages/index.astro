@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import comedor from '../assets/fotos/restaurante-el-meson-vertical-01.jpg';
@@ -23,7 +24,14 @@ import mesa from '../assets/fotos/restaurante-el-meson-vertical-10.jpg';
 import parrilla from '../assets/fotos/restaurante-el-meson-vista-7-07.jpg';
 import postres from '../assets/fotos/restaurante-el-meson-apaisada-09.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante El Mesón, parrilla y bar en la calle Camelias, 1 (Moraleja, Cáceres). Lagarto y carnes a la parrilla, ensalada de rulo, croquetas, pulpo y calamares. 4,4 en Google con 659 reseñas. Tel. 927 56 34 74.';
@@ -144,6 +152,21 @@ const nav = [
 ];
 
 const title = 'Restaurante El Mesón · Parrilla en Moraleja';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-el-meson-apaisada-03.jpg": patatas,
+	"restaurante-el-meson-vertical-01.jpg": comedor,
+	"restaurante-el-meson-vertical-10.jpg": mesa,
+	"restaurante-el-meson-vertical-04.jpg": ensalada,
+	"restaurante-el-meson-vertical-08.jpg": lagarto,
+	"restaurante-el-meson-vista-7-07.jpg": parrilla,
+	"restaurante-el-meson-vertical-06.jpg": entrecot,
+	"restaurante-el-meson-apaisada-09.jpg": postres,
+	"restaurante-el-meson-vertical-02.jpg": flan,
+};
 ---
 
 <!doctype html>
@@ -200,84 +223,19 @@ const title = 'Restaurante El Mesón · Parrilla en Moraleja';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Camelias, 1 · Moraleja"
-				title="Parrilla y bar<br /><em>en Moraleja.</em>"
-				lede={`El Mesón es parrilla y bar en la calle Camelias, 1, de Moraleja (Cáceres), en el noroeste de la provincia. Lagarto y carnes a la parrilla, ensalada de rulo, croquetas, pulpo y calamares, con raciones para compartir. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={patatas}
-				imageAlt="Sartén de patatas con queso fundido y bacon en Restaurante El Mesón, Moraleja"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{
-						label: 'Nota',
-						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
-					},
-					{ label: 'Horario', html: 'Consultar por teléfono' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante El Mesón" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El mesón"
-				title="Mesa larga<br /><em>y parrilla.</em>"
-				paragraphs={[
-					'Restaurante El Mesón está en la calle Camelias, 1, de Moraleja (Cáceres), en el noroeste de la provincia, en la comarca de Sierra de Gata y a un paso de las Vegas del Alagón.',
-					'El comedor es de los de mesa larga: mantel negro, sillas blancas de metal, suelo de baldosa, vigas de madera y una estantería de botellas iluminada sobre la pared. Al fondo queda la barra con taburetes, y al otro lado del comedor una esquina con pared de ladrillo y mesas de madera.',
-					'La ficha de Google lo clasifica como parrilla y bar. Sus reseñas nombran la ensalada de rulo, las croquetas, el pulpo, los calamares y el lagarto, y coinciden en el trato del equipo y en la «buena relación calidad-precio».',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo resume así: «camareros geniales, educados y simpáticos, buena relación calidad-precio».`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Del lagarto<br /><em>a las croquetas.</em>"
-				description="La ficha de Google no publica carta ni precios: esto es lo que nombran sus reseñas y lo que se ve en las fotos de sus platos."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Sin carta publicada, los platos cambian según el día. Llama al 927 56 34 74 para saber qué hay y cuándo abre: la ficha de Google no tiene horario."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor<br /><em>y la parrilla.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante El Mesón en Google Maps: el comedor de mesa larga, la ensalada de rulo, el lagarto a la parrilla y los postres."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en la calle Camelias.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="La ficha de Google de El Mesón no tiene horario añadido, así que aquí no se inventa ninguno. Llama al 927 56 34 74 y te confirman los días y las horas de apertura."
-				mapTitle="Mapa de Restaurante El Mesón en la calle Camelias, 1, Moraleja (Cáceres)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Restaurante El Mesón · Moraleja"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al 927 56 34 74. La ficha de Google marca aseo adaptado para sillas de ruedas y asientos adaptados. Está en la calle Camelias, 1, de Moraleja, en la comarca de Sierra de Gata."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

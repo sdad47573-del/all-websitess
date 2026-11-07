@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import buffet from '../assets/fotos/la-ermita-apaisada-01.jpg';
@@ -177,6 +178,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-ermita-apaisada-01.jpg": buffet,
+	"la-ermita-vertical-10.jpg": fachada,
+	"la-ermita-apaisada-03.jpg": migas,
+	"la-ermita-vista-7-07.jpg": tortilla,
+	"la-ermita-vertical-05.jpg": berenjenas,
+	"la-ermita-vertical-06.jpg": potaje,
+	"la-ermita-vertical-02.jpg": guisoPatatas,
+	"la-ermita-vista-9-09.jpg": menestra,
+	"la-ermita-vista-4-04.jpg": interior,
+	"la-ermita-vertical-08.jpg": cartel,
+};
 ---
 
 <!doctype html>
@@ -246,136 +263,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Camino de la Ermita · San Ginés (Murcia)"
-				title="Comida de casa, <br /><em>servida en bandejas.</em>"
-				lede={`La Ermita es la casa de comidas del Camino de la Ermita, en San Ginés: un mostrador corrido de bandejas donde se elige el guiso del día y se va en táper. Potaje de garbanzos, arroces, migas, berenjenas gratinadas y tortilla de patatas. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas y abre de lunes a viernes, de 8:00 a 15:30.`}
-				image={buffet}
-				imageAlt="El mostrador de bandejas de La Ermita, con los guisos del día y los tápers apilados debajo"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>8:00–15:30</b> · lunes a viernes' },
-					{ label: 'Servicio', html: '<b>Para llevar</b> · por bandejas' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Comida casera"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Ermita" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Camino de la Ermita. <br /><em>El mostrador y las bandejas.</em>"
-				paragraphs={[
-					'La Ermita está en el Camino de la Ermita, s/n, en la pedanía de San Ginés, Murcia. La ficha de Google sitúa el local en las coordenadas 37.9584484, -1.179648. La fachada es amarilla, con el rótulo del local y un cartel bajo el toldo; enfrente, la placa del Carril Saavedra que aparece en una de las fotos del perfil.',
-					'Dentro hay un mostrador corrido de acero y bandejas con los guisos del día, un cartel que recuerda que «la tapa se sella, cierra con seguridad» y, debajo, los tápers y tapas apilados para servir. Al fondo, una estantería hecha con cajas de madera, un extintor rojo y un carro con el pan. No hay mesas: se entra, se elige y se sale con la bolsa.',
-					'En las fotos del perfil se reconocen los platos de siempre: una cazuela de barro con migas y tropezones de carne, la tortilla de patatas en su bandeja, berenjenas gratinadas con queso fundido, un potaje de garbanzos con acelgas y huevo, un guiso de patatas en salsa de tomate y una menestra de judía verde con huevo picado. Y en la pared, la paella del cartel del local.',
-					`Las reseñas lo confirman: «comida casera sabrosa, variada, higiene excepcional, trato inmejorable» y «todo buenísimo, raciones generosas, todo muy limpio y muy económico». Con ${RATING.count} opiniones, la media es de ${RATING.label} sobre 5 (noviembre de 2026). Se atiende en el ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica carta ni precios. Lo que aparece en esta página es lo que citan las reseñas y lo que se reconoce en las fotos del perfil; como el menú cambia cada día, confirma qué hay y cuánto cuesta por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la olla a la bandeja</p>
-					<h2 id="highlights-title">Casero, variado <br /><em>y sin florituras.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La comida"
-				title="Lo que se ve <br /><em>en las bandejas.</em>"
-				description="Sin carta publicada: esta lista reúne lo que citan las reseñas de la ficha (arroces, croquetas de cocido, raciones generosas) y los platos que se reconocen en las fotos del perfil."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`El menú cambia cada día, así que ni la ficha ni esta página pueden darte la lista completa. Llama al ${BUSINESS.phone} para saber qué hay y cuánto cuesta la bandeja.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, las bandejas <br /><em>y el horario.</em>"
-				description="Diez fotografías del perfil de La Ermita: la fachada con el rótulo, el mostrador de bandejas, las migas en cazuela de barro, la tortilla, las berenjenas gratinadas, el potaje de garbanzos, el guiso de patatas, la menestra, el interior con la estantería de cajas y el cartel con el horario."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,5 sobre 5, <em>con 105 reseñas.</em></h2>
-						<p>
-							Google publica una media de 4,5 con 105 opiniones (noviembre de 2026). Las reseñas
-							que se ven insisten en tres cosas: la comida casera y variada, la limpieza y el
-							precio.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span>
-											<small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,5</strong>
-						<span>★★★★☆</span>
-						<small>105 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
-				title="En San Ginés, <br /><em>camino de la Ermita.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google y confirmado por el cartel de la puerta: lunes a viernes de 8:00 a 15:30, sábado y domingo cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Ermita en el Camino de la Ermita, San Ginés, Murcia"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Camino de la Ermita · San Ginés"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Los pedidos se hacen por teléfono o en el mostrador: la ficha no enlaza una web del local ni un sistema de pedidos online, y tampoco anuncia reparto a domicilio. Para bandejas grandes o para un grupo, avisa con tiempo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir a por la comida.</em>" />
 		</main>
 
 		<LocalFooter

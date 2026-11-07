@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mesa from '../assets/fotos/panaderia-fripan-vertical-07.jpg';
@@ -121,6 +122,19 @@ const galeria = [
 		alt: 'Entrada de la nave de la panadería con toldo azul, contenedor verde y un camión al fondo',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-fripan-vertical-07.jpg": mesa,
+	"panaderia-fripan-vertical-01.jpg": vitrina,
+	"panaderia-fripan-vertical-02.jpg": rosas,
+	"panaderia-fripan-vertical-04.jpg": croissants,
+	"panaderia-fripan-vertical-05.jpg": donuts,
+	"panaderia-fripan-vertical-09.jpg": bolsa,
+	"panaderia-fripan-vertical-10.jpg": nave,
+};
 ---
 
 <!doctype html>
@@ -180,114 +194,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Ing. Ribera, 10 · Córdoba"
-				title="Bollería de bandeja, <br /><em>pan de todos los días.</em>"
-				lede={`Fripan es la panadería de la calle Ingeniero Ribera, 10. Sus fotos son una mesa llena de bollería: muffins de chocolate y arándanos, croissants, panecillos glaseados en rosa, donuts amarillos empaquetados de dos en dos y panecillos con semillas. La ficha de Google no publica horario, así que aquí no lo vas a encontrar inventado: se llama y se pregunta. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={mesa}
-				imageAlt="Mesa de la Panadería Fripan cubierta de bandejas de bollería, donuts y panecillos"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Dirección', html: `<b>${BUSINESS.street}</b>` },
-					{ label: 'Horario', html: '<b>No publicado</b> · llama antes' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver las fotos en Google"
-				tag="Sin horario en Google"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Fripan" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una mesa <br /><em>llena de bandejas.</em>"
-				paragraphs={[
-					'Fripan está en el número 10 de la calle Ingeniero Ribera, en Córdoba. La ficha de Google le da una sola categoría, «Panadería», y no publica ni una línea de descripción: todo lo que se sabe del negocio está en sus diez fotos.',
-					'Y las fotos son generosas. Hay muffins de chocolate, de frutos rojos y de arándanos en cápsula de papel; croissants de hojaldre apilados; panecillos glaseados en rosa con virutas blancas; bollos de chocolate blanco cubiertos de pepitas; dulces de coco y rosquillas rebozadas en azúcar.',
-					'Los donuts aparecen por todas partes: amarillos, con una línea de glaseado blanco en zigzag, empaquetados de dos en dos en bandejas y también en bolsas de papel. Junto a ellos, panecillos con semillas y bolsas de pan envasado con el logotipo de la casa.',
-					'La última foto es la puerta de la nave: pared blanca, toldo azul, un contenedor verde y un camión al fondo. En el cartel de la pared se lee «Artesana del Horno · sabor y calidad a tu mesa». Es un negocio de obrador, no un escaparate de calle.',
-				]}
-				note="La ficha de Google no publica horario, carta, precios, web propia ni datos de accesibilidad, y no confirma si atiende al público. Esta página no lo inventa: para cualquier duda, llama al 957 42 17 13."
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
-							<h2 id="three-title">Bandeja, bolsa <br /><em>y nave.</em></h2>
-						</div>
-					</div>
-					<div class="three-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="three-card">
-									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La mesa <br /><em>y la entrada.</em>"
-				description="Seis imágenes de la ficha de Google Maps: la mesa de bollería, los panecillos glaseados, los croissants, los donuts empaquetados, una bolsa de rosquillas y la puerta de la nave."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026. La galería de la ficha tiene diez fotos; aquí se usan seis."
-			/>
-
-			<section class="rating-band" aria-labelledby="rating-title">
-				<div class="wrap rating-inner">
-					<div class="rating-score">
-						<strong>3,7</strong>
-						<div>
-							<span class="rating-stars" role="img" aria-label="3,7 de 5 estrellas">3,7 / 5</span>
-							<p id="rating-title" style="margin:0;font-size:.78rem">33 reseñas en Google Maps</p>
-						</div>
-					</div>
-					<p class="rating-copy">
-						Es la media de la ficha, con opiniones variadas y 33 reseñas. Esta página no
-						selecciona ni reproduce sus textos: se leen todas, con autor y fecha, en Google.
-					</p>
-					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 33 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Ing. Ribera, <br /><em>número 10.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario en la ficha de Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Panadería Fripan en la calle Ingeniero Ribera, 10, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Fripan · Ing. Ribera, 10"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google no publica horario ni datos de accesibilidad, y no confirma atención al público ni reparto. El teléfono es el que figura en esa ficha. Esta página no gestiona pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
 		</main>
 
 		<LocalFooter

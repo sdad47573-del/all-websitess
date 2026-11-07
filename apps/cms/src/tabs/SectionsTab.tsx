@@ -6,6 +6,7 @@ import {
 	createSignal,
 	For,
 	onCleanup,
+	onMount,
 	Show,
 	untrack,
 } from "solid-js";
@@ -34,6 +35,8 @@ const GLYPHS: Record<SectionType, string> = {
 	faq: "?",
 	texto: "≡",
 	cta: "➜",
+	chips: "◉",
+	menu: "☰",
 };
 
 const imagenDe = (section: Section) => section.imagen || section.fotos?.[0]?.imagen || null;
@@ -414,6 +417,9 @@ export default function SectionsTab(props: {
 		() => draft().find((section) => section.id === selectedId()) ?? null,
 	);
 	const dirty = createMemo(() => JSON.stringify(draft()) !== savedJson());
+	const selectedIndex = createMemo(() =>
+		draft().findIndex((section) => section.id === selectedId()),
+	);
 
 	// La vista previa enseña solo la pieza abierta: dentro del iframe se oculta
 	// todo lo que no sea ella (cabecera, otras secciones, pie y flotantes) pero
@@ -555,6 +561,23 @@ export default function SectionsTab(props: {
 		}
 	};
 
+	/** Cambia la foto del build por la de /images, sin esperar a un nuevo build. */
+	const setImage = (container: Element, name?: string, alt?: string) => {
+		const img = container.querySelector("img");
+		if (!img) return;
+		// El build cae en la primera imagen de la carpeta cuando no hay nombre.
+		const file = name || media()?.[0]?.name || "";
+		if (!file) return;
+		const src = mediaUrl(props.site.slug, file);
+		if (img.getAttribute("src") !== src) {
+			// El srcset del build apunta al asset con hash y ganaría al src.
+			img.removeAttribute("srcset");
+			img.removeAttribute("sizes");
+			img.setAttribute("src", src);
+		}
+		if (alt !== undefined && img.getAttribute("alt") !== alt) img.setAttribute("alt", alt);
+	};
+
 	const syncPiece = (target: HTMLElement, section: Section) => {
 		fieldText(target, "titulo", section.titulo);
 		fieldText(target, "etiqueta", section.etiqueta);
@@ -611,6 +634,15 @@ export default function SectionsTab(props: {
 		syncList(target, '[data-campo="enlace"]', enlaces.length, (node, index) =>
 			applyLinkNode(node, enlaces[index]),
 		);
+
+		for (const node of Array.from(target.querySelectorAll('[data-campo="imagen"]'))) {
+			setImage(node, section.imagen, section.imagenAlt);
+		}
+
+		const fotos = section.fotos ?? [];
+		syncList(target, '[data-campo="foto"]', fotos.length, (node, index) =>
+			setImage(node, fotos[index]?.imagen, fotos[index]?.alt),
+		);
 	};
 
 	const syncPreview = () => {
@@ -666,6 +698,15 @@ export default function SectionsTab(props: {
 		if (selectedId() === section.id) setSelectedId(next[0]?.id ?? null);
 	};
 
+	const duplicate = (section: Section) => {
+		const copy = JSON.parse(JSON.stringify(section)) as Section;
+		copy.id = `pieza-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 5)}`;
+		const next = [...draft()];
+		next.splice(selectedIndex() + 1, 0, copy);
+		setDraft(next);
+		setSelectedId(copy.id);
+	};
+
 	const add = (tipo: SectionType) => {
 		const section = blank(tipo);
 		setDraft([...draft(), section]);
@@ -706,9 +747,33 @@ export default function SectionsTab(props: {
 	const discard = () => {
 		const list = JSON.parse(savedJson()) as Section[];
 		setDraft(list);
-		setSelectedId(list[0]?.id ?? null);
+		// Se queda en la pieza abierta si sigue existiendo tras descartar.
+		setSelectedId((current) =>
+			current && list.some((section) => section.id === current) ? current : (list[0]?.id ?? null),
+		);
 		setFlash(null);
 	};
+
+	onMount(() => {
+		const onKey = (event: KeyboardEvent) => {
+			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+				event.preventDefault();
+				void save();
+			}
+		};
+		// Si se cierra la pestaña con cambios sin guardar, el navegador avisa.
+		const onUnload = (event: BeforeUnloadEvent) => {
+			if (!dirty()) return;
+			event.preventDefault();
+			event.returnValue = "";
+		};
+		window.addEventListener("keydown", onKey);
+		window.addEventListener("beforeunload", onUnload);
+		onCleanup(() => {
+			window.removeEventListener("keydown", onKey);
+			window.removeEventListener("beforeunload", onUnload);
+		});
+	});
 
 	return (
 		<>
@@ -971,7 +1036,37 @@ export default function SectionsTab(props: {
 										<code>maps:directions</code> y <code>maps:streetView</code>.
 									</p>
 
-									<div class="piece-fields">
+									<div class="editor-tools">
+	<span class="hint">
+		Pieza {selectedIndex() + 1} de {draft().length} · Ctrl/⌘ + S guarda
+	</span>
+	<button
+		type="button"
+		class="link-button"
+		title="Subir"
+		disabled={selectedIndex() === 0}
+		onClick={() => move(selectedIndex(), -1)}
+	>
+		↑ Subir
+	</button>
+	<button
+		type="button"
+		class="link-button"
+		title="Bajar"
+		disabled={selectedIndex() === draft().length - 1}
+		onClick={() => move(selectedIndex(), 1)}
+	>
+		↓ Bajar
+	</button>
+	<button type="button" class="link-button" onClick={() => duplicate(section())}>
+		Duplicar
+	</button>
+	<button type="button" class="link-button danger" onClick={() => remove(section())}>
+		Quitar
+	</button>
+</div>
+
+<div class="piece-fields">
 										<label class="checkbox-field">
 											<input
 												type="checkbox"
@@ -1287,7 +1382,226 @@ export default function SectionsTab(props: {
 											</div>
 										</Group>
 
-										<Group when={section().tipo === "galeria"} title="Fotos y botón">
+										<Group when={section().tipo === "chips"} title="Chips">
+	<div class="link-editor">
+		<div class="link-head">
+			<span class="name">Etiquetas</span>
+			<button
+				type="button"
+				class="link-button"
+				disabled={(section().chips ?? []).length >= 10}
+				onClick={() => setList("chips", [...(section().chips ?? []), ""])}
+			>
+				+ Añadir chip
+			</button>
+		</div>
+		<For each={section().chips ?? []}>
+			{(chip, index) => (
+				<div class="field-row">
+					<label class="field">
+						<span class="name">Texto</span>
+						<input
+							value={chip}
+							maxlength="60"
+							onInput={(event) =>
+								setList(
+									"chips",
+									(section().chips ?? []).map((entry, position) =>
+										position === index() ? event.currentTarget.value : entry,
+									),
+								)
+							}
+						/>
+					</label>
+					<button
+						type="button"
+						class="link-button danger"
+						onClick={() =>
+							setList(
+								"chips",
+								(section().chips ?? []).filter((_, position) => position !== index()),
+							)
+						}
+					>
+						Quitar
+					</button>
+				</div>
+			)}
+		</For>
+	</div>
+</Group>
+
+<Group when={section().tipo === "menu"} title="Carta">
+	<div class="link-editor">
+		<div class="link-head">
+			<span class="name">Grupos de la carta</span>
+			<button
+				type="button"
+				class="link-button"
+				disabled={(section().grupos ?? []).length >= 12}
+				onClick={() =>
+					setList("grupos", [...(section().grupos ?? []), { titulo: "", items: [] }])
+				}
+			>
+				+ Añadir grupo
+			</button>
+		</div>
+		<For each={section().grupos ?? []}>
+			{(grupo, group) => (
+				<div class="link-editor">
+					<div class="link-head">
+						<label class="field">
+							<span class="name">Título del grupo</span>
+							<input
+								value={grupo.titulo}
+								maxlength="90"
+								onInput={(event) =>
+									setList(
+										"grupos",
+										(section().grupos ?? []).map((entry, position) =>
+											position === group()
+												? { ...entry, titulo: event.currentTarget.value }
+												: entry,
+										),
+									)
+								}
+							/>
+						</label>
+						<button
+							type="button"
+							class="link-button danger"
+							onClick={() =>
+								setList(
+									"grupos",
+									(section().grupos ?? []).filter((_, position) => position !== group()),
+								)
+							}
+						>
+							Quitar grupo
+						</button>
+					</div>
+					<For each={grupo.items}>
+						{(dish, dishIndex) => (
+							<div class="field-row">
+								<label class="field">
+									<span class="name">Plato</span>
+									<input
+										value={dish.nombre}
+										maxlength="120"
+										onInput={(event) =>
+											setList(
+												"grupos",
+												(section().grupos ?? []).map((entry, position) =>
+													position === group()
+														? {
+																...entry,
+																items: entry.items.map((item, itemPosition) =>
+																	itemPosition === dishIndex()
+																		? { ...item, nombre: event.currentTarget.value }
+																		: item,
+																),
+																}
+															: entry,
+														),
+												)
+										}
+									/>
+								</label>
+								<label class="field">
+									<span class="name">Nota</span>
+									<input
+										value={dish.nota}
+										maxlength="300"
+										onInput={(event) =>
+											setList(
+												"grupos",
+												(section().grupos ?? []).map((entry, position) =>
+													position === group()
+														? {
+																...entry,
+																items: entry.items.map((item, itemPosition) =>
+																	itemPosition === dishIndex()
+																		? { ...item, nota: event.currentTarget.value }
+																		: item,
+																),
+																}
+															: entry,
+														),
+												)
+										}
+									/>
+								</label>
+								<label class="field">
+									<span class="name">Precio</span>
+									<input
+										value={dish.precio ?? ""}
+										maxlength="40"
+										placeholder="Opcional"
+										onInput={(event) =>
+											setList(
+												"grupos",
+												(section().grupos ?? []).map((entry, position) =>
+													position === group()
+														? {
+																...entry,
+																items: entry.items.map((item, itemPosition) =>
+																	itemPosition === dishIndex()
+																		? { ...item, precio: event.currentTarget.value }
+																		: item,
+																),
+																}
+															: entry,
+														),
+												)
+										}
+									/>
+								</label>
+								<button
+									type="button"
+									class="link-button danger"
+									onClick={() =>
+										setList(
+											"grupos",
+											(section().grupos ?? []).map((entry, position) =>
+												position === group()
+													? {
+															...entry,
+															items: entry.items.filter((_, itemPosition) => itemPosition !== dishIndex()),
+														}
+													: entry,
+											)
+										)
+									}
+								>
+									Quitar
+								</button>
+							</div>
+						)}
+					</For>
+					<button
+						type="button"
+						class="link-button"
+						disabled={grupo.items.length >= 40}
+						onClick={() =>
+							setList(
+								"grupos",
+								(section().grupos ?? []).map((entry, position) =>
+									position === group()
+										? { ...entry, items: [...entry.items, { nombre: "", nota: "" }] }
+										: entry,
+								),
+							)
+						}
+					>
+						+ Añadir plato
+					</button>
+				</div>
+			)}
+		</For>
+	</div>
+</Group>
+
+<Group when={section().tipo === "galeria"} title="Fotos y botón">
 											<div class="link-editor">
 												<div class="link-head">
 													<span class="name">Fotos</span>

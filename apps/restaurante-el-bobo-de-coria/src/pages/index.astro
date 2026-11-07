@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import comedor from '../assets/fotos/restaurante-el-bobo-de-coria-apaisada-02.jpg';
@@ -23,7 +24,14 @@ import entrecot from '../assets/fotos/restaurante-el-bobo-de-coria-vertical-03.j
 import carneSalsa from '../assets/fotos/restaurante-el-bobo-de-coria-cuadrada-09.jpg';
 import fideos from '../assets/fotos/restaurante-el-bobo-de-coria-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante El Bobo de Coria, mesón de cocina casera en el casco histórico de Coria (Cáceres). Setas de temporada, bacalao, carnes a la plancha y tarta de almendras. Comidas y cenas de martes a domingo. Reservas en el 927 50 07 95.';
@@ -121,6 +129,21 @@ const nav = [
 ];
 
 const title = 'Restaurante El Bobo de Coria · Cocina casera y setas en Coria (Cáceres)';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-el-bobo-de-coria-apaisada-02.jpg": comedor,
+	"restaurante-el-bobo-de-coria-panoramica-06.jpg": fachada,
+	"restaurante-el-bobo-de-coria-panoramica-04.jpg": cartel,
+	"restaurante-el-bobo-de-coria-apaisada-08.jpg": terraza,
+	"restaurante-el-bobo-de-coria-apaisada-05.jpg": boletus,
+	"restaurante-el-bobo-de-coria-vertical-07.jpg": setas,
+	"restaurante-el-bobo-de-coria-vertical-03.jpg": entrecot,
+	"restaurante-el-bobo-de-coria-cuadrada-09.jpg": carneSalsa,
+	"restaurante-el-bobo-de-coria-apaisada-10.jpg": fideos,
+};
 ---
 
 <!doctype html>
@@ -175,80 +198,19 @@ const title = 'Restaurante El Bobo de Coria · Cocina casera y setas en Coria (C
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. de las Monjas · Coria"
-				title="Cocina casera<br /><em>en Coria.</em>"
-				lede={`Setas de temporada, bacalao, carnes a la plancha y tarta de almendras en un mesón de paredes rojas con jardín, en el casco histórico de Coria. Comidas y cenas de martes a domingo. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={comedor}
-				imageAlt="Comedor de paredes rojas y vigas de madera de El Bobo de Coria"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Horario', html: 'Mar–Dom · 13:30 y 21:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece El Bobo de Coria" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El mesón"
-				title="Paredes rojas<br /><em>y jardín.</em>"
-				paragraphs={[
-					`El Bobo de Coria es un mesón de los de antes en la calle de las Monjas, 6, en el casco histórico de Coria (${BUSINESS.postalCode}, Cáceres). Puerta de arco, comedor de paredes rojas, vigas de madera y suelo de barro; detrás, un jardín con mesas bajo los árboles.`,
-					'La cocina es casera y abundante. En temporada mandan las setas: boletus al ajillo y crema de boletus, que son lo que más se repite en las reseñas. También gazpacho, bacalao, pluma ibérica y carnes a la plancha, con la tarta de almendras de postre.',
-					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios y disponibilidad se llama al restaurante.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repiten las setas de temporada, la crema de boletus, el bacalao y la tarta de almendras.`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Setas, carnes<br /><em>y tarta de almendras.</em>"
-				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el restaurante."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia con el mercado y la temporada. Si vas por un plato concreto, llama antes: no publicamos precios porque el restaurante no los tiene publicados."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor<br /><em>y el jardín.</em>"
-				description="Estas fotografías proceden del perfil de El Bobo de Coria en Google Maps: la fachada de arco, el cartel de piedra, el jardín y los platos de setas y carne de la casa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Nos vemos<br /><em>en Las Monjas.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: dos servicios, comidas de 13:30 a 16:00 y cenas de 21:00 a 22:30, de martes a domingo. El lunes cierra."
-				mapTitle="Mapa de Restaurante El Bobo de Coria en la calle de las Monjas, 6, Coria (Cáceres)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Bobo de Coria"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al restaurante. La ficha de Google marca aseo y asientos adaptados, pero no acceso adaptado, y la puerta es un arco de piedra; si necesitas accesibilidad, pregunta antes por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

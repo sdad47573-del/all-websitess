@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/el-raco-de-navarrete-apaisada-01.jpg';
@@ -23,7 +24,16 @@ import carajillo from '../assets/fotos/el-raco-de-navarrete-vertical-03.jpg';
 import brasa from '../assets/fotos/el-raco-de-navarrete-vertical-07.jpg';
 import sardinas from '../assets/fotos/el-raco-de-navarrete-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HABITACIONES, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HABITACIONES,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description = BUSINESS.description;
 
@@ -147,6 +157,21 @@ const nav = [
 
 const title = 'El Racó de Navarrete · Restaurante y hotel en Cabanes';
 const cita = REVIEWS[2];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-raco-de-navarrete-apaisada-01.jpg": fachada,
+	"el-raco-de-navarrete-apaisada-06.jpg": comedor,
+	"el-raco-de-navarrete-vertical-07.jpg": brasa,
+	"el-raco-de-navarrete-apaisada-04.jpg": arroz,
+	"el-raco-de-navarrete-apaisada-05.jpg": bocadillo,
+	"el-raco-de-navarrete-apaisada-08.jpg": barra,
+	"el-raco-de-navarrete-apaisada-09.jpg": ensalada,
+	"el-raco-de-navarrete-vertical-10.jpg": sardinas,
+	"el-raco-de-navarrete-vertical-03.jpg": carajillo,
+};
 ---
 
 <!doctype html>
@@ -211,119 +236,19 @@ const cita = REVIEWS[2];
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. España, 1 · Pol. Pont de Cabanes · Cabanes"
-				title="Restaurante,<br />hotel y<br /><em>una buena parada.</em>"
-				lede="El Racó de Navarrete es la casa de carretera de Cabanes: cocina casera mediterránea, carnes a la brasa, almuerzos y menú del día desde 10 €. Arriba, 11 habitaciones para quien viaja y quiere dormir en el mismo sitio donde ha comido."
-				image={fachada}
-				imageAlt="Fachada de El Racó de Navarrete con el rótulo de hotel y la terraza de sombrillas blancas"
-				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
-				tag="Restaurante + hotel"
-				facts={[
-					{ label: 'Nota', html: '<b>4,2 en Google</b> con 2.567 reseñas' },
-					{ label: 'Menú del día', html: 'desde <b>10 €</b>' },
-					{ label: 'Habitaciones', html: '<b>11</b> · 20 plazas' },
-					{ label: 'Horario', html: '<b>06:00 – 00:00</b> todos los días' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece El Racó de Navarrete" items={SERVICIOS} />
-
-			<LocalAbout
-				label="Casa de carretera en la Plana Alta"
-				title="Se come bien,<br />se duerme cerca<br /><em>y se sigue camino.</em>"
-				paragraphs={[
-					'En la Avenida España 1, dentro del polígono Pont de Cabanes, El Racó de Navarrete lleva años haciendo las dos cosas que se le piden a una casa de carretera: dar de comer a quien va de paso y alojar a quien decide quedarse. La fachada ocre, el rótulo de hotel con cubiertos y las sombrillas blancas de la terraza anuncian lo que hay dentro: comedor amplio, barra y cocina casera.',
-					'La carta tira de brasa y de cuchara. Las reseñas hablan del bocadillo de secreto a la brasa «bien generoso», de la longaniza y el chorizo hechos al fuego, del arroz con pollo y de las sardinas con verduras. La cocina es mediterránea y casera, con el solomillo y el chuletón como especialidades, y a mediodía hay menú del día desde 10 €, con menú infantil de 8 €.',
-					'El edificio es también hotel: 11 habitaciones y 20 plazas, de una estrella, abierto todo el año según el registro de Turisme Comunitat Valenciana. Parking gratuito, wifi en todas las instalaciones, terraza y zona de juegos infantil. La ficha suma 2.567 opiniones con un 4,2.',
-				]}
-				note="«Hemos estado comiendo varias veces y nos ha gustado mucho y volveremos a ir», dice una reseña. Otra: «buen servicio y comida casera de muy buena calidad»."
-				links={[
-					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="hotel" id="hotel" aria-labelledby="hotel-title">
-				<div class="wrap">
-					<div>
-						<p class="section-label"><span></span>El hotel</p>
-						<h2 id="hotel-title">Dormir<br /><em>en el mismo sitio.</em></h2>
-						<p>
-							Hotel de una estrella en el mismo edificio del restaurante, abierto todo el año.
-							Las reservas se cierran por teléfono o por correo, y el desayuno bufé se sirve
-							para los huéspedes antes de salir a la carretera.
-						</p>
-						<a class="hotel-link" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email} ↗</a>
-					</div>
-					<ul class="rooms">
-						{HABITACIONES.map((item) => (
-							<li>
-								<span>{item.label}</span>
-								<b>{item.value}</b>
-							</li>
-						))}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Brasa, cuchara<br /><em>y menú del día.</em>"
-				description="La ficha de Google no publica la carta completa, así que esta selección sale de las fotos del perfil, de las reseñas y de los directorios de hostelería donde aparece el restaurante: bocadillos a la brasa, carnes, arroces, pescado frito, tapas y menú del día."
-				cta={{ label: 'Preguntar el menú de hoy', href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Menú del día desde 10 € y menú infantil 8 €, según Páginas Amarillas; el precio medio orientativo es de 20 €. Confirma precios y platos al llamar al 964 33 20 60: cambian con la temporada."
-			/>
-
-			<section class="cita" aria-label="Opinión destacada en Google">
-				<div class="wrap">
-					<blockquote>
-						<p>“{cita.text}”</p>
-						<footer>Reseña en Google · {cita.rating} estrellas</footer>
-					</blockquote>
-					<div class="cita-nota">
-						<b>4,2</b>
-						2.567 reseñas en Google
-						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leerlas todas ↗</a>
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor,<br />la brasa<br /><em>y la barra.</em>"
-				description="Estas fotografías proceden del perfil de El Racó de Navarrete en Google Maps: el comedor y la barra, el surtido de embutidos a la brasa, el bocadillo de longaniza, el arroz con pollo, la ensalada completa, las sardinas con verduras y el carajillo."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow="Av. España, 1 · 12180 Cabanes"
-				title="A pie de<br /><em>carretera.</em>"
-				addressLines={['Pol. Ind. Pont de Cabanes', BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castelló · Plana Alta']}
-				hoursCaption="Horario de bar y restaurante"
-				hours={HOURS}
-				hoursNote="Horario publicado en directorios de hostelería: de 06:00 a 00:00 todos los días. La ficha de Google no lo detalla y la cocina puede cerrar entre servicios, así que conviene llamar antes de ir."
-				mapTitle="Mapa de El Racó de Navarrete en la Avenida España, 1, Cabanes"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Racó de Navarrete · Cabanes"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="Mesa y habitación se reservan por teléfono, en el 964 33 20 60, o por correo en elracodenavarrete@gmail.com. No hay reserva online ni formulario en esta web."
-			/>
-
-			<LocalFaq items={FAQ} title="Antes de <em>parar.</em>" />
 		</main>
 
 		<LocalFooter

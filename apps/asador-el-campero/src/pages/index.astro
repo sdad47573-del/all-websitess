@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/asador-el-campero-apaisada-03.jpg';
@@ -22,7 +23,18 @@ import cocido from '../assets/fotos/asador-el-campero-apaisada-09.jpg';
 import ensalada from '../assets/fotos/asador-el-campero-vertical-10.jpg';
 import interior from '../assets/fotos/asador-el-campero-vertical-08.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Asador El Campero · Pollo asado y comida casera en Ciudad Lineal';
 const description = BUSINESS.description;
@@ -140,6 +152,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"asador-el-campero-apaisada-03.jpg": fachada,
+	"asador-el-campero-vista-02.jpg": arrozNegro,
+	"asador-el-campero-vertical-08.jpg": interior,
+	"asador-el-campero-apaisada-05.jpg": guiso,
+	"asador-el-campero-apaisada-06.jpg": fideos,
+	"asador-el-campero-vista-04.jpg": croquetas,
+	"asador-el-campero-apaisada-09.jpg": cocido,
+	"asador-el-campero-vertical-10.jpg": ensalada,
+};
 ---
 
 <!doctype html>
@@ -209,137 +235,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Tr.ª Virgen de la Roca, 59 · Ciudad Lineal, Madrid"
-				title="Comida casera <br /><em>y pollo asado.</em>"
-				lede={`Asador El Campero está en la travesía de Virgen de la Roca, en Ciudad Lineal: pollo asado, parrilla, guisos, arroces y menús para llevar. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="La fachada de Asador El Campero en la travesía Virgen de la Roca, con el rótulo amarillo y los carteles de paella y pollo asado"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:00–16:00</b> · sábado cerrado' },
-					{ label: 'Servicio', html: '<b>Para llevar</b> · y encargos' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Fotos de la ficha de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pollo asado · paellas · casero"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Asador El Campero" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El asador <br /><em>de la travesía.</em>"
-				paragraphs={[
-					'Asador El Campero ocupa el local de la travesía Virgen de la Roca, 59, en pleno Ciudad Lineal. La fachada es amarilla y el rótulo lo dice sin rodeos: «Asador El Campero · Gran variedad de comidas caseras». En la luna, dos carteles anuncian paella y pollo asado.',
-					'El escaparate hace de carta: ensaladas, verduras, arroces, pastas, pescados, carnes, sándwiches, menús para llevar, pollos asados, bocadillos calientes, tortillas, croquetas y empanadas argentinas. Dentro, el mostrador y la vitrina guardan los guisos del día.',
-					'Es cocina de todos los días y para recoger. Una reseña lo cuenta así: «Muy buena comida casera para llevar a diario, o por encargo los fines de semana». Otra encargó «una paella de quince raciones para un evento» y salió bien.',
-					'Google le da 4,3 sobre 5 con 78 reseñas. La tercera opinión de cinco estrellas resume la casa en una línea: «Buena comida, muy variada y buenos precios».',
-				]}
-				note="La ficha no publica carta con precios ni página web. El cartel del escaparate sí anuncia el surtido que aparece en la carta de esta web; disponibilidad y encargos se confirman por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que dicen de El Campero</p>
-					<h2 id="highlights-title">Pollo, guisos <br /><em>y encargos.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Del asador <br /><em>y del día.</em>"
-				description="El surtido que anuncia el escaparate del local, con lo que se ve en las fotos. La ficha no publica precios: se consultan en el mostrador."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="El escaparate añade ensaladas, verduras, arroces, pastas, pescados, carnes, sándwiches, menús para llevar, pollos asados, bocadillos calientes, tortillas, croquetas y empanadas argentinas. No hay carta de precios publicada; la disponibilidad cambia según el día."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La vitrina <br /><em>y el mostrador.</em>"
-				description="Siete fotografías del perfil de Asador El Campero en Google Maps: el arroz negro, el interior, los guisos, los fideos, las croquetas, el cocido y la ensalada. La fachada abre la página."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,3 sobre 5, <em>con 78 reseñas.</em></h2>
-						<p>
-							La valoración que publica Google en octubre de 2026 es de 4,3 con 78 opiniones. Las
-							tres reseñas que muestra la ficha hablan de la variedad, de los precios, de la comida
-							casera y de una paella por encargo; aquí se reproducen tal cual.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,3</strong>
-						<span>★★★★☆</span>
-						<small>78 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Ciudad Lineal, <br /><em>Virgen de la Roca.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 9:00 a 16:00 de lunes a viernes y también el domingo. El sábado cierra. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Asador El Campero en la travesía Virgen de la Roca, 59, Ciudad Lineal, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Tr.ª Virgen de la Roca, 59"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha lo clasifica como restaurante de comida para llevar y no publica reparto a domicilio ni pedidos online: todo se concreta por teléfono, en el 914 03 94 41. En accesibilidad solo marca que no hay aparcamiento adaptado ni asientos adaptados."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

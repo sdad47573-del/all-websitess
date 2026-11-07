@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/panaderia-confiteria-el-cautivo-apaisada-01.jpg';
@@ -154,6 +155,17 @@ const galeria = [
 		alt: 'Mantecados, roscos envueltos, pasteles de chocolate y dulces envasados en el mostrador',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-confiteria-el-cautivo-apaisada-01.jpg": fachada,
+	"panaderia-confiteria-el-cautivo-vertical-02.jpg": fruta,
+	"panaderia-confiteria-el-cautivo-vertical-05.jpg": quesos,
+	"panaderia-confiteria-el-cautivo-apaisada-06.jpg": bizcocho,
+	"panaderia-confiteria-el-cautivo-vertical-07.jpg": dulces,
+};
 ---
 
 <!doctype html>
@@ -216,112 +228,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. de Carlos Haya, 192 · Bailén-Miraflores"
-				title="Panadería, tienda <br /><em>y confitería.</em>"
-				lede={`El Cautivo está en la avenida de Carlos Haya, 192, con el número bien visible al lado de la puerta. La fachada es roja y el rótulo azul anuncia «El Cautivo · Comestibles - Charcutería - Congelados», mientras el toldo dice «Panadería Confitería». Dentro hay mostrador de dulces, un expositor de fruta, quesos envasados y hielo. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada roja de Panadería confitería El Cautivo, con el rótulo azul, el toldo y el número 192"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,7</b> en Google · 23 reseñas' },
-					{ label: 'Horario', html: '<b>L–J 8:30–15:00</b> y 17:00–20:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · dulces · tienda"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en El Cautivo" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una tienda <br /><em>con obrador.</em>"
-				paragraphs={[
-					'Panadería confitería El Cautivo está en la avenida de Carlos Haya, 192, en Bailén-Miraflores. La fachada es roja, con un rótulo azul que anuncia «Comestibles - Charcutería - Congelados» y un toldo que añade «Panadería Confitería». En el escaparate se anuncia también la venta de cubitos de hielo.',
-					'Dentro, el local es tienda y obrador a la vez. En las fotos del perfil se ve el expositor de fruta con plátanos, naranjas, mandarinas, limones, manzanas, kiwis y melón, junto a quesos envasados al vacío de Santa María del Cerro y productos de comestibles.',
-					'La parte dulce está en el mostrador: bizcocho cortado en porciones, pasteles de chocolate, mantecados, roscos envueltos y otros dulces envasados. La ficha de Google clasifica el negocio como panadería y le da 4,7 sobre 5 con 23 reseñas.',
-					'Abre de lunes a jueves de 8:30 a 15:00 y de 17:00 a 20:00; el viernes solo por la mañana, de 8:30 a 15:00, y el sábado de 9:00 a 14:00. El domingo cierra. La ficha no publica carta, precios ni página web, así que aquí no encontrarás importes.',
-				]}
-				note="Sin carta ni precios publicados: el mostrador recoge solo lo que muestran las fotos del perfil y lo que anuncian el rótulo y el toldo de la fachada."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Horno, tienda <br />
-							<em>y mostrador.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la tienda.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que anuncian el rótulo y el toldo de la fachada."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día. Para saber qué hay, llama al 951 73 15 16."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Cinco fotos de la ficha de Google Maps: la fachada, el expositor de fruta, los quesos, el bizcocho y los dulces envasados."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Carlos Haya, <br /><em>número 192.</em>"
-				addressLines={[
-					BUSINESS.street,
-					BUSINESS.district,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería confitería El Cautivo en la avenida de Carlos Haya, 192, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="El Cautivo · Carlos Haya"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha indica que el local tiene acceso para sillas de ruedas, pero no aparcamiento adaptado. No publica información sobre el mostrador o el aseo. El contacto es en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

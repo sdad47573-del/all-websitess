@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import barra from '../assets/fotos/restaurante-caddie-apaisada-09.jpg';
@@ -23,7 +24,15 @@ import rotulo from '../assets/fotos/restaurante-caddie-vertical-05.jpg';
 import entrecotGuiso from '../assets/fotos/restaurante-caddie-vertical-06.jpg';
 import pintxosSetas from '../assets/fotos/restaurante-caddie-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante Caddie, en Plaza Caddie 3 (Lasarte-Oria). Pinchos, raciones, platos combinados y menú del día. Cierra los martes. Tel. 943 37 07 04.';
@@ -177,6 +186,21 @@ const nav = [
 ];
 
 const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-caddie-apaisada-09.jpg": barra,
+	"restaurante-caddie-panoramica-03.jpg": ensalada,
+	"restaurante-caddie-panoramica-07.jpg": rebozado,
+	"restaurante-caddie-vertical-01.jpg": comedor,
+	"restaurante-caddie-vertical-05.jpg": rotulo,
+	"restaurante-caddie-vertical-02.jpg": entrecotHuevo,
+	"restaurante-caddie-vertical-06.jpg": entrecotGuiso,
+	"restaurante-caddie-vertical-10.jpg": pintxosSetas,
+	"restaurante-caddie-vertical-04.jpg": tartaQueso,
+};
 ---
 
 <!doctype html>
@@ -233,82 +257,19 @@ const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Plaza Caddie, 3 · Lasarte-Oria"
-				title="La taberna<br /><em>de Plaza Caddie.</em>"
-				lede={`Restaurante Caddie es la taberna de Plaza Caddie, 3, en Lasarte-Oria. Abre a las 6:30 para el desayuno, y a lo largo del día sirve pinchos y tapas en la barra, raciones, bocadillos, platos combinados y menú del día. Cierra los martes. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={barra}
-				imageAlt="Barra del Restaurante Caddie con bandejas de pintxos, montaditos, croquetas y mini hamburguesas"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Barra', html: 'Pinchos, tapas, raciones y bocadillos' },
-					{ label: 'Horario', html: 'Desde las 6:30 · cierra martes' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece el Restaurante Caddie" items={[...SERVICIOS]} />
-
-			<LocalAbout
-				label="La casa"
-				title="Barra, mesa<br /><em>y menú del día.</em>"
-				paragraphs={[
-					'El Restaurante Caddie está en Plaza Caddie, 3, en el 20160 Lasarte-Oria (Gipuzkoa). Google lo clasifica como restaurante y taberna, y su rótulo de fachada, con la figura de un caddie sobre una silueta verde, es la seña de la casa antes de entrar.',
-					'Abre todos los días menos el martes. De lunes a viernes empieza a las 6:30 y cierra a las 22:00, salvo el viernes, que alarga hasta medianoche; el sábado va de 9:00 a 24:00 y el domingo, de 9:00 a 22:00. Es el horario que publica su ficha de Google y puede cambiar, así que conviene confirmarlo por teléfono.',
-					'Dentro hay un comedor de mesas y sillas de madera junto a las ventanas, con la barra al fondo. Allí se sirven tapas, pinchos, raciones y bocadillos, y a la mesa pasan los platos combinados y el menú del día que anuncian sus reseñas.',
-					'Las reseñas publicadas hablan de una ensalada «completísima», de un plato combinado con merluza rebozada y de la hamburguesa con patatas alioli. En las fotos del perfil aparecen además el entrecot con patatas —también con huevo frito—, un guiso de carne con puré, los pintxos de setas de la barra y la tarta de queso de postre.',
-					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. La ficha marca acceso para sillas de ruedas y asientos adaptados.`,
-				]}
-				note="La ficha de Google no publica carta ni precios: los platos de esta página son los que citan las reseñas y los que muestran las fotos del propio restaurante. La carta cambia, así que conviene preguntar al llegar."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="La barra,<br /><em>la mesa y el día.</em>"
-				description="La ficha de Google no publica carta. Esto es lo que citan sus reseñas y lo que aparece en las fotos del restaurante; el menú del día cambia cada jornada."
-				cta={{ label: `Preguntar el menú: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={[...MENU]}
-				note="El menú del día no tiene precio publicado en la ficha de Google. Se consulta llamando al 943 37 07 04 y cambia cada día."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La barra,<br /><em>el comedor y los platos.</em>"
-				description="Estas fotografías proceden del perfil del Restaurante Caddie en Google Maps: la barra de pintxos, el comedor, el rótulo de la fachada, la ensalada, el rebozado con patatas, el entrecot, el guiso, los pintxos de setas y la tarta de queso."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Plaza Caddie, 3,<br /><em>en Lasarte-Oria.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Gipuzkoa · País Vasco',
-				]}
-				hours={[...HOURS]}
-				hoursNote="Horario de la ficha de Google: cierra los martes; de lunes a viernes abre a las 6:30 y cierra a las 22:00 (el viernes, a medianoche); el sábado, de 9:00 a 24:00, y el domingo, de 9:00 a 22:00. Puede cambiar, así que conviene llamar antes."
-				mapTitle="Mapa del Restaurante Caddie en Plaza Caddie, 3, Lasarte-Oria"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Restaurante Caddie · Lasarte-Oria"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se llama al 943 37 07 04. La ficha de Google marca acceso para sillas de ruedas y asientos adaptados, y el comedor tiene mesas y sillas de madera junto a las ventanas."
-			/>
-
-			<LocalFaq items={[...FAQ]} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

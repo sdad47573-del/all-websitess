@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/hnos-lopez-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import dosArroces from '../assets/fotos/hnos-lopez-apaisada-08.jpg';
 import cola from '../assets/fotos/hnos-lopez-apaisada-09.jpg';
 import calle from '../assets/fotos/hnos-lopez-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Hnos. López · Asador de pollos y paellas para llevar en Calpe';
 const description = BUSINESS.description;
@@ -156,6 +164,21 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"hnos-lopez-apaisada-01.jpg": fachada,
+	"hnos-lopez-panoramica-07.jpg": asador,
+	"hnos-lopez-apaisada-02.jpg": paellasPuestas,
+	"hnos-lopez-panoramica-03.jpg": paellaMixta,
+	"hnos-lopez-cuadrada-04.jpg": paellaMesa,
+	"hnos-lopez-vertical-05.jpg": cocina,
+	"hnos-lopez-panoramica-06.jpg": tortillas,
+	"hnos-lopez-apaisada-08.jpg": dosArroces,
+	"hnos-lopez-apaisada-09.jpg": cola,
+};
 ---
 
 <!doctype html>
@@ -226,126 +249,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Pollo asado <br /><em>y paellas de Calpe.</em>"
-				lede={`Hnos. López es asador de pollos y comida para llevar en la calle La Pinta, edificio Maripaz, local 1, en Calp. Pollos asados en los pinchos del horno, patatas fritas y alioli, pimientos asados, calamares a la romana, croquetas de jamón, pollo o bacalao y paellas por encargo: mixta, valenciana, de verdura, arroz negro, arroz a banda y fideuá. Abre todos los días de 10:00 a 15:00 y Google le da ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas.`}
-				image={fachada}
-				imageAlt="La fachada de Hnos. López en la calle La Pinta de Calpe, con los carteles de asador y paellas"
-				primaryCta={{ label: `Encargar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				secondaryCta={{ label: 'Ver la carta y las fotos', href: '#carta' }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,4</b> en Google · 154 reseñas' },
-					{ label: 'Horario', html: '<b>10:00–15:00</b><br />Todos los días' },
-					{ label: 'Encargos', html: '<b>96 583 27 80</b><br />Pollos y paellas' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Para llevar · To take away"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que se puede pedir en Hnos. López" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El asador <br /><em>de la calle La Pinta.</em>"
-				paragraphs={[
-					'Hnos. López está en pleno centro de Calp, en la calle La Pinta, edificio Maripaz, local 1. La fachada no deja dudas: el rótulo azul anuncia asador de pollos y paellas, con el teléfono de reservas y encargos bien grande y la paellera de la foto en lo alto.',
-					'El cartel del día es corto y claro: pollos asados en los pinchos del horno, patatas fritas, patatas alioli, pimientos asados, calamares a la romana, ensaladas y croquetas de jamón, pollo o bacalao. También hay pan, bebidas frías y hielo a diario, que en verano es media comida.',
-					'Lo que más sale son las paellas para llevar. La lista del local incluye mixta, valenciana, de verdura, de pollo y verdura, arroz negro, arroz a banda, fideuá mixta y fideuá de marisco, y deja abierta la puerta a otros arroces. Se cocinan al momento y se entregan en la paellera, listas para poner en la mesa.',
-					'En el apartado de encargo entran también los codillos y las costillas de cerdo, la aguja, los conejos y las patatas asadas. Con 154 reseñas y un 4,4 sobre 5 en Google, es uno de los asadores más conocidos de Calpe; en temporada alta la cola en la puerta es parte del paisaje.',
-				]}
-				note="Los datos salen de la ficha pública de Google Maps, de la guía municipal de Calpe y de los carteles del propio local que aparecen en su galería. No es un canal oficial de pedidos: la disponibilidad del día y los precios se confirman por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Del horno <br /><em>y de la paellera.</em>"
-				description="La carta del cartel del local: el asador, los acompañamientos, las paellas y lo que se encarga con antelación."
-				cta={{ label: `Encargar · ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				groups={MENU}
-				note="Sin precios: el asador no publica tarifas. El importe del pollo, de las bandejas y de cada paella se confirma en el 96 583 27 80. Las paellas, codillos, costillas, conejos y patatas asadas son «por encargo» y conviene pedirlos con tiempo."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El horno, la cocina <br /><em>y la cola.</em>"
-				description="Ocho fotografías del perfil de Hnos. López en Google Maps: los pollos en los pinchos, las paellas recién hechas, la paella mixta servida en la mesa, la cocina con los fogones, las tortillas en molde y la puerta del local con clientes esperando."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<section class="reviews-band section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<div>
-						<p class="reviews-kicker">La ficha de Google</p>
-						<h2 id="resenas-title">4,4 sobre 5 <br /><em>en Google.</em></h2>
-						<p class="reviews-rating">
-							<strong>4,4</strong>
-							<span>★★★★☆<br />154 reseñas en Google</span>
-						</p>
-						<p class="reviews-note">
-							Uno de los asadores con más opiniones de Calpe. Aquí no se reproducen
-							testimonios literales: se leen enteros en la ficha de Google, junto a las
-							fotos de los clientes.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<ul class="reviews-list">
-						<li class="review-card">
-							<p>
-								El pollo asado y las paellas para llevar son lo que más se pide: en
-								temporada alta conviene llamar antes para no esperar en la puerta.
-							</p>
-							<footer>
-								<span class="stars" aria-hidden="true">★★★★☆</span>
-								<span>Según la ficha y las fotos de Google</span>
-							</footer>
-						</li>
-						<li class="review-card">
-							<p>
-								El local trabaja sobre todo para recoger: bandejas de pollo, arroces en
-								la paellera y acompañamientos para completar la comida en casa o en la
-								playa.
-							</p>
-							<footer>
-								<span class="stars" aria-hidden="true">★★★★☆</span>
-								<span>Según la ficha y las fotos de Google</span>
-							</footer>
-						</li>
-					</ul>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Calp, <br /><em>junto al puerto.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.regionName]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: todos los días de 10:00 a 15:00. En festivos y en temporada alta puede cambiar, así que conviene llamar antes."
-				mapTitle="Mapa de Hnos. López en la calle La Pinta, Calp, Alicante"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Carrer la Pinta, ed. Maripaz, local 1"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Encargar al ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay pedidos ni pagos online en esta página: el teléfono es el canal que consta para encargar. El local trabaja para llevar y no publica reparto a domicilio, así que lo normal es recoger el pedido en la calle La Pinta."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>encargar.</em>" />
 		</main>
 
 		<LocalFooter

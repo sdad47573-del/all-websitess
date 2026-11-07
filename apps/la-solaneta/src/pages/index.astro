@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import pizzaTerraza from '../assets/fotos/la-solaneta-pizza-terraza.jpg';
@@ -155,6 +156,19 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-solaneta-pizza-terraza.jpg": pizzaTerraza,
+	"la-solaneta-comedor.jpg": comedor,
+	"la-solaneta-pizza-corte.jpg": pizzaCorte,
+	"la-solaneta-patatas.jpg": patatas,
+	"la-solaneta-carta.jpg": carta,
+	"la-solaneta-fachada.jpg": fachada,
+	"la-solaneta-pizza-plato.jpg": pizzaPlato,
+};
 ---
 
 <!doctype html>
@@ -224,128 +238,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Avinguda de la Cortinada, CG-3 · La Cortinada"
-				title="Pizza al horno <br /><em>frente al valle.</em>"
-				lede={`La Solaneta es la pizzería de La Cortinada, en la parroquia de Ordino: pizzas al horno, pasta y antipasti en un comedor de madera o en la terraza que mira a la montaña. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre casi todos los días desde las 9:30 y cierra los miércoles.`}
-				image={pizzaTerraza}
-				imageAlt="Pizza en la terraza de La Solaneta con las montañas al fondo"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:30–23:00</b> · miércoles cerrado' },
-					{ label: 'Servicio', html: '<b>Pizza para llevar</b> · y terraza' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Ristorante"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Solaneta" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="La Cortinada, <br /><em>valle de Ordino.</em>"
-				paragraphs={[
-					'La Solaneta está en la Avinguda de la Cortinada, CG-3, 33, en el kilómetro 10 de la carretera general que sube al valle de Ordino, en el pueblo de La Cortinada. La ficha de Google la sitúa en las coordenadas 42.5750521, 1.5177382, en la planta baja de un edificio de piedra con el rótulo en la fachada. El teléfono es un fijo andorrano, el +376 722 922.',
-					'Dentro, el comedor es amplio y de madera: suelo oscuro, mesas separadas, sillas rojas y una hilera de lámparas negras sobre las mesas. Fuera, la terraza da al valle, con el bosque y las montañas de Ordino al fondo y el sol de la tarde entrando de lado.',
-					'La carta es italiana y está escrita en catalán: antipasti para empezar (pa a l’agli, bruschetta, taula de formatges, patates braves, calamars a la romana), una sección de pastes con lasaña bolonyesa, carbonara o pasta al forn, y pizzas al horno desde la margarita hasta la paysanne, la pizza kebab o el palermo con salmón. Hay también una carta de pizzas con el nombre del local, la Pazza Lizza.',
-					`Google la clasifica además como pizzería, bar y pizza para llevar, y la ficha incluye el atributo «Se admiten perros». Con ${RATING.count} reseñas y una media de ${RATING.label} sobre 5 (noviembre de 2026), es una de las mesas mejor valoradas del valle.`,
-				]}
-				note="La ficha no publica precios. En el perfil hay una foto de la carta con los importes impresos, pero puede estar desactualizada: se confirman en el local o por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> La cocina</p>
-					<h2 id="highlights-title">Horno, pasta <br /><em>y montaña.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Antipasti, pastes <br /><em>y pizzes.</em>"
-				description="Lo que recoge la carta fotografiada en el perfil del local, ordenado en cuatro bloques. La carta está en catalán y puede cambiar con la temporada."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`Los encargos de pizza para llevar y las reservas se hacen por teléfono, en el ${BUSINESS.phone}. Los importes de la carta impresa no se copian aquí porque pueden haber cambiado; se consultan al llamar.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor, la terraza <br /><em>y la pizza.</em>"
-				description="Seis fotografías del perfil de La Solaneta: el comedor de madera, una pizza recién servida, las patatas con salsa, la carta del local, la fachada de piedra y una pizza en la mesa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,8 sobre 5, <em>con 303 reseñas.</em></h2>
-						<p>
-							Es una de las notas más altas de la parroquia de Ordino. La ficha la clasifica como
-							pizzería, bar, pizza para llevar y restaurante, y añade un detalle útil para quien
-							viaja con mascota: se admiten perros.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Leer todas las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,8</strong>
-						<span>★★★★★</span>
-						<small>303 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la carretera <br /><em>de Ordino.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city} (Ordino)`,
-					'Principado de Andorra',
-				]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: lunes de 12:00 a 23:00, martes de 9:30 a 16:30 y de jueves a domingo de 9:30 a 23:00; el miércoles cierra. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Solaneta en la Avinguda de la Cortinada, La Cortinada"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel={`${BUSINESS.street} · La Cortinada`}
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Se reserva por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni reservas online. La ficha no da datos de aparcamiento propio; al estar en la carretera CG-3, lo habitual es llegar en coche y aparcar en el pueblo.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>subir.</em>" />
 		</main>
 
 		<LocalFooter

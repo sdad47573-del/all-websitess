@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import desayuno from '../assets/fotos/jessica-cafeteria-panaderia-apaisada-01.jpg';
@@ -118,6 +119,17 @@ const galeria = [
 		alt: 'Café con leche servido en taza blanca con el sobre de Café Delta',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"jessica-cafeteria-panaderia-apaisada-01.jpg": desayuno,
+	"jessica-cafeteria-panaderia-apaisada-06.jpg": fachada,
+	"jessica-cafeteria-panaderia-vertical-02.jpg": molletes,
+	"jessica-cafeteria-panaderia-vertical-07.jpg": mesa,
+	"jessica-cafeteria-panaderia-vertical-05.jpg": cafe,
+};
 ---
 
 <!doctype html>
@@ -177,106 +189,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Centro · 14004 Córdoba"
-				title="Jessica, <br /><em>pan y desayunos.</em>"
-				lede={`En el Centro de Córdoba, con el rótulo naranja de «CAFETERÍA JESSICA» en la fachada, hay una panadería que funciona sobre todo a la hora del desayuno. Tostadas con buen aceite, molletes con tomate, medias de jamón York con mantequilla y café. Abre de lunes a sábado de 7:00 a 15:00 y el domingo descansa. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={desayuno}
-				imageAlt="Desayuno en Jessica Cafetería Panadería: dos cafés, tostadas con aceite, un plato de jamón y la aceitera sobre la mesa"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,4</b> en Google · 102 reseñas' },
-					{ label: 'Horario', html: '<b>L–S</b> 7:00–15:00' },
-					{ label: 'Zona', html: '<b>Centro</b> · 14004' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Desayunos · pan · café"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Jessica" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una cafetería <br /><em>de desayuno.</em>"
-				paragraphs={[
-					'Jessica Cafetería Panadería está en el distrito Centro de Córdoba (14004), con la fachada de ladrillo, el rótulo naranja de «CAFETERÍA JESSICA» y la publicidad de Café Delta sobre la acera.',
-					'Dentro hay barra con taburetes altos, mesas de madera y paredes naranjas. En las fotos del perfil se ven los desayunos servidos: tostadas y molletes con tomate rallado, el aceite en su botella, platos de jamón y cafés con leche en taza blanca.',
-					'Las reseñas hablan de eso mismo: «buen sitio para desayunar y buen aceite para las tostadas», «he desayunado media de jamón York con mantequilla y una Coca-Cola, 2,80 €» y «los dueños, una pareja joven, son muy cordiales, amables y serviciales».',
-					'El horario es de mañana: abre a las 7:00 de lunes a sábado y cierra a las 15:00. El domingo no abre.',
-				]}
-				note="La ficha de Google no publica calle ni número, teléfono, descripción, carta ni precios: solo la zona (Centro, 14004) y las coordenadas. Los precios que aparecen en las reseñas o en los carteles del local cambian, así que esta web no los repite."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Desayuno, <br />
-							<em>tostadas y café.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que se desayuna <br /><em>en Jessica.</em>"
-				description="Sin precios publicados: esto es lo que muestran las fotos del perfil y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica carta ni precios, así que esta web no indica importes. En el local hay barra y mesas para desayunar."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>en la mesa.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: la fachada, los desayunos y el café."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el <br /><em>Centro.</em>"
-				addressLines={['Centro', `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Jessica Cafetería Panadería en el Centro de Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Jessica Cafetería Panadería · Centro"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Abrir en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: 'Ver la ficha y las fotos en Google ↗', href: MAPS.place, external: true }}
-				reserveNote="La ficha de Google no publica calle ni número ni teléfono: el mapa de esta página abre el punto exacto de la ficha y «Cómo llegar» lanza las indicaciones. Tampoco publica datos de accesibilidad, así que esta página no afirma nada sobre el acceso, el aseo o el aparcamiento."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

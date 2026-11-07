@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import comedor from '../assets/fotos/restaurante-o-curtineiro-apaisada-01.jpg';
@@ -23,7 +24,15 @@ import asado from '../assets/fotos/restaurante-o-curtineiro-apaisada-07.jpg';
 import potaje from '../assets/fotos/restaurante-o-curtineiro-cuadrada-09.jpg';
 import guisado from '../assets/fotos/restaurante-o-curtineiro-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante O Curtiñeiro, en Praza da Fonte 6 (32740 Parada de Sil, Ourense). Cocina gallega, menú del día y raciones en la Ribeira Sacra. Terraza en la plaza. Sin reserva. Tel. 619 02 07 01.';
@@ -157,6 +166,21 @@ const nav = [
 ];
 
 const title = 'Restaurante O Curtiñeiro · Cocina gallega en Parada de Sil';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-o-curtineiro-apaisada-05.jpg": fachada,
+	"restaurante-o-curtineiro-apaisada-01.jpg": comedor,
+	"restaurante-o-curtineiro-apaisada-06.jpg": barra,
+	"restaurante-o-curtineiro-cuadrada-04.jpg": letreros,
+	"restaurante-o-curtineiro-vertical-02.jpg": jarrete,
+	"restaurante-o-curtineiro-apaisada-07.jpg": asado,
+	"restaurante-o-curtineiro-apaisada-10.jpg": guisado,
+	"restaurante-o-curtineiro-cuadrada-09.jpg": potaje,
+	"restaurante-o-curtineiro-vista-3-03.jpg": postres,
+};
 ---
 
 <!doctype html>
@@ -214,81 +238,19 @@ const title = 'Restaurante O Curtiñeiro · Cocina gallega en Parada de Sil';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Praza da Fonte, 6 · Parada de Sil"
-				title="Cocina gallega<br /><em>en la Praza da Fonte.</em>"
-				lede={`Restaurante O Curtiñeiro es un restaurante gallego de Praza da Fonte, 6, en Parada de Sil (Ourense), en plena Ribeira Sacra. Menú del día y raciones de cocina casera, con terraza bajo los toldos rojos de la plaza. Abre todos los días de 8:00 a 22:00 y no trabaja con reservas: se atiende por orden de llegada. Teléfono: ${BUSINESS.phoneDisplay}.`}
-				image={fachada}
-				imageAlt="Fachada de piedra de Restaurante O Curtiñeiro en la Praza da Fonte, con dos toldos rojos y las mesas de la terraza delante"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount.toLocaleString('es-ES')} reseñas)` },
-					{ label: 'Cocina', html: 'Gallega · menú del día y raciones' },
-					{ label: 'Horario', html: 'Todos los días · 8:00–22:00' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante O Curtiñeiro" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una casa de granito<br /><em>en la Ribeira Sacra.</em>"
-				paragraphs={[
-					'Restaurante O Curtiñeiro ocupa una casa de piedra en la Praza da Fonte, 6, el corazón de Parada de Sil (Ourense). Google lo clasifica como restaurante gallego y abre todos los días, de 8:00 a 22:00. Bajo los dos toldos rojos de la fachada hay mesas altas con taburetes, y junto a la puerta los letreros de pizarra anuncian el menú del día.',
-					'Dentro, el comedor conserva los muros de granito y las vigas de madera. Las mesas se visten con mantel y servilleta, y de las paredes cuelgan fotografías enmarcadas del cañón del Sil. Al fondo, la barra de piedra y sus taburetes completan el espacio.',
-					'Sus reseñas hablan de una cocina generosa: «raciones abundantes en un menú del día variado y con productos de calidad». Entre los platos citados están el caldo gallego, la oreja, el jarrete, el jamón, la merluza, la empanada y las patatas con pulpo. En las fotos del perfil aparecen carnes guisadas y asadas con patatas y una bandeja de postres caseros.',
-					'La ficha del restaurante deja claro cómo funciona la sala: «No trabajamos con reservas vamos por orden de llegada». Google le da 4,4 sobre 5 con 2.450 reseñas.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount.toLocaleString('es-ES')} opiniones en Google. Una de ellas: «${REVIEWS[0]}»`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Menú del día<br /><em>y raciones.</em>"
-				description="La ficha de Google no publica carta ni precios: esto es lo que citan sus reseñas y lo que aparece en las fotos del perfil. El menú del día cambia cada jornada."
-				cta={{ label: `Preguntar el menú: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No hay precios publicados. Llama al 619 02 07 01 para saber el menú de hoy: no se admiten reservas y se atiende por orden de llegada."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La plaza,<br /><em>el comedor y la mesa.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante O Curtiñeiro en Google Maps: la fachada de granito con los toldos rojos, la terraza de la plaza, el comedor de piedra, la barra, el jarrete, la carne asada, el potaje y la bandeja de postres."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Te esperamos<br /><em>en Parada de Sil.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: todos los días de 8:00 a 22:00. Para grupos conviene llamar antes, aunque no se aceptan reservas."
-				mapTitle="Mapa de Restaurante O Curtiñeiro en la Praza da Fonte de Parada de Sil (Ourense)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="O Curtiñeiro · Parada de Sil"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online ni por teléfono: el restaurante atiende por orden de llegada. La ficha de Google marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

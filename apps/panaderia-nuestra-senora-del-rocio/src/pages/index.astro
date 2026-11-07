@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/panaderia-nuestra-senora-del-rocio-vertical-07.jpg';
@@ -130,6 +131,17 @@ const galeria = [
 		alt: 'Tarta de cumpleaños de chocolate decorada con nata rosa y azul y el número 5',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-nuestra-senora-del-rocio-vertical-07.jpg": fachada,
+	"panaderia-nuestra-senora-del-rocio-apaisada-10.jpg": rotulo,
+	"panaderia-nuestra-senora-del-rocio-apaisada-08.jpg": vitrina,
+	"panaderia-nuestra-senora-del-rocio-vertical-06.jpg": bolleria,
+	"panaderia-nuestra-senora-del-rocio-apaisada-09.jpg": tarta,
+};
 ---
 
 <!doctype html>
@@ -191,106 +203,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Cañada Real Soriana · 14710 Córdoba"
-				title="Panadería <br /><em>del Rocío.</em>"
-				lede={`En la Cañada Real Soriana, 244, hay un obrador de barrio con el rótulo verde de «Panadería Ntra. Sra. Del Rocío». Dentro, pan recién hecho, bollería de chocolate, dulces y tartas de encargo. Abre todos los días: de 6:30 a 15:00 de lunes a viernes y de 7:00 a 14:30 sábados y domingos. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de Panadería Nuestra Señora del Rocío, con el toldo rojo de PANADERIA y el rótulo verde sobre la puerta"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 457 reseñas' },
-					{ label: 'Horario', html: '<b>Todos los días</b> desde las 6:30' },
-					{ label: 'Zona', html: '<b>Cañada Real</b> · 14710' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · tartas"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en el obrador" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un obrador <br /><em>de cada día.</em>"
-				paragraphs={[
-					'La panadería está en la Cañada Real Soriana, 244 (14710 Córdoba), con la fachada encalada, el zócalo amarillo y un toldo rojo que anuncia «PANADERIA» sobre la puerta. El rótulo pequeño, en verde, es el del nombre completo: «Ntra. Sra. Del Rocío».',
-					'Dentro hay pan del día, bollería y una vitrina con tartas y dulces. En las fotos del perfil se ven barras recién hechas, canutillos y tartaletas en bandeja, bollos bañados de chocolate y tartas de cumpleaños con dedicatoria escrita a mano.',
-					'Abre todos los días y cierra a mediodía, así que el pan se compra por la mañana. Los sábados y los domingos abre a las 7:00 y cierra a las 14:30; de lunes a viernes empieza a las 6:30 y aguanta hasta las 15:00.',
-					'Las reseñas de Google lo resumen bien: «el pan buenísimo y los dulces y pasteles también», «fabrican las mejores tartas que he probado en mi vida y a un precio inmejorable» y «muy buena calidad y buen trato».',
-				]}
-				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta ni precios. El surtido que se describe aquí es el que muestran las fotos del perfil y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 957 45 85 95', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, tartas <br />
-							<em>y trato de barrio.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que sale <br /><em>del obrador.</em>"
-				description="Sin precios publicados: esto es lo que muestran las fotos del perfil y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. Para tartas o encargos, lo mejor es llamar al 957 45 85 95 y preguntar con antelación."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="El obrador, <br /><em>por dentro.</em>"
-				description="Cuatro fotos de la ficha de Google Maps: el rótulo, la vitrina, la bollería y una tarta de cumpleaños."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow="Cañada Real Soriana · 14710 Córdoba"
-				title="En la Cañada <br /><em>Real Soriana.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Nuestra Señora del Rocío en la Cañada Real Soriana, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Panadería Nuestra Señora del Rocío · Córdoba"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 957 45 85 95. No publica web propia ni redes. Indica acceso para sillas de ruedas; no informa sobre el aparcamiento adaptado, el mostrador ni el aseo, así que esta página no lo afirma. Para tartas o encargos, conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

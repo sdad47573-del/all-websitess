@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import panaderia from '../assets/fotos/panaderia-ilustre-apaisada-09.jpg';
@@ -115,6 +116,19 @@ const galeria = [
 	{ src: horarioFoto, alt: 'Horario escrito en el escaparate de Panadería Ilustre' },
 	{ src: palmeras, alt: 'Palmeras de hojaldre fotografiadas en la galería del local' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-ilustre-apaisada-09.jpg": panaderia,
+	"panaderia-ilustre-apaisada-04.jpg": hogaza,
+	"panaderia-ilustre-vertical-03.jpg": mostrador,
+	"panaderia-ilustre-apaisada-08.jpg": galletas,
+	"panaderia-ilustre-apaisada-06.jpg": bolleria,
+	"panaderia-ilustre-vertical-05.jpg": horarioFoto,
+	"panaderia-ilustre-vertical-07.jpg": palmeras,
+};
 ---
 
 <!doctype html>
@@ -173,93 +187,19 @@ const galeria = [
 			navAriaLabel="Navegación principal"
 		/>
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Don Juan de Austria, 33 · Málaga"
-				title="Panes de barrio, <br /><em>hechos con mimo.</em>"
-				lede={`Panadería Ilustre está en C. Don Juan de Austria, 33, en el centro de Málaga. Las fotos muestran hogazas de corteza rústica, bollería, pasteles y galletas. Abre todos los días por la mañana y de lunes a viernes también por la tarde. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={panaderia}
-				imageAlt="Estantes de panes y bollería de Panadería Ilustre"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Valoración', html: '<b>4,7</b> en Google · 100 reseñas' },
-					{ label: 'Horario', html: '<b>L–V 8:00–14:30</b> · S–D 8:30–14:30' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Panadería · Málaga"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-			<LocalChips label="En Panadería Ilustre" items={SERVICIOS} />
-			<LocalAbout
-				label="La panadería"
-				title="En el centro <br /><em>de Málaga.</em>"
-				paragraphs={[
-					'Panadería Ilustre se encuentra en C. Don Juan de Austria, 33, en el Distrito Centro de Málaga. La ficha de Google la identifica como panadería y publica el teléfono, el horario y las indicaciones para llegar.',
-					'En las imágenes del perfil se ven hogazas de corteza rústica, panes de miga clara y oscura, bollería hojaldrada, pasteles, galletas y palmeras. Una reseña también menciona pan de cerveza, pan de tomate y bases para pizza. La disponibilidad puede variar.',
-					'El horario escrito en el escaparate indica mañanas todos los días, y apertura por la tarde de lunes a viernes. La ficha de Google muestra una valoración de 4,7 sobre 5, basada en 100 reseñas.',
-				]}
-				note="No hay una carta completa publicada: la selección aquí se basa en las fotos del establecimiento y en productos mencionados en reseñas. El surtido puede variar."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Tres apuntes</p>
-						<h2 id="three-title">Hogazas, horno <br /><em>y mostrador.</em></h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-			<LocalMenu
-				eyebrow="Pan, bollería y pastelería"
-				title="Pan, bollería <br /><em>y algo dulce.</em>"
-				description="Una muestra del surtido que aparece en las fotos públicas del establecimiento. La disponibilidad puede cambiar a lo largo del día."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note={`El surtido puede cambiar. Para consultar qué hay disponible hoy, llama al ${BUSINESS.phone}.`}
-			/>
-			<LocalGallery
-				eyebrow="Fotos"
-				title="Del horno <br /><em>al mostrador.</em>"
-				description="Hogazas de corteza rústica, bandeja de bollería, galletas, palmeras y escaparate del local: imágenes de la ficha pública en Google Maps."
-				images={galeria}
-				cta={{ label: 'Ver fotos en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Don Juan <br /><em>de Austria.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario del cartel de la puerta"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Ilustre, C. Don Juan de Austria, 33, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Panadería Ilustre · Distrito Centro"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="El horario escrito en el escaparate indica apertura todos los días por la mañana; comprueba posibles cambios en festivos antes de desplazarte."
-			/>
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 		<LocalFooter
 			mark={BUSINESS.mark}

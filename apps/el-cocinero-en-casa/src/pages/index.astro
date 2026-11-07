@@ -10,9 +10,20 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'El Cocinero en Casa · Comida para llevar en Retiro';
 const description = BUSINESS.description;
@@ -99,6 +110,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-cocinero-en-casa-apaisada-01.jpg": fachada,
+	"el-cocinero-en-casa-apaisada-04.jpg": cordero,
+	"el-cocinero-en-casa-apaisada-07.jpg": gratinados,
+	"el-cocinero-en-casa-panoramica-03.jpg": arroz,
+	"el-cocinero-en-casa-panoramica-05.jpg": tartas,
+	"el-cocinero-en-casa-panoramica-06.jpg": salmon,
+	"el-cocinero-en-casa-vertical-02.jpg": ensaladilla,
+	"el-cocinero-en-casa-vista-10-10.jpg": guiso,
+};
 ---
 
 <!doctype html>
@@ -167,71 +192,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Calle de Antonio Arias, 13 · Retiro, Madrid"
-				title="Comida casera <br /><em>para llevar.</em>"
-				lede={`El Cocinero en Casa es comida para llevar en Retiro. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>Mar–dom</b> 9:00–16:30 · <b>Lun</b> cerrado' },
-					{ label: 'Servicio', html: '<b>Para llevar</b>' },
-				]}
-				image={fachada}
-				imageAlt="Fachada de El Cocinero en Casa en la Calle de Antonio Arias, en Retiro"
-				galleryHref={MAPS.place}
-				photoCredit="Ficha de Google Maps"
-				galleryLinkLabel="Ver en Google Maps"
-				tag="Comida para llevar"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece El Cocinero en Casa" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Comida casera <br /><em>para llevar.</em>"
-				paragraphs={[
-					'El Cocinero en Casa está en la Calle de Antonio Arias, 13, en Retiro. Su ficha de Google Maps lo clasifica como restaurante de comida para llevar.',
-					'Su ficha publica horario de martes a domingo, de 9:00 a 16:30. Los sábados y domingos hacen paellas, con encargos por teléfono.',
-				]}
-				note="La ficha no publica página web, redes sociales, carta con precios ni reparto a domicilio. Para precios concretos y encargos, llama al 915 73 28 16."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la cocina.</em>"
-				description="Vitrina de comida preparada, tartas y platos de la casa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Las fotos de la carta y de los platos de otros locales no se publican. Si tienes los derechos de alguna imagen y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Retiro, <br /><em>Calle de Antonio Arias.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, BUSINESS.region]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.horas === 'Cerrado' }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: martes a domingo de 9:00 a 16:30, y lunes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de El Cocinero en Casa en la Calle de Antonio Arias, 13, Retiro, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Calle de Antonio Arias, 13"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha no publica reparto a domicilio ni pedidos online: se concreta todo por teléfono, en el 915 73 28 16. No da datos de accesibilidad, así que conviene llamar antes si necesitas algo concreto."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

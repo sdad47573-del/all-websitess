@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/chicken-bbq-sevilla-apaisada-01.jpg';
@@ -23,7 +24,14 @@ import bandeja from '../assets/fotos/chicken-bbq-sevilla-vertical-09.jpg';
 import arroz from '../assets/fotos/chicken-bbq-sevilla-vertical-10.jpg';
 import interior from '../assets/fotos/chicken-bbq-sevilla-panoramica-07.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Chicken BBQ Sevilla · Pollo a la brasa en Los Bermejales';
 const description = BUSINESS.description;
@@ -168,6 +176,21 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"chicken-bbq-sevilla-apaisada-01.jpg": fachada,
+	"chicken-bbq-sevilla-apaisada-03.jpg": parrilla,
+	"chicken-bbq-sevilla-apaisada-04.jpg": pinchos,
+	"chicken-bbq-sevilla-cuadrada-02.jpg": brasas,
+	"chicken-bbq-sevilla-vertical-06.jpg": polloTroceado,
+	"chicken-bbq-sevilla-vertical-05.jpg": patatas,
+	"chicken-bbq-sevilla-vertical-09.jpg": bandeja,
+	"chicken-bbq-sevilla-vertical-10.jpg": arroz,
+	"chicken-bbq-sevilla-panoramica-07.jpg": interior,
+};
 ---
 
 <!doctype html>
@@ -225,111 +248,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood} · ${BUSINESS.city}`}
-				title="Pollo a la brasa, <br /><em>leña de encina.</em>"
-				lede="Chicken BBQ Sevilla está en la avenida de Alemania 19, en Los Bermejales. El negocio lo resume en su ficha: «Pollo a la Brasa. Productos frescos hechos a la leña de encinas». Abre solo para comer, de 11:00 a 16:00 de martes a domingo y desde las 10:00 los lunes, y los pedidos se hacen en el 955 38 61 30."
-				image={fachada}
-				imageAlt="Fachada de Chicken BBQ Sevilla con el rótulo rojo de pollo al carbón y el teléfono de pedidos en la avenida de Alemania"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,8</b> en Google · 135 reseñas' },
-					{ label: 'Horario', html: '<b>11:00–16:00</b><br />Lunes desde las 10:00 · sin cenas' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> pedidos y consultas` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Chicken BBQ Sevilla" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Carbón, encina <br /><em>y brasa viva.</em>"
-				paragraphs={[
-					'Chicken BBQ Sevilla está en la avenida de Alemania 19, en Los Bermejales, con el rótulo de pollo al carbón sobre la puerta y la cocina a la vista: barra de madera, taburetes rojos y el asador al fondo, según las fotos de su perfil.',
-					'El negocio lo cuenta en una línea en su ficha: «Pollo a la Brasa. Productos frescos hechos a la leña de encinas». No es un horno eléctrico: los pollos van ensartados en jaulas metálicas girando sobre la brasa, como se ve en las fotografías del local.',
-					'El horario es solo de comidas. De 11:00 a 16:00 de martes a domingo, y los lunes desde las 10:00. No hay cena ni cierre a mediodía, así que el pollo se sirve del mediodía a media tarde.',
-					'Google lo clasifica además como parrilla, restaurante de barbacoa, pollería y especialista en costillas, y lo marca como comida a domicilio. Las reseñas que la ficha destaca hablan del pollo, las patatas, el arroz y la salsa picante, y de la formalidad al recoger pedidos por teléfono.',
-				]}
-				note="La ficha no publica carta con precios ni web propia, y el reparto se gestiona por teléfono. Los productos de esta página salen de la descripción del negocio, de las categorías de Google y de las reseñas; no hay importes que mostrar sin inventarlos."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Pollo, patatas <br /><em>y arroz.</em>"
-				description="Sin precios publicados en la ficha, así que aquí va lo que el negocio declara y lo que repiten las reseñas que Google destaca."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={carta}
-				note="Esta lista sale de la descripción del negocio, de las categorías con las que Google lo clasifica y de las reseñas destacadas. No hay carta ni precios públicos: se confirman en el mostrador o llamando al 955 38 61 30."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
-					<div class="reviews-head">
-						<h2 id="resenas-title">El pollo, las patatas <br /><em>y la salsa.</em></h2>
-						<p>
-							La ficha tiene 135 reseñas y una media de 3,8. Estas son tres de las que Google destaca, con
-							la puntuación que les dio su autor.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
-										{'★'.repeat(review.rating)}
-										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
-									</p>
-									<blockquote>{review.quote}</blockquote>
-									<figcaption>Reseña publicada en Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<p class="review-note">
-						Citas de las reseñas públicas del local, con la puntuación del autor y la puntuación del
-						texto normalizada. En la ficha de Google están todas, incluidas las críticas.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Ocho fotos <br /><em>del asador.</em>"
-				description="Del perfil del local: la parrilla con los pollos girando sobre la brasa, el pollo ya troceado, las patatas y el arroz, y el interior con la barra."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.neighbourhood}`}
-				title="Ven a <br /><em>Los Bermejales.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'España']}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: solo comidas, de 11:00 a 16:00 de martes a domingo y desde las 10:00 los lunes. No hay servicio de cenas. En festivos puede cambiar; llama antes si vas en día señalado."
-				mapTitle="Mapa de Chicken BBQ Sevilla en la avenida de Alemania 19, Los Bermejales"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Chicken BBQ"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Pedidos: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="Los pedidos se hacen por teléfono, y una de las reseñas destaca la formalidad al recogerlos. La ficha también lo marca como comida a domicilio, pero no enlaza ninguna plataforma de reparto, así que confirma zona y horario al llamar. Esta página no tramita pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

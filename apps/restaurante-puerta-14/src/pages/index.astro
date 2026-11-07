@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 const business = {
@@ -146,7 +147,29 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
----
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+
+};
+
+const horas = [
+					{ day: 'Lunes', value: '9:00 – 24:00' },
+					{ day: 'Martes', value: '9:00 – 24:00' },
+					{ day: 'Miércoles', value: 'Cerrado', closed: true },
+					{ day: 'Jueves', value: '9:00 – 24:00' },
+					{ day: 'Viernes', value: '9:00 – 24:00' },
+					{ day: 'Sábado', value: '9:00 – 24:00' },
+					{ day: 'Domingo', value: '9:00 – 24:00' },
+				];
+const mapasPagina = {
+	place: mapsUrl,
+	directions: mapsUrl,
+	streetView: mapsUrl,
+	embed: mapEmbedUrl,
+};---
 
 <!doctype html>
 <html lang="es">
@@ -212,101 +235,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<section class="hero-custom wrap" id="inicio" aria-labelledby="hero-title">
-				<div>
-					<p class="eyebrow"><span aria-hidden="true"></span> Puerta de Murcia 14 · Cartagena</p>
-					<h1 id="hero-title">Raciones enormes,<br />precio honesto,<br /><em>en pleno centro.</em></h1>
-					<p class="hero-lede">Cocina casera mediterránea en zona peatonal: marinera, pulpo a la cartagenera, croquetas, cachopo y tarta de queso casera. Media de ~20 € con bebida. De 9:00 a 24:00, miércoles cerrado.</p>
-					<div class="hero-actions">
-						<a class="button button-primary" href={phoneHref}>Llamar 968 50 25 33</a>
-						<a class="button button-ghost" href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
-					</div>
-					<ul class="hero-facts">
-						<li><b>4,3</b> en reseñas</li>
-						<li><b>~20 €</b> con bebida</li>
-						<li><b>Terraza</b> peatonal</li>
-						<li><b>Miércoles</b> cerrado</li>
-					</ul>
-				</div>
-				<figure style="margin:0">
-					<img src="/fotos/puerta-murcia-14.svg" alt="Ilustración del exterior de Puerta 14 en Puerta de Murcia" fetchpriority="high" />
-					<figcaption style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem">Imagen provisional — sustitúyela por fotos propias. <a href={mapsUrl} target="_blank" rel="noreferrer">Ver galería en Maps ↗</a></figcaption>
-				</figure>
-			</section>
-
-			<LocalChips label="Servicios de Puerta 14" items={servicios} />
-
-			<LocalAbout
-				label="La puerta del centro que siempre acierta"
-				title="De tapas,<br />de raciones<br /><em>y de volver.</em>"
-				paragraphs={[
-					'Puerta 14 está en Puerta de Murcia 14, en la zona peatonal del centro histórico: restaurante descubierto por casualidad por muchos y convertido en fijo por su cocina local, su personal amable y sus precios bajos para la calidad que sirve.',
-					'Aquí los platos y cubiertos se cambian varias veces durante la comida de tapas, el camarero aconseja para que no sobre ni falte, y las porciones son enormes: marinera, calamares a la andaluza, croquetas, cachopo, pulpo, bravas y tarta de queso.',
-					'Familias, grupos y eventos —bodas, comuniones, cumpleaños— con terraza donde los perros son bienvenidos y un café asiático de cierre.',
-				]}
-				note="Consejo de la clientela: no pidas de más a la primera; deja que te asesoren con las cantidades."
-				links={[
-					{ label: 'Cómo llegar', href: directionsUrl, external: true },
-					{ label: 'Ficha en Google Maps', href: mapsUrl, external: true },
-				]}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: business.name,
+					street: business.street,
+					district: business.district ?? '',
+					postalCode: business.postalCode,
+					city: business.city,
+				}}
+								horario={horas}
+								mapas={mapasPagina}
 			/>
-
-			<LocalMenu
-				eyebrow="Lo más pedido"
-				title="Qué pedir<br /><em>en Puerta 14.</em>"
-				description="Selección a partir de los platos recomendados en reseñas públicas. Todo fresco y bien cocinado a precio adecuado."
-				cta={{ label: 'Reservar por teléfono', href: phoneHref }}
-				groups={[{ title: 'La carta', items: platos }]}
-				note="Media ~20 € con bebida. Pregunta por las cantidades antes de pedir: las raciones son grandes."
-			/>
-
-			<section class="section-pad wrap" id="fotos" aria-labelledby="fotos-title">
-				<p class="eyebrow"><span aria-hidden="true"></span> Fotos</p>
-				<h2 id="fotos-title">El 14, <em style="color:var(--amber);font-style:normal">en imágenes.</em></h2>
-				<div class="aviso-fotos" role="note">
-					<strong>⚠️ Sobre las fotos de Google Maps:</strong> no las he descargado ni copiado: las imágenes de la ficha de Google tienen derechos de sus autores y las condiciones de Google Maps no permiten extraerlas automáticamente. Esta web usa <strong>ilustraciones placeholder propias</strong> en <code>public/fotos/</code>. Sustitúyelas por fotos propias del local (mismo nombre de archivo) y se publicarán solas.
-				</div>
-				<div class="fotos-grid">
-					{fotos.map((f) => (
-						<figure>
-							<img src={f.src} alt={f.alt} loading="lazy" decoding="async" />
-							<figcaption>{f.alt.split('—')[0]}</figcaption>
-						</figure>
-					))}
-				</div>
-				<p style="margin-top:1rem"><a class="button button-ghost" href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos reales en Google Maps ↗</a></p>
-			</section>
-
-			<LocalVisit
-				eyebrow="Puerta de Murcia 14 · 30201 Cartagena"
-				title="Nos vemos<br /><em>en el centro.</em>"
-				addressLines={[
-					'C. Puerta de Murcia, 14',
-					'Casco Antiguo',
-					'30201 Cartagena (Murcia), España',
-				]}
-				hours={[
-					{ day: 'Lunes', value: '9:00 – 24:00' },
-					{ day: 'Martes', value: '9:00 – 24:00' },
-					{ day: 'Miércoles', value: 'Cerrado', closed: true },
-					{ day: 'Jueves', value: '9:00 – 24:00' },
-					{ day: 'Viernes', value: '9:00 – 24:00' },
-					{ day: 'Sábado', value: '9:00 – 24:00' },
-					{ day: 'Domingo', value: '9:00 – 24:00' },
-				]}
-				hoursNote="Horario según ficha pública (2026). Confirma en festivos por teléfono."
-				mapTitle="Mapa de Restaurante Puerta 14 en Puerta de Murcia 14, Cartagena"
-				mapEmbedUrl={mapEmbedUrl}
-				mapLabel="Puerta 14 · Cartagena centro"
-				mapHref={mapsUrl}
-				links={[
-					{ label: 'Cómo llegar', href: directionsUrl, external: true, variant: 'primary' },
-				]}
-				contactLink={{ label: `+34 ${business.phone}`, href: phoneHref }}
-				reserveNote="Grupos y eventos (bodas, comuniones, cumpleaños): llama al 968 50 25 33."
-			/>
-
-			<LocalFaq items={faqs} />
 		</main>
 
 		<LocalFooter

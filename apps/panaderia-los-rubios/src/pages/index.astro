@@ -9,11 +9,20 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import calle from '../assets/fotos/panaderia-los-rubios-apaisada-01.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Panadería los Rubios · Bailén-Miraflores, Málaga';
 const description =
@@ -90,6 +99,13 @@ const nav = [
 	{ label: 'La casa', href: '#casa' },
 	{ label: 'Visítanos', href: '#visitanos' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-los-rubios-apaisada-01.jpg": calle,
+};
 ---
 
 <!doctype html>
@@ -152,94 +168,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Carraca, 4 · Bailén-Miraflores"
-				title="La panadería <br /><em>de la esquina.</em>"
-				lede={`Panadería los Rubios está en la calle Carraca, 4, en Bailén-Miraflores. El local ocupa la esquina de un bloque de viviendas y el rótulo «Panadería · Pastelería» se ve desde la calle. Abre de lunes a viernes y también el domingo, siempre por la mañana, de 7:30 a 14:30. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={calle}
-				imageAlt="Vista de la calle Carraca con el rótulo de Panadería los Rubios en la esquina del edificio"
-				primaryCta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>3,6</b> en Google · 53 reseñas' },
-					{ label: 'Horario', html: '<b>L–V y D</b> 7:30–14:30' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Única foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · dulces · barrio"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Los Rubios" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pan y dulces <br /><em>de barrio.</em>"
-				paragraphs={[
-					'Panadería los Rubios está en la calle Carraca, 4, en Bailén-Miraflores (29011 Málaga). El local está en la esquina de un bloque de viviendas y el rótulo «Panadería · Pastelería» se ve desde la calle, como muestra la foto del perfil.',
-					'La ficha de Google la clasifica como panadería. Una de las reseñas habla de «muy buenos dulces y pan», y el rótulo del local anuncia panadería y pastelería. No hay más detalle público: la ficha no publica carta, surtido ni precios.',
-					'El horario es de mañana: de lunes a viernes y el domingo, de 7:30 a 14:30. El sábado cierra. Es un horario poco habitual, así que conviene confirmarlo por teléfono antes de acercarse.',
-					'La ficha tampoco publica página web, correo ni redes sociales, y la galería del perfil solo tiene una foto, una vista de la calle. Por eso esta web no muestra productos ni importes: el contacto es en el local o en el 952 27 60 01.',
-				]}
-				note="Sin carta, precios ni fotos de producto publicadas: la ficha de Google solo tiene una imagen de la calle y no describe el surtido."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Barrio, horno <br />
-							<em>y mostrador.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la calle Carraca, <br /><em>número 4.</em>"
-				addressLines={[
-					BUSINESS.street,
-					BUSINESS.district,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería los Rubios en la calle Carraca, 4, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Los Rubios · Carraca"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google no publica información sobre el acceso, el aparcamiento adaptado, el mostrador o el aseo, así que esta página no la afirma. El contacto es en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

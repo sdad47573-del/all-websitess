@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import vitrina from '../assets/fotos/la-boutique-del-pollo-2-apaisada-01.jpg';
@@ -21,7 +22,18 @@ import elaborados from '../assets/fotos/la-boutique-del-pollo-2-apaisada-05.jpg'
 import pechugas from '../assets/fotos/la-boutique-del-pollo-2-panoramica-07.jpg';
 import huevos from '../assets/fotos/la-boutique-del-pollo-2-apaisada-06.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'La Boutique del Pollo #2 · Pollería en Tetuán, Madrid';
 const description = BUSINESS.description;
@@ -145,6 +157,19 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-boutique-del-pollo-2-apaisada-01.jpg": vitrina,
+	"la-boutique-del-pollo-2-panoramica-02.jpg": adobados,
+	"la-boutique-del-pollo-2-panoramica-04.jpg": mostrador,
+	"la-boutique-del-pollo-2-apaisada-05.jpg": elaborados,
+	"la-boutique-del-pollo-2-panoramica-07.jpg": pechugas,
+	"la-boutique-del-pollo-2-apaisada-06.jpg": huevos,
+	"la-boutique-del-pollo-2-vista-03.jpg": tarjeta,
+};
 ---
 
 <!doctype html>
@@ -214,137 +239,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. del Marqués de Viana, 4 · Tetuán, Madrid"
-				title="Pollo fresco <br /><em>y de confianza.</em>"
-				lede={`La Boutique del Pollo #2 es la pollería de Marqués de Viana, en Tetuán: pollo fresco, pavos, aves, caza, conejos, huevos y elaborados, con servicio a domicilio para restaurantes y hogares. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={vitrina}
-				imageAlt="La vitrina de La Boutique del Pollo #2 con pollos enteros, cuartos y carteles de oferta"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:00–14:00</b> · tardes de 17:30' },
-					{ label: 'Servicio', html: '<b>A domicilio</b> · restaurantes y hogares' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Fotos de la ficha de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pollo fresco · elaborados · huevos"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Boutique del Pollo #2" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pollería <br /><em>de toda la vida.</em>"
-				paragraphs={[
-					'La Boutique del Pollo #2 está en el número 4 de la calle del Marqués de Viana, en Tetuán. Es una pollería de barrio con vitrina a la calle y el surtido de siempre: pollo fresco, pavos, aves, caza, conejos, huevos y elaborados.',
-					'El mostrador se llena de pollos enteros y troceados, pechugas, alitas y bandejas adobadas, con carteles de oferta por kilos que cambian según el día. Al lado, las bandejas de empanadas, croquetas, albóndigas y preparados para barbacoa.',
-					'La tarjeta del local lo resume: «pollería, pavos, aves, caza, conejos, huevos, elaborados, especiales para barbacoas, hamburguesas, etc.» y anuncia «servicio a domicilio, restaurantes y hogares».',
-					'Google le da 5,0 sobre 5 con 5 reseñas. Una habla de «muy buen género» y «trato excelente y profesional»; otra define el sitio como «pollería de toda la vida» y elogia a Ramón.',
-				]}
-				note="La ficha no publica precios estables, página web ni redes sociales. Los carteles de oferta de las fotos cambian según el día; el surtido y el reparto se confirman por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Del mostrador a casa</p>
-					<h2 id="highlights-title">Pollo, huevos <br /><em>y elaborados.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El surtido"
-				title="Aves, carnes <br /><em>y elaborados.</em>"
-				description="Lo que anuncian la ficha y la tarjeta del local. Los precios se consultan en el mostrador."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La ficha no publica una lista de precios: en las fotos se ven carteles de oferta por kilos que cambian según el día. La disponibilidad se confirma por teléfono o en el mostrador."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La vitrina <br /><em>y el mostrador.</em>"
-				description="Las siete fotografías del perfil de La Boutique del Pollo #2 en Google Maps: la vitrina, los adobados, los elaborados, los huevos y la tarjeta del local."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">5,0 sobre 5, <em>con 5 reseñas.</em></h2>
-						<p>
-							La valoración que publica Google en octubre de 2026 es de 5,0 con 5 opiniones. Las
-							dos reseñas que muestra la ficha hablan del género, de la calidad y del trato; aquí
-							se reproducen tal cual.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>5,0</strong>
-						<span>★★★★★</span>
-						<small>5 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Tetuán, <br /><em>Marqués de Viana.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 9:00 a 14:00 y de 17:30 a 20:30 de lunes a viernes, y de 9:00 a 14:00 el sábado. El domingo cierra. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Boutique del Pollo #2 en la calle del Marqués de Viana, 4, Tetuán, Madrid"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. del Marqués de Viana, 4"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Servicio a domicilio para restaurantes y hogares, según la tarjeta del local. Se pide por teléfono, en el 915 79 15 82; la tarjeta incluye además el 917 33 02 20. No consta página web ni pedidos online. En accesibilidad la ficha solo marca que no hay aparcamiento adaptado."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

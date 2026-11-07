@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/bon-appetit-cafeteria-carrefour-apaisada-04.jpg';
@@ -22,7 +23,16 @@ import linea from '../assets/fotos/bon-appetit-cafeteria-carrefour-vertical-05.j
 import plato from '../assets/fotos/bon-appetit-cafeteria-carrefour-vertical-07.jpg';
 import pasteles from '../assets/fotos/bon-appetit-cafeteria-carrefour-vertical-10.jpg';
 
-import { BUSINESS, CARTA, CARTA_NOTE, FAQ, HORARIO, MAPS, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	CARTA,
+	CARTA_NOTE,
+	FAQ,
+	HORARIO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Bon Appétit · Cafetería Carrefour Andorra 2000';
 const description = BUSINESS.description;
@@ -151,6 +161,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"bon-appetit-cafeteria-carrefour-apaisada-04.jpg": fachada,
+	"bon-appetit-cafeteria-carrefour-apaisada-01.jpg": comedor,
+	"bon-appetit-cafeteria-carrefour-apaisada-06.jpg": vitrina,
+	"bon-appetit-cafeteria-carrefour-vista-3-03.jpg": bandeja,
+	"bon-appetit-cafeteria-carrefour-vertical-07.jpg": plato,
+	"bon-appetit-cafeteria-carrefour-apaisada-09.jpg": postres,
+	"bon-appetit-cafeteria-carrefour-vertical-10.jpg": pasteles,
+	"bon-appetit-cafeteria-carrefour-vertical-05.jpg": linea,
+};
 ---
 
 <!doctype html>
@@ -217,109 +241,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="La cafetería <br /><em>del Andorra 2000.</em>"
-				lede={`Bon Appétit es la cafetería del centro comercial Carrefour Andorra 2000, en la calle Sardana, 22, de Andorra la Vella. Menú con primero, segundo, postre y bebida por 12,50 €, vitrina de pollo asado y patatas, ensaladas, tapas y desayunos desde las 8:30. Abre todos los días hasta las 20:00. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="Fachada verde de Bon Appétit Carrefour Andorra 2000 con el rótulo en blanco y el escaparate a la calle Sardana"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Menú', html: '<b>12,50 €</b><br />Primero, segundo, postre y bebida' },
-					{ label: 'Horario', html: '<b>8:30–20:00</b> · todos los días' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Cafetería · Andorra la Vella"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Bon Appétit" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Autoservicio <br /><em>en el Andorra 2000.</em>"
-				paragraphs={[
-					'Bon Appétit ocupa la esquina de la calle Sardana, 22, dentro del centro comercial Carrefour Andorra 2000. Fuera, la fachada es verde con el rótulo blanco de «BON APPÉTIT! Carrefour Andorra 2000»; dentro, el local se abre en una sala amplia de suelo de madera, con mesas de madera y sillas metálicas verdes, amarillas y granates.',
-					'El servicio es de autoservicio: se pasa por la línea de vitrinas —con el cartel de «Amanides · Cafetería»— y se elige de las bandejas. En la vitrina se ven cuartos de pollo asado, carnes, patatas panadera, pizzas y ensaladas, y al lado la caja con el datáfono.',
-					'En las fotos del perfil se leen los carteles de la vitrina: un menú con «1r plat, 2n plat, postres i beguda» por 12,50 €, «Plats únics» y el aviso de que no se puede comer comida traída de fuera. También hay una vitrina de postres en vaso —chocolate, fresas, arándanos y nata—, bollería y una nevera con refrescos y agua.',
-					`La ficha de Google la clasifica como «Cafetería», «Restaurante de desayunos», «Comida a domicilio», «Bar de tapas» y «Restaurante vegano». Abre todos los días de 8:30 a 20:00 y tiene ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026).`,
-				]}
-				note="La ficha de Google no publica teléfono, web, carta ni precios. Lo que se cuenta aquí sale de sus fotos y de las categorías que publica; el único precio es el del menú que se lee en el cartel de la vitrina."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="El menú"
-				title="Menú a 12,50 € <br /><em>y vitrina.</em>"
-				description="El menú con primero, segundo, postre y bebida es lo que anuncia el cartel de la vitrina en las fotos del perfil. El resto de platos son los que aparecen en las bandejas, sin precio publicado."
-				cta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				groups={CARTA}
-				note={CARTA_NOTE}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El comedor, <br /><em>la vitrina y la mesa.</em>"
-				description="Siete fotografías del perfil de Bon Appétit en Google Maps: la fachada, el comedor, la vitrina con el cartel del menú, una bandeja de pollo con patatas, la línea de autoservicio, un plato de salchicha con verduras y la vitrina de postres y pasteles."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">3,5 sobre 5, <em>con 129 reseñas.</em></h2>
-						<p>
-							Un local de paso, dentro de un centro comercial, con 129 opiniones y una media
-							de 3,5 sobre 5 (consultada el 2 de noviembre de 2026). No es una media alta: hay
-							mesas bien valoradas y otras que no, así que conviene leer las reseñas enteras
-							antes de decidir.
-						</p>
-						<p>
-							Esta web no copia reseñas sueltas: para verlas con sus fechas y sus respuestas,
-							abre la ficha en Google.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las 129 reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>3,5</strong>
-						<span>★★★½☆</span>
-						<small>129 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la calle Sardana, <br /><em>dentro del centro.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} · Andorra`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: todos los días de 8:30 a 20:00, sin día de cierre. No añade avisos de festivos; en una fecha señalada conviene comprobar el horario del centro comercial."
-				mapTitle="Mapa de Bon Appétit en la calle Sardana, 22, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Sardana, 22 · Andorra la Vella"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
-				reserveNote="La ficha no publica teléfono, reservas ni pedidos online, así que no hay canal de contacto más que acudir al local. Es una cafetería de autoservicio dentro del centro comercial: se pide en la vitrina y se paga en caja."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

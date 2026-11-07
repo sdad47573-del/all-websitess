@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurante-kalaberri-apaisada-01.jpg';
@@ -24,7 +25,14 @@ import ensalada from '../assets/fotos/restaurante-kalaberri-vertical-08.jpg';
 import revuelto from '../assets/fotos/restaurante-kalaberri-vertical-09.jpg';
 import pulpo from '../assets/fotos/restaurante-kalaberri-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante Kalaberri, cocina vasca en Matia Kalea, 50, de Donostia: pintxos, raciones, pescado y brasa. Abierto todos los días desde las 11:00. Tel. 943 12 62 18.';
@@ -197,6 +205,22 @@ const nav = [
 ];
 
 const title = 'Kalaberri · Restaurante vasco en Donostia';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-kalaberri-apaisada-01.jpg": fachada,
+	"restaurante-kalaberri-vertical-10.jpg": pulpo,
+	"restaurante-kalaberri-apaisada-03.jpg": pintxos,
+	"restaurante-kalaberri-vertical-02.jpg": pescado,
+	"restaurante-kalaberri-vertical-07.jpg": entrada,
+	"restaurante-kalaberri-apaisada-06.jpg": chuleton,
+	"restaurante-kalaberri-vertical-09.jpg": revuelto,
+	"restaurante-kalaberri-vertical-08.jpg": ensalada,
+	"restaurante-kalaberri-apaisada-04.jpg": entrecot,
+	"restaurante-kalaberri-apaisada-05.jpg": logo,
+};
 ---
 
 <!doctype html>
@@ -252,83 +276,19 @@ const title = 'Kalaberri · Restaurante vasco en Donostia';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Matia Kalea, 50 · Donostia"
-				title="Pintxos, pescado<br /><em>y brasa.</em>"
-				lede={`Restaurante Kalaberri es un restaurante vasco en Matia Kalea, 50, de Donostia / San Sebastián (Gipuzkoa). Pintxos, raciones, bocadillos y platos de pescado, con brasa y guisos, en un local con puerta de madera negra y el pez blanco por bandera. Abre todos los días a las 11:00. Reservas en el ${BUSINESS.phoneDisplay}.`}
-				image={fachada}
-				imageAlt="Fachada de Restaurante Kalaberri en Matia Kalea con el toldo negro y el rótulo del pez"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{
-						label: 'Nota',
-						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
-					},
-					{ label: 'Horario', html: 'Todos los días · desde las 11:00' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante Kalaberri" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un vasco<br /><em>en Matia.</em>"
-				paragraphs={[
-					'Restaurante Kalaberri está en Matia Kalea, 50, de Donostia / San Sebastián (Gipuzkoa). Google lo clasifica como restaurante vasco y lo describe así: «carta deliciosa: pintxos, raciones, bocadillos y buena música».',
-					'La fachada es de piedra, con un toldo negro, el pez blanco de Kalaberri y el rótulo «KALABERRI antigua» sobre la puerta de madera negra con cristales. Delante, una calle con árboles; dentro, luz cálida y clientes junto a la entrada.',
-					'Su ficha reúne 361 reseñas y una nota media de 4,7 sobre 5. Las reseñas hablan de pintxos y raciones, de platos de pescado «exquisitos», de pulpo, cordero a la brasa, carrilleras, entrecot, revuelto de hongos y ensalada de burrata.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo resume así: «los pintxos y raciones deliciosos, y los platos de pescado exquisitos».`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="De la barra<br /><em>y de la cocina.</em>"
-				description="La ficha de Google no publica carta ni precios: esto es lo que anuncia su descripción, lo que citan sus reseñas y lo que aparece en sus fotos."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La carta cambia a diario y los precios no están publicados en la ficha. Llama al 943 12 62 18 para saber qué hay hoy y si queda mesa."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El toldo,<br /><em>la barra y el pulpo.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante Kalaberri en Google Maps: la fachada con el toldo negro, la entrada, los pintxos de pescado, el pulpo, el pescado al horno, las carnes a la brasa, el revuelto de hongos y la ensalada con queso de cabra."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Te esperamos<br /><em>en la barra.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: todos los días desde las 11:00. Cierra a las 23:00 el martes, a las 23:30 el lunes, a las 24:00 miércoles y jueves, a la 1:30 viernes y sábado, y a las 16:00 el domingo."
-				mapTitle="Mapa de Restaurante Kalaberri en Matia Kalea, 50, Donostia / San Sebastián (Gipuzkoa)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Restaurante Kalaberri · Donostia"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se reserva llamando al 943 12 62 18. La ficha de Google marca acceso para sillas de ruedas y asientos adaptados; no marca aparcamiento adaptado. Está en Matia Kalea, 50, de Donostia."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

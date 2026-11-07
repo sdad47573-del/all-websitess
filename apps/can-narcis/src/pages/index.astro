@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/can-narcis-apaisada-01.jpg';
@@ -23,7 +24,16 @@ import foto08 from '../assets/fotos/can-narcis-cuadrada-08.jpg';
 import foto09 from '../assets/fotos/can-narcis-cuadrada-09.jpg';
 import foto10 from '../assets/fotos/can-narcis-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Can Narcís · Comida casera para llevar en Andorra la Vella';
 const description = `Can Narcís, Av. Príncep Benlloch, 71 (AD500 Andorra la Vella). Comida casera para llevar con ${RATING.label} sobre 5 en Google. Teléfono ${BUSINESS.phone}.`;
@@ -92,6 +102,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"can-narcis-apaisada-01.jpg": fachada,
+	"can-narcis-cuadrada-02.jpg": foto02,
+	"can-narcis-cuadrada-03.jpg": foto03,
+	"can-narcis-cuadrada-04.jpg": foto04,
+	"can-narcis-cuadrada-05.jpg": foto05,
+	"can-narcis-cuadrada-06.jpg": foto06,
+	"can-narcis-cuadrada-07.jpg": foto07,
+	"can-narcis-cuadrada-08.jpg": foto08,
+	"can-narcis-cuadrada-09.jpg": foto09,
+	"can-narcis-apaisada-10.jpg": foto10,
+};
 ---
 
 <!doctype html>
@@ -160,87 +186,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Príncep Benlloch, 71 · Andorra la Vella"
-				title="Comida casera <br /><em>para llevar.</em>"
-				lede={`Can Narcís está en la Av. Príncep Benlloch, 71, en Andorra la Vella. Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de miércoles a domingo, de 12:00 a 18:30.`}
-				image={fachada}
-				imageAlt="Fachada de Can Narcís en Andorra la Vella"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:00–18:30</b> · miércoles a domingo' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Para llevar"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Can Narcís" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Comida casera <br /><em>en Andorra la Vella.</em>"
-				paragraphs={[
-					"Can Narcís está en la Av. Príncep Benlloch, 71, en Andorra la Vella (AD500).",
-					`Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. La ficha no publica una carta online propia, así que esta web no incluye platos ni precios.`,
-				]}
-				note="La ficha no publica precios en su propio texto. Para el menú y los importes, llama por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Sobre el local</p>
-					<h2 id="highlights-title">Para llevar, <br /><em>de miércoles a domingo.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item) => (
-								<li>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El local <br /><em>y la comida.</em>"
-				description="Diez fotografías del perfil de Can Narcís en Google Maps."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Av. Príncep Benlloch, 71, <br /><em>Andorra la Vella.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Can Narcís en la Av. Príncep Benlloch, 71, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Av. Príncep Benlloch, 71"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Consultas y pedidos por teléfono: la ficha no publica reservas online."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

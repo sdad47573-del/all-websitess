@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/panaderia-juani-apaisada-01.jpg';
@@ -156,6 +157,14 @@ const galeria = [
 		alt: 'Logotipo de Polvillo con un panadero y una cesta de panes, en el escaparate del local',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-juani-apaisada-01.jpg": fachada,
+	"panaderia-juani-apaisada-02.jpg": polvillo,
+};
 ---
 
 <!doctype html>
@@ -214,110 +223,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Libertador Hidalgo y Costilla, 1 · Sur, Córdoba"
-				title="Pan calentito <br /><em>y dulces de confitería.</em>"
-				lede={`Panadería Juani está en la calle Libertador Hidalgo y Costilla, 1, en el barrio Sur de Córdoba. En la fachada conviven el rótulo de Rico Pan, con el logotipo de Polvillo, y el de Confitería Juani. Hay pan del día, bollería y dulces, y una reseña de Google habla de los plazos de entrega. Abre de lunes a viernes de 7:30 a 15:00 y de 17:30 a 21:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={fachada}
-				imageAlt="Fachada de la Panadería Juani con los rótulos de Rico Pan y Confitería Juani y los escaparates"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,9</b> en Google · 23 reseñas' },
-					{ label: 'Horario', html: '<b>7:30–15:00</b> y 17:30–21:00' },
-					{ label: 'Domingo', html: '<b>8:00–14:00</b> también abierto' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollería · dulces"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en Juani" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Pan y confitería <br /><em>en el barrio Sur.</em>"
-				paragraphs={[
-					'Panadería Juani está en la calle Libertador Hidalgo y Costilla, 1, en el barrio Sur de Córdoba (14013). La fachada reúne dos rótulos: a un lado, Rico Pan, con el logotipo de Polvillo en el escaparate; al otro, Confitería Juani, con sus escaparates de dulces y productos.',
-					'En las fotos del perfil se ven las vitrinas de la confitería, las estanterías del interior y el cartel de Polvillo con un panadero y una cesta de panes: «Nuestro buen pan de cada día».',
-					'La ficha de Google la clasifica como panadería y le da 4,9 sobre 5 con 23 reseñas. Las reseñas hablan del pan y del trato: «Genial, buen pan y buen trato», «Muy buen pan y calentito tienen de todo».',
-					'Otra reseña menciona el reparto: «Cumplen los plazos de entrega, te lo notifican y muy buen trato personal». La ficha no publica teléfono, web, redes ni condiciones del reparto, así que las consultas y los encargos se hablan en el local.',
-				]}
-				note="La ficha de Google no publica carta ni precios. Esta página solo cuenta lo que muestran las fotos del perfil, lo que dicen los rótulos del local y lo que cuentan las reseñas."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Pan, dulces <br />
-							<em>y reparto.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que sale <br /><em>del horno.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día: de lunes a viernes la panadería vuelve a abrir por la tarde."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>a pie de calle.</em>"
-				description="Las dos fotos de la ficha de Google Maps: la fachada con los rótulos de Rico Pan y Confitería Juani, y el logotipo de Polvillo del escaparate."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el barrio <br /><em>Sur de Córdoba.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`,
-				]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Juani en la calle Libertador Hidalgo y Costilla, 1, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Juani · Barrio Sur"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Street View', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="La ficha de Google no publica teléfono ni web: las consultas y los encargos se hablan en el local. Indica acceso para sillas de ruedas, pero no aparcamiento adaptado; tampoco detalla el mostrador ni el aseo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

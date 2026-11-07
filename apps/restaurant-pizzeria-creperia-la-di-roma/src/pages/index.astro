@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurant-pizzeria-creperia-la-di-roma-apaisada-01.jpg';
@@ -144,6 +145,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-01.jpg": fachada,
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-02.jpg": pizzaJamon,
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-06.jpg": galette,
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-07.jpg": tabla,
+	"restaurant-pizzeria-creperia-la-di-roma-vertical-03.jpg": entrecot,
+	"restaurant-pizzeria-creperia-la-di-roma-vertical-10.jpg": pasta,
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-08.jpg": canelones,
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-04.jpg": ensalada,
+	"restaurant-pizzeria-creperia-la-di-roma-apaisada-09.jpg": postre,
+};
 ---
 
 <!doctype html>
@@ -213,119 +229,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. d’Encamp, 23 · El Pas de la Casa, AD200"
-				title="Pizza, crepes <br /><em>y montaña.</em>"
-				lede={`La Di Roma está en la Av. d’Encamp, 23, de El Pas de la Casa, el pueblo de esquí de la parroquia de Encamp. El rótulo de la fachada lo anuncia todo: restaurante, bar, pizzería y crepería, con fondues, raclette y tartiflette. Abre de 9:00 a 1:00 todos los días y Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={fachada}
-				imageAlt="La fachada de La Di Roma en la Av. d’Encamp, con el rótulo de restaurante bar pizzería crepería, la terraza de madera y la pizarra de precios"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:00–1:00</b> · todos los días' },
-					{ label: 'Cocina', html: '<b>Pizza y crepes</b> · fondues y tapas' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pas de la Casa · Andorra"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece La Di Roma" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Encamp, 23. <br /><em>Terraza y mantel.</em>"
-				paragraphs={[
-					'La Di Roma ocupa un bajo de la Av. d’Encamp, 23, la calle que sube hacia el centro de El Pas de la Casa, el núcleo andorrano pegado a la frontera francesa. La fachada es de madera, con una terraza de mesas y bancos en la acera, una pizarra de precios junto a la puerta y el rótulo que resume el negocio: «Restaurant Bar Pizzeria Creperie».',
-					'Debajo, el mismo rótulo anuncia «Fondues et raclette à volonté · Tartiflette · Tapas»: la cocina de montaña que se espera a 2.050 metros, junto a la pizza y las crepes que dan nombre a la casa. También se ve el cartel de «Take away».',
-					'En las fotos del perfil aparecen una pizza con dados de jamón, una galette de trigo sarraceno con huevo, jamón y queso, una tabla de embutidos con una cazuela de queso fundido, entrecots con patatas panadera, espaguetis con jamón, canelones gratinados y una tabla de postres con helado, nata y fresas.',
-					`El horario es de día entero y de madrugada: de 9:00 a 1:00, todos los días, sin día de cierre en la ficha. La valoración es de ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026).`,
-				]}
-				note="La ficha de Google no publica carta, precios ni si el reparto a domicilio existe. Lo que sí muestran sus fotos es la terraza y el cartel de «Take away». Para todo lo demás, llama al +376 855 516."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> La casa</p>
-					<h2 id="highlights-title">De la pizza <br /><em>a la fondue.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, la mesa <br /><em>y el postre.</em>"
-				description="Nueve fotografías del perfil de La Di Roma en Google Maps: la fachada con la terraza de madera, la pizza de jamón, la galette de trigo sarraceno, la tabla de embutidos con queso fundido, el entrecot, los espaguetis, los canelones gratinados, la ensalada con queso azul y la tabla de postres."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,0 sobre 5, <em>con 499 reseñas.</em></h2>
-						<p>
-							Cuatrocientas noventa y nueve opiniones y una media de 4,0 (consultada el 2 de
-							noviembre de 2026). Es un local muy transitado, en un pueblo de esquí y de compras:
-							la media recoge mesas muy buenas y otras que no lo fueron tanto.
-						</p>
-						<p>
-							Esta web no copia reseñas sueltas: para leerlas con sus fechas y sus respuestas, abre
-							la ficha en Google.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las 499 reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,0</strong>
-						<span>★★★★☆</span>
-						<small>499 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
-				title="En el Pas <br /><em>de la Casa.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} · Andorra`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 9:00 a 1:00 todos los días, de lunes a domingo. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Di Roma en la Av. d’Encamp, 23, El Pas de la Casa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Encamp, 23 · El Pas de la Casa"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Reservas y consultas por teléfono, en el +376 855 516: la ficha no publica reservas online ni pedidos por la web. En temporada de esquí el pueblo se llena, así que conviene llamar antes si vais en grupo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>subir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import terraza from '../assets/fotos/clapis-comida-italiana-teatinos-apaisada-01.jpg';
@@ -23,7 +24,18 @@ import carpaccio from '../assets/fotos/clapis-comida-italiana-teatinos-vertical-
 import carbonara from '../assets/fotos/clapis-comida-italiana-teatinos-vertical-09.jpg';
 import tortellini from '../assets/fotos/clapis-comida-italiana-teatinos-vertical-02.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Clapis · Comida italiana en Teatinos, Málaga';
 const description =
@@ -178,6 +190,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"clapis-comida-italiana-teatinos-apaisada-01.jpg": terraza,
+	"clapis-comida-italiana-teatinos-apaisada-10.jpg": mesa,
+	"clapis-comida-italiana-teatinos-vertical-04.jpg": pastas,
+	"clapis-comida-italiana-teatinos-apaisada-07.jpg": pizza,
+	"clapis-comida-italiana-teatinos-vertical-09.jpg": carbonara,
+	"clapis-comida-italiana-teatinos-vertical-02.jpg": tortellini,
+	"clapis-comida-italiana-teatinos-vertical-06.jpg": carpaccio,
+	"clapis-comida-italiana-teatinos-vertical-05.jpg": postre,
+	"clapis-comida-italiana-teatinos-vertical-03.jpg": interior,
+};
 ---
 
 <!doctype html>
@@ -247,137 +274,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Andrómeda, 15, Loc 3 · Teatinos, Málaga"
-				title="Pasta fresca <br /><em>y pizza italiana.</em>"
-				lede={`Clapis es una trattoria de Teatinos con la cocina a la vista y la terraza encendida hasta la noche. La ficha lo resume así: «Pasta fresca, auténtica pizza italiana y postres totalmente caseros e italianos». Abre al mediodía de martes a domingo y cena martes, miércoles, viernes y sábados. Tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={terraza}
-				imageAlt="La terraza nocturna de Clapis con mesas y sillas negras, luces y el cartel de Spritz, Pizza y Pasta Fresca"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>13:00–17:00</b> · y cenas 20:00–23:30' },
-					{ label: 'Cocina', html: '<b>Pasta fresca y pizza</b> · italiana' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pasta fresca · pizza italiana"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Clapis" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una trattoria <br /><em>en Teatinos.</em>"
-				paragraphs={[
-					'Clapis está en la calle Andrómeda, 15, local 3, en Teatinos. La terraza ocupa la acera con mesas negras y luces de cadena, y dentro la cocina se ve desde la sala: la pila de platos, el horno y la máquina de pasta.',
-					'La ficha de Google define la casa en una frase: «Pasta fresca, auténtica pizza italiana y postres totalmente caseros e italianos». Es una cocina italiana de barrio, con la pasta y la pizza como eje y los postres hechos en casa.',
-					'Las reseñas dejan los platos sobre la mesa: la pasta cacio e pepe, la carbonara, la pizza de quesos, la cuatro quesos con mermelada y las pizzas con prosciutto y crema de queso. En la galería aparecen además el carpaccio, la burrata, los tortellini y los postres de mascarpone.',
-					'Google le da 4,8 sobre 5 con 476 reseñas. Abre todos los mediodías de martes a domingo, de 13:00 a 17:00, y suma cenas de 20:00 a 23:30 los martes, miércoles, viernes y sábados. El lunes cierra.',
-				]}
-				note="La ficha no publica página web, carta ni precios. Los platos de esta página son los que nombran la descripción del negocio, las reseñas y las fotos de su perfil de Google. La carta y los precios se consultan en el local o por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se cocina</p>
-					<h2 id="highlights-title">Pasta, pizza <br /><em>y postres de casa.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="A la mesa <br /><em>italiana.</em>"
-				description="La ficha de Google no publica carta ni precios. Esto es lo que nombran la descripción del negocio y las reseñas, más los platos que aparecen en las fotos del local."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La ficha no publica precios. Los platos de esta lista son los que aparecen en la galería del perfil de Google del local, consultada en octubre de 2026, y los que nombran la descripción y las reseñas. La carta cambia: confírmala en el local o por teléfono."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza <br /><em>y la mesa.</em>"
-				description="Nueve fotografías del perfil de Clapis en Google Maps: la terraza, el interior, las pizzas, las pastas, el carpaccio, los postres y una mesa llena de platos."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,8 sobre 5, <em>con 476 reseñas.</em></h2>
-						<p>
-							La valoración que publica Google en octubre de 2026 es de 4,8 con 476 opiniones. Las
-							reseñas destacadas hablan de la pasta, de las pizzas y de los postres; aquí se
-							reproducen tal como aparecen en la ficha.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,8</strong>
-						<span>★★★★★</span>
-						<small>476 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
-				title="En Teatinos, <br /><em>calle Andrómeda.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: mediodía de martes a domingo, de 13:00 a 17:00, y cenas de 20:00 a 23:30 los martes, miércoles, viernes y sábados. Lunes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Clapis en la calle Andrómeda, 15, local 3, Teatinos, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. Andrómeda, 15, Loc 3 · Teatinos"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Reservas y consultas por teléfono: la ficha no publica reservas online. Google marca el acceso para sillas de ruedas y el aseo adaptado, pero no publica datos sobre aparcamiento adaptado ni asientos adaptados."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

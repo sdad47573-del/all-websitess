@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import mostrador from '../assets/fotos/panaderia-horno-la-molina-apaisada-10.jpg';
@@ -137,6 +138,18 @@ const galeria = [
 		alt: 'Carta de smoothies naturales de La Molina, con combinaciones de fruta',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-horno-la-molina-apaisada-10.jpg": mostrador,
+	"panaderia-horno-la-molina-vertical-01.jpg": fachada,
+	"panaderia-horno-la-molina-apaisada-04.jpg": vitrina,
+	"panaderia-horno-la-molina-vertical-08.jpg": tartas,
+	"panaderia-horno-la-molina-vertical-05.jpg": cafe,
+	"panaderia-horno-la-molina-vertical-09.jpg": smoothies,
+};
 ---
 
 <!doctype html>
@@ -198,106 +211,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Levante · 14007 Córdoba"
-				title="Pan, bollos <br /><em>y pastelería de siempre.</em>"
-				lede={`La Molina está en la Avenida del 28 de Febrero, 34, en Levante, con el rótulo «Horno La Molina» y el dibujo del molino sobre la puerta. Dentro hay un mostrador con cestas y bolsas de pan, un expositor de bollos y una vitrina de tartas y pasteles. También hay mesas para tomar café y una carta de smoothies naturales. Abre todos los días de 7:00 a 19:00. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={mostrador}
-				imageAlt="Mostrador de Horno La Molina con cestas de pan, bandejas de bollos y panes en bolsas"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 322 reseñas' },
-					{ label: 'Horario', html: '<b>Todos los días</b> 7:00–19:00' },
-					{ label: 'Zona', html: '<b>Levante</b> · 14007' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Pan · bollos · pastelería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que hay en La Molina" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un obrador <br /><em>de barrio.</em>"
-				paragraphs={[
-					'La Molina está en la Avenida del 28 de Febrero, 34, en Levante (14007 Córdoba). El rótulo de la fachada dice «Horno La Molina», con el dibujo de un molino, y el escaparate enseña las bolsas de pan.',
-					'Dentro, el local tiene mostrador de mármol con cestas de pan y bandejas de bollos, un expositor con panes en bolsas y una vitrina de tartas y pasteles: bizcochos, tartas de chocolate y de nata, pasteles de yema y hojaldres.',
-					'También hay mesas para sentarse. En las fotos del perfil se ve un café con leche con un bollo espolvoreado de azúcar, y la carta de smoothies naturales «hechos al momento», con combinaciones de fruta.',
-					'Las reseñas lo describen como «obrador tradicional, con pan y pastelería de siempre y con trato exquisito», y destacan «los bollos más grandes de pan de telera para bocadillo». Abre todos los días de 7:00 a 19:00.',
-				]}
-				note="La ficha de Google publica la categoría, la dirección, el teléfono y el horario, pero no carta ni precios. La carta de smoothies que aparece en las fotos lleva importes, pero cambian, así que esta web no los repite."
-				links={[
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-					{ label: 'Llamar al 957 43 32 69', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow">
-							<span aria-hidden="true"></span> Tres cosas de la casa
-						</p>
-						<h2 id="three-title">
-							Obrador, <br />
-							<em>vitrina y mesas.</em>
-						</h2>
-					</div>
-					<div class="three-grid">
-						{HIGHLIGHTS.map((item, index) => (
-							<article class="three-card">
-								<span class="three-num" aria-hidden="true">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3>{item.title}</h3>
-								<p>{item.text}</p>
-							</article>
-						))}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Sin carta ni precios publicados: esto es lo que muestran las fotos del local y lo que cuentan las reseñas de Google."
-				cta={{ label: 'Ver la ficha en Google', href: MAPS.place }}
-				groups={MENU_GROUPS}
-				note="La ficha no publica precios ni métodos de pago, así que esta web no indica importes. El surtido de la vitrina cambia a lo largo del día: el obrador abre a las 7:00."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La casa, <br /><em>por dentro.</em>"
-				description="Cinco fotos de la ficha de Google Maps: la fachada, la vitrina, las tartas, el café y la carta de smoothies."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
-				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la Avenida <br /><em>del 28 de Febrero.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería Horno La Molina en la Avenida del 28 de Febrero, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Horno La Molina · Levante"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-				]}
-				contactLink={{ label: 'Abrir en Google Maps ↗', href: MAPS.place, external: true }}
-				reserveNote="El teléfono de la ficha es el 957 43 32 69. No publica web propia ni redes. Indica acceso para sillas de ruedas y que no hay aparcamiento adaptado; no informa sobre el mostrador ni el aseo. Para tartas o encargos, conviene llamar con antelación."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

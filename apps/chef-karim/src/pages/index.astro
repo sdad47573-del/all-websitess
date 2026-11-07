@@ -10,11 +10,19 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import postre from '../assets/fotos/chef-karim-apaisada-01.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Chef Karim · Comida a domicilio y para llevar en Sevilla';
 const description = BUSINESS.description;
@@ -97,6 +105,13 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"chef-karim-apaisada-01.jpg": postre,
+};
 ---
 
 <!doctype html>
@@ -154,75 +169,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Comida a domicilio <br /><em>y para llevar.</em>"
-				lede="En la calle Beatriz de Suabia 77, una cocina de reparto y recogida: comida española, platos del día y raciones que se piden por teléfono. Abre de lunes a sábado con dos turnos y el domingo continuo, y tiene 5 sobre 5 en Google, aunque solo con 2 reseñas."
-				image={postre}
-				imageAlt="Rollo de pasta frita espolvoreado con azúcar glas junto a una crema en un plato blanco"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>5,0</b> en Google · 2 reseñas' },
-					{ label: 'Horario', html: '<b>9:30–15:30</b><br />Y 16:30–22:30, de lunes a sábado' },
-					{ label: 'Teléfono', html: `<b>664 65 93 96</b> pedidos y consultas` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la ficha"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Chef Karim" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Cocina española <br /><em>a tu puerta.</em>"
-				paragraphs={[
-					'Chef Karim está en la calle Beatriz de Suabia 77, en el 41005, con el reparto y la comida para llevar como eje. La ficha de Google lo clasifica como restaurante de cocina española, comida rápida, comida para llevar y comida a domicilio.',
-					'No hay carta publicada ni descripción de los platos en la ficha. En la única foto del perfil aparece un postre: un rollo de pasta frita espolvoreado con azúcar glas, con una crema al lado. Todo lo demás hay que preguntarlo por teléfono.',
-					'Las reseñas son solo dos, ambas de cinco estrellas: «qué platos más ricos» y «excelente chef, lleno de mucho talento y calidad humana, lo recomiendo». Es una muestra pequeña, pero deja claro el tono de la casa.',
-					'El horario es amplio: de lunes a sábado, dos turnos de 9:30 a 15:30 y de 16:30 a 22:30; el domingo, continuo de 10:00 a 22:30. En festivos puede cambiar.',
-				]}
-				note="La información sale de la ficha pública de Google Maps y de la foto del perfil del establecimiento. La ficha no publica carta ni precios: confirma platos, precios y zona de reparto por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver la casa en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Del teléfono <br /><em>a la mesa.</em>"
-				description="La ficha no publica carta ni precios. Esta lista recoge las categorías con las que figura en Google y el formato de la casa: cocina española, platos del día, raciones para llevar y reparto."
-				cta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note="No hay carta oficial publicada ni precios del local, así que esta lista es orientativa: sirve para saber cómo funciona la casa, no para cerrar una cuenta. Para conocer los platos de hoy y el precio, llama al chef."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a <br /><em>Beatriz de Suabia.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Sevilla, España',
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: de lunes a sábado, de 9:30 a 15:30 y de 16:30 a 22:30; el domingo, de 10:00 a 22:30. En festivos puede cambiar; la ficha avisa, por ejemplo, del día de Todos los Santos."
-				mapTitle="Mapa de Chef Karim en la calle Beatriz de Suabia 77, Sevilla"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Beatriz de Suabia, 77 · Sevilla"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. Para pedir a domicilio o encargar para recoger, llama al teléfono del chef y confirma zona, importe y hora de entrega."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

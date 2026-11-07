@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/ilia-comida-para-llevar-vertical-01.jpg';
@@ -173,6 +174,22 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"ilia-comida-para-llevar-apaisada-04.jpg": paella,
+	"ilia-comida-para-llevar-vertical-01.jpg": fachada,
+	"ilia-comida-para-llevar-vertical-03.jpg": arroz,
+	"ilia-comida-para-llevar-apaisada-07.jpg": lentejas,
+	"ilia-comida-para-llevar-vertical-02.jpg": tartaQueso,
+	"ilia-comida-para-llevar-apaisada-08.jpg": vitrina,
+	"ilia-comida-para-llevar-apaisada-06.jpg": interior,
+	"ilia-comida-para-llevar-apaisada-09.jpg": mostrador,
+	"ilia-comida-para-llevar-vertical-05.jpg": tartaSofia,
+	"ilia-comida-para-llevar-vertical-10.jpg": arrozOtra,
+};
 ---
 
 <!doctype html>
@@ -242,136 +259,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Calle Aragón, 11 · Orihuela (Alicante)"
-				title="Cocina casera, <br /><em>para llevar a casa.</em>"
-				lede={`ILIA es un local de comida para llevar en la Calle Aragón de Orihuela: arroces en su tarrina, guisos de cuchara como las lentejas con chorizo, y postres que las reseñas no se cansan de elogiar. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, y abre de 10:00 a 15:30 con el martes cerrado.`}
-				image={paella}
-				imageAlt="Una paella grande recién hecha en su paellera, en la cocina de ILIA"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00–15:30</b> · martes cerrado' },
-					{ label: 'Servicio', html: '<b>Para llevar</b> · solo a mediodía' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Comida casera"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece ILIA" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Calle Aragón, 11. <br /><em>El expositor y la olla.</em>"
-				paragraphs={[
-					'ILIA está en la Calle Aragón, 11, en Orihuela. La ficha de Google sitúa el local en las coordenadas 38.0816933, -0.949617. La fachada es de paneles grises, con el rótulo de la olla y el nombre en letras naranjas y el subtítulo de «comidas para llevar»; en la acera se colocan pizarras con lo que hay ese día y el escaparate se llena de carteles de menús.',
-					'Dentro hay un mostrador blanco y un expositor refrigerado con tápers y bandejas alineadas: guisos, arroces y postres. Al fondo, una zona de espera con pufs blancos, plantas y un ventanal a la calle. No hay mesas: se entra, se elige del expositor (o se encarga) y se sale con la bolsa.',
-					'En las fotos del perfil aparece la cocina trabajando: una paella grande en su paellera, tarrinas de arroz amarillo con carne y una tarrina de lentejas con chorizo. Y los postres, que son su otra fama: una tarta de queso cubierta de chocolate blanco y Kinder y tartas personalizadas con nombre y decoración para cumpleaños.',
-					`Las reseñas lo confirman: «se nota el cariño en cada plato, ingredientes de primera y sabor inigualable», «súper bien de precio, muy buenas raciones… ¡los postres increíbles!». La media es de ${RATING.label} sobre 5 con ${RATING.count} reseñas (noviembre de 2026). Se atiende en el ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica carta ni precios. Lo que aparece en esta página es lo que citan las reseñas y lo que se reconoce en las fotos del perfil; confirma platos, precios y encargos por teléfono."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> De la olla a la tarrina</p>
-					<h2 id="highlights-title">Guisos, arroces <br /><em>y postres.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La comida"
-				title="Lo que sale <br /><em>del expositor.</em>"
-				description="Sin carta publicada: esta lista reúne lo que citan las reseñas de la ficha (lentejas con chorizo, tallarines con trufa, raciones y postres) y los platos que se reconocen en las fotos del perfil."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`Sin precios publicados. Llama al ${BUSINESS.phone} para saber qué hay ese día, cuánto cuesta la ración y con cuánta antelación hay que encargar la paella o una tarta.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada, el expositor <br /><em>y los postres.</em>"
-				description="Nueve fotografías del perfil de ILIA: la fachada con el rótulo y las pizarras, el expositor con los tápers, la zona de espera, la paella, el arroz amarillo con carne, las lentejas con chorizo y las tartas."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">5,0 sobre 5, <em>con 86 reseñas.</em></h2>
-						<p>
-							Google publica una media de 5,0 con 86 opiniones (noviembre de 2026), una de las
-							notas más altas de la zona. Las reseñas que se ven hablan del cariño en los platos,
-							de los ingredientes, del precio y de los postres.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span>
-											<small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>5,0</strong>
-						<span>★★★★★</span>
-						<small>86 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Orihuela, <br /><em>calle Aragón.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city} (Alicante)`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 10:00 a 15:30 de lunes a domingo, con el martes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de ILIA comida para llevar en la Calle Aragón, 11, Orihuela"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Calle Aragón, 11 · Orihuela"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Los pedidos se hacen por teléfono o en el mostrador: la ficha no enlaza una web del local ni un sistema de pedidos online, y tampoco anuncia reparto a domicilio. Para arroces grandes o tartas personalizadas, avisa con tiempo."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir a por la comida.</em>" />
 		</main>
 
 		<LocalFooter

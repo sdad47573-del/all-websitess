@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/restaurante-sos-apaisada-01.jpg';
@@ -24,7 +25,15 @@ import entrecot from '../assets/fotos/restaurante-sos-vertical-08.jpg';
 import chillout from '../assets/fotos/restaurante-sos-apaisada-09.jpg';
 import comedor from '../assets/fotos/restaurante-sos-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const description =
 	'Restaurante SOS, en Carrer des Munt Aconcagua (07849 Cala Llonga, Ibiza). Cocina mediterránea, pescado fresco, arroces y terraza frente al mar. Tel. 971 19 64 60.';
@@ -172,6 +181,22 @@ const nav = [
 ];
 
 const title = 'SOS · Restaurante mediterráneo en Cala Llonga';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-sos-apaisada-01.jpg": fachada,
+	"restaurante-sos-vertical-04.jpg": arroz,
+	"restaurante-sos-vista-6-06.jpg": arrozMesa,
+	"restaurante-sos-vertical-03.jpg": bogavantePasta,
+	"restaurante-sos-cuadrada-05.jpg": bogavanteGuiso,
+	"restaurante-sos-apaisada-02.jpg": pescadoSal,
+	"restaurante-sos-apaisada-07.jpg": mariscada,
+	"restaurante-sos-vertical-08.jpg": entrecot,
+	"restaurante-sos-apaisada-10.jpg": comedor,
+	"restaurante-sos-apaisada-09.jpg": chillout,
+};
 ---
 
 <!doctype html>
@@ -229,81 +254,19 @@ const title = 'SOS · Restaurante mediterráneo en Cala Llonga';
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer des Munt Aconcagua · Cala Llonga"
-				title="Frente al mar<br /><em>de Cala Llonga.</em>"
-				lede={`SOS es un restaurante mediterráneo en Carrer des Munt Aconcagua, en Cala Llonga (Santa Eulària des Riu, Ibiza), en primera línea de playa. Cocina saludable con productos locales, pescado fresco del día, arroces y opciones healthy, con terraza y vistas a la cala para desayunos, comidas, cenas y atardeceres. Abre todos los días de 12:30 a 23:00, salvo el martes. Teléfono: ${BUSINESS.phoneDisplay}.`}
-				image={fachada}
-				imageAlt="Fachada blanca de Restaurante SOS en Cala Llonga, con el rótulo RESTAURANTE, el logo SOS y palmeras alrededor"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
-					{ label: 'Cocina', html: 'Mediterránea · pescado fresco y arroces' },
-					{ label: 'Horario', html: 'Todos los días · 12:30–23:00 · martes cerrado' },
-				]}
-				galleryHref={MAPS.place}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Qué ofrece Restaurante SOS" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Mediterráneo<br /><em>en primera línea.</em>"
-				paragraphs={[
-					'SOS está en Carrer des Munt Aconcagua, en Cala Llonga (Santa Eulària des Riu, Ibiza), en primera línea de playa. Google lo clasifica como restaurante y restaurante mediterráneo. La casa es blanca y luminosa, con el rótulo «RESTAURANTE» sobre la fachada y el logo SOS en madera; alrededor, palmeras y el pinar de la cala.',
-					'La ficha del negocio lo cuenta así: «ofrecemos cocina mediterránea saludable con productos locales, pescado fresco del día, arroces y opciones healthy». La terraza, con vistas a Cala Llonga, sirve desayunos, comidas, cenas y atardeceres. Abre todos los días de 12:30 a 23:00; el martes cierra.',
-					'Dentro, el comedor tiene vigas de madera, plantas colgantes, mesas de madera y sillas de mimbre, con la barra al fondo. En las fotos del perfil aparecen la paella de marisco, el arroz de marisco, el bogavante con espaguetis, el bogavante guisado, la mariscada, el pescado a la sal y el entrecot, además de un rincón chill-out con sofás y silla colgante.',
-					'Sus reseñas hablan de la comida y del trato: «los camareros amabilísimos, pedimos el arroz de marisco y riquísimo», «las mejores almejas que he comido hace tiempo, la sangría de cava buenísima» y «todo buenísimo, bien atendido y raciones contundentes». Google le da 4,7 sobre 5 con 900 reseñas.',
-				]}
-				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[2]}»`}
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Arroces, marisco<br /><em>y pescado del día.</em>"
-				description="La ficha de Google no publica carta ni precios: esto es lo que citan sus reseñas, lo que cuenta la descripción del negocio y lo que aparece en las fotos del perfil."
-				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="No hay precios publicados. Llama al 971 19 64 60 para reservar mesa o preguntar por el pescado del día y los arroces."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza,<br /><em>la mesa y el mar.</em>"
-				description="Estas fotografías proceden del perfil de Restaurante SOS en Google Maps: la fachada, el comedor, el rincón chill-out de la terraza, la paella y el arroz de marisco, el bogavante, la mariscada, el pescado a la sal y el entrecot."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Te esperamos<br /><em>en Cala Llonga.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					`${BUSINESS.regionName}, España`,
-				]}
-				hours={HOURS}
-				hoursNote="Horario de la ficha de Google: todos los días de 12:30 a 23:00; martes cerrado. Para mesas en la terraza conviene llamar antes."
-				mapTitle="Mapa de Restaurante SOS en Carrer des Munt Aconcagua, Cala Llonga (Ibiza)"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="SOS · Cala Llonga"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reserva online: se llama al 971 19 64 60. La ficha de Google marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados."
-			/>
-
-			<LocalFaq items={FAQ} />
 		</main>
 
 		<LocalFooter

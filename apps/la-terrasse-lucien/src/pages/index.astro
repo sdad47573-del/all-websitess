@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import portada from '../assets/fotos/la-terrasse-lucien-vista-1-01.jpg';
@@ -116,6 +117,22 @@ const faqSchema = {
 		acceptedAnswer: { '@type': 'Answer', text: item.a },
 	})),
 };
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-terrasse-lucien-vista-1-01.jpg": portada,
+	"la-terrasse-lucien-vertical-05.jpg": interior,
+	"la-terrasse-lucien-apaisada-06.jpg": ensalada,
+	"la-terrasse-lucien-vertical-02.jpg": pizza,
+	"la-terrasse-lucien-vertical-03.jpg": pescado,
+	"la-terrasse-lucien-vertical-04.jpg": carta,
+	"la-terrasse-lucien-vertical-07.jpg": paella,
+	"la-terrasse-lucien-vertical-08.jpg": pizzaTerraza,
+	"la-terrasse-lucien-vertical-09.jpg": fritura,
+	"la-terrasse-lucien-vertical-10.jpg": ensaladaPollo,
+};
 ---
 
 <!doctype html>
@@ -185,72 +202,19 @@ const faqSchema = {
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. d'Encamp, 25 · Pas de la Casa"
-				title="La Terrasse <br /><em>Lucien.</em>"
-				lede={`Restaurante francés en la Av. d'Encamp, en Pas de la Casa (AD200). Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre todos los días de 10:00 a 22:00.`}
-				image={portada}
-				imageAlt="La terraza de La Terrasse Lucien vista desde la calle, con sombrillas rojas y clientes sentados"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00–22:00</b> · todos los días' },
-					{ label: 'Cocina', html: '<b>Francesa</b> · según Google' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Restaurante francés · Pas de la Casa"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que sabemos de La Terrasse Lucien" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Av. d'Encamp, 25. <br /><em>Pas de la Casa.</em>"
-				paragraphs={[
-					"La Terrasse Lucien está en la Av. d'Encamp, 25, en Pas de la Casa, en la zona de esquí y tiendas de la parroquia de Encamp. Tiene terraza a la calle y un comedor de madera con ventanales y lámparas rojas.",
-					'Google la clasifica como «Restaurante francés» y «Restaurante». En su perfil aparecen fotos de burgers, fondue y raclette, pescados, carnes, paella, pizzas y ensaladas, además de menús del día y menú infantil.',
-					`La ficha reúne ${RATING.count} reseñas con una media de ${RATING.label} sobre 5. Abre todos los días de 10:00 a 22:00 y Google marca el acceso para sillas de ruedas.`,
-				]}
-				note="La ficha de Google no publica precios ni una carta oficial. Para la carta y los precios actuales, llama al local o consulta la ficha."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La terraza, <br /><em>la sala y la cocina.</em>"
-				description="Diez fotografías del perfil de La Terrasse Lucien en Google Maps: la terraza, el comedor, ensaladas, pizzas, pescado, paella, la carta y los platos de la temporada."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Pas de la Casa <br /><em>a pie de calle.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.city, `${BUSINESS.postalCode} · Andorra`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: todos los días de 10:00 a 22:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de La Terrasse Lucien en la Av. d'Encamp, 25, Pas de la Casa"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Av. d'Encamp, 25 · Pas de la Casa"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Consultas y reservas por teléfono, en el +376 856 528. Esta web no gestiona reservas ni pedidos."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>ir.</em>" />
 		</main>
 
 		<LocalFooter

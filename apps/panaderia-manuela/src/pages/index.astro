@@ -8,9 +8,18 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Panadería Manuela Martín Vargas · Plaza de Vista Alegre, Córdoba';
 const description =
@@ -75,6 +84,13 @@ const nav = [
 	{ label: 'Dónde', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+
+};
 ---
 
 <!doctype html>
@@ -133,123 +149,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
-				<p class="eyebrow"><span aria-hidden="true"></span> Pl. de Vista Alegre, 1 · Poniente Sur</p>
-				<h1 id="hero-title">Panadería <em>Manuela Martín Vargas</em></h1>
-				<p class="hero-sub">Panadería · 14004 Córdoba</p>
-				<p class="hero-lede">
-					Una panadería de plaza en el barrio de Poniente Sur, con el nombre de su
-					panadera en el rótulo. Su teléfono es el 957 27 38 03. La ficha de Google no
-					publica horario ni fotos del local: aquí encontrarás los datos que sí constan,
-					sin rellenar los huecos. {BUSINESS.rating.toString().replace('.', ',')} sobre 5
-					con {BUSINESS.reviewsCount} reseña en Google.
-				</p>
-				<div class="hero-actions">
-					<a class="button button-primary" href={BUSINESS.phoneHref}>
-						Llamar al 957 27 38 03
-					</a>
-					<a class="button button-ghost" href={MAPS.directions}>
-						Cómo llegar <span aria-hidden="true">↗</span>
-					</a>
-				</div>
-				<ul class="hero-facts">
-					<li>
-						<span>Dirección</span>
-						<b>{BUSINESS.street}</b>
-						{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}
-					</li>
-					<li>
-						<span>Teléfono</span>
-						<b>{BUSINESS.phone}</b>
-						Atención en el local
-					</li>
-					<li>
-						<span>Horario</span>
-						<b>No publicado</b>
-						En la ficha de Google
-					</li>
-				</ul>
-			</section>
-
-			<LocalChips label="Lo que consta en la ficha" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un nombre propio <br /><em>en la plaza.</em>"
-				paragraphs={[
-					'La ficha de Google la registra como «Panadería Manuela Martín Vargas», con una sola categoría: «Panadería». No hay nombre comercial de fantasía ni eslogan: es el nombre de la panadera el que identifica el negocio.',
-					'Está en el número 1 de la plaza de Vista Alegre, en el barrio de Poniente Sur (14004 Córdoba). Es una esquina de plaza con arbolado, de las que se cruzan a diario los vecinos de la zona, y el mapa de esta página abre el punto exacto que da Google.',
-					'La ficha publica un teléfono, el 957 27 38 03, y nada más: ni descripción, ni carta, ni precios, ni web propia. Tampoco publica horario, así que esta web no lo inventa; para saber si está abierta hay que llamar o acercarse.',
-					'La ficha tampoco tiene fotos. Google solo muestra una referencia de Street View de la plaza, que no es una imagen del obrador ni del mostrador. Por eso la portada es tipográfica: no se usan fotos de otras panaderías para aparentar lo que aquí no hay.',
-				]}
-				note={`La media de Google es 3,0 sobre 5 con una única reseña. Con una sola opinión, el número no describe el negocio; esta página lo recoge tal cual y remite al teléfono ${BUSINESS.phone} para cualquier duda práctica.`}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas que sí constan</p>
-						<h2 id="three-title">El nombre, la plaza <br /><em>y el teléfono.</em></h2>
-					</div>
-					<div class="three-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="three-card">
-									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<section class="rating-band" aria-labelledby="rating-title">
-				<div class="wrap rating-inner">
-					<div class="rating-score">
-						<strong>3,0</strong>
-						<div>
-							<span class="rating-stars" role="img" aria-label="3 de 5 estrellas">3 / 5</span>
-							<p id="rating-title" style="margin:0;font-size:.75rem">1 reseña en Google Maps</p>
-						</div>
-					</div>
-					<p class="rating-copy">
-						Una sola reseña, con una media de 3,0 sobre 5. No es una muestra
-						representativa y esta página no la usa para recomendar nada: la opinión
-						completa se lee en Google.
-					</p>
-					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Ver la reseña en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la plaza, <br /><em>sin horario publicado.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Panadería Manuela Martín Vargas en la plaza de Vista Alegre, 1, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Manuela Martín Vargas · Poniente Sur"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Llamar', href: BUSINESS.phoneHref, variant: 'primary' },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google no publica horario, carta, precios ni web propia, y solo indica que no hay aparcamiento adaptado. Esta página no gestiona pedidos ni encargos: se resuelven por teléfono o en el mostrador."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import tajinPollo from '../assets/fotos/maison-tanger-vertical-02.jpg';
@@ -24,7 +25,15 @@ import fachadaDos from '../assets/fotos/maison-tanger-vertical-05.jpg';
 import comedor from '../assets/fotos/maison-tanger-vertical-08.jpg';
 import rotulo from '../assets/fotos/maison-tanger-vertical-07.jpg';
 
-import { BUSINESS, FAQ, HORARIO, HORARIO_AVISO, MAPS, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Maison Tánger · Restaurante marroquí en Ciudad Real';
 const description = BUSINESS.description;
@@ -176,6 +185,22 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"maison-tanger-vertical-02.jpg": tajinPollo,
+	"maison-tanger-vista-4-04.jpg": dosTajines,
+	"maison-tanger-vertical-10.jpg": cuscus,
+	"maison-tanger-vertical-09.jpg": desayuno,
+	"maison-tanger-vertical-03.jpg": bandejaDulces,
+	"maison-tanger-apaisada-06.jpg": pastas,
+	"maison-tanger-vertical-01.jpg": fachada,
+	"maison-tanger-vertical-05.jpg": fachadaDos,
+	"maison-tanger-vertical-08.jpg": comedor,
+	"maison-tanger-vertical-07.jpg": rotulo,
+};
 ---
 
 <!doctype html>
@@ -233,111 +258,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="La cocina <br /><em>de Tánger.</em>"
-				lede="Maison Tánger es un restaurante marroquí en la calle Quevedo, 18, en Ciudad Real: tajines de barro cocidos despacio, pastela de pollo, cuscús con pasas y garbanzos, pan casero y dulces de la casa. Abre de 9:00 a 16:00 y de 19:00 a 23:00, con los domingos solo de mediodía. Pedidos y consultas en el 926 72 20 22."
-				image={tajinPollo}
-				imageAlt="Tajín de pollo con patatas y zanahoria en cazuela de barro, con la tapa levantada y la tetera al fondo"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>5,0</b> en Google · 21 reseñas' },
-					{ label: 'Horario', html: '<b>9:00–16:00</b><br />y 19:00–23:00 · domingo solo mediodía' },
-					{ label: 'Pedidos', html: `<b>${BUSINESS.phone}</b> para comer allí o llevar` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Maison Tánger" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Barro, azafrán <br /><em>y pan caliente.</em>"
-				paragraphs={[
-					'El local está en la calle Quevedo, 18, en Ciudad Real, con un rótulo negro y dorado que anuncia «Maison Tánger · Cafetería & Restaurante» sobre una fachada de cal y zócalo de piedra. Dentro, mesas de madera, sillas negras y un comedor sencillo donde el olor sale de los tajines.',
-					'La ficha de Google lo clasifica como restaurante marroquí. En las fotos de su perfil aparecen los tajines de barro con patatas y zanahoria, el cuscús con garbanzos y pasas, el pan casero en cestas, los cuernos de gacela y demás pastas de sésamo, y los crepes y buñuelos de la parte de cafetería.',
-					'Abre de 9:00 a 16:00 y de 19:00 a 23:00 de lunes a sábado; los domingos solo de 9:00 a 16:00. La propia ficha avisa de que en el Día de Todos los Santos el horario podría ser distinto.',
-					'La ficha tiene 21 reseñas y una media de 5 sobre 5. Las tres que Google destaca elogian la pastela de pollo, los precios y los tajines de pollo y de kofta, que una de ellas pide para llevar.',
-				]}
-				note="La ficha de Google no publica carta ni precios y esta web no inventa importes: los platos que se nombran salen de las reseñas destacadas y de las fotos del propio perfil del local."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver el local en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Tajín, pastela <br /><em>y cuscús.</em>"
-				description="Lo que se ve en la mesa y en el mostrador del local: los tajines de barro, la pastela de pollo, el cuscús y los dulces de sésamo. Sin precios publicados."
-				cta={{ label: 'Ver las fotos en Google Maps', href: MAPS.place }}
-				groups={carta}
-				note="Esta lista sale de las reseñas que Google destaca y de las fotografías del perfil del establecimiento. No hay carta con precios publicada: el surtido del día se pregunta en el local o en el 926 72 20 22."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="resenas-title">
-				<div class="wrap">
-					<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
-					<div class="reviews-head">
-						<h2 id="resenas-title">Cinco sobre <br /><em>cinco.</em></h2>
-						<p>
-							La ficha tiene 21 reseñas y una media de 5. Estas son las tres que Google destaca, todas
-							de cinco estrellas, con la puntuación que les dio su autor.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							RESENAS.map((review) => (
-								<figure class="review-card">
-									<p class="review-stars" aria-label={`${review.rating} sobre 5`}>
-										{'★'.repeat(review.rating)}
-										<span aria-hidden="true">{'★'.repeat(5 - review.rating)}</span>
-									</p>
-									<blockquote>{review.quote}</blockquote>
-									<figcaption>Reseña publicada en Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<p class="review-note">
-						Citas de las reseñas públicas del local, con la puntuación del autor. En la ficha de Google
-						están todas, incluidas las que puntúan por debajo.
-					</p>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="De la mesa <br /><em>al mostrador.</em>"
-				description="Diez fotos del perfil del local: el tajín de pollo, dos tajines con pan casero, el cuscús, los crepes del desayuno, las bandejas de pastas marroquíes, la fachada y el comedor."
-				images={galeria}
-				cta={{ label: 'Ver todas en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="Comida <br /><em>y cena.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Ciudad Real · España']}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={HORARIO_AVISO}
-				mapTitle="Mapa de Maison Tánger en la calle Quevedo, 18, Ciudad Real"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Maison Tánger"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Pedidos: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="Se puede comer en el local o pedir para llevar: una de las reseñas destacadas cuenta que encargaron tajín de pollo y de kofta para llevar. Las reservas y los encargos se hablan en el 926 72 20 22; esta página no tramita pedidos ni cobros."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

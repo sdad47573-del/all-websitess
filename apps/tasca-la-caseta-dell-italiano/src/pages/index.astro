@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import heroImage from '../assets/fotos/tasca-la-caseta-dell-italiano-apaisada-06.jpg';
@@ -272,7 +273,38 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
----
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"tasca-la-caseta-dell-italiano-apaisada-06.jpg": heroImage,
+	"tasca-la-caseta-dell-italiano-cuadrada-01.jpg": interior,
+	"tasca-la-caseta-dell-italiano-apaisada-05.jpg": carbonara,
+	"tasca-la-caseta-dell-italiano-apaisada-03.jpg": tagliatelle,
+	"tasca-la-caseta-dell-italiano-apaisada-10.jpg": penne,
+	"tasca-la-caseta-dell-italiano-vertical-07.jpg": tabla,
+	"tasca-la-caseta-dell-italiano-vertical-08.jpg": antipasto,
+	"tasca-la-caseta-dell-italiano-apaisada-04.jpg": tostas,
+	"tasca-la-caseta-dell-italiano-vertical-09.jpg": tiramisu,
+	"tasca-la-caseta-dell-italiano-vertical-02.jpg": pistacho,
+};
+
+const horas = [
+					{ day: 'Lunes', value: 'Cerrado', closed: true },
+					{ day: 'Martes', value: 'Cerrado', closed: true },
+					{ day: 'Miércoles', value: '13:30 – 16:00 · 20:00 – 23:00' },
+					{ day: 'Jueves', value: '13:00 – 16:00 · 20:00 – 23:00' },
+					{ day: 'Viernes', value: '13:30 – 16:00 · 20:00 – 23:30' },
+					{ day: 'Sábado', value: '13:30 – 16:00 · 20:00 – 23:30' },
+					{ day: 'Domingo', value: '13:30 – 16:00 · 20:00 – 23:00' },
+				];
+const mapasPagina = {
+	place: cidUrl,
+	directions: cidUrl,
+	streetView: cidUrl,
+	embed: mapEmbedUrl,
+};---
 
 <!doctype html>
 <html lang="es">
@@ -326,90 +358,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Carrer de Navarra · Castelló"
-				title="Pasta fresca,<br />antipasti<br /><em>y ninguna pizza.</em>"
-				lede="La Caseta dell'Italiano es una trattoria italiana en el Carrer de Navarra, 15, en el centro de Castelló de la Plana. Pasta hecha cada día, antipasti para compartir, pulpo a la brasa y dolci caseros como el tiramisú. Aquí no hay pizza, y lo avisan desde el nombre."
-				image={heroImage}
-				imageAlt="Tagliolini neri con marisco servidos en La Caseta dell'Italiano, Castelló de la Plana"
-				primaryCta={{ label: 'Llamar 641 32 07 47', href: phoneHref }}
-				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: mapsUrl, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,8</b> en Google (2.451 reseñas)' },
-					{ label: 'Cocina', html: 'Trattoria italiana' },
-					{ label: 'Horario', html: 'Comidas y cenas, miércoles a domingo' },
-					{ label: 'Aviso', html: 'No trabajamos con pizza' },
-				]}
-				galleryHref={mapsUrl}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: business.name,
+					street: business.street,
+					district: business.district ?? '',
+					postalCode: business.postalCode,
+					city: business.city,
+				}}
+								horario={horas}
+								mapas={mapasPagina}
 			/>
-
-			<LocalChips label="Qué ofrece La Caseta dell'Italiano" items={servicios} />
-
-			<LocalAbout
-				label="Una trattoria de barrio en el centro"
-				title="Madera, mantel<br />de cuadros<br /><em>y pasta al dente.</em>"
-				paragraphs={[
-					"Tasca La Caseta dell'Italiano ocupa un local de madera y manteles de cuadros a pocos metros del centro de Castelló de la Plana. En las paredes conviven el póster de Turín, un cartel de «spaghetti» y las botellas de la barra; en la sala, mesas de mármol y un fondo de cocina a la vista.",
-					'La cocina es italiana de verdad y sin atajos: pasta fresca servida al dente —carbonara, tagliatelle al pomodoro, penne al ragú, tagliolini negros con marisco—, antipasti con burrata, prosciutto y salame, y platos de brasa como el pulpo, que es el que más aplausos se lleva en las reseñas.',
-					'La casa lo dice claro en su propio nombre: «no trabajamos con pizza». Lo que sí hay es una carta larga de pasta, carnes y pescado, y una vitrina de postres caseros con tiramisú y tarta de pistacho. Ideal para una comida de grupo o una cena tranquila entre semana.',
-				]}
-				note="La ficha de Google suma 2.451 opiniones con una nota media de 4,8, una de las más altas de la ciudad. Los clientes repiten con la pasta («excelente pasta, mucha variedad, buen servicio, para repetir sin duda»), el pulpo parmentier, la lasaña y los boquerones. Los lunes y martes cierra."
-				links={[
-					{ label: 'Leer reseñas en Google', href: reviewsUrl, external: true },
-					{ label: 'Ficha del restaurante', href: cidUrl, external: true },
-					{ label: 'Cómo llegar', href: directionsUrl, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Antipasti,<br /><em>pasta y dolci.</em>"
-				description="Selección hecha a partir de los platos que aparecen en las fotos de la ficha de Google y de los que citan los clientes en las reseñas. La carta cambia, así que pregunta al reservar."
-				cta={{ label: 'Reservar por teléfono', href: phoneHref }}
-				groups={grupos}
-				note="Esta web no publica precios: no hay carta oficial publicada y no se inventan importes. La carta del día y los precios se confirman en el local o por teléfono."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La sala,<br /><em>la pasta y los dolci.</em>"
-				description="Estas fotografías proceden del perfil de Tasca La Caseta dell'Italiano en Google Maps, con imágenes de la ficha y de sus clientes: el comedor de madera, la carbonara, los tagliolini negros, las tablas de antipasti, el tiramisú y la tarta de pistacho."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: mapsUrl }}
-				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
-			/>
-
-			<LocalVisit
-				eyebrow="Carrer de Navarra, 15 · 12002 Castelló"
-				title="Nos vemos<br /><em>en La Caseta.</em>"
-				addressLines={[
-					business.street,
-					`${business.postalCode} ${business.city}`,
-					'Castellón, España',
-				]}
-				hours={[
-					{ day: 'Lunes', value: 'Cerrado', closed: true },
-					{ day: 'Martes', value: 'Cerrado', closed: true },
-					{ day: 'Miércoles', value: '13:30 – 16:00 · 20:00 – 23:00' },
-					{ day: 'Jueves', value: '13:00 – 16:00 · 20:00 – 23:00' },
-					{ day: 'Viernes', value: '13:30 – 16:00 · 20:00 – 23:30' },
-					{ day: 'Sábado', value: '13:30 – 16:00 · 20:00 – 23:30' },
-					{ day: 'Domingo', value: '13:30 – 16:00 · 20:00 – 23:00' },
-				]}
-				hoursNote="Horario publicado en la ficha de Google. Abre de miércoles a domingo con servicio de mediodía y de noche, y cierra lunes y martes. En festivos puede cambiar, así que llama al 641 32 07 47 antes de ir."
-				mapTitle="Mapa de Tasca La Caseta dell'Italiano en el Carrer de Navarra, 15, Castelló de la Plana"
-				mapEmbedUrl={mapEmbedUrl}
-				mapLabel="La Caseta dell'Italiano · Castelló"
-				mapHref={cidUrl}
-				links={[
-					{ label: 'Cómo llegar', href: directionsUrl, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: mapsUrl, external: true },
-				]}
-				contactLink={{ label: `+34 ${business.phone}`, href: phoneHref }}
-				reserveNote="Reservas por teléfono, en el 641 32 07 47. No hay reserva online ni formulario en esta web. La ficha de Google indica acceso para sillas de ruedas y aseo adaptado, pero no aparcamiento adaptado; si necesitas una mesa concreta, avisa al reservar."
-			/>
-
-			<LocalFaq items={faqs} />
 		</main>
 
 		<LocalFooter

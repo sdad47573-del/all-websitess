@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import panes from '../assets/fotos/panaderia-santa-ana-colombiana-apaisada-05.jpg';
@@ -24,7 +25,15 @@ import horno from '../assets/fotos/panaderia-santa-ana-colombiana-vertical-08.jp
 import tartaFruta from '../assets/fotos/panaderia-santa-ana-colombiana-apaisada-09.jpg';
 import vitrina from '../assets/fotos/panaderia-santa-ana-colombiana-apaisada-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Panadería Santa Ana Colombiana · Bailén-Miraflores, Málaga';
 const description =
@@ -171,6 +180,22 @@ const facts = [
 	{ label: 'Domingo', value: '8:00–3:00' },
 	{ label: 'Lunes', value: 'Cerrado' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-santa-ana-colombiana-apaisada-05.jpg": panes,
+	"panaderia-santa-ana-colombiana-apaisada-01.jpg": mostrador,
+	"panaderia-santa-ana-colombiana-apaisada-02.jpg": empanadas,
+	"panaderia-santa-ana-colombiana-apaisada-03.jpg": tartaOreo,
+	"panaderia-santa-ana-colombiana-apaisada-04.jpg": tartaFresas,
+	"panaderia-santa-ana-colombiana-apaisada-06.jpg": tartaCumple,
+	"panaderia-santa-ana-colombiana-vertical-07.jpg": obrador,
+	"panaderia-santa-ana-colombiana-vertical-08.jpg": horno,
+	"panaderia-santa-ana-colombiana-apaisada-09.jpg": tartaFruta,
+	"panaderia-santa-ana-colombiana-apaisada-10.jpg": vitrina,
+};
 ---
 
 <!doctype html>
@@ -231,95 +256,19 @@ const facts = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Ibrahin, 1 · Bailén-Miraflores, Málaga"
-				title="Pan del horno, <br /><em>tortas para celebrar.</em>"
-				lede={`Panadería colombiana y repostería gourmet en Bailén-Miraflores. Pan del día, empanadas, tartas y pasabocas por encargo. Abre de martes a domingo y cierra los lunes. Tiene ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google con ${BUSINESS.reviewsCount} reseñas.`}
-				image={panes}
-				imageAlt="Cuatro hogazas de pan artesano de corteza dorada sobre una bandeja del obrador"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 27 reseñas' },
-					{ label: 'Horario', html: '<b>Martes a domingo</b> · lunes cerrado' },
-					{ label: 'Encargos', html: '<b>Tartas y pasabocas</b> para eventos' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Repostería gourmet"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<section class="factbar" aria-label="Datos publicados en la ficha de Google">
-				<ul class="wrap">
-					{
-						facts.map((fact) => (
-							<li>
-								<span>{fact.label}</span>
-								<strong>{fact.value}</strong>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-
-			<LocalChips label="Lo que ofrece la Panadería Santa Ana Colombiana" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Panadería colombiana <br /><em>y repostería.</em>"
-				paragraphs={[
-					'La Panadería Santa Ana Colombiana está en la calle Ibrahin, 1, en Bailén-Miraflores. En el obrador, el cartel de la casa se presenta como Panificadora Santa Ana · Phanor Herrera y anuncia panadería y repostería gourmet.',
-					'En el mostrador se ven hogazas de pan, empanadas de masa de maíz, tartas de chocolate y de fruta, tartas de cumpleaños, helados de fruta La Quindianita y productos envasados. Las fotos del perfil de Google recogen el obrador, el horno y las vitrinas.',
-					'El cartel anuncia tortas y pasabocas para eventos especiales. La ficha de Google no publica catálogo, precios ni plazos: los encargos se consultan en el teléfono que aparece en ese mismo cartel, el 665 72 07 62.',
-					'Esta página no publica carta ni importes porque el establecimiento no los tiene publicados en Google. La dirección, el horario y la valoración son los de la ficha; los productos citados son los que se ven en las fotos y en el cartel del obrador.',
-				]}
-				note="4,5 sobre 5 con 27 reseñas en Google. Una de ellas: «Pan de calidad 100x100»."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Del horno <br /><em>a la mesa.</em>"
-				description="La ficha de Google no publica carta ni precios. Esta lista reúne lo que aparece en las fotografías del perfil y lo que anuncia el cartel del obrador."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Sin precios publicados: para encargar una tarta o consultar el surtido del día, llama al 952 39 24 93 o al 665 72 07 62, el teléfono que el cartel del obrador anuncia para encargos."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos del perfil de Google Maps"
-				title="Diez fotos <br /><em>del obrador.</em>"
-				description="Las fotografías del perfil de Santa Ana en Google Maps: el pan recién horneado, el mostrador, las empanadas, las tartas y el expositor de helados."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y procedentes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="De martes <br /><em>a domingo.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: martes a sábado de 8:00 a 22:00; domingo de 8:00 a 3:00; lunes cerrado. Para el domingo 1 de noviembre, Día de Todos los Santos, la ficha avisa de que el horario podría ser diferente."
-				mapTitle="Mapa de la Panadería Santa Ana Colombiana en la calle Ibrahin, 1, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Santa Ana · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Encargos · ${BUSINESS.orderPhone}`, href: BUSINESS.orderPhoneHref }}
-				reserveNote="La ficha no publica web ni pedidos online. El teléfono de la ficha es el 952 39 24 93; el cartel del obrador anuncia el 665 72 07 62 para encargos de tartas y pasabocas."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
 		</main>
 
 		<LocalFooter

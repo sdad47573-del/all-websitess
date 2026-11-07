@@ -128,7 +128,9 @@ export type SectionType =
 	| "visita"
 	| "faq"
 	| "texto"
-	| "cta";
+	| "cta"
+	| "chips"
+	| "menu";
 
 export interface SectionLink {
 	texto: string;
@@ -160,6 +162,8 @@ export interface Section {
 	items?: { titulo: string; texto: string }[];
 	fotos?: { imagen: string; alt: string }[];
 	preguntas?: { pregunta: string; respuesta: string }[];
+	chips?: string[];
+	grupos?: { titulo: string; items: { nombre: string; nota: string; precio?: string }[] }[];
 }
 
 export interface SectionFile {
@@ -176,6 +180,8 @@ export const SECTION_LABELS: Record<SectionType, string> = {
 	faq: "Preguntas frecuentes",
 	texto: "Texto libre",
 	cta: "Llamada a la acción",
+	chips: "Chips",
+	menu: "Carta",
 };
 
 /** Una pieza real de otra página, para enseñar cómo se usa el tipo. */

@@ -8,9 +8,18 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Panadería Carmelitas · C. Torremolinos, 27, Córdoba';
 const description =
@@ -91,6 +100,13 @@ const nav = [
 	{ label: 'Horario', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+
+};
 ---
 
 <!doctype html>
@@ -149,127 +165,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
-				<div class="hero-copy">
-					<p class="eyebrow"><span aria-hidden="true"></span> {BUSINESS.street} · Distrito Sur</p>
-					<h1 id="hero-title">Una panadería abierta <br /><em>todo el día.</em></h1>
-					<p class="hero-lede">
-						Carmelitas es la panadería de la calle Torremolinos, 27, en el Distrito Sur.
-						Abre de 8:00 a 21:00 todos los días, domingo incluido, y se atiende por el
-						957 46 22 90. La ficha de Google no publica fotos, carta ni precios: aquí
-						están los datos que sí constan, sin inventar el resto.
-						{BUSINESS.rating.toString().replace('.', ',')} sobre 5 con {BUSINESS.reviewsCount} reseñas.
-					</p>
-					<div class="hero-actions">
-						<a class="button button-primary" href={MAPS.directions}>Cómo llegar</a>
-						<a class="button button-ghost" href={BUSINESS.phoneHref}>
-							Llamar <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<ul class="hero-facts">
-						<li><b>{BUSINESS.street}</b> · {BUSINESS.district}</li>
-						<li><b>Todos los días</b> · 8:00–21:00</li>
-						<li><b>{BUSINESS.phone}</b> · atención en el local</li>
-					</ul>
-				</div>
-
-				<aside class="hero-card" aria-label="Datos del establecimiento">
-					<span class="hero-card-mark" aria-hidden="true">{BUSINESS.mark}</span>
-					<p class="hero-card-name">Panadería <em>Carmelitas</em></p>
-					<dl>
-						<div><dt>Horario</dt><dd>Todos los días · 8:00–21:00</dd></div>
-						<div><dt>Dirección</dt><dd>{BUSINESS.street}</dd></div>
-						<div><dt>Barrio</dt><dd>{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</dd></div>
-						<div><dt>Teléfono</dt><dd>{BUSINESS.phone}</dd></div>
-						<div><dt>Google</dt><dd>3,5 / 5 · {BUSINESS.reviewsCount} reseñas</dd></div>
-					</dl>
-					<a class="hero-card-link" href={MAPS.place} target="_blank" rel="noreferrer">
-						Ver la ficha en Google Maps ↗
-					</a>
-				</aside>
-			</section>
-
-			<LocalChips label="Lo que consta en la ficha" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un nombre en la <br /><em>calle Torremolinos.</em>"
-				paragraphs={[
-					'De esta panadería se sabe lo que figura en su ficha pública: se llama «Panadería Carmelitas», está en el número 27 de la calle Torremolinos, en el Distrito Sur de Córdoba (14013), y su teléfono es el 957 46 22 90.',
-					'La ficha la clasifica con una sola categoría, «Panadería», y no describe el negocio ni enumera lo que vende. Por eso esta página no promete panes, bollería ni encargos concretos: lo que hay en el mostrador se pregunta allí o por teléfono.',
-					'Lo que sí llama la atención es el horario: de 8:00 a 21:00, trece horas seguidas y todos los días de la semana, domingo incluido. Cubre desayuno, mediodía y merienda sin cerrar a la hora de comer, algo poco habitual en una panadería de barrio.',
-					'La ficha no tiene fotos: Google no muestra ninguna imagen del local ni de sus productos, solo la referencia de Street View de la calle. En lugar de rellenar ese hueco con fotos de otros sitios, esta página se queda con lo comprobable: dirección, horario, teléfono y nota.',
-				]}
-				note="No hay carta, catálogo ni precios publicados, y no hay fotos de la ficha. Si necesitas saber qué hay ese día, si hacen encargos o si abren en festivo, lo más rápido es llamar al 957 46 22 90."
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<section class="three section-pad" aria-labelledby="three-title">
-				<div class="wrap">
-					<div class="three-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas que sí constan</p>
-							<h2 id="three-title">Panadería, horario <br /><em>y teléfono.</em></h2>
-						</div>
-					</div>
-					<div class="three-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="three-card">
-									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<section class="rating-band" aria-labelledby="rating-title">
-				<div class="wrap rating-inner">
-					<div class="rating-score">
-						<strong>3,5</strong>
-						<div>
-							<span class="rating-stars" role="img" aria-label="3,5 de 5 estrellas">3,5 / 5</span>
-							<p id="rating-title" style="margin:0;font-size:.78rem">4 reseñas en Google Maps</p>
-						</div>
-					</div>
-					<p class="rating-copy">
-						La media de la ficha es 3,5 sobre 5 con solo 4 reseñas: es una muestra muy
-						pequeña, así que una opinión mueve el número. Esta página no reproduce sus
-						textos; se leen completas en Google.
-					</p>
-					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el Distrito <br /><em>Sur.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de la Panadería Carmelitas en la calle Torremolinos, 27, Córdoba"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Carmelitas · Distrito Sur"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: BUSINESS.phone, href: BUSINESS.phoneHref }}
-				reserveNote="La ficha de Google no publica web propia, carta ni información de accesibilidad o aparcamiento. Esta página no gestiona pedidos ni encargos: el teléfono conecta directamente con el establecimiento."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

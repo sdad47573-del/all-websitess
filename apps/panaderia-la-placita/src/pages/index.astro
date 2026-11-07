@@ -9,13 +9,23 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import plaza from '../assets/fotos/panaderia-la-placita-plaza-01.jpg';
 import esquina from '../assets/fotos/panaderia-la-placita-plaza-02.jpg';
 import calle from '../assets/fotos/panaderia-la-placita-plaza-03.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, OFERTA, REVIEWS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	OFERTA,
+	REVIEWS,
+} from '../data/site';
 
 const title = 'Panadería La Placita de Nieves y Cintia · Bailén-Miraflores';
 const description =
@@ -128,6 +138,15 @@ const galeria = [
 		alt: 'Calle junto a la plaza, con los edificios y los coches aparcados',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-la-placita-plaza-01.jpg": plaza,
+	"panaderia-la-placita-plaza-02.jpg": esquina,
+	"panaderia-la-placita-plaza-03.jpg": calle,
+};
 ---
 
 <!doctype html>
@@ -188,141 +207,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Pl. Monseñor Bocanegra, 18 · Bailén-Miraflores"
-				title="La placita, <br /><em>de Nieves y Cintia.</em>"
-				lede={`En la plaza Monseñor Bocanegra, 18, hay una panadería que también es tienda de alimentación. Se llama La Placita de Nieves y Cintia, abre de lunes a viernes en dos turnos y los fines de semana solo por la mañana. Tiene ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google con ${BUSINESS.reviewsCount} reseñas.`}
-				image={plaza}
-				imageAlt="Plaza Monseñor Bocanegra, con árboles, bancos y los comercios del barrio"
-				primaryCta={{ label: 'Llamar · 952 28 98 89', href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>5,0</b> en Google · 8 reseñas' },
-					{ label: 'Horario', html: '<b>Dos turnos</b> · L–V' },
-					{ label: 'Teléfono', html: '<b>952 28 98 89</b>' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Imagen de Google Street View"
-				galleryLinkLabel="Ver la plaza en Street View"
-				tag="Panadería y tienda"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<div class="tile-band" aria-hidden="true"></div>
-
-			<LocalAbout
-				label="La casa"
-				title="Panadería y tienda, <br /><em>en la misma puerta.</em>"
-				paragraphs={[
-					'La Panadería La Placita de Nieves y Cintia está en la plaza Monseñor Bocanegra, 18, en Bailén-Miraflores. La ficha de Google la clasifica en dos categorías: panadería y tienda de alimentación.',
-					'Las reseñas son cortas y muy de barrio: una habla de que «los dulces son del día a día» y de «hacer unos bocadillos muy ricos»; otra dice «sois maravillosas chicas»; la tercera felicita por «mantener esa esencia tan especial». Son las tres únicas que la ficha destaca.',
-					'Abre de lunes a viernes de 7:30 a 14:00 y de 17:00 a 20:00. El sábado y el domingo solo hay turno de mañana, de 8:00 a 14:00. El 1 de noviembre figura con horario especial.',
-					'La ficha no publica descripción del negocio, carta, precios ni página web. Tampoco tiene fotos del perfil: las imágenes de esta página son vistas de Google Street View de la plaza donde está el local. Lo que no está publicado, aquí no se inventa.',
-				]}
-				note="5 sobre 5 con 8 reseñas en Google. Es una media de muy pocas opiniones; sirve como referencia, no como garantía."
-				links={[
-					{ label: 'Llamar · 952 28 98 89', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="duo section-pad" aria-labelledby="duo-title">
-				<div class="wrap">
-					<div class="duo-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Dos cosas a la vez</p>
-							<h2 id="duo-title">El mostrador <br /><em>y la despensa.</em></h2>
-						</div>
-						<p>
-							Es lo que declara la ficha de Google. No hay carta ni listado de productos
-							publicado, así que la web se limita a esas dos categorías y a lo que citan
-							las reseñas.
-						</p>
-					</div>
-					<div class="duo-grid">
-						{
-							OFERTA.map((item, index) => (
-								<article class="duo-card">
-									<span class="duo-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-					<div class="duo-notes">
-						{
-							HIGHLIGHTS.map((item) => (
-								<div class="duo-note">
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalGallery
-				eyebrow="La plaza"
-				title="Monseñor <br /><em>Bocanegra.</em>"
-				description="La ficha no tiene fotos del perfil. Estas tres vistas de Google Street View enseñan la plaza y los soportales donde está la panadería."
-				images={galeria}
-				cta={{ label: 'Abrir Street View', href: MAPS.streetView }}
-				note="Imágenes de Google Street View de la plaza Monseñor Bocanegra, consultadas en octubre de 2026. En la vista de la esquina los locales aparecen con la persiana bajada."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div class="reviews-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
-							<h2 id="reviews-title">Tres reseñas, <br /><em>cinco estrellas.</em></h2>
-						</div>
-						<p>
-							5 sobre 5 con 8 reseñas. Estas son las tres que la ficha destaca; se citan
-							tal cual, sin retocar el tono.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
-										★★★★★
-									</span>
-									<blockquote>{review.text}</blockquote>
-									<figcaption>Reseña de Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 8 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la plaza, <br /><em>número 18.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de Panadería La Placita de Nieves y Cintia en la plaza Monseñor Bocanegra, 18, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Placita · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: '952 28 98 89', href: BUSINESS.phoneHref }}
-				reserveNote="La ficha indica acceso para sillas de ruedas y no publica información sobre aparcamiento. No hay web ni correo: el contacto es en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llegar.</em>" />
 		</main>
 
 		<LocalFooter

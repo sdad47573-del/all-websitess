@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachadaNoche from '../assets/fotos/hoy-cocino-yo-apaisada-01.jpg';
@@ -23,7 +24,18 @@ import ensaladaGarbanzos from '../assets/fotos/hoy-cocino-yo-cuadrada-07.jpg';
 import ensaladilla from '../assets/fotos/hoy-cocino-yo-cuadrada-08.jpg';
 import interiorCocina from '../assets/fotos/hoy-cocino-yo-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Hoy cocino yo! · Comida casera para llevar en Málaga-Este';
 const description =
@@ -179,6 +191,21 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"hoy-cocino-yo-apaisada-01.jpg": fachadaNoche,
+	"hoy-cocino-yo-apaisada-03.jpg": vitrina,
+	"hoy-cocino-yo-vertical-02.jpg": tarrinas,
+	"hoy-cocino-yo-vertical-05.jpg": pollo,
+	"hoy-cocino-yo-cuadrada-07.jpg": ensaladaGarbanzos,
+	"hoy-cocino-yo-cuadrada-08.jpg": ensaladilla,
+	"hoy-cocino-yo-apaisada-04.jpg": fachadaDia,
+	"hoy-cocino-yo-apaisada-06.jpg": interiorCliente,
+	"hoy-cocino-yo-vertical-10.jpg": interiorCocina,
+};
 ---
 
 <!doctype html>
@@ -248,135 +275,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. Fernando Camino, 11 · Málaga-Este"
-				title="Comida casera, <br /><em>hoy sin cocinar.</em>"
-				lede={`Conos de pescado frito, bocadillos, pollo asado, ensaladas y platos del día preparados con ingredientes frescos. Hoy cocino yo! tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={fachadaNoche}
-				imageAlt="Fachada de Hoy cocino yo! de noche, con el rótulo en neón y la vitrina iluminada"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>10:00–21:00</b> · L a V' },
-					{ label: 'Fin de semana', html: '<b>10:00–16:00</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Para llevar y a domicilio"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Hoy cocino yo!" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Una vitrina <br /><em>y una cocina.</em>"
-				paragraphs={[
-					'En la calle Fernando Camino, 11, en Málaga-Este, hay una tienda de comida con el rótulo en neón y una vitrina que se llena cada mañana. Hoy cocino yo! es cocina casera para llevar, preparada el mismo día con ingredientes frescos.',
-					'La especialidad son los conos de pescado recién frito y los bocadillos con sabor, según la descripción del propio negocio. Google lo clasifica como restaurante de comida para llevar y como comida a domicilio.',
-					'En la vitrina caben más cosas: empanadas y empanadillas, tartas, pollo asado en bandeja y tarrinas de ensalada preparadas para salir. Las opiniones añaden pulpo, paella, ensaladas variadas y patatas fritas hechas al momento.',
-					'Abre de 10:00 a 21:00 de lunes a viernes y hasta las 16:00 los fines de semana. Tiene 4,6 sobre 5 con 214 reseñas; las publicadas hablan de raciones generosas, comida casera y buen precio.',
-				]}
-				note="La ficha no publica carta, precios, web ni redes sociales; solo el teléfono. Los platos citados son los que aparecen en su descripción, en las reseñas y en las fotografías del local."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-					{ label: 'Llamar al 673 18 32 55', href: BUSINESS.phoneHref },
-				]}
-			/>
-
-			<ul class="highlights">
-				{
-					HIGHLIGHTS.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Lo que hay <br /><em>en la vitrina.</em>"
-				description="Lo que nombran la descripción del negocio, las reseñas y las fotos del local. Sin carta cerrada ni precios inventados: el día se consulta por teléfono."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="La ficha de Google no incluye carta ni precios. Para saber qué hay hoy, cuánto cuesta y si quedan conos o pollo, llama al 673 18 32 55 antes de acercarte."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="La fachada <br /><em>y la vitrina.</em>"
-				description="Nueve fotografías del perfil de Hoy cocino yo!: la fachada de día y de noche, la vitrina con empanadas y bocadillos, el pollo asado, las tarrinas de ensalada y el interior."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="notas" aria-labelledby="notas-title">
-				<div class="wrap notas-grid">
-					<div>
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="notas-title">Raciones <em>generosas.</em></h2>
-						<p class="notas-score">
-							<strong>{RATING.label}</strong>
-							<span>
-								<b>★★★★★</b>
-								{RATING.count} reseñas<br />en Google
-							</span>
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas ↗
-						</a>
-					</div>
-
-					<div class="notas-copy">
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<p class="notas-foot">
-							La media es 4,6 sobre 5 con 214 valoraciones. Las tres opiniones publicadas hablan de
-							comida casera, raciones generosas, ensaladas variadas y patatas recién hechas:
-							<a href={MAPS.reviews} target="_blank" rel="noreferrer">el resto se lee en Google ↗</a
-							>.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Málaga-<br /><em>Este.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de lunes a viernes, de 10:00 a 21:00; sábados y domingos, de 10:00 a 16:00. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Hoy cocino yo! en la calle Fernando Camino, 11, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. Fernando Camino, 11"
-				mapHref={MAPS.cid}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Para encargar, llama al 673 18 32 55. Google marca acceso para sillas de ruedas y no publica aparcamiento ni asientos adaptados. Tampoco detalla zonas ni horarios de reparto."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

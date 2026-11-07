@@ -10,6 +10,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import dulces from '../assets/fotos/la-divina-providencia-dulces-01.jpg';
@@ -150,6 +151,16 @@ const galeria = [
 		alt: 'Esquina de la calle del Barón con el rótulo de panadería y confitería, en Google Street View',
 	},
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-divina-providencia-dulces-01.jpg": dulces,
+	"la-divina-providencia-pan-02.jpg": pan,
+	"la-divina-providencia-calle-03.jpg": calle,
+	"la-divina-providencia-fachada-04.jpg": fachada,
+};
 ---
 
 <!doctype html>
@@ -210,146 +221,19 @@ const galeria = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Calle del Barón, 12 · Bailén-Miraflores"
-				title="Pan y cocina <br /><em>de barrio.</em>"
-				lede={`La Divina Providencia está en la calle del Barón, 12, en Bailén-Miraflores. Es una panadería de barrio en la que, además del pan, se cuecen cosas: pimientos asados, lasañas, tortillas de patatas y una carne de membrillo artesanal que las reseñas no se cansan de citar. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
-				image={dulces}
-				imageAlt="Bandeja de dulces cuadrados rebozados de azúcar sobre papel de la panadería"
-				primaryCta={{ label: 'Llamar · 952 61 37 96', href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 31 reseñas' },
-					{ label: 'Horario', html: '<b>Dos turnos</b> · domingo cerrado' },
-					{ label: 'Teléfono', html: '<b>952 61 37 96</b>' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Foto de la ficha de Google Maps"
-				galleryLinkLabel="Ver la calle en Street View"
-				tag="Dulces de la casa"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<section class="ticker" aria-label="Lo que citan las reseñas">
-				<div class="wrap ticker-inner">
-					<span>Pimientos asados</span>
-					<span aria-hidden="true">✦</span>
-					<span>Lasañas</span>
-					<span aria-hidden="true">✦</span>
-					<span>Tortillas de patatas</span>
-					<span aria-hidden="true">✦</span>
-					<span>Membrillo artesanal</span>
-				</div>
-			</section>
-
-			<LocalAbout
-				label="La casa"
-				title="Una panadería <br /><em>que también guisa.</em>"
-				paragraphs={[
-					'La Divina Providencia está en la calle del Barón, 12, en Bailén-Miraflores. La ficha de Google la clasifica como panadería, pero las reseñas hablan sobre todo de lo que se cocina dentro: pimientos asados, lasañas, tortillas de patatas y carne de membrillo.',
-					'Una reseña dice que «a mi mujer le encantan los pimientos asados que venden»; otra celebra «unas lasañas y tortillas de patatas exquisitas»; la tercera se queda con «la carne de membrillo artesanal que preparan». Son las tres opiniones que la ficha destaca.',
-					'La ficha no publica descripción del negocio, carta ni precios. Tampoco hay una web. Lo que sí hay son dos fotos del perfil: una bandeja de dulces rebozados de azúcar —la de la portada— y un pan envuelto en papel, en la galería.',
-					'Abre de lunes a viernes de 7:15 a 14:30 y de 17:00 a 21:00; el sábado, de 8:00 a 14:30 y de 17:00 a 21:00. El domingo cierra. La ficha indica acceso y aparcamiento adaptados para sillas de ruedas.',
-				]}
-				note="4,5 sobre 5 con 31 reseñas en Google. La media incluye opiniones de todo tipo; las tres citadas son las destacadas de la ficha."
-				links={[
-					{ label: 'Llamar · 952 61 37 96', href: BUSINESS.phoneHref },
-					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
-				]}
-			/>
-
-			<section class="notes section-pad" aria-labelledby="notes-title">
-				<div class="wrap notes-grid">
-					<div class="notes-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
-						<h2 id="notes-title">El horno <br /><em>y la olla.</em></h2>
-					</div>
-					<div class="notes-list">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="note-row">
-									<span class="note-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-									<div>
-										<h3>{item.title}</h3>
-										<p>{item.text}</p>
-									</div>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Lo que citan <br /><em>las reseñas.</em>"
-				description="No hay carta ni precios publicados. Esto es lo que la ficha y las reseñas dejan claro: lo que se cocina y lo que se prepara en la casa."
-				cta={{ label: 'Llamar · 952 61 37 96', href: BUSINESS.phoneHref }}
-				groups={MENU_GROUPS}
-				note="La ficha no recoge surtido, precios ni métodos de pago, así que esta web no publica importes. Para saber qué hay ese día, llama al 952 61 37 96 o pasa por el mostrador."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos"
-				title="La calle <br /><em>y el pan.</em>"
-				description="La otra foto de la ficha y dos vistas de Google Street View de la calle del Barón, donde está la panadería."
-				images={galeria}
-				cta={{ label: 'Abrir Street View', href: MAPS.streetView }}
-				note="Imágenes de la ficha y de Google Street View, consultadas en octubre de 2026. En la vista de la esquina el local aparece con la persiana bajada."
-			/>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div class="reviews-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
-							<h2 id="reviews-title">Tres reseñas <br /><em>de la ficha.</em></h2>
-						</div>
-						<p>
-							4,5 sobre 5 con 31 reseñas. Estas tres están publicadas en Google: dos de
-							cinco estrellas y una de cuatro, y hablan más de la cocina que del pan.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
-										{'★'.repeat(review.rating)}
-										<span class="stars-empty">{'★'.repeat(5 - review.rating)}</span>
-									</span>
-									<blockquote>{review.text}</blockquote>
-									<figcaption>Reseña de Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 31 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En el Barón, <br /><em>número 12.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote={HOURS_NOTE}
-				mapTitle="Mapa de La Divina Providencia en la calle del Barón, 12, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Divina · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Llamar', href: BUSINESS.phoneHref },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: '952 61 37 96', href: BUSINESS.phoneHref }}
-				reserveNote="La ficha indica acceso y aparcamiento adaptados para sillas de ruedas. No publica web ni correo: el contacto es en el local o por teléfono."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
 		</main>
 
 		<LocalFooter

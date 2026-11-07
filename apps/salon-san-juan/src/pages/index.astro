@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/salon-san-juan-apaisada-01.jpg';
@@ -22,7 +23,17 @@ import pollo from '../assets/fotos/salon-san-juan-vertical-07.jpg';
 import fruta from '../assets/fotos/salon-san-juan-vertical-09.jpg';
 import calamares from '../assets/fotos/salon-san-juan-vista-6-06.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Salón San Juan · Comidas para llevar en San Pedro del Pinatar';
 const description =
@@ -122,6 +133,20 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"salon-san-juan-apaisada-01.jpg": fachada,
+	"salon-san-juan-apaisada-03.jpg": rotulo,
+	"salon-san-juan-apaisada-08.jpg": guiso,
+	"salon-san-juan-vertical-02.jpg": buffet,
+	"salon-san-juan-vertical-05.jpg": arroz,
+	"salon-san-juan-vertical-07.jpg": pollo,
+	"salon-san-juan-vertical-09.jpg": fruta,
+	"salon-san-juan-vista-6-06.jpg": calamares,
+};
 ---
 
 <!doctype html>
@@ -191,101 +216,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Comidas para llevar, <br /><em>en San Pedro.</em>"
-				lede={`Salón San Juan prepara comidas para llevar en C. la Paz, 8, en San Pedro del Pinatar. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas, y abre de lunes a domingo de 8:30 a 17:30, salvo los miércoles.`}
-				image={fachada}
-				imageAlt="La fachada de Salón San Juan con el rótulo «Comidas para llevar»"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>8:30–17:30</b> · cerrado los miércoles' },
-					{ label: 'Servicio', html: '<b>Para llevar</b>' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Comidas para llevar"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Salón San Juan" items={SERVICIOS} />
-
-			<LocalAbout
-				label="El local"
-				title="C. la Paz, 8. <br /><em>Comida para llevar.</em>"
-				paragraphs={[
-					'Salón San Juan está en la calle la Paz, 8, en San Pedro del Pinatar. En la fachada se lee el rótulo amarillo «Comidas para llevar», y el local tiene un salón con ventanales y mesas de mantel blanco.',
-					'Google lo clasifica como restaurante de comida para llevar. Las fotos del perfil muestran guisos de carne, arroz con marisco, pollo asado con patatas, calamares a la plancha y un mostrador con platos del día.',
-					`La ficha tiene ${RATING.label} sobre 5 con ${RATING.count} reseñas. Para pedir o consultar, llama al ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica una carta con precios. Lo que aparece aquí son los platos que se ven en las fotos del perfil; confirma disponibilidad y precios por teléfono."
-				links={[
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Para llevar</p>
-					<h2 id="highlights-title">Lo esencial <br /><em>antes de ir.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="La cocina"
-				title="Lo que se ve <br /><em>en las fotos.</em>"
-				description="La ficha no publica carta. Esta lista reúne los platos que aparecen en las fotografías del perfil de Google Maps."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="Sin precios publicados. Llama al 664 06 27 13 para saber el menú del día y los precios."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El rótulo, <br /><em>y los platos.</em>"
-				description="Fotografías del perfil de Salón San Juan en Google Maps: la fachada, el rótulo, varios guisos y platos del día."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En San Pedro, <br /><em>junto al centro.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Salón San Juan en C. la Paz, 8, San Pedro del Pinatar"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. la Paz, 8 · San Pedro del Pinatar"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="Pedidos y encargos por teléfono: la ficha no enlaza una web propia ni un sistema de pedidos online."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter

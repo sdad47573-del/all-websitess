@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import pollo from '../assets/fotos/el-manjar-cr-apaisada-02.jpg';
@@ -166,6 +167,18 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"el-manjar-cr-apaisada-02.jpg": pollo,
+	"el-manjar-cr-apaisada-03.jpg": albondigas,
+	"el-manjar-cr-apaisada-04.jpg": ensaladilla,
+	"el-manjar-cr-cuadrada-01.jpg": ensaladaPasta,
+	"el-manjar-cr-vertical-05.jpg": cartel,
+	"el-manjar-cr-panoramica-06.jpg": logo,
+};
 ---
 
 <!doctype html>
@@ -235,138 +248,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="C. de la Mata, 4 · Ciudad Real"
-				title="El menú de casa, <br /><em>a domicilio.</em>"
-				lede={`En la calle de la Mata, este local hace lo que anuncia su rótulo: «comida y derivados para llevar». Pollo asado, albóndigas con guisantes, ensaladilla, ensalada de pasta y postres de casa, con un menú diario de primero, segundo, pan y postre por ${MENU_PRECIO}. Abre de 12:00 a 15:30, con el lunes cerrado, y tiene ${RATING.label} sobre 5 en Google con ${RATING.count} reseñas.`}
-				image={pollo}
-				imageAlt="Trozos de pollo asado de El manjar Cr en Ciudad Real"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>12:00–15:30</b> · lunes cerrado' },
-					{ label: 'Menú diario', html: `<b>${MENU_PRECIO}</b><br />con pan y postre` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Comida para llevar"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece El manjar" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Casero, de verdad, <br /><em>y a domicilio.</em>"
-				paragraphs={[
-					'El manjar Cr está en el número 4 de la calle de la Mata, en Ciudad Real, y se presenta en su propia ficha con una frase muy clara: «Tienda de comida casera para llevar a domicilio». El rótulo de la casa añade el resto: un gorro de cocinero, el nombre en letras doradas y el lema «Comida y derivados para llevar».',
-					'La cocina trabaja el menú del día, que el local anuncia por 7 € con primero, segundo, pan y postre a elegir. En el cartel se ven las fotos de algunos de esos platos: una paella, una lasaña, albóndigas con guisantes, ensaladilla y una tarta de galletas.',
-					'En la galería del perfil aparecen las bandejas de cada día: pollo asado troceado y dorado, albóndigas en salsa con guisantes, ensaladilla rusa con tiras de pimiento rojo asado —como se sirve en La Mancha— y ensalada de pasta tricolor con maíz, aceitunas y huevo. También hay sopa de picadillo, que una de las reseñas menciona.',
-					'Las tres opiniones que Google destaca no coinciden entre sí, y aquí se recogen todas: una de cinco estrellas por la tarta de galletas, una de cuatro que dice que lo probado está «buenísimo» tras ir tres veces, y una de una estrella que critica la sopa de picadillo por el exceso de jamón.',
-					`Con ${RATING.count} reseñas y ${RATING.label} de media, es un local de barrio con clientela repetidora. El reparto a domicilio consta en la ficha; la zona y el horario de entrega no se publican.`,
-				]}
-				note="La ficha no publica carta con precios por plato: el único importe que consta es el del menú diario en el cartel del local (7 €). Tampoco detalla zona de reparto, formas de pago ni mesas para comer allí. El menú de cada día se pregunta en el 615 43 46 70."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: `Instagram ${INSTAGRAM.handle}`, href: INSTAGRAM.href, external: true },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que se lleva la gente</p>
-					<h2 id="highlights-title">Primero, segundo <br /><em>y postre.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El menú"
-				title="Lo que hay <br /><em>hoy en el mostrador.</em>"
-				description="El menú diario del cartel de la casa y los platos que aparecen en las fotos del perfil y en las reseñas. El único precio publicado es el del menú completo, 7 €."
-				cta={{ label: `Preguntar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note="El menú cambia cada día. Lo que hay, el precio por plato y la zona de reparto se preguntan en el 615 43 46 70."
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El pollo, las cazuelas <br /><em>y el cartel.</em>"
-				description="Seis imágenes del perfil del local: el pollo asado recién hecho, la cazuela de albóndigas con guisantes, la ensaladilla rusa, la ensalada de pasta, el cartel del menú diario por 7 € y el rótulo de la casa."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">4,1 sobre 5, <em>con 25 reseñas.</em></h2>
-						<p>
-							Google publica una media de 4,1 con 25 opiniones (noviembre de 2026). Las tres
-							que destaca la ficha van de una a cinco estrellas: la tarta de galletas y el
-							conjunto de lo probado se llevan los elogios, y la sopa de picadillo, la crítica.
-							Son las que se ven aquí; en Google hay más.
-						</p>
-						<ul class="reviews">
-							{
-								RESENAS.map((resena) => (
-									<li>
-										<p>«{resena.texto}»</p>
-										<span aria-label={`${resena.valor} de 5 estrellas`}>
-											{'★'.repeat(resena.valor)}
-											{'☆'.repeat(5 - resena.valor)} <small>Reseña publicada en Google</small>
-										</span>
-									</li>
-								))
-							}
-						</ul>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver todas las reseñas <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>4,1</strong>
-						<span>★★★★★</span>
-						<small>25 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
-				title="En la calle <br /><em>de la Mata.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.postalCode, `${BUSINESS.district}, ${BUSINESS.region}`]}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha: de 12:00 a 15:30, con el jueves a las 11:45 y el lunes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de El manjar Cr en la calle de la Mata, 4, Ciudad Real"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="C. de la Mata, 4 · Ciudad Real"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`Pedidos por teléfono en el ${BUSINESS.phone}, para recoger en el local o con reparto a domicilio. La ficha confirma el acceso para sillas de ruedas y no publica zona de reparto, formas de pago ni mesas para comer allí.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>llamar.</em>" />
 		</main>
 
 		<LocalFooter

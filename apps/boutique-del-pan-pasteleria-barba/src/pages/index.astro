@@ -9,11 +9,20 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/boutique-del-pan-pasteleria-barba-apaisada-01.jpg';
 
-import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, MAPS, REVIEWS, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	MAPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Boutique Del Pan Pastelería Barba · Bailén-Miraflores';
 const description =
@@ -97,6 +106,13 @@ const nav = [
 	{ label: 'Visítanos', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"boutique-del-pan-pasteleria-barba-apaisada-01.jpg": fachada,
+};
 ---
 
 <!doctype html>
@@ -155,115 +171,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. Miraflores de los Ángeles, 9 · Bailén-Miraflores"
-				title="Pan de barrio, <br /><em>pastelería de casa.</em>"
-				lede={`La Boutique Del Pan Pastelería Barba está en la Avenida Miraflores de los Ángeles, 9, en Bailén-Miraflores. Pan y pastelería todos los días de 8:00 a 14:30. Tiene ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google con ${BUSINESS.reviewsCount} reseñas.`}
-				image={fachada}
-				imageAlt="Fachada de la Boutique Del Pan Pastelería Barba en la esquina de la Avenida Miraflores de los Ángeles, con el rótulo de la tienda"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,3</b> en Google · 12 reseñas' },
-					{ label: 'Horario', html: '<b>8:00–14:30</b> todos los días' },
-					{ label: 'Barrio', html: '<b>Bailén-Miraflores</b>, Málaga' },
-				]}
-				galleryHref={MAPS.streetView}
-				photoCredit="Imagen de Google Street View · julio de 2026"
-				galleryLinkLabel="Abrir Street View"
-				tag="Todos los días · 8:00–14:30"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece la Boutique Del Pan Pastelería Barba" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="El pan <br /><em>con apellido.</em>"
-				paragraphs={[
-					'La Boutique Del Pan Pastelería Barba está en la Avenida Miraflores de los Ángeles, 9, en Bailén-Miraflores. El rótulo de la esquina anuncia «Boutique del Pan · Pastelería Barba», y la ficha de Google la clasifica como panadería.',
-					'Abre todos los días de 8:00 a 14:30. Es un horario de mañana: la ficha no recoge un tramo de tarde ni un día de cierre.',
-					'La ficha no publica teléfono, web, carta ni precios, y tampoco fotos del perfil. Esta página no inventa ninguno de esos datos: reúne la dirección, el horario, la valoración y las reseñas, y usa una vista de Google Street View para enseñar la fachada.',
-					'Las reseñas destacan el pan, la atención y los precios: «muy buen pan y te atienden con amabilidad a unos precios muy asequibles», dice una de ellas.',
-				]}
-				note="4,3 sobre 5 con 12 reseñas en Google. La media incluye opiniones de todo tipo; las dos que se citan en esta página son de cinco estrellas."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<section class="highlights section-pad" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<div class="highlights-head">
-						<p class="eyebrow"><span aria-hidden="true"></span> Tres detalles</p>
-						<h2 id="highlights-title">Lo que se sabe <br /><em>de la casa.</em></h2>
-					</div>
-					<div class="highlight-grid">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<article class="highlight-card">
-									<span class="highlight-num">{String(index + 1).padStart(2, '0')}</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</article>
-							))
-						}
-					</div>
-				</div>
-			</section>
-
-			<section class="reviews section-pad" id="resenas" aria-labelledby="reviews-title">
-				<div class="wrap">
-					<div class="reviews-head">
-						<div>
-							<p class="eyebrow"><span aria-hidden="true"></span> Lo que dicen</p>
-							<h2 id="reviews-title">Dos reseñas <br /><em>de la ficha.</em></h2>
-						</div>
-						<p>
-							La media es 4,3 sobre 5 con 12 reseñas. Estas son dos de las opiniones de
-							cinco estrellas publicadas en Google; puedes leer el resto en la ficha.
-						</p>
-					</div>
-					<div class="review-grid">
-						{
-							REVIEWS.map((review) => (
-								<figure class="review-card">
-									<span class="stars" role="img" aria-label={`${review.rating} de 5 estrellas`}>
-										★★★★★
-									</span>
-									<blockquote>{review.text}</blockquote>
-									<figcaption>Reseña de Google Maps</figcaption>
-								</figure>
-							))
-						}
-					</div>
-					<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-						Leer las 12 reseñas en Google ↗
-					</a>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En la avenida, <br /><em>por la mañana.</em>"
-				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
-				hours={HOURS}
-				hoursCaption="Horario publicado en Google"
-				hoursNote="Todos los días de 8:00 a 14:30, según la ficha de Google. No hay teléfono ni web publicados: conviene confirmar el horario antes de ir, sobre todo en festivos."
-				mapTitle="Mapa de Boutique Del Pan Pastelería Barba en la Avenida Miraflores de los Ángeles, 9, Málaga"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Barba · Bailén-Miraflores"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Reseñas en Google', href: MAPS.reviews, external: true },
-				]}
-				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
-				reserveNote="Sin teléfono ni web publicados: la atención es en el propio establecimiento. La ficha indica acceso para sillas de ruedas."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import comedor from '../assets/fotos/restaurant-mon-asiatic-apaisada-06.jpg';
@@ -23,7 +24,16 @@ import dimsum from '../assets/fotos/restaurant-mon-asiatic-vertical-02.jpg';
 import sopa from '../assets/fotos/restaurant-mon-asiatic-vertical-03.jpg';
 import entrantes from '../assets/fotos/restaurant-mon-asiatic-vertical-07.jpg';
 
-import { BUSINESS, CARTA, CARTA_NOTE, FAQ, HOURS, MAPS, RATING, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	CARTA,
+	CARTA_NOTE,
+	FAQ,
+	HOURS,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'Restaurant Món Asiàtic · Cocina asiática en Escaldes-Engordany';
 const description = BUSINESS.description;
@@ -139,6 +149,21 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurant-mon-asiatic-apaisada-06.jpg": comedor,
+	"restaurant-mon-asiatic-vertical-01.jpg": fachada,
+	"restaurant-mon-asiatic-apaisada-09.jpg": sala,
+	"restaurant-mon-asiatic-vertical-07.jpg": entrantes,
+	"restaurant-mon-asiatic-vertical-02.jpg": dimsum,
+	"restaurant-mon-asiatic-apaisada-04.jpg": salteado,
+	"restaurant-mon-asiatic-apaisada-05.jpg": tallarines,
+	"restaurant-mon-asiatic-vertical-03.jpg": sopa,
+	"restaurant-mon-asiatic-cuadrada-10.jpg": tempura,
+};
 ---
 
 <!doctype html>
@@ -196,81 +221,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Cocina asiática <br /><em>recién hecha.</em>"
-				lede={`Restaurant Món Asiàtic está en la calle Santa Anna, 10, de Escaldes-Engordany. Platos a la carta y menús de mediodía en un comedor para 60 o 70 comensales, con cocina «recién hecha y casera» según la propia casa. Abre jueves, viernes y sábado de 13:00 a 16:00 y de 20:00 a 23:00. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
-				image={comedor}
-				imageAlt="Comedor de Món Asiàtic con mesas negras, platos rojos y sillas de madera bajo un mural de flor roja"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>13:00–16:00</b><br />y 20:00–23:00, jue–sáb' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b><br />Sin reservas en línea` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Menús de mediodía"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de Món Asiàtic" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un comedor <br /><em>familiar.</em>"
-				paragraphs={[
-					'Restaurant Món Asiàtic está en la calle Santa Anna, 10, de Escaldes-Engordany. La fachada es de piedra, con toldo de Bar Restaurant Santa Anna, puerta y ventanales rojos, y un rótulo dorado que se presenta como «Restaurant Món Asiàtic · cuina casolana», con los teléfonos 845 394 y 841 668 pintados al lado.',
-					'La casa se describe así: «Somos un restaurante asiático ubicada a la parroquia de Escaldes-Engordany Andorra, cabe unos 60 a 70 comenzales. Ofrecemos platos a la carta donde puedes probar comida recién hecha y casera. Además disponemos menús a los martes, jueves y viernes al mediodía».',
-					'El local tiene dos salas: una con mesas negras, platos rojos y un gran mural de flor, y otra con mesas de mármol amarillo, sillas de bistró y paredes de ladrillo y madera. La casa resume el trato que quiere dar: «muy transparente, agradable y familiar».',
-					`Abre jueves, viernes y sábado de 13:00 a 16:00 y de 20:00 a 23:00; lunes, martes, miércoles y domingo figuran cerrados. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas.`,
-				]}
-				note="La información sale de la ficha pública de Google Maps, de la descripción escrita por el restaurante y de las fotografías de su perfil. La ficha no publica carta con precios: los platos que se citan son los que aparecen en las fotos."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="Qué se come"
-				title="Del vapor <br /><em>y del wok.</em>"
-				description="La ficha no publica la carta. Esto es lo que se ve en las fotos del perfil y lo que anuncia la casa: entrantes para compartir, salteados y menús de mediodía."
-				cta={{ label: 'Preguntar por teléfono', href: BUSINESS.phoneHref }}
-				groups={CARTA}
-				note={CARTA_NOTE}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Ocho fotos <br /><em>de la mesa.</em>"
-				description="La fachada, las dos salas del comedor, los rollitos y las gyozas, el dim sum al vapor, el salteado de carne, los tallarines, la sopa de bok choy y la tempura."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Santa Anna, 10, <br /><em>Escaldes.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Andorra']}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: jueves a sábado de 13:00 a 16:00 y de 20:00 a 23:00; de lunes a miércoles y el domingo, cerrado. La descripción del restaurante habla además de menús los martes al mediodía, así que conviene confirmarlo por teléfono."
-				mapTitle="Mapa de Restaurant Món Asiàtic en la calle Santa Anna 10, Escaldes-Engordany"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Món Asiàtic"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-				]}
-				contactLink={{ label: `Teléfono: ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. La ficha solo publica el teléfono +376 845 394, que es la vía para preguntar por mesa o por el menú del día."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

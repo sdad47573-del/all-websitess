@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import fachada from '../assets/fotos/la-catedral-vertical-02.jpg';
@@ -24,7 +25,15 @@ import terraza from '../assets/fotos/la-catedral-vertical-07.jpg';
 import carne from '../assets/fotos/la-catedral-vertical-09.jpg';
 import desayuno from '../assets/fotos/la-catedral-vertical-10.jpg';
 
-import { BUSINESS, FAQ, HOURS, MAPS, MENU, MENU_NOTE, SERVICIOS } from '../data/site';
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	MENU_NOTE,
+	SERVICIOS,
+} from '../data/site';
 
 const title = 'La Catedral (Granja Diva) · Bar, cafetería y pizzas en Andorra la Vella';
 const description = BUSINESS.description;
@@ -170,6 +179,21 @@ const nav = [
 	{ label: 'Visita', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"la-catedral-vertical-07.jpg": terraza,
+	"la-catedral-apaisada-05.jpg": carta,
+	"la-catedral-vertical-06.jpg": pizza,
+	"la-catedral-vertical-01.jpg": burger,
+	"la-catedral-apaisada-03.jpg": bravas,
+	"la-catedral-apaisada-08.jpg": entrepa,
+	"la-catedral-vertical-09.jpg": carne,
+	"la-catedral-vertical-04.jpg": cervezas,
+	"la-catedral-vertical-10.jpg": desayuno,
+};
 ---
 
 <!doctype html>
@@ -227,85 +251,19 @@ const nav = [
 		/>
 
 		<main id="conteudo">
-			<LocalHero
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.city}`}
-				title="Tapes, pizzes <br /><em>i terrassa.</em>"
-				lede={`La Catedral es el bar-cafetería familiar de la Av. Dr. Mitjavila 20, en Andorra la Vella. Cocina casolana de 7:00 a 23:00, de lunes a sábado: tapes, torrades, entrepans freds i calents, pizzes, hamburgueses, plats combinats i amanides, con terraza y vistas a la montaña. La ficha de Google le da 4,5 sobre 5 con 101 reseñas.`}
-				image={terraza}
-				imageAlt="Terraza de La Catedral con bocadillos y patatas fritas en la mesa y las montañas de Andorra al fondo"
-				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: '<b>4,5</b> en Google · 101 reseñas' },
-					{ label: 'Horario', html: '<b>7:00–23:00</b><br />Lunes a sábado · domingo cerrado' },
-					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b> pedidos y consultas` },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Señas de La Catedral" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Un racó familiar <br /><em>a Andorra la Vella.</em>"
-				paragraphs={[
-					'La Catedral (Granja Diva) está en el número 20 de la Av. Dr. Mitjavila, local 2, en el centro de Andorra la Vella. Es un bar-cafetería de barrio con terraza: sillas y sombrillas con el logo de la casa, mesas frente a la montaña y un cartel con la carta completa junto a la puerta.',
-					'La propia casa lo cuenta así: «El nostre Bar / Cafeteria La Catedral és un racó familiar on trobaràs un assortiment de tapes, pizzes, hamburgueses, amanides, etc. Tot casolà i amb productes de molt bona qualitat, però sobretot, un ambient acollidor i familiar que amb el temps s’han convertit en la nostra identitat».',
-					'La carta es larga y va de la barra a la mesa: tapas de jamón ibérico, queso manchego, calamares o patatas bravas; torrades y bocadillos fríos y calientes; pizzas de masa fina; hamburguesas con huevo frito y bacon; platos combinados con dos huevos; ensaladas y espárragos. Todo con precios de barrio.',
-					'Abre de 7:00 a 23:00 de lunes a sábado y cierra el domingo. Google le da 4,5 sobre 5 con 101 reseñas y marca que se admiten perros. La ficha indica acceso y asientos adaptados, pero no aparcamiento adaptado. Se puede llamar para encargar por teléfono.',
-				]}
-				note="La información sale de la ficha pública de Google Maps, de la web oficial del local y de la carta que aparece en las fotografías del perfil. Precios y disponibilidad pueden cambiar: confírmalos al pedir."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Web oficial', href: BUSINESS.website, external: true },
-				]}
-			/>
-
-			<LocalMenu
-				eyebrow="La carta"
-				title="Tapes, pizzes <br /><em>i entrepans.</em>"
-				description="La carta está expuesta en la entrada del local, escrita en catalán. Estos son los platos y precios tal como aparecen en la fotografía del perfil de Google."
-				cta={{ label: 'Ver la carta en Google Maps', href: MAPS.place }}
-				groups={MENU}
-				note={MENU_NOTE}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="Nueve fotos <br /><em>de La Catedral.</em>"
-				description="La terraza con las montañas, la carta de la entrada, las pizzas, las hamburguesas, los bocadillos, las bravas y la mesa del desayuno."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dínoslo y la borramos."
-			/>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="Ven a la <br /><em>avinguda.</em>"
-				addressLines={[
-					BUSINESS.street,
-					`${BUSINESS.postalCode} ${BUSINESS.city}`,
-					'Andorra',
-				]}
-				hours={HOURS}
-				hoursCaption="Horario"
-				hoursNote="Horario publicado en la ficha de Google: de 7:00 a 23:00 de lunes a sábado, con el domingo cerrado. Al abrir a las 7:00 sirve cafés y desayunos, y la cocina sigue hasta la noche. En festivos puede cambiar; llama antes si vas en día señalado."
-				mapTitle="Mapa de La Catedral en la Av. Dr. Mitjavila 20, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="La Catedral"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha de Google', href: MAPS.place, external: true },
-					{ label: 'Web oficial', href: BUSINESS.website, external: true },
-				]}
-				contactLink={{ label: `Llamar: ${BUSINESS.phone}`, href: `tel:${BUSINESS.phoneHref}` }}
-				reserveNote="No hay reservas ni pedidos en línea en esta página. El teléfono es el canal directo que publica la ficha, y la web oficial también invita a llamar para encargar. La terraza se ocupa por orden de llegada."
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
 		</main>
 
 		<LocalFooter

@@ -11,6 +11,7 @@ import {
 	LocalSeo,
 	LocalTopbar,
 	LocalVisit,
+	LocalSecciones,
 } from '@astro-components';
 
 import patatas from '../assets/fotos/super-pollastre-vertical-02.jpg';
@@ -154,6 +155,16 @@ const nav = [
 	{ label: 'Visitar', href: '#visitanos' },
 	{ label: 'Preguntas', href: '#preguntas' },
 ];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"super-pollastre-vertical-02.jpg": patatas,
+	"super-pollastre-apaisada-04.jpg": mostrador,
+	"super-pollastre-apaisada-01.jpg": bollos,
+	"super-pollastre-apaisada-05.jpg": bandeja,
+};
 ---
 
 <!doctype html>
@@ -223,124 +234,19 @@ const nav = [
 		/>
 
 		<main id="contenido">
-			<LocalHero
-				eyebrow="Av. de Santa Coloma, 8 · Andorra la Vella"
-				title="Pollo asado <br /><em>para llevar.</em>"
-				lede={`Super Pollastre es el asador de la Avenida de Santa Coloma, en Andorra la Vella: medio pollastre y alas recién hechos, patatas con salsa y una bandeja de bollería en el mismo mostrador. La ficha de Google le da ${RATING.label} sobre 5 con ${RATING.count} reseñas. Abre de martes a domingo de 9:00 a 16:00 y vuelve por la noche desde las 18:30; el lunes cierra.`}
-				image={patatas}
-				imageAlt="Plato de patatas con salsa de Super Pollastre"
-				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
-				facts={[
-					{ label: 'Nota', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
-					{ label: 'Horario', html: '<b>9:00–16:00</b> · y 18:30–23:00' },
-					{ label: 'Servicio', html: '<b>Para llevar</b> · y en el local' },
-				]}
-				galleryHref={MAPS.place}
-				photoCredit="Foto del perfil de Google Maps"
-				galleryLinkLabel="Ver la galería"
-				tag="Pollo al horno"
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
 			/>
-
-			<LocalChips label="Lo que ofrece Super Pollastre" items={SERVICIOS} />
-
-			<LocalAbout
-				label="La casa"
-				title="Avenida de Santa Coloma. <br /><em>Pollo y bollería.</em>"
-				paragraphs={[
-					'Super Pollastre está en la Avenida de Santa Coloma, 8, en Andorra la Vella, a pocos minutos del centro. La ficha de Google sitúa el local en las coordenadas 42.5047195, 1.5147543. El teléfono es un fijo andorrano, el +376 868 068.',
-					'Dentro se ve el mostrador de acero, la pared blanca con un barril de Campillo de adorno, el calendario de la pared y el cartel de la casa con el medio pollastre y las alas junto a los refrescos. Encima del mostrador, el cartel anuncia lo que se vende ese día.',
-					'En el perfil de Google hay dos bandejas de bollería recién horneada: napolitanas y bollos de chocolate espolvoreados de azúcar, de las que se venden en el mismo mostrador. También aparece un plato de patatas en dados con salsa rosa, servido sobre papel de «Bon Appétit», que es la guarnición clásica del pollo asado.',
-					`La ficha es pequeña: ${RATING.count} reseñas y una media de ${RATING.label} sobre 5 (noviembre de 2026). Google lo clasifica como restaurante y no publica carta con precios ni web propia. Para saber qué hay cada día en el mostrador, lo práctico es llamar al ${BUSINESS.phone}.`,
-				]}
-				note="La ficha no publica carta, precios ni datos de accesibilidad. Lo que aparece en esta página es lo que dice la ficha y lo que se reconoce en las fotos del perfil; el importe del pollo y de las alas se confirma en el mostrador."
-				links={[
-					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
-					{ label: 'Ver las fotos', href: '#galeria' },
-				]}
-			/>
-
-			<section class="highlight-strip" aria-labelledby="highlights-title">
-				<div class="wrap">
-					<p class="section-label section-label-light"><span aria-hidden="true"></span> Del horno</p>
-					<h2 id="highlights-title">Pollo, patatas <br /><em>y bollos.</em></h2>
-					<ul class="highlights">
-						{
-							HIGHLIGHTS.map((item, index) => (
-								<li>
-									<span class="highlight-mark" aria-hidden="true">
-										0{index + 1}
-									</span>
-									<h3>{item.title}</h3>
-									<p>{item.text}</p>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</section>
-
-			<LocalMenu
-				eyebrow="El mostrador"
-				title="Pollo, guarnición <br /><em>y bollería.</em>"
-				description="Sin carta publicada: esta lista reúne lo que anuncia el cartel del mostrador y lo que se reconoce en las fotos del perfil de Google. El pollo se vende por piezas y para llevar."
-				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				groups={MENU}
-				note={`Los encargos se hacen por teléfono, en el ${BUSINESS.phone}. El pollo se prepara al momento, así que conviene llamar con tiempo si se quiere para una hora concreta. Los precios están en el cartel del mostrador.`}
-			/>
-
-			<LocalGallery
-				eyebrow="Fotos de Google Maps"
-				title="El mostrador, las patatas <br /><em>y la bollería.</em>"
-				description="Cuatro fotografías del perfil de Super Pollastre: el plato de patatas con salsa, el cartel del mostrador con el medio pollastre y las alas, y dos bandejas de bollería recién horneada."
-				images={galeria}
-				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
-				note="Imágenes alojadas en esta página y provenientes del perfil del establecimiento en Google Maps. Si tienes los derechos de alguna y quieres retirarla, dilo y la eliminamos."
-			/>
-
-			<section class="rating-section" aria-labelledby="rating-title">
-				<div class="wrap rating-grid">
-					<div class="rating-copy">
-						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
-						<h2 id="rating-title">3,8 sobre 5, <em>con 17 reseñas.</em></h2>
-						<p>
-							Google publica una media de 3,8 con 17 opiniones (noviembre de 2026). Es una ficha
-							pequeña, de un local de barrio: todavía no hay suficientes reseñas para sacar
-							conclusiones, así que aquí no se citan frases sueltas.
-						</p>
-						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
-							Ver las reseñas en Google <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-					<div class="rating-badge" aria-hidden="true">
-						<strong>3,8</strong>
-						<span>★★★★☆</span>
-						<small>17 reseñas<br />en Google</small>
-					</div>
-				</div>
-			</section>
-
-			<LocalVisit
-				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
-				title="En Andorra la Vella, <br /><em>Santa Coloma.</em>"
-				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Principado de Andorra']}
-				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
-				hoursCaption="Horario"
-				hoursNote={`Horario publicado en la ficha de Google: de 9:00 a 16:00 y de 18:30 a 23:00 de martes a jueves y el domingo; viernes y sábado la noche llega hasta las 24:00; lunes cerrado. ${HORARIO_AVISO}`}
-				mapTitle="Mapa de Super Pollastre en la Avenida de Santa Coloma, Andorra la Vella"
-				mapEmbedUrl={MAPS.embed}
-				mapLabel="Av. de Santa Coloma, 8 · Andorra la Vella"
-				mapHref={MAPS.place}
-				links={[
-					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
-					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
-					{ label: 'Vista de la calle', href: MAPS.streetView, external: true },
-				]}
-				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
-				reserveNote={`El pollo se encarga por teléfono, en el ${BUSINESS.phone}: el local no tiene web propia ni pedidos online, y la ficha no anuncia reparto a domicilio. La ficha no publica datos de accesibilidad, así que conviene preguntarlos en la misma llamada.`}
-			/>
-
-			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pedir.</em>" />
 		</main>
 
 		<LocalFooter
