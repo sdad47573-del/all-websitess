@@ -47,14 +47,28 @@ columna `web_actual`, como las que había antes.
 - Las 80 restantes solo tienen `dist/`, así que su canonical no se puede
   corregir desde este repositorio.
 
-## Proxy por ruta (opcional)
+## Servir la web en el dominio principal
 
-`https://www.sur-digital.com/api/proxy/<slug>/…` sigue sirviendo la web del
-cliente dentro del dominio principal, reescribiendo sus rutas absolutas y su
-dominio. Las reglas públicas `/<slug>` de `vercel.json` reescriben a ese
-endpoint, pero el despliegue actual de producción responde 404 en `/<slug>`:
-hasta que se despliegue el `vercel.json` vigente, usa el despliegue del cliente
-o `/api/proxy/<slug>/` directamente.
+`https://www.sur-digital.com/<slug>/…` sirve la web del cliente dentro de
+`sur-digital.com`: pide su despliegue, reescribe las rutas absolutas, los
+`srcset`, los assets y su propio dominio, y devuelve la página con 200. La URL
+no cambia, así que el cliente y su web se ven en el mismo dominio.
+
+El enrutado vive en Astro, no en `vercel.json`:
+
+- `src/pages/[...path].ts` atiende `/<slug>/…` y llama al proxy.
+- `src/lib/proxy.ts` hace la descarga y la reescritura.
+- `src/pages/api/proxy/[...path].ts` mantiene `/api/proxy/<slug>/…` como puerta
+  de depuración para una web concreta.
+
+Hubo 198 reglas `rewrites` por slug en `vercel.json` y no funcionaban: con
+Astro, Vercel solo aplica esos rewrites a ficheros estáticos (su propia
+documentación lo dice), y el resto se lo comía la ruta del 404 del adaptador.
+Por eso se retiraron; si se vuelven a añadir, `/<slug>` seguirá dando 404.
+
+El 404 del sitio (`src/pages/404.astro`) es on-demand a propósito: la ruta
+catch-all le reescribe los slugs que no son de ningún cliente y Astro no
+permite reescribir a una página prerenderizada.
 
 ## Comprobar
 
