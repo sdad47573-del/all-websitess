@@ -1,5 +1,5 @@
-import { describe, expect, test } from "bun:test";
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
+import { afterAll, beforeAll, describe, expect, setDefaultTimeout, test } from "bun:test";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 // Pruebas de humo del hero 3D en un navegador real. El 3D ya no se descarga al
@@ -9,15 +9,21 @@ import { join } from "node:path";
 // inicial se queda en el póster, el ratón arranca el 3D y en táctil lo arranca
 // el primer toque. Sin Chrome instalado se saltan (CHROME_PATH para apuntar a
 // uno concreto).
+//
+// Se ejecutan contra `astro dev`, no contra un build: el sitio tiene una ruta
+// de servidor y su build exige el adaptador de Vercel, que en Windows falla al
+// empaquetar funciones (EPERM en un symlink). El hero es código de cliente, así
+// que el comportamiento es el mismo sin compilar.
 
 const APP_ROOT = join(import.meta.dir, "..");
-const DIST = join(APP_ROOT, "dist");
-const HOME_FILE = join(DIST, "i18n", "es", "index.html");
-const PAGE_PATH = "/i18n/es/index.html";
+const PAGE_PATH = "/";
 const MODEL_PATH = "/models/logo-sur-digital.glb";
-const COMPONENT_FILE = join(APP_ROOT, "src", "components", "Logo3D.astro");
 // Bajo .tmp/chrome/, que ya está ignorado junto al resto de perfiles de Chrome.
 const PROFILES = join(APP_ROOT, ".tmp", "chrome");
+// Puerto propio para no chocar con el 4321 que usa `astro dev` a mano ni con
+// el que levanta Playwright en los e2e.
+const DEV_PORT = 4331;
+const DEV_ORIGIN = `http://localhost:${DEV_PORT}`;
 
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
@@ -37,27 +43,62 @@ type CdpClient = Awaited<ReturnType<typeof connectCdp>>;
 type Page = (method: string, params?: Record<string, unknown>) => Promise<any>;
 type HeroState = { canvasVisible: boolean; errorShown: boolean };
 
-// El build tarda más de minuto: solo se recompila si dist no existe o si el
-// componente es más nuevo, para que la prueba no valide HTML viejo.
-function ensureBuild() {
-  const stale =
-    !existsSync(HOME_FILE) ||
-    statSync(COMPONENT_FILE).mtimeMs > statSync(HOME_FILE).mtimeMs;
+// `bun run dev` lanza astro como proceso hijo: matar solo al padre deja el
+// servidor escuchando. En Windows hay que matar el árbol entero.
+function stopDev(pid: number) {
+  if (process.platform === "win32") {
+    Bun.spawnSync(["taskkill", "/pid", String(pid), "/T", "/F"], {
+      stdout: "ignore",
+      stderr: "ignore",
+    });
+    return;
+  }
 
-  if (!stale) return;
-
-  console.log("hero3d: dist no existe o es anterior a Logo3D.astro, compilando…");
-  const build = Bun.spawnSync({
-    cmd: ["bun", "run", "build"],
-    cwd: APP_ROOT,
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-
-  if (build.exitCode !== 0) {
-    throw new Error(`astro build ha fallado:\n${build.stderr.toString().slice(-2000)}`);
+  try {
+    process.kill(-pid, "SIGTERM");
+  } catch {
+    // El proceso ya no existe.
   }
 }
+
+// Un único `astro dev` para toda la suite: arrancarlo cuesta unos segundos y
+// cada prueba abre su propio Chrome.
+async function startDev() {
+  const dev = Bun.spawn(["bun", "run", "dev", "--port", String(DEV_PORT)], {
+    cwd: APP_ROOT,
+    stdout: "ignore",
+    stderr: "ignore",
+    detached: process.platform !== "win32",
+  });
+
+  const deadline = Date.now() + 90_000;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(`${DEV_ORIGIN}${PAGE_PATH}`);
+      if (response.ok) return { stop: () => stopDev(dev.pid) };
+    } catch {
+      // El servidor todavía no acepta conexiones.
+    }
+    await Bun.sleep(250);
+  }
+
+  stopDev(dev.pid);
+  throw new Error("astro dev no ha arrancado para las pruebas del hero 3D");
+}
+
+// Cada prueba reserva 120 s y la de arranque entra dentro de ese margen.
+setDefaultTimeout(120_000);
+
+let dev: { stop: () => void } | undefined;
+
+beforeAll(async () => {
+  if (!chromePath) return;
+  dev = await startDev();
+});
+
+afterAll(() => {
+  dev?.stop();
+});
 
 async function fetchJson(url: string) {
   const deadline = Date.now() + 15_000;
@@ -131,22 +172,6 @@ async function waitForDebugPort(profile: string) {
   }
 
   throw new Error("Chrome no ha publicado DevToolsActivePort");
-}
-
-function serveDist() {
-  return Bun.serve({
-    port: 0,
-    async fetch(request) {
-      const pathname = decodeURIComponent(new URL(request.url).pathname);
-
-      for (const candidate of [join(DIST, pathname), join(DIST, pathname, "index.html")]) {
-        const file = Bun.file(candidate);
-        if (await file.exists()) return new Response(file);
-      }
-
-      return new Response("No encontrado", { status: 404 });
-    },
-  });
 }
 
 const READ_HERO = `(() => {
@@ -258,12 +283,10 @@ async function withHeroPage(
   body: (hero: { page: Page; events: CdpEvent[] }) => Promise<void>,
   beforeNavigate?: (page: Page) => Promise<void>
 ) {
-  ensureBuild();
   const profile = join(PROFILES, profileName);
   rmSync(profile, { recursive: true, force: true });
   mkdirSync(profile, { recursive: true });
 
-  const server = serveDist();
   const chrome = Bun.spawn(
     [
       chromePath as string,
@@ -299,7 +322,7 @@ async function withHeroPage(
     await page("Runtime.enable");
     await page("Network.enable");
     await beforeNavigate?.(page);
-    await page("Page.navigate", { url: `${server.url.origin}${PAGE_PATH}` });
+    await page("Page.navigate", { url: `${DEV_ORIGIN}${PAGE_PATH}` });
 
     await body({ page, events: browser.events });
 
@@ -314,7 +337,6 @@ async function withHeroPage(
       // Chrome ya puede estar cerrado.
     }
     chrome.kill();
-    server.stop(true);
 
     // Windows tarda en soltar los archivos del perfil: si se borra al
     // instante da EBUSY y el fallo de limpieza taparía el resultado real.
