@@ -98,7 +98,14 @@ export const proxy = async (
 		return new Response('Bad request', { status: 400 });
 	}
 
-	const target = `${origin}/${segments.join('/')}${new URL(request.url).search}`;
+	// La barra final se conserva al pedir el origen: muchos despliegues (Netlify,
+	// Vercel) canonicalizan `/pagina` → `/pagina/` con un 301. Pidiendo siempre
+	// sin barra, ese 301 se reescribía justo a la URL pública que acababa de
+	// entrar y el navegador quedaba en un bucle de redirecciones.
+	const url = new URL(request.url);
+	const path = segments.join('/');
+	const trailingSlash = path && url.pathname.endsWith('/') ? '/' : '';
+	const target = `${origin}/${path}${trailingSlash}${url.search}`;
 
 	let upstream: Response;
 	try {

@@ -2,6 +2,16 @@
 // Clientes reales con web publicada. Datos y capturas en data/portfolio.
 import { Image } from "astro:assets";
 import { PORTFOLIO } from "../data/portfolio";
+import { ORIGINS } from "../data/proxy-origins";
+
+// Las tarjetas enlazan a la web del cliente servida por el proxy (/<slug>/), no
+// al despliegue original: la visita no sale del dominio y el enlace no depende
+// de que el proyecto del cliente siga publicado en su URL de Vercel o Netlify.
+// El slug sale de proxy-origins, que es la única lista de clientes proxeados.
+const PROXY_PATH_BY_ORIGIN = new Map(
+  Object.entries(ORIGINS).map(([slug, origin]) => [origin, `/${slug}/`]),
+);
+const proxyPath = (url: string) => PROXY_PATH_BY_ORIGIN.get(url) ?? url;
 
 // Categorías en el orden en que se pintan los filtros. Se cuentan sobre los
 // propios datos para que un proyecto nuevo no obligue a tocar esta lista.
@@ -113,7 +123,7 @@ const slugify = (s: string) =>
             ].join(" ")}
           >
             <a
-              href={url}
+              href={proxyPath(url)}
               target="_blank"
               rel="noopener noreferrer"
               class="group flex flex-1 flex-col focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
@@ -205,7 +215,7 @@ const slugify = (s: string) =>
               data-title={title}
               data-sector={sector}
               data-description={description}
-              data-url={url}
+              data-url={proxyPath(url)}
               data-tags={tags.join("|")}
               aria-haspopup="dialog"
               aria-controls="portfolio-quick-view"
