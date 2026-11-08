@@ -1,5 +1,5 @@
-import { getImage } from '@astro-components';
-import HeroPjImg from '@assets/hero-pj.webp';
+import { getImage } from '../@astro-components/index.ts';
+import HeroPjImg from '../@assets/hero-pj.webp';
 
 // Variantes del hero (foto del abogado). Fuente única compartida por el
 // <picture> de Hero1.astro y los <link rel="preload"> de index.astro: como

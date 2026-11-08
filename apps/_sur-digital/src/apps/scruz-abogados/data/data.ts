@@ -1,8 +1,8 @@
 import type { ImageMetadata } from 'astro';
-import familiaImg from '@assets/familia.png';
-import traficoImg from '@assets/abogados-de-accidentes-e-indemnizaciones-min-1.png';
-import herenciasImg from '@assets/abogados-de-herencias-y-patrimonios-min.png';
-import divorciosImg from '@assets/abogados-especialistas-en-divorcios-baratos-min.png';
+import familiaImg from '../@assets/familia.png';
+import traficoImg from '../@assets/abogados-de-accidentes-e-indemnizaciones-min-1.png';
+import herenciasImg from '../@assets/abogados-de-herencias-y-patrimonios-min.png';
+import divorciosImg from '../@assets/abogados-especialistas-en-divorcios-baratos-min.png';
 import { SERVICES } from './SERVICES';
 
 // Iconos de las cuatro tarjetas del hero. Viven aquí y no en SERVICES porque

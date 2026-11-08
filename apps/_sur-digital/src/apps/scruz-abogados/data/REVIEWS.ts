@@ -23,7 +23,7 @@
  * página: por eso solo se marca lo que la web pinta (SHOWN_REVIEWS).
  */
 import type { ImageMetadata } from 'astro';
-import elizabethBluImg from '@assets/resena-elizabeth-blu.png';
+import elizabethBluImg from '../@assets/resena-elizabeth-blu.png';
 
 export interface GoogleReview {
 	/** Nombre del autor tal y como aparece en Google Maps. */

@@ -13,27 +13,19 @@
  * - Horario detallado, carta completa, precios y valoración.
  */
 
-import fotoPortada from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-01.jpg';
-import fotoCentro from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-02.jpg';
-import fotoBarra from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-03.jpg';
-import fotoSala from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-04.jpg';
-import fotoExtra1 from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-05.jpg';
-import fotoExtra2 from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-06.jpg';
-import fotoExtra3 from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-07.jpg';
-import fotoExtra4 from '../assets/fotos/restaurante-zoobotanico-jerez-apaisada-08.jpg';
 import logo from '../assets/fotos/restaurante-zoobotanico-jerez-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoBarra,
-	fotoCalle: fotoSala,
-	fotoExtra1,
-	fotoExtra2,
-	fotoExtra3,
-	fotoExtra4,
+	fotoFachada: logo,
+	fotoInterior: logo,
+	fotoCejas: logo,
+	fotoCalle: logo,
+	fotoExtra1: logo,
+	fotoExtra2: logo,
+	fotoExtra3: logo,
+	fotoExtra4: logo,
 	logo,
-};
+};82688268
 
 const GOOGLE_MAPS =
 	'https://www.google.com/maps/place/Restaurante+Zoobot%C3%A1nico+Jerez/@36.6907296,-6.1490929,17z/data=!3m1!4b1!4m6!3m5!1s0xd0dc763580b044b:0xe59407e897fe3c!8m2!3d36.6907296!4d-6.1490929!16s%2Fg%2F11rc76_124?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D';

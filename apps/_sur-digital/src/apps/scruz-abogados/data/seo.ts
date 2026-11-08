@@ -13,8 +13,8 @@
 // Imagen social dedicada 1200x630 (generada desde 9.webp con sharp): las
 // tarjetas de WhatsApp/Twitter/Facebook recortan y degradan imágenes más
 // pequeñas; el anterior default (794x530) salía recortado en WhatsApp.
-import defaultOgImage from '@assets/OG-DEFAULT-1200x630.webp';
-import logoImg from '@assets/Recurso-2@0.5x.png';
+import defaultOgImage from '../@assets/OG-DEFAULT-1200x630.webp';
+import logoImg from '../@assets/Recurso-2@0.5x.png';
 import { SHOWN_REVIEWS } from './REVIEWS';
 import { SITE_URL, SITE_NAME, SITE_TAGLINE, SITE_LOCALE } from './site';
 
