@@ -7,6 +7,7 @@ import pagefind from "astro-pagefind";
 import { socialCards } from "./integrations/social-cards.ts";
 import { cleanUrls } from "./tools/clean-urls.ts";
 import { ORIGINS } from "./src/data/proxy-origins.ts";
+import { collectApps } from "./tools/apps-list.mjs";
 
 // Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
 // no existen como archivo (las versiones por idioma viven en /i18n/<lang>/ y la
@@ -35,12 +36,17 @@ export default defineConfig({
       // propio en su slug (/precios/, /preise/, /prices/…).
       //
       // Las webs de clientes también se anuncian: viven en el proxy
-      // (src/pages/[...path].ts), que se declara canónico en este dominio, así
-      // que Google debe descubrirlas como parte de sur-digital.com y no solo
-      // por los enlaces del portfolio.
+      // (src/pages/[...path].ts) o son apps de `apps/` ensambladas en /<slug>/
+      // (tools/apps-build.mjs), y todas se declaran canónicas en este dominio,
+      // así que Google debe descubrirlas como parte de sur-digital.com y no
+      // solo por los enlaces del portfolio. Se deduplica porque un slug puede
+      // estar en los dos sitios.
       customPages: [
         new URL("/", SITE).href,
-        ...Object.keys(ORIGINS).map((slug) => new URL(`/${slug}/`, SITE).href),
+        ...
+          [...new Set([...Object.keys(ORIGINS), ...collectApps().map(({ name }) => name)])].map(
+            (slug) => new URL(`/${slug}/`, SITE).href
+          ),
       ],
     }),
     pagefind(),
