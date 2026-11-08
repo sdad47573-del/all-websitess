@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, IMAGES } from '../data/site';
+
+const estrellas = [1, 2, 3, 4, 5];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<section id="inicio" class="relative isolate overflow-hidden text-white">
+	<div class="absolute inset-0">
+		<Image
+			src={IMAGES.fotoApaisada1}
+			alt="Restaurante La Parrilla, en Plasencia"
+			widths={[640, 1100, 1600]}
+			sizes="100vw"
+			quality={70}
+			loading="eager"
+			fetchpriority="high"
+			class="h-full w-full object-cover"
+		/>
+		<div class="from-neutral/95 via-neutral/75 absolute inset-0 bg-gradient-to-t to-neutral/35"></div>
+	</div>
+
+	<div class="relative mx-auto max-w-7xl px-4 pt-16 pb-36 sm:px-6 sm:pt-24 sm:pb-44 lg:px-8">
+		<p class="text-accent inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold tracking-[0.22em] uppercase">
+			<span>
+				<i class="ri-map-pin-line"></i> Plasencia · Cáceres
+			</span>
+			<span class="text-white/50">Brasa y terraza</span>
+		</p>
+
+		<h1 class="font-display mt-5 max-w-3xl text-6xl leading-[0.9] sm:text-7xl lg:text-8xl" set:html={piezas.portada.titulo} />
+
+		<p class="mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+			Carnes y pescados a la brasa en la Avenida de Salamanca. Cochinillo, cordero, chuletón y
+			pulpo, con terraza y una cocina que trabaja producto de mercado.
+		</p>
+
+		<div class="mt-7 flex flex-wrap items-center gap-3">
+			<a
+				href={BUSINESS.googleMaps}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="badge badge-lg gap-2 border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white"
+			>
+				<span class="text-accent tracking-tight" aria-hidden="true">
+					{estrellas.map((n) => (
+						<i class={n <= Math.round(BUSINESS.rating) ? 'ri-star-fill' : 'ri-star-line'} />
+					))}
+				</span>
+				{BUSINESS.rating.toString().replace('.', ',')} · {BUSINESS.reviewCount} reseñas en Google
+			</a>
+		</div>
+
+		<div class="mt-8 flex flex-wrap gap-3">
+			<a href={BUSINESS.phoneHref} class="btn btn-secondary btn-lg gap-2 rounded-full">
+				<i class="ri-phone-line text-xl"></i>
+				{BUSINESS.phone}
+			</a>
+			<a
+				href={BUSINESS.googleMaps}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn btn-lg gap-2 rounded-full border-white/35 bg-transparent text-white hover:border-white hover:bg-white hover:text-neutral"
+			>
+				<i class="ri-google-fill"></i>
+				Ver ficha de Google
+			</a>
+		</div>
+	</div>
+
+	<div class="cenefa-parrilla relative h-3 w-full"></div>
+</section>
+
+<div class="relative z-10 mx-auto -mt-24 max-w-6xl px-4 sm:-mt-28 sm:px-6 lg:px-8">
+	<dl class="border-base-300 bg-base-100 text-base-content grid divide-y divide-base-200 rounded-2xl border shadow-xl sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+		<div class="p-6">
+			<dt class="text-base-content/50 text-[0.65rem] tracking-[0.18em] uppercase">Comidas</dt>
+			<dd class="mt-1 text-base font-bold">Desde las 13:00</dd>
+			<dd class="text-base-content/60 text-xs">Cenas jueves a sábado · martes cerrado</dd>
+		</div>
+		<div class="p-6">
+			<dt class="text-base-content/50 text-[0.65rem] tracking-[0.18em] uppercase">Dónde</dt>
+			<dd class="mt-1 text-base font-bold">{BUSINESS.street}</dd>
+			<dd class="text-base-content/60 text-xs">
+				{BUSINESS.postalCode} {BUSINESS.city}
+			</dd>
+		</div>
+		<div class="p-6">
+			<dt class="text-base-content/50 text-[0.65rem] tracking-[0.18em] uppercase">Reservas</dt>
+			<dd class="mt-1 text-base font-bold">
+				<a href={BUSINESS.phoneHref} class="hover:text-secondary">
+					{BUSINESS.phone}
+				</a>
+			</dd>
+			<dd class="text-base-content/60 text-xs">Comidas, cenas y grupos</dd>
+		</div>
+	</dl>
+</div>

@@ -1,0 +1,114 @@
+---
+import Contact from '../components/Contact.astro';
+import Fab from '../components/Fab.astro';
+import Footer from '../components/Footer.astro';
+import Topbar from '../components/Topbar.astro';
+import { breadcrumbs } from '../data/schema';
+import { BUSINESS, SERVICIOS } from '../data/site';
+import Layout from '../layouts/Layout.astro';
+
+const titulo = 'Servicios de manicuras · Sofía García, Málaga';
+const descripcion = `Manicuras, diseños de uñas y esmaltados en calle Mesonero Romanos, 10 (Teatinos, ${BUSINESS.city}), con cita previa. Tel. ${BUSINESS.phoneDisplay}.`;
+const h1 = 'Servicios de manicuras';
+
+const SECCIONES = [{ clave: 's', titulo: 'Servicios del salón', items: SERVICIOS }];
+
+const catalogoSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: `${BUSINESS.name}: servicios de manicuras`,
+	itemListElement: SECCIONES.flatMap((seccion, indiceSeccion) =>
+		seccion.items.map((item, indice) => ({
+			'@type': 'ListItem',
+			position: indiceSeccion * 100 + indice + 1,
+			item: {
+				'@type': 'Service',
+				name: item.title,
+				description: item.text,
+				areaServed: BUSINESS.city,
+				provider: { '@type': 'BeautySalon', name: BUSINESS.name },
+			},
+		})),
+	),
+};
+---
+
+<Layout
+	title={titulo}
+	description={descripcion}
+	path="/servicios"
+	keywords={`${titulo}, ${BUSINESS.district} ${BUSINESS.city}, ${BUSINESS.name}`}
+	schema={[
+		breadcrumbs([
+			{ name: 'Inicio', path: '/' },
+			{ name: h1, path: '/servicios' },
+		]),
+		catalogoSchema,
+	]}
+>
+	<Topbar base="/" />
+	<main>
+		<section class="hero-totalbeauty text-white">
+			<div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+				<nav class="mb-6 text-xs text-white/60" aria-label="Migas de pan">
+					<a href="/sofia-garcia-total-beauty/" class="hover:text-accent">Inicio</a><span class="mx-2">/</span><span
+						class="text-white/90">{h1}</span
+					>
+				</nav>
+				<span class="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
+					{BUSINESS.district} · {BUSINESS.city}
+				</span>
+				<h1 class="font-display mt-3 text-4xl font-bold sm:text-5xl">{h1}</h1>
+				<p class="font-display mt-3 text-xl font-semibold text-white/85">
+					{BUSINESS.name}, en {BUSINESS.city}
+				</p>
+				<p class="mt-5 max-w-2xl leading-relaxed text-white/75">
+					El salón atiende con cita previa de lunes a viernes. Llama antes de venir para reservarte
+					hora.
+				</p>
+				<div class="mt-8 flex flex-wrap gap-3">
+					<a href={BUSINESS.phoneHref} class="btn btn-secondary gap-2 rounded-full">
+						<i class="ri-phone-line"></i> Llamar al {BUSINESS.phoneDisplay}
+					</a>
+					<a
+						href="/sofia-garcia-total-beauty/#contacto"
+						class="btn btn-outline hover:text-neutral rounded-full border-white/40 bg-white/5 text-white hover:border-white hover:bg-white"
+					>
+						<i class="ri-map-pin-line"></i> Cómo llegar
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<div class="bg-base-200 py-14 sm:py-20">
+			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				{
+					SECCIONES.map((seccion) => (
+						<div class="mb-14 last:mb-0">
+							<h2 class="font-display text-3xl font-bold sm:text-4xl">{seccion.titulo}</h2>
+							<div class="totalbeauty-divider mt-4 h-px w-24" />
+							<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								{seccion.items.map((item, index) => (
+									<article
+										id={`${seccion.clave}-${index + 1}`}
+										class="etiqueta-totalbeauty rounded-box border-base-300 bg-base-100 border p-6"
+									>
+										<h3 class="font-display flex items-center gap-3 text-xl font-bold">
+											<i class={`${item.icon} text-primary text-2xl`} aria-hidden="true" />
+											{item.title}
+										</h3>
+										<p class="text-base-content/65 mt-2 text-sm leading-relaxed">{item.text}</p>
+									</article>
+								))}
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<Contact />
+	</main>
+	<Footer />
+	<Fab />
+</Layout>

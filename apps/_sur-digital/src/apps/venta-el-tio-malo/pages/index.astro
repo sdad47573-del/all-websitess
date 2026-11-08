@@ -1,0 +1,492 @@
+---
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/fotos/venta-el-tio-malo-apaisada-02.jpg';
+import kitchenPhoto from '../assets/fotos/venta-el-tio-malo-vertical-01.jpg';
+import Galeria from '../components/Galeria.astro';
+import {
+	business,
+	description,
+	directionsUrl,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+} from '../lib/business';
+import '../styles/global.css';
+
+const site = business.site;
+
+const facts = [
+	{ value: '5:30–1:00', label: 'Todos los días' },
+	{ value: '4,3 ★', label: `${business.reviews} reseñas` },
+	{ value: '1961', label: 'La misma casa' },
+];
+
+const services = ['Desayunos', 'Tapas', 'Raciones', 'Fritura', 'Guisos', 'Carnes', 'Pescados', 'Postres'];
+
+const specialities = [
+	{
+		number: '01',
+		kicker: 'Desde las 5:30',
+		title: 'Desayunos de venta',
+		text: 'Jamón, tostadas y café desde primera hora. El primer turno del día, con la barra ya en marcha.',
+	},
+	{
+		number: '02',
+		kicker: 'En la barra',
+		title: 'Tapas y raciones',
+		text: 'Clásicos gaditanos para picar sin prisa. Raciones generosas y platos para compartir en el centro de la mesa.',
+	},
+	{
+		number: '03',
+		kicker: 'Recién frito',
+		title: 'Fritura de pescado',
+		text: 'Pescado fresco, coquinas y puntillitas. Una fritura ligera y crujiente, de las que se piden otra vez.',
+	},
+	{
+		number: '04',
+		kicker: 'A fuego lento',
+		title: 'Guisos y cazuelas',
+		text: 'Menudo, ajos y recetas de siempre. Cocina despacio, con el sabor de las ventas de antes.',
+	},
+	{
+		number: '05',
+		kicker: 'De la tierra y el mar',
+		title: 'Carnes y pescados',
+		text: 'Producto de la zona a la plancha, al horno o en su jugo. La cocina de todos los días, bien hecha.',
+	},
+	{
+		number: '06',
+		kicker: 'Para terminar',
+		title: 'Postres caseros',
+		text: 'El final dulce de la casa. Pregunta por lo que hay hoy: cambia con la temporada y con las manos de la cocina.',
+	},
+];
+
+const kitchenTags = ['Jamón', 'Croquetas', 'Pulpo aliño', 'Caracoles', 'Coquinas', 'Menudo', 'Postres caseros'];
+
+const faqs = [
+	{
+		q: '¿Dónde está Venta El Tío Malo?',
+		a: 'En Av. de la Ctra. Puerto de Santa María, 30, 11540 Sanlúcar de Barrameda (Cádiz), a la entrada de la ciudad.',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'Abre todos los días de 5:30 de la mañana a 1:00 de la madrugada, de forma ininterrumpida.',
+	},
+	{
+		q: '¿Qué se puede comer?',
+		a: 'Desayunos de venta, tapas y raciones, fritura de pescado, guisos, carnes, pescados y postres caseros. La carta del día se consulta en el local.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'Para grupos y celebraciones conviene llamar antes al 619 92 56 27. El resto del tiempo se puede venir sin reserva.',
+	},
+	{
+		q: '¿Desde cuándo existe la venta?',
+		a: 'Desde 1961. Más de sesenta años dando de comer en la carretera del Puerto de Santa María, en Sanlúcar de Barrameda.',
+	},
+	{
+		q: '¿Se puede pedir comida para llevar?',
+		a: 'Sí. Llama al 619 92 56 27 y te preparan el pedido para recoger en el local.',
+	},
+	{
+		q: '¿Es accesible para sillas de ruedas?',
+		a: 'Sí. El local dispone de acceso, asientos y aseo adaptados para sillas de ruedas, según los datos de su ficha de Google Maps.',
+	},
+	{
+		q: '¿Hay aparcamiento?',
+		a: 'La venta está en la carretera, con aparcamiento limitado en la zona. En horas punta conviene llegar con tiempo o preguntar por teléfono.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#182a22" />
+		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="Venta El Tío Malo, restaurante Sanlúcar de Barrameda, desayunos Sanlúcar, tapas Sanlúcar, fritura Sanlúcar, venta Cádiz"
+		/>
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/venta-el-tio-malo/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<title>Venta El Tío Malo | Cocina tradicional en Sanlúcar</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Venta El Tío Malo · Cocina de siempre en Sanlúcar" />
+		<meta
+			property="og:description"
+			content="Desayunos, tapas, fritura y guisos desde 1961. Abierto todos los días de 5:30 a 1:00 en Sanlúcar de Barrameda."
+		/>
+		<meta property="og:url" content={`${site}/`} />
+		<meta property="og:image" content={`${site}/og.jpg`} />
+		<meta property="og:image:alt" content="Venta El Tío Malo, Sanlúcar de Barrameda" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Venta El Tío Malo · Sanlúcar de Barrameda" />
+		<meta
+			name="twitter:description"
+			content="Cocina tradicional desde 1961. Desayunos, tapas, fritura y guisos. Cada día de 5:30 a 1:00."
+		/>
+		<meta name="twitter:image" content={`${site}/og.jpg`} />
+		<meta name="geo.region" content="ES-CA" />
+		<meta name="geo.placename" content="Sanlúcar de Barrameda" />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Venta El Tío Malo, inicio">
+				<span class="brand-mark" aria-hidden="true">TM</span>
+				<span class="brand-name">
+					Venta El Tío Malo
+					<small>Sanlúcar · desde 1961</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#venta">La venta</a>
+				<a href="#cocina">La cocina</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}><span aria-hidden="true">☎</span> {business.phone}</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Sanlúcar de Barrameda · Desde 1961</p>
+					<h1 id="hero-title" set:html={piezas.portada.titulo} />
+					<p class="hero-lede">
+						Desayunos, tapas, fritura y guisos en la carretera del Puerto de Santa María. Una venta familiar
+						de Sanlúcar, abierta de la mañana a la noche.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={phoneHref}>Llamar {business.phone}</a>
+						<a class="button button-ghost" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="hero-facts">
+						{facts.map((fact) => (
+							<li>
+								<b>{fact.value}</b>
+								<span>{fact.label}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<Image
+						src={heroPhoto}
+						alt="Fotografía de la Venta El Tío Malo publicada en su ficha de Google Maps"
+						widths={[640, 960, 1280]}
+						sizes="(max-width: 980px) 100vw, 54vw"
+						format="avif"
+						quality={72}
+						loading="eager"
+						decoding="async"
+					/>
+					<span class="hero-scrim" aria-hidden="true"></span>
+					<span class="hero-stamp" aria-hidden="true">Venta<br />desde 1961</span>
+					<figcaption>
+						<span>Av. de la Ctra. Puerto de Santa María, 30</span>
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios de la venta">
+				<div class="band-rating">
+					<p><b>4,3</b><span>/ 5</span></p>
+					<div>
+						<span class="stars" aria-hidden="true">★★★★★</span>
+						<small>{business.reviews} reseñas en Google</small>
+					</div>
+				</div>
+				<ul class="services">
+					{services.map((service) => <li>{service}</li>)}
+				</ul>
+				<a class="band-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+					Ficha completa <span aria-hidden="true">↗</span>
+				</a>
+			</section>
+
+			<section class="about section-pad" id="venta">
+				<div class="about-head">
+					<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+					<h2>Desde 1961,<br />en la <em>misma mesa.</em></h2>
+				</div>
+				<div class="about-grid">
+					<div class="about-copy">
+						<p>
+							En la entrada de Sanlúcar, en la carretera del Puerto de Santa María, la Venta El Tío Malo lleva
+							desde 1961 dando de comer a quien pasa, a quien vuelve y a quien se queda.
+						</p>
+						<p>
+							Cocina de venta, sin adornos: producto de la tierra y del mar, guisos que se hacen despacio y una
+							barra que a media mañana ya tiene conversación. Desayunos desde las 5:30, tapas a cualquier hora y
+							mesa puesta hasta la madrugada.
+						</p>
+						<p class="about-note">
+							La carta está en la pared y el sabor en la memoria. Si vienes por primera vez, pregunta por la
+							fritura, el menudo y los postres de la casa.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href="#cocina">Lo que se come <span aria-hidden="true">→</span></a>
+							<a class="simple-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver reseñas <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<aside class="about-card" aria-label="La venta en cifras">
+						<p class="about-quote">«La carta está en la pared.»</p>
+						<dl>
+							<div><dt>Desde</dt><dd>1961</dd></div>
+							<div><dt>Abierta</dt><dd>Todos los días</dd></div>
+							<div><dt>Horario</dt><dd>5:30 – 1:00</dd></div>
+							<div><dt>En Google</dt><dd>4,3 / 5</dd></div>
+						</dl>
+						<p class="about-card-note">Una venta de carretera con más de sesenta años de historia.</p>
+					</aside>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="cocina">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> De su casa</p>
+						<h2>Lo que sale<br /><em>de la cocina.</em></h2>
+					</div>
+					<p>
+						Desayunos de venta, tapas de siempre y platos caseros. Esta es la línea de la casa; la carta del día
+						se consulta en el local.
+					</p>
+				</div>
+				<div class="cards">
+					{specialities.map((item) => (
+						<article class="card">
+							<span class="card-number" aria-hidden="true">{item.number}</span>
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="kitchen" aria-labelledby="kitchen-title">
+				<figure class="kitchen-photo">
+					<Image
+						src={kitchenPhoto}
+						alt="Fotografía de Venta El Tío Malo publicada en su ficha de Google Maps"
+						widths={[420, 640, 860]}
+						sizes="(max-width: 900px) 100vw, 42vw"
+						format="avif"
+						quality={72}
+						loading="lazy"
+						decoding="async"
+					/>
+					<figcaption>Sanlúcar de Barrameda · Cádiz</figcaption>
+				</figure>
+				<div class="kitchen-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> A la mesa</p>
+					<h2 id="kitchen-title">La cocina<br />de <em>todos los días.</em></h2>
+					<p>
+						Aquí se viene a comer bien sin complicaciones: jamón en el desayuno, croquetas caseras, pulpo aliño,
+						caracoles, fritura con coquinas y un menudo que lleva décadas en la memoria de los clientes.
+					</p>
+					<p>
+						Producto de la zona, recetas de siempre y el ritmo de una venta que no ha dejado de servir mesas desde
+						1961.
+					</p>
+					<ul class="tags">
+						{kitchenTags.map((tag) => <li>{tag}</li>)}
+					</ul>
+					<a class="button button-line" href={phoneHref}>Llamar a la venta <span aria-hidden="true">↗</span></a>
+				</div>
+			</section>
+
+			<Galeria
+				nombre={business.name}
+				mapsUrl={mapsUrl}
+				titulo="La venta, en fotos"
+				intro="Una selección de las fotografías publicadas en la ficha de Google Maps de Venta El Tío Malo. La ficha completa reúne muchas más."
+				nota="Fotografías de la ficha pública de Google Maps, alojadas aquí para servirlas optimizadas. Los derechos pertenecen a sus autores."
+			/>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow dark"><span aria-hidden="true"></span> Sanlúcar de Barrameda</p>
+					<h2>Ven a la venta<br /><em>a cualquier hora.</em></h2>
+					<address class="address">
+						{business.street}<br />
+						{business.postalCode} {business.city}, {business.province}
+					</address>
+
+					<table class="hours">
+						<caption>Horario</caption>
+						<tbody>
+							<tr>
+								<th scope="row">Lunes a domingo</th>
+								<td>5:30 – 1:00</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="hours-note">
+						Abierto de forma ininterrumpida, según su ficha de Google Maps. En festivos y puentes conviene
+						llamar antes.
+					</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={phoneHref}>Llamar {business.phone}</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<a class="phone-link" href={phoneHref}>{business.phone}</a>
+				</div>
+
+				<div class="visit-side">
+					<div class="map-frame">
+						<iframe
+							title="Mapa de Venta El Tío Malo en Sanlúcar de Barrameda"
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen
+						></iframe>
+						<a class="map-label" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							<span aria-hidden="true">⌖</span> El Tío Malo · Sanlúcar
+						</a>
+					</div>
+					<div class="visit-card">
+						<p>
+							<b>En la carretera del Puerto de Santa María</b>
+							<span>A la entrada de Sanlúcar, con acceso directo desde la A-2001.</span>
+						</p>
+						<p>
+							<b>Comida para llevar</b>
+							<span>Llama y recoge tu pedido en el local.</span>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<div class="faq-head">
+					<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+					<h2>Antes de <em>venir.</em></h2>
+				</div>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">TM</span>
+				<p>
+					Venta El Tío Malo
+					<small>{business.street} · {business.city}</small>
+				</p>
+			</div>
+			<nav aria-label="Enlaces de la venta">
+				<a href={mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+				<a href="#inicio">Volver arriba</a>
+			</nav>
+			<small class="footer-legal">
+				© {new Date().getFullYear()} Venta El Tío Malo · Sanlúcar de Barrameda. Fotografías de la ficha pública de
+				Google Maps, con derechos de sus autores.
+			</small>
+			<p class="footer-credit">
+				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+			</p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/venta-el-tio-malo/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/venta-el-tio-malo/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/venta-el-tio-malo/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a la venta <span>{business.phone}</span>
+		</a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/venta-el-tio-malo/aviso-legal">Aviso legal</a>
+			<a href="/venta-el-tio-malo/aviso-legal#privacidad">Privacidad</a>
+			<a href="/venta-el-tio-malo/aviso-legal#cookies">Cookies</a>
+		</nav>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34619925627?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Venta." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Venta"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

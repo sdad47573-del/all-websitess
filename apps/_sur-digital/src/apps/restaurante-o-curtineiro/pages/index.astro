@@ -1,0 +1,295 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import comedor from '../assets/fotos/restaurante-o-curtineiro-apaisada-01.jpg';
+import jarrete from '../assets/fotos/restaurante-o-curtineiro-vertical-02.jpg';
+import postres from '../assets/fotos/restaurante-o-curtineiro-vista-3-03.jpg';
+import letreros from '../assets/fotos/restaurante-o-curtineiro-cuadrada-04.jpg';
+import fachada from '../assets/fotos/restaurante-o-curtineiro-apaisada-05.jpg';
+import barra from '../assets/fotos/restaurante-o-curtineiro-apaisada-06.jpg';
+import asado from '../assets/fotos/restaurante-o-curtineiro-apaisada-07.jpg';
+import potaje from '../assets/fotos/restaurante-o-curtineiro-cuadrada-09.jpg';
+import guisado from '../assets/fotos/restaurante-o-curtineiro-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const description =
+	'Restaurante O Curtiñeiro, en Praza da Fonte 6 (32740 Parada de Sil, Ourense). Cocina gallega, menú del día y raciones en la Ribeira Sacra. Terraza en la plaza. Sin reserva. Tel. 619 02 07 01.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de piedra de Restaurante O Curtiñeiro en la Praza da Fonte, con dos toldos rojos y las mesas altas de la terraza delante',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor de paredes de granito con mesas de madera vestidas, sillas con cojín rojo y un ventanuco al fondo',
+	},
+	{
+		src: barra,
+		alt: 'Interior del restaurante con vigas de madera, barra de piedra, taburetes y banderines del Celta colgados del techo',
+	},
+	{
+		src: letreros,
+		alt: 'Dos letreros de pizarra de Restaurante O Curtiñeiro sobre el muro de granito, rodeados de macetas de flores',
+	},
+	{
+		src: jarrete,
+		alt: 'Jarrete de ternera con patatas cocidas en un plato blanco',
+	},
+	{
+		src: asado,
+		alt: 'Fuente de carne asada con patatas fritas para compartir en el centro de la mesa',
+	},
+	{
+		src: guisado,
+		alt: 'Plato de carne guisada con zanahoria y patatas fritas cortadas en bastones',
+	},
+	{
+		src: potaje,
+		alt: 'Cuenco de potaje de legumbres con cuchara y un vaso de agua al lado',
+	},
+	{
+		src: postres,
+		alt: 'Bandeja de postres caseros con porciones de flan, tocino de cielo y tarta',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#o-curtineiro`,
+	name: BUSINESS.name,
+	alternateName: ['O Curtiñeiro', 'Restaurante O Curtiñeiro Parada de Sil', 'O Curtiñeiro Parada de Sil'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 619 02 07 01',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Gallega', 'Española', 'Casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Parada de Sil' },
+		{ '@type': 'AdministrativeArea', name: 'Ourense' },
+		{ '@type': 'AdministrativeArea', name: 'Galicia' },
+		{ '@type': 'AdministrativeArea', name: 'Ribeira Sacra' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '22:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante O Curtiñeiro · Cocina gallega en Parada de Sil';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-o-curtineiro-apaisada-05.jpg": fachada,
+	"restaurante-o-curtineiro-apaisada-01.jpg": comedor,
+	"restaurante-o-curtineiro-apaisada-06.jpg": barra,
+	"restaurante-o-curtineiro-cuadrada-04.jpg": letreros,
+	"restaurante-o-curtineiro-vertical-02.jpg": jarrete,
+	"restaurante-o-curtineiro-apaisada-07.jpg": asado,
+	"restaurante-o-curtineiro-apaisada-10.jpg": guisado,
+	"restaurante-o-curtineiro-cuadrada-09.jpg": potaje,
+	"restaurante-o-curtineiro-vista-3-03.jpg": postres,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7d2d28" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante O Curtiñeiro, O Curtiñeiro Parada de Sil, comer en Parada de Sil, restaurante Ribeira Sacra, menú del día Parada de Sil, cocina gallega Ourense, restaurante Praza da Fonte"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante O Curtiñeiro · Cocina gallega en Parada de Sil"
+			ogDescription="Menú del día y raciones de cocina gallega en la Praza da Fonte de Parada de Sil (Ourense). Terraza bajo los toldos rojos. Sin reserva. Tel. 619 02 07 01."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de piedra de Restaurante O Curtiñeiro con sus toldos rojos en Parada de Sil"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#7d2d28"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-GA"
+			postalCode={BUSINESS.postalCode}
+			phone="+34619020701"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/restaurante-o-curtineiro/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="O CURTIÑEIRO"
+			subtitle="Cocina gallega · Parada de Sil"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a O Curtiñeiro"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34619020701?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Parada%20de%20Sil." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Parada de Sil"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

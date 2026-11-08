@@ -1,0 +1,364 @@
+---
+import '../styles/global.css';
+import {
+	business,
+	directionsUrl,
+	facebookUrl,
+	faqSchema,
+	faqs,
+	hours,
+	instagramUrl,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	officialSiteUrl,
+	restaurantSchema,
+	dishes,
+} from '../lib/business';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Taberna El Chato | Carnes maduradas y brasa en Villarrubia';
+const description =
+	'Taberna El Chato en Villarrubia, Córdoba: carnes maduradas a la brasa, croquetas caseras de rabo de toro y cocina tradicional. Reserva mesa: 957 41 98 79.';
+const keywords =
+	'Taberna El Chato Córdoba, restaurante Villarrubia Córdoba, carnes maduradas Córdoba, carne a la brasa, croquetas de rabo de toro, taberna Villarrubia, Avenida de la Pedanía 206, reservar Taberna El Chato';
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#251e19" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-CO" />
+		<meta name="geo.placename" content="Villarrubia, Córdoba" />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/taberna-el-chato/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/og.png`} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Ilustración original de carne a la brasa para Taberna El Chato; no es una fotografía del local" />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.district} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${business.site}/og.png`} />
+		<meta name="twitter:image:alt" content="Taberna El Chato, carnes maduradas y brasa en Villarrubia" />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Taberna El Chato, inicio">
+				<span class="brand-mark" aria-hidden="true">C</span>
+				<span class="brand-name">Taberna El Chato <small>Carnes maduradas · Villarrubia</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#cocina">La taberna</a>
+				<a href="#carta">Especialidades</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="header-phone" href={phoneHref}><span aria-hidden="true">☎</span> 957 41 98 79</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow eyebrow-light"><span aria-hidden="true"></span> Villarrubia · Córdoba · Desde la brasa</p>
+					<h1 id="hero-title" set:html={piezas.portada.titulo} />
+					<p class="hero-intro">
+						Una taberna de ambiente familiar donde el fuego, las carnes maduradas y las recetas de siempre se encuentran. Empieza con unas croquetas caseras y deja que te aconsejen el corte del día.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={phoneHref}>Llamar y reservar <span aria-hidden="true">↗</span></a>
+						<a class="button button-outline-light" href={mapsUrl} target="_blank" rel="noreferrer">Ver Google Maps <span aria-hidden="true">↗</span></a>
+					</div>
+					<div class="hero-meta">
+						<div><small>Ubicación</small><address>{business.district}<br />{business.city}, Córdoba</address></div>
+						<div><small>Reservas</small><a href={phoneHref}>{business.phone}</a></div>
+					</div>
+				</div>
+				<figure class="hero-art">
+					<Image
+						src={foto('taberna-el-chato-apaisada-01.jpg')}
+						alt="Comedor de Taberna El Chato con las mesas vestidas y las parras colgando del techo"
+						widths={[640, 900, 1200]}
+						sizes="(max-width: 700px) 100vw, 50vw"
+						format="avif"
+						quality={70}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<figcaption class="art-copy">
+						<strong>Fuego y paciencia</strong>
+						<span>Maduración · Brasa · Sabor</span>
+						<span class="art-source">Fotografía de la ficha de Google Maps</span>
+					</figcaption>
+				</figure>
+			</section>
+
+			<div class="facts" aria-label="Especialidades y servicios de Taberna El Chato">
+				<span>Carnes maduradas</span>
+				<span>Parrilla y brasa</span>
+				<span>Croquetas caseras</span>
+				<span>Terraza climatizada</span>
+			</div>
+
+			<section class="story section-pad" id="cocina" aria-labelledby="story-title">
+				<div>
+					<p class="section-label"><span aria-hidden="true"></span> Taberna en Villarrubia</p>
+					<h2 id="story-title">El sabor empieza<br /><em>en el producto.</em></h2>
+				</div>
+				<div class="story-copy">
+					<p>
+						Taberna El Chato es una taberna-restaurante de Villarrubia, Córdoba, especializada en carnes maduradas y a la brasa. En su perfil oficial invitan a consultar las piezas disponibles y reservar mesa por teléfono.
+					</p>
+					<p>
+						La experiencia comienza con tapas de la casa —entre ellas, las croquetas de rabo de toro y de puchero— y continúa con cortes seleccionados que se terminan al gusto. También hay guisos y platos tradicionales para quienes prefieren sabores de siempre.
+					</p>
+					<p class="story-note">
+						Hay una diferencia de dirección entre fuentes públicas: Google Maps y directorios indican Avenida de la Pedanía, 206; la web oficial muestra Av. Concordia, 1. Confirma la ubicación exacta al llamar.
+					</p>
+				</div>
+			</section>
+
+			<section class="menu section-pad" id="carta" aria-labelledby="menu-title">
+				<div class="section-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Lo que se cuenta de la casa</p>
+						<h2 id="menu-title">De la croqueta<br /><em>al corte madurado.</em></h2>
+					</div>
+					<p>Una guía orientativa elaborada a partir de publicaciones y reseñas. La carta y la disponibilidad de cortes cambian; confirma los detalles con el restaurante.</p>
+				</div>
+				<div class="menu-grid">
+					{dishes.map((dish, index) => (
+						<article class="menu-card">
+							<small>0{index + 1} · {dish.category}</small>
+							<h3>{dish.name}</h3>
+							<p>{dish.text}</p>
+						</article>
+					))}
+				</div>
+				<p class="menu-note">Platos orientativos, no una carta completa. Consulta precios, puntos de cocción y alérgenos con el equipo. <a href={phoneHref}>Llama al 957 41 98 79</a>.</p>
+			</section>
+
+			<section class="gallery section-pad" id="fotos" aria-labelledby="gallery-title">
+				<div>
+					<p class="eyebrow eyebrow-light"><span aria-hidden="true"></span> Taberna El Chato · Villarrubia</p>
+					<h2 id="gallery-title">La taberna<br /><em>en imágenes.</em></h2>
+					<div class="gallery-copy">							<p>Estas cinco imágenes son fotografías publicadas por Taberna El Chato en su web oficial. La fotografía de portada procede de su ficha de Google Maps. Las guardamos en el sitio para que puedas verlas directamente, sin depender de terceros.</p>
+						<div class="gallery-links">
+							<a class="button button-ember" href={mapsUrl} target="_blank" rel="noreferrer">Más fotos en Google Maps <span aria-hidden="true">↗</span></a>
+							<a class="social-link" href={instagramUrl} target="_blank" rel="noreferrer">Instagram oficial ↗</a>
+							<a class="social-link" href={officialSiteUrl} target="_blank" rel="noreferrer">Web oficial ↗</a>
+						</div>
+					</div>
+				</div>
+				<div class="photo-grid" aria-label="Fotografías de la galería oficial de Taberna El Chato">
+					<figure class="photo-card photo-card-featured">
+						<Image
+							src={foto('terraza.jpg')}
+							alt="Terraza climatizada de Taberna El Chato"
+							widths={[320, 480, 640]}
+							sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+							format="avif"
+							quality={65}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Terraza climatizada</figcaption>
+					</figure>
+					<figure class="photo-card">
+						<Image
+							src={foto('bodega.jpg')}
+							alt="Bodega de vinos de Taberna El Chato"
+							widths={[320, 480, 640]}
+							sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+							format="avif"
+							quality={65}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Bodega de vinos</figcaption>
+					</figure>
+					<figure class="photo-card">
+						<Image
+							src={foto('plato.jpg')}
+							alt="Fotografía de un plato publicado en la galería de Taberna El Chato"
+							widths={[320, 480, 640]}
+							sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+							format="avif"
+							quality={65}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Desde la cocina</figcaption>
+					</figure>
+					<figure class="photo-card">
+						<Image
+							src={foto('entrada.jpg')}
+							alt="Plato fotografiado para la galería de Taberna El Chato"
+							widths={[320, 480, 640]}
+							sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+							format="avif"
+							quality={65}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Platos de la casa</figcaption>
+					</figure>
+					<figure class="photo-card">
+						<Image
+							src={foto('camara-maduracion.jpg')}
+							alt="Cámara de maduración de carnes de Taberna El Chato"
+							widths={[320, 480, 640]}
+							sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+							format="avif"
+							quality={65}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Cámara de maduración</figcaption>
+					</figure>
+				</div>
+				<p class="gallery-note">Fotografías tomadas de la <a href={officialSiteUrl} target="_blank" rel="noreferrer">galería oficial de Taberna El Chato</a> y guardadas localmente. Google Maps sigue disponible para consultar más imágenes y la ficha del negocio.</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos" aria-labelledby="visit-title">
+				<div>
+					<p class="section-label"><span aria-hidden="true"></span> Villarrubia · 14710 Córdoba</p>
+					<h2 id="visit-title">Reserva tu mesa<br /><em>junto a la brasa.</em></h2>
+					<address>{business.streetAddress}<br />{business.district}, {business.postalCode} {business.city}</address>
+					<table class="hours">
+						<caption>Horario publicado por una guía local en mayo de 2022</caption>
+						<tbody>
+							{hours.map((item) => (
+								<tr><th scope="row">{item.day}</th><td>{item.service}</td></tr>
+							))}
+						</tbody>
+					</table>
+					<p class="hours-note">Los horarios publicados pueden diferir del servicio actual. Confirma el horario y la dirección exacta con el restaurante antes de desplazarte.</p>
+					<div class="visit-actions">
+						<a class="button button-ink" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a>
+						<a class="button button-outline" href={officialSiteUrl} target="_blank" rel="noreferrer">Web oficial</a>
+					</div>
+					<a class="visit-phone" href={phoneHref}>Reservas: {business.phone}</a>
+				</div>
+				<div class="map-card">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+						title="Mapa de Taberna El Chato en Villarrubia, Córdoba"
+					 src={mapEmbedUrl}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+						<noscript>
+							<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+						</noscript>
+					</div>
+					<div class="map-label"><div><strong>{business.name}</strong><small>Villarrubia · Córdoba</small></div><a href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a></div>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.question}</summary>
+							<p>{faq.answer}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<a class="footer-brand" href="#inicio" aria-label="Taberna El Chato, volver al inicio">
+				<span class="brand-mark" aria-hidden="true">C</span>
+				<span>Taberna El Chato<small>Villarrubia · Córdoba</small></span>
+			</a>
+			<nav class="footer-nav" aria-label="Perfiles y contacto de la taberna">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={instagramUrl} target="_blank" rel="noreferrer">Instagram ↗</a>
+				<a href={facebookUrl} target="_blank" rel="noreferrer">Facebook ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} Taberna El Chato · Villarrubia, Córdoba. Consulta por teléfono la dirección, horarios, carta y disponibilidad.</small>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/taberna-el-chato/aviso-legal">Aviso legal</a>
+			<a href="/taberna-el-chato/aviso-legal#privacidad">Privacidad</a>
+			<a href="/taberna-el-chato/aviso-legal#cookies">Cookies</a>
+		</nav>
+		<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+	</footer>
+		<a class="mobile-call" href={phoneHref}>Llamar para reservar <span>957 41 98 79</span></a>
+
+						<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34957419879?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Taberna%20El%20Chato." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Taberna El Chato"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>
+
+

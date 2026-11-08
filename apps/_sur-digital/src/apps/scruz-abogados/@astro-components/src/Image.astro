@@ -1,0 +1,78 @@
+---
+import type { ImageMetadata, ImageOutputFormat } from 'astro';
+import { Image as AstroImage, Picture } from 'astro:assets';
+
+interface Props {
+	src: ImageMetadata;
+	alt: string;
+	width?: number;
+	height?: number;
+	loading?: 'eager' | 'lazy';
+	decoding?: 'async' | 'sync' | 'auto';
+	fetchpriority?: 'high' | 'low' | 'auto';
+	class?: string;
+	sizes?: string;
+	/** Formatos modernos servidos como `<source>` (por defecto AVIF). */
+	formats?: ImageOutputFormat[];
+	/** Formato del `<img>` de respaldo (por defecto WebP). */
+	fallbackFormat?: ImageOutputFormat;
+	/** Atributos extra del `<picture>`; el `style` de layout se añade aquí abajo. */
+	pictureAttributes?: Record<string, unknown>;
+	[key: string]: unknown;
+}
+
+const {
+	src,
+	alt,
+	formats = ['avif'],
+	fallbackFormat = 'webp',
+	pictureAttributes = {},
+	...rest
+} = Astro.props as Props;
+
+// Leer metadatos (`src.format`) del propio objeto marcaba la imagen como "usada
+// fuera del pipeline" (el Proxy de Astro añade el archivo a `referencedImages`
+// en cuanto se lee cualquier propiedad) y el build se quedaba con el original
+// sin referenciar: +353 KB de webp duplicados. El clon (`structuredClone`) no
+// dispara esa marca.
+const meta = (src as { clone?: ImageMetadata }).clone ?? src;
+
+// AVIF + WebP: los navegadores con AVIF (≈95 % del tráfico) cogen la `<source>`
+// avif y el resto recibe el mismo webp de siempre en el `<img>` — no hace falta
+// duplicar webp en un `<source>`, el fallback ya lo sirve.
+//
+// Medición propia con sharp 0.35 sobre los assets reales (detalle en el README):
+// a igualdad de PSNR el avif ocupa ~35-45 % de lo que pesa el webp. El avif va
+// con la calidad por defecto de sharp (50), que ya supera al webp por defecto de
+// Astro (80), así que el respaldo no pierde nada frente a como estaba.
+const isPassThrough = meta.format === 'svg' || meta.format === 'gif';
+
+// `display: contents` deja el `<img>` como caja de layout, igual que antes de
+// envolverlo en `<picture>`: sin esto el wrapper (inline) cambia el contexto
+// donde la imagen es hija de un flex/grid o lleva `absolute inset-0` (hero
+// editorial, iconos de la home, QR…).
+const pictureAttrs: Record<string, unknown> = {
+	...pictureAttributes,
+	style: pictureAttributes.style
+		? `${pictureAttributes.style}; display: contents`
+		: 'display: contents',
+};
+
+{
+	// SVG y GIF se sirven tal cual: Astro no rasteriza SVG y un GIF animado
+	// perdería el movimiento. Además, un `<source type="image/avif">` apuntando
+	// al propio svg rompería la imagen en los navegadores con AVIF.
+	isPassThrough ? (
+---
+		<AstroImage src={src} alt={alt} {...rest} />
+	) : (
+		<Picture
+			src={src}
+			alt={alt}
+			formats={formats}
+			fallbackFormat={fallbackFormat}
+			pictureAttributes={pictureAttrs}
+			{...rest}
+		/>
+	)
+}

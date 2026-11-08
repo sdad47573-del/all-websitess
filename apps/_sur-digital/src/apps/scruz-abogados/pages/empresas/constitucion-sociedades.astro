@@ -1,0 +1,307 @@
+---
+import heroImg from '@assets/1.webp';
+import { SITE_URL } from '../../data/site';
+import {
+	BadgeCheck,
+	Building2,
+	CalendarClock,
+	FileCheck,
+	FileText,
+	Gavel,
+	Handshake,
+	Info,
+	Signature,
+	Stamp,
+	Scale,
+	ShieldCheck,
+	Users,
+} from '@lucide/astro';
+import CustomLayout from '../../layouts/CustomLayout.astro';
+import ServiceBlogGuides from '../../components/ServiceBlogGuides.astro';
+import {
+	EditorialConcepts,
+	EditorialCtaFinal,
+	EditorialFAQ,
+	EditorialHero,
+	EditorialIntro,
+	EditorialProcess,
+	EditorialWhyUs,
+} from '../../components/editorial';
+
+const faqEntries = [
+	{
+		question: '¿Qué me conviene: SL o autónomo?',
+		answer:
+			'Depende del riesgo del negocio, de si hay socios y de la previsión de beneficios. La SL limita la responsabilidad al capital aportado (mínimo legal 3.000 €, y desde la Ley Crea y Crece se puede constituir con 1 €) y facilita entrar o salir de socios, pero obliga a llevar contabilidad formal y depositar las cuentas anuales. El autónomo es más barato y rápido de alta, pero responde con todo su patrimonio personal. Comparamos cuota de autónomos, Impuesto de Sociedades e IRPF con tus números reales antes de decidir.',
+	},
+	{
+		question: '¿Cuánto cuesta y cuánto tarda constituir una sociedad?',
+		answer:
+			'Entre notaría, Registro Mercantil e impuestos, una SL ordinaria suele costar entre 300 y 500 €, menos si se usan los estatutos tipo de la Ley 14/2013, que además simplifican la tramitación. En plazos: 24-48 horas por la vía exprés telemática (Documento Único Electrónico) y de 2 a 6 semanas por la vía ordinaria. Te damos presupuesto cerrado con denominación, escritura, NIF y alta censal incluidos.',
+	},
+	{
+		question: '¿Qué pasos tiene constituir una sociedad limitada?',
+		answer:
+			'1) Certificado negativo de denominación en el Registro Mercantil Central (o reserva telemática). 2) Otorgamiento de la escritura pública ante notario con los estatutos y el nombramiento de administradores. 3) Presentación de la escritura en el Registro Mercantil. 4) Obtención del NIF definitivo de la sociedad. 5) Alta censal en Hacienda (modelo 036/037) y, si va a haber socios-trabajadores, alta en el RETA. Sin esos pasos la sociedad no puede facturar.',
+	},
+	{
+		question: '¿Necesito pasar por notario o puedo constituirla online?',
+		answer:
+			'La vía ordinaria exige escritura pública ante notario, pero la Ley Crea y Crece permite constituir la SL telemáticamente con estatutos tipo y videoidentificación, sin desplazamientos. Aun así, si hay pactos entre socios, aportaciones no dinerarias o una estructura de administradores especial, conviene hacerlo ante notario con estatutos a medida: lo que se ahorra en el alta se pierde después en un conflicto societario mal regulado.',
+	},
+	{
+		question: '¿Qué son los pactos de socios y hace falta firmarlos?',
+		answer:
+			'Son los acuerdos que regulan lo que los estatutos no cubren: quién decide qué, cómo se reparten los beneficios, qué pasa si un socio quiere salir, cómo se valora su participación o qué ocurre si alguien fallece o entra en concurso. No son obligatorios, pero son la diferencia entre un desacuerdo resuelto por lo pactado y un pleito societario. Se pueden firmar junto con la constitución o más adelante; conviene revisarlos cuando cambia la proporción de participaciones.',
+	},
+	{
+		question: '¿Qué obligaciones tiene una SL una vez constituida?',
+		answer:
+			'Contabilidad ordenada conforme al Código de Comercio, depósito de las cuentas anuales en el Registro Mercantil dentro del mes siguiente a su aprobación, libro de actas y libro registro de socios al día, junta general anual en los seis primeros meses del ejercicio, impuesto de sociedades y declaraciones periódicas, y RGPD desde el primer día que trata datos de clientes o empleados. El incumplimiento de los registros societarios, además de sanción, puede acarrear la responsabilidad solidaria de los administradores.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqEntries.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+
+const heroStats = [
+	{ Icon: CalendarClock, label: 'Plazos', value: 'Desde 24-48 h' },
+	{ Icon: FileText, label: 'Precio', value: 'Presupuesto cerrado' },
+	{ Icon: ShieldCheck, label: 'Enfoque', value: 'Socios protegidos' },
+];
+
+const plazos = [
+	{
+		Icon: CalendarClock,
+		title: '2 meses',
+		description:
+			'Plazo para presentar la escritura de constitución en el Registro Mercantil desde su otorgamiento. Pasado ese plazo, hay que otorgar una nueva.',
+	},
+	{
+		Icon: Stamp,
+		title: '24-48 horas',
+		description:
+			'Vía exprés telemática (DUE con estatutos tipo): denominación, escritura, registro y NIF en uno o dos días hábiles.',
+	},
+	{
+		Icon: Gavel,
+		title: '6 meses',
+		description:
+			'Plazo para celebrar la junta general ordinaria que aprueba las cuentas de cada ejercicio: el primer ejercicio cuenta igual.',
+	},
+	{
+		Icon: Info,
+		title: '1 mes',
+		description:
+			'Plazo para depositar las cuentas anuales aprobadas en el Registro Mercantil. Fuera de plazo, el registro solo las deposita previa multa.',
+	},
+];
+
+const conceptos = [
+	{
+		Icon: Scale,
+		title: 'Elección de la forma jurídica',
+		description:
+			'SL, SLU, SA, sociedad civil, comunidad de bienes, cooperativa o SAT: comparamos responsabilidad, fiscalidad y costes de gestión con tus números, no con generalidades.',
+	},
+	{
+		Icon: FileCheck,
+		title: 'Constitución completa',
+		description:
+			'Denominación social, reserva, escritura y estatutos, NIF, alta censal y alta en el RETA de los socios-trabajadores: entregamos la sociedad lista para facturar.',
+	},
+	{
+		Icon: Handshake,
+		title: 'Pactos de socios',
+		description:
+			'Reparto de dividendos, mayorías reforzadas, régimen de salida, venta preferente y valoración de participaciones: lo acordado por escrito evita el pleito societario.',
+	},
+	{
+		Icon: Users,
+		title: 'Administradores y órganos',
+		description:
+			'Administrador único, mancomunado, solidario o consejo: elegimos la estructura que encaja con vuestro gobierno, con las funciones y las responsabilidades claras.',
+	},
+	{
+		Icon: Signature,
+		title: 'Ampliaciones y cambios posteriores',
+		description:
+			'Ampliaciones de capital, entrada y salida de socios, cambio de denominación o de domicilio y adaptación de estatutos a reformas legales como la Ley Crea y Crece.',
+	},
+	{
+		Icon: Building2,
+		title: 'Sociedades agrarias y de la comarca',
+		description:
+			'Cooperativas, SAT y comunidades de bienes de base agroalimentaria: constitución y adaptación al marco propio del sector, muy presente en Lucena y la Subbética.',
+	},
+];
+
+const pasos = [
+	{
+		number: '01',
+		title: 'Decidir la estructura',
+		description:
+			'Nos cuentas el negocio y quién va a ser socio. Te proponemos la forma jurídica y el reparto de participaciones, con el coste fiscal y de gestión de cada opción.',
+	},
+	{
+		number: '02',
+		title: 'Reservar la denominación',
+		description:
+			'Solicitamos el certificado negativo (o la reserva telemática) en el Registro Mercantil Central y preparamos los estatutos y los pactos de socios.',
+	},
+	{
+		number: '03',
+		title: 'Otorgar e inscribir',
+		description:
+			'Escritura ante notario o constitución telemática por la vía exprés. Presentamos en el Registro Mercantil y obtenemos el NIF definitivo de la sociedad.',
+	},
+	{
+		number: '04',
+		title: 'Dejarla operativa',
+		description:
+			'Alta censal en Hacienda, alta en el RETA si procede, libros societarios iniciados, contrato de alquiler del local y RGPD: la empresa puede facturar desde el primer día.',
+	},
+];
+
+const why = [
+	{
+		Icon: BadgeCheck,
+		title: 'Presupuesto cerrado desde el diagnóstico',
+		description:
+			'Sabes cuánto cuesta toda la constitución antes de empezar: notaría, registro, Hacienda y honorarios, sin sorpresas a mitad del expediente.',
+	},
+	{
+		Icon: ShieldCheck,
+		title: 'Pensada para los socios de verdad',
+		description:
+			'El 90 % de los conflictos societarios se puede regular en el alta por una décima parte de lo que cuesta el pleito después. Los pactos de socios no son un extra.',
+	},
+	{
+		Icon: Building2,
+		title: 'Conocemos el tejido local',
+		description:
+			'Sociedades de servicios, comercios, construcción y agroalimentario de Lucena, Córdoba y Málaga: sabemos qué forma jurídica aguanta cada negocio de la zona.',
+	},
+];
+
+const relatedGuides = [
+	{ label: 'Cómo crear una empresa en Andalucía', href: '/blog/crear-empresa-andalucia/' },
+	{ label: 'Verifactu y facturación electrónica', href: '/blog/verifactu-facturacion-electronica/' },
+];
+---
+
+<CustomLayout
+	title="Constitución de Sociedades en Lucena | Scruz Abogados"
+	description="Constituimos tu SL, SLU o sociedad agraria en Lucena y Córdoba: escritura, estatutos, pactos de socios, NIF y alta censal. Presupuesto cerrado: 666 329 155."
+	keywords="constitución de sociedades Lucena, crear una SL Córdoba, cuánto cuesta constituir una sociedad, abogado constitución empresas Lucena, pactos de socios, SL o autónomo, sociedad limitada online Andalucía"
+	ogImage={heroImg.src}
+	breadcrumb={[
+		{ name: 'Inicio', url: '/' },
+		{ name: 'Empresas', url: '/empresas/' },
+		{ name: 'Constitución de Sociedades', url: '/empresas/constitucion-sociedades/' },
+	]}
+	additionalSchemas={[
+		{
+			'@context': 'https://schema.org',
+			'@type': 'Service',
+			'@id': `${SITE_URL}/empresas/constitucion-sociedades/#service`,
+			url: `${SITE_URL}/empresas/constitucion-sociedades/`,
+			name: 'Constitución de sociedades',
+			description:
+				'Elección de la forma jurídica, constitución de SL y otras sociedades, pactos de socios, NIF, alta censal y RETA para empresas y autónomos.',
+			serviceType: 'Derecho mercantil y societario',
+			provider: { '@id': `${SITE_URL}/#organization` },
+			areaServed: ['Lucena', 'Córdoba', 'Málaga', 'Andalucía'],
+			isPartOf: { '@id': `${SITE_URL}/empresas/#service` },
+		},
+		faqSchema,
+	]}
+>
+	<EditorialHero
+		image={heroImg}
+		imageAlt="Abogado mercantil constituyendo una sociedad limitada en Lucena"
+		supertitle="Empresas · Constitución de sociedades"
+		description="Constituimos tu empresa con la forma jurídica correcta y los pactos de socios que evitan el conflicto: de la denominación al alta censal, con presupuesto cerrado."
+		stats={heroStats}
+	>
+		<span slot="title"
+			>Constitución de sociedades en Lucena: <span class="text-primary"
+				>tu empresa, bien fundada.</span
+			></span
+		>
+	</EditorialHero>
+
+	<EditorialIntro
+		supertitle="Mercantil societario"
+		title={'Una sociedad bien constituida <span class="text-primary">evita el pleito de mañana</span>.'}
+		factboxSupertitle="Lo que debes saber"
+		factboxTitle="Plazos y pasos del alta"
+		factboxItems={plazos}
+	>
+		<p class="mb-4">
+			Constituir una sociedad no es un trámite: es la decisión que fija quién responde con su
+			patrimonio, quién decide en cada junta y qué pasa cuando un socio quiere irse. Una SL firmada
+			con estatutos tipo y sin pactos de socios sale barata en el alta y se paga cara en el primer
+			conflicto: la mayoría de los pleitos entre socios se podía haber regulado el día de la firma.
+		</p>
+		<p class="mb-4">
+			Asesoramos a negocios de Lucena, Córdoba y Málaga en toda la vida societaria: la elección de
+			la forma jurídica con tus números reales, la constitución completa (denominación, escritura o
+			vía exprés telemática, NIF, alta censal y RETA), los pactos de socios y los cambios
+			posteriormente: ampliaciones de capital, entrada o salida de socios y adaptación de estatutos.
+		</p>
+		<p>
+			Cada expediente se presupuesta por escrito antes de empezar. Si tu empresa ya está
+			constituida, <a href="/scruz-abogados/empresas/">el área de empresas</a> cubre lo demás: laboral,
+			contratos y protección de datos.
+		</p>
+	</EditorialIntro>
+
+	<EditorialConcepts
+		supertitle="Qué hacemos por tu empresa"
+		title="Servicios societarios"
+		description="Del papel en blanco a la sociedad operativa, y de la sociedad operativa a los cambios que exige el crecimiento."
+		items={conceptos}
+	/>
+
+	<EditorialProcess
+		supertitle="Metodología"
+		title="Cómo constituimos tu sociedad"
+		items={pasos}
+	/>
+
+	<EditorialWhyUs
+		supertitle="Por qué elegirnos"
+		title="Tu empresa, fundada como una empresa."
+		items={why}
+	/>
+
+	<EditorialFAQ
+		supertitle="Preguntas frecuentes"
+		title="Dudas al crear tu sociedad"
+		description="Las preguntas que más nos hacen quienes van a montar un negocio o a formalizar una sociedad con socios."
+		items={faqEntries}
+	/>
+
+	<ServiceBlogGuides supertitle="Guías para empresas" />
+
+	<EditorialCtaFinal
+		supertitle="Hablemos de tu proyecto"
+		title={'Vas a crear tu empresa, <span class="text-primary">hazlo bien desde el día uno.</span>'}
+		description="Primera consulta gratuita y confidencial. Analizamos tu proyecto y te decimos qué forma jurídica encaja, cuánto cuesta y cuánto tarda, sin compromiso."
+		relatedLinks={[
+			...relatedGuides,
+			{ label: 'Empresas y mercantil', href: '/empresas/' },
+			{ label: 'Contratos mercantiles', href: '/empresas/contratos-mercantiles/' },
+			{ label: 'Derecho laboral de empresa', href: '/empresas/derecho-laboral/' },
+			{ label: 'Protección de datos y RGPD', href: '/empresas/proteccion-de-datos/' },
+		]}
+	/>
+</CustomLayout>

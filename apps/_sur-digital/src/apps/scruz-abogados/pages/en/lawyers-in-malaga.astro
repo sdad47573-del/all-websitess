@@ -1,0 +1,355 @@
+---
+import heroImg from '@assets/ABOGADOS-EN-LUCENA-3-980x654.webp';
+import { Clock, Mail, MapPin, Phone, Video } from '@lucide/astro';
+import CustomLayout from '../../layouts/CustomLayout.astro';
+import { SITE_URL } from '../../data/site';
+
+// Versión inglesa de /abogados-en-malaga/. No es una traducción automática: el
+// público al que sirve (expatriados y residentes extranjeros de Málaga) llega
+// con dudas distintas — idioma, atención remota, validez de documentos en
+// español —, así que el orden de la página y las FAQ son propios.
+const alternates = [
+	{ hreflang: 'es-ES', href: `${SITE_URL}/abogados-en-malaga/` },
+	{ hreflang: 'en', href: `${SITE_URL}/en/lawyers-in-malaga/` },
+	{ hreflang: 'x-default', href: `${SITE_URL}/abogados-en-malaga/` },
+];
+
+const faqEntries = [
+	{
+		question: 'Do you speak English?',
+		answer:
+			'Yes. Consultations, calls and emails are handled in English. Court filings and documents submitted to the Spanish administration must be in Spanish, and we prepare or supervise those translations so that nothing you sign is in a language you cannot check.',
+	},
+	{
+		question: 'Is the first consultation really free?',
+		answer:
+			'Yes. The first consultation is free, confidential and with no obligation, either at our office in Teatinos-Universidad or by video call. We explain the realistic options, the deadlines that apply and a written fixed-fee quote before any work starts.',
+	},
+	{
+		question: 'Can you help me if I live on the Costa del Sol?',
+		answer:
+			'Yes. Clients in Marbella, Fuengirola, Torremolinos, Benalmádena, Estepona, Antequera and Ronda are attended by video call, and we travel to the courts of Málaga province when the case requires a court appearance.',
+	},
+	{
+		question: 'How much will my case cost?',
+		answer:
+			'It depends on the procedure and on whether it is negotiated or litigated, so we do not quote over the phone. After reviewing your documents we give you a fixed fee in writing, with the disbursements identified separately. If you decide not to go ahead, you pay nothing.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqEntries.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+
+const serviceSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Service',
+	'@id': `${SITE_URL}/en/lawyers-in-malaga/#service`,
+	serviceType: 'Law firm',
+	name: 'English-speaking lawyers in Málaga',
+	description:
+		'Law firm in Teatinos-Universidad (Málaga) advising English-speaking residents and companies, in person and by video call.',
+	provider: { '@id': `${SITE_URL}/#organization` },
+	areaServed: ['Málaga', 'Costa del Sol', 'Andalucía'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'Av. de Gregorio Prieto, 27, Teatinos-Universidad',
+		addressLocality: 'Málaga',
+		addressRegion: 'Málaga',
+		postalCode: '29190',
+		addressCountry: 'ES',
+	},
+};
+
+const areas = [
+	{
+		title: 'Immigration and nationality',
+		description:
+			'Residency and work permits, renewals, family reunification, EU registration and Spanish nationality.',
+		href: '/en/immigration-and-nationality/',
+	},
+	{
+		title: 'Family law',
+		description:
+			'Divorce, separation, child custody, maintenance and modification of court-ordered measures.',
+		href: '/divorcios-separaciones/',
+	},
+	{
+		title: 'Employment law',
+		description:
+			'Unfair dismissal, severance, unpaid wages, workplace accidents and Social Security benefits.',
+		href: '/despidos/',
+	},
+	{
+		title: 'Property, contracts and debt',
+		description:
+			'Purchase and sale, rental disputes, eviction, breach of contract and debt recovery.',
+		href: '/derecho-civil/',
+	},
+	{
+		title: 'Wills and inheritance',
+		description:
+			'Spanish wills, inheritance without a will, distribution among heirs and inheritance tax.',
+		href: '/herencias-testamentos/',
+	},
+	{
+		title: 'Criminal defence',
+		description:
+			'Representation from the police station and throughout the proceedings, including urgent duty.',
+		href: '/derecho-penal/',
+	},
+];
+
+const practical = [
+	{ Icon: MapPin, label: 'Office', value: 'Av. de Gregorio Prieto, 27 · 29190 Málaga' },
+	{ Icon: Clock, label: 'Opening hours', value: 'Monday to Friday, 9:00–18:00' },
+	{ Icon: Phone, label: 'Phone and WhatsApp', value: '666 329 155 · 957 118 195' },
+	{ Icon: Video, label: 'Remote', value: 'Video calls across Spain' },
+];
+
+// La página ya avisaba de que "the linked guides are in Spanish" sin enlazar
+// ninguna guía. Estas son las que más se consultan desde Málaga y su área
+// metropolitana; van marcadas con lang/hreflang para separar idiomas.
+const guides = [
+	{
+		title: 'Alquilar un piso en Málaga',
+		description:
+			'Contrato, fianza, zona y gastos: lo que conviene revisar antes de firmar en Teatinos o en la costa.',
+		href: '/blog/alquilar-piso-malaga/',
+	},
+	{
+		title: 'Alquilar una habitación: contrato y fianza',
+		description:
+			'Normas del alquiler por habitaciones, qué debe constar por escrito y cómo se recupera la fianza.',
+		href: '/blog/alquiler-de-habitaciones/',
+	},
+	{
+		title: 'Heredar con testamento en España',
+		description:
+			'Certificado de últimas voluntades, inventario, aceptación y plazos del impuesto de sucesiones.',
+		href: '/blog/heredar-con-testamento/',
+	},
+	{
+		title: 'Despido por bajo rendimiento',
+		description:
+			'Cuándo es procedente, qué prueba exige la empresa y cómo se impugna si la causa no se sostiene.',
+		href: '/blog/despido-por-bajo-rendimiento/',
+	},
+];
+---
+
+<CustomLayout
+	title="English-Speaking Lawyers in Málaga | Scruz Abogados"
+	description="English-speaking lawyers in Málaga (Teatinos-Universidad): immigration, family, employment, property and inheritance law. Free first consultation."
+	keywords="english speaking lawyers Malaga, English solicitor Malaga, abogado Málaga inglés, immigration lawyer Malaga, expat lawyer Costa del Sol, divorce lawyer Malaga"
+	ogImage={heroImg.src}
+	lang="en"
+	alternates={alternates}
+	breadcrumb={[
+		{ name: 'Home', url: '/' },
+		{ name: 'Lawyers in Málaga (English)', url: '/en/lawyers-in-malaga/' },
+	]}
+	additionalSchemas={[serviceSchema, faqSchema]}
+>
+	<section class="bg-primary text-primary-content">
+		<div class="mx-auto max-w-6xl px-6 py-16 md:px-16 md:py-24">
+			<p class="text-warning mb-3 text-sm font-semibold uppercase tracking-wide">
+				Law firm in Málaga · Teatinos-Universidad
+			</p>
+			<h1 class="font-title mb-5 max-w-3xl text-3xl font-bold leading-tight md:text-5xl">
+				English-speaking lawyers in Málaga, next to the University.
+			</h1>
+			<p class="mb-8 max-w-2xl text-lg text-white/90">
+				Spanish law firm with an office in Teatinos-Universidad. We advise expats, students,
+				remote workers and companies in English, in person or by video call, and we tell you what
+				your case really costs before you commit.
+			</p>
+			<div class="flex flex-col gap-3 sm:flex-row">
+				<a class="btn btn-warning btn-lg" href="tel:+34666329155">
+					<Phone class="size-5" aria-hidden="true" /> Call 666 329 155
+				</a>
+				<a
+					class="btn btn-outline btn-lg !border-white !text-white hover:!bg-white hover:!text-primary"
+					href="https://wa.me/34666329155?text=Hello%2C%20I%20would%20like%20to%20book%20a%20free%20consultation%20with%20Scruz%20Abogados."
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Message on WhatsApp
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-white py-12 md:py-20">
+		<div class="mx-auto grid max-w-6xl gap-10 px-6 md:px-16 lg:grid-cols-[minmax(0,1fr)_22rem]">
+			<div class="space-y-5 text-lg leading-relaxed text-gray-700">
+				<p class="eyebrow">A Spanish firm, in your language</p>
+				<h2 class="font-title text-2xl font-bold text-gray-900 md:text-3xl">
+					Legal advice without a language barrier
+				</h2>
+				<p>
+					Our office is at <strong>Avenida de Gregorio Prieto, 27</strong>, in the
+					Teatinos-Universidad district, a few minutes from the University of Málaga and well
+					connected with the city centre and the coast. We work by appointment so that nobody
+					waits in a corridor.
+				</p>
+				<p>
+					Most of the people who contact us are residents, students, remote workers and
+					investors who can manage daily life in Spanish but do not want to sign a contract, a
+					will or a court document they cannot fully understand. We explain every step, the
+					deadlines involved and the documents that must be signed, and we keep the working
+					language in English throughout the case.
+				</p>
+				<p>
+					The first consultation is free and confidential. After reviewing your papers we give
+					you a written fixed-fee quote, with the court fees and disbursements listed
+					separately, so the final invoice holds no surprises.
+				</p>
+				<p>
+					Prefer Spanish? Read the
+					<a class="link link-primary" href="/scruz-abogados/abogados-en-malaga/" hreflang="es-ES" lang="es">
+						Spanish version of our Málaga office page</a
+					>.
+				</p>
+			</div>
+			<aside class="card-surface h-fit rounded-2xl p-6">
+				<h2 class="font-title mb-4 text-lg font-bold">Practical information</h2>
+				<ul class="space-y-4">
+					{
+						practical.map(({ Icon, label, value }) => (
+							<li class="flex items-start gap-3">
+								<Icon class="text-primary mt-0.5 size-5 shrink-0" aria-hidden="true" />
+								<div>
+									<p class="text-sm font-semibold text-gray-900">{label}</p>
+									<p class="text-sm text-gray-600">{value}</p>
+								</div>
+							</li>
+						))
+					}
+					<li class="flex items-start gap-3">
+						<Mail class="text-primary mt-0.5 size-5 shrink-0" aria-hidden="true" />
+						<div>
+							<p class="text-sm font-semibold text-gray-900">Email</p>
+							<p class="text-sm text-gray-600">
+								<a class="link link-primary" href="mailto:info@scruzabogados.es"
+									>info@scruzabogados.es</a
+								>
+							</p>
+						</div>
+					</li>
+				</ul>
+				<p class="mt-4 text-sm text-gray-600">
+					Urgent matters (detention, protection orders, accidents) are attended 24 hours a day
+					by phone or WhatsApp.
+				</p>
+			</aside>
+		</div>
+	</section>
+
+	<section class="bg-gray-50 py-12 md:py-20">
+		<div class="mx-auto max-w-6xl px-6 md:px-16">
+			<p class="eyebrow eyebrow--center mb-3">How we can help</p>
+			<h2 class="font-title mb-4 text-center text-2xl font-bold md:text-4xl">Practice areas</h2>
+			<p class="mx-auto mb-10 max-w-3xl text-center text-lg text-gray-600">
+				The areas that foreign residents ask us about most often in Málaga. The linked guides are
+				in Spanish because that is the language of the courts and the administration; we summarise
+				them for you in English during the consultation.
+			</p>
+			<div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{
+					areas.map(({ title, description, href }) => (
+						<a
+							class="card-surface group rounded-xl p-6 transition-transform hover:-translate-y-1"
+							href={href}
+						>
+							<h3 class="mb-2 text-lg font-bold text-gray-900">{title}</h3>
+							<p class="text-gray-600">{description}</p>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-white py-12 md:py-20">
+		<div class="mx-auto max-w-6xl px-6 md:px-16">
+			<p class="eyebrow eyebrow--center mb-3">Guides in Spanish</p>
+			<h2 class="font-title mx-auto mb-4 max-w-3xl text-center text-2xl font-bold md:text-4xl">
+				The practical detail, written for Spain
+			</h2>
+			<p class="mx-auto mb-10 max-w-3xl text-center text-gray-600">
+				Contracts, court filings and tax forms are in Spanish, so our guides are too. These are
+				the four that clients in Málaga ask about most often; we explain them in English during
+				the consultation.
+			</p>
+			<div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
+				{
+					guides.map(({ title, description, href }) => (
+						<a
+							class="card-surface group rounded-xl p-6 transition-transform hover:-translate-y-1"
+							href={href}
+							hreflang="es-ES"
+							lang="es"
+						>
+							<h3 class="mb-2 text-lg font-bold text-gray-900">{title}</h3>
+							<p class="text-gray-600">{description}</p>
+						</a>
+					))
+				}
+			</div>
+			<p class="mt-8 text-center">
+				<a class="link link-primary" href="/scruz-abogados/blog/" hreflang="es-ES" lang="es">
+					Ver todas las guías del blog
+				</a>
+			</p>
+		</div>
+	</section>
+
+	<section class="bg-white py-12 md:py-20">
+		<div class="mx-auto max-w-4xl px-6 md:px-16">
+			<p class="eyebrow eyebrow--center mb-3">Before you call</p>
+			<h2 class="font-title mb-8 text-center text-2xl font-bold md:text-4xl">
+				Frequently asked questions
+			</h2>
+			<div class="space-y-4">
+				{
+					faqEntries.map((item) => (
+						<details class="rounded-xl border border-gray-200 p-5">
+							<summary class="cursor-pointer font-bold text-gray-900">{item.question}</summary>
+							<p class="mt-3 leading-relaxed text-gray-700">{item.answer}</p>
+						</details>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-primary text-primary-content py-14 md:py-20">
+		<div class="mx-auto max-w-4xl px-6 text-center md:px-16">
+			<h2 class="font-title mb-4 text-2xl font-bold md:text-4xl">
+				Book your free consultation
+			</h2>
+			<p class="mx-auto mb-8 max-w-2xl text-white/90">
+				Tell us what happened and bring the documents you have — even if they are incomplete. We
+				will tell you whether you have a case, which deadline applies and what it would cost.
+			</p>
+			<div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
+				<a class="btn btn-warning btn-lg" href="tel:+34666329155">Call 666 329 155</a>
+				<a
+					class="btn btn-outline btn-lg !border-white !text-white hover:!bg-white hover:!text-primary"
+					href="mailto:info@scruzabogados.es?subject=Free%20consultation%20(English)">Email us</a
+				>
+			</div>
+			<p class="mt-8 text-sm text-white/70">
+				This page is general information, not legal advice. Every case depends on its documents
+				and deadlines.
+			</p>
+		</div>
+	</section>
+</CustomLayout>

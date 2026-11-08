@@ -1,0 +1,260 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+	} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-la-fragua-apaisada-01.jpg';
+import migas from '../assets/fotos/restaurante-la-fragua-apaisada-03.jpg';
+import carneGuiso from '../assets/fotos/restaurante-la-fragua-apaisada-04.jpg';
+import tarta from '../assets/fotos/restaurante-la-fragua-apaisada-05.jpg';
+import ensalada from '../assets/fotos/restaurante-la-fragua-vertical-06.jpg';
+import revuelto from '../assets/fotos/restaurante-la-fragua-apaisada-07.jpg';
+import empanada from '../assets/fotos/restaurante-la-fragua-apaisada-09.jpg';
+import carneTomate from '../assets/fotos/restaurante-la-fragua-apaisada-10.jpg';
+import carrillada from '../assets/fotos/restaurante-la-fragua-vertical-02.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+	REVIEWS
+} from '../data/site';
+
+const description =
+	'Restaurante la Fragua, cocina extremeña en una casa de piedra del casco antiguo de Garganta la Olla (Cáceres). Migas, carnes de guiso, menú del día y tarta de queso casera. Reservas en el 927 17 95 71.';
+
+const galeria = [
+	{ src: migas, alt: 'Migas extremeñas con huevo frito en Restaurante la Fragua, Garganta la Olla' },
+	{ src: carneGuiso, alt: 'Carne guisada en salsa con patatas fritas en La Fragua, Cáceres' },
+	{ src: tarta, alt: 'Tarta semifría de queso casera con salsa de frutos rojos de La Fragua' },
+	{ src: ensalada, alt: 'Ensalada de tomate con aceitunas y pimientos de La Fragua' },
+	{ src: revuelto, alt: 'Revuelto de judías verdes con huevo de Restaurante la Fragua' },
+	{ src: empanada, alt: 'Carne empanada en salsa con patatas fritas en La Fragua' },
+	{ src: carneTomate, alt: 'Carne en salsa de tomate con patatas y ensalada en La Fragua' },
+	{ src: carrillada, alt: 'Carne guisada con patatas en su salsa de Restaurante la Fragua' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	acceptsReservations: true,
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['La Fragua', 'La Fragua Garganta la Olla', 'Restaurante La Fragua Cáceres'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 927 17 95 71',
+	priceRange: BUSINESS.priceRange,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Extremeña', 'Española', 'Cocina tradicional'],
+	areaServed: [
+		{ '@type': 'AdministrativeArea', name: 'La Vera' },
+		{ '@type': 'City', name: 'Garganta la Olla' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '13:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '13:00',
+			closes: '23:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '13:00',
+			closes: '15:30',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Reserva por teléfono', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El restaurante', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante la Fragua · Cocina extremeña en Garganta la Olla (Cáceres)';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-la-fragua-apaisada-01.jpg": fachada,
+	"restaurante-la-fragua-apaisada-03.jpg": migas,
+	"restaurante-la-fragua-apaisada-04.jpg": carneGuiso,
+	"restaurante-la-fragua-apaisada-05.jpg": tarta,
+	"restaurante-la-fragua-vertical-06.jpg": ensalada,
+	"restaurante-la-fragua-apaisada-07.jpg": revuelto,
+	"restaurante-la-fragua-apaisada-09.jpg": empanada,
+	"restaurante-la-fragua-apaisada-10.jpg": carneTomate,
+	"restaurante-la-fragua-vertical-02.jpg": carrillada,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#33474e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante la Fragua, La Fragua Garganta la Olla, comer en Garganta la Olla, restaurante La Vera, cocina extremeña, migas extremeñas, menú del día Garganta la Olla, Garganta la Olla Cáceres, restaurante casco antiguo Garganta la Olla"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante la Fragua · Cocina extremeña en Garganta la Olla"
+			ogDescription="Migas con huevo, carnes de guiso, menú del día y tarta de queso casera en una casa de piedra de Garganta la Olla (Cáceres). 4,4 en Google con 660 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de piedra de Restaurante la Fragua, en Garganta la Olla (Cáceres)"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#33474e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34927179571"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/restaurante-la-fragua/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Fragua"
+			subtitle="Cocina extremeña · La Vera"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a La Fragua"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34927179571?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Vera." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a La Vera"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

@@ -1,0 +1,170 @@
+---
+import '../styles/global.css';
+import Galeria from '../components/Galeria.astro';
+import {
+	business,
+	directionsUrl,
+	facebookUrl,
+	instagramUrl,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHrefs,
+	structuredData,
+} from '../lib/business';
+
+const title = 'Restaurante Los Curros | Cocina malagueña en Rincón de la Victoria';
+const description =
+	'Restaurante Los Curros, en el paseo marítimo de Rincón de la Victoria (Málaga): parrilla de carnes y pescados, espetos de sardinas y cocina tradicional malagueña. Reservas: 952 97 03 72.';
+
+const carta = [
+	{ num: '01', name: 'Carnes y pescados a la parrilla', note: 'Buen producto, elaborado a la brasa.' },
+	{ num: '02', name: 'Espetos de sardinas', note: 'Un clásico malagueño en el paseo.' },
+	{ num: '03', name: 'Cocina tradicional malagueña', note: 'Platos de siempre, con sabor de casa.' },
+	{ num: '04', name: 'Salones para celebraciones', note: 'Comidas de grupo y despedidas.' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#12263a" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow" />
+		<meta name="geo.region" content="ES-MA" />
+		<meta name="geo.placename" content="Rincón de la Victoria" />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/restaurante-los-curros/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Chivo+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="business.business" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+			<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+			<meta property="og:image" content="https://www.sur-digital.com/restaurante-los-curros/og.png" />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="site-header">
+			<a class="brand" href="#inicio" aria-label="Restaurante Los Curros, inicio"><span class="brand-mark" aria-hidden="true">LC</span><span class="brand-label">LOS CURROS <small>RESTAURANTE · RINCÓN DE LA VICTORIA</small></span></a>
+			<nav aria-label="Navegación principal"><a href="#carta">La carta</a><a href="#contacto">Contacto</a></nav>
+			<a class="header-phone" href={phoneHrefs[0]}><span aria-hidden="true">☎</span> {business.phones[0]}</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-content">
+					<p class="eyebrow"><span></span> COCINA TRADICIONAL MALAGUEÑA · PASEO MARÍTIMO</p>
+					<h1 id="hero-title" set:html={piezas.portada.titulo} />
+					<p class="hero-sub">Restaurante · Rincón de la Victoria</p>
+					<p class="hero-intro">Más de 20 años de cocina tradicional malagueña en primera línea de playa: carnes y pescados a la parrilla, espetos de sardinas y platos de siempre, con trato familiar.</p>
+					<div class="hero-actions"><a class="button button-navy" href={phoneHrefs[0]}><span aria-hidden="true">☎</span> Llamar y reservar</a><a class="button button-outline" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a></div>
+					<dl class="hero-datos">
+						<div><dt>DIRECCIÓN</dt><dd><address>{business.streetAddress}<br />{business.postalCode} {business.city}</address></dd></div>
+						<div><dt>RESERVAS</dt><dd><a href={phoneHrefs[0]}>{business.phones[0]}</a></dd></div>
+						<div><dt>MAPA</dt><dd><a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a></dd></div>
+					</dl>
+				</div>
+			</section>
+
+			<section class="carta-section" id="carta" aria-labelledby="carta-title">
+				<p class="section-label"><span>01 /</span> LA CARTA</p>
+				<div class="carta-head"><h2 id="carta-title">Del mar<br /><em>y de la brasa.</em></h2><p class="carta-lead">Parrilla, pescado y platos malagueños de toda la vida. Consulta la carta completa en el local.</p></div>
+				<ol class="carta-index">
+					{carta.map((item) => (
+						<li class="carta-item"><span class="carta-num" aria-hidden="true">{item.num}</span><span class="carta-text"><strong>{item.name}</strong><small>{item.note}</small></span></li>
+					))}
+				</ol>
+			</section>
+
+			<section class="about-section" aria-labelledby="about-title">
+				<p class="section-label"><span>02 /</span> LOS CURROS · RINCÓN DE LA VICTORIA</p>
+				<div class="about-content"><h2 id="about-title">Cocina de siempre,<br /><em>a la orilla del mar.</em></h2><div><p>Somos un equipo de hostelería con más de 20 años de experiencia. En nuestro restaurante del paseo marítimo de Rincón de la Victoria vas a encontrar desde una comida rápida y económica hasta carnes y pescados que no tienen nada que envidiar a otros grandes restaurantes. Buena parrilla, servicio excelente y salones de construcción rústica para celebraciones y despedidas.</p><a class="social-link" href={instagramUrl} target="_blank" rel="noreferrer">Síguenos en Instagram <span aria-hidden="true">↗</span></a></div></div>
+				<div class="about-footer"><span>PARRILLA · PESCADO · TRADICIÓN</span><span>29730 RINCÓN DE LA VICTORIA</span><span>✦</span></div>
+			</section>
+
+			<section class="contact-section" id="contacto" aria-labelledby="contact-title">
+				<p class="section-label"><span>03 /</span> VISÍTANOS</p>
+				<div class="contact-layout">
+					<div class="contact-copy"><p class="contact-kicker">EN EL PASEO MARÍTIMO</p><h2 id="contact-title">Reserva<br /><em>tu mesa.</em></h2>
+						<div class="contact-card">
+							<div class="contact-row"><span aria-hidden="true">⌖</span><div><small>DIRECCIÓN</small><address>{business.streetAddress}<br />{business.postalCode} {business.city}</address></div></div>
+							<div class="contact-row"><span aria-hidden="true">☎</span><div><small>RESERVAS</small><a href={phoneHrefs[0]}>{business.phones[0]}</a></div></div>
+						</div>
+						<a class="button button-dark" href={directionsUrl} target="_blank" rel="noreferrer">Abrir indicaciones <span aria-hidden="true">↗</span></a>
+					</div>
+					<div class="map-card"><div class="map-header"><span><i></i> AV. DEL MEDITERRÁNEO · RINCÓN</span><a href={mapsUrl} target="_blank" rel="noreferrer">ABRIR MAPS ↗</a></div><div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe title="Mapa de Restaurante Los Curros en Avenida del Mediterráneo, Rincón de la Victoria" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript>
+							<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+						</noscript>
+					</div><div class="map-footer"><span aria-hidden="true">⌖</span><div><strong>{business.name}</strong><small>{business.streetAddress} · {business.city}</small></div><a href={directionsUrl} target="_blank" rel="noreferrer" aria-label="Cómo llegar a Restaurante Los Curros">↗</a></div></div>
+				</div>
+				<div class="social-row"><span>ENCUÉNTRANOS TAMBIÉN EN</span><a href={instagramUrl} target="_blank" rel="noreferrer">Instagram ↗</a><a href={facebookUrl} target="_blank" rel="noreferrer">Facebook ↗</a></div>
+			</section>
+			<Galeria nombre="Restaurante Los Curros" mapsUrl={mapsUrl} />
+		</main>
+
+		<footer class="site-footer"><a class="brand footer-brand" href="#inicio" aria-label="Restaurante Los Curros, volver al inicio"><span class="brand-mark">LC</span><span class="brand-label">LOS CURROS <small>RESTAURANTE · RINCÓN DE LA VICTORIA</small></span></a><p>{business.streetAddress}, {business.postalCode} {business.city}<br /><a href={phoneHrefs[0]}>{business.phones[0]}</a></p><a class="footer-social" href={instagramUrl} target="_blank" rel="noreferrer">Instagram ↗</a><small>© {new Date().getFullYear()} Restaurante Los Curros · Rincón de la Victoria &nbsp;·&nbsp; Consulta la carta y los horarios en el local.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;">
+				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+			</p>
+<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+	<a href="/restaurante-los-curros/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+	<a href="/restaurante-los-curros/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+	<a href="/restaurante-los-curros/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+</nav>
+</footer>
+		<a class="phone-cta" href={phoneHrefs[0]}><span aria-hidden="true">☎</span> Reservar en Los Curros <strong>{business.phones[0]}</strong></a>
+	<nav class="legal-links" aria-label="Información legal">
+					<a href="/restaurante-los-curros/aviso-legal">Aviso legal</a>
+					<a href="/restaurante-los-curros/aviso-legal#privacidad">Privacidad</a>
+					<a href="/restaurante-los-curros/aviso-legal#cookies">Cookies</a>
+				</nav>
+						<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34952970372?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Carnes%20y%20pescados%20a%20la%20parrilla." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Carnes y pescados a la parrilla"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>
+
+

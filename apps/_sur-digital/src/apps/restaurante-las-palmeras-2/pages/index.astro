@@ -1,0 +1,289 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+	} from '@astro-components';
+
+import terraza from '../assets/fotos/restaurante-las-palmeras-2-apaisada-01.jpg';
+import vinos from '../assets/fotos/restaurante-las-palmeras-2-vertical-02.jpg';
+import fachada from '../assets/fotos/restaurante-las-palmeras-2-vista-3-03.jpg';
+import exterior from '../assets/fotos/restaurante-las-palmeras-2-apaisada-04.jpg';
+import barra from '../assets/fotos/restaurante-las-palmeras-2-apaisada-05.jpg';
+import desayuno from '../assets/fotos/restaurante-las-palmeras-2-apaisada-06.jpg';
+import calamar from '../assets/fotos/restaurante-las-palmeras-2-vertical-07.jpg';
+import brochetas from '../assets/fotos/restaurante-las-palmeras-2-apaisada-08.jpg';
+import alitas from '../assets/fotos/restaurante-las-palmeras-2-vertical-09.jpg';
+import carne from '../assets/fotos/restaurante-las-palmeras-2-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+	REVIEWS
+} from '../data/site';
+
+const description =
+	'Restaurante las Palmeras 2 en la Ciudad del Transporte (Murcia): desayunos desde las 5:30, menú del día casero, tapas y raciones a buen precio. Abre de lunes a viernes 5:30–21:00 y sábados por la mañana. Teléfono 621 25 55 79.';
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de Restaurante las Palmeras 2 con sombrillas y mesas, en la Ciudad del Transporte (Murcia)',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Restaurante las Palmeras 2 entre palmeras, en la Ciudad del Transporte, Murcia',
+	},
+	{
+		src: barra,
+		alt: 'Barra del bar con vitrina de tapas, barriles y taburetes en Restaurante las Palmeras 2',
+	},
+	{
+		src: desayuno,
+		alt: 'Mollete con jamón y café con leche del desayuno de Restaurante las Palmeras 2',
+	},
+	{
+		src: calamar,
+		alt: 'Calamar a la plancha con ensalada, limón y pimientos de Restaurante las Palmeras 2',
+	},
+	{
+		src: alitas,
+		alt: 'Alitas de pollo en salsa con patatas fritas de Restaurante las Palmeras 2, Murcia',
+	},
+	{
+		src: carne,
+		alt: 'Carne a la plancha con patatas y ensalada de Restaurante las Palmeras 2',
+	},
+	{
+		src: brochetas,
+		alt: 'Brochetas de verdura a la plancha con salsa de la casa, Restaurante las Palmeras 2',
+	},
+	{
+		src: vinos,
+		alt: 'Botellas de vino y naranjas en la bodega de Restaurante las Palmeras 2',
+	},
+	{
+		src: exterior,
+		alt: 'Exterior con sombrillas del Restaurante las Palmeras 2 en la Ciudad del Transporte, Murcia',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Las Palmeras 2', 'Restaurante Las Palmeras 2 Murcia', 'Las Palmeras Ciudad del Transporte'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34 621 25 55 79',
+	priceRange: BUSINESS.priceRange,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Casera', 'Desayunos', 'Tapas'],
+	areaServed: [
+		{ '@type': 'City', name: 'Murcia' },
+		{ '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '05:30',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '07:00',
+			closes: '13:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Desayunos', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Menú del día', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El bar', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Restaurante las Palmeras 2 · Desayunos y menú del día en Murcia';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-las-palmeras-2-apaisada-01.jpg": terraza,
+	"restaurante-las-palmeras-2-vista-3-03.jpg": fachada,
+	"restaurante-las-palmeras-2-apaisada-05.jpg": barra,
+	"restaurante-las-palmeras-2-apaisada-06.jpg": desayuno,
+	"restaurante-las-palmeras-2-vertical-07.jpg": calamar,
+	"restaurante-las-palmeras-2-vertical-09.jpg": alitas,
+	"restaurante-las-palmeras-2-vertical-10.jpg": carne,
+	"restaurante-las-palmeras-2-apaisada-08.jpg": brochetas,
+	"restaurante-las-palmeras-2-vertical-02.jpg": vinos,
+	"restaurante-las-palmeras-2-apaisada-04.jpg": exterior,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2f6b4f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante las Palmeras 2, Las Palmeras 2 Murcia, restaurante Ciudad del Transporte, desayunos Murcia, menú del día Murcia, bar de tapas Murcia, almuerzos económicos Murcia, comer barato Murcia, Cdad. del Transporte"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante las Palmeras 2 · Desayunos y menú del día en Murcia"
+			ogDescription="Desayunos desde las 5:30, menú del día casero y tapas a buen precio en la Ciudad del Transporte (Murcia). 4,4 en Google con 64 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza con sombrillas de Restaurante las Palmeras 2, en la Ciudad del Transporte (Murcia)"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2f6b4f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34621255579"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`Ciudad del Transporte, ${BUSINESS.city}`}
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/restaurante-las-palmeras-2/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Las Palmeras 2"
+			subtitle="Desayunos · Tapas · Murcia"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Las Palmeras 2"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34621255579?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Murcia." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Murcia"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

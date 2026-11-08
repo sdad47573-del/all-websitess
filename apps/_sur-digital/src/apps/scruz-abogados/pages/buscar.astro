@@ -1,0 +1,232 @@
+---
+import { RiIcon } from '@astro-icons';
+import CustomLayout from '../layouts/CustomLayout.astro';
+import { SERVICES } from '../data/SERVICES';
+import { BLOG_POSTS } from '../data/BLOG_POSTS';
+import { ROUTE_DEFAULTS } from '../data/seo';
+import { CITY_LANDINGS } from '../data/CITY_LANDINGS';
+
+// Índice de búsqueda: servicios + ubicaciones + blog + páginas informativas.
+// Se serializa a JSON para que el buscador filtre en cliente (sin framework).
+const serviceEntries = SERVICES.map((s) => ({
+	title: s.title,
+	description: s.description,
+	url: `${s.path}/`,
+}));
+
+const blogEntries = BLOG_POSTS.map((b) => ({
+	title: b.title,
+	description: b.description,
+	url: b.href,
+}));
+
+const infoPages = [
+	{ url: '/quienes-somos/', key: '/quienes-somos/' },
+	{ url: '/trayectoria/', key: '/trayectoria/' },
+	{ url: '/servicios/', key: '/servicios/' },
+	{ url: '/empresas/', key: '/empresas/' },
+	{ url: '/ubicaciones/', key: '/ubicaciones/' },
+	{ url: '/faq/', key: '/faq/' },
+	{ url: '/abogados-en-lucena/', key: '/abogados-en-lucena/' },
+	{ url: '/abogados-en-malaga/', key: '/abogados-en-malaga/' },
+	{ url: '/abogados-en-rute/', key: '/abogados-en-rute/' },
+	{ url: '/abogados-en-aracena/', key: '/abogados-en-aracena/' },
+	{ url: '/que-juzgado-me-corresponde/', key: '/que-juzgado-me-corresponde/' },
+	{ url: '/partidos-judiciales/', key: '/partidos-judiciales/' },
+	{ url: '/calculadora-plazos/', key: '/calculadora-plazos/' },
+	{ url: '/calculadora-tasa-judicial/', key: '/calculadora-tasa-judicial/' },
+	{ url: '/reparto-herencia/', key: '/reparto-herencia/' },
+	{ url: '/impuestos-herencia/', key: '/impuestos-herencia/' },
+	{ url: '/donde-atendemos/', key: '/donde-atendemos/' },
+];
+
+// Las plazas de `src/data/cities/` se indexan desde los datos, no con una lista
+// escrita a mano: si la lista se queda corta, la página queda fuera del buscador
+// sin que nada avise. Aracena y las demás escritas a mano sí van en la lista
+// anterior, porque no viven en CITY_LANDINGS.
+const cityEntries = CITY_LANDINGS.map((c) => ({
+	title: c.title.replace(' | Scruz', ''),
+	description: c.description,
+	url: `/abogados-en-${c.slug}/`,
+}));
+
+const infoEntries = infoPages
+	.map(({ url, key }) => {
+		const defaults = ROUTE_DEFAULTS[key];
+		return defaults
+			? {
+					title: defaults.title.replace(' | Scruz Abogados', ''),
+					description: defaults.description,
+					url,
+				}
+			: null;
+	})
+	.filter(Boolean) as { title: string; description: string; url: string }[];
+
+const SEARCH_INDEX = [...serviceEntries, ...blogEntries, ...cityEntries, ...infoEntries];
+---
+
+<CustomLayout
+	title="Buscar | Scruz Abogados - Encuentra tu servicio jurídico"
+	description="Busca entre todos los servicios jurídicos del despacho Scruz Abogados en Lucena, Córdoba y Málaga: divorcios, herencias, despidos, accidentes de tráfico y más."
+	noindex
+>
+	<section class="bg-base-100 px-6 py-16 md:px-16 md:py-24">
+		<div class="mx-auto max-w-3xl">
+			<p class="eyebrow">Buscador</p>
+			<h1 class="mb-4 font-title text-3xl leading-tight md:text-4xl lg:text-5xl">
+				¿Qué servicio jurídico buscas?
+			</h1>
+			<p class="mb-8 text-base leading-relaxed text-base-content/70 md:text-lg">
+				Busca entre nuestros servicios en Lucena, Córdoba y Málaga: divorcios, herencias,
+				despidos, accidentes de tráfico, derecho civil y mucho más.
+			</p>
+
+			<div class="relative">
+				<RiIcon
+					name="search"
+					class="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-base-content/50"
+				/>
+				<input
+					id="search-input"
+					type="search"
+					autocomplete="off"
+					placeholder="Ej.: herencias, divorcio, despido…"
+					aria-label="Buscar servicios jurídicos"
+					class="input input-bordered input-lg w-full rounded-xl pl-12"
+					autofocus
+				/>
+			</div>
+
+			<p id="result-count" class="mt-6 text-sm text-base-content/70"></p>
+			<div id="results" class="mt-4 flex flex-col gap-4"></div>
+
+			<div id="no-results" class="mt-8 hidden rounded-xl bg-base-200 p-8 text-center">
+				<p class="text-lg font-semibold">No hemos encontrado resultados</p>
+				<p class="mt-2 text-base-content/70">
+					Prueba con otro término o llámanos al
+					<a href="tel:+34666329155" class="text-primary font-semibold">+34 666 329 155</a>
+					para una consulta gratuita.
+				</p>
+			</div>
+		</div>
+	</section>
+</CustomLayout>
+
+<script>
+	/**
+	 * getElementById tipado. El elemento vive en el HTML estático de esta
+	 * página; si falta (p. ej. HTML manipulado), el buscador no se inicializa
+	 * y lo registramos en consola en vez de romper el resto de scripts.
+	 */
+	function getEl<T extends HTMLElement>(id: string): T | null {
+		return document.getElementById(id) as T | null;
+	}
+
+	const indexEl = getEl<HTMLElement>('search-index');
+	const input = getEl<HTMLInputElement>('search-input');
+	const results = getEl<HTMLElement>('results');
+	const count = getEl<HTMLElement>('result-count');
+	const noResults = getEl<HTMLElement>('no-results');
+
+	if (!indexEl || !input || !results || !count || !noResults) {
+		console.error('El buscador no pudo inicializarse: faltan elementos del DOM');
+	} else {
+		void runSearch({
+			index: JSON.parse(indexEl.textContent ?? '[]'),
+			input,
+			results,
+			count,
+			noResults,
+		});
+	}
+
+	function runSearch({
+		index,
+		input,
+		results,
+		count,
+		noResults,
+	}: {
+		index: { title: string; description: string; url: string }[];
+		input: HTMLInputElement;
+		results: HTMLElement;
+		count: HTMLElement;
+		noResults: HTMLElement;
+	}) {
+		const normalize = (value: string) =>
+			value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+		const escapeHtml = (value: string) =>
+			value
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+
+		function render(query: string) {
+			const terms = normalize(query.trim())
+				.split(/\s+/)
+				.filter(Boolean);
+
+			const matches = terms.length
+				? index
+						.map((entry) => {
+							const haystack = normalize(`${entry.title} ${entry.description}`);
+							const score = terms.reduce(
+								(acc, term) => acc + (haystack.includes(term) ? 1 : 0),
+								0,
+							);
+							return { entry, score };
+						})
+						.filter(({ score }) => score > 0)
+						.sort((a, b) => b.score - a.score)
+						.map(({ entry }) => entry)
+				: [];
+
+			count.textContent = terms.length
+				? matches.length === 1
+					? '1 resultado'
+					: `${matches.length} resultados`
+				: '';
+
+			noResults.classList.toggle('hidden', !terms.length || matches.length > 0);
+
+			results.innerHTML = matches
+				.map(
+					(entry) => `
+						<a
+							href="${escapeHtml(entry.url)}"
+							class="group rounded-xl bg-base-200/60 p-5 transition-colors hover:bg-primary hover:text-primary-content"
+							data-discover="true"
+						>
+							<h2 class="font-title text-lg font-bold group-hover:text-primary-content">
+								${escapeHtml(entry.title)}
+							</h2>
+							<p class="mt-1 text-sm text-base-content/70 group-hover:text-primary-content/80">
+								${escapeHtml(entry.description)}
+							</p>
+						</a>
+					`,
+				)
+				.join('');
+
+			if (!terms.length) results.innerHTML = '';
+		}
+
+		input.addEventListener('input', () => render(input.value));
+
+		// Si llega con ?q= desde el SearchAction, rellena y filtra.
+		const params = new URLSearchParams(window.location.search);
+		const initial = params.get('q');
+		if (initial) {
+			input.value = initial;
+			render(initial);
+		} else {
+			render('');
+		}
+	}
+</script>
+
+<script is:inline type="application/json" id="search-index" set:html={JSON.stringify(SEARCH_INDEX).replace(/</g, '\\u003c')} />

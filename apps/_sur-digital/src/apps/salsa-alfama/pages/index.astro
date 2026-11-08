@@ -1,0 +1,316 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/salsa-alfama-apaisada-01.jpg';
+import massa from '../assets/fotos/salsa-alfama-apaisada-03.jpg';
+import salaJanela from '../assets/fotos/salsa-alfama-apaisada-05.jpg';
+import rio from '../assets/fotos/salsa-alfama-apaisada-06.jpg';
+import tramPorta from '../assets/fotos/salsa-alfama-apaisada-08.jpg';
+import parede from '../assets/fotos/salsa-alfama-apaisada-10.jpg';
+import janela from '../assets/fotos/salsa-alfama-vertical-02.jpg';
+import menu from '../assets/fotos/salsa-alfama-vertical-04.jpg';
+import porta from '../assets/fotos/salsa-alfama-vertical-07.jpg';
+import rua from '../assets/fotos/salsa-alfama-vertical-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	PASSOS,
+	REVIEWS,
+	SERVICOS,
+} from '../data/site';
+
+const title = 'Salsa · restaurante e bar em Alfama, Lisboa';
+const description =
+	'Restaurante e bar na Rua das Escolas Gerais, 57, em Alfama: cozinha portuguesa, entradas para partilhar e vista sobre os telhados e o Tejo. Reservas 21 886 0883.';
+
+const galeria = [
+	{
+		src: rio,
+		alt: 'Vista sobre os telhados de Alfama e o Tejo, com um barco a atravessar o rio',
+	},
+	{
+		src: menu,
+		alt: 'Página de menu do Salsa com as entradas e os preços, em fundo escuro',
+	},
+	{
+		src: tramPorta,
+		alt: 'Elétrico amarelo da Carris a passar à porta do Salsa, na Rua das Escolas Gerais',
+	},
+	{
+		src: massa,
+		alt: 'Massa com camarão, amêijoa e mexilhão num prato branco',
+	},
+	{
+		src: janela,
+		alt: 'Copo de vinho branco e prato sobre a mesa, com a janela aberta para os telhados de Alfama',
+	},
+	{
+		src: salaJanela,
+		alt: 'Sala do Salsa com toalhas azuis, cadeiras de madeira e janelas abertas para os telhados',
+	},
+	{
+		src: porta,
+		alt: 'Interior do restaurante visto da sala, com a porta aberta e o elétrico na rua',
+	},
+	{
+		src: rua,
+		alt: 'Fachada de azulejo e a rua em calçada, com o elétrico amarelo ao fundo',
+	},
+	{
+		src: parede,
+		alt: 'Parede da sala com fotografias emolduradas de Alfama e mesas com toalhas azuis',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#salsa`,
+	name: BUSINESS.name,
+	alternateName: ['Salsa Restaurant & Bar', 'Salsa Alfama', 'Salsa Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 886 0883',
+	priceRange: '€€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cozinha portuguesa', 'Frutos do mar', 'Entradas para partilhar'],
+	acceptsReservations: BUSINESS.phoneHref,
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '12:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares para pessoas em cadeiras de rodas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"salsa-alfama-apaisada-01.jpg": fachada,
+	"salsa-alfama-apaisada-06.jpg": rio,
+	"salsa-alfama-vertical-04.jpg": menu,
+	"salsa-alfama-apaisada-08.jpg": tramPorta,
+	"salsa-alfama-apaisada-03.jpg": massa,
+	"salsa-alfama-vertical-02.jpg": janela,
+	"salsa-alfama-apaisada-05.jpg": salaJanela,
+	"salsa-alfama-vertical-07.jpg": porta,
+	"salsa-alfama-vertical-09.jpg": rua,
+	"salsa-alfama-apaisada-10.jpg": parede,
+};
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#a6202b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Work+Sans:wght@300;400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Salsa Alfama, Salsa Restaurant Bar Lisboa, restaurante Alfama, Rua das Escolas Gerais, comer em Alfama, restaurante português Alfama, bar Alfama, elétrico 28"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha portuguesa e entradas para partilhar na Rua das Escolas Gerais, 57 · Alfama. Reservas pelo 21 886 0883."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de azulejo do Salsa, com o letreiro vermelho por cima da porta"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#a6202b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/salsa-alfama/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Salsa"
+			subtitle="Restaurante e bar · Alfama"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Como chegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário, carta e preços antes da visita."
+			ctaLabel="Ligar ao Salsa"
+			navAriaLabel="Ligações do Salsa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/351218860883?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Lisboa." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Lisboa"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

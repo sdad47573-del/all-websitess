@@ -1,0 +1,334 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/yak-yeti-vertical-01.jpg';
+import carilFrango from '../assets/fotos/yak-yeti-vertical-02.jpg';
+import sala from '../assets/fotos/yak-yeti-vertical-03.jpg';
+import caris from '../assets/fotos/yak-yeti-apaisada-04.jpg';
+import carisMesa from '../assets/fotos/yak-yeti-apaisada-07.jpg';
+import thaliVeg from '../assets/fotos/yak-yeti-vertical-06.jpg';
+import thaliFrango from '../assets/fotos/yak-yeti-vista-5-05.jpg';
+import anfitria from '../assets/fotos/yak-yeti-vertical-08.jpg';
+import salaVermelha from '../assets/fotos/yak-yeti-vertical-09.jpg';
+import planeta from '../assets/fotos/yak-yeti-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICOS,
+} from '../data/site';
+
+const title = 'Yak & Yeti · Nepalês e indiano na Mouraria, Lisboa';
+const description =
+	'Yak & Yeti, restaurante nepalês e indiano na Calçada de Santo André, 17, na Mouraria, Lisboa. MoMo, thali, biryani e caris, todos os dias das 11:00 às 23:00.';
+
+const galeria = [
+	{
+		src: caris,
+		alt: 'Cinco caris em tachos de metal vistos de cima, com molhos vermelhos, amarelos e verdes, sobre uma mesa branca',
+	},
+	{
+		src: carilFrango,
+		alt: 'Caril de frango vermelho num tacho de metal, com naan e molheiras de molho ao fundo',
+	},
+	{
+		src: thaliVeg,
+		alt: 'Thali vegetariano em tabuleiro de metal, com grão-de-bico, batata, espinafres, dal, arroz e papad',
+	},
+	{
+		src: thaliFrango,
+		alt: 'Tabuleiro de thali com arroz, caris e papad numa mesa do restaurante, com duas pessoas ao fundo',
+	},
+	{
+		src: anfitria,
+		alt: 'Funcionária do Yak & Yeti, de camisola vermelha, a apresentar o chicken thali set na sala do restaurante',
+	},
+	{
+		src: sala,
+		alt: 'Sala do Yak & Yeti com mesas e cadeiras de madeira, candeeiros cor de laranja e fotografias do Nepal nas paredes',
+	},
+	{
+		src: salaVermelha,
+		alt: 'Sala com paredes vermelhas e pretas, uma estátua de Buda numa prateleira e candeeiros amarelos sobre as mesas',
+	},
+	{
+		src: carisMesa,
+		alt: 'Cinco caris em tachos indianos sobre uma mesa branca, com molheiras de chutney e salada ao lado',
+	},
+	{
+		src: planeta,
+		alt: 'Fotografia circular da Calçada de Santo André com o logótipo do Yak & Yeti, o telefone e a morada',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada do Yak & Yeti na Calçada de Santo André, com o letreiro vermelho do restaurante e a ementa exposta na rua',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta do Yak & Yeti',
+	inLanguage: 'pt-PT',
+	url: `${BUSINESS.siteUrl}/#carta`,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#yak-yeti`,
+	name: BUSINESS.name,
+	alternateName: ['Yak & Yeti Lisbon', 'Yak and Yeti Lisboa', 'Restaurante Yak & Yeti'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, MAPS.instagram, MAPS.thefork],
+	telephone: '+351 21 822 0350',
+	currenciesAccepted: 'EUR',
+	priceRange: '€€',
+	servesCuisine: ['Cozinha nepalesa', 'Cozinha indiana'],
+	acceptsReservations: MAPS.thefork,
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível a pessoas em cadeiras de rodas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"yak-yeti-vertical-01.jpg": fachada,
+	"yak-yeti-apaisada-04.jpg": caris,
+	"yak-yeti-vertical-02.jpg": carilFrango,
+	"yak-yeti-vertical-06.jpg": thaliVeg,
+	"yak-yeti-vista-5-05.jpg": thaliFrango,
+	"yak-yeti-vertical-08.jpg": anfitria,
+	"yak-yeti-vertical-03.jpg": sala,
+	"yak-yeti-vertical-09.jpg": salaVermelha,
+	"yak-yeti-apaisada-07.jpg": carisMesa,
+	"yak-yeti-vertical-10.jpg": planeta,
+};
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2c0c0a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Yak & Yeti, Yak and Yeti Lisbon, restaurante nepalês Lisboa, comida indiana Mouraria, MoMo Lisboa, thali Lisboa, biryani Lisboa, Calçada de Santo André, restaurante perto do Martim Moniz"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha nepalesa e indiana na Calçada de Santo André, 17, na Mouraria. MoMo, thukpa, thali, biryani e caris, todos os dias das 11:00 às 23:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada do Yak & Yeti na Calçada de Santo André, em Lisboa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2c0c0a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/yak-yeti/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Yak & Yeti"
+			subtitle="Nepalês · Mouraria"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Reservar ↗', href: MAPS.thefork, external: true },
+				{ label: 'Entrega ↗', href: MAPS.ubereats, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias do perfil do estabelecimento em Google Maps. Carta e preços publicados pela casa; confirma horário e valores antes da visita."
+			ctaLabel="Ligar ao Yak & Yeti"
+			navAriaLabel="Ligações do Yak & Yeti"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/351218220350?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Carta%20do%20Yak%20%26%20Yeti." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Carta do Yak &amp; Yeti"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

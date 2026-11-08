@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-sos-apaisada-01.jpg';
+import pescadoSal from '../assets/fotos/restaurante-sos-apaisada-02.jpg';
+import bogavantePasta from '../assets/fotos/restaurante-sos-vertical-03.jpg';
+import arroz from '../assets/fotos/restaurante-sos-vertical-04.jpg';
+import bogavanteGuiso from '../assets/fotos/restaurante-sos-cuadrada-05.jpg';
+import arrozMesa from '../assets/fotos/restaurante-sos-vista-6-06.jpg';
+import mariscada from '../assets/fotos/restaurante-sos-apaisada-07.jpg';
+import entrecot from '../assets/fotos/restaurante-sos-vertical-08.jpg';
+import chillout from '../assets/fotos/restaurante-sos-apaisada-09.jpg';
+import comedor from '../assets/fotos/restaurante-sos-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const description =
+	'Restaurante SOS, en Carrer des Munt Aconcagua (07849 Cala Llonga, Ibiza). Cocina mediterránea, pescado fresco, arroces y terraza frente al mar. Tel. 971 19 64 60.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada blanca de Restaurante SOS en Cala Llonga, con el rótulo RESTAURANTE, el logo SOS y palmeras alrededor',
+	},
+	{
+		src: arroz,
+		alt: 'Paella de marisco con carabineros, mejillones y bogavante en la sartén',
+	},
+	{
+		src: arrozMesa,
+		alt: 'Arroz de marisco en paellera sobre una mesa de madera, con limón y marisco',
+	},
+	{
+		src: bogavantePasta,
+		alt: 'Bogavante con espaguetis en salsa sobre una fuente blanca alargada',
+	},
+	{
+		src: bogavanteGuiso,
+		alt: 'Bogavante guisado con patatas y huevo frito en una cazuela',
+	},
+	{
+		src: pescadoSal,
+		alt: 'Pescado entero a la sal sobre una bandeja metálica, con verduras al lado',
+	},
+	{
+		src: mariscada,
+		alt: 'Mariscada con bogavante, langostinos, mejillones, pescado y patatas chips',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la brasa cortado y con sal gruesa',
+	},
+	{
+		src: comedor,
+		alt: 'Comedor de SOS con vigas de madera, plantas colgantes, sillas de mimbre y mesas de madera',
+	},
+	{
+		src: chillout,
+		alt: 'Rincón chill-out de la terraza con sofás, cojines amarillos y una silla colgante',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#sos`,
+	name: BUSINESS.name,
+	alternateName: ['SOS', 'SOS Restaurant', 'SOS Cala Llonga', 'Restaurante SOS Ibiza'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 971 19 64 60',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Española', 'Marisco'],
+	areaServed: [
+		{ '@type': 'City', name: 'Cala Llonga' },
+		{ '@type': 'AdministrativeArea', name: 'Santa Eulària des Riu' },
+		{ '@type': 'AdministrativeArea', name: 'Ibiza' },
+		{ '@type': 'AdministrativeArea', name: 'Islas Baleares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '12:30',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'SOS · Restaurante mediterráneo en Cala Llonga';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-sos-apaisada-01.jpg": fachada,
+	"restaurante-sos-vertical-04.jpg": arroz,
+	"restaurante-sos-vista-6-06.jpg": arrozMesa,
+	"restaurante-sos-vertical-03.jpg": bogavantePasta,
+	"restaurante-sos-cuadrada-05.jpg": bogavanteGuiso,
+	"restaurante-sos-apaisada-02.jpg": pescadoSal,
+	"restaurante-sos-apaisada-07.jpg": mariscada,
+	"restaurante-sos-vertical-08.jpg": entrecot,
+	"restaurante-sos-apaisada-10.jpg": comedor,
+	"restaurante-sos-apaisada-09.jpg": chillout,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#126e78" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante SOS, SOS Cala Llonga, comer en Cala Llonga, restaurante con vistas al mar Ibiza, cocina mediterránea Ibiza, arroces Cala Llonga, pescado fresco Ibiza, restaurante Santa Eulària"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="SOS · Restaurante mediterráneo en Cala Llonga"
+			ogDescription="Cocina mediterránea, pescado fresco del día y arroces en primera línea de playa de Cala Llonga (Ibiza). Terraza con vistas. Tel. 971 19 64 60."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada blanca de Restaurante SOS en Cala Llonga, con el logo SOS y palmeras"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#126e78"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-IB"
+			postalCode={BUSINESS.postalCode}
+			phone="+34971196460"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/restaurante-sos/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="SOS"
+			subtitle="Restaurante mediterráneo · Cala Llonga"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a SOS"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34971196460?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Cala%20Llonga." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Cala Llonga"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

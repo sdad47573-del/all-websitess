@@ -1,0 +1,41 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from '@astro-components';
+
+// TODO: esto deberia de venir por props loading="eager" decoding="async"
+interface Props {
+	rellenoImg: ImageMetadata;
+	title: string;
+	list: string[];
+	supertitle?: string;
+}
+
+const { rellenoImg, title, list, supertitle } = Astro.props;
+---
+
+<div class="reveal-pop card lg:card-side card-surface mx-auto max-w-6xl gap-6 rounded-2xl p-6 md:gap-16 md:p-16">
+	<div class="card-body px-0 pt-0">
+		{supertitle && <p class="eyebrow">{supertitle}</p>}
+		<h2 class="card-title pb-7 text-3xl md:text-4xl">
+			{title}
+		</h2>
+		<div class="flex flex-col gap-2">
+			{list.map((text) => <p class="pb-4 text-base-content/80">{text}</p>)}
+		</div>
+	</div>
+	<!--
+		El 110 % (sangrado de la imagen) solo tiene sentido con el layout lateral de
+		`lg:card-side`, donde el <figure> es una columna. En tablet el card sigue
+		apilado, así que el 110 % era del ancho COMPLETO y la imagen se salía del
+		cuerpo del card (+47 px a 834, +58 en la caja) hasta casi tocar el borde.
+	-->
+	<figure class="w-full lg:w-[110%]">
+		<Image
+			loading="eager"
+			decoding="async"
+			class="!object-contain"
+			src={rellenoImg}
+			alt="Logotipo de Scruz Abogados"
+		/>
+	</figure>
+</div>

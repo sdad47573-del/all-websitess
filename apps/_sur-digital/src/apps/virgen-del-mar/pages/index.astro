@@ -1,0 +1,266 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+	} from '@astro-components';
+
+import paella from '../assets/fotos/virgen-del-mar-apaisada-02.jpg';
+import gambaRoja from '../assets/fotos/virgen-del-mar-apaisada-03.jpg';
+import vitrina from '../assets/fotos/virgen-del-mar-vertical-10.jpg';
+import bunuelos from '../assets/fotos/virgen-del-mar-vertical-05.jpg';
+import almejas from '../assets/fotos/virgen-del-mar-vista-4-04.jpg';
+import ostra from '../assets/fotos/virgen-del-mar-vista-7-07.jpg';
+import vieiras from '../assets/fotos/virgen-del-mar-vertical-08.jpg';
+import pescado from '../assets/fotos/virgen-del-mar-apaisada-09.jpg';
+import solomillo from '../assets/fotos/virgen-del-mar-vertical-01.jpg';
+import carpaccio from '../assets/fotos/virgen-del-mar-vertical-06.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+	REVIEWS
+} from '../data/site';
+
+const description =
+	'Virgen del Mar, restaurante de marisco y pescado en la Plaza de San Nicolás, 3 (centro de Murcia). Gamba roja, ostras, arroces y guisos de la tierra. Comidas y cenas de martes a domingo. Reservas en el 968 21 66 79.';
+
+const galeria = [
+	{ src: paella, alt: 'Paella de marisco con gamba, mejillón y almeja de Virgen del Mar, Murcia' },
+	{ src: gambaRoja, alt: 'Gambas rojas de Virgen del Mar servidas con limón, Murcia' },
+	{ src: vitrina, alt: 'Vitrina de marisco de Virgen del Mar: gambas, cigalas, mejillones y alcachofas' },
+	{ src: bunuelos, alt: 'Buñuelos de bacalao con salsa rosa de Virgen del Mar, Murcia' },
+	{ src: almejas, alt: 'Almejas a la marinera con un vino Rías Baixas en Virgen del Mar' },
+	{ src: ostra, alt: 'Ostra abierta sobre hielo con limón en Virgen del Mar, Murcia' },
+	{ src: vieiras, alt: 'Vieiras a la plancha con limón de Virgen del Mar, Murcia' },
+	{ src: pescado, alt: 'Pescado a la plancha con patatas paja y limón de Virgen del Mar' },
+	{ src: solomillo, alt: 'Solomillo a la plancha con patatas panadera de Virgen del Mar' },
+	{ src: carpaccio, alt: 'Carpaccio con aguacate y huevas de Virgen del Mar, Murcia' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	acceptsReservations: true,
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Restaurante Virgen del Mar', 'Virgen del Mar Murcia', 'Virgen del Mar San Nicolás'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [BUSINESS.officialSite, MAPS.place],
+	telephone: '+34 968 21 66 79',
+	priceRange: BUSINESS.priceRange,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Marisco', 'Pescado', 'Murciana', 'Arroces'],
+	areaServed: [
+		{ '@type': 'City', name: 'Murcia' },
+		{ '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '13:30',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '20:30',
+			closes: '23:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '13:30',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Reserva por teléfono', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El restaurante', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Virgen del Mar · Marisco y arroces en el centro de Murcia';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"virgen-del-mar-apaisada-02.jpg": paella,
+	"virgen-del-mar-apaisada-03.jpg": gambaRoja,
+	"virgen-del-mar-vertical-10.jpg": vitrina,
+	"virgen-del-mar-vertical-05.jpg": bunuelos,
+	"virgen-del-mar-vista-4-04.jpg": almejas,
+	"virgen-del-mar-vista-7-07.jpg": ostra,
+	"virgen-del-mar-vertical-08.jpg": vieiras,
+	"virgen-del-mar-apaisada-09.jpg": pescado,
+	"virgen-del-mar-vertical-01.jpg": solomillo,
+	"virgen-del-mar-vertical-06.jpg": carpaccio,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4e63" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Virgen del Mar Murcia, restaurante Virgen del Mar, marisco Murcia centro, gamba roja Murcia, ostras Murcia, arroces Murcia, Plaza de San Nicolás, restaurante centro Murcia, reservar marisquería Murcia"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Virgen del Mar · Marisco y arroces en el centro de Murcia"
+			ogDescription="Marisco fresco, gamba roja, ostras y arroces en la Plaza de San Nicolás, 3 (Murcia). Comidas y cenas de martes a domingo. 4,5 en Google con 530 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Paella de marisco de Virgen del Mar, restaurante del centro de Murcia"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f4e63"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34968216679"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`Centro de ${BUSINESS.city}`}
+			preload={[paella]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/virgen-del-mar/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Virgen del Mar"
+			subtitle="Marisco · Murcia centro"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Web oficial ↗', href: BUSINESS.officialSite, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Virgen del Mar"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34968216679?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Murcia." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Murcia"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

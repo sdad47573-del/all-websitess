@@ -1,0 +1,405 @@
+---
+import '../styles/global.css';
+
+const business = {
+	name: 'Venta La Barca de Vejer',
+	short: 'La Barca de Vejer',
+	street: 'N-340 km 36,6',
+	city: 'Vejer de la Frontera',
+	postalCode: '11158',
+	phone: '+34 856 38 97 28',
+	latitude: 36.2594799,
+	longitude: -5.9614425,
+	site: 'https://www.sur-digital.com/venta-la-barca-de-vejer',
+};
+
+const mapsUrl =
+	'https://www.google.com/maps/place/Venta+La+Barca+de+Vejer/@36.2594799,-5.9614425,17z/data=!3m1!4b1!4m6!3m5!1s0xd0c45b89768c6af:0x6c139f34e6817e9b!8m2!3d36.2594799!4d-5.9614425!16s%2Fg%2F11b6_zxxl9?authuser=0&hl=es&entry=ttu';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&output=embed`;
+const phoneHref = 'tel:+34856389728';
+
+const specialties = [
+	{
+		kicker: 'En carretera',
+		title: 'Venta de la N-340',
+		text: 'Parada clásica en el km 36,6, entre Vejer y Barbate, en La Barca de Vejer.',
+	},
+	{
+		kicker: 'De cuchara',
+		title: 'Guisos y menú',
+		text: 'Venta de guisos y bocadillos: confirma el menú del día en el local.',
+	},
+	{
+		kicker: 'Para el viaje',
+		title: 'Bocadillos',
+		text: 'Bocadillos generosos para seguir ruta por La Janda.',
+	},
+	{
+		kicker: 'De paso',
+		title: 'Fácil aparcar',
+		text: 'Acceso directo desde la nacional, ideal para una parada rápida.',
+	},
+	{
+		kicker: 'Contacto',
+		title: '856 38 97 28',
+		text: 'Llama para confirmar carta y horario antes de venir.',
+	},
+	{
+		kicker: 'Aviso',
+		title: 'Sin horario publicado',
+		text: 'No publicamos horario por falta de fuente sólida y verificable.',
+	},
+];
+
+const gallery = [
+	{ src: '/fotos/venta.svg', alt: 'Ilustración de la venta — sustituye por foto propia' },
+	{ src: '/fotos/guiso.svg', alt: 'Ilustración de guisos — sustituye por foto propia' },
+	{ src: '/fotos/carretera.svg', alt: 'Ilustración de la N-340 — sustituye por foto propia' },
+	{ src: '/fotos/salon.svg', alt: 'Ilustración del salón — sustituye por foto propia' },
+	{ src: '/fotos/campo.svg', alt: 'Ilustración del campo — sustituye por foto propia' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está Venta La Barca de Vejer?',
+		a: 'En N-340 km 36,6, La Barca de Vejer (Vejer de la Frontera, Cádiz).',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'El horario no está publicado en una fuente sólida. Confirma en el 856 38 97 28 antes de venir.',
+	},
+	{
+		q: '¿Qué se puede comer?',
+		a: 'Venta restaurante de guisos, menú y bocadillos. Confirma la carta del día en el propio local.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'Para grupos y fines de semana es recomendable llamar al 856 38 97 28.',
+	},
+	{
+		q: '¿Cómo llego?',
+		a: 'Acceso directo desde la N-340 entre Vejer y Barbate. Usa el botón «Cómo llegar» para abrir la ruta en Google Maps.',
+	},
+];
+
+const description =
+	'Venta La Barca de Vejer en N-340 km 36,6, Vejer de la Frontera. Venta restaurante de guisos y bocadillos. Tel. 856 38 97 28.';
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${business.site}/#restaurante`,
+	name: business.name,
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 856 38 97 28',
+	image: [`${business.site}/fotos/venta.svg`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Andaluza'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: 'La Barca de Vejer',
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	acceptsReservations: 'True',
+};
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#16241c" />
+		<meta name="description" content="Venta La Barca de Vejer: venta restaurante en N-340 km 36,6, Vejer de la Frontera. Guisos y bocadillos. 856 38 97 28." />
+		<meta name="keywords" content="Venta La Barca Vejer, comer N-340 Vejer, venta Vejer Frontera, menú Vejer" />
+		<meta name="author" content="Venta La Barca de Vejer" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/venta-la-barca-de-vejer/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<title>La Barca de Vejer | Venta restaurante en la N-340</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="La Barca de Vejer · Venta en la N-340" />
+		<meta property="og:description" content="Guisos y bocadillos en el km 36,6, entre Vejer y Barbate." />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/fotos/venta.svg`} />
+		<meta property="og:image:alt" content="Venta La Barca de Vejer" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content="Andalucía" />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="La Barca de Vejer · Venta en Vejer" />
+		<meta name="twitter:description" content="N-340 km 36,6: guisos y bocadillos." />
+		<meta name="twitter:image" content={`${business.site}/fotos/venta.svg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<meta name="geo.placename" content="Vejer de la Frontera" />
+		<meta name="geo.position" content="36.2594799;-5.9614425" />
+		<meta name="ICBM" content="36.2594799, -5.9614425" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="La Barca de Vejer, inicio">
+				<span class="brand-mark" aria-hidden="true">BV</span>
+				<span class="brand-name">La Barca de Vejer <small>Vejer · N-340</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#casa">La venta</a>
+				<a href="#carta">La carta</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>856 38 97 28</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> N-340 km 36,6 · Vejer</p>
+					<h1 id="hero-title" set:html={piezas.portada.titulo} />
+					<p class="hero-lede">
+						Venta restaurante en La Barca de Vejer: guisos, menú y bocadillos
+						en plena N-340, entre Vejer y Barbate.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={phoneHref}>Llamar 856 38 97 28</a>
+						<a class="button button-ghost" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>km 36,6</b> N-340</li>
+						<li><b>Venta</b> clásica</li>
+						<li>Guisos</li>
+						<li>Bocadillos</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<img src="/venta-la-barca-de-vejer/fotos/venta.svg" alt="Ilustración de Venta La Barca de Vejer" fetchpriority="high" decoding="async" width="1200" height="800" />
+					<figcaption>
+						<span>N-340 km 36,6 · Vejer</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios">
+				<div class="ratings">
+					<div><b>km 36,6</b><span>N-340</span></div>
+					<div><b>Venta</b><span>Clásica</span></div>
+					<div><b>€</b><span>Económica</span></div>
+				</div>
+				<ul class="services">
+					<li>Guisos</li>
+					<li>Menú</li>
+					<li>Bocadillos</li>
+					<li>Carretera</li>
+					<li>Grupos</li>
+					<li>Paso</li>
+				</ul>
+			</section>
+
+			<section class="about section-pad" id="casa">
+				<p class="section-label"><span aria-hidden="true"></span> La venta</p>
+				<div class="about-grid">
+					<h2>En La Barca,<br />junto <em>a la nacional.</em></h2>
+					<div class="about-copy">
+						<p>
+							Venta La Barca de Vejer está en N-340 km 36,6, La Barca de Vejer
+							(Vejer de la Frontera), con coordenadas 36.2594799, -5.9614425.
+						</p>
+						<p>
+							Venta restaurante de paso y de barrio, con guisos, menú y bocadillos
+							generosos para seguir ruta por La Janda.
+						</p>
+						<p class="about-note">
+							Horario y carta sin fuente sólida publicada. Confirma en el
+							856 38 97 28 antes de venir.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="carta">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> De su casa</p>
+						<h2>Lo que sale<br /><em>de cocina.</em></h2>
+					</div>
+					<p>
+						Líneas generales de venta andaluza. Confirma la carta del día
+						en el propio local.
+					</p>
+				</div>
+				<div class="cards">
+					{specialties.map((item) => (
+						<article class="card">
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="gallery section-pad" id="galeria">
+				<div class="gallery-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Galería</p>
+						<h2>La venta<br /><em>y la mesa.</em></h2>
+					</div>
+					<div class="gallery-cta">
+						<p>
+							Estas ilustraciones son marcadores de posición creados para la web. No usamos fotos de Google Maps
+							por derechos de autor: sustitúyelas por fotos propias de la venta.
+						</p>
+						<a class="button button-ink" href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos en Google Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{gallery.map((photo, index) => (
+						<figure class:list={['shot', index === 0 && 'shot-wide']}>
+							<img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width="800" height="800" />
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes propias temporales en SVG. Para publicar, reemplaza los archivos de /public/fotos/ por fotografías
+					del titular con sus textos alt correspondientes.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> N-340 km 36,6</p>
+					<h2>Para en la venta<br /><em>a comer.</em></h2>
+					<p class="address">
+						{business.street}<br />
+						{business.postalCode} {business.city}, España
+					</p>
+
+					<table class="hours">
+						<caption>Horario</caption>
+						<tbody>
+							<tr>
+								<th scope="row">Horario</th>
+								<td>A confirmar: 856 38 97 28</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="hours-note">Sin horario publicado en fuente sólida. Llama antes de venir.</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={phoneHref}>Llamar a la venta ↗</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<a class="phone-link" href={phoneHref}>+34 856 38 97 28</a>
+				</div>
+
+				<div class="map-frame">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+						<iframe title="Mapa de Venta La Barca de Vejer en N-340 km 36,6" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript><p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p></noscript>
+					</div>
+					<a class="map-label" href={mapsUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">⌖</span> La Barca · Vejer</a>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2>Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">BV</span>
+				<p>La Barca de Vejer<small>{business.street} · {business.city}</small></p>
+			</div>
+			<nav aria-label="Enlaces de la venta">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} La Barca de Vejer · Vejer. Ilustraciones propias temporales, pendientes de fotos del local.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/venta-la-barca-de-vejer/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/venta-la-barca-de-vejer/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/venta-la-barca-de-vejer/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>Llamar a la venta <span>856 38 97 28</span></a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/venta-la-barca-de-vejer/aviso-legal">Aviso legal</a>
+			<a href="/venta-la-barca-de-vejer/aviso-legal#privacidad">Privacidad</a>
+			<a href="/venta-la-barca-de-vejer/aviso-legal#cookies">Cookies</a>
+		</nav>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34856389728?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Venta%20La%20Barca%20de%20Vejer." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Venta La Barca de Vejer"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

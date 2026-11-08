@@ -1,0 +1,160 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, IMAGES } from '../data/site';
+
+const estrellas = [1, 2, 3, 4, 5];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<section id="inicio" class="bg-base-100 relative overflow-hidden">
+	<div class="shelves pointer-events-none absolute inset-0 opacity-70" aria-hidden="true"></div>
+	<p
+		class="ghost-title font-display pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 text-[16rem] leading-none font-bold tracking-[-0.05em] whitespace-nowrap select-none sm:text-[24rem]"
+		aria-hidden="true"
+	>
+		Alacena
+	</p>
+
+	<div
+		class="relative mx-auto grid max-w-7xl gap-12 px-4 pt-10 pb-16 sm:px-6 sm:pt-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-16 lg:px-8 lg:pt-16 lg:pb-24"
+	>
+		<div>
+			<div class="flex flex-wrap items-center gap-2">
+				<span class="pantry-tag bg-base-100/70 text-primary">
+					<i class="ri-map-pin-2-line" aria-hidden="true"></i> Onda · Castellón
+				</span>
+				<span class="pantry-tag border-base-300 text-base-content/55">
+					Bar restaurante
+				</span>
+			</div>
+
+			<h1
+				class="font-display mt-6 text-[4.6rem] leading-[0.86] font-semibold tracking-[-0.04em] sm:text-7xl lg:text-[7rem]"
+			 set:html={piezas.portada.titulo} />
+
+			<p class="text-base-content/70 mt-6 max-w-lg text-lg leading-relaxed">
+				Desayunos, almuerzos y comidas de siempre en el centro de Onda. Bocadillos montados en
+				el mostrador, menú del día y carnes a la brasa.
+			</p>
+
+			<a
+				href={BUSINESS.googleMaps}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="mt-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1"
+			>
+				<span class="text-accent-content text-sm tracking-tight" aria-hidden="true">
+					{estrellas.map((n) => (
+						<i class={n <= Math.round(BUSINESS.rating) ? 'ri-star-fill' : 'ri-star-line'} />
+					))}
+				</span>
+				<span class="text-sm font-bold">
+					{BUSINESS.rating.toString().replace('.', ',')}
+				</span>
+				<span class="text-base-content/50 text-xs">
+					· {BUSINESS.reviewCount} reseñas en Google
+				</span>
+			</a>
+
+			<div class="mt-8 flex flex-wrap gap-3">
+				<a
+					href={BUSINESS.phoneHref}
+					class="btn btn-primary btn-lg h-13 gap-2 rounded-full px-6 text-sm font-semibold"
+				>
+					<i class="ri-phone-line text-lg" aria-hidden="true"></i>
+					{BUSINESS.phone}
+				</a>
+				<a
+					href={BUSINESS.googleMaps}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="btn btn-outline btn-lg border-base-300 hover:border-primary hover:bg-primary hover:text-primary-content h-13 gap-2 rounded-full px-6 text-sm font-semibold"
+				>
+					<i class="ri-route-line text-lg" aria-hidden="true"></i>
+					Cómo llegar
+				</a>
+			</div>
+
+			<dl
+				class="border-base-300 mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t pt-7 sm:grid-cols-3"
+			>
+				<div>
+					<dt class="label text-base-content/40 text-[0.55rem]">Horario</dt>
+					<dd class="mt-1.5 text-sm font-semibold">Lunes a sábado</dd>
+					<dd class="text-base-content/55 text-xs">8:00 – 16:00</dd>
+				</div>
+				<div>
+					<dt class="label text-base-content/40 text-[0.55rem]">A mediodía</dt>
+					<dd class="mt-1.5 text-sm font-semibold">Menú del día</dd>
+					<dd class="text-base-content/55 text-xs">Carnes a la brasa</dd>
+				</div>
+				<div class="col-span-2 sm:col-span-1">
+					<dt class="label text-base-content/40 text-[0.55rem]">Dónde</dt>
+					<dd class="mt-1.5 text-sm font-semibold">{BUSINESS.street}</dd>
+					<dd class="text-base-content/55 text-xs">
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</dd>
+				</div>
+			</dl>
+		</div>
+
+		<div class="relative mx-auto w-full max-w-md pb-8 lg:max-w-none lg:pb-0">
+			<figure class="relative">
+				<div class="photo-mat rounded-[2rem] overflow-hidden">
+					<Image
+						src={IMAGES.fotoApaisada1}
+						alt="Comedor de La Alacena en Onda, con mesas, sillas negras y cuadros en la pared"
+						widths={[520, 820, 1200]}
+						sizes="(min-width: 1024px) 44vw, 92vw"
+						quality={82}
+						loading="eager"
+						fetchpriority="high"
+						class="aspect-[4/3] w-full object-cover"
+					/>
+				</div>
+
+				<div
+					class="border-base-100 absolute -bottom-8 -left-3 w-36 rotate-[-3deg] rounded-xl border-[6px] shadow-xl sm:-left-6 sm:w-44"
+				>
+					<Image
+						src={IMAGES.fotoApaisada3}
+						alt="Dos bocadillos grandes de La Alacena servidos en una bandeja"
+						widths={[280, 460]}
+						sizes="(min-width: 640px) 11rem, 9rem"
+						quality={82}
+						loading="lazy"
+						class="aspect-square w-full rounded-md object-cover"
+					/>
+				</div>
+
+				<div
+					class="stamp bg-base-100 text-primary absolute -top-6 -right-2 size-24 rotate-6 sm:-right-4 sm:size-28"
+				>
+					<span class="text-accent-content text-[0.5rem] tracking-[0.15em] uppercase">Onda</span>
+					<span class="font-display mt-0.5 text-3xl leading-none font-bold">
+						{BUSINESS.rating.toString().replace('.', ',')}
+					</span>
+					<span class="text-base-content/50 mt-1 text-[0.48rem] font-semibold tracking-[0.12em] uppercase">
+						453 reseñas
+					</span>
+				</div>
+
+				<figcaption
+					class="pantry-tag bg-accent text-accent-content border-accent absolute right-4 -bottom-4"
+				>
+					<i class="ri-restaurant-2-line" aria-hidden="true"></i> Cocina de casa
+				</figcaption>
+			</figure>
+		</div>
+	</div>
+
+	<div class="border-base-300/70 mx-auto max-w-7xl border-t" aria-hidden="true">
+		<div class="flex h-8 items-center justify-center gap-3">
+			<span class="bg-primary/30 h-px w-16"></span>
+			<span class="bg-primary/50 size-1.5 rotate-45"></span>
+			<span class="bg-primary/30 h-px w-16"></span>
+		</div>
+	</div>
+</section>

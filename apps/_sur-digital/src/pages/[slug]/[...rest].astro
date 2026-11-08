@@ -1,0 +1,35 @@
+---
+// Subpáginas de las webs de `src/apps/`: /<slug>/aviso-legal/, /<slug>/servicios/
+// y cualquier otro fichero de `src/apps/<slug>/pages/`. La portada la sirve
+// [slug].astro, así que aquí solo entran rutas con al menos un segmento.
+//
+// No se pueden enumerar las rutas dinámicas de una app (`blog/[...slug].astro`,
+// `[sector].astro`) ni sus endpoints (`api/`): se quedan fuera a propósito.
+// El glob vive dentro de getStaticPaths porque el bundle de prerender solo
+// conserva lo que esa función usa.
+export function getStaticPaths() {
+  const pages = import.meta.glob("../../apps/*/pages/**/*.astro");
+
+  return Object.entries(pages).flatMap(([file, load]) => {
+    const match = file.match(/\.\.\/\.\.\/apps\/([^/]+)\/pages\/(.+)\.astro$/);
+    if (!match) return [];
+
+    const [, slug, page] = match;
+    if (page.includes("[")) return [];
+    if (page.startsWith("api/") || page.includes("/api/")) return [];
+
+    const rest = page.replace(/\/index$/, "");
+    if (!rest || rest === "404") return [];
+
+    return [{ params: { slug, rest }, props: { load } }];
+  });
+}
+
+interface Props {
+  load: () => Promise<{ default: any }>;
+}
+const { load } = Astro.props;
+const AppPage = (await load()).default;
+---
+
+<AppPage />

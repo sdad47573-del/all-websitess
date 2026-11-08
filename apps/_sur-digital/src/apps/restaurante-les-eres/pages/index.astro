@@ -1,0 +1,287 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import paella from '../assets/fotos/restaurante-les-eres-paella.jpg';
+import terraza from '../assets/fotos/restaurante-les-eres-terraza.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'BarOrPub'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Les Eres', 'Bar Les Eres Borriana', 'Restaurante Les Eres Grao'],
+	slogan: BUSINESS.tagline,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	currenciesAccepted: 'EUR',
+	areaServed: [
+		{ '@type': 'City', name: 'Borriana' },
+		{ '@type': 'AdministrativeArea', name: 'la Plana Baixa' },
+		{ '@type': 'AdministrativeArea', name: 'Castellón' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza cubierta',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La terraza', href: '#terraza' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Les Eres · Bar restaurante en el Grao de Borriana';
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4653" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Les Eres, Les Eres Borriana, bar Grao de Borriana, bar junto al puerto Borriana, bar restaurante Poblats Marítims, bar Castellón playa, Carrer les Eres 17"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Les Eres · Bar restaurante junto al puerto de Borriana"
+			ogDescription="Terraza cubierta, horario de 8:00 a 23:00 de martes a domingo y acceso adaptado. En el Grao de Borriana, junto al puerto y a un paseo de la playa."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Paella en la mesa de la terraza cubierta de Les Eres, en el Grao de Borriana"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f4653"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[paella]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Bar restaurante · El Grao, Borriana"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer les Eres, 17 · Poblats Marítims · Borriana"
+				title={piezas.portada.titulo}
+				lede="Les Eres es el bar restaurante de la calle Les Eres, en el Grao de Borriana: terraza cubierta, manteles de tela y un horario largo que empieza con el café de las ocho y termina a las once de la noche. Abre de martes a domingo."
+				image={paella}
+				imageAlt="Paella servida en la mesa de la terraza cubierta de Les Eres, en el Grao de Borriana"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.cid, external: true }}
+				tag="Bar restaurante · Grao"
+				facts={[
+					{ label: 'Nota', html: '<b>4,2 en Google</b> con 6 reseñas' },
+					{ label: 'Horario', html: '<b>8:00 – 23:00</b> de martes a domingo' },
+					{ label: 'Lunes', html: '<b>Cerrado</b> todo el día' },
+					{ label: 'Terraza', html: '<b>Cubierta</b>, con mesas de mantel' },
+				]}
+				galleryHref={MAPS.place}
+				galleryLinkLabel="Ver la foto en Google Maps"
+			/>
+
+			<LocalChips label="Qué ofrece Les Eres" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El bar del Grao<br /><em>que no cierra a mediodía.</em>"
+				paragraphs={[
+					'Les Eres está en la calle Les Eres, número 17, en los Poblats Marítims, el barrio marinero de Borriana que todo el mundo conoce como el Grao. Queda junto al puerto, a un paseo de la playa, en una calle tranquila de casas bajas.',
+					'El local abre de martes a domingo, de ocho de la mañana a once de la noche, y descansa los lunes. Es un horario de bar de barrio: sirve desde el café de primera hora hasta la última consumición de la noche, sin echar el cierre a la hora de comer.',
+					'Bajo la terraza cubierta hay mesas de mantel y sillas de madera, con el jardín y las palmeras al fondo. La ficha de Google marca acceso y asientos adaptados para sillas de ruedas, y en la única foto publicada del perfil aparece una paella en el centro de la mesa, de esas que se piden para compartir.',
+				]}
+				note="La ficha de Google de Les Eres todavía no tiene teléfono, web ni carta publicados: quien busque el bar lo encontrará por la dirección y el mapa. Si eres el titular y quieres añadir esos datos a esta página, escríbenos y los incorporamos."
+				links={[
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+				]}
+			/>
+
+			<section class="special section-pad" id="terraza" aria-labelledby="terraza-title">
+				<div class="wrap special-grid">
+					<figure class="special-photo">
+						<Image
+							src={terraza}
+							alt="Terraza cubierta de Les Eres con mesas blancas, sillas de madera y el jardín al fondo"
+							widths={[320, 480, 580]}
+							sizes="(max-width: 980px) 92vw, 44vw"
+							format="avif"
+							quality={70}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La terraza cubierta, en una foto del perfil de Google Maps.</figcaption>
+					</figure>
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La terraza</p>
+						<h2 id="terraza-title">Mesa de mantel<br /><em>bajo el porche.</em></h2>
+						<p>
+							La terraza está cubierta, así que se puede comer fuera aunque caiga algo de
+							agua o el sol apriete en agosto. Las mesas son blancas, las sillas de madera y
+							el fondo lo pone el jardín del local, con palmeras y vegetación de la huerta.
+						</p>
+						<p>
+							Es un sitio de sobremesa larga: la paella en el centro, la botella de cerveza
+							fría al lado y tiempo por delante. Para quien vaya con sillas de ruedas, la
+							ficha marca tanto el acceso como los asientos adaptados.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.directions}>Cómo llegar en Google Maps ↗</a>
+							<a class="simple-link" href={MAPS.place}>Ver la ficha del bar ↗</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow="Carrer les Eres, 17 · 12530 Borriana · Castellón"
+				title="En el Grao,<br /><em>junto al puerto.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castellón · Comunitat Valenciana']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Google marca de 8:00 a 23:00 de martes a domingo y cierra los lunes. En festivos el horario puede cambiar, como avisa la propia ficha, así que mírala antes de acercarte."
+				mapTitle="Mapa de Restaurante Les Eres en la calle Les Eres, 17, Borriana"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Les Eres · Grao de Borriana"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Abrir en Google Maps', href: MAPS.cid, external: true }}
+				reserveNote="No hay teléfono, web ni reserva online publicados en la ficha de Google, así que esta página no inventa un número de contacto. Para grupos, lo práctico es pasarse por el local. La calle Les Eres está en el casco marinero del Grao, junto al puerto."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+			]}
+			phone=""
+			phoneHref=""
+			ctaLabel="Cómo llegar a Les Eres"
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios y servicios antes de la visita."
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

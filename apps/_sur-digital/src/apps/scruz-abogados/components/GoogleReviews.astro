@@ -1,0 +1,98 @@
+---
+import GoogleImg from '@assets/google.webp';
+import VerifiedImg from '@assets/verified.png';
+import { Image } from '@astro-components';
+import { GoogleIcon, RiIcon } from '@astro-icons';
+import { REVIEW_STATS, SHOWN_REVIEWS } from '../data/REVIEWS';
+
+// ─────────────────────────────────────────────────────────────────────────
+// Reseñas reales de la ficha de Google Business Profile.
+// Añadir aquí NO: el contenido vive en src/data/REVIEWS.ts (fuente única), de
+// donde salen también el aggregateRating y el bloque `review` del JSON-LD. Así
+// la media que declara el schema coincide siempre con lo que se ve en la web.
+// Nunca inventar reseñas: los usuarios las detectan y Google penaliza
+// el rating manipulado (ver SEO.md §2, «Pendientes operativos»).
+// ─────────────────────────────────────────────────────────────────────────
+const { count, average } = REVIEW_STATS;
+
+// La media se muestra con un decimal y coma decimal (4,8), como en Google.
+const averageLabel = `${average.toFixed(1).replace('.', ',')}/5`;
+const averageStars = Math.round(average);
+
+// URL del perfil de Google Maps con el selector de reseñas abierto (!9m1!1b1).
+const review_url =
+	'https://www.google.com/maps/place/Abogado+Sergio+Cruz+Chac%C3%B3n/@37.4271167,-4.4847368,14.33z/data=!4m8!3m7!1s0xd6d7100463548d7:0x8ddd019c9af14c71!8m2!3d37.4078135!4d-4.4876165!9m1!1b1!16s%2Fg%2F11y0b9bxt7?entry=ttu&g_ep=EgoyMDI1MTAwOC4wIKXMDSoASAFQAw%3D%3D';
+
+// Con 1 reseña la sección no debe aparentar un volumen que no hay:
+// se ocultan los controles de carrusel y se atenúa el titular agregado.
+const hasMultiple = count > 1;
+const reviewLabel = `rese${count === 1 ? 'ña' : 'ñas'}`;
+
+// Etiqueta del CTA: si solo hay 1-2 reseñas visibles, el texto honesto es
+// "Leer en Google" (no hay más reseñas que ver en la web).
+const ctaLabel = hasMultiple ? 'Ver más reseñas en Google' : 'Leer reseña en Google';
+---
+
+<div class="reveal mx-auto flex max-w-6xl flex-col gap-4 px-4 py-12 md:px-16 md:py-20">
+	<div class="pb-8 text-center">
+		<h2 class="font-title mb-4 text-3xl font-bold md:text-4xl">Opiniones de clientes</h2>
+		<p class="text-xl">Reseñas reales de Google</p>
+	</div>
+	<div class="flex flex-col-reverse items-center justify-center gap-20 md:flex-row">
+		<div class="flex flex-col items-center">
+			{/* La valoración agregada se deriva de REVIEW_STATS: si algún día deja de
+				poder sostenerse el 5/5, el rótulo cambia solo en lugar de mentir. */}
+			<p class="text-2xl font-bold">Valoración {averageLabel}</p>
+			<div class="text-3xl" aria-hidden="true">
+				{'⭐'.repeat(averageStars)}
+			</div>
+			<p class="pt-4 pb-2">
+				{'Basada en'} <span class="font-bold">{count} {reviewLabel}</span>
+			</p>
+			<Image src={GoogleImg} alt="" class="mb-4 h-9 w-auto object-contain" />
+			<a class="btn btn-primary btn-lg btn-wide" href={review_url} rel="noopener" target="_blank">{ctaLabel}</a>
+		</div>
+		<div class="relative flex flex-col gap-4 md:flex-row">
+			{
+				hasMultiple && (
+					<>
+						<a
+							class="btn btn-primary btn-circle absolute top-24 -right-7 hidden md:flex"
+							href={review_url}
+							aria-label="Ver la siguiente reseña de Google"
+						>
+							<RiIcon name="arrowRightS" class="size-4" />
+						</a>
+						<a
+							class="btn btn-primary btn-circle absolute top-24 -left-7 hidden md:flex"
+							href={review_url}
+							aria-label="Ver la reseña anterior de Google"
+						>
+							<RiIcon name="arrowLeftS" class="size-4" />
+						</a>
+					</>
+				)
+			}
+			{
+				SHOWN_REVIEWS.map((r) => (
+					<div class="reveal-pop ring-primary card-surface w-full max-w-96 rounded-2xl p-4 transition-all hover:ring-2">
+						<div class="flex justify-between">
+							<div class="flex">
+								{r.photo && <Image src={r.photo} alt="" class="mr-3.5 size-10" />}
+								<p class="font-bold">{r.author}</p>
+							</div>
+							<GoogleIcon class="size-5" />
+						</div>
+						<div class="flex items-center gap-2 py-2.5">
+							{'⭐'.repeat(r.rating)}
+
+							<Image src={VerifiedImg} alt="" class="size-4" />
+						</div>
+
+						<p class="text">{r.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</div>

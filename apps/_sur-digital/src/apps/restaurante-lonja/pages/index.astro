@@ -1,0 +1,260 @@
+---
+import WhatsappFab from '../components/WhatsappFab.astro';
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+const business = {
+	name: 'Restaurante Lonja',
+	tagline: 'Comida casera · Desayunos de 10 en Cartagena',
+	street: '30392 Cartagena (ver mapa)',
+	district: 'Cartagena oeste',
+	city: 'Cartagena',
+	region: 'Región de Murcia',
+	postalCode: '30392',
+	phone: '678 28 68 02',
+	latitude: 37.6277509,
+	longitude: -0.961471,
+	site: 'https://www.sur-digital.com/restaurante-lonja',
+};
+
+const mapsUrl = `https://www.google.com/maps/place/Restaurante+Lonja/@${business.latitude},${business.longitude},17z/data=!3m1!4b1!4m6!3m5!1s0xd63419020fccbfb:0xb5ead5573d087a4c!8m2!3d${business.latitude}!4d${business.longitude}!16s%2Fg%2F11sh05s1wx`;
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=16&hl=es&output=embed`;
+const phoneHref = 'tel:+34678286802';
+
+const description =
+	'Restaurante Lonja en 30392 Cartagena: comida casera variada, desayunos de 10 con tostadas y café exquisito, terraza y trato familiar. Tel. 678 28 68 02.';
+
+const servicios = [
+	'Desayunos de 10',
+	'Tostadas y café',
+	'Comida casera',
+	'Terraza',
+	'Trato familiar',
+	'Se adaptan a ti',
+	'Cartagena oeste',
+];
+
+const platos = [
+	{ name: 'Desayunos con tostadas riquísimas', note: 'se adaptan a tus necesidades y preferencias' },
+	{ name: 'Café exquisito', note: 'el de la terraza llena que nunca falla' },
+	{ name: 'Comida casera variada', note: 'platos del día de fondo mediterráneo' },
+	{ name: 'Pescado y mar', note: 'frescura de lonja en la mesa' },
+	{ name: 'Raciones para compartir', note: 'pregunta por lo del día' },
+];
+
+const fotos = [
+	{ src: '/fotos/terraza-lonja.svg', alt: 'Ilustración placeholder de la terraza de Restaurante Lonja — sustituir por foto propia' },
+	{ src: '/fotos/desayunos-tostadas.svg', alt: 'Ilustración placeholder de desayunos con tostadas y café — sustituir por foto propia' },
+	{ src: '/fotos/comida-casera.svg', alt: 'Ilustración placeholder de comida casera variada — sustituir por foto propia' },
+	{ src: '/fotos/pescado-lonja.svg', alt: 'Ilustración placeholder de pescado fresco — sustituir por foto propia' },
+	{ src: '/fotos/salon-familiar.svg', alt: 'Ilustración placeholder del salón familiar — sustituir por foto propia' },
+	{ src: '/fotos/exterior-cartagena.svg', alt: 'Ilustración placeholder del exterior en Cartagena — sustituir por foto propia' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está Restaurante Lonja?',
+		a: 'En 30392 Cartagena (Murcia), en la zona oeste del municipio (coordenadas del enlace: 37.6277509, -0.961471). Usa el botón «Cómo llegar» para abrir la ubicación exacta en Google Maps.',
+	},
+	{
+		q: '¿Cuál es el teléfono?',
+		a: 'El 678 28 68 02. Llama para confirmar dirección exacta, horarios y disponibilidad, sobre todo en fin de semana.',
+	},
+	{
+		q: '¿Qué se come en Lonja?',
+		a: 'Comida casera variada y desayunos de 10: tostadas riquísimas y café exquisito, con personal que se adapta a tus necesidades. La clientela destaca el trato con cariño y la sonrisa.',
+	},
+	{
+		q: '¿Tiene terraza?',
+		a: 'Sí, con terraza donde sirven desayunos y comidas. Aun llena, el servicio es atento y simpático según las reseñas.',
+	},
+	{
+		q: '¿Qué nota tiene?',
+		a: 'Muy alta en Google (9,4/10 en agregadores con 25 opiniones). Pocas opiniones pero todas excelentes: si vas, deja la tuya.',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${business.site}/#restaurante`,
+	name: business.name,
+	slogan: business.tagline,
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 678 28 68 02',
+	priceRange: '€€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Mediterránea', 'Española', 'Cocina casera'],
+	address: {
+		'@type': 'PostalAddress',
+		addressLocality: business.city,
+		addressRegion: 'Murcia',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: business.latitude, longitude: business.longitude },
+	hasMap: mapsUrl,
+	acceptsReservations: 'True',
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Desayunos', value: true },
+	],
+	aggregateRating: { '@type': 'AggregateRating', ratingValue: 4.7, reviewCount: 25, bestRating: 5 },
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Qué pedir', href: '#carta' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotosPiezas = {
+
+};
+
+const horas = [
+					{ day: 'Lunes', value: 'Consultar · 678 28 68 02' },
+					{ day: 'Martes', value: 'Consultar · 678 28 68 02' },
+					{ day: 'Miércoles', value: 'Consultar · 678 28 68 02' },
+					{ day: 'Jueves', value: 'Consultar · 678 28 68 02' },
+					{ day: 'Viernes', value: 'Consultar · 678 28 68 02' },
+					{ day: 'Sábado', value: 'Consultar · 678 28 68 02' },
+					{ day: 'Domingo', value: 'Consultar · 678 28 68 02' },
+				];
+const mapasPagina = {
+	place: mapsUrl,
+	directions: mapsUrl,
+	streetView: mapsUrl,
+	embed: mapEmbedUrl,
+};
+
+---
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>Restaurante Lonja | Comida casera y desayunos en Cartagena</title>
+		<meta name="theme-color" content="#0c1a24" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={business.name}
+			description={description}
+			keywords="Restaurante Lonja, restaurante Cartagena, desayunos Cartagena, tostadas Cartagena, comida casera Cartagena, terraza Cartagena"
+			canonical={`${business.site}/`}
+			site={business.site}
+			ogTitle="Restaurante Lonja · Comida casera en Cartagena"
+			ogDescription="Desayunos de 10, tostadas, café exquisito y comida casera en 30392 Cartagena. Terraza y trato familiar."
+			ogImage={`${business.site}/og.svg`}
+			ogImageAlt="Restaurante Lonja, comida casera en Cartagena"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={business.name}
+			themeColor="#0c1a24"
+			street={business.street}
+			city={business.city}
+			region="Murcia"
+			postalCode={business.postalCode}
+			phone={business.phone}
+			latitude={business.latitude}
+			longitude={business.longitude}
+			placeName="Cartagena oeste, Murcia"
+			preload={[]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<style>
+			.hero-custom { display:grid; grid-template-columns: 1.05fr 0.95fr; gap:2.5rem; align-items:center; padding:4.5rem 0 2.5rem; }
+			.hero-custom h1 { font-size: clamp(2.6rem, 5.4vw, 4.4rem); line-height:1.02; margin:0.6rem 0 1rem; }
+			.hero-custom h1 em { color: var(--amber); font-style:normal; }
+			.hero-custom img { width:100%; height:auto; border-radius: var(--radius); border:1px solid var(--line); }
+			.fotos-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; margin-top:1.6rem; }
+			.fotos-grid figure { margin:0; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--deep-2); }
+			.fotos-grid img { width:100%; height:220px; object-fit:cover; display:block; }
+			.fotos-grid figcaption { padding:0.6rem 0.8rem; font-size:0.85rem; color:var(--muted); }
+			.aviso-fotos { border:1px dashed var(--amber); border-radius:14px; padding:1rem 1.2rem; background:rgba(224,153,61,0.08); font-size:0.95rem; }
+			@media (max-width: 980px){ .hero-custom{grid-template-columns:1fr; padding-top:3rem;} .fotos-grid{grid-template-columns:1fr 1fr;} }
+			@media (max-width: 640px){ .fotos-grid{grid-template-columns:1fr;} .fotos-grid img{height:200px;} }
+		</style>
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark="L"
+			name={business.name}
+			subtitle="Cartagena · comida casera"
+			phone={business.phone}
+			phoneHref={phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotosPiezas}
+				negocio={{
+					name: business.name,
+					street: business.street,
+					district: business.district ?? '',
+					postalCode: business.postalCode,
+					city: business.city,
+				}}
+								horario={horas}
+								mapas={mapasPagina}
+			/>
+		</main>
+
+		<LocalFooter
+			mark="L"
+			name={business.name}
+			address={`30392 ${business.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: mapsUrl, external: true },
+				{ label: 'Cómo llegar ↗', href: directionsUrl, external: true },
+				{ label: business.phone, href: phoneHref },
+			]}
+			phone={business.phone}
+			phoneHref={phoneHref}
+			legal="Ilustraciones propias provisionales. Información elaborada a partir de fuentes públicas escasas; confirma dirección y horarios antes de la visita."
+			ctaLabel="Llamar a Lonja"
+		/>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/restaurante-lonja/aviso-legal">Aviso legal</a>
+			<a href="/restaurante-lonja/aviso-legal#privacidad">Privacidad</a>
+			<a href="/restaurante-lonja/aviso-legal#cookies">Cookies</a>
+		</nav>
+		<WhatsappFab phone={phoneHref} name={business.name} />
+	</body>
+</html>

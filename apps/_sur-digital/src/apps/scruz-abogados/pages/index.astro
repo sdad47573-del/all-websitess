@@ -1,0 +1,623 @@
+---
+import img from '@assets/7.webp';
+import { SITE_URL } from '../data/site';
+import hoursImg from '@assets/hours.webp';
+import SpainImg from '@assets/spain.astro';
+import supportImg from '@assets/support.png';
+import { Image } from '@astro-components';
+import ContactSection2 from '../components/ContactSection2.astro';
+import FAQItem from '../components/FAQItem.astro';
+import GoogleReviews from '../components/GoogleReviews.astro';
+import Hero1 from '../components/Hero1.astro';
+import UbicacionMiniItem from '../components/UbicacionMiniItem.astro';
+import { FAQ } from '../data/FAQ';
+import { UBICACIONES } from '../data/UBICACIONES';
+import CustomLayout from '../layouts/CustomLayout.astro';
+import { SERVICES } from '../data/SERVICES';
+
+import HeroBgImg from '@assets/hero-bg.webp';
+import { RiIcon } from '@astro-icons';
+import { getImage } from '@astro-components';
+import { HERO_IMAGES } from '../components/heroImages';
+import {
+	ArrowLeftRight,
+	ArrowRight,
+	Briefcase,
+	Building2,
+	Check,
+	Clock,
+	FileText,
+	Heart,
+	House,
+	MapPin,
+	Scale,
+	Shield,
+	ShieldCheck,
+	UserRound,
+	Users,
+} from '@lucide/astro';
+import { BLOG_POSTS } from '../data/BLOG_POSTS';
+
+const optimizedBg = await getImage({
+	src: HeroBgImg,
+	format: 'webp',
+});
+
+// El hero renderiza la foto del abogado a 800 px (desktop) y 412 px (móvil).
+// Generar aquí la variante a 800 px evita preloadear la imagen a tamaño
+// original (182 KB) cuando el <img> real solo necesita 800 px.
+// Las variantes del hero (avif/webp × desktop/móvil) viven en heroImages.ts,
+// fuente única compartida con el <picture> de Hero1.astro para que cada
+// preload apunte exactamente a la variante que el navegador renderiza.
+
+// Catálogo de servicios para hasOfferCatalog (relevancia tópica de las
+// queries "abogado X lucena" con volumen detectado en Search Console).
+const offerCatalog = SERVICES.map((s) => ({
+	name: s.title,
+	description: s.description,
+	url: `${s.path}/`,
+	serviceType: 'LegalService',
+}));
+
+// FAQ visibles en la home: Honorarios (responde el PAA "¿Cuánto cobra un
+// abogado por una consulta?") + Plazos. El schema FAQPage refleja EXACTAMENTE
+// las preguntas renderizadas (requisito de las directrices de Google).
+const homeFaqs = [FAQ[0], FAQ[1]];
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${SITE_URL}/#faq`,
+	name: 'Preguntas frecuentes | Scruz Abogados',
+	mainEntity: homeFaqs.flatMap((cat) =>
+		cat.questions.map((q) => ({
+			'@type': 'Question',
+			name: q.title,
+			acceptedAnswer: { '@type': 'Answer', text: q.answer },
+		})),
+	),
+};
+---	<CustomLayout
+	title="Abogado en Lucena | Civil, Herencias y Testamentos | Scruz"
+	description="¿Buscas abogado en Lucena? Primera consulta gratuita y urgencias 24 h. Herencias y testamentos, divorcios, civil, penal y laboral: 666 329 155."
+	offerCatalog={offerCatalog}
+	additionalSchemas={[faqSchema]}
+>
+---
+	<link rel="preload" as="image" href={optimizedBg.src} slot="head" fetchpriority="high" />
+	<!-- Foto del hero: se preloada SOLO el AVIF, que es lo que el <picture> de
+	     Hero1.astro renderiza en los navegadores modernos (~97% del tráfico).
+	     NO se preloadan los fallbacks webp: los navegadores que soportan ambos
+	     formatos descargarían el par completo (preload con type no discrimina),
+	     y los que no soportan avif cargan su webp por la vía normal. -->
+	<link
+		rel="preload"
+		as="image"
+		href={HERO_IMAGES.desktop.avif.src}
+		slot="head"
+		fetchpriority="high"
+		media="(min-width: 768px)"
+	/>
+	<link
+		rel="preload"
+		as="image"
+		href={HERO_IMAGES.mobile.avif.src}
+		slot="head"
+		fetchpriority="high"
+		media="(max-width: 767px)"
+	/>
+	<Hero1 />
+
+	<!--
+		Banda "Siempre a tu lado". Tres cosas iban mal aquí:
+		  - La intro metía tramos en `text-lg` dentro de párrafos de 16 px, así que
+		    esas líneas cambiaban de alto y el texto se veía a saltos. Ahora todo es
+		    un solo cuerpo, con las ideas clave en negrita pero sin cambiar de tamaño.
+		  - Las tres columnas eran un flex con `justify-between`, o sea que cada una
+		    medía lo que medía su texto: la primera salía al DOBLE de ancho que las
+		    otras dos. Ahora es una rejilla de columnas iguales.
+		  - Los iconos no cuadraban en alto: el mapa es un SVG apaisado y quedaba
+		    metido en un cuadro de 44x44, más bajo que los otros dos. Ver spain.astro.
+		El aire y el ancho de contenido los pone la clase `.band` (index.css), que
+		comparte con el resto de bandas azules del sitio; el titular y la intro no se
+		estiran gracias a su max-w-3xl.
+	-->
+	<div class="band band-primary bg-primary text-primary-content text-center">
+		<h2 class="reveal font-title pb-4 text-center text-3xl font-bold md:text-5xl max-[380px]:break-words">
+			Siempre a tu lado, estés donde estés
+		</h2>
+		<!--
+			Intro en un solo cuerpo de 16 px: los conceptos clave van en negrita, pero
+			SIN subir el tamaño. Antes llevaban `text-lg` dentro de un párrafo de 16 px,
+			así que esas líneas cambiaban de alto (1.75rem frente a 1.5rem) y el bloque
+			se veía desalineado y a saltos. El ancho se limita a max-w-3xl: a ancho
+			completo la línea es demasiado larga para leerla cómoda.
+		-->
+		<p class="mx-auto max-w-3xl pb-6 text-center">
+			Abogado disponible las
+			<span class="font-bold">24 horas durante los 7 días para toda España</span>
+			(horario de oficina: lunes a viernes de 9:00 a 18:00; urgencias fuera de horario)
+		</p>
+		<p class="mx-auto max-w-3xl pb-12 text-center md:pb-16">
+			Desde <span class="font-bold">Málaga hasta Córdoba y Granada</span>,
+			ofrecemos <span class="font-bold">asistencia legal inmediata, online o
+			presencial</span>, adaptada a tus necesidades.
+		</p>
+
+		<!--
+			Rejilla de 3 columnas IGUALES (antes flex + justify-between: cada columna
+			medía lo que medía su texto y la primera salía al doble de ancho). Las 3
+			columnas entran solo desde lg: por debajo, tres bloques de texto de ~200 px
+			se leen mal, así que se apilan en una sola columna.
+			`lg:min-h-[4rem]` en los títulos reserva dos líneas para que los párrafos
+			empiecen a la misma altura aunque un título ocupe dos líneas y los otros una
+			(2 × 2rem de line-height de text-2xl = 4rem).
+		-->
+		<div class="mx-auto grid max-w-6xl gap-8 lg:grid-cols-3 lg:gap-10" data-reveal-stagger>
+			<div class="reveal flex flex-col items-center gap-4 text-center">
+				<Image class="h-11 w-auto" src={hoursImg} alt="" width={44} height={44} />
+				<p class="text-xl font-bold md:text-2xl lg:min-h-[4rem]">Disponibilidad total</p>
+				<p>
+					<span class="font-bold">Atendemos tu caso todos los días de la
+					semana, las 24 horas</span>, con horario de oficina de lunes a viernes de
+					9:00 a 18:00 y atención de urgencias el resto del tiempo. Porque los
+					problemas legales no esperan.
+				</p>
+			</div>
+
+			<div class="reveal flex flex-col items-center gap-4 text-center">
+				<SpainImg />
+				<p class="text-xl font-bold md:text-2xl lg:min-h-[4rem]">Cobertura nacional con foco local</p>
+				<p>
+					<span class="font-bold">Aceptamos casos en toda España</span>, con
+					especial atención a <span class="font-bold">Málaga, Córdoba y
+					Granada</span>.
+				</p>
+			</div>
+
+			<div class="reveal flex flex-col items-center gap-4 text-center">
+				<Image class="h-11 w-auto" src={supportImg} alt="" width={44} height={44} />
+				<p class="text-xl font-bold md:text-2xl lg:min-h-[4rem]">Flexibilidad de contacto</p>
+				<p>
+					<span class="font-bold">
+						Atendemos consultas online, por videoconferencia, llamada telefónica o presencial
+					</span> en nuestro despacho.
+				</p>
+			</div>
+
+		
+		</div>
+	</div>
+
+	<section class="bg-white py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-4 md:px-16">
+			<div class="reveal-pop mb-10 text-center md:mb-16">
+				<p class="eyebrow eyebrow--center mb-3">Por qué elegirnos</p>
+				<h2 class="mb-4 font-title text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">A destacar</h2>
+			</div>
+			<div class="grid grid-cols-1 items-center gap-8 md:gap-12 lg:grid-cols-2">
+				<div class="space-y-6" data-reveal-stagger>
+				<div class="reveal group flex items-start space-x-4">
+							<div
+								class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12"
+							>
+								<Clock class="text-primary size-6" />
+							</div><div>
+								<h3 class="mb-2 text-xl font-semibold text-gray-900">+20 Años de Experiencia</h3><p
+									class="text-gray-600"
+								>
+									Décadas de experiencia respaldando a nuestros clientes en sus necesidades legales
+									más importantes.
+								</p>
+							</div>
+						</div><div class="reveal flex items-start space-x-4">
+							<div
+								class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12"
+							>
+								<MapPin class="text-primary size-6" />
+							</div><div>
+								<h3 class="mb-2 text-xl font-semibold text-gray-900">Múltiples Ubicaciones</h3><p
+									class="text-gray-600"
+								>
+									Oficinas en Málaga, Lucena y Córdoba con despachos adicionales bajo demanda.
+								</p>
+							</div>
+						</div><div class="reveal flex items-start space-x-4">
+							<div
+								class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12"
+							>
+								<UserRound class="text-primary size-6" />
+							</div><div>
+								<h3 class="mb-2 text-xl font-semibold text-gray-900">Atención Personalizada</h3><p
+									class="text-gray-600"
+								>
+									Cada caso es único. Ofrecemos un servicio cercano y adaptado a tus necesidades
+									específicas.
+								</p>
+							</div>
+						</div><div class="reveal flex items-start space-x-4">
+							<div
+								class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110 md:h-12 md:w-12"
+							>
+								<ShieldCheck class="text-primary size-6" />
+							</div><div>
+								<h3 class="mb-2 text-xl font-semibold text-gray-900">Transparencia Total</h3><p
+									class="text-gray-600"
+								>
+									Presupuesto cerrado por escrito antes de empezar y comunicación constante
+									durante todo el procedimiento, sin sorpresas.
+								</p>
+							</div>
+						</div>
+					</div>
+				<!--
+					Foto de la sección "A destacar": SIN animaciones, a propósito.
+					Llevaba dos y ninguna aportaba: `reveal-pop` en este div (barrido
+					clip-path de 0,7 s + escala 0,97→1, que sobre una foto se lee como un
+					corte) y `group-hover:scale-[1.03]` en la propia imagen (zoom de 500 ms
+					al pasar el ratón por la columna). Ahora entra directa y fija.
+					Al quitar `group` se va también el hover de la imagen, que era su único
+					`group-hover:`. La columna de texto de al lado conserva su reveal.
+				-->
+				<div class="relative">
+					<Image
+						alt="Consulta legal profesional"
+						class="h-96 w-full rounded-xl object-cover object-top shadow-2xl lg:h-full"
+						src={img}
+						width={504}
+						height={384}
+					/>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-gray-50 py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-4 md:px-16">
+			<div class="reveal-pop mb-10 text-center md:mb-16">
+				<p class="eyebrow eyebrow--center mb-3">Áreas de práctica</p>
+				<h2 class="mb-4 font-title text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">Nuestras especialidades</h2><p
+					class="mx-auto max-w-3xl text-lg text-gray-600 md:text-xl"
+				>
+					Ofrecemos servicios jurídicos integrales con un enfoque personalizado para cada cliente
+				</p>
+			</div>			<div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+				<div class="reveal reveal-pop group rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-4 flex size-12 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110 md:mb-6 md:size-16">
+						<House class="size-6 text-blue-600 md:size-8" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Derecho Civil</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Contratos, compraventas, alquileres, desahucios y responsabilidad civil
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Contratos y compraventas
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Desahucios
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Accidentes y responsabilidad civil
+						</li>
+					</ul>					<a
+						class="text-primary group/link mt-4 inline-flex items-center gap-1 font-semibold transition-colors hover:underline"
+						href="/scruz-abogados/derecho-civil/"
+						data-discover="true">Abogado civil en Lucena<RiIcon name="arrowRight" class="size-4 transition-transform group-hover/link:translate-x-1" />
+					</a>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-purple-100 transition-transform duration-300 group-hover:scale-110">
+						<Heart class="size-8 text-purple-600" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Derecho de Familia</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Divorcios, separaciones, herencias y sucesiones
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Divorcios y separaciones
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" /><a class="hover:text-primary hover:underline" href="/scruz-abogados/herencias-testamentos/">Herencias y testamentos en Lucena</a>
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Incumplimientos de sentencia
+						</li>
+					</ul>					<a
+						class="text-primary group/link mt-4 inline-flex items-center gap-1 font-semibold transition-colors hover:underline"
+						href="/scruz-abogados/divorcios-separaciones/"
+						data-discover="true">Abogado de familia en Lucena<RiIcon name="arrowRight" class="size-4 transition-transform group-hover/link:translate-x-1" />
+					</a>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-orange-100 transition-transform duration-300 group-hover:scale-110">
+						<Building2 class="size-8 text-orange-600" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Derecho Mercantil</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Asesoramiento integral a empresas y contratación mercantil
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Contratación mercantil
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Reestructuraciones empresariales
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Asesoramiento integral
+						</li>
+					</ul>					<a
+						class="text-primary group/link mt-4 inline-flex items-center gap-1 font-semibold transition-colors hover:underline"
+						href="/scruz-abogados/empresas/"
+						data-discover="true">Abogado mercantil en Lucena<RiIcon name="arrowRight" class="size-4 transition-transform group-hover/link:translate-x-1" />
+					</a>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-red-100 transition-transform duration-300 group-hover:scale-110">
+						<Shield class="size-8 text-red-600" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Derecho Penal</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Defensa y acusación particular en procesos penales
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Denuncias y delitos leves
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Defensa particular
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Acusación particular
+						</li>
+					</ul>					<a
+						class="text-primary group/link mt-4 inline-flex items-center gap-1 font-semibold transition-colors hover:underline"
+						href="/scruz-abogados/derecho-penal/"
+						data-discover="true">Abogado penalista en Lucena<RiIcon name="arrowRight" class="size-4 transition-transform group-hover/link:translate-x-1" />
+					</a>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-green-100 transition-transform duration-300 group-hover:scale-110">
+						<Briefcase class="size-8 text-green-600" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Derecho Laboral</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Despidos, indemnizaciones y conflictos laborales
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Despidos e indemnizaciones
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Reclamaciones salariales
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Conflictos laborales
+						</li>
+					</ul>					<a
+						class="text-primary group/link mt-4 inline-flex items-center gap-1 font-semibold transition-colors hover:underline"
+						href="/scruz-abogados/despidos/"
+						data-discover="true">Abogado laboralista en Lucena<RiIcon name="arrowRight" class="size-4 transition-transform group-hover/link:translate-x-1" />
+					</a>
+				</div>
+			</div>
+			<!-- Enlazado interno a las landings comerciales que Search Console registra
+			     con impresiones y cero clics (google_search/Páginas.csv). La home
+			     concentra la autoridad del dominio y hasta ahora solo llegaba a estas
+			     áreas por /servicios/, a dos clics de profundidad. -->
+			<div class="mt-8 rounded-xl border border-base-300 bg-white p-5 md:p-6">
+				<p class="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-gray-500">
+					Otras áreas de práctica
+				</p>
+				<ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-center text-sm">
+					<li><a class="link link-primary" href="/scruz-abogados/indemnizaciones-trafico/">Indemnizaciones por accidente de tráfico</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/testamentos-cordoba/">Testamentos en Córdoba</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/seguros-agrarios/">Seguros agrarios y Agroseguro</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/recursos-administrativos/">Recursos administrativos y sanciones</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/violencia-genero/">Violencia de género</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/guarda-custodia/">Guarda y custodia y pensión de alimentos</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/consumo/">Consumo y reclamaciones bancarias</a></li>
+					<li><a class="link link-primary" href="/scruz-abogados/urbanismo/">Urbanismo y licencias de obra</a></li>
+				</ul>
+			</div>
+			<div class="mt-8 text-center md:mt-12">
+				<a
+					class="btn btn-primary btn-block btn-lg font-semibold sm:btn-wide transition-colors"
+					href="/scruz-abogados/servicios/"
+					data-discover="true">Ver todos los servicios</a
+				>
+			</div>
+		</div>
+	</section>
+	<GoogleReviews />
+
+	<section class="bg-gray-50 py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-4 md:px-16">
+			<div class="reveal-pop mb-10 text-center md:mb-16">
+				<p class="eyebrow eyebrow--center mb-3">Dónde estamos</p>
+				<h2 class="mb-4 font-title text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">Nuestras oficinas</h2>					<p class="text-lg text-gray-600 md:text-xl">
+						Estamos cerca de ti en las principales ciudades de Andalucía
+					</p>
+			</div>
+			<div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2" data-reveal-stagger>
+				{UBICACIONES.map((ubi) => <UbicacionMiniItem {...ubi} />)}
+			</div>
+			<div class="mt-8 text-center md:mt-12">
+				<a class="btn btn-primary btn-block btn-lg sm:btn-wide" href="/scruz-abogados/ubicaciones/"data-discover="true"
+					>Ver todas las ubicaciones</a
+					>
+			</div>
+		</div>
+	</section>
+	<section class="py-12 md:py-20">
+		<div class="reveal-pop">
+			<p class="eyebrow eyebrow--center mb-4">Resolvemos tus dudas</p>
+			<h2 class="mb-4 text-center font-title text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">
+				Preguntas frecuentes
+			</h2>
+			<p class="mx-auto max-w-4xl pb-10 text-center text-lg text-gray-600 md:pb-16 md:text-xl">
+				Resolvemos las dudas más comunes sobre nuestros servicios jurídicos y procedimientos legales
+			</p>
+		</div>
+
+		<div class="mx-auto flex max-w-4xl flex-col gap-4 px-4 sm:px-6 lg:px-8" data-reveal-stagger>
+			{homeFaqs.map((faq) => <FAQItem {...faq} />)}
+			<div class="mt-8 text-center md:mt-12">
+				<a class="btn btn-primary btn-block btn-lg sm:btn-wide" href="/scruz-abogados/faq/" data-discover="true"
+					>Ver más preguntas</a
+				>
+			</div>
+		</div>
+	</section>
+	<section class="bg-white py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-4 md:px-16">
+			<div class="reveal-pop mb-10 text-center md:mb-16">
+				<p class="eyebrow eyebrow--center mb-3">Blog jurídico</p>
+				<h2 class="mb-4 font-title text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">
+					Guías legales para entender tu caso
+				</h2><p class="mx-auto max-w-3xl text-lg text-gray-600 md:text-xl">
+					Artículos escritos por el despacho explicando plazos, requisitos y pasos de los
+					procedimientos más habituales en Lucena, Córdoba y Málaga.
+				</p>
+			</div>
+			<div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+				{
+					BLOG_POSTS.slice(0, 6).map((post) => (
+						<a
+							href={post.href}
+							class="card-surface reveal-pop hover:-translate-y-1 flex flex-col rounded-xl p-5 sm:p-6 md:p-8"
+							data-discover="true"
+						>
+							<div class="mb-6 flex items-center justify-between">
+								<span class="text-primary inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold">
+									<FileText class="size-4" /> {post.category}
+								</span>
+							</div>
+							<h3 class="mb-3 flex-1 text-lg font-bold text-gray-900">{post.title}</h3>
+							<p class="mb-6 text-gray-600">{post.description}</p>
+							<div class="mt-auto flex items-center justify-between border-t border-gray-100 pt-4 text-sm text-gray-500">
+								<span class="inline-flex items-center gap-1"><Clock class="size-4" /> {post.readTime} lectura</span>
+								<span class="inline-flex items-center gap-1">Leer guía <ArrowRight class="size-4" /></span>
+							</div>
+						</a>
+					))
+				}
+			</div>
+			<div class="mt-8 text-center md:mt-12">
+				<a class="btn btn-primary btn-block btn-lg sm:btn-wide" href="/scruz-abogados/blog/" data-discover="true"
+					>Ver todas las guías</a
+				>
+			</div>
+		</div>
+	</section>
+	<section class="bg-gray-50 py-12 md:py-20">
+		<div class="mx-auto max-w-7xl px-4 md:px-16">
+			<div class="reveal-pop mb-10 text-center md:mb-16">
+				<p class="eyebrow eyebrow--center mb-3">Para empresas</p><h2 class="mb-4 font-title text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl">
+						Servicios especializados
+					</h2><p class="text-lg text-gray-600 md:text-xl">
+					Soluciones jurídicas adaptadas a las necesidades de tu empresa
+				</p>
+			</div><div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+				<div class="reveal reveal-pop group rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110">
+						<Building2 class="text-primary size-8" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Constitución de Sociedades</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Te ayudamos a crear tu empresa con la forma jurídica más adecuada
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />SL y SA
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Sociedades Civiles
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Cooperativas
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Fundaciones
+						</li>
+					</ul>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110">
+						<FileText class="text-primary size-8" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Contratos Mercantiles</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Redacción y revisión de todo tipo de contratos comerciales
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Contratos de distribución
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Acuerdos comerciales
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Franquicias
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Joint ventures
+						</li>
+					</ul>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110">
+						<Users class="text-primary size-8" />
+					</div>
+					<h3 class="mb-4 text-xl font-bold text-gray-900">Derecho Laboral Empresarial</h3>
+					<p class="mb-6 text-gray-600">
+						Gestión integral de las relaciones laborales en tu empresa
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Despidos
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Convenios colectivos
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Inspecciones
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Prevención de riesgos
+						</li>
+					</ul>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110">
+						<Scale class="text-primary size-8" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Compliance y Cumplimiento</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Aseguramos que tu empresa cumpla con toda la normativa vigente
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />RGPD
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Blanqueo de capitales
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Compliance penal
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Auditorías legales
+						</li>
+					</ul>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110">
+						<ArrowLeftRight class="text-primary size-8" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Fusiones y Adquisiciones</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Asesoramiento en operaciones de M&amp;A y reestructuraciones
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Due diligence
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Valoraciones
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Negociación
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Cierre de operaciones
+						</li>
+					</ul>
+				</div><div class="reveal reveal-pop rounded-xl bg-white p-5 shadow-lg transition-shadow hover:shadow-xl sm:p-6 md:p-8">
+					<div class="mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-blue-100 transition-transform duration-300 group-hover:scale-110">
+						<ShieldCheck class="text-primary size-8" />
+					</div><h3 class="mb-4 text-xl font-bold text-gray-900">Resolución de Conflictos</h3><p
+						class="mb-6 text-gray-600"
+					>
+						Mediación y litigio en disputas comerciales
+					</p><ul class="space-y-2">
+						<li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Arbitraje
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Mediación
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Litigio mercantil
+						</li><li class="flex items-center text-sm text-gray-700">
+							<Check class="mr-2 size-4 shrink-0 text-green-600" />Reclamaciones
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="mt-12 text-center">								<a
+									class="btn btn-primary btn-block btn-lg font-semibold sm:btn-wide transition-colors"
+									href="/scruz-abogados/empresas/"
+									data-discover="true">Ver servicios para empresas</a
+								>
+			</div>
+		</div>
+	</section>
+	<ContactSection2 />
+</CustomLayout>

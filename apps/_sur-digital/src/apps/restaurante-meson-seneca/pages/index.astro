@@ -1,0 +1,491 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	distintivo,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Restaurante Mesón Séneca · Restaurante en Jaén';
+const description =
+	'Restaurante Mesón Séneca, restaurante en la Avenida de Andalucía, 27 de Jaén. 4 sobre 5 con 675 reseñas; mediodía y noche de martes a sábado y mediodía los domingos.';
+const keywords =
+	'Restaurante Mesón Séneca, Mesón Séneca Jaén, restaurante Jaén, Avenida de Andalucía Jaén, Restaurante Mesón Séneca teléfono';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada por Restaurante Mesón Séneca en su ficha de Google Maps';
+const altOg = 'Fotografía de Restaurante Mesón Séneca publicada en su ficha de Google Maps';
+
+/**
+ * Galería completa: las diez fotografías de la ficha.
+ *
+ * El manifiesto de la descarga quedó sin autor (`author` vacío), así que se publican sin pie y sin
+ * atribución: no hay nada que citar.
+ */
+const galeria = [
+	'restaurante-meson-seneca-apaisada-01.jpg',
+	'restaurante-meson-seneca-vertical-02.jpg',
+	'restaurante-meson-seneca-apaisada-03.jpg',
+	'restaurante-meson-seneca-apaisada-04.jpg',
+	'restaurante-meson-seneca-apaisada-05.jpg',
+	'restaurante-meson-seneca-vertical-06.jpg',
+	'restaurante-meson-seneca-vertical-07.jpg',
+	'restaurante-meson-seneca-vertical-08.jpg',
+	'restaurante-meson-seneca-apaisada-09.jpg',
+	'restaurante-meson-seneca-vertical-10.jpg',
+];
+
+/** Tres fotos de avance en el collage de la portada (también están en la galería). */
+const collage = [
+	{ name: 'restaurante-meson-seneca-apaisada-01.jpg', clase: 'collage-item collage-item-a' },
+	{ name: 'restaurante-meson-seneca-vertical-02.jpg', clase: 'collage-item collage-item-b' },
+	{ name: 'restaurante-meson-seneca-vertical-06.jpg', clase: 'collage-item collage-item-c' },
+];
+
+/**
+ * Número de reseñas destacadas que publica la ficha.
+ *
+ * Aquí son tres, pero se cuenta en vez de escribirlo a mano para que el texto no se desincronice
+ * si la ficha cambia.
+ */
+const numeroResenas = reviews.length;
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#2a211a" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-J" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/restaurante-meson-seneca/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">S</span>
+				<span class="brand-text">
+					Restaurante Mesón Séneca
+					<small>Avenida de Andalucía · Jaén</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La casa</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Jaén · Avenida de Andalucía, 27</p>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
+						<p class="hero-lede">
+							El Restaurante Mesón Séneca está en la Avenida de Andalucía, 27, con código
+							postal 23005, en Jaén. Google lo clasifica como restaurante y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. Abre de martes a
+							sábado con servicio de mediodía y noche, y los domingos solo al mediodía.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-collage">
+						{collage.map((item, index) => (
+							<figure class={item.clase}>
+								<Image
+									src={foto(item.name)}
+									alt={altFoto}
+									widths={index === 0 ? [640, 900, 1200] : [320, 480, 640]}
+									sizes={
+										index === 0
+											? '(max-width: 1080px) 92vw, 46vw'
+											: '(max-width: 1080px) 45vw, 23vw'
+									}
+									format="avif"
+									quality={68}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : undefined}
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>{hoursSummary}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">La casa</p>
+						<h2 class="title" id="local-title">
+							Mediodía
+							<br />
+							<em>y noche.</em>
+						</h2>
+						<p>
+							Google lo clasifica como restaurante, sin un tipo de cocina concreto: es la
+							única categoría que publica la ficha. Le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. Está en la Avenida de
+							Andalucía, 27, con código postal 23005, y la ficha publica su plus code
+							Q6G4+V7 Jaén.
+						</p>
+						<p>
+							Abre de martes a sábado con dos turnos, de 12:00 a 16:30 y de 20:00 a 24:00,
+							y el domingo con un solo turno de 12:00 a 17:00. El lunes cierra. En las
+							reseñas que destaca la ficha se habla de las raciones, la cerveza y las
+							tapas, del trato y el ambiente familiar, y de una queja por el sabor del
+							aceite de las frituras.
+						</p>
+						<p>
+							Google muestra junto al nombre el distintivo «{distintivo}», el único de ese
+							tipo que publica la ficha. Esta web se ha preparado solo con lo que publica
+							esa ficha, consultada el {site.consultado}: nombre, dirección, teléfono,
+							categoría, horario, valoración, servicios de accesibilidad, el distintivo,
+							las {numeroResenas} reseñas que destaca y sus propias fotografías. La ficha
+							no publica descripción del local, la carta ni los precios, así que aquí no se
+							reproducen.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									<strong>{review.rating} sobre 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title" set:html={piezas.fotos.titulo} />
+					<p class="lead">{piezas.fotos.texto}</p>
+					<div class="cocina-grid">
+						{piezas.fotos.fotos.map((item) => (
+							<figure class="cocina-item">
+								<Image
+									src={foto(item.imagen)}
+									alt={item.alt}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="cocina-note">
+						La ficha no publica la carta ni los precios, así que esta web no los reproduce.
+						Para saber qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title" set:html={piezas.horario.titulo} />
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							De <strong>martes a sábado</strong> el local tiene dos turnos: mediodía, de
+							12:00 a 16:30, y noche, de 20:00 a 24:00 (el cierre se escribe como 00:00 en
+							los datos estructurados). El <strong>domingo</strong> abre un solo turno de
+							12:00 a 17:00 y el <strong>lunes</strong> cierra. Es el horario que publica
+							la ficha consultada el {site.consultado}, con el aviso de que el lunes 12,
+							Fiesta Nacional de España, podría ser diferente. Conviene confirmar por
+							teléfono antes de ir.
+						</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+						 src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+							<noscript>
+								<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+							</noscript>
+						</div>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title" set:html={piezas.preguntas.titulo} />
+					<div class="faq-list">
+						{piezas.preguntas.preguntas.map((item) => (
+							<details>
+								<summary>{item.pregunta}</summary>
+								<p>{item.respuesta}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">S</span>
+					<span>
+						Restaurante Mesón Séneca
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Restaurante Mesón Séneca · Avenida de Andalucía, 27 (23005
+					Jaén). Web informativa elaborada con los datos y las fotografías que el local publica
+					en su ficha de Google Maps, consultada el {site.consultado}. Confirma horario y
+					disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/restaurante-meson-seneca/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/restaurante-meson-seneca/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/restaurante-meson-seneca/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar al Restaurante Mesón Séneca <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/restaurante-meson-seneca/aviso-legal">Aviso legal</a>
+			<a href="/restaurante-meson-seneca/aviso-legal#privacidad">Privacidad</a>
+			<a href="/restaurante-meson-seneca/aviso-legal#cookies">Cookies</a>
+		</nav>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34953250744?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20restaurante-meson-seneca-apaisada-01.jpg." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a restaurante-meson-seneca-apaisada-01.jpg"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>
+
+

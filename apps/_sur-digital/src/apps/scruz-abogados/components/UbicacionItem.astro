@@ -1,0 +1,60 @@
+---
+import { RiIcon } from '@astro-icons';
+import { twJoin } from 'tailwind-merge';
+import ConsentMap from './ConsentMap.astro';
+
+// `id` (opcional) = ancla estable de la oficina (#lucena, #malaga), la misma que
+// usa el schema ItemList de la página para apuntar a cada sede.
+const { id, city, isMain, province, description, address, zip, map } = Astro.props;
+---
+
+<!--
+	Dos columnas ya desde `md`: con `lg:grid-cols-2` la ficha se quedaba en una
+	sola columna en tablet (768-1023 px), así que la tarjeta se estiraba a todo
+	el ancho y el mapa aparecía debajo como una franja de 320 px de alto por
+	736 px de ancho (el plano se veía aplastado y la ficha, con líneas larguísimas).
+	Desde `md` la ficha y el plano van lado a lado; con `items-stretch` + `h-full`
+	el mapa acompaña la altura real de la tarjeta en lugar de quedarse corto.
+-->
+<div
+	id={id}
+	class="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 md:gap-10"
+	data-reveal-stagger
+>
+	<div class="reveal">
+		<div
+			class={twJoin('card-surface h-full rounded-2xl p-6 md:p-8', isMain && 'ring-primary ring-2')}
+		>
+			<h3 class="font-title mb-2 flex flex-wrap items-center gap-3 text-2xl font-bold">
+				{city}
+				{
+					isMain && (
+						<div class="bg-primary text-primary-content inline-block rounded-full px-3 py-1 text-sm font-semibold">
+							Oficina Principal
+						</div>
+					)
+				}
+			</h3>
+			<p class="mb-6 text-base-content/70">{province}</p>
+			<p class="mb-6 text-base-content/80">{description}</p>
+			<div class="mb-6 space-y-4">
+				<div class="flex items-start space-x-3">
+					<div class="mt-0.5 flex h-5 w-5 items-center justify-center">
+						<RiIcon name="mapPin" class="text-primary size-4" />
+					</div>
+					<div>
+						<p class="font-medium">{address}</p>
+						<p class="text-base-content/70">{zip}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="reveal">
+		<div
+			class="aspect-[4/3] overflow-hidden rounded-2xl bg-base-200 ring-1 ring-base-300 md:aspect-auto md:h-full md:min-h-[22rem]"
+		>
+			<ConsentMap src={map} title={`Mapa de la oficina de Scruz Abogados en ${city}`} />
+		</div>
+	</div>
+</div>
