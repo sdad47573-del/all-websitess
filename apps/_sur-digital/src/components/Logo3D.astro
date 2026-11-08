@@ -54,30 +54,33 @@ const {
 
 <!-- En móvil y tablet el logo va debajo del texto y más pequeño: si va primero,
      el titular y el CTA caen fuera de la primera pantalla. En escritorio
-     recupera su tamaño y pasa a la derecha del texto. -->
-<div class="relative mx-auto w-full max-w-[280px] sm:max-w-sm lg:mx-0 lg:max-w-lg">
+     recupera su tamaño y pasa a la derecha del texto. La banda es 2:1 (no un
+     cuadrado) porque el logo es muy apaisado: así llena el marco y el hero no
+     arrastra cientos de píxeles de aire arriba y abajo. -->
+<div class="relative mx-auto w-full max-w-[320px] sm:max-w-md lg:mx-0 lg:max-w-xl">
   <div
     data-model3d
     data-src={MODEL_SRC}
     data-label-lite={labelLite}
-    class="relative aspect-square cursor-grab touch-pan-y select-none active:cursor-grabbing"
+    class="relative aspect-[2/1] cursor-grab touch-pan-y select-none active:cursor-grabbing"
     role="img"
     aria-label={label}
   >
     <!-- Imagen estática del logo con el mismo encuadre, luz y sombra que el
          modelo 3D. Es lo que se ve al cargar (y lo único en redes lentas o con
-         ahorro de datos). Se sirve adaptada al tamaño real de la columna: 280 px
-         en móvil, 384 en tablet y ~490 en escritorio. -->
+         ahorro de datos). Se sirve adaptada al tamaño real de la columna: 320 px
+         en móvil, 448 en tablet y ~528 en escritorio; `object-cover` recorta el
+         aire vertical del póster cuadrado para que el logo llene la banda. -->
     <Image
       data-model3d-poster
       src={posterLogo}
-      widths={[280, 384, 490, 720]}
-      sizes="(max-width: 639px) 280px, (max-width: 1023px) 384px, 490px"
+      widths={[320, 448, 528, 720]}
+      sizes="(max-width: 639px) 320px, (max-width: 1023px) 448px, 528px"
       alt=""
       loading="eager"
       fetchpriority="high"
       decoding="async"
-      class="absolute inset-0 h-full w-full object-contain transition-opacity duration-700"
+      class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
     />
 
     <!-- Encima del póster: se funde cuando el 3D ya tiene su primer frame. -->
@@ -368,8 +371,12 @@ const {
         // 0 → 1 en la entrada de cada modelo: pequeño "pop" en vez de aparecer
         // de golpe al cambiar de pieza.
         let enter = 1;
-        // Radio de la esfera envolvente del modelo ya escalado, para encuadrar.
-        let modelRadius = 1.5;
+        // Semianchos del modelo ya escalado. Encuadrar por la caja real (y no
+        // por la esfera envolvente) evita que un logo tan apaisado como este
+        // quede pequeño y que, al fundirse el póster, el 3D encoja.
+        let modelHalfWidth = 1.4;
+        let modelHalfHeight = 0.47;
+        let modelHalfDepth = 0.07;
         // Huella del modelo y altura de su base, para dimensionar la sombra.
         let shadowFootprint = 0;
         let shadowBottom = -1;
@@ -379,14 +386,19 @@ const {
         let shadowHeight = 0;
 
         // --- Encuadre ---
-        // Ajusta la distancia de cámara al radio real y al aspecto: el modelo
-        // llena el canvas igual en móvil que en escritorio, en vez de depender
-        // de una distancia fija que dejaba piezas diminutas o recortadas.
+        // Ajusta la distancia al ancho real del modelo con un margen del 13 %:
+        // así el logo llena la banda 2:1 en vez de flotar dentro de la esfera
+        // envolvente, que lo dejaba pequeño. La altura reserva aire para el
+        // flote y la sombra de contacto.
         const fitCamera = () => {
-          const vFov = THREE.MathUtils.degToRad(camera.fov);
-          const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
-          const distance = (modelRadius * 1.06) / Math.sin(Math.min(vFov, hFov) / 2);
-          camera.position.set(0, 0, Math.max(4.2, distance));
+          const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+          const tanH = tanV * camera.aspect;
+          const distance = Math.max(
+            (modelHalfWidth + 0.03) / (tanH * 0.87),
+            (modelHalfHeight + 0.1) / (tanV * 0.86),
+            modelHalfDepth * 2 + 1.2
+          );
+          camera.position.set(0, 0, Math.max(2.3, distance));
           camera.lookAt(0, 0, 0);
           camera.updateProjectionMatrix();
         };
@@ -450,7 +462,10 @@ const {
 
           // Encuadre y sombra se calculan del tamaño ya escalado.
           const scaled = new THREE.Box3().setFromObject(group);
-          modelRadius = scaled.getBoundingSphere(new THREE.Sphere()).radius;
+          const scaledSize = scaled.getSize(new THREE.Vector3());
+          modelHalfWidth = scaledSize.x / 2;
+          modelHalfHeight = scaledSize.y / 2;
+          modelHalfDepth = scaledSize.z / 2;
 
           shadowFootprint = Math.max(size.x * scale, size.z * scale);
           shadowBottom = scaled.min.y;
