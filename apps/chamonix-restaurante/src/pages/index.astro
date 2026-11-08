@@ -1,0 +1,322 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/chamonix-restaurante-apaisada-01.jpg';
+import chuletillas from '../assets/fotos/chamonix-restaurante-vertical-02.jpg';
+import arrozBogavante from '../assets/fotos/chamonix-restaurante-vertical-03.jpg';
+import entrecot from '../assets/fotos/chamonix-restaurante-apaisada-04.jpg';
+import pescado from '../assets/fotos/chamonix-restaurante-apaisada-05.jpg';
+import chuleton from '../assets/fotos/chamonix-restaurante-vertical-06.jpg';
+import calamar from '../assets/fotos/chamonix-restaurante-vertical-07.jpg';
+import gambas from '../assets/fotos/chamonix-restaurante-vertical-08.jpg';
+import fachada from '../assets/fotos/chamonix-restaurante-apaisada-09.jpg';
+import carta from '../assets/fotos/chamonix-restaurante-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Chamonix, carnes a la brasa y arroces en Sant Antoni de Portmany (Ibiza). Desayunos desde las 8:00 y cocina hasta medianoche. Tel. 971 34 07 17.';
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de Chamonix junto a la pared de piedra, con mesas y sillas blancas y el rótulo del local en la fachada',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Chamonix en la avenida, con el rótulo «Restaurante · carnes a la brasa», la pizarra del menú y la terraza cerrada',
+	},
+	{
+		src: chuleton,
+		alt: 'Chuletón a la brasa con berenjena, calabacín y patata asada en un plato turquesa',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la brasa con patatas asadas, pimiento verde y un cuenco de salsa',
+	},
+	{
+		src: chuletillas,
+		alt: 'Chuletillas de cordero a la brasa con patatas asadas y pimiento verde',
+	},
+	{
+		src: arrozBogavante,
+		alt: 'Arroz caldoso con bogavante, mejillones y limón servido en la paellera',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado entero a la plancha con lechuga y limón en un plato blanco',
+	},
+	{
+		src: calamar,
+		alt: 'Calamar a la plancha con patatas y ensalada en un plato azul',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas al ajillo en una cazuela de barro',
+	},
+	{
+		src: carta,
+		alt: 'Carta impresa de Chamonix con los entrantes, las ensaladas y los platos principales',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#chamonix`,
+	name: BUSINESS.name,
+	alternateName: [
+		'Chamonix',
+		'Chamonix Grill',
+		'Chamonix Sant Antoni',
+		'Restaurante Chamonix Ibiza',
+	],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 971 34 07 17',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Mediterránea', 'Parrilla', 'Carne a la brasa'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sant Antoni de Portmany' },
+		{ '@type': 'AdministrativeArea', name: 'Ibiza' },
+		{ '@type': 'AdministrativeArea', name: 'Islas Baleares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '08:00',
+			closes: '24:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Chamonix · Carnes a la brasa y arroces en Sant Antoni';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f1a16" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Chamonix Restaurant Ibiza, Chamonix Sant Antoni, restaurante Sant Antoni de Portmany, carnes a la brasa Ibiza, parrilla Sant Antoni, comer en Sant Antoni, paella Sant Antoni, arroz con bogavante Ibiza, desayunos Ibiza, Avinguda Isidor Macabich"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Chamonix · Carnes a la brasa y arroces en Sant Antoni"
+			ogDescription="Brasa, arroces, pescado y desayunos desde las 8:00 en Avinguda d’Isidor Macabich, 15 (Sant Antoni de Portmany). Abierto hasta medianoche. Tel. 971 34 07 17."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de Chamonix con mesas blancas junto a la pared de piedra del edificio"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f1a16"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-IB"
+			postalCode={BUSINESS.postalCode}
+			phone="+34971340717"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Chamonix"
+			subtitle="Brasa · Sant Antoni"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Avinguda d’Isidor Macabich, 15 · Sant Antoni"
+				title="Carne a la brasa<br /><em>en Sant Antoni.</em>"
+				lede={`Chamonix es un restaurante de cocina española y mediterránea en Avinguda d’Isidor Macabich, 15 (Sant Antoni de Portmany, Ibiza). Bajo el cartel «Restaurante · carnes a la brasa» salen de la parrilla el entrecot de novilla, la entraña de Angus, el solomillo, el secreto ibérico y las chuletas de cordero; en la carta hay además lenguado, calamar, sirvia, pulpo a la gallega, gambas y ensaladas, y arroces como la paella y el arroz con bogavante. Abre todos los días de 8:00 a 24:00, así que también se puede desayunar. Teléfono: ${BUSINESS.phoneDisplay}.`}
+				image={terraza}
+				imageAlt="Terraza de Chamonix junto a la pared de piedra, con mesas y sillas blancas y el rótulo del local en la fachada"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Cocina', html: 'Brasa y parrilla · cocina española' },
+					{ label: 'Horario', html: 'Todos los días · 8:00–24:00' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Chamonix Restaurante" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Parrilla con luz<br /><em>de mediodía.</em>"
+				paragraphs={[
+					'Chamonix está en Avinguda d’Isidor Macabich, 15, en Sant Antoni de Portmany, en la misma acera que los apartamentos El Moro y a un paso del puerto. La fachada de piedra, el rótulo vertical con el nombre y el cartel «Restaurante · carnes a la brasa» anuncian de qué va la casa: parrilla y cocina española.',
+					'La terraza ocupa la acera delante del local, cubierta con toldos blancos y cerrada con plásticos cuando sopla el viento, con mesas y sillas blancas junto a la ventana de madera. Dentro, los ventanales de cuadrícula y las paredes de piedra repiten el mismo tono cálido que la calle.',
+					'La carta impresa se divide en entrantes, ensaladas y platos principales, y en la fachada hay una pizarra con el menú del día que se reescribe cada jornada. De la brasa salen el entrecot de novilla, la entraña de Angus, el solomillo de ternera, el secreto ibérico al romero y las chuletas de cordero; del mar, el lenguado, la sirvia, el calamar, el pulpo a la gallega y las gambas.',
+					'Abre de 8:00 a 24:00 todos los días, lo que da desayunos, comidas y cenas. Una reseña lo resume desde la mañana: «me encanta desayunar ahí y pedir una tostada de mantequilla, York y queso». Otra habla de «paella y arroz con bogavante, muy rico todo ello», y una tercera del trato del equipo. Google le da 4,2 sobre 5 con 586 reseñas.',
+				]}
+				note={`${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[0]}»`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Parrilla, arroces<br /><em>y desayunos.</em>"
+				description="Precios transcritos de la carta impresa que aparece en las fotos del perfil de Google. Los platos con el precio corregido a mano figuran como «precio a consultar»."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La carta puede cambiar: el menú del día se escribe cada jornada en la pizarra de la fachada. Llama al 971 34 07 17 para reservar mesa o preguntar por los platos del día."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La parrilla,<br /><em>la terraza y la carta.</em>"
+				description="Estas fotografías proceden del perfil de Chamonix Restaurante en Google Maps: la terraza de la avenida, la fachada con los rótulos, el chuletón y el entrecot a la brasa, las chuletillas de cordero, el arroz con bogavante, el pescado a la plancha, el calamar, las gambas al ajillo y la carta impresa."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Te esperamos<br /><em>en la avenida.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google: todos los días de 8:00 a 24:00. En temporada alta conviene llamar antes para mesa en la terraza."
+				mapTitle="Mapa de Chamonix Restaurante en Avinguda d’Isidor Macabich, Sant Antoni de Portmany"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Chamonix · Sant Antoni"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 971 34 07 17. La ficha de Google marca asientos adaptados para sillas de ruedas."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Chamonix"
+		/>
+	</body>
+</html>

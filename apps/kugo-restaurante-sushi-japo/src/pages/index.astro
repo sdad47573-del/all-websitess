@@ -1,0 +1,309 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/kugo-restaurante-sushi-japo-apaisada-01.jpg';
+import flambeado from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-02.jpg';
+import rollsVerdes from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-03.jpg';
+import bandeja from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-04.jpg';
+import rollsAtun from '../assets/fotos/kugo-restaurante-sushi-japo-apaisada-05.jpg';
+import mesa from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-06.jpg';
+import caja from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-07.jpg';
+import cajaMango from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-08.jpg';
+import anguila from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-09.jpg';
+import gyozas from '../assets/fotos/kugo-restaurante-sushi-japo-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'KUGO Restaurante Sushi & Japo, en Es Caló (bahía de Sant Antoni, Ibiza). Sushi de autor, rolls, nigiri y gyozas, para comer en sala o pedir para llevar y a domicilio. Tel. 696 56 68 49.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de KUGO de noche, con farolillos japoneses encendidos, el rótulo KUGO y mesas ocupadas en la terraza',
+	},
+	{
+		src: flambeado,
+		alt: 'Rolls de atún flameados con soplete sobre una bandeja negra',
+	},
+	{
+		src: rollsVerdes,
+		alt: 'Rolls verdes con tempura y topping cremoso junto a rolls crujientes con sésamo, ante una ilustración japonesa',
+	},
+	{
+		src: rollsAtun,
+		alt: 'Rolls de atún con perlas crujientes y rolls de salmón con queso crema y topping oscuro',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja de sushi con nigiri de salmón, atún y langostino, rolls con sésamo y salsa de soja',
+	},
+	{
+		src: mesa,
+		alt: 'Bandeja de rolls variados en la mesa, con palillos, salsa de soja y tetera japonesa',
+	},
+	{
+		src: caja,
+		alt: 'Caja de sushi para llevar con rolls variados, gyozas con teriyaki y rolls de mango',
+	},
+	{
+		src: cajaMango,
+		alt: 'Caja de entrega con rolls verdes cubiertos de salsa de mango, sésamo y flores, junto al envase de soja',
+	},
+	{
+		src: anguila,
+		alt: 'Rolls de anguila con salsa teriyaki y sésamo sobre una bandeja negra',
+	},
+	{
+		src: gyozas,
+		alt: 'Gyozas fritas con salsa teriyaki y sésamo en un plato blanco',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#kugo`,
+	name: BUSINESS.name,
+	alternateName: ['KUGO', 'KUGO Ibiza', 'KUGO Sushi', 'KUGO Sant Antoni'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 696 56 68 49',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Japonesa', 'Sushi'],
+	areaServed: [
+		{ '@type': 'City', name: 'Sant Josep de sa Talaia' },
+		{ '@type': 'AdministrativeArea', name: 'Sant Antoni de Portmany' },
+		{ '@type': 'AdministrativeArea', name: 'Ibiza' },
+		{ '@type': 'AdministrativeArea', name: 'Islas Baleares' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '18:00',
+			closes: '23:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'KUGO · Sushi y cocina japonesa en Sant Antoni, Ibiza';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#b8264a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="KUGO Ibiza, KUGO sushi, sushi Sant Antoni, restaurante japonés Ibiza, sushi a domicilio Ibiza, rolls de autor Ibiza, sushi para llevar Sant Antoni, Es Caló"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="KUGO · Sushi y cocina japonesa en Sant Antoni, Ibiza"
+			ogDescription="Sushi de autor en la bahía de Sant Antoni: rolls flameados, tempura, nigiri y gyozas. Para comer en sala o pedir a domicilio. Tel. 696 56 68 49."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de KUGO de noche con farolillos japoneses y la terraza llena"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#b8264a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-IB"
+			postalCode={BUSINESS.postalCode}
+			phone="+34696566849"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="KUGO"
+			subtitle="Sushi & Japo · Sant Antoni, Ibiza"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Es Caló · Bahía de Sant Antoni"
+				title="Sushi de autor<br /><em>bajo los farolillos.</em>"
+				lede={`KUGO es un restaurante de sushi y cocina japonesa en Es Caló, en la bahía de Sant Antoni (Sant Josep de sa Talaia, Ibiza). Farolillos japoneses, terraza abierta y una cocina que trabaja con producto fresco: rolls flameados, uramaki, tempura, nigiri y gyozas. Se puede comer en sala, llamar y recoger el pedido o pedirlo a domicilio, y también hacen catering. Abre todos los días de 18:00 a 23:30, salvo el martes. Teléfono: ${BUSINESS.phoneDisplay}.`}
+				image={fachada}
+				imageAlt="Fachada de KUGO de noche, con farolillos japoneses encendidos, el rótulo KUGO y mesas ocupadas en la terraza"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Cocina', html: 'Sushi y japonesa · rolls de autor' },
+					{ label: 'Horario', html: 'Todos los días · 18:00–23:30 · martes cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece KUGO" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Sushi con<br /><em>soplete y farolillos.</em>"
+				paragraphs={[
+					'KUGO está en Es Caló, en la bahía de Sant Antoni (Sant Josep de sa Talaia, Ibiza). Google lo clasifica como restaurante de sushi. El local abre a la calle con una terraza cubierta de farolillos japoneses naranjas, carteles con estampas de geishas y una barra con las piezas a la vista.',
+					'La ficha del negocio lo cuenta con sus palabras: «estamos aquí en la bonita bahía de San Antonio en Ibiza y somos vuestro lugar para sushi». Y añade: «en nuestra cocina, nos gusta innovar y sorprenderte con nuestras creaciones de sushi», con «productos frescos y locales».',
+					'Además de comer en sala, el negocio ofrece pedidos para recoger y entrega a domicilio: «puedes llamar, hacer tu pedido y pasarte a recogerlo cuando quieras. Y si te apetece, también te lo llevamos a casa». También hacen catering.',
+					'En las fotos del perfil aparecen rolls de atún flameados con soplete, uramaki de salmón con queso crema, rolls de langostino en tempura, rolls de mango, rolls de anguila con teriyaki, nigiri de salmón, atún y langostino, bandejas variadas y gyozas fritas. Sus reseñas hablan de la mezcla de sabores, de la calidad y del trato. Google le da 4,9 sobre 5 con 1.642 reseñas.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Una de ellas: «${REVIEWS[0]}»`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Pedir y reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Rolls, nigiri<br /><em>y gyozas.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que aparece en las fotos del perfil y lo que citan sus reseñas."
+				cta={{ label: `Pedir: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados. Llama al 696 56 68 49 para pedir para recoger, encargar entrega a domicilio o preguntar por las piezas del día."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra,<br /><em>el soplete y el mar.</em>"
+				description="Estas fotografías proceden del perfil de KUGO en Google Maps: la fachada con los farolillos, los rolls flameados, el uramaki de salmón, las bandejas de nigiri, los rolls de mango y de anguila, las cajas para llevar y las gyozas."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Te esperamos<br /><em>en Sant Antoni.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google: todos los días de 18:00 a 23:30; martes cerrado. Para pedidos grandes o catering conviene llamar con antelación."
+				mapTitle="Mapa de KUGO Restaurante Sushi & Japo en Es Caló, bahía de Sant Antoni (Ibiza)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="KUGO · Sant Antoni"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 696 56 68 49. Por teléfono también se encargan los pedidos para recoger y la entrega a domicilio. La ficha marca acceso para sillas de ruedas y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes del pedido."
+			ctaLabel="Pedir en KUGO"
+		/>
+	</body>
+</html>

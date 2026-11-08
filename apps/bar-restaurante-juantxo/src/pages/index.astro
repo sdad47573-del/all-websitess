@@ -1,0 +1,331 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/bar-restaurante-juantxo-apaisada-01.jpg';
+import pintxos from '../assets/fotos/bar-restaurante-juantxo-panoramica-02.jpg';
+import pescado from '../assets/fotos/bar-restaurante-juantxo-apaisada-03.jpg';
+import tarta from '../assets/fotos/bar-restaurante-juantxo-apaisada-04.jpg';
+import albondigas from '../assets/fotos/bar-restaurante-juantxo-apaisada-05.jpg';
+import merluza from '../assets/fotos/bar-restaurante-juantxo-apaisada-06.jpg';
+import sopa from '../assets/fotos/bar-restaurante-juantxo-vertical-07.jpg';
+import ensalada from '../assets/fotos/bar-restaurante-juantxo-apaisada-08.jpg';
+import entrecot from '../assets/fotos/bar-restaurante-juantxo-apaisada-09.jpg';
+import arrozNegro from '../assets/fotos/bar-restaurante-juantxo-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Bar Restaurante Juantxo, en Lezo-Bide Kalea 17 (20110 Pasai Donibane, Pasaia). Menú del día, pescado y postres caseros. 4,3 sobre 5 y teléfono 943 51 20 61.';
+
+const title = 'Bar Restaurante Juantxo · Comer en Pasai Donibane';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de ladrillo del Bar Restaurante Juantxo con el toldo granate y el rótulo JUANTXO, en Pasai Donibane',
+	},
+	{
+		src: arrozNegro,
+		alt: 'Arroz negro con langostino y alioli en un plato del Bar Restaurante Juantxo',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado a la plancha con verduras salteadas en un plato del restaurante',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la plancha cortado en tiras con patatas fritas y cebolla caramelizada',
+	},
+	{
+		src: merluza,
+		alt: 'Lomo de merluza con langostinos, calabacín y pimiento sobre una cama de patata',
+	},
+	{
+		src: albondigas,
+		alt: 'Albóndigas en salsa de la casa con patatas fritas y pan',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada con langostinos, aguacate, salmón y salsa César',
+	},
+	{
+		src: pintxos,
+		alt: 'Bandeja de pintxos con tomate cherry y brotes tiernos en la barra',
+	},
+	{
+		src: sopa,
+		alt: 'Crema de calabaza con huevo escalfado y un hilo de nata, con copa de vino al fondo',
+	},
+	{
+		src: tarta,
+		alt: 'Porción de tarta de queso con mermelada de frutos rojos',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#juantxo`,
+	name: BUSINESS.name,
+	alternateName: [BUSINESS.legalName, 'Juantxo Pasai Donibane', 'Juantxo Pasaia'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 943 51 20 61',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Vasca', 'Española', 'Pescado y marisco'],
+	areaServed: [
+		{ '@type': 'City', name: 'Pasaia' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: 'Pasai Donibane, Pasaia',
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Sunday'],
+			opens: '09:00',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '09:00',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '09:00',
+			closes: '17:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1d4e56" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bar Restaurante Juantxo, comer en Pasai Donibane, restaurante Pasaia, menú del día Pasaia, menú del día Pasai Donibane, pescado Pasaia, pintxos Pasai Donibane, bar restaurante Gipuzkoa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Bar Restaurante Juantxo · Comer en Pasai Donibane"
+			ogDescription="Menú del día, pescado, pintxos y postres caseros en Lezo-Bide Kalea 17 (Pasai Donibane, Pasaia). Abre todos los días desde las 9:00. Tel. 943 51 20 61."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Toldo granate con el rótulo JUANTXO sobre la fachada de ladrillo del restaurante en Pasai Donibane"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1d4e56"
+			street={BUSINESS.street}
+			city="Pasai Donibane, Pasaia"
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone="+34943512061"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Pasai Donibane, Pasaia"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="BAR RESTAURANTE JUANTXO"
+			subtitle="Pasai Donibane · Pasaia"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Lezo-Bide Kalea, 17 · Pasai Donibane"
+				title="Cocina de pescado<br /><em>en el puerto de Pasai Donibane.</em>"
+				lede={`Bar Restaurante Juantxo es el bar de ladrillo con el toldo granate que hay en Lezo-Bide Kalea, 17, subiendo desde el puerto de Pasai Donibane (Pasaia). Abre todos los días desde las 9:00: desayunos y pintxos en la barra, menú del día y cocina de pescado. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de ladrillo del Bar Restaurante Juantxo con el toldo granate y el rótulo JUANTXO, en Pasai Donibane"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Cocina', html: 'Menú del día · pescado y postres caseros' },
+					{ label: 'Horario', html: 'Todos los días · desde las 9:00' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece el Bar Restaurante Juantxo" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="Un bar de puerto<br /><em>con mantel y menú.</em>"
+				paragraphs={[
+					'El Bar Restaurante Juantxo está en Lezo-Bide Kalea, 17, en Pasai Donibane (20110 Pasaia, Gipuzkoa), la calle que sale del casco marinero hacia Lezo. Google lo clasifica como bar restaurante, y su fachada de ladrillo con el toldo granate y el rótulo JUANTXO da a la acera, a un paso del puerto.',
+					'Abre todos los días a las 9:00, así que por la mañana funciona como bar de desayunos y pintxos y a mediodía pasa a restaurante con menú del día. Los lunes cierra a las 17:00; de martes a jueves y el domingo hasta las 22:00; los viernes y sábados aguanta hasta las 23:30.',
+					'En las fotos de su perfil de Google aparecen el arroz negro con langostino y alioli, el pescado a la plancha con verduras, la merluza con langostinos, el entrecot con patatas, la ensalada de langostinos y aguacate, las albóndigas en salsa, la crema con huevo escalfado, la tarta de queso con frutos rojos y los pintxos de la barra.',
+					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Las publicadas hablan de «servicio rápido» y «camareros muy atentos», de una «muy buena relación calidad-precio», de pintxos de tortilla «muy top para desayunar» y de un menú del domingo por 28,50 €.`,
+				]}
+				note="El menú del día cambia cada jornada y la ficha de Google no publica carta, así que los platos y precios de esta página son los que citan las reseñas y los que se ven en las fotos del perfil."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Menú del día<br /><em>y barra.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que citan sus reseñas y lo que aparece en las fotos del perfil. El menú del día cambia cada jornada."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="En reseñas de 2026 aparecen 28,50 € y 30 € para el menú de fin de semana. Para saber el menú de hoy, lo más rápido es llamar al 943 51 20 61."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada,<br /><em>la barra y los platos.</em>"
+				description="Estas fotografías proceden del perfil del Bar Restaurante Juantxo en Google Maps: la fachada con el rótulo, los pintxos de la barra, el arroz negro, la merluza con langostinos, el entrecot, las albóndigas, la ensalada y la tarta de queso."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} Pasai Donibane`}
+				title="En la calle que sube<br /><em>desde el puerto.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} Pasai Donibane`,
+					'Pasaia · Gipuzkoa',
+				]}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: abre a las 9:00 todos los días; los lunes cierra a las 17:00, de martes a jueves y el domingo a las 22:00 y viernes y sábado a las 23:30. Puede cambiar, así que conviene llamar antes."
+				mapTitle="Mapa del Bar Restaurante Juantxo en Lezo-Bide Kalea, 17, Pasai Donibane (Pasaia)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bar Restaurante Juantxo · Pasai Donibane"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 943 51 20 61. La ficha de Google marca acceso para sillas de ruedas y asientos adaptados. Una reseña propone comer aquí y después dar un paseo hasta el faro."
+			/>
+
+			<LocalFaq
+				items={[...FAQ]}
+				eyebrow="Preguntas frecuentes"
+				title="Antes de <em>venir.</em>"
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} Pasai Donibane, Pasaia`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar al Juantxo"
+		/>
+	</body>
+</html>

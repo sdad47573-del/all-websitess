@@ -1,0 +1,328 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import comedor from '../assets/fotos/casa-indiana-apaisada-01.jpg';
+import barra from '../assets/fotos/casa-indiana-apaisada-03.jpg';
+import cordero from '../assets/fotos/casa-indiana-apaisada-04.jpg';
+import gambas from '../assets/fotos/casa-indiana-apaisada-06.jpg';
+import tandoori from '../assets/fotos/casa-indiana-apaisada-07.jpg';
+import kebab from '../assets/fotos/casa-indiana-apaisada-09.jpg';
+import lampara from '../assets/fotos/casa-indiana-vertical-02.jpg';
+import biryani from '../assets/fotos/casa-indiana-vertical-08.jpg';
+import samosas from '../assets/fotos/casa-indiana-vertical-10.jpg';
+import pollo from '../assets/fotos/casa-indiana-vista-5-05.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Casa Indiana, restaurante indio en la Av. Rovisco Pais 2, Loja A (1000-268 Lisboa): curries de cordero, pollo y gambas, tandoori, biryani y samosas, con opciones vegetarianas y veganas y carne halal. De 11:30 a 23:00; cierra miércoles y domingo. 4,6 en Google con 806 reseñas. Tel. 21 840 1195.';
+
+const galeria = [
+	{
+		src: comedor,
+		alt: 'Comedor de Casa Indiana con paredes verdes, manteles amarillos y un mural del Taj Mahal',
+	},
+	{
+		src: tandoori,
+		alt: 'Trozos de pollo tandoori a la parrilla con limón y cilantro en Casa Indiana',
+	},
+	{
+		src: cordero,
+		alt: 'Cordero al curry en salsa roja servido en cazuela de cobre en Casa Indiana',
+	},
+	{
+		src: pollo,
+		alt: 'Pollo al curry en salsa cremosa con cilantro y lima en Casa Indiana',
+	},
+	{
+		src: gambas,
+		alt: 'Gambas al curry con un hilo de nata en cazuela de cobre en Casa Indiana',
+	},
+	{
+		src: biryani,
+		alt: 'Biryani de arroz basmati con azafrán, cilantro y cebolla frita en Casa Indiana',
+	},
+	{
+		src: samosas,
+		alt: 'Samosas triangulares recién fritas servidas en plato blanco en Casa Indiana',
+	},
+	{
+		src: kebab,
+		alt: 'Kebab de la casa con cilantro y limón en plato alargado en Casa Indiana',
+	},
+	{
+		src: barra,
+		alt: 'Barra de Casa Indiana con celosía dorada iluminada y lámpara de latón',
+	},
+	{
+		src: lampara,
+		alt: 'Lámpara de latón calada del techo de Casa Indiana',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Casa Indiana Lisboa', 'Casa Indiana Restaurante'],
+	slogan: 'Cocina india en Lisboa',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 840 1195',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['India', 'Halal', 'Vegetariano'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '11:30',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos accesibles para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{ '@type': 'LocationFeatureSpecification', name: 'Bucle magnético', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La cocina', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Casa Indiana · Restaurante indio en Lisboa';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2d2a5e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Casa Indiana Lisboa, restaurante indio Lisboa, curry Lisboa, biryani Lisboa, tandoori Lisboa, restaurante halal Lisboa, Av. Rovisco Pais, restaurante vegetariano Lisboa, restaurante vegano Lisboa, samosas Lisboa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Casa Indiana · Restaurante indio en Lisboa"
+			ogDescription="Curries de cordero, pollo y gambas, tandoori, biryani y samosas, con opciones vegetarianas y veganas y carne halal. De 11:30 a 23:00. 4,6 en Google con 806 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pollo tandoori con limón y cilantro en Casa Indiana, Lisboa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2d2a5e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351218401195"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.regionName}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 21 840 1195',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[comedor]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Cocina india · Lisboa"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. Rovisco Pais, 2 · Loja A · Lisboa"
+				title="El sabor de la India,<br /><em>en Lisboa.</em>"
+				lede="Casa Indiana es un restaurante indio en la Av. Rovisco Pais, 2 (Loja A): curries de cordero, pollo y gambas, pollo tandoori, biryani y samosas, con opciones vegetarianas y veganas y carne halal. Abre de 11:30 a 23:00, con el miércoles y el domingo cerrados."
+				image={comedor}
+				imageAlt="Comedor de Casa Indiana con paredes verdes, manteles amarillos y un mural del Taj Mahal"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Cocina india"
+				facts={[
+					{ label: 'Nota', html: '<b>4,6 en Google</b> con 806 reseñas' },
+					{ label: 'Horario', html: '<b>11:30 – 23:00</b>' },
+					{ label: 'Cerrado', html: '<b>Miércoles y domingo</b>' },
+					{ label: 'Cocina', html: '<b>Halal</b>, vegana y vegetariana' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Casa Indiana" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una casa india<br /><em>en la Rovisco Pais.</em>"
+				paragraphs={[
+					'Casa Indiana está en la Av. Rovisco Pais, 2 (Loja A), en Lisboa. El comedor va de verde y amarillo: paredes esmeralda, manteles dorados, sillas tapizadas y un mural del Taj Mahal presidiendo la sala. La barra, con celosía dorada iluminada y lámparas de latón caladas, es la otra seña de identidad del local.',
+					'La cocina es india y generosa: cordero y pollo al curry en cazuelas de cobre, gambas en salsa de especias, pollo tandoori a la parrilla con limón, biryani de arroz basmati con azafrán y cilantro, y samosas para empezar. Todo se sirve para compartir en el centro de la mesa, como manda la costumbre.',
+					'El restaurante indica en su ficha que trabaja con opciones vegetarianas, veganas, de cordero y de pollo, y que su carne es halal. Además es un local plenamente accesible: entrada, asientos, aseo y aparcamiento adaptados, y bucle magnético asistencial.',
+				]}
+				note="«Serve vegetarian/vegan/lamb/chicken/halal», resume el propio restaurante en su ficha de Google. Las fotos del perfil muestran los curries en cazuela de cobre, el tandoori en placa caliente y el biryani en fuente ovalada."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La cocina"
+				title="Curries,<br /><em>tandoori y biryani.</em>"
+				description="La ficha no publica carta con precios: estos platos salen de su descripción y de las fotos del perfil, donde se ven el cordero y el pollo al curry, las gambas, el tandoori, el biryani y las samosas."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Casa Indiana no publica precios en Google y esta web no los inventa. La cocina india se comparte: un curry por persona y un arroz para el centro suele ser la medida. Llama al 21 840 1195 para confirmar platos del día, opciones veganas y reservas de grupo."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El comedor,<br />los curries<br /><em>y la barra.</em>"
+				description="Estas fotografías proceden del perfil de Casa Indiana en Google Maps: el comedor verde y amarillo, el cordero y el pollo al curry, las gambas, el tandoori, el biryani, las samosas y la barra de celosía dorada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Av. Rovisco Pais, 2 · 1000-268 Lisboa"
+				title="En la Rovisco Pais,<br /><em>de martes a sábado.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Portugal']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre de 11:30 a 23:00 de lunes a martes y de jueves a sábado. Cierra los miércoles y los domingos. La ficha avisa de que el horario puede cambiar en festivos, así que llama antes si vas en día señalado."
+				mapTitle="Mapa de Casa Indiana en la Av. Rovisco Pais, 2, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Casa Indiana · Lisboa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 21 840 1195. La ficha marca entrada, asientos, aseo y aparcamiento adaptados para sillas de ruedas, además de bucle magnético. Si vais un grupo grande, avisad con antelación."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a Casa Indiana"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>

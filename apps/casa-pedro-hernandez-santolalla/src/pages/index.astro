@@ -1,0 +1,556 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	distintivo,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	mencionados,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Casa Pedro Hernández Santolalla | Taberna en Sanlúcar';
+const description =
+	'Taberna y bar de tapas en la calle Bolsa, 65 de Sanlúcar de Barrameda. 4,4 sobre 5 con 843 reseñas; desayuno, mediodía y cena de lunes a sábado.';
+const keywords =
+	'Casa Pedro Hernández Santolalla, Bar Casa Pedro Santolalla, taberna Sanlúcar de Barrameda, bar de tapas Sanlúcar, Calle Bolsa Sanlúcar, Calle Mar Sanlúcar, tapear Sanlúcar, desayunos Sanlúcar, Casa Pedro teléfono';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías y el manifiesto de la descarga no
+ * atribuye autor, así que no se inventa una descripción ni una atribución: los `alt` avisan solo
+ * de dónde salen.
+ */
+const altFoto =
+	'Fotografía publicada en la ficha de Google Maps de Bar Casa Pedro Hernández Santolalla, en Sanlúcar de Barrameda';
+const altOg = 'Fotografía de Casa Pedro Hernández Santolalla publicada en su ficha de Google Maps';
+
+/** Galería completa: las diez fotografías de la ficha, en el orden en que se descargaron. */
+const galeria = [
+	'casa-pedro-hernandez-santolalla-vertical-01.jpg',
+	'casa-pedro-hernandez-santolalla-apaisada-03.jpg',
+	'casa-pedro-hernandez-santolalla-vertical-02.jpg',
+	'casa-pedro-hernandez-santolalla-vertical-04.jpg',
+	'casa-pedro-hernandez-santolalla-apaisada-08.jpg',
+	'casa-pedro-hernandez-santolalla-vertical-05.jpg',
+	'casa-pedro-hernandez-santolalla-vertical-06.jpg',
+	'casa-pedro-hernandez-santolalla-apaisada-09.jpg',
+	'casa-pedro-hernandez-santolalla-vertical-07.jpg',
+	'casa-pedro-hernandez-santolalla-vertical-10.jpg',
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#6b2233" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-CA" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta
+			property="og:street-address"
+			content={`${business.streetAddress}, ${business.secondaryAddress}`}
+		/>
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<header class="topbar">
+			<div class="azulejo" aria-hidden="true"></div>
+			<div class="topbar-row">
+				<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+					<span class="brand-mark" aria-hidden="true">
+						CP
+					</span>
+					<span class="brand-text">
+						Casa Pedro
+						<small>Sanlúcar de Barrameda</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					<a href="#local">La taberna</a>
+					<a href="#carta">Qué se nombra</a>
+					<a href="#fotos">Las fotos</a>
+					<a href="#horario">Horario</a>
+					<a href="#preguntas">Preguntas</a>
+				</nav>
+				<a class="topbar-phone" href={phoneHref}>
+					<span aria-hidden="true">☎</span>
+					{business.phone}
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<div class="hero-tags">
+							<p class="eyebrow">Calle Bolsa, 65 · Sanlúcar</p>
+							<span class="badge-pill">{distintivo}</span>
+						</div>
+						<h1 id="hero-title">
+							Casa Pedro
+							<span>Hernández Santolalla</span>
+						</h1>
+						<p class="hero-sub">Taberna y bar de tapas en Sanlúcar de Barrameda</p>
+						<p class="hero-lede">
+							En la calle Bolsa, 65, con el número 28 de la calle Mar. Google le da{' '}
+							<strong>{business.rating.toLocaleString('es-ES')} sobre 5</strong> con{' '}
+							<strong>{business.reviewCount.toLocaleString('es-ES')} reseñas</strong>. Abre todas
+							las mañanas y sirve cena de lunes a sábado; el domingo solo tiene turno de mediodía.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>
+								Llamar al {business.phone}
+							</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.secondaryAddress}
+									<br />
+									{business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas en Google
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-media">
+						<figure class="hero-arch">
+							<Image
+								src={foto('casa-pedro-hernandez-santolalla-vertical-01.jpg')}
+								alt={altFoto}
+								widths={[420, 640, 900]}
+								sizes="(max-width: 1080px) 92vw, 40vw"
+								format="avif"
+								quality={68}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</figure>
+						<div class="hero-sign">
+							<strong>Taberna · Bar de tapas</strong>
+							<small>Fotos de la ficha de Google</small>
+						</div>
+						<p class="hero-caption">Imagen publicada por el local en su ficha de Google Maps.</p>
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>
+					{business.streetAddress} · {business.secondaryAddress}
+				</span>
+				<span>Desayuno y mediodía todos los días</span>
+				<span>
+					{distintivo} · {business.phone}
+				</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap">
+					<div class="casa-grid">
+						<div class="casa-text">
+							<p class="kicker">La taberna</p>
+							<h2 class="title" id="local-title">
+								Dos turnos al día,
+								<br />
+								<em>y el domingo a mediodía.</em>
+							</h2>
+							<p>
+								Bar Casa Pedro Hernández Santolalla es una taberna de Sanlúcar de Barrameda. Google
+								la clasifica como <strong>taberna</strong> y <strong>bar de tapas</strong>, y en la
+								ficha consultada el {site.consultado}
+								tenía {business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+								{business.reviewCount.toLocaleString('es-ES')} reseñas.
+							</p>
+							<p>
+								Está en la calle Bolsa, 65, con el número 28 de la calle Mar. El horario parte el
+								día en dos: de lunes a viernes abre de 8:30 a 16:00 y vuelve de 19:00 a 24:00; el
+								sábado, de 10:00 a 16:00 y de 20:00 a 24:00; el domingo solo sirve el mediodía, de
+								11:00 a 16:00.
+							</p>
+							<p>
+								La ficha no publica carta, precios ni descripción del titular, así que esta web no
+								inventa ninguno. Sí publica el distintivo <strong>«{distintivo}»</strong> y dos
+								datos de accesibilidad: asientos adaptados disponibles y aparcamiento adaptado no
+								disponible.
+							</p>
+							<ul class="tag-list" aria-label="Datos que publica la ficha">
+								<li>{business.category}</li>
+								<li>Bar de tapas</li>
+								<li>{distintivo}</li>
+								<li>Dos turnos</li>
+								<li>Asientos adaptados</li>
+								<li>Sin aparcamiento adaptado</li>
+							</ul>
+						</div>
+
+						<figure class="casa-photo">
+							<Image
+								src={foto('casa-pedro-hernandez-santolalla-apaisada-03.jpg')}
+								alt={altFoto}
+								widths={[520, 800, 1100]}
+								sizes="(max-width: 1080px) 92vw, 40vw"
+								format="avif"
+								quality={70}
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption class="hero-caption">
+								Fotografía de la ficha de Google Maps de Casa Pedro Hernández Santolalla.
+							</figcaption>
+						</figure>
+					</div>
+
+					<div class="reviews-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')}</strong>
+							<span>{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+								Ver todas ↗
+							</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>«{review.text}»</p>
+								<footer>
+									<strong>{review.rating} sobre 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section tapeo" id="carta" aria-labelledby="carta-title">
+				<div class="wrap">
+					<p class="kicker">Lo que dicen las reseñas</p>
+					<h2 class="title" id="carta-title">
+						Lo que se nombra,
+						<br />
+						<em>sin carta y sin precios.</em>
+					</h2>
+					<div class="tapeo-grid">
+						<div>
+							<p class="lead">
+								La ficha de Google no publica carta ni precios. Esta lista recoge solo los nombres
+								que aparecen en las tres reseñas que la ficha destaca, más el servicio de desayuno.
+								No es la carta del local y no lleva importes.
+							</p>
+							<div class="tapeo-nota">
+								<strong>Cómo leer esta lista</strong>
+								<p>
+									Quesos, chorizo picante, salmorejo y jamón salen de dos reseñas de clientes; la de
+									4 sobre 5 habla de tapear y la de 1 sobre 5 de un desayuno. Para saber qué hay
+									hoy, la ficha remite al teléfono del local.
+								</p>
+							</div>
+						</div>
+						<ul class="carta">
+							{mencionados.map((item) => (
+								<li>
+									<span class="nombre">{item.nombre}</span>
+									<span class="etiqueta">Reseña</span>
+									<span class="nota">{item.nota}</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="section galeria" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						Casa Pedro <em>en diez imágenes.</em>
+					</h2>
+					<p class="lead">
+						Son las diez fotografías que el local publica en su ficha de Google Maps. La ficha no
+						describe su contenido y el manifiesto de la descarga no atribuye autor, así que se
+						muestran sin pie de autor y sin una descripción inventada.
+					</p>
+					<div class="galeria-grid">
+						{galeria.map((name) => (
+							<figure class="galeria-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="galeria-note">
+						La ficha no publica la carta ni los precios, así que esta web no los reproduce. Para
+						saber qué hay hoy, llama al <a href={phoneHref}>{business.phone}</a> o mira las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section horario" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Calle Bolsa, 65
+							<br />
+							<em>y C. Mar, 28.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.secondaryAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							De lunes a viernes hay dos turnos; el sábado empieza más tarde y el{' '}
+							<strong>domingo</strong> no abre por la noche. Es el horario de la ficha consultada el{' '}
+							{site.consultado}; conviene confirmarlo por teléfono, sobre todo en festivos.
+						</p>
+						<p class="access-title">Accesibilidad publicada en la ficha</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen
+						></iframe>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.secondaryAddress} · {business.postalCode}
+									{business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap faq-grid">
+					<div class="faq-intro">
+						<p class="kicker">Preguntas frecuentes</p>
+						<h2 class="title" id="faq-title">
+							Antes de
+							<br />
+							<em>ir a tapear.</em>
+						</h2>
+						<p>
+							Todo lo que la ficha publica de Casa Pedro, resumido sin añadir nada. Lo que no
+							aparece en la ficha se responde diciendo que no aparece.
+						</p>
+						<p class="faq-count">
+							{business.reviewCount.toLocaleString('es-ES')}
+							<small>
+								reseñas
+								<br />
+								en Google
+							</small>
+						</p>
+					</div>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">
+						CP
+					</span>
+					<span>
+						Casa Pedro Hernández Santolalla
+						<small>
+							{business.streetAddress} · {business.secondaryAddress} · {business.postalCode}
+							{business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Bar Casa Pedro Hernández Santolalla ·{' '}
+					{business.streetAddress} ({business.postalCode} {business.city}). Web informativa
+					elaborada con los datos y las fotografías que el local publica en su ficha de Google Maps,
+					consultada el
+					{site.consultado}. Confirma horario y disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<a class="mobile-call" href={phoneHref}>
+				Llamar a Casa Pedro <span>{business.phone}</span>
+			</a>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

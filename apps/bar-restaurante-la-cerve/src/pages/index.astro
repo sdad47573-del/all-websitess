@@ -1,0 +1,334 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import barra from '../assets/fotos/bar-restaurante-la-cerve-apaisada-01.jpg';
+import ambiente from '../assets/fotos/bar-restaurante-la-cerve-apaisada-04.jpg';
+import fachada from '../assets/fotos/bar-restaurante-la-cerve-apaisada-06.jpg';
+import chuleta from '../assets/fotos/bar-restaurante-la-cerve-apaisada-03.jpg';
+import tartaQueso from '../assets/fotos/bar-restaurante-la-cerve-apaisada-10.jpg';
+import hamburguesa from '../assets/fotos/bar-restaurante-la-cerve-vertical-02.jpg';
+import dosTartas from '../assets/fotos/bar-restaurante-la-cerve-vertical-07.jpg';
+import tiramisu from '../assets/fotos/bar-restaurante-la-cerve-vertical-08.jpg';
+import sandwich from '../assets/fotos/bar-restaurante-la-cerve-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Bar restaurante La Cerve, en Euskadi Etorbidea 53 (Trintxerpe, Pasaia). Cerveza natural, pinchos, bocatas, raciones y platos combinados. Tel. 943 39 23 86.';
+
+const title = 'Bar restaurante La Cerve · Pinchos en Trintxerpe';
+
+const galeria = [
+	{
+		src: barra,
+		alt: 'Barra de madera de La Cerve con barriles de cobre, grifos de cerveza y pinchos en el mostrador',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de La Cerve en Euskadi Etorbidea con el rótulo, las ventanas y las mesas de la acera',
+	},
+	{
+		src: chuleta,
+		alt: 'Chuleta a la plancha con patatas fritas servida en un plato de La Cerve',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa con huevo frito y patatas fritas en La Cerve, con una caña al lado',
+	},
+	{
+		src: ambiente,
+		alt: 'Clientes en la barra de La Cerve bajo los barriles de cobre y las lámparas',
+	},
+	{
+		src: sandwich,
+		alt: 'Sándwich club de La Cerve con huevo, bacon y lechuga, junto a una cerveza',
+	},
+	{
+		src: dosTartas,
+		alt: 'Dos porciones de tarta de queso con nata en La Cerve, una de ellas con mermelada',
+	},
+	{
+		src: tartaQueso,
+		alt: 'Tarta de queso con coco rallado y nata servida en un plato de La Cerve',
+	},
+	{
+		src: tiramisu,
+		alt: 'Tiramisú con nata y sirope de chocolate en un plato de La Cerve',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#lacerve`,
+	name: BUSINESS.name,
+	alternateName: ['La Cerve', 'Bar La Cerve', 'Bar restaurante La Cerve Trintxerpe'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 943 39 23 86',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Vasca', 'Española', 'Cocina de bar'],
+	areaServed: [
+		{ '@type': 'City', name: 'Pasaia' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '08:00',
+			closes: '23:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '10:00',
+			closes: '02:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '10:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Se admiten perros',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+const resenas = BUSINESS.reviewsCount.toLocaleString('es-ES');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7c4a14" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bar restaurante La Cerve, La Cerve Trintxerpe, bar Trintxerpe, cerveza natural Pasaia, pinchos Pasaia, bocatas Trintxerpe, hamburguesas Pasaia, comer en Trintxerpe"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Bar restaurante La Cerve · Pinchos en Trintxerpe"
+			ogDescription="Cerveza natural recién hecha, pinchos, torreznos, croquetas, bocatas, raciones y platos combinados en Euskadi Etorbidea 53 (Trintxerpe, Pasaia). Tel. 943 39 23 86."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Barra de La Cerve con barriles de cobre y pinchos en Trintxerpe"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#7c4a14"
+			street={BUSINESS.street}
+			city={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone="+34943392386"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			preload={[barra]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="BAR RESTAURANTE LA CERVE"
+			subtitle="Trintxerpe · Pasaia"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Euskadi Etorbidea, 53 · Trintxerpe"
+				title="Cerveza natural,<br /><em>pinchos y bocatas.</em>"
+				lede={`Bar restaurante La Cerve es el bar de Euskadi Etorbidea, 53, en Trintxerpe (Pasaia, Gipuzkoa). Cerveza natural recién hecha, pinchos, torreznos, croquetas, bocatas, raciones, hamburguesas y platos combinados, con la barra de madera y los barriles de cobre al fondo. ${nota} sobre 5 con ${resenas} reseñas en Google.`}
+				image={barra}
+				imageAlt="Barra de madera de La Cerve con barriles de cobre, grifos de cerveza y pinchos en el mostrador"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${nota}</b> en Google (${resenas} reseñas)` },
+					{ label: 'Barra', html: 'Cerveza natural · pinchos y torreznos' },
+					{ label: 'Horario', html: 'L–J hasta las 23:00 · V y S hasta las 2:00' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Bar restaurante La Cerve" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="La barra,<br /><em>el cobre y la espuma.</em>"
+				paragraphs={[
+					'El Bar restaurante La Cerve está en Euskadi Etorbidea, 53, en el 20110 Trintxerpe (Pasaia, Gipuzkoa), en la misma avenida que cruza el barrio. Google lo clasifica como bar restaurante.',
+					'La barra es de madera y sobre ella cuelgan tres barriles de cobre con los grifos de cerveza; el letrero de la pared marca 2006. Al otro lado, las estanterías de botellas, las copas y los pinchos alineados en el mostrador. En la fachada, el rótulo de La Cerve y unas mesas altas en la acera.',
+					'Abre todos los días: de lunes a jueves, de 8:00 a 23:00; el viernes y el sábado, de 10:00 a 2:00, y el domingo, de 10:00 a 23:00. Es el horario que publica su ficha de Google y puede cambiar, así que conviene confirmarlo por teléfono.',
+					'Sus reseñas hablan de «buenos bocatas y raciones», de pinchos, torreznos, croquetas, «buena cerveza y fútbol», y de bocadillos, hamburguesas, sándwich y platos combinados variados. En las fotos del perfil aparecen además la chuleta con patatas, la hamburguesa con huevo, el club sándwich, la tarta de queso y el tiramisú.',
+					`Tiene ${nota} sobre 5 con ${resenas} reseñas en Google. La ficha marca acceso para sillas de ruedas, aseo y asientos adaptados, y que se admiten perros; también indica que no hay aparcamiento adaptado.`,
+				]}
+				note="La ficha de Google no publica carta ni precios: los platos de esta página son los que citan las reseñas y los que aparecen en las fotos del propio bar. La carta cambia, así que conviene preguntar en la barra."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="De la barra<br /><em>a la mesa.</em>"
+				description="La ficha de Google no publica carta. Esto es lo que citan sus reseñas, lo que anuncia la pizarra y lo que se lee en la carta de sus fotos; la oferta del día cambia."
+				cta={{ label: `Preguntar el menú: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="La pizarra de la fachada que aparece en sus fotos anuncia el menú del día por 15 €. La ficha de Google no publica ni la carta ni el precio, así que conviene confirmarlo al llamar."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra,<br /><em>la fachada y los platos.</em>"
+				description="Estas fotografías proceden del perfil de Bar restaurante La Cerve en Google Maps: la barra con los barriles de cobre, el ambiente, la fachada, la chuleta, la hamburguesa, el sándwich, las tartas de queso y el tiramisú."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Euskadi Etorbidea, 53,<br /><em>en Trintxerpe.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.municipality} · Gipuzkoa`,
+				]}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: de lunes a jueves, de 8:00 a 23:00; el viernes y el sábado, de 10:00 a 2:00, y el domingo, de 10:00 a 23:00. Puede cambiar, sobre todo en festivos, así que conviene llamar antes."
+				mapTitle="Mapa de Bar restaurante La Cerve en Euskadi Etorbidea, 53, Trintxerpe (Pasaia)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bar restaurante La Cerve · Trintxerpe"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 943 39 23 86. La ficha de Google marca acceso para sillas de ruedas, aseo y asientos adaptados, y que se admiten perros; también indica que no hay aparcamiento adaptado."
+			/>
+
+			<LocalFaq items={[...FAQ]} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}, ${BUSINESS.municipality}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a La Cerve"
+		/>
+	</body>
+</html>

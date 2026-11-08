@@ -1,0 +1,319 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/augusto-lisboa-apaisada-01.jpg';
+import torrada from '../assets/fotos/augusto-lisboa-apaisada-02.jpg';
+import cafes from '../assets/fotos/augusto-lisboa-vertical-03.jpg';
+import tabua from '../assets/fotos/augusto-lisboa-apaisada-04.jpg';
+import balcao from '../assets/fotos/augusto-lisboa-vertical-06.jpg';
+import mesa from '../assets/fotos/augusto-lisboa-vertical-07.jpg';
+import ovos from '../assets/fotos/augusto-lisboa-vertical-08.jpg';
+import torradaCafe from '../assets/fotos/augusto-lisboa-apaisada-09.jpg';
+import fachada from '../assets/fotos/augusto-lisboa-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Augusto Lisboa · Brunch e café de especialidade';
+const description =
+	'Augusto Lisboa, café de brunch na Rua de Santa Marinha, 26 (1100-491 Lisboa). Café de especialidade, brunch todo o dia e comida caseira, com 4,8 sobre 5 no Google.';
+
+const galeria = [
+	{
+		src: interior,
+		alt: 'Sala do Augusto Lisboa com o chão de tijoleira rosa, o balcão de azulejo e candeeiros de cristal',
+	},
+	{
+		src: torrada,
+		alt: 'Torrada de abacate com ovo mexido e fitas de cenoura num prato cor-de-rosa',
+	},
+	{
+		src: cafes,
+		alt: 'Duas canecas de café com leite vistas de cima sobre uma mesa de madeira',
+	},
+	{
+		src: tabua,
+		alt: 'Tábua de brunch com queijos, presunto, torradas, salada e uma caneca de café',
+	},
+	{
+		src: balcao,
+		alt: 'Balcão de azulejo do Augusto Lisboa com plantas, jarras e um candeeiro de vime',
+	},
+	{
+		src: mesa,
+		alt: 'Mesa posta com abacate, taça de fruta, torrada, café com leite e sumo',
+	},
+	{
+		src: ovos,
+		alt: 'Taça de ovos mexidos com ervas, queijos curados e uma lata de sardinhas',
+	},
+	{
+		src: torradaCafe,
+		alt: 'Torrada de abacate com ovo escalfado acompanhada de uma caneca de café com leite',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada rosa do Augusto Lisboa na Rua de Santa Marinha, 26, com a chapa redonda do café',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#augusto`,
+	name: BUSINESS.name,
+	alternateName: ['Augusto', 'Augusto Lisboa Alfama', 'Café Augusto Lisboa', 'Augusto brunch Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Brunch', 'Café de especialidade', 'Cozinha caseira'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:30',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '17:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada acessível a cadeiras de rodas',
+			value: false,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamento acessível',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'O brunch', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f3a2e" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Augusto Lisboa, brunch Lisboa, café de especialidade Lisboa, brunch Alfama, Rua de Santa Marinha, pequeno-almoço Lisboa, café Augusto, onde tomar brunch em Lisboa"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Café de brunch na Rua de Santa Marinha, 26, em Lisboa: café de especialidade, brunch todo o dia e comida caseira, com 4,8 sobre 5 no Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Torrada de abacate com ovo, tábua de queijos e café no Augusto Lisboa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#1f3a2e"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Augusto"
+			subtitle="Brunch · Lisboa"
+			nav={nav}
+			cta={{ label: 'Google Maps', href: MAPS.place, external: true }}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Rua de Santa Marinha, 26 · Lisboa"
+				title="Brunch devagar, <br /><em>café a sério.</em>"
+				lede={`O Augusto é um café de brunch na Rua de Santa Marinha, 26, em Lisboa: café de especialidade, torradas de pão de massa-mãe, tábuas portuguesas e comida caseira com ingredientes locais. Tem 4,8 sobre 5 no Google com 3.577 críticas.`}
+				image={interior}
+				imageAlt="Sala do Augusto Lisboa com o chão de tijoleira rosa, o balcão de azulejo e candeeiros de cristal"
+				primaryCta={{ label: 'Como chegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,8</b> no Google · 3.577 críticas' },
+					{ label: 'A casa', html: '<b>Brunch</b> todo o dia' },
+					{ label: 'Horário', html: '<b>8:30–16:00</b> fim de semana até 17:00' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que serve o Augusto Lisboa" items={SERVICOS} />
+
+			<LocalAbout
+				label="A casa"
+				title="Parede rosa, <br /><em>chão de tijoleira.</em>"
+				paragraphs={[
+					'O Augusto ocupa o rés-do-chão de um prédio cor-de-rosa na Rua de Santa Marinha, 26, em Lisboa. Lá dentro, o chão é de tijoleira rosa, o balcão está forrado a azulejo e os candeeiros de cristal convivem com plantas por todo o lado.',
+					'A Google classifica-o como restaurante descontraído com brunch e café, e dá-lhe 4,8 sobre 5 com 3.577 críticas. O espaço descreve-se como café de especialidade e brunch todo o dia, com comida caseira e ingredientes locais e de qualidade.',
+					'Da cozinha saem torradas de pão de massa-mãe, tábuas portuguesas, banana bread e gelado artesanal: é o que o próprio local destaca na ficha. As críticas acrescentam o ambiente — espaço muito bem decorado, pessoas simpáticas e boa comida — e a possibilidade de adaptar pratos para quem tem alergia a ovo.',
+					'A ficha não publica telefone, e-mail, site próprio, carta completa nem preços. Esta página reúne apenas o que está publicado: morada, horário, fotografias e críticas, sem inventar reservas nem canais de contacto.',
+				]}
+				note="Tem 4,8 sobre 5 com 3.577 críticas no Google. Uma delas diz: «Espaço muito bem decorado, pessoas simpáticas e boa comida»."
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.reviews, external: true },
+					{ label: 'Ver a casa no Google Maps', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="O brunch"
+				title="O que sai <br /><em>da cozinha.</em>"
+				description="A ficha do Google não publica carta nem preços, e o café não tem site próprio. Isto é o que o próprio espaço descreve e o que citam as suas críticas."
+				cta={{ label: 'Ver fotos no Google Maps', href: MAPS.place }}
+				groups={MENU}
+				note="Não há carta nem preços publicados na ficha. Para saber o que há hoje, o mais direto é passar à porta ou consultar o perfil do Augusto no Google Maps."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As nove fotografias publicadas no perfil do Augusto Lisboa em Google Maps: a sala cor-de-rosa, o balcão de azulejo, a fachada e os pratos do brunch."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Passa pela <br /><em>Rua de Santa Marinha.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário"
+				hoursNote="Horário publicado na ficha de Google: de segunda a sexta das 8:30 às 16:00, e aos sábados e domingos das 8:30 às 17:00. Convém confirmá-lo antes de ir."
+				mapTitle="Mapa do Augusto Lisboa na Rua de Santa Marinha, 26, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Augusto Lisboa · Lisboa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Como chegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: 'Abrir no Google Maps', href: MAPS.place, external: true }}
+				reserveNote="Sem telefone público: a ficha de Google não publica número, e-mail nem site, por isso não existe um canal de reservas publicado. A Google indica ainda que o espaço não tem entrada acessível a cadeiras de rodas nem estacionamento acessível."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>vir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário e oferta antes da visita."
+			ctaLabel="Ver no Google Maps"
+			navAriaLabel="Ligações do Augusto Lisboa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

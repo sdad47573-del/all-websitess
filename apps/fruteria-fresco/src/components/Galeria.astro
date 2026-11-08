@@ -1,0 +1,30 @@
+---
+/**
+ * Galería de fotos de la ficha de Google Maps.
+ *
+ * El marcado, los estilos y el visor viven en `LocalGaleria`
+ * (@astro-components), que es el mismo en todas las webs. Aquí solo queda el
+ * `import.meta.glob`: tiene que escribirse dentro de la app porque Vite lo
+ * resuelve respecto a este fichero y las fotos están en `src/assets/fotos`.
+ */
+import { LocalGaleria } from '@astro-components';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+	nombre: string;
+	titulo?: string;
+	intro?: string;
+	nota?: string;
+	mapsUrl?: string;
+	locale?: 'es' | 'en';
+	id?: string;
+	limite?: number;
+}
+
+const fotos = import.meta.glob<ImageMetadata>('../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}', {
+	eager: true,
+	import: 'default',
+});
+---
+
+<LocalGaleria fotos={fotos} {...Astro.props} />

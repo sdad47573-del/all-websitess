@@ -1,0 +1,109 @@
+---
+import 'remixicon/fonts/remixicon.css';
+import '../styles/index.css';
+
+import { BUSINESS, SCHEMA } from '../data/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	/** Ruta de la página, para el canonical y el og:url. */
+	path?: string;
+	/** Palabras clave propias de la página (por defecto, las de la portada). */
+	keywords?: string;
+	/** Datos estructurados extra de la página: migas de pan, carta, FAQ… */
+	schema?: unknown[];
+	noIndex?: boolean;
+}
+
+const {
+	title = `${BUSINESS.name} · Cocina malagueña en Teatinos, ${BUSINESS.city}`,
+	description = 'Taberna de cocina casera malagueña en Teatinos (Málaga): guisos a fuego lento, producto fresco y tapas para compartir. Reserva mesa: 611 67 21 97.',
+	path = '/',
+	keywords = 'Taberna La New, taberna Málaga, Teatinos, comida casera Málaga, guisos, tapas Teatinos, dónde comer Teatinos, Avenida Gregorio Prieto 19, Ciudad de la Justicia',
+	schema = [],
+	noIndex = false,
+} = Astro.props;
+
+const canonical = new URL(path, BUSINESS.siteUrl).toString();
+const ogImage = `${BUSINESS.siteUrl}/og.jpg`;
+
+// `max-image-preview:large` habilita las miniaturas grandes en Google (clave en un sitio
+// con tantas fotos) y `max-snippet:-1` permite descripciones largas.
+const robots = noIndex
+	? 'noindex, follow'
+	: 'index, follow, max-image-preview:large, max-snippet:-1';
+
+// El JSON-LD del negocio va en todas las páginas; cada página puede añadir el suyo.
+const datosEstructurados = [SCHEMA, ...schema];
+---
+
+<!doctype html>
+<html
+	lang="es"
+	data-theme="lanew"
+	prefix="og: https://ogp.me/ns# restaurant: https://ogp.me/ns/restaurant#"
+>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content="Taberna La New" />
+		<meta name="robots" content={robots} />
+		<meta name="theme-color" content="#12463C" />
+		<link rel="canonical" href={canonical} />
+
+		<!-- Open Graph (Facebook, WhatsApp, LinkedIn…) -->
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="540" />
+		<meta property="og:image:height" content="436" />
+		<meta property="og:image:alt" content={`${BUSINESS.name}, taberna en Teatinos (Málaga)`} />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:street-address" content={`${BUSINESS.street}, ${BUSINESS.local}`} />
+		<meta property="og:locality" content={BUSINESS.city} />
+		<meta property="og:region" content={BUSINESS.region} />
+		<meta property="og:postal-code" content={BUSINESS.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content="+34951432089" />
+		<meta property="place:location:latitude" content={String(BUSINESS.geo.lat)} />
+		<meta property="place:location:longitude" content={String(BUSINESS.geo.lng)} />
+
+		<!-- Twitter / X -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content={`${BUSINESS.name}, taberna en Teatinos (Málaga)`} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		{
+			datosEstructurados.map((bloque) => (
+				<script type="application/ld+json" is:inline set:html={JSON.stringify(bloque)} />
+			))
+		}
+			<meta name="geo.placename" content="Málaga" />
+		<meta name="geo.position" content="36.7160292;-4.4632347" />
+		<meta name="ICBM" content="36.7160292, -4.4632347" />
+	</head>
+	<body class="bg-base-100 text-base-content font-sans antialiased">
+		<slot />
+	</body>
+</html>

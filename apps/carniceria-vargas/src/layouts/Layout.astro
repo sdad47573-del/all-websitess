@@ -1,0 +1,153 @@
+---
+import 'remixicon/fonts/remixicon.css';
+import '../styles/index.css';
+
+import { BUSINESS, IMAGES, SCHEMA } from '../data/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	/** Ruta de la página, para el canonical y el og:url. */
+	path?: string;
+	/** Palabras clave propias de la página (por defecto, las de la portada). */
+	keywords?: string;
+	/** Datos estructurados extra de la página: migas de pan, FAQ… */
+	schema?: unknown[];
+	noIndex?: boolean;
+}
+
+const {
+	title = `${BUSINESS.name} · Carnicería y charcutería en ${BUSINESS.city}`,
+	description = `Carnicería y charcutería en Rafael Alberti, 9 (Cruz de Humilladero, Málaga): carne fresca, embutidos y elaborados. ${BUSINESS.ratingDisplay}★. Tel. ${BUSINESS.phoneDisplay}.`,
+	path = '/',
+	keywords = 'Carnicería Vargas Málaga, carnicería Cruz de Humilladero, carnicería Rafael Alberti 9, carne fresca Málaga, jamón al corte Málaga, embutidos y charcutería Málaga, elaborados caseros carnicería, albóndigas y hamburguesas Málaga, carne para barbacoa Málaga, carnicería de barrio Málaga',
+	schema = [],
+	noIndex = false,
+} = Astro.props;
+
+const canonical = new URL(path, BUSINESS.siteUrl).toString();
+const ogImage = new URL(IMAGES.foto1.src, BUSINESS.siteUrl).toString();
+
+// `max-image-preview:large` habilita las miniaturas grandes en Google (clave en un
+// sitio con fotos del local) y `max-snippet:-1` permite descripciones largas.
+const robots = noIndex
+	? 'noindex, follow'
+	: 'index, follow, max-image-preview:large, max-snippet:-1';
+
+// El JSON-LD del negocio va en todas las páginas; cada página puede añadir el suyo.
+// `image` lleva un array con todas las fotos de la ficha: Google indexa mejor un local con varias
+// imágenes que con una sola.
+const imagenesSchema = Object.values(IMAGES).map((imagen) =>
+	new URL(imagen.src, BUSINESS.siteUrl).toString(),
+);
+
+// La página como `WebPage` le dice a Google que este documento es la portada de un sitio concreto
+// y no una página suelta, lo que ayuda a asociar el resto de URL del dominio con este negocio.
+const webPage = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	'@id': `${canonical}#webpage`,
+	url: canonical,
+	name: title,
+	description,
+	isPartOf: {
+		'@type': 'WebSite',
+		'@id': `${BUSINESS.siteUrl}/#website`,
+		name: BUSINESS.name,
+		url: `${BUSINESS.siteUrl}/`,
+	},
+	about: { '@id': SCHEMA['@id'] },
+	inLanguage: 'es',
+	primaryImageOfPage: imagenesSchema[0],
+};
+
+const datosEstructurados = [{ ...SCHEMA, image: imagenesSchema }, webPage, ...schema];
+---
+
+<!doctype html>
+<html lang="es" data-theme="vargas" prefix="og: https://ogp.me/ns# place: https://ogp.me/ns/place#">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={BUSINESS.name} />
+		<meta name="robots" content={robots} />
+		<meta name="theme-color" content="#7A1F24" />
+		<link rel="canonical" href={canonical} />
+
+		<!-- Open Graph (Facebook, WhatsApp, LinkedIn…) -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content={String(IMAGES.foto1.width)} />
+		<meta property="og:image:height" content={String(IMAGES.foto1.height)} />
+		<meta
+			property="og:image:alt"
+			content={`Carnes y elaborados en el mostrador de ${BUSINESS.name}, carnicería en ${BUSINESS.city}`}
+		/>
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:street-address" content={`${BUSINESS.street}, ${BUSINESS.district}`} />
+		<meta property="og:locality" content={BUSINESS.city} />
+		<meta property="og:region" content={BUSINESS.region} />
+		<meta property="og:postal-code" content={BUSINESS.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content="+34952612997" />
+		<meta property="place:location:latitude" content={String(BUSINESS.geo.lat)} />
+		<meta property="place:location:longitude" content={String(BUSINESS.geo.lng)} />
+
+		<!-- Twitter / X -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta
+			name="twitter:image:alt"
+			content={`Mostrador de ${BUSINESS.name}, carnicería en ${BUSINESS.city}`}
+		/>
+
+		<!-- SEO local -->
+		<meta name="geo.region" content="ES-AN" />
+		<meta name="geo.placename" content={BUSINESS.city} />
+		<meta name="geo.position" content={`${BUSINESS.geo.lat};${BUSINESS.geo.lng}`} />
+		<meta name="ICBM" content={`${BUSINESS.geo.lat}, ${BUSINESS.geo.lng}`} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<!--
+	Las tipografías se cargan sin bloquear el primer render: media="print" evita que el navegador
+	espere a la hoja de Google para pintar, y onload la activa al llegar. Sin JavaScript, la
+	etiqueta <noscript> mantiene las fuentes.
+-->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<noscript
+			><link
+				href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap"
+				rel="stylesheet"
+			/></noscript
+		>
+
+		{
+			datosEstructurados.map((bloque) => (
+				<script type="application/ld+json" is:inline set:html={JSON.stringify(bloque)} />
+			))
+		}
+	</head>
+	<body class="bg-base-100 text-base-content font-sans antialiased">
+		<slot />
+	</body>
+</html>

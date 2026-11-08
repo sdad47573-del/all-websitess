@@ -1,0 +1,486 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	floristSchema,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'FLORS SENKA · Floristería en Sant Feliu de Llobregat';
+const description =
+	'FLORS SENKA, floristería en el Carrer de Falguera, 94 (08980 Sant Feliu de Llobregat, Barcelona). 4,6 sobre 5 con 43 reseñas en Google Maps. Teléfono 936 66 71 40.';
+const keywords =
+	'FLORS SENKA, floristería Sant Feliu de Llobregat, flores Sant Feliu, Carrer de Falguera';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada en la ficha de Google Maps de FLORS SENKA, en Sant Feliu de Llobregat';
+const altOg = 'Fotografía de FLORS SENKA publicada en su ficha de Google Maps';
+
+/**
+ * Galería completa: las diez fotografías de la ficha.
+ *
+ * El manifiesto de la descarga quedó sin autor (`author` vacío), así que se publican sin pie y sin
+ * atribución: no hay nada que citar.
+ */
+const galeria = [
+	'flors-senka-vertical-01.jpg',
+	'flors-senka-vertical-02.jpg',
+	'flors-senka-vertical-03.jpg',
+	'flors-senka-vertical-04.jpg',
+	'flors-senka-vertical-05.jpg',
+	'flors-senka-apaisada-06.jpg',
+	'flors-senka-apaisada-07.jpg',
+	'flors-senka-vertical-08.jpg',
+	'flors-senka-vertical-09.jpg',
+	'flors-senka-vertical-10.jpg',
+];
+
+/**
+ * Tres fotos de avance en el collage de la portada (también están en la galería).
+ *
+ * Arriba va la apaisada (07), que es la que mejor resiste el recorte ancho del hueco
+ * superior, y abajo dos verticales (01 y 02), con las proporciones por
+ * defecto del repositorio (16/9 y 4/5).
+ */
+const collage = [
+	{ name: 'flors-senka-apaisada-07.jpg', clase: 'collage-item collage-item-a' },
+	{ name: 'flors-senka-vertical-01.jpg', clase: 'collage-item collage-item-b' },
+	{ name: 'flors-senka-vertical-02.jpg', clase: 'collage-item collage-item-c' },
+];
+
+/**
+ * Número de reseñas destacadas que publica la ficha.
+ *
+ * La ficha destaca 3 extractos literales, así que `reviews` los trae y el bloque de citas de la portada los reproduce tal cual junto a la tarjeta con la valoración.
+ */
+const numeroResenas = reviews.length;
+const textoResenas = `${business.reviewCount.toLocaleString('es-ES')} reseñas`;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#5c2e3e" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-B" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(floristSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">S</span>
+				<span class="brand-text">
+					FLORS SENKA
+					<small>Carrer de Falguera, 94 · Sant Feliu</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La tienda</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Sant Feliu de Llobregat · Barcelona · Falguera</p>
+						<h1 id="hero-title">
+							FLORS SENKA,
+							<br />
+							<em>floristería.</em>
+						</h1>
+						<p class="hero-lede">
+							FLORS SENKA está en el Carrer de Falguera, 94, con código postal
+							08980, en Sant Feliu de Llobregat
+							(Barcelona).
+							Google la clasifica como floristería y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{textoResenas}. Abre con dos turnos de lunes a viernes, solo por la mañana el sábado y el domingo de 10:00 a 14:00.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode}
+									{business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{textoResenas}
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-collage">
+						{collage.map((item, index) => (
+							<figure class={item.clase}>
+								<Image
+									src={foto(item.name)}
+									alt={altFoto}
+									widths={index === 0 ? [640, 900, 1200] : [320, 480, 640]}
+									sizes={
+										index === 0
+											? '(max-width: 1080px) 92vw, 46vw'
+											: '(max-width: 1080px) 45vw, 23vw'
+									}
+									format="avif"
+									quality={68}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : undefined}
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{textoResenas}
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>{hoursSummary}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">La tienda</p>
+						<h2 class="title" id="local-title">
+							Flores y plantas,
+							<br />
+							<em>en Sant Feliu.</em>
+						</h2>
+						<p>
+							Google la clasifica como floristería. Le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{textoResenas}. Está en la
+							Carrer de Falguera, 94, con código postal
+							08980, en Sant Feliu de Llobregat (Barcelona), y la ficha publica su plus
+							code
+							92MR+5F Sant Feliu de Llobregat.
+						</p>
+						<p>
+							La ficha no publica descripción del titular. Las {numeroResenas} reseñas que destaca hablan de flores muy frescas con ramos muy bonitos y económicos, de trato exquisito y personalizado que hace todo lo que pides, y de quedar muy bien, y aquí se reproducen tal cual, sin añadir nada.
+						</p>
+						<p>
+							Esta web se ha preparado solo con lo que publica la ficha, consultada
+							el {site.consultado}: nombre, dirección, teléfono, categoría,
+							horario, valoración, el servicio de accesibilidad, las {numeroResenas} reseñas que destaca
+							y sus propias fotografías. La
+							ficha no publica descripción, web, catálogo ni precios, así que aquí no se
+							reproducen.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>{textoResenas} en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									<strong>{review.rating} sobre 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La tienda <em>en fotos.</em>
+					</h2>
+					<p class="lead">
+						Son las diez fotografías que FLORS SENKA publica en su ficha de
+						Google Maps. El manifiesto de la descarga no atribuye ninguna a un autor
+						con nombre, así que se publican sin pie y sin atribución. La ficha no
+						describe el contenido de las fotos y aquí no se inventa ninguna descripción.
+					</p>
+					<div class="cocina-grid">
+						{galeria.map((name) => (
+							<figure class="cocina-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="cocina-note">
+						La ficha no publica catálogo ni precios, así que esta web no los reproduce.
+						Para saber qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Carrer de Falguera, 94,
+							<br />
+							<em>08980 Sant Feliu.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							La tienda abre <strong>de lunes a viernes</strong> en dos turnos, mañana de 9:30 a 13:45 (el martes hasta las 13:30) y tarde de 17:00 a 20:00; el <strong>sábado</strong> solo por la mañana de 9:15 a 14:00 y el <strong>domingo</strong> de 10:00 a 14:00. Conviene confirmar
+							por teléfono antes de ir.
+						</p>
+						{accesibilidad.length > 0 ? (
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+) : (
+						<p class="hours-note">La ficha no publica datos de accesibilidad.</p>
+)}
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+						 src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+							<noscript>
+								<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+							</noscript>
+						</div>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>llamar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">S</span>
+					<span>
+						FLORS SENKA
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} FLORS SENKA · Carrer de Falguera, 94
+					(08980 Sant Feliu de Llobregat). Web informativa elaborada con los datos, las reseñas destacadas y las fotografías que
+					el local publica en su ficha de Google Maps, consultada el {site.consultado}.
+					Confirma horario y disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a SENKA <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

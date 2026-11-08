@@ -1,0 +1,534 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	credito,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	momentos,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Bar Manolo · Sanlúcar de Barrameda';
+const description =
+	'Bar Manolo, bar restaurante y cafetería en la carretera de Puerto de Santa María, Sanlúcar. Abre todos los días de 5:00 a 24:00; 4,3 sobre 5 con 644 reseñas.';
+const keywords =
+	'Bar Manolo Sanlúcar, Bar Manolo, bar carretera Puerto de Santa María, desayunos Sanlúcar, bar restaurante Sanlúcar de Barrameda, cafetería Sanlúcar';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías y el manifiesto de la descarga no
+ * atribuye autor, así que no se inventa una descripción ni una atribución: los `alt` avisan solo
+ * de dónde salen.
+ */
+const altFoto =
+	'Fotografía publicada en la ficha de Google Maps de Bar Manolo, en Sanlúcar de Barrameda';
+const altOg = 'Fotografía de Bar Manolo publicada en su ficha de Google Maps';
+
+/** Galería completa: las diez fotografías de la ficha, en el orden en que se descargaron. */
+const galeria = [
+	'bar-manolo-apaisada-01.jpg',
+	'bar-manolo-cuadrada-02.jpg',
+	'bar-manolo-cuadrada-03.jpg',
+	'bar-manolo-apaisada-04.jpg',
+	'bar-manolo-vertical-05.jpg',
+	'bar-manolo-apaisada-06.jpg',
+	'bar-manolo-vertical-07.jpg',
+	'bar-manolo-vertical-08.jpg',
+	'bar-manolo-vertical-09.jpg',
+	'bar-manolo-apaisada-10.jpg',
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#35261d" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-CA" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">
+					BM
+				</span>
+				<span class="brand-text">
+					Bar Manolo
+					<small>Sanlúcar de Barrameda</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#barra">La barra</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#resenas">Reseñas</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="hero-eyebrow">Ctra. Puerto de Santa María, s/n · Sanlúcar</p>
+						<h1 id="hero-title">
+							Bar Manolo
+							<span>A las 5:00 ya hay barra.</span>
+						</h1>
+						<p class="hero-lede">
+							Bar restaurante y cafetería en la carretera de Puerto de Santa María, en Sanlúcar de
+							Barrameda. La ficha de Google lo marca{' '}
+							<strong>abierto de 5:00 a 24:00 todos los días</strong> y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>
+								Llamar al {business.phone}
+							</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>{business.streetAddress}</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>5:00 – 24:00</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 ·{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-photos">
+						<figure class="hero-figure hero-figure-principal">
+							<Image
+								src={foto('bar-manolo-apaisada-01.jpg')}
+								alt={altFoto}
+								widths={[480, 720, 1000]}
+								sizes="(max-width: 1080px) 92vw, 40vw"
+								format="avif"
+								quality={70}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</figure>
+						<figure class="hero-figure hero-figure-secundaria">
+							<Image
+								src={foto('bar-manolo-cuadrada-02.jpg')}
+								alt={altFoto}
+								widths={[260, 380, 520]}
+								sizes="(max-width: 1080px) 44vw, 19vw"
+								format="avif"
+								quality={70}
+								loading="eager"
+								decoding="async"
+							/>
+						</figure>
+						<p class="hero-plaque">
+							<strong>5:00</strong>
+							<span>abre todos los días</span>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<strong>Todos los días</strong>
+				<span>5:00 – 24:00</span>
+				<span>{business.streetAddress}</span>
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+			</div>
+
+			<section class="section" id="barra" aria-labelledby="barra-title">
+				<div class="wrap barra-grid">
+					<div>
+						<p class="kicker">La barra</p>
+						<h2 class="title" id="barra-title">
+							Lo que publica
+							<em> la ficha.</em>
+						</h2>
+						<div class="aviso-ficha">
+							<p>
+								<strong>La ficha de Google no publica descripción del titular.</strong> Tampoco
+								carta ni precios. En vez de rellenar esos huecos con texto inventado, aquí está lo
+								que sí publica, dato por dato, con la fecha de consulta.
+							</p>
+						</div>
+						<ul class="datos">
+							<li>
+								<span>Categorías</span>
+								<strong>{business.categories.join(' · ')}</strong>
+							</li>
+							<li>
+								<span>Dirección</span>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<span>Horario</span>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<span>Teléfono</span>
+								<strong>{business.phone}</strong>
+							</li>
+							<li>
+								<span>Valoración</span>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 ·{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+							<li>
+								<span>Plus code</span>
+								<strong>{business.plusCode}</strong>
+							</li>
+						</ul>
+					</div>
+					<div>
+						<p class="kicker">En las reseñas</p>
+						<h2 class="title">
+							Tres momentos
+							<em> del día.</em>
+						</h2>
+						<ul class="momentos">
+							{momentos.map((item) => (
+								<li>
+									<strong class="hora">{item.etiqueta}</strong>
+									<div>
+										<h3>{item.titulo}</h3>
+										<p>{item.texto}</p>
+									</div>
+								</li>
+							))}
+						</ul>
+						<p class="barra-note">
+							Son menciones de tres clientes, no una carta oficial. Para saber qué hay hoy y cuánto
+							cuesta, lo más rápido es <a href={phoneHref}>llamar al {business.phone}</a>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="section galeria" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						Diez fotos
+						<em> de la ficha.</em>
+					</h2>
+					<p class="lead">
+						Las diez fotografías que Bar Manolo publica en su ficha de Google Maps. La ficha no las
+						describe y el manifiesto de la descarga no atribuye autor, así que se muestran sin pie
+						inventado.
+					</p>
+					<div class="galeria-grid">
+						{galeria.map((name, index) => (
+							<figure class="galeria-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[300, 460, 640]}
+									sizes="(max-width: 760px) 46vw, (max-width: 1080px) 30vw, 23vw"
+									format="avif"
+									quality={66}
+									loading="lazy"
+									decoding="async"
+								/>
+								<span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+							</figure>
+						))}
+					</div>
+					<p class="galeria-note">
+						Fotos de la ficha consultada el {site.consultado}. Si eres el titular y prefieres que no
+						aparezcan, se retiran: el teléfono de contacto es el{' '}
+						<a href={phoneHref}>{business.phone}</a>.
+					</p>
+				</div>
+			</section>
+
+			<section class="section horario" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y llegada</p>
+						<h2 class="title" id="horario-title">
+							En la carretera,
+							<em> desde las 5:00.</em>
+						</h2>
+						<div class="horario-cabecera">
+							<strong>5:00</strong>
+							<span>
+								apertura
+								<br />
+								todos los días
+							</span>
+						</div>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							La ficha marca de 5:00 a 24:00 los siete días de la semana. Es el horario consultado
+							el {site.consultado}; conviene confirmarlo por teléfono antes de ir, sobre todo en
+							festivos.
+						</p>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<p class="access-title">Accesibilidad publicada en la ficha</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen
+						></iframe>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="resenas" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div class="resenas-head">
+						<div>
+							<p class="kicker">Lo que dicen</p>
+							<h2 class="title" id="resenas-title">
+								Tres reseñas
+								<em> destacadas.</em>
+							</h2>
+						</div>
+						<div class="score">
+							<strong>{business.rating.toLocaleString('es-ES')}</strong>
+							<span>
+								sobre 5 · {business.reviewCount.toLocaleString('es-ES')} reseñas
+								<br />
+								<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+									Ver todas ↗
+								</a>
+							</span>
+						</div>
+					</div>
+					<div class="quote-grid">
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									{review.rating} sobre 5<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de
+						<em> parar.</em>
+					</h2>
+					<p class="lead">
+						{business.reviewCount.toLocaleString('es-ES')} reseñas, tres destacadas y cuatro datos
+						de accesibilidad: todo lo que publica la ficha, resumido sin añadir nada.
+					</p>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">
+						BM
+					</span>
+					<span>
+						Bar Manolo
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del bar">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Bar Manolo · Carretera de Puerto de Santa María, sin número
+					(11540 Sanlúcar de Barrameda). Web informativa elaborada con los datos y las fotografías
+					que el bar publica en su ficha de Google Maps, consultada el {site.consultado}. Confirma
+					horario y disponibilidad por teléfono antes de salir.
+					<span class="credit">
+						Web creada por{' '}
+						<a href={credito.url} rel="noopener">
+							{credito.nombre}
+						</a>
+					</span>
+				</small>
+			</div>
+
+			<a class="mobile-call" href={phoneHref}>
+				Llamar a Bar Manolo <span>{business.phone}</span>
+			</a>
+
+			<nav class="legal-links" aria-label="Información legal">
+				<a href="/aviso-legal">Aviso legal</a>
+				<a href="/aviso-legal#privacidad">Privacidad</a>
+				<a href="/aviso-legal#cookies">Cookies</a>
+			</nav>
+		</footer>
+	</body>
+</html>
