@@ -24,5 +24,8 @@ export { default as LocalFaqList } from './src/local/FaqList.astro';
 export { default as LocalMapFab } from './src/local/MapFab.astro';
 export { default as LocalPhoneFab } from './src/local/PhoneFab.astro';
 export { default as LocalServicios } from './src/local/Servicios.astro';
+export { default as LocalContact } from './src/local/Contact.astro';
+export { default as LocalSalon } from './src/local/Salon.astro';
+export { default as LocalOpiniones } from './src/local/Opiniones.astro';
 export { default as LocalShop } from './src/local/Shop.astro';
 export { default as LocalWhatsappFab } from './src/local/WhatsappFab.astro';

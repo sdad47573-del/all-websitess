@@ -37,14 +37,36 @@ Después habría que regenerar en `vercel.json` una reescritura por subdominio
 (`has: [{ type: "host", value: "<slug>.sur-digital.com" }]`) apuntando a la
 columna `web_actual`, como las que había antes.
 
+## Código fuente: 80 de las 96 no están en este repo
+
+El proxy sirve 96 webs (`ORIGINS`), pero el repositorio solo contiene el código
+de 16. Comprobado contra la columna `codigo_fuente` del CSV y con
+`git ls-files` (8 nov 2026):
+
+| Situación | Webs |
+|---|---|
+| `codigo_fuente=si` | 16 |
+| · con `package.json` y script `build` | 14 |
+| · con carpeta pero sin `package.json` | 2 |
+| `codigo_fuente=no` | 80 |
+| · sin carpeta en `apps/` | 17 |
+| · con carpeta y sin `dist` (solo `node_modules`, `.turbo` o `.astro`) | 47 |
+| · con `dist` | 16 |
+
+Las 80 sin fuente no se pueden reconstruir desde aquí: su código vive fuera de
+este repositorio. El proxy funciona porque pide el despliegue ya publicado en
+cada visita, así que un cambio en una de ellas exige tocar su proyecto de
+origen y volver a desplegarlo. Tampoco se pueden empaquetar en el build de
+`_sur-digital`: no hay fuente que compilar, solo el despliegue en producción.
+
 ## Enlaces y canónicas
 
 - El portfolio enlaza directamente al despliegue de cada web. No depende del
   proxy ni de un subdominio.
-- Las 14 apps que conservan código fuente declaran en `astro.config.mjs` su
-  despliegue real como `site`, que es lo que alimenta el sitemap, el canonical
-  y el `og:url`. Necesitan un despliegue nuevo para publicar el cambio.
-- Las 80 restantes solo tienen `dist/`, así que su canonical no se puede
+- Las 14 apps Astro con fuente declaran en `astro.config.mjs` su despliegue
+  real como `site`, que es lo que alimenta el sitemap, el canonical y el
+  `og:url`. Necesitan un despliegue nuevo para publicar el cambio.
+- Las 80 sin fuente no se pueden tocar aquí, así que su canonical no se puede
   corregir desde este repositorio.
 
 ## Servir la web en el dominio principal

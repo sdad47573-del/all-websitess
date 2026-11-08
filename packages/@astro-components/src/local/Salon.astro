@@ -1,0 +1,82 @@
+---
+/**
+ * Sección "El local" de las webs de restaurante: foto de interior, texto de
+ * presentación y enlaces a la ficha de Google y a los servicios.
+ *
+ * El marcado y las clases son los mismos en toda esta familia; cada app pasa su
+ * `BUSINESS` y la foto (`IMAGES.fotoInterior`). El alt y el titular se derivan
+ * del nombre y la ciudad, y se pueden sobrescribir cuando la web usa otro texto.
+ */
+import type { ImageMetadata } from 'astro';
+import Image from '../Image.astro';
+
+export interface Props {
+	business: { name: string; city: string; googleMaps: string };
+	image: ImageMetadata;
+	alt?: string;
+	/** Admite HTML: se pinta con `set:html`. */
+	title?: string;
+	intro?: string;
+	eyebrow?: string;
+	caption?: string;
+	servicesHref?: string;
+	id?: string;
+}
+
+const {
+	business,
+	image,
+	alt = `Interior de ${business.name} en ${business.city}`,
+	title = `${business.name} en ${business.city}`,
+	intro = `${business.name} está en ${business.city}. Para horario, teléfono y reservas, consulta su ficha pública de Google.`,
+	eyebrow = 'El local',
+	caption = 'Fotos reales del local en Google Maps.',
+	servicesHref = '/#servicios',
+	id = 'salon',
+} = Astro.props;
+---
+
+<section id={id} class="bg-base-100 scroll-mt-20 py-20 sm:py-24">
+	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="grid items-center gap-12 lg:grid-cols-2">
+			<figure class="relative">
+				<div class="overflow-hidden rounded-sm shadow-xl">
+					<Image
+						src={image}
+						alt={alt}
+						widths={[600, 1000]}
+						sizes="(min-width: 1024px) 46vw, 92vw"
+						quality={85}
+						loading="lazy"
+						class="aspect-[4/5] w-full object-cover"
+					/>
+				</div>
+				<figcaption class="text-base-content/50 mt-3 text-xs">
+					{caption}
+				</figcaption>
+			</figure>
+
+			<div>
+				<span class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">{eyebrow}</span>
+				<h2 class="font-display mt-3 text-3xl font-bold sm:text-4xl" set:html={title} />
+				<div class="astyle-divider mt-5 h-px w-24"></div>
+				<p class="text-base-content/70 mt-6 leading-relaxed">
+					{intro}
+				</p>
+				<div class="mt-8 flex flex-wrap gap-3">
+					<a
+						href={business.googleMaps}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-primary gap-2 rounded-full"
+					>
+						<i class="ri-google-fill"></i> Ver ficha de Google
+					</a>
+					<a href={servicesHref} class="btn btn-outline gap-2 rounded-full">
+						<i class="ri-list-check"></i> Ver servicios
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
