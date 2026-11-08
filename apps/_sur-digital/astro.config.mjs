@@ -6,6 +6,7 @@ import vercel from "@astrojs/vercel";
 import pagefind from "astro-pagefind";
 import { socialCards } from "./integrations/social-cards.ts";
 import { cleanUrls } from "./tools/clean-urls.ts";
+import { ORIGINS } from "./src/data/proxy-origins.ts";
 
 // Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
 // no existen como archivo (las versiones por idioma viven en /i18n/<lang>/ y la
@@ -32,7 +33,15 @@ export default defineConfig({
       // Solo la home: se compila en /i18n/<lang>/ y su URL pública es /, que
       // no existe como archivo. Las demás páginas traducidas tienen archivo
       // propio en su slug (/precios/, /preise/, /prices/…).
-      customPages: [new URL("/", SITE).href],
+      //
+      // Las webs de clientes también se anuncian: viven en el proxy
+      // (src/pages/[...path].ts), que se declara canónico en este dominio, así
+      // que Google debe descubrirlas como parte de sur-digital.com y no solo
+      // por los enlaces del portfolio.
+      customPages: [
+        new URL("/", SITE).href,
+        ...Object.keys(ORIGINS).map((slug) => new URL(`/${slug}/`, SITE).href),
+      ],
     }),
     pagefind(),
     // Tarjetas cuadradas 1080×1080 para Instagram a partir de las OG

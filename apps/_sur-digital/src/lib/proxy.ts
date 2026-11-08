@@ -38,8 +38,34 @@ const DROP = new Set([
 const withPrefix = (path: string, slug: string) => `/${slug}${path}`;
 
 /** Reescribe las URLs del HTML original al prefijo del proxy. */
-const rewriteHtml = (html: string, origin: string, base: string, slug: string) => {
+const rewriteHtml = (
+	html: string,
+	origin: string,
+	base: string,
+	slug: string,
+	target: string,
+	status: number,
+) => {
+	// El proxy es la fuente: la página se declara canónica en sur-digital.com, no
+	// en el despliegue del cliente, para que sea esta URL la que compita en
+	// Google. El canonical que traiga el cliente se sustituye y, si no hay, se
+	// inyecta antes de `</head>`.
+	const canonicalTag = html.match(/<link[^>]+rel=["']canonical["'][^>]*>/i)?.[0];
+	const canonicalPath = target.slice(origin.length).split('?')[0] || '/';
+	const canonicalUrl = `${base}${canonicalPath}`;
+	const canonicalLink = `<link rel="canonical" href="${canonicalUrl.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">`;
+
+	// El canonical del cliente suele apuntar a su despliegue (*.vercel.app o
+	// *.netlify.app). Ese host reaparece en el JSON-LD y en og:image, así que se
+	// reescribe al proxy: la ficha estructurada debe declarar la URL de
+	// sur-digital.com, no la del despliegue. Un dominio propio del cliente se
+	// respeta, porque puede ser un enlace real suyo.
+	const canonicalHref = canonicalTag?.match(/href=["']([^"']+)["']/i)?.[1]?.trim() ?? '';
+	const canonicalHost = canonicalHref.match(/^https?:\/\/([^/]+)/i)?.[1]?.toLowerCase() ?? '';
+	const despliegue = /\.(vercel|netlify)\.app$/.test(canonicalHost) ? `https://${canonicalHost}` : '';
+
 	let out = html.split(origin).join(base);
+	if (despliegue) out = out.split(despliegue).join(base);
 
 	// Atributos que empiezan por la raíz: href="/#carta", src="/_astro/x.webp".
 	out = out.replace(/(\s(?:href|src|action|formaction|poster)=\")\/(?!\/)/g, (_, attr: string) => {
@@ -65,6 +91,17 @@ const rewriteHtml = (html: string, origin: string, base: string, slug: string) =
 			return `${attr}${rewritten}"`;
 		},
 	);
+
+	// Solo se tocan las señales en páginas que existen: un 404 no se canoniza.
+	if (status === 200) {
+		out = canonicalTag
+			? out.replace(/<link[^>]+rel=["']canonical["'][^>]*>/i, () => canonicalLink)
+			: out.replace(/<\/head>/i, () => `${canonicalLink}</head>`);
+		out = out.replace(
+			/(<meta[^>]+property=["']og:url["'][^>]+content=["'])[^"']*(["'])/i,
+			(_, pre: string, post: string) => `${pre}${canonicalUrl}${post}`,
+		);
+	}
 
 	// Rutas `/_astro/` que no viven en un atributo (JSON de islas, props de
 	// componentes, scripts en línea). El lookbehind evita duplicar el prefijo
@@ -144,13 +181,10 @@ export const proxy = async (
 	const isAsset = segments[0] === '_astro' || segments[0] === 'fonts';
 
 	if (type.includes('text/html')) {
-		const body = rewriteHtml(await upstream.text(), origin, base, slug);
+		const body = rewriteHtml(await upstream.text(), origin, base, slug, target, upstream.status);
 		headers.set('content-type', 'text/html; charset=utf-8');
-		// Espejo de la web del cliente bajo nuestro dominio: no debe indexarse ni
-		// competir con su web real, que conserva su propio canonical (y que en 80
-		// clientes no se puede corregir desde este repo). `follow` mantiene el
-		// rastreo de los enlaces internos de la página.
-		headers.set('x-robots-tag', 'noindex, follow');
+		// Sin `x-robots-tag`: la página se indexa como parte de sur-digital.com y
+		// su canonical apunta aquí, no al despliegue del cliente.
 		headers.set('cache-control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=600');
 		return new Response(body, { status: upstream.status, headers });
 	}
