@@ -100,6 +100,11 @@ const STYLE = `<style>
 	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
 	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
 	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
 </style>`;
 
 /**
@@ -121,7 +126,7 @@ const insertInto = (source, snippet) => {
 };
 
 /** Bloque de botones con solo las piezas que faltan en esa web. */
-const block = ({ name, tel, call, whatsapp }) => {
+const block = ({ name, tel, call, whatsapp, stacked }) => {
 	const label = escapeHtml(name);
 	const human = escapeHtml(readablePhone(tel));
 	const digits = normalizeTel(tel).replace(/^\+/, '');
@@ -139,7 +144,7 @@ const block = ({ name, tel, call, whatsapp }) => {
 		);
 	}
 
-	return `${MARKER}\n${STYLE}\n<nav class="contact-fabs" aria-label="Contacto rápido">\n${links.join('\n')}\n</nav>`;
+	return `${MARKER}\n${STYLE}\n<nav class="contact-fabs${stacked ? ' is-stacked' : ''}" aria-label="Contacto rápido">\n${links.join('\n')}\n</nav>`;
 };
 
 const apps = readdirSync(APPS_DIR, { withFileTypes: true })
@@ -178,7 +183,13 @@ for (const app of apps) {
 		}
 		const next = source.replace(
 			existing,
-			block({ name: nameExisting, tel: telExisting, call: hasCall, whatsapp: hasWhatsapp }),
+			block({
+				name: nameExisting,
+				tel: telExisting,
+				call: hasCall,
+				whatsapp: hasWhatsapp,
+				stacked: source.includes('contact-fabs is-stacked'),
+			}),
 		);
 		if (next === source) {
 			results.push({ app, status: 'ya tenía los botones' });
@@ -199,12 +210,15 @@ for (const app of apps) {
 	// HTML acaba sin `tel:`). Hay que ver el enlace renderizado, ya sea un `href` en la app o
 	// una prop de los componentes compartidos que lo pintan (`LocalTopbar`, `LocalFooter`,
 	// `LocalPhoneFab`).
+	// Los componentes compartidos reciben el negocio entero (`<LocalContact business={BUSINESS}>`)
+	// y sacan el `tel:` de ahí, así que en el código de la app no aparece ningún `href`.
 	const hasCall =
 		/href=["']tel:/.test(all) ||
 		/href=\{[^}]*phoneHref[^}]*\}/.test(all) ||
-		/<Local(?:Topbar|Footer|PhoneFab)\b[^>]*(?:phone|phoneHref)=/s.test(all) ||
+		/<Local(?:Topbar|Footer|Contact|PhoneFab)\b[^>]*(?:phone|phoneHref|business)=/s.test(all) ||
 		/mobile-call/.test(all);
-	const hasWhatsapp = /wa\.me|api\.whatsapp\.com|LocalWhatsappFab/i.test(all);
+	// Un `wa.me` suelto en los datos tampoco cuenta: tiene que llegar a un `href`.
+	const hasWhatsapp = /href=[^>]*wa\.me/i.test(all) || /LocalWhatsappFab/.test(all);
 	if (hasCall && hasWhatsapp) {
 		results.push({ app, status: 'ya enlazaba teléfono y WhatsApp' });
 		continue;
@@ -213,19 +227,13 @@ for (const app of apps) {
 	// Un FAB propio en la misma esquina que el de "cómo llegar" o el de llamada quedaría encima.
 	const floating = /LocalMapFab|LocalPhoneFab|LocalWhatsappFab/.test(all);
 
-	// Con otro FAB ya en la esquina, solo se añade la llamada si falta; el botón de WhatsApp
-	// nuevo se apilaría sobre el existente, así que se deja para una pasada manual.
-	if (floating && !hasCall) {
-		results.push({ app, status: 'tiene otro FAB; requiere revisión manual' });
-		continue;
-	}
-
 	const name = businessName(source, files) ?? titleCase(app);
 	const snippet = block({
 		name,
 		tel,
 		call: !hasCall,
-		whatsapp: !hasWhatsapp && !floating,
+		whatsapp: !hasWhatsapp,
+		stacked: floating,
 	});
 	if (!snippet.includes('href=')) {
 		results.push({ app, status: 'no se puede montar (teléfono inválido)' });
@@ -247,11 +255,11 @@ for (const app of apps) {
 	});
 }
 
+const out = (line) => process.stdout.write(`${line}\n`);
+
 for (const result of results) {
-	console.log(
-		`${result.app.padEnd(42)} ${result.status}${result.added ? ` · ${result.added}` : ''}`,
-	);
+	out(`${result.app.padEnd(42)} ${result.status}${result.added ? ` · ${result.added}` : ''}`);
 }
-console.log(
+out(
 	`\n${dry ? '[dry] ' : ''}${written} app(s) ${dry ? 'por escribir' : 'escritas'} de ${results.length} con teléfono`,
 );
