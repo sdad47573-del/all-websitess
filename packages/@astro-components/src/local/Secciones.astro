@@ -6,6 +6,7 @@ import LocalMenu from './Menu.astro';
 import LocalFaq from './Faq.astro';
 import LocalGallery from './Gallery.astro';
 import LocalHero from './Hero.astro';
+import LocalReviews from './Reviews.astro';
 import LocalVisit from './Visit.astro';
 
 interface Enlace {
@@ -66,13 +67,23 @@ export interface SeccionMapas {
 interface Props {
 	secciones: Seccion[];
 	fotos: Record<string, ImageMetadata>;
+	/** Reseñas reales de la ficha (`REVIEWS`); solo se pintan si la sección «opiniones» existe. */
+	reviews?: {
+		text?: string;
+		quote?: string;
+		author?: string;
+		name?: string;
+		rating?: number;
+	}[];
+	googleMaps?: string;
 	/** Datos del negocio que no viven en secciones.json: dirección y mapa. */
 	negocio: SeccionNegocio;
 	horario?: SeccionHorario[];
 	mapas: SeccionMapas;
 }
 
-const { secciones, fotos, negocio, horario = [], mapas } = Astro.props;
+const { secciones, fotos, negocio, horario = [], mapas, reviews = [], googleMaps = mapas.place } =
+	Astro.props;
 
 // Hay webs con el horario como {day,value} y otras como {dia,horas}: se iguala aquí.
 const horas = (horario as Array<Record<string, unknown>>).map((hora) => ({
@@ -221,6 +232,17 @@ const visibles = secciones.filter((seccion) => seccion.visible !== false);
 						}))}
 					/>
 				);
+
+			case 'opiniones':
+				return reviews.length > 0 ? (
+					<LocalReviews
+						reviews={reviews}
+						googleMaps={googleMaps}
+						eyebrow={seccion.etiqueta}
+						title={seccion.titulo}
+						id={seccion.id}
+					/>
+				) : null;
 
 			case 'chips':
 				return (

@@ -1,0 +1,292 @@
+---
+/**
+ * Reviews.astro — Banda de opiniones de Google para las webs de negocios locales.
+ *
+ * Se alimenta de las reseñas que la app ya publica en sus datos (`REVIEWS`): no hay texto
+ * nuevo ni valoraciones inventadas. La media se calcula con las reseñas mostradas y, si la
+ * app pasa `rating`/`reviewCount`, se usan esos totales de la ficha.
+ *
+ * Es autónoma: trae su propio CSS con variables de la app como respaldo, así que funciona
+ * igual en las webs que definen `--lacquer`/`--gold` que en las que no.
+ */
+export interface ReviewItem {
+	text?: string;
+	quote?: string;
+	author?: string;
+	name?: string;
+	rating?: number;
+	source?: string;
+}
+
+export interface Props {
+	reviews: ReviewItem[];
+	/** Ficha de Google Maps para «leer todas las reseñas». */
+	googleMaps?: string;
+	eyebrow?: string;
+	title?: string;
+	/** Media publicada en la ficha; si no viene, se calcula con las reseñas mostradas. */
+	rating?: number;
+	/** Total de reseñas de la ficha; si no viene, se indica cuántas se destacan. */
+	reviewCount?: number;
+	id?: string;
+}
+
+const {
+	reviews,
+	googleMaps,
+	eyebrow = 'Opiniones',
+	title = 'Lo que dicen <em>en Google.</em>',
+	rating,
+	reviewCount,
+	id = 'opiniones',
+} = Astro.props;
+
+const items = reviews
+	.map((review) => ({
+		text: (review.text ?? review.quote ?? '').trim(),
+		author: (review.author ?? review.name ?? '').trim(),
+		rating: Math.max(0, Math.min(5, Number(review.rating) || 5)),
+	}))
+	.filter((review) => review.text.length > 0);
+
+if (items.length === 0) return;
+
+const media =
+	typeof rating === 'number' && rating > 0
+		? rating
+		: items.reduce((sum, review) => sum + review.rating, 0) / items.length;
+const mediaTexto = media.toFixed(1).replace('.', ',');
+const resenasTexto =
+	typeof reviewCount === 'number' && reviewCount > 0
+		? `${reviewCount} reseñas en Google Maps`
+		: `${items.length} ${items.length === 1 ? 'reseña destacada' : 'reseñas destacadas'} en Google Maps`;
+---
+
+<section class="reviews" id={id} aria-labelledby={`${id}-title`}>
+	<div class="reviews-wrap">
+		<div class="reviews-head">
+			<p class="reviews-eyebrow"><span aria-hidden="true"></span> {eyebrow}</p>
+			<h2 id={`${id}-title`} set:html={title} />
+		</div>
+
+		<div class="reviews-grid">
+			<div class="reviews-summary">
+				<p class="reviews-score">
+					<strong>{mediaTexto}</strong>
+					<span class="reviews-stars" aria-hidden="true">
+						{Array.from({ length: 5 }, (_, index) => (
+							<span class={index < Math.round(media) ? 'on' : ''}>★</span>
+						))}
+					</span>
+				</p>
+				<p class="reviews-count">{resenasTexto}</p>
+				{
+					googleMaps && (
+						<a class="reviews-link" href={googleMaps} target="_blank" rel="noopener noreferrer">
+							Leer todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					)
+				}
+			</div>
+
+			<ul class="reviews-list">
+				{
+					items.map((review) => (
+						<li class="reviews-card">
+							<blockquote>
+								<p class="reviews-stars" aria-hidden="true">
+									{Array.from({ length: 5 }, (_, index) => (
+										<span class={index < review.rating ? 'on' : ''}>★</span>
+									))}
+								</p>
+								<span class="sr-only">{review.rating} de 5 estrellas</span>
+								<p>«{review.text}»</p>
+								{review.author && <footer>— {review.author}</footer>}
+							</blockquote>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<style>
+	.reviews {
+		padding-block: clamp(3.5rem, 8vw, 6rem);
+		background: var(--reviews-bg, var(--lacquer, #1d4a3f));
+		color: var(--reviews-fg, var(--cream-2, #fdfaf2));
+	}
+
+	.reviews-wrap {
+		width: min(100% - 2.5rem, 1160px);
+		margin-inline: auto;
+	}
+
+	.reviews-head {
+		margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+	}
+
+	.reviews-eyebrow {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		margin: 0 0 1rem;
+		font-size: 0.67rem;
+		font-weight: 700;
+		letter-spacing: 0.24em;
+		text-transform: uppercase;
+		color: var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-eyebrow span {
+		display: inline-block;
+		width: 1.7rem;
+		height: 1px;
+		background: currentColor;
+	}
+
+	.reviews h2 {
+		margin: 0;
+		font-size: clamp(2.1rem, 4.8vw, 3.4rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+
+	.reviews h2 :global(em) {
+		font-style: italic;
+		color: var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-grid {
+		display: grid;
+		gap: 2rem;
+		align-items: start;
+	}
+
+	@media (min-width: 900px) {
+		.reviews-grid {
+			grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+			gap: 3.5rem;
+		}
+	}
+
+	.reviews-score {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+		margin: 0;
+	}
+
+	.reviews-score strong {
+		font-size: clamp(3.2rem, 7vw, 4.8rem);
+		line-height: 0.9;
+		color: var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-stars {
+		margin: 0;
+		font-size: 0.95rem;
+		letter-spacing: 0.12em;
+		line-height: 1;
+		color: color-mix(in srgb, currentColor 35%, transparent);
+	}
+
+	.reviews-stars .on {
+		color: var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-count {
+		margin: 0.9rem 0 0;
+		font-size: 0.82rem;
+		letter-spacing: 0.04em;
+		color: color-mix(in srgb, currentColor 72%, transparent);
+	}
+
+	.reviews-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin-top: 1.1rem;
+		min-height: 44px;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-link:hover,
+	.reviews-link:focus-visible {
+		color: var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-list {
+		display: grid;
+		gap: 0.8rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	@media (min-width: 760px) {
+		.reviews-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.reviews-card:first-child {
+			grid-column: 1 / -1;
+		}
+	}
+
+	.reviews-card {
+		margin: 0;
+		padding: 1.15rem 1.25rem;
+		background: color-mix(in srgb, currentColor 8%, transparent);
+		border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+		border-left: 3px solid var(--reviews-accent, var(--gold, #e2a75e));
+	}
+
+	.reviews-card blockquote {
+		margin: 0;
+	}
+
+	.reviews-card p {
+		margin: 0;
+		font-size: 0.94rem;
+		line-height: 1.7;
+	}
+
+	.reviews-card .reviews-stars {
+		margin-bottom: 0.6rem;
+		font-size: 0.85rem;
+	}
+
+	.reviews-card footer {
+		margin-top: 0.7rem;
+		font-size: 0.7rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: color-mix(in srgb, currentColor 68%, transparent);
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reviews-link {
+			transition: none;
+		}
+	}
+</style>

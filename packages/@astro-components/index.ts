@@ -27,5 +27,6 @@ export { default as LocalServicios } from './src/local/Servicios.astro';
 export { default as LocalContact } from './src/local/Contact.astro';
 export { default as LocalSalon } from './src/local/Salon.astro';
 export { default as LocalOpiniones } from './src/local/Opiniones.astro';
+export { default as LocalReviews } from './src/local/Reviews.astro';
 export { default as LocalShop } from './src/local/Shop.astro';
 export { default as LocalWhatsappFab } from './src/local/WhatsappFab.astro';
