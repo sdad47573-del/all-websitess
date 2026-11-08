@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+import { BUSINESS, MAPS, RATING } from '../data/site';
+import foto from '../assets/fotos/el-alameda-01.jpg';
+
+const title = `${BUSINESS.name} · ${BUSINESS.city}`;
+const description = BUSINESS.description;
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="icon" href="/el-alameda/favicon.svg" type="image/svg+xml" />
+	<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Restaurant",
+	"@id": "https://www.sur-digital.com/el-alameda/#negocio",
+	"name": "El Alameda",
+	"url": "https://www.sur-digital.com/el-alameda/",
+	"description": "El Alameda, bar en Urkixo Zumarkalea, 40 (Abando, 48011 Bilbao, Bizkaia). Clásico bar popular con barra de pintxos y cocina casera, según su ficha de Google Maps.",
+	"image": "https://www.sur-digital.com/el-alameda/og.jpg",
+	"telephone": "+34944435008",
+	"geo": {
+		"@type": "GeoCoordinates",
+		"latitude": 43.2605019,
+		"longitude": -2.9378471
+	},
+	"hasMap": "https://www.google.com/maps/place/El+Alameda/@43.2605019,-2.9378471,16z/data=!3m1!4b1!4m6!3m5!1s0xd4e50282aac27b1:0x843c6130bcf8449!8m2!3d43.2605019!4d-2.9378471!16s%2Fg%2F1v_ndtsg?authuser=0&hl=es&entry=ttu",
+	"servesCuisine": [
+		"Española"
+	]
+}
+</script>
+		<meta property="og:image" content="https://www.sur-digital.com/el-alameda/og.jpg" />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+			<meta property="og:url" content="https://www.sur-digital.com/el-alameda/" />
+		<meta property="og:locale" content="es_ES" />
+			<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+	</head>
+	<body>
+		<header class="site-header">
+			<h1 set:html={piezas.portada.titulo} />
+			<p>{BUSINESS.tagline}</p>
+		</header>
+		<main>
+			<img src={foto.src} width={foto.width} height={foto.height} alt={`Foto de ${BUSINESS.name}`} />
+			<section>
+				<h2>Dirección</h2>
+				<p>{BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}</p>
+				<p>Teléfono: <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></p>
+				<p>Valoración en Google Maps: {RATING.label}</p>
+				<p><a href={MAPS.place} target="_blank" rel="noreferrer">Ver en Google Maps</a> · <a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></p>
+			</section>
+		</main>
+		<footer class="site-footer">
+			<p>© {new Date().getFullYear()} {BUSINESS.fullName}</p>
+			<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> · sur-digital.vercel.app</small>
+		</footer>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34944435008?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20El%20Alameda." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a El Alameda"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

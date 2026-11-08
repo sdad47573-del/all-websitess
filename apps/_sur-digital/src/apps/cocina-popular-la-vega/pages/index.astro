@@ -1,0 +1,220 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/cocina-popular-la-vega-vertical-01.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Cocina popular · Comidas para llevar en La Vega, Murcia';
+const description = BUSINESS.description;
+
+const carta = [
+	{
+		title: 'La pizarra del lunes',
+		items: [
+			{ name: 'Sopa de cocido con pelotas', note: 'el plato que abre la pizarra de la puerta' },
+			{ name: 'Potaje de garbanzos con acelgas', note: 'de cuchara, para llevar' },
+			{ name: 'Lentejas', note: 'en la misma pizarra' },
+			{ name: 'Arroz y verdura', note: 'la opción de arroz' },
+		],
+	},
+	{
+		title: 'Y de segundo',
+		items: [
+			{ name: 'Pollo con patatas al ajo cabañil', note: 'el guiso de pollo que anuncia la pizarra' },
+			{ name: 'Tortilla de berenjena', note: 'por raciones' },
+			{ name: 'Empanada casera', note: 'también en la pizarra del día' },
+			{ name: 'Espaguetis', note: 'el plato de pasta de esa pizarra' },
+		],
+	},
+	{
+		title: 'Del escaparate',
+		items: [
+			{ name: 'Pan', note: 'lo que anuncia el cartel de la puerta' },
+			{ name: 'Bollería', note: 'en el mismo cartel' },
+			{ name: 'Zona gourmet', note: 'así la llama el propio local' },
+		],
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#cocina-popular`,
+	name: BUSINESS.name,
+	alternateName: ['Cocina popular La Vega', 'Cocina popular Murcia', 'Comidas para llevar La Vega'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	takeaway: true,
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La pizarra', href: '#carta' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"cocina-popular-la-vega-vertical-01.jpg": fachada,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#101a1c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Cocina popular Murcia, comidas para llevar La Vega, comida para llevar Murcia 30008, menú del día Murcia, potaje de garbanzos, ajo cabañil, Cronista Carlos Valcárcel, cocina popular La Vega"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comidas para llevar en la calle Cronista Carlos Valcárcel 1, 1ºA, 30008 Murcia. La ficha de Google no publica carta, horario ni teléfono: esta página reúne lo que sí se sabe, sin adornos."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Cocina popular con el toldo de comidas para llevar en Murcia"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#101a1c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MC"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="La Vega, Murcia"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/cocina-popular-la-vega/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Cocina popular"
+			subtitle="Comidas para llevar · La Vega"
+			cta={{ label: 'Ficha en Google', href: MAPS.place, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Cocina popular"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos y fotografía tomados de la ficha y del perfil públicos del local en Google Maps. Horario, teléfono y precios no están publicados."
+			ctaLabel="Ficha"
+			navAriaLabel="Enlaces de Cocina popular La Vega"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

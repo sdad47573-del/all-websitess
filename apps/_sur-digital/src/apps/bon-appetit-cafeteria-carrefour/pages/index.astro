@@ -1,0 +1,285 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/bon-appetit-cafeteria-carrefour-apaisada-04.jpg';
+import comedor from '../assets/fotos/bon-appetit-cafeteria-carrefour-apaisada-01.jpg';
+import vitrina from '../assets/fotos/bon-appetit-cafeteria-carrefour-apaisada-06.jpg';
+import postres from '../assets/fotos/bon-appetit-cafeteria-carrefour-apaisada-09.jpg';
+import bandeja from '../assets/fotos/bon-appetit-cafeteria-carrefour-vista-3-03.jpg';
+import linea from '../assets/fotos/bon-appetit-cafeteria-carrefour-vertical-05.jpg';
+import plato from '../assets/fotos/bon-appetit-cafeteria-carrefour-vertical-07.jpg';
+import pasteles from '../assets/fotos/bon-appetit-cafeteria-carrefour-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	CARTA,
+	CARTA_NOTE,
+	FAQ,
+	HORARIO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Bon Appétit · Cafetería Carrefour Andorra 2000';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: comedor,
+		alt: 'Comedor de Bon Appétit con mesas de madera, sillas metálicas verdes y amarillas, estanterías con plantas y un mural de pizzas al fondo',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de Bon Appétit con bandejas de pollo asado, carnes y patatas, y el cartel del menú de 12,50 € con primero, segundo, postre y bebida',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja con pollo asado, patatas panadera, pan, ensalada con tomate y aceitunas, una empanada y una lata de 7Up',
+	},
+	{
+		src: plato,
+		alt: 'Plato con una salchicha a la plancha y verduras asadas, junto a un plato de patata con verdura y un vaso de chocolate',
+	},
+	{
+		src: postres,
+		alt: 'Vitrina de postres en vaso con chocolate, fresas, arándanos y nata, junto a tarrinas y vasos apilados',
+	},
+	{
+		src: pasteles,
+		alt: 'Bandeja de pasteles de Bon Appétit con brownies, cupcakes de chocolate, tartas de fruta y napolitanas, sobre la nevera de refrescos',
+	},
+	{
+		src: linea,
+		alt: 'Línea de autoservicio de Bon Appétit con el cartel de «Amanides · Cafetería» y el mostrador de vitrinas junto al suelo de madera',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Menú de Bon Appétit',
+	inLanguage: 'es-ES',
+	hasMenuSection: CARTA.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CafeOrCoffeeShop',
+	'@id': `${BUSINESS.siteUrl}/#bon-appetit`,
+	name: BUSINESS.fullName,
+	alternateName: ['Bon Appétit Andorra', 'Cafetería Carrefour Andorra 2000', 'Bon Appetit Andorra la Vella'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cafetería', 'Desayunos', 'Tapas', 'Vegana'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:30',
+			closes: '20:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El menú', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"bon-appetit-cafeteria-carrefour-apaisada-04.jpg": fachada,
+	"bon-appetit-cafeteria-carrefour-apaisada-01.jpg": comedor,
+	"bon-appetit-cafeteria-carrefour-apaisada-06.jpg": vitrina,
+	"bon-appetit-cafeteria-carrefour-vista-3-03.jpg": bandeja,
+	"bon-appetit-cafeteria-carrefour-vertical-07.jpg": plato,
+	"bon-appetit-cafeteria-carrefour-apaisada-09.jpg": postres,
+	"bon-appetit-cafeteria-carrefour-vertical-10.jpg": pasteles,
+	"bon-appetit-cafeteria-carrefour-vertical-05.jpg": linea,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17211d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Bon Appétit Andorra, cafetería Carrefour Andorra 2000, menú del día Andorra la Vella, cafetería Andorra la Vella, desayunos Andorra, calle Sardana Andorra, comida para llevar Andorra"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cafetería del centro comercial Carrefour Andorra 2000, en la calle Sardana, 22. Menú de 12,50 € con primero, segundo, postre y bebida. Todos los días de 8:30 a 20:00. 3,5 sobre 5 con 129 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada verde de Bon Appétit Carrefour Andorra 2000 en la calle Sardana de Andorra la Vella"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.fullName}
+			themeColor="#17211d"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="AD-07"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="Andorra"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Bon Appétit"
+			subtitle="Carrefour Andorra 2000"
+			nav={nav}
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Bon Appétit"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			ctaLabel=""
+			legal="Datos, horario, valoración y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. La ficha no publica teléfono, carta ni precios: el menú de 12,50 € es el del cartel de la vitrina."
+			navAriaLabel="Enlaces de Bon Appétit"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

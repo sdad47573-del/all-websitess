@@ -1,0 +1,252 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/don-felix-lounge-apaisada-01.jpg';
+import foto02 from '../assets/fotos/don-felix-lounge-vertical-02.jpg';
+import foto03 from '../assets/fotos/don-felix-lounge-cuadrada-03.jpg';
+import foto04 from '../assets/fotos/don-felix-lounge-apaisada-04.jpg';
+import foto05 from '../assets/fotos/don-felix-lounge-apaisada-05.jpg';
+import foto06 from '../assets/fotos/don-felix-lounge-vertical-06.jpg';
+import foto07 from '../assets/fotos/don-felix-lounge-cuadrada-07.jpg';
+import foto08 from '../assets/fotos/don-felix-lounge-vertical-08.jpg';
+import foto09 from '../assets/fotos/don-felix-lounge-apaisada-09.jpg';
+import foto10 from '../assets/fotos/don-felix-lounge-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Don Félix Lounge · Restaurante italiano en Escaldes-Engordany';
+const description = `Don Félix Lounge, Carrer Nou, 1 (AD700 Escaldes-Engordany). Restaurante italiano con ${RATING.label} sobre 5 en Google. Teléfono ${BUSINESS.phone}.`;
+
+const galeria = [
+	{ src:	fachada, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto02, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto03, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto04, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto05, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto06, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto07, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto08, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto09, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+	{ src: foto10, alt: 'Foto de Don Félix Lounge publicada en su ficha de Google Maps' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#don-felix-lounge`,
+	name: BUSINESS.fullName,
+	alternateName: ['Don Félix', 'Don Félix Lounge Escaldes'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phone,
+	
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"don-felix-lounge-apaisada-01.jpg": fachada,
+	"don-felix-lounge-vertical-02.jpg": foto02,
+	"don-felix-lounge-cuadrada-03.jpg": foto03,
+	"don-felix-lounge-apaisada-04.jpg": foto04,
+	"don-felix-lounge-apaisada-05.jpg": foto05,
+	"don-felix-lounge-vertical-06.jpg": foto06,
+	"don-felix-lounge-cuadrada-07.jpg": foto07,
+	"don-felix-lounge-vertical-08.jpg": foto08,
+	"don-felix-lounge-apaisada-09.jpg": foto09,
+	"don-felix-lounge-vertical-10.jpg": foto10,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#163b2d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Don Félix Lounge, restaurante italiano Escaldes-Engordany, Carrer Nou 1"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Restaurante italiano en el Carrer Nou, 1, de Escaldes-Engordany."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Don Félix Lounge en Escaldes-Engordany"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#163b2d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Escaldes-Engordany"
+			locale="es_ES"
+			countryName="Andorra"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Don Félix"
+			subtitle="Escaldes"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada el 1 de noviembre de 2026. Confirma el horario antes de la visita."
+			ctaLabel="Llamar a Don Félix Lounge"
+			navAriaLabel="Enlaces de Don Félix Lounge"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34376846847?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Google%20CID." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Google CID"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

@@ -1,0 +1,329 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/pollo-de-casa-apaisada-01.jpg';
+import mesaPollo from '../assets/fotos/pollo-de-casa-apaisada-03.jpg';
+import ensaladaMixta from '../assets/fotos/pollo-de-casa-apaisada-05.jpg';
+import ensaladaZanahoria from '../assets/fotos/pollo-de-casa-apaisada-06.jpg';
+import guisoArroz from '../assets/fotos/pollo-de-casa-apaisada-08.jpg';
+import aparcamiento from '../assets/fotos/pollo-de-casa-apaisada-09.jpg';
+import terrazaMesas from '../assets/fotos/pollo-de-casa-apaisada-10.jpg';
+import terrazaDesdeComedor from '../assets/fotos/pollo-de-casa-vertical-02.jpg';
+import medioPollo from '../assets/fotos/pollo-de-casa-vertical-04.jpg';
+import arrozPollo from '../assets/fotos/pollo-de-casa-vertical-07.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Pollo de Casa · Pollo asado con terraza en La Nucía';
+const description =
+	"Pollo de Casa, Polígono Industrial l'Alberca, 2 (03530 La Nucía, Alicante). Medio pollo asado con patatas, arroces y guisos, en terraza cubierta. De martes a domingo, de 8:00 a 16:00.";
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'La terraza cubierta de Pollo de Casa, con el toldo marrón, las mesas rojas y el aparcamiento al fondo',
+	},
+	{
+		src: medioPollo,
+		alt: 'Medio pollo asado con patatas fritas en un plato blanco',
+	},
+	{
+		src: mesaPollo,
+		alt: 'Medio pollo asado con patatas panadera, ensalada y bebida en una mesa de la terraza',
+	},
+	{
+		src: arrozPollo,
+		alt: 'Arroz amarillo con pollo, pimiento rojo y medio limón en un plato',
+	},
+	{
+		src: guisoArroz,
+		alt: 'Pollo guisado con arroz blanco en un plato de la terraza',
+	},
+	{
+		src: ensaladaMixta,
+		alt: 'Ensalada mixta con lechuga, tomate, zanahoria rallada y aceitunas',
+	},
+	{
+		src: ensaladaZanahoria,
+		alt: 'Ensalada de zanahoria rallada con aceitunas y pepino',
+	},
+	{
+		src: terrazaMesas,
+		alt: 'Las mesas rojas de la terraza con la cafetera, el pan y las sillas de plástico',
+	},
+	{
+		src: terrazaDesdeComedor,
+		alt: 'Vista de la terraza desde el comedor, con la barandilla metálica y los carteles del local',
+	},
+	{
+		src: aparcamiento,
+		alt: 'El aparcamiento del polígono visto desde la terraza, bajo el toldo del local',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Lo que se sirve en Pollo de Casa',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#pollo-de-casa`,
+	name: BUSINESS.name,
+	alternateName: ['Pollo de Casa La Nucía', 'Pollo de Casa Alicante'],
+	description:
+		'Pollo asado con patatas, arroces y guisos en el Polígono Industrial l\'Alberca, 2 (03530 La Nucía, Alicante), con terraza cubierta.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34607159989',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Pollo asado', 'Arroces', 'Comida casera'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'La Nucía' },
+		{ '@type': 'AdministrativeArea', name: 'Marina Baixa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La comida', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"pollo-de-casa-apaisada-01.jpg": terraza,
+	"pollo-de-casa-vertical-04.jpg": medioPollo,
+	"pollo-de-casa-apaisada-03.jpg": mesaPollo,
+	"pollo-de-casa-vertical-07.jpg": arrozPollo,
+	"pollo-de-casa-apaisada-08.jpg": guisoArroz,
+	"pollo-de-casa-apaisada-05.jpg": ensaladaMixta,
+	"pollo-de-casa-apaisada-06.jpg": ensaladaZanahoria,
+	"pollo-de-casa-apaisada-10.jpg": terrazaMesas,
+	"pollo-de-casa-vertical-02.jpg": terrazaDesdeComedor,
+	"pollo-de-casa-apaisada-09.jpg": aparcamiento,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3b2b47" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Pollo de Casa La Nucía, pollo asado La Nucía, medio pollo con patatas, arroz con pollo, terraza cubierta, polígono l'Alberca, comer en La Nucía"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Medio pollo asado con patatas, arroces y guisos en una terraza cubierta del polígono l'Alberca (La Nucía). De martes a domingo, de 8:00 a 16:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La terraza cubierta de Pollo de Casa, con el toldo marrón y las mesas rojas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#3b2b47"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={BUSINESS.district}
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[terraza]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Pollo de Casa"
+			subtitle="Pollo asado · La Nucía"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="Pollo de Casa"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en noviembre de 2026. Confirma platos, precios y horario antes de ir."
+			ctaLabel="Llamar a Pollo de Casa"
+			navAriaLabel="Enlaces de Pollo de Casa"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34607159989?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Lo%20que%20se%20sirve%20en%20Pollo%20de%20Casa." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Lo que se sirve en Pollo de Casa"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

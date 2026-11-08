@@ -1,0 +1,356 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import escaparate from '../assets/fotos/la-chaty-vertical-10.jpg';
+import bolsa from '../assets/fotos/la-chaty-vertical-09.jpg';
+import vitrina from '../assets/fotos/la-chaty-vertical-06.jpg';
+import tartaChocolate from '../assets/fotos/la-chaty-panoramica-01.jpg';
+import tartaFrutos from '../assets/fotos/la-chaty-panoramica-07.jpg';
+import tartasLargas from '../assets/fotos/la-chaty-panoramica-08.jpg';
+import empanadillas from '../assets/fotos/la-chaty-vertical-02.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'La Chaty Panadería · pan y pastelería en el Levante, Córdoba';
+const description =
+	'La Chaty Panadería, en C. Arcos de la Frontera, 10 (Levante, 14014 Córdoba). Pan del día y vitrina de pastelería. Abre todos los días desde las 7:30 hasta primera hora de la tarde. 4,0/5 con 9 reseñas en Google.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#la-chaty`,
+	name: BUSINESS.name,
+	alternateName: ['La Chaty', 'Panadería La Chaty', 'La Chaty Córdoba'],
+	description:
+		'Panadería en C. Arcos de la Frontera, 10 (Levante, 14014 Córdoba), con pan del día y vitrina de pastelería. Abierta todos los días por la mañana.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	servesCuisine: ['Panadería', 'Pastelería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '07:30',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '07:30',
+			closes: '14:03',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '08:00',
+			closes: '14:14',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Dónde', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const galeria = [
+	{
+		src: bolsa,
+		alt: 'Bolsa de papel naranja con el rótulo «Panadería La Chaty» impreso en negro',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de la panadería con tartas de chocolate, brazos de gitano y tartas de queso con frutos rojos',
+	},
+	{
+		src: tartaChocolate,
+		alt: 'Tarta rectangular de chocolate con profiteroles alrededor y grosellas rojas en el centro',
+	},
+	{
+		src: tartaFrutos,
+		alt: 'Tarta redonda cubierta de frutos rojos sobre un blonda de papel, en la mesa de trabajo',
+	},
+	{
+		src: tartasLargas,
+		alt: 'Tres bandejas doradas con tartas alargadas de frutos rojos y adorno de hojas de acebo',
+	},
+	{
+		src: empanadillas,
+		alt: 'Bandeja de empanadillas de horno recién hechas, doradas por encima',
+	},
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#f7f2e8" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@1,6..72,400..600&family=Sora:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Chaty Panadería, panadería Córdoba, barrio Levante, Arcos de la Frontera 10, 14014, pan del día, pastelería Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan del día y vitrina de pastelería en C. Arcos de la Frontera, 10. Abierta todos los días por la mañana. 4,0 sobre 5 con 9 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="El escaparate de La Chaty Panadería en el barrio de Levante, Córdoba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#f7f2e8"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[escaparate]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Chaty"
+			subtitle="Panadería · Levante"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> C. Arcos de la Frontera, 10 · Levante</p>
+					<h1 id="hero-title" set:html={piezas.portada.titulo} />
+					<p class="hero-lede">
+						La Chaty es la panadería del número 10 de la calle Arcos de la Frontera, en
+						el barrio de Levante. Abre de 7:30 a 14:30 de lunes a jueves y una hora más
+						tarde el fin de semana, siempre por la mañana. La ficha de Google no publica
+						teléfono, carta ni precios: aquí están los datos que sí constan y sus fotos.
+						{BUSINESS.rating.toString().replace('.', ',')} sobre 5 con {BUSINESS.reviewsCount} reseñas.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={MAPS.directions}>Cómo llegar</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ver la ficha y sus fotos <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>{BUSINESS.street}</b> · {BUSINESS.district} · {BUSINESS.postalCode}</li>
+						<li><b>Lunes a jueves</b> · 7:30–14:30</li>
+						<li><b>Teléfono</b> · no publicado en Google</li>
+					</ul>
+				</div>
+
+				<figure class="hero-figure">
+					<Image
+						src={escaparate}
+						alt="Escaparate de La Chaty Panadería con el rótulo, la lista de panes y precios en el cristal y los panes apilados dentro"
+						widths={[420, 640, 900]}
+						sizes="(max-width: 980px) 92vw, 44vw"
+						format="avif"
+						quality={68}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<span class="hero-badge"><span aria-hidden="true">10</span> fotos en la ficha</span>
+					<figcaption class="hero-caption">
+						El escaparate, con la lista de panes del día. Foto de la galería de Google.
+					</figcaption>
+				</figure>
+			</section>
+
+			<LocalChips label="Lo que consta en la ficha" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Pan de barrio y <br /><em>vitrina de pastelería.</em>"
+				paragraphs={[
+					'La Chaty se anuncia en su escaparate como «La Chaty Panadería», y la ficha de Google la registra con esa misma categoría. Está en la calle Arcos de la Frontera, 10, en el barrio de Levante de Córdoba (14014), y abre todas las mañanas.',
+					'El cristal del escaparate hace de carta: ahí están los nombres de los panes del día y sus precios, con barras, bollas, vienas, baguettes y chapatas entre ellos. Los precios cambian con el tiempo, así que esta página no copia cifras; los nombres sirven para saber qué se cuece allí.',
+					'Dentro hay más que pan. Las fotos de la ficha enseñan la vitrina con tartas de chocolate rodeadas de profiteroles, brazos de gitano, tartas de queso con frutos rojos y bandejas de empanadillas, además de la bolsa naranja con el nombre del negocio.',
+					'El horario es de mañana y termina pronto: 14:30 de lunes a jueves, 14:03 los viernes y 14:14 el fin de semana. Son las horas exactas que publica Google, con esos minutos, y así se reproducen aquí. La ficha no publica teléfono ni web propia.',
+				]}
+				note="No hay carta, precios ni teléfono publicados. Si necesitas confirmar el horario, encargar algo o preguntar por un pan concreto, lo más directo es acercarte al mostrador en horario de apertura."
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
+							<h2 id="three-title">Escaparate, vitrina <br /><em>y mañana.</em></h2>
+						</div>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La fachada, el pan <br /><em>y la vitrina.</em>"
+				description="Siete de las diez fotos de la ficha de Google Maps: el escaparate en la portada y aquí la bolsa del negocio, la vitrina de tartas, tres elaboraciones de pastelería y las empanadillas."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026. La ficha tiene diez fotos; las otras tres se han dejado fuera porque aparecen personas o enseres personales en el encuadre."
+			/>
+
+			<section class="rating-band" aria-labelledby="rating-title">
+				<div class="wrap rating-inner">
+					<div class="rating-score">
+						<strong>4,0</strong>
+						<div>
+							<span class="rating-stars" role="img" aria-label="4 de 5 estrellas">4 / 5</span>
+							<p id="rating-title" style="margin:0;font-size:.76rem">9 reseñas en Google Maps</p>
+						</div>
+					</div>
+					<p class="rating-copy">
+						La media de la ficha es 4,0 sobre 5 con 9 reseñas. Es un número redondo con
+						pocas opiniones. Esta página no selecciona ni reproduce sus textos: se leen
+						todas en Google.
+					</p>
+					<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+						Leer las 9 reseñas en Google ↗
+					</a>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En el barrio <br /><em>de Levante.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de La Chaty Panadería en la calle Arcos de la Frontera, 10, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="La Chaty · Levante"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Reseñas', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				reserveNote="La ficha de Google no publica teléfono, web propia, carta ni datos de accesibilidad (solo indica que no hay aparcamiento adaptado). Esta página no gestiona pedidos ni encargos: se resuelven en el mostrador."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. La ficha no publica teléfono, carta ni precios. Horario y disponibilidad pueden cambiar; confírmalos antes de ir."
+			ctaLabel="Cómo llegar"
+			navAriaLabel="Enlaces de La Chaty Panadería"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

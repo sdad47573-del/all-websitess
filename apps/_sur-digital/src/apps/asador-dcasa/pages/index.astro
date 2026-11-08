@@ -1,0 +1,621 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, CARTA, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, NOTA_CARTA, RATING, RESENAS } from '../data/site';
+import '../styles/global.css';
+
+import fotoPedido from '../assets/fotos/asador-dcasa-vertical-06.jpg';
+import fotoFachada from '../assets/fotos/asador-dcasa-apaisada-04.jpg';
+import fotoMostrador from '../assets/fotos/asador-dcasa-vertical-05.jpg';
+import fotoInterior from '../assets/fotos/asador-dcasa-apaisada-01.jpg';
+import fotoBici from '../assets/fotos/asador-dcasa-apaisada-03.jpg';
+import fotoCesta from '../assets/fotos/asador-dcasa-vertical-02.jpg';
+import fotoVitrina from '../assets/fotos/asador-dcasa-vertical-07.jpg';
+import fotoCroquetas from '../assets/fotos/asador-dcasa-vertical-08.jpg';
+import fotoCartel from '../assets/fotos/asador-dcasa-vertical-09.jpg';
+import fotoTarrina from '../assets/fotos/asador-dcasa-cuadrada-10.jpg';
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Restaurant',
+			'@id': `${BUSINESS.siteUrl}/#restaurante`,
+			name: BUSINESS.fullName,
+			description: BUSINESS.description,
+			url: `${BUSINESS.siteUrl}/`,
+			telephone: '+34911557173',
+			image: `${BUSINESS.siteUrl}/og.jpg`,
+			servesCuisine: ['Casera', 'Asador', 'Pollo asado'],
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: BUSINESS.street,
+				addressLocality: BUSINESS.city,
+				addressRegion: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				addressCountry: BUSINESS.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			},
+			hasMap: MAPS.place,
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: RATING.value,
+				reviewCount: RATING.count,
+				bestRating: 5,
+			},
+			openingHoursSpecification: [
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+					opens: '12:00',
+					closes: '16:00',
+				},
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Saturday'],
+					opens: '11:30',
+					closes: '15:30',
+				},
+			],
+			amenityFeature: [
+				{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: false },
+				{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: false },
+				{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: false },
+			],
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${BUSINESS.siteUrl}/#faq`,
+			mainEntity: FAQ.map((item) => ({
+				'@type': 'Question',
+				name: item.q,
+				acceptedAnswer: { '@type': 'Answer', text: item.a },
+			})),
+		},
+	],
+};
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Asador D'casa · Pollo asado y comida casera para llevar en Madrid</title>
+		<meta name="description" content={BUSINESS.description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#201d19" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/asador-dcasa/favicon.svg" />
+
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content="Asador D'casa · Pollo asado y comida casera para llevar" />
+		<meta property="og:description" content={BUSINESS.description} />
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Pedido para llevar de Asador D'casa con pollo asado, patatas y croquetas" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&display=swap"
+			rel="stylesheet"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#contenido">Saltar al contenido</a>
+
+		<header class="top">
+			<div class="wrap top__in">
+				<a class="brand" href="/asador-dcasa/" aria-label="Asador D'casa, inicio">
+					<span class="brand__mark" aria-hidden="true">d'casa</span>
+					<span class="brand__name">
+						<strong>Comida casera para llevar</strong>
+						<small>Polibea, 8 · Ciudad Lineal</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Secciones">
+					<a href="#casa">La casa</a>
+					<a href="#carta">La carta</a>
+					<a href="#fotos">Fotos</a>
+					<a href="#resenas">Reseñas</a>
+					<a href="#visita">Visita</a>
+				</nav>
+				<a class="call" href={BUSINESS.phoneHref}>Pedir · {BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero">
+				<div class="wrap hero__grid">
+					<div>
+						<p class="kicker">Asador · Ciudad Lineal · Madrid</p>
+						<h1 class="hero__title" set:html={piezas.portada.titulo} />
+						<p class="hero__lede">
+							Pollo asado, menús caseros y raciones recién hechas en Polibea, 8. Se pide, se
+							recoge y se come donde quieras, con el sabor de la cocina de la abuela.
+						</p>
+						<div class="hero__actions">
+							<a class="btn btn--brick" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+							<a class="btn btn--ghost" href="#carta">Ver la carta</a>
+						</div>
+						<div class="hero__meta">
+							<span><b>{RATING.label}</b>sobre 5 · {RATING.count} reseñas</span>
+							<span>Martes a sábado, mediodía</span>
+							<span>Solo para llevar</span>
+						</div>
+					</div>
+
+					<figure class="hero__media">
+						<div class="hero__frame">
+							<span class="tape" aria-hidden="true"></span>
+							<Image
+								src={fotoPedido}
+								alt="Pedido para llevar con pollo asado, patatas, croquetas, arroz y dos porciones de tarta"
+								widths={[420, 700, 1000]}
+								sizes="(max-width: 1024px) 90vw, 30rem"
+								loading="eager"
+								fetchpriority="high"
+							/>
+						</div>
+						<figcaption>
+							<span>Un pedido de casa, listo para llevar</span>
+							<span>Foto: ficha de Google</span>
+						</figcaption>
+						<div class="sticker" aria-hidden="true">
+							<span>Reseñas</span>
+							<b>4,9</b>
+							<span>en Google</span>
+						</div>
+					</figure>
+				</div>
+			</section>
+
+			<div class="band">
+				<div class="wrap band__in">
+					<div class="band__item">
+						<span>Martes a viernes</span>
+						<strong>12:00 – 16:00</strong>
+					</div>
+					<div class="band__item">
+						<span>Sábados</span>
+						<strong>11:30 – 15:30</strong>
+					</div>
+					<div class="band__item">
+						<span>Domingo y lunes cerrado · pedidos</span>
+						<strong><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></strong>
+					</div>
+				</div>
+			</div>
+
+			<section class="sec" id="casa">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La casa</span>
+							<h2>Un asador de barrio con la abuela en la receta</h2>
+						</div>
+						<p>
+							Todo lo que cuenta esta página sale de la ficha pública del local en Google y de
+							sus fotos: la dirección, el teléfono, la nota, el horario, la descripción que
+							firma el propio asador y su pizarra de precios.
+						</p>
+					</div>
+
+					<div class="about">
+						<figure class="about__fig">
+							<Image
+								src={fotoFachada}
+								alt="Fachada blanca de d'casa en la esquina de Polibea, con el pollo dibujado y los carteles de comida casera"
+								widths={[420, 760, 1100]}
+								sizes="(max-width: 1024px) 92vw, 32rem"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>La esquina de Polibea, 8, con el pollo pintado en la pared</figcaption>
+						</figure>
+						<div class="about__text">
+							<p class="lead">
+								«D'casa es una apuesta por la comida tradicional, es un asador con comida para
+								llevar que trasladará tu paladar directamente a casa de la abuela.»
+							</p>
+							<p>
+								Lo firma el propio local en su ficha, con la etiqueta #DCASA. Google lo
+								clasifica como restaurante de comida para llevar y restaurante, y las fotos
+								enseñan el mostrador, la vitrina de pollos y los pedidos ya montados en
+								tarrinas.
+							</p>
+							<p>
+								La nota publicada es 4,9 sobre 5 con 290 reseñas. Las que se ven hablan de
+								raciones generosas, menús variados y un precio ajustado; una destaca las
+								croquetas como «de las mejores que he probado». Abre de martes a sábado al
+								mediodía y cierra domingo y lunes.
+							</p>
+							<blockquote class="pull">
+								«Pedí pollo asado, patatas fritas y croquetas (de las mejores que he probado).»
+								<cite>Reseña de cinco estrellas publicada en Google</cite>
+							</blockquote>
+						</div>
+					</div>
+
+					<div class="cards">
+						{
+							HIGHLIGHTS.map((item) => (
+								<article class="card">
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="sec sec--paper" id="carta">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La carta, en la pizarra</span>
+							<h2>Pollo del asador y raciones de casa</h2>
+						</div>
+						<p>
+							La carta no está publicada en la ficha: está escrita a mano en la pizarra que
+							cuelga del mostrador. De ahí salen los platos y los precios de las raciones.
+						</p>
+					</div>
+
+					<div class="carta-layout">
+						<div class="board">
+							<div class="board__head">
+								<h3>Nuestra carta · D'Casa</h3>
+								<span>Precios de la pizarra</span>
+							</div>
+							<div class="board__grid">
+								{
+									CARTA.map((grupo) => (
+										<div class="board__group">
+											<h4>{grupo.title}</h4>
+											{grupo.note && <p>{grupo.note}</p>}
+											{grupo.items.map((plato) => (
+												<div class="board__item">
+													<span class="board__name">
+														{plato.name}
+														{plato.note && <span class="board__note">{plato.note}</span>}
+													</span>
+													{plato.price ? (
+														<>
+															<span class="board__dots" aria-hidden="true"></span>
+															<span class="board__price">{plato.price}</span>
+														</>
+													) : null}
+												</div>
+											))}
+										</div>
+									))
+								}
+							</div>
+							<p class="board__foot">{NOTA_CARTA}</p>
+						</div>
+
+						<aside class="board-side">
+							<h3>Todo se lee en la pared</h3>
+							<p>
+								La pizarra cuelga del mostrador, entre plantas y la bici rosa que decora el
+								local. Al lado, una vitrina con los pollos y las brochetas esperando turno.
+							</p>
+							<p>
+								Los precios de esta página son los que se leen en la foto. El pollo se cobra
+								según tamaño y acompañamiento, y esos números no se distinguen bien: mejor
+								preguntarlos al llamar.
+							</p>
+							<figure>
+								<Image
+									src={fotoMostrador}
+									alt="Mostrador de d'casa con la pizarra de Nuestra Carta colgada y la bici rosa"
+									widths={[360, 620, 900]}
+									sizes="(max-width: 1024px) 46vw, 17rem"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>La pizarra, sobre el mostrador</figcaption>
+							</figure>
+						</aside>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec" id="fotos">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La galería de la ficha</span>
+							<h2>Del asador a la tarrina</h2>
+						</div>
+						<p>
+							Las diez fotos públicas del local, repartidas entre la portada, la sección de la
+							casa, la carta y esta galería. Ninguna repetida.
+						</p>
+					</div>
+
+					<div class="photos">
+						<figure class="photo photo--wide">
+							<Image
+								src={fotoInterior}
+								alt="Interior de d'casa con mesas altas, sillas y la pizarra de la carta al fondo"
+								widths={[480, 800, 1200]}
+								sizes="(max-width: 760px) 92vw, 46vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Las mesas del local, junto al mostrador</figcaption>
+						</figure>
+						<figure class="photo photo--tall">
+							<Image
+								src={fotoVitrina}
+								alt="Vitrina con pollos asados y brochetas en bandejas"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 760px) 46vw, 24vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>La vitrina, llena de pollos</figcaption>
+						</figure>
+						<figure class="photo">
+							<Image
+								src={fotoBici}
+								alt="Rincón del local con una bici rosa, plantas y las pizarras del menú"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 760px) 46vw, 24vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>La bici rosa del mostrador</figcaption>
+						</figure>
+						<figure class="photo">
+							<Image
+								src={fotoCesta}
+								alt="Cesta de tomates y pepinos sobre la bici rosa"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 760px) 46vw, 24vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Tomates y pepinos, en la cesta</figcaption>
+						</figure>
+						<figure class="photo">
+							<Image
+								src={fotoCroquetas}
+								alt="Croquetas caseras en una cesta de papel de periódico"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 760px) 46vw, 24vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Croquetas caseras, recién fritas</figcaption>
+						</figure>
+						<figure class="photo">
+							<Image
+								src={fotoCartel}
+								alt="Cartel de d'casa con la dirección, el teléfono de reservas y el horario"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 760px) 46vw, 24vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>El cartel de la pared, con el horario</figcaption>
+						</figure>
+						<figure class="photo photo--wide">
+							<Image
+								src={fotoTarrina}
+								alt="Tarrina para llevar con filete empanado y patatas fritas"
+								widths={[480, 800, 1200]}
+								sizes="(max-width: 760px) 92vw, 46vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Empanado y patatas, listos para cerrar</figcaption>
+						</figure>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec sec--paper" id="resenas">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Lo que dicen</span>
+							<h2>{RATING.label} sobre 5 en Google</h2>
+						</div>
+						<p>
+							Tres reseñas de cinco estrellas que repiten lo mismo: pollo, raciones generosas y
+							buena relación calidad-precio.
+						</p>
+					</div>
+
+					<div class="reviews">
+						<div class="reviews__score">
+							<b>{RATING.label}</b>
+							<span class="stars" aria-hidden="true">★★★★★</span>
+							<span>{RATING.count} reseñas en Google</span>
+							<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas ↗</a>
+						</div>
+						<div class="reviews__list">
+							{
+								RESENAS.map((resena) => (
+									<blockquote class="quote">
+										<p>«{resena.texto}»</p>
+										<footer>Reseña publicada en Google · {resena.valor} de 5</footer>
+									</blockquote>
+								))
+							}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec" id="visita">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Cómo llegar</span>
+							<h2>Polibea, 8, Ciudad Lineal</h2>
+						</div>
+						<p>
+							Un bajo de esquina con la fachada blanca y el pollo dibujado. La ficha marca que
+							no hay acceso adaptado, así que conviene saberlo antes de ir.
+						</p>
+					</div>
+
+					<div class="visit">
+						<div class="visit__info">
+							<p class="visit__address">
+								<strong>{BUSINESS.name}</strong>
+								{BUSINESS.street}<br />
+								{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}
+							</p>
+							<div class="visit__actions">
+								<a class="btn btn--brick" href={BUSINESS.phoneHref}>Pedir al {BUSINESS.phone}</a>
+								<a class="btn btn--ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+									Cómo llegar ↗
+								</a>
+							</div>
+
+							<table class="hours">
+								<caption>Horario publicado en la ficha</caption>
+								<tbody>
+									{
+										HORARIO.map((dia) => (
+											<tr class={dia.closed ? 'is-closed' : undefined}>
+												<th scope="row">{dia.dia}</th>
+												<td>{dia.horas}</td>
+											</tr>
+										))
+									}
+								</tbody>
+							</table>
+							<p class="hours__aviso">{HORARIO_AVISO}</p>
+
+							<div class="access">
+								<strong>Accesibilidad</strong>
+								La ficha indica que no hay acceso para sillas de ruedas, ni asientos adaptados, ni
+								aparcamiento accesible. No es un local adaptado: si necesitas acceso sin
+								escalones, llama antes de desplazarte.
+							</div>
+						</div>
+
+						<div class="map">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa de ${BUSINESS.name}, ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+							<div class="map__foot">
+								<span>{BUSINESS.street} · {BUSINESS.district}</span>
+								<a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha en Google Maps ↗</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec sec--paper" id="preguntas">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Antes de pedir</span>
+							<h2>Preguntas frecuentes</h2>
+						</div>
+						<p>
+							Lo que la ficha y la pizarra permiten responder. Para el menú del día, el precio
+							del pollo o una reserva, llama al {BUSINESS.phone}.
+						</p>
+					</div>
+
+					<div class="faq">
+						{
+							FAQ.map((item, i) => (
+								<details open={i === 0}>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="footer">
+			<div class="wrap">
+				<div class="footer__top">
+					<div class="footer__brand">
+						<strong>d'casa</strong>
+						<p>{BUSINESS.street} · {BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</p>
+						<p>Asador y comida casera para llevar. Martes a sábado, mediodía.</p>
+					</div>
+					<div class="footer__cols">
+						<div class="footer__col">
+							<span>Contacto</span>
+							<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+							<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						</div>
+						<div class="footer__col">
+							<span>En esta página</span>
+							<a href="#casa">La casa</a>
+							<a href="#carta">La carta</a>
+							<a href="#fotos">Fotos</a>
+							<a href="#preguntas">Preguntas</a>
+						</div>
+						<div class="footer__col">
+							<span>Más</span>
+							<a href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps ↗</a>
+							<a href="/asador-dcasa/aviso-legal/">Aviso legal y privacidad</a>
+						</div>
+					</div>
+				</div>
+				<div class="footer__bottom">
+					<span>© {new Date().getFullYear()} {BUSINESS.fullName}. Precios de la pizarra fotografiada; pueden cambiar.</span>
+					<span>
+						Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+						<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+					</span>
+				</div>
+			</div>
+		</footer>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34911557173?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Acceso%20para%20sillas%20de%20ruedas." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Acceso para sillas de ruedas"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

@@ -1,0 +1,315 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/hnos-lopez-apaisada-01.jpg';
+import asador from '../assets/fotos/hnos-lopez-panoramica-07.jpg';
+import paellasPuestas from '../assets/fotos/hnos-lopez-apaisada-02.jpg';
+import paellaMixta from '../assets/fotos/hnos-lopez-panoramica-03.jpg';
+import paellaMesa from '../assets/fotos/hnos-lopez-cuadrada-04.jpg';
+import cocina from '../assets/fotos/hnos-lopez-vertical-05.jpg';
+import tortillas from '../assets/fotos/hnos-lopez-panoramica-06.jpg';
+import dosArroces from '../assets/fotos/hnos-lopez-apaisada-08.jpg';
+import cola from '../assets/fotos/hnos-lopez-apaisada-09.jpg';
+import calle from '../assets/fotos/hnos-lopez-apaisada-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Hnos. López · Asador de pollos y paellas para llevar en Calpe';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: asador,
+		alt: 'Pollos asándose en los pinchos del horno de Hnos. López, con la piel dorada',
+	},
+	{
+		src: paellasPuestas,
+		alt: 'Varias paelleras de arroz con langostinos y gajos de limón sobre los fogones',
+	},
+	{
+		src: paellaMixta,
+		alt: 'Paella mixta con langostinos, mejillones y pimiento en la paellera',
+	},
+	{
+		src: paellaMesa,
+		alt: 'Paella mixta servida en la mesa, con uvas, vino tinto y zumo de naranja',
+	},
+	{
+		src: cocina,
+		alt: 'Fila de paellas recién hechas en los fogones de la cocina del asador',
+	},
+	{
+		src: tortillas,
+		alt: 'Seis tortillas de patata en moldes redondos de aluminio, listas para llevar',
+	},
+	{
+		src: dosArroces,
+		alt: 'Dos paellas al fuego, una con langostinos y otra con anillas de calamar',
+	},
+	{
+		src: cola,
+		alt: 'Clientes esperando en la puerta del local, bajo el cartel de paellas y el rótulo azul',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta de Hnos. López',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'Store'],
+	'@id': `${BUSINESS.siteUrl}/#hnos-lopez`,
+	name: BUSINESS.name,
+	alternateName: [
+		'Pollos Hermanos López',
+		'Asador Hnos. López',
+		'Hnos. Lopez Calpe',
+		'Asador de pollos Calpe',
+	],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: BUSINESS.phoneHref,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Paellas', 'Asados', 'Mediterránea', 'Valenciana'],
+	areaServed: [
+		{ '@type': 'City', name: 'Calp' },
+		{ '@type': 'AdministrativeArea', name: 'Marina Alta' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+		worstRating: 1,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Reseñas', href: '#resenas' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"hnos-lopez-apaisada-01.jpg": fachada,
+	"hnos-lopez-panoramica-07.jpg": asador,
+	"hnos-lopez-apaisada-02.jpg": paellasPuestas,
+	"hnos-lopez-panoramica-03.jpg": paellaMixta,
+	"hnos-lopez-cuadrada-04.jpg": paellaMesa,
+	"hnos-lopez-vertical-05.jpg": cocina,
+	"hnos-lopez-panoramica-06.jpg": tortillas,
+	"hnos-lopez-apaisada-08.jpg": dosArroces,
+	"hnos-lopez-apaisada-09.jpg": cola,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0c2233" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Hnos. López Calpe, pollos asados Calp, asador de pollos Calpe, paellas para llevar Calpe, paella por encargo Calp, croquetas caseras, calle La Pinta, comida para llevar Calpe"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Asador de pollos y paellas para llevar en la calle La Pinta de Calp: pollos asados, croquetas, calamares y paellas por encargo. Todos los días de 10:00 a 15:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada de Hnos. López en Calpe, con los carteles de asador de pollos y paellas para llevar"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#0c2233"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Calp, Alicante"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/hnos-lopez/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Hnos. López"
+			subtitle="Asador · Calp"
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={`tel:${BUSINESS.phoneHref}`}
+			legal="Datos, carta y fotografías de la ficha pública de Google Maps, de la guía municipal de Calpe y de los carteles del local, consultados en octubre de 2026. Platos y disponibilidad cambian a diario."
+			ctaLabel="Llamar a Hnos. López"
+			navAriaLabel="Enlaces de Hnos. López"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34965832780?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Carta%20de%20Hnos.%20L%C3%B3pez." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Carta de Hnos. López"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

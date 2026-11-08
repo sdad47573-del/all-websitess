@@ -1,0 +1,180 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería cafetería Suarez · Plaza de la Trinidad, Córdoba';
+const description =
+	'Panadería cafetería Suarez, en la plaza de la Trinidad (Centro, 14003 Córdoba). La ficha de Google no publica teléfono, horario, fotos ni reseñas: aquí solo está lo que consta.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['CafeOrCoffeeShop', 'Bakery'],
+	'@id': `${BUSINESS.siteUrl}/#suarez`,
+	name: BUSINESS.name,
+	alternateName: ['Suarez Córdoba', 'Panadería Suarez', 'Cafetería Suarez'],
+	description:
+		'Panadería y cafetería en la plaza de la Trinidad, Centro (14003 Córdoba).',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	servesCuisine: ['Cafetería', 'Panadería'],
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.png`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Dónde', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#fbf6ec" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Outfit:wght@300..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería cafetería Suarez, panadería Córdoba, cafetería Córdoba, plaza de la Trinidad, Centro, 14003"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y cafetería en la plaza de la Trinidad, Centro de Córdoba. La ficha de Google no publica teléfono, horario, fotos ni reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Cartel de la Panadería cafetería Suarez en Córdoba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#fbf6ec"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Suarez"
+			subtitle="Panadería · Cafetería"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HOURS}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos de la ficha pública de Google Maps, consultada en octubre de 2026. La ficha no publica teléfono, horario, fotos ni reseñas. Horario y disponibilidad pueden cambiar; no hay canal publicado para confirmarlos."
+			ctaLabel="Cómo llegar"
+			navAriaLabel="Enlaces de Panadería cafetería Suarez"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

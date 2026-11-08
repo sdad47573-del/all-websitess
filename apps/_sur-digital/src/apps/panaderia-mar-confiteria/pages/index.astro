@@ -1,0 +1,333 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import {
+	LocalAbout,
+	LocalFaq,
+	LocalFooter,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import calle from '../assets/fotos/panaderia-mar-confiteria-apaisada-01.jpg';
+
+import { BUSINESS, FACTS, FAQ, HOURS, MAPS, STREET_VIEW } from '../data/site';
+
+const title = 'Panadería Mar Confitería · Bailén-Miraflores, Málaga';
+const description =
+	'Panadería Mar Confitería en la Rotonda de Suárez, 5, Bailén-Miraflores (29011 Málaga). Panadería y confitería con horario de mañana y tarde y apertura los domingos por la mañana.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#mar-confiteria`,
+	name: BUSINESS.name,
+	alternateName: ['Mar Confitería', 'Panadería Mar Málaga', 'Confitería Mar'],
+	description:
+		'Panadería y confitería en la Rotonda de Suárez, 5 (Bailén-Miraflores, 29011 Málaga). Horario de mañana y tarde y apertura los domingos por la mañana.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '17:00',
+			closes: '20:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '17:00',
+			closes: '19:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '08:00',
+			closes: '15:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El barrio', href: '#barrio' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#123f52" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Mar Confitería, panadería Bailén-Miraflores, confitería Málaga, panadería Rotonda de Suárez, panadería Málaga 29011, confitería Miraflores"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y confitería en la Rotonda de Suárez, 5, en Bailén-Miraflores (Málaga). Abre de mañana y tarde, y los domingos por la mañana."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Rótulo de la Panadería Mar Confitería sobre fondo azul marino"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#123f52"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/panaderia-mar-confiteria/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Mar"
+			subtitle="Panadería · Confitería"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Rotonda de Suárez, 5 · Bailén-Miraflores</p>
+					<h1 id="hero-title" set:html={piezas.portada.titulo} />
+					<p class="hero-lede">
+						Pan y dulces en la Rotonda de Suárez, 5, en Málaga. Abre de lunes a viernes de
+						8:00 a 15:00 y de 17:00 a 20:30; el domingo, solo por la mañana. Tiene
+						{BUSINESS.rating.toString().replace('.', ',')} sobre 5 en Google con
+						{BUSINESS.reviewsCount} reseñas.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<p class="hero-hours">
+						<span>Hoy</span> consulta el horario publicado antes de venir: cambia entre semana,
+						sábado y domingo.
+					</p>
+				</div>
+
+				<div class="sign-wrap">
+					<div class="signboard" role="img" aria-label="Rótulo de la Panadería Mar Confitería, en la Rotonda de Suárez, 5">
+						<span class="sign-kicker">Panadería · Confitería</span>
+						<strong class="sign-word">Mar</strong>
+						<svg class="sign-wave" viewBox="0 0 160 14" aria-hidden="true">
+							<path d="M0 7c10-7 20-7 30 0s20 7 30 0 20-7 30 0 20 7 30 0 20-7 30 0" fill="none" stroke="currentColor" stroke-width="1.6" />
+						</svg>
+						<span class="sign-place">Rotonda de Suárez, 5<br />Bailén-Miraflores · Málaga</span>
+						<span class="sign-rating">
+							<span aria-hidden="true">★</span> 4,4 · 8 reseñas en Google
+						</span>
+					</div>
+					<p class="sign-note">Pan y dulces de barrio, desde las 8:00.</p>
+				</div>
+			</section>
+
+			<section class="factbar" aria-label="Datos publicados en la ficha de Google">
+				<ul class="wrap">
+					{
+						FACTS.map((fact) => (
+							<li>
+								<span>{fact.label}</span>
+								<strong>{fact.value}</strong>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<LocalAbout
+				label="La casa"
+				title="Una panadería <br /><em>de barrio.</em>"
+				paragraphs={[
+					'La Panadería Mar Confitería está en la Rotonda de Suárez, 5, en Bailén-Miraflores (29011 Málaga). Google la clasifica como panadería, y el nombre del establecimiento añade la confitería: pan y dulces en la misma casa.',
+					'Abre de lunes a viernes de 8:00 a 15:00 y de 17:00 a 20:30. El sábado repite la mañana y por la tarde abre de 17:00 a 19:00; el domingo solo se puede ir por la mañana, hasta las 15:00.',
+					'La ficha pública de Google no recoge teléfono, página web, carta ni precios, y tampoco incluye fotos del interior. Esta página no inventa ninguno de esos datos: reúne la dirección, el horario y la valoración publicados, y enlaza la ficha para consultar cualquier cambio.',
+					'La imagen de la sección siguiente es una vista de Google Street View de la rotonda; puede ser anterior al rótulo actual del local. Para llegar, el mapa de «Visítanos» abre la ubicación exacta.',
+				]}
+				note="4,4 sobre 5 con 8 reseñas en Google. La ficha no muestra reseñas con texto que se puedan citar."
+				links={[
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="barrio section-pad" id="barrio">
+				<div class="wrap barrio-grid">
+					<figure class="barrio-photo">
+						<Image
+							src={calle}
+							alt="Vista de la Rotonda de Suárez, en Bailén-Miraflores, con la esquina donde se encuentra la panadería"
+							widths={[480, 720, 960, 1200]}
+							sizes="(max-width: 980px) 92vw, 56vw"
+							format="avif"
+							quality={70}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>
+							Vista de Google Street View de la Rotonda de Suárez. Puede ser anterior al rótulo
+							actual del local.
+							<a href={STREET_VIEW.url} target="_blank" rel="noreferrer">Abrir Street View ↗</a>
+						</figcaption>
+					</figure>
+					<div class="barrio-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> El barrio</p>
+						<h2>En la rotonda, <br /><em>en Bailén-Miraflores.</em></h2>
+						<p>
+							La panadería está en la Rotonda de Suárez, una de las plazas que ordenan el
+							barrio de Bailén-Miraflores, al noroeste del centro de Málaga. La ficha de
+							Google la sitúa en el número 5, con el entorno de viviendas y comercios que
+							se ve en la imagen.
+						</p>
+						<p>
+							El local se consulta en persona: la ficha no publica teléfono ni web, así que
+							la mejor forma de confirmar el surtido del día es pasarse por la mañana o por
+							la tarde, dentro del horario publicado.
+						</p>
+						<div class="barrio-links">
+							<a class="simple-link" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar en Google Maps ↗
+							</a>
+							<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las 8 reseñas ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En la rotonda, <br /><em>de mañana o de tarde.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote="Horario de la ficha de Google: de lunes a viernes, mañana y tarde; el sábado por la tarde cierra a las 19:00; el domingo solo abre por la mañana. Conviene confirmarlo antes de ir, sobre todo en festivos."
+				mapTitle="Mapa de la Panadería Mar Confitería en la Rotonda de Suárez, 5, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Mar · Bailén-Miraflores"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Reseñas en Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: 'Abrir la ficha en Google Maps', href: MAPS.place, external: true }}
+				reserveNote="La ficha no publica teléfono ni página web, y no hay pedidos online. La atención es en el propio establecimiento, dentro del horario indicado."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>pasar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos de la ficha pública de Google Maps e imagen de Google Street View. Sin teléfono, carta ni precios publicados por el establecimiento."
+			ctaLabel="Cómo llegar a Mar"
+			navAriaLabel="Enlaces de la Panadería Mar Confitería"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

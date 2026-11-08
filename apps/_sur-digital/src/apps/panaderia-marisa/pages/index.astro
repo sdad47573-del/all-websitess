@@ -1,0 +1,628 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import fachada from '../assets/fotos/panaderia-marisa-apaisada-03.jpg';
+import interior from '../assets/fotos/panaderia-marisa-vertical-08.jpg';
+import vitrina from '../assets/fotos/panaderia-marisa-apaisada-02.jpg';
+import charcuteria from '../assets/fotos/panaderia-marisa-apaisada-04.jpg';
+import galletas from '../assets/fotos/panaderia-marisa-apaisada-05.jpg';
+import aceite from '../assets/fotos/panaderia-marisa-apaisada-09.jpg';
+import despensa from '../assets/fotos/panaderia-marisa-apaisada-10.jpg';
+import mostrador from '../assets/fotos/panaderia-marisa-apaisada-01.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Panadería Marisa · Carretera de Cádiz (Málaga)';
+const description =
+	'Panadería Marisa, en C. Frigiliana, 10 (Carretera de Cádiz, 29004 Málaga): pan de masa madre, quesos, charcutería y despensa. Abierta todos los días.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#marisa`,
+	name: BUSINESS.name,
+	alternateName: ['Panadería Marisa Málaga', 'Panadería y Charcutería Marisa'],
+	description:
+		'Panadería y charcutería en la calle Frigiliana, 10, Carretera de Cádiz (29004 Málaga). Panes de masa madre y ecológicos, galletas de espelta, quesos, charcutería de pueblo y despensa.',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34624391511',
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '07:30',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '17:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '07:30',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '08:30',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '08:30',
+			closes: '15:00',
+		},
+	],
+	amenityFeature: {
+		'@type': 'LocationFeatureSpecification',
+		name: 'Acceso para sillas de ruedas',
+		value: true,
+	},
+	servesCuisine: 'Panadería, charcutería y tienda de alimentación',
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Horario', href: '#horario' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Dónde está', href: '#visitanos' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2c2418" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Karla:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Marisa Málaga, pan de masa madre Málaga, panadería Carretera de Cádiz, panadería calle Frigiliana, charcutería Málaga 29004, queso y embutido Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pan de masa madre, quesos, charcutería y despensa en la calle Frigiliana, 10. Abierta todos los días."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="El rótulo de Panadería Marisa, con el dibujo de una hogaza y el toldo con el teléfono del local"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#2c2418"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería Marisa, inicio">
+					<span class="brand-mark" aria-hidden="true">M</span>
+					<span class="brand-name">
+						Panadería Marisa
+						<small>Carretera de Cádiz · Málaga</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone} <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Carretera de Cádiz · 29004 Málaga</p>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
+						<p class="hero-lede">
+							Una panadería de barrio en la calle Frigiliana. Panes de masa madre y ecológicos,
+							galletas de espelta, quesos y charcutería de pueblo. El rótulo de la fachada lo
+							resume en tres palabras: panadería, charcutería, Marisa.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href="#horario">Ver el horario</a>
+						</div>
+						<dl class="hero-facts">
+							<div>
+								<dt>Abre</dt>
+								<dd>7:30</dd>
+							</div>
+							<div>
+								<dt>Abierta</dt>
+								<dd>Los 7 días</dd>
+							</div>
+							<div>
+								<dt>Valoración</dt>
+								<dd>5,0 · 13 reseñas</dd>
+							</div>
+						</dl>
+					</div>
+
+					<figure class="hero-media">
+						<div class="hero-photo">
+							<Image
+								src={fachada}
+								alt="El rótulo de Panadería Marisa sobre la persiana, con el dibujo de una hogaza y el toldo con el teléfono 624 391 511"
+								widths={[480, 720, 1024, 1400]}
+								sizes="(max-width: 900px) 92vw, 50vw"
+								format="avif"
+								quality={74}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figcaption>
+							<span>El rótulo de la fachada</span>
+							<span>Foto de la ficha de Google</span>
+						</figcaption>
+						<span class="hero-seal" aria-hidden="true">
+							<strong>5,0</strong>
+							<small>13 reseñas<br />en Google</small>
+						</span>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que publica la ficha de Google">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Pan de masa madre y una <em>despensa de pueblo.</em></h2>
+						<p>
+							Marisa ocupa un bajo en la calle Frigiliana, en Carretera de Cádiz. La fachada
+							anuncia «panes saludables de masa madre» a un lado y «charcutería, productos con
+							denominación de origen» al otro; debajo, el toldo repite el teléfono del local.
+						</p>
+						<p>
+							La descripción que el propio negocio publica en Google enumera panes de masa madre
+							y ecológicos, galletas de espelta sarraceno, charcutería de pueblo y quesos. Es la
+							información más concreta que da la ficha: no hay carta completa ni precios
+							publicados.
+						</p>
+						<p>
+							En las fotos de la galería se ve el mostrador de bollería y el expositor de quesos y
+							embutidos, pero también estanterías con miel, aceite de oliva, conservas, salsas y
+							bebidas. Es panadería, charcutería y tienda de alimentación a la vez.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#fotos">Ver las fotos</a>
+						</div>
+					</div>
+
+					<figure class="about-media">
+						<Image
+							src={interior}
+							alt="El interior del local visto desde la puerta: estanterías de pan, la vitrina de bollería y el mostrador al fondo"
+							widths={[400, 640, 900]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>El interior, desde la puerta</figcaption>
+					</figure>
+				</div>
+
+				<ul class="highlights">
+					{
+						HIGHLIGHTS.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">De la primera hora <em>a la noche.</em></h2>
+						<p class="hours-lede">
+							La ficha publica horario de lunes a domingo. De lunes a jueves el local abre en dos
+							tramos, con cierre a mediodía; el viernes solo tiene turno de mañana y el fin de
+							semana termina a media mañana o a primera hora de la tarde.
+						</p>
+						<p class="hours-note">
+							<strong>Ojo con los festivos.</strong> {HORARIO_AVISO}
+						</p>
+						<a class="hours-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Comprobar en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="hours-table-wrap">
+						<table class="hours-table">
+							<caption class="visually-hidden">
+								Horario publicado en la ficha de Google
+							</caption>
+							<tbody>
+								{
+									HORARIO.map((row) => (
+										<tr>
+											<th scope="row">{row.dia}</th>
+											<td>{row.horas}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+						<p class="hours-foot">
+							Horario publicado en la ficha pública de Google, consultada en octubre de 2026.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="fotos wrap" id="fotos" aria-labelledby="fotos-title">
+				<div class="fotos-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos</p>
+						<h2 id="fotos-title">El mostrador <em>y la despensa.</em></h2>
+					</div>
+					<p>
+						Las imágenes salen de la galería de la ficha de Google. En ellas se ven el rótulo, la
+						vitrina de bollería, el expositor de quesos y embutidos y las estanterías de productos
+						envasados.
+					</p>
+				</div>
+
+				<div class="fotos-grid">
+					<figure class="foto foto-wide">
+						<Image
+							src={vitrina}
+							alt="La vitrina con napolitanas de chocolate, croissants y bandejas de dulces"
+							widths={[560, 800, 1120]}
+							sizes="(max-width: 900px) 92vw, 58vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La vitrina de bollería</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={charcuteria}
+							alt="El mostrador de charcutería y quesos con bandejas de embutido envasado y carteles de precio"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Quesos y charcutería</figcaption>
+					</figure>
+					<figure class="foto foto-portrait">
+						<Image
+							src={galletas}
+							alt="Estantería de madera con bolsas de galletas crujientes de avena y coco de El Andrésano"
+							widths={[360, 540, 760]}
+							sizes="(max-width: 900px) 92vw, 26vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Galletas de avena y coco</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={mostrador}
+							alt="El mostrador del local con bolsas de galletas, botes de miel y la vitrina de bollería"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>El mostrador</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={aceite}
+							alt="Botellas de aceite de oliva virgen extra de Ardales junto al cartel de aceite sin filtrar"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Aceite de oliva</figcaption>
+					</figure>
+					<figure class="foto foto-wide">
+						<Image
+							src={despensa}
+							alt="Caja de madera con salsas de Alimentos de Perol y botellas de vino Los Patios Syrah"
+							widths={[560, 800, 1120]}
+							sizes="(max-width: 900px) 92vw, 58vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Salsas y vino de la despensa</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">Cinco sobre cinco, <em>con trece reseñas.</em></h2>
+						<p>
+							La ficha de Google tiene una valoración de 5,0 sobre 5 con 13 reseñas en el momento
+							de consultarla (octubre de 2026). El estado actualizado y las opiniones completas se
+							ven en Google Maps.
+						</p>
+						<ul class="reviews">
+							{
+								RESENAS.map((resena) => (
+									<li>
+										<p>«{resena.texto}»</p>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)} <small>{resena.autor}</small>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<div class="rating-actions">
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="rating-figure">
+						<div class="rating-symbol" aria-hidden="true">
+							<span class="rating-value">5,0</span>
+							<span class="rating-stars">★★★★★</span>
+						</div>
+						<p class="rating-caption">
+							valoración media<br />
+							con 13 reseñas publicadas
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En la calle <em>Frigiliana, 10.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<p class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</p>
+
+					<p class="hours-note">
+						<strong>El teléfono es el que publica la ficha.</strong> No consta página web ni perfil
+						social del negocio, así que esta página no enlaza ninguno.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Acceso</span>
+							Google marca el acceso para sillas de ruedas.
+						</li>
+						<li>
+							<span>Barrio</span>
+							Carretera de Cádiz, en la zona de la calle Frigiliana.
+						</li>
+						<li>
+							<span>Plus Code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería Marisa en la calle Frigiliana, 10, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> C. Frigiliana, 10
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>entrar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">M</span>
+						<p>
+							Panadería Marisa
+							<small>
+								Panadería, charcutería y despensa<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={BUSINESS.phoneHref}>Llamar</a>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/panaderia-marisa/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos y fotografías de la ficha pública de
+					Google Maps, consultada en octubre de 2026. La web no publica carta ni precios porque la
+					ficha no los incluye.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/panaderia-marisa/aviso-legal">Aviso legal</a>
+					<a href="/panaderia-marisa/aviso-legal#privacidad">Privacidad</a>
+					<a href="/panaderia-marisa/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small
+						>Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a>
+						· sur-digital.vercel.app</small
+					>
+				</p>
+			</div>
+		</footer>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34624391511?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20M%C3%A1laga." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Málaga"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

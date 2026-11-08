@@ -1,0 +1,626 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS } from '../data/site';
+import '../styles/global.css';
+
+import fotoFachada from '../assets/fotos/restaurante-chino-xi-an-vertical-01.jpg';
+import fotoPato from '../assets/fotos/restaurante-chino-xi-an-cuadrada-07.jpg';
+import fotoArrozBambu from '../assets/fotos/restaurante-chino-xi-an-vertical-10.jpg';
+import fotoCarta from '../assets/fotos/restaurante-chino-xi-an-vertical-03.jpg';
+import fotoSopa from '../assets/fotos/restaurante-chino-xi-an-apaisada-02.jpg';
+import fotoEnsalada from '../assets/fotos/restaurante-chino-xi-an-apaisada-09.jpg';
+import fotoPollo from '../assets/fotos/restaurante-chino-xi-an-vertical-04.jpg';
+import fotoTallarines from '../assets/fotos/restaurante-chino-xi-an-vertical-06.jpg';
+import fotoArrozFrito from '../assets/fotos/restaurante-chino-xi-an-vista-5-05.jpg';
+import fotoAgridulce from '../assets/fotos/restaurante-chino-xi-an-vista-8-08.jpg';
+
+const DESC =
+	'Restaurante Chino Xi An, en Av. Plutarco, 20 (Teatinos-Universidad, 29010 Málaga). Cocina china de 13:00 a 16:30 y de 20:00 a 23:30, martes cerrado. 3,9 sobre 5 con 429 reseñas en Google.';
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Restaurant',
+			'@id': `${BUSINESS.siteUrl}/#restaurante`,
+			name: BUSINESS.fullName,
+			alternateName: BUSINESS.shortName,
+			description: DESC,
+			url: `${BUSINESS.siteUrl}/`,
+			telephone: '+34952629368',
+			image: `${BUSINESS.siteUrl}/og.jpg`,
+			servesCuisine: ['Cocina china'],
+			priceRange: '€',
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: BUSINESS.street,
+				addressLocality: BUSINESS.city,
+				addressRegion: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				addressCountry: BUSINESS.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			},
+			hasMap: MAPS.place,
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: RATING.value,
+				reviewCount: RATING.count,
+				bestRating: 5,
+			},
+			openingHoursSpecification: [
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+					opens: '13:00',
+					closes: '16:30',
+				},
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+					opens: '20:00',
+					closes: '23:30',
+				},
+			],
+			amenityFeature: [
+				{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+				{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+				{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+				{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento accesible', value: false },
+			],
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${BUSINESS.siteUrl}/#faq`,
+			mainEntity: FAQ.map((item) => ({
+				'@type': 'Question',
+				name: item.q,
+				acceptedAnswer: { '@type': 'Answer', text: item.a },
+			})),
+		},
+	],
+};
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Restaurante Chino Xi An · Cocina china en Teatinos, Málaga</title>
+		<meta name="description" content={DESC} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#f7efe0" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/restaurante-chino-xi-an/favicon.svg" />
+
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content="Restaurante Chino Xi An · Teatinos, Málaga" />
+		<meta property="og:description" content={DESC} />
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Pato asado cortado en lonchas con salsa, en Restaurante Chino Xi An" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Marcellus&display=swap"
+			rel="stylesheet"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#contenido">Saltar al contenido</a>
+
+		<header class="top">
+			<div class="wrap top__in">
+				<a class="brand" href="/restaurante-chino-xi-an/" aria-label="Restaurante Chino Xi An, inicio">
+					<span class="seal" aria-hidden="true">西</span>
+					<span class="brand__name">
+						<strong>Xi An</strong>
+						<small>Bar · Restaurante chino</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Secciones">
+					<a href="#casa">La casa</a>
+					<a href="#carta">La carta</a>
+					<a href="#fotos">Fotos</a>
+					<a href="#visita">Visita</a>
+					<a href="#preguntas">Preguntas</a>
+				</nav>
+				<a class="call" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero">
+				<div class="wrap hero__grid">
+					<div class="hero__side" aria-hidden="true">
+						<p class="hanzi">西安</p>
+						<small>Xi An · Málaga</small>
+					</div>
+
+					<div class="hero__copy">
+						<p class="kicker">Av. Plutarco, 20 · Teatinos</p>
+						<h1 class="hero__title" set:html={piezas.portada.titulo} />
+						<p class="hero__lede">
+							Bar-restaurante chino en Teatinos. Tallarines, arroces y platos de wok, a mediodía y
+							por la noche, en el mismo bajo de siempre.
+						</p>
+						<div class="hero__actions">
+							<a class="btn btn--red" href="#carta">Ver la carta</a>
+							<a class="btn btn--line" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+						</div>
+						<p class="hero__rating">
+							<span class="score">{RATING.label}</span>
+							<span>sobre 5 · {RATING.count} reseñas en Google</span>
+						</p>
+					</div>
+
+					<figure class="hero__figure">
+						<Image
+							src={fotoFachada}
+							alt="Fachada del Bar-Restaurante Xi An con el rótulo 西安 en rojo sobre un fondo crema"
+							widths={[420, 700, 1000]}
+							sizes="(max-width: 980px) 92vw, 34rem"
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<figcaption class="hero__caption">
+							<span>Bar · Restaurante 西安</span>
+							<span>Foto: ficha de Google</span>
+						</figcaption>
+						<div class="stamp" aria-hidden="true">
+							<strong>西安</strong>
+							<span>Cocina china</span>
+						</div>
+					</figure>
+				</div>
+			</section>
+
+			<div class="rail">
+				<div class="wrap rail__in">
+					<p class="rail__item"><strong>13:00–16:30</strong> <span>Mediodía</span></p>
+					<p class="rail__item"><strong>20:00–23:30</strong> <span>Noche</span></p>
+					<p class="rail__item"><strong>Martes</strong> <span>Cerrado</span></p>
+				</div>
+			</div>
+
+			<section class="sec about" id="casa">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__num">01 — La casa</span>
+							<h2>Un chino de barrio con la puerta abierta</h2>
+						</div>
+						<p>
+							Lo que se puede contar de Xi An sale de su ficha de Google: la dirección, el horario,
+							la valoración y las reseñas de quienes se han sentado aquí.
+						</p>
+					</div>
+
+					<div class="about__grid">
+						<div class="about__text">
+							<p class="about__lead">
+								Xi An es un bar-restaurante chino en la avenida Plutarco, 20, en pleno barrio
+								universitario de Teatinos.
+							</p>
+							<p>
+								Google lo clasifica como restaurante chino y le da 3,9 sobre 5 con 429 reseñas. La
+								ficha marca acceso para sillas de ruedas, aseo adaptado y asientos adaptados; del
+								aparcamiento avisa de que no hay plazas accesibles.
+							</p>
+							<p>
+								La puerta da a la calle y el rótulo se lee desde lejos: «Bar - Restaurante» y los
+								dos caracteres rojos, 西安, el nombre de la ciudad china de la que toma el nombre.
+							</p>
+							<blockquote class="quote">
+								«A destacar: pollo picante, los tallarines Wenzhoumes y el arroz de la casa.»
+								<cite>Reseña publicada en Google</cite>
+							</blockquote>
+						</div>
+
+						<div class="about__figs">
+							<figure>
+								<Image
+									src={fotoPato}
+									alt="Pato asado cortado en lonchas, con un cuenco de salsa oscura al lado"
+									widths={[400, 700]}
+									sizes="(max-width: 980px) 48vw, 22rem"
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+							<figure>
+								<Image
+									src={fotoArrozBambu}
+									alt="Arroz de la casa servido en una cesta de bambú, cubierto de hebras"
+									widths={[320, 560]}
+									sizes="(max-width: 980px) 38vw, 18rem"
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						</div>
+					</div>
+
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item) => (
+								<li class="hl">
+									<b>{item.title}</b>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<section class="sec menu" id="carta">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__num">02 — La carta</span>
+							<h2>Arroz, tallarines y wok</h2>
+						</div>
+						<p>
+							La ficha no publica la carta entera, pero una de sus fotos reproduce la página de
+							arroz y tallarines del menú impreso. Esos precios son los únicos que se pueden citar.
+						</p>
+					</div>
+
+					<div class="menu__grid">
+						<aside class="menu__aside">
+							<figure class="menu__carta">
+								<Image
+									src={fotoCarta}
+									alt="Página de arroz y tallarines de la carta de Xi An, con los platos y sus precios"
+									widths={[380, 620, 900]}
+									sizes="(max-width: 980px) 88vw, 26rem"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>
+									Página de la carta fotografiada en la ficha de Google. Los números y los precios
+									se leen tal cual.
+								</figcaption>
+							</figure>
+							<p class="menu__note">
+								<strong>Del resto de la carta no hay foto ni lista publicada.</strong> Los platos
+								que aparecen abajo, sin importe, son los que nombran las reseñas.
+							</p>
+						</aside>
+
+						<div class="carta">
+							{
+								MENU.map((grupo) => (
+									<div class="carta__group">
+										<h3>{grupo.title}</h3>
+										<p class="carta__src">{grupo.source}</p>
+										{grupo.items.map((dish) => (
+											<article class="dish">
+												<div class="dish__top">
+													<h4 class="dish__name">{dish.name}</h4>
+													{dish.cn ? <span class="dish__cn">{dish.cn}</span> : null}
+													<span class="dish__dots" aria-hidden="true" />
+													{dish.price ? <span class="dish__price">{dish.price}</span> : null}
+												</div>
+												<p class="dish__note">{dish.note}</p>
+											</article>
+										))}
+									</div>
+								))
+							}
+							<p class="carta__foot">
+								Precios de la fotografía de la carta en la ficha (octubre de 2026). Pueden haber
+								cambiado: confírmalos en el local o por teléfono.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec" id="fotos">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__num">03 — La mesa</span>
+							<h2>Lo que sale de la cocina</h2>
+						</div>
+						<p>
+							Fotografías de la galería del restaurante en Google Maps. Son fotos de mesa, no de
+							estudio: sopa, ensalada, tallarines y arroces.
+						</p>
+					</div>
+
+					<div class="gal__grid">
+						<figure>
+							<Image
+								src={fotoEnsalada}
+								alt="Ensalada china con jamón cocido, pepino, zanahoria y lechuga en un cuenco"
+								widths={[420, 760, 1100]}
+								sizes="(max-width: 620px) 92vw, (max-width: 980px) 92vw, 55vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Ensalada china con jamón cocido</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoSopa}
+								alt="Sopa espesa con fideos y huevo en un cuenco azul y blanco"
+								widths={[420, 760, 1000]}
+								sizes="(max-width: 620px) 92vw, (max-width: 980px) 92vw, 40vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Sopa de la casa</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoPollo}
+								alt="Pollo salteado con pimientos verdes y zanahoria en un plato blanco"
+								widths={[380, 620, 860]}
+								sizes="(max-width: 620px) 48vw, (max-width: 980px) 48vw, 31vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Pollo con verduras</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoTallarines}
+								alt="Tallarines con ternera, cebolleta y brotes de soja en un plato hondo"
+								widths={[380, 620, 860]}
+								sizes="(max-width: 620px) 48vw, (max-width: 980px) 48vw, 31vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Tallarines con ternera</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoArrozFrito}
+								alt="Arroz frito con huevo, jamón y zanahoria en un plato blanco"
+								widths={[380, 620, 860]}
+								sizes="(max-width: 620px) 48vw, (max-width: 980px) 48vw, 31vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Arroz frito</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoAgridulce}
+								alt="Pollo agridulce con piña, pimiento y zanahoria en salsa roja"
+								widths={[520, 900, 1300]}
+								sizes="(max-width: 620px) 92vw, (max-width: 980px) 92vw, 90vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Pollo agridulce</figcaption>
+						</figure>
+					</div>
+
+					<p class="gal__foot">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">
+							Ver todas las fotos en la ficha de Google ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="sec revs">
+				<div class="wrap">
+					<div class="revs__top">
+						<div>
+							<span class="head__num">04 — Opiniones</span>
+							<h2>La nota y las voces</h2>
+						</div>
+						<div class="revs__score">
+							<b>{RATING.label}</b>
+							<span>{RATING.count} reseñas en Google. Hay de todo: platos que se repiten y clientes que no vuelven.</span>
+						</div>
+					</div>
+
+					<div class="revs__grid">
+						{
+							RESENAS.map((resena) => (
+								<article class="rev">
+									<p class="rev__stars" aria-label={`${resena.valor} de 5 estrellas`}>
+										{'★'.repeat(resena.valor)}
+										{'☆'.repeat(5 - resena.valor)}
+									</p>
+									<blockquote>{resena.texto}</blockquote>
+									<p class="rev__meta">Reseña en Google</p>
+								</article>
+							))
+						}
+					</div>
+
+					<div class="revs__foot">
+						<span>
+							Las tres están publicadas tal cual, incluida la negativa. La media la calcula Google
+							con todas las opiniones de la ficha.
+						</span>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas las reseñas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec visit" id="visita">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__num">05 — Dónde estamos</span>
+							<h2>Av. Plutarco, 20</h2>
+						</div>
+						<p>
+							En Teatinos-Universidad, a un paso de la zona de facultades. El mapa abre las
+							coordenadas exactas de la ficha.
+						</p>
+					</div>
+
+					<div class="visit__grid">
+						<div>
+							<p class="addr">
+								{BUSINESS.street}
+								<span>{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</span>
+							</p>
+
+							<table class="hours">
+								<caption class="skip">Horario publicado en la ficha de Google</caption>
+								<thead>
+									<tr>
+										<th scope="col">Día</th>
+										<th scope="col">Horario</th>
+									</tr>
+								</thead>
+								<tbody>
+									{
+										HORARIO.map((fila) => (
+											<tr class:list={['', { 'is-closed': fila.closed }]}>
+												<th scope="row">{fila.dia}</th>
+												<td>{fila.horas}</td>
+											</tr>
+										))
+									}
+								</tbody>
+							</table>
+							<p class="notice">{HORARIO_AVISO}</p>
+
+							<div class="actions">
+								<a class="btn btn--red" href={MAPS.directions} target="_blank" rel="noreferrer">
+									Cómo llegar ↗
+								</a>
+								<a class="btn btn--line" href={BUSINESS.phoneHref}>Llamar</a>
+								<a class="btn btn--line" href={MAPS.streetView} target="_blank" rel="noreferrer">
+									Ver la calle ↗
+								</a>
+							</div>
+
+							<ul class="tags">
+								<li>Acceso para sillas de ruedas</li>
+								<li>Aseo adaptado</li>
+								<li>Asientos adaptados</li>
+								<li>Sin aparcamiento accesible</li>
+								<li>Cocina china</li>
+							</ul>
+						</div>
+
+						<div class="map">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa con la ubicación de ${BUSINESS.name} en ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec faq" id="preguntas">
+				<div class="wrap faq__grid">
+					<div>
+						<span class="head__num">06 — Antes de venir</span>
+						<h2>Preguntas frecuentes</h2>
+						<p class="faq__intro">
+							Todo lo que sigue está sacado de la ficha pública de Google. Si algo no aparece, es
+							porque la casa no lo ha publicado.
+						</p>
+					</div>
+					<div>
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="foot">
+			<div class="wrap">
+				<div class="foot__grid">
+					<div class="foot__brand">
+						<strong>Restaurante Chino Xi An</strong>
+						<p>
+							Bar-restaurante chino en {BUSINESS.street}, {BUSINESS.district},{' '}
+							{BUSINESS.postalCode} {BUSINESS.city}.
+						</p>
+					</div>
+					<div>
+						<h3>La casa</h3>
+						<ul>
+							<li><a href="#casa">Quiénes somos</a></li>
+							<li><a href="#carta">La carta</a></li>
+							<li><a href="#fotos">Fotos</a></li>
+							<li><a href="#preguntas">Preguntas frecuentes</a></li>
+						</ul>
+					</div>
+					<div>
+						<h3>Contacto</h3>
+						<ul>
+							<li><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></li>
+							<li><a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></li>
+							<li><a href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps</a></li>
+							<li><a href="/restaurante-chino-xi-an/aviso-legal">Aviso legal y privacidad</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot__bottom">
+					<small>© {new Date().getFullYear()} {BUSINESS.fullName}. Todos los derechos reservados.</small>
+					<p class="credit">
+						<small>
+							Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+							<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+						</small>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Llamar al restaurante <span>{BUSINESS.phone}</span>
+		</a>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34952629368?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Acceso%20para%20sillas%20de%20ruedas." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Acceso para sillas de ruedas"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

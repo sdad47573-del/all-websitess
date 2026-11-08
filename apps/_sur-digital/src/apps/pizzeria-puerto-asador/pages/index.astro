@@ -1,0 +1,266 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+import type { ImageMetadata } from 'astro';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.jpg',
+	{ eager: true },
+);
+const gallery = Object.entries(fotos)
+	.sort(([a], [b]) => a.localeCompare(b))
+	.map(([, image]) => ({
+		src: image.default,
+		alt: 'Fotografía publicada en Google Maps de Pizzeria Puerto Asador.',
+	}));
+const fotoPrincipal = gallery[0].src;
+import { BUSINESS, FAQ, HORARIO, MAPS, MENU, RATING, RESENAS, SERVICIOS } from '../data/site';
+
+const title = 'Pizzeria Puerto Asador · Pizzas, camperos y asador en Málaga';
+const description =
+	'Pizzeria Puerto Asador en Callejón Pajarillo Verde, Puerto de la Torre, Málaga. Pizzas, camperos y asados. Consulta fotos, horario, reseñas y cómo llegar.';
+const businessSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#pizzeria-puerto-asador`,
+	name: BUSINESS.name,
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34952107101',
+	servesCuisine: ['Hamburguesería', 'Parrilla', 'Comida rápida'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Friday'], opens: '20:00', closes: '00:00' },
+		{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '13:00', closes: '00:00' },
+	],
+};
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'Especialidades', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17130f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&display=swap" rel="stylesheet" />
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Pizzeria Puerto Asador Málaga, pizzería Puerto de la Torre, camperos Málaga, parrilla Málaga, comida rápida"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pizzas, camperos y asados en Puerto de la Torre. Consulta las fotos, el horario y cómo llegar a Pizzeria Puerto Asador."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fotografía del perfil de Google Maps de Pizzeria Puerto Asador"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#17130f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{ street: BUSINESS.street, locality: BUSINESS.city, region: BUSINESS.region, postalCode: BUSINESS.postalCode, country: BUSINESS.country, phone: BUSINESS.phone, latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng }}
+			preload={[fotoPrincipal]}
+			schemas={[businessSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Pizzería · Puerto de la Torre"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			navAriaLabel="Navegación principal"
+		/>
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Callejón Pajarillo Verde · Puerto de la Torre"
+				title={piezas.portada.titulo}
+				lede={`Pizzeria Puerto Asador sirve en Puerto de la Torre. Google la clasifica como hamburguesería, parrilla y restaurante de comida rápida; la ficha muestra ${RATING.label} sobre 5 con ${RATING.count} reseñas.`}
+				image={fotoPrincipal}
+				imageAlt="Fotografía del perfil de Google Maps de Pizzeria Puerto Asador"
+				primaryCta={{ label: 'Llamar · 952 10 71 01', href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha en Google Maps', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Valoración', html: `<b>${RATING.label}</b> en Google · ${RATING.count} reseñas` },
+					{ label: 'Dirección', html: '<b>Puerto de la Torre</b> · Málaga' },
+					{ label: 'Horario', html: '<b>Tardes y noches</b> · consulta el detalle' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+				tag="Pizzería · parrilla · hamburguesería"
+			/>
+			<LocalChips label="Tipos de comida y servicios publicados" items={SERVICIOS} />
+			<LocalAbout
+				label="El local"
+				title="Una parada <br /><em>en el Puerto.</em>"
+				paragraphs={[
+					'Pizzeria Puerto Asador está en Callejón Pajarillo Verde, en el barrio malagueño de Puerto de la Torre. La ficha de Google lo sitúa entre los restaurantes de comida rápida, hamburgueserías y parrillas.',
+					'En una publicación del propio establecimiento se anuncian camperos, pizzas y asados. Google Maps también muestra la opción de pedir online para consultar las alternativas disponibles.',
+					'La ficha pública consultada indica una valoración de 4,1 sobre 5, basada en 415 reseñas. La puntuación, el horario y las opciones de pedido pueden cambiar; confirma los datos en el perfil antes de desplazarte.',
+				]}
+				note="La ficha no presenta una carta completa ni precios verificables. Las especialidades se limitan a las categorías de Google y a lo que anuncia una publicación del establecimiento."
+				links={[
+					{ label: 'Ver ficha y reseñas', href: MAPS.reviews, external: true },
+					{ label: 'Explorar las fotos', href: '#galeria' },
+					{ label: 'Pedir online', href: MAPS.place, external: true },
+				]}
+			/>
+			<ul class="highlights">
+				<li><h3>Pizzas y asados</h3><p>La propia publicación del local menciona pizzas y asados entre sus opciones.</p></li>
+				<li><h3>Camperos</h3><p>Camperos anunciados por el establecimiento en su perfil de Google Maps.</p></li>
+				<li><h3>Hamburguesería y parrilla</h3><p>Dos de las categorías que aparecen en la ficha pública de Google.</p></li>
+			</ul>
+			<LocalMenu
+				eyebrow="Qué encontrarás"
+				title="De la pizza <br /><em>a la parrilla.</em>"
+				description="Las categorías y especialidades que sí constan en la ficha y en una publicación del local, sin carta o precios inventados."
+				cta={{ label: 'Consultar la ficha', href: MAPS.place }}
+				groups={MENU}
+				note="Google Maps muestra la opción «Pedir online». Entra en la ficha para consultar el menú, los precios y las opciones de pedido disponibles hoy."
+			/>
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El local <br /><em>en imágenes.</em>"
+				description="Diez fotografías del perfil de Pizzeria Puerto Asador, guardadas en la web para cargarlas directamente desde aquí."
+				images={gallery}
+				cta={{ label: 'Ver el perfil en Google Maps', href: MAPS.place }}
+				note="Fotografías del perfil público de Pizzeria Puerto Asador en Google Maps. Si tienes los derechos de alguna imagen y deseas pedir que se retire, contacta para solicitar su eliminación."
+			/>
+			<section class="notas" aria-labelledby="opiniones-title">
+				<div class="wrap notas-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="opiniones-title">{RATING.label} <em>de 5.</em></h2>
+						<p class="notas-score"><strong>{RATING.label}</strong><span><b>★★★★★</b>{RATING.count} reseñas<br />en Google</span></p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">Ver las reseñas ↗</a>
+					</div>
+					<div class="notas-copy">
+						<p>La ficha pública muestra una valoración de {RATING.label} sobre 5 con {RATING.count} reseñas. Consulta Google Maps para leer las opiniones y ver la puntuación más reciente.</p>
+						<p class="notas-foot">Los datos corresponden a la consulta de octubre de 2026 y pueden cambiar. <a href={MAPS.reviews} target="_blank" rel="noreferrer">Abrir las reseñas actuales en Google ↗</a>.</p>
+					</div>
+				</div>
+			</section>
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos <br /><em>en el Puerto.</em>"
+				addressLines={[BUSINESS.street, BUSINESS.district, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HORARIO.map((row) => ({ day: row.dia, value: row.horas, closed: row.closed }))}
+				hoursCaption="Horario publicado en Google Maps"
+				hoursNote="Horario consultado en octubre de 2026; puede variar en festivos. Confirma el horario y la disponibilidad en Google Maps antes de ir."
+				mapTitle="Mapa de Pizzeria Puerto Asador en Puerto de la Torre, Málaga"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Callejón Pajarillo Verde · Málaga"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google Maps', href: MAPS.place, external: true },
+				]
+				}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Google Maps muestra una opción de pedido online. Para conocer el menú, los precios y las opciones disponibles, consulta directamente la ficha del establecimiento."
+			/>
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>venir.</em>" />
+		</main>
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.district} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma el horario antes de la visita."
+			ctaLabel="Llamar a Pizzeria Puerto Asador"
+			navAriaLabel="Enlaces de Pizzeria Puerto Asador"
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34952107101?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Google%20CID." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Google CID"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

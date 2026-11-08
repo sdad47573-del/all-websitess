@@ -1,0 +1,690 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import fachada from '../assets/fotos/panaderia-confiteria-el-nino-rivas-apaisada-01.jpg';
+import rotulo from '../assets/fotos/panaderia-confiteria-el-nino-rivas-apaisada-02.jpg';
+import puerta from '../assets/fotos/panaderia-confiteria-el-nino-rivas-vertical-03.jpg';
+import interior from '../assets/fotos/panaderia-confiteria-el-nino-rivas-vertical-04.jpg';
+import escaparate from '../assets/fotos/panaderia-confiteria-el-nino-rivas-vertical-05.jpg';
+import muneco from '../assets/fotos/panaderia-confiteria-el-nino-rivas-vertical-06.jpg';
+import cartelRosco from '../assets/fotos/panaderia-confiteria-el-nino-rivas-vertical-07.jpg';
+import roscon from '../assets/fotos/panaderia-confiteria-el-nino-rivas-cuadrada-09.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEW_QUOTE,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'El Niño Rivas · Panadería y confitería en Carretera de Cádiz, Málaga';
+const description = BUSINESS.description;
+const ratingLabel = BUSINESS.rating.toFixed(1).replace('.', ',');
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de la panadería con el rótulo azul de Panadería Confitería El Niño Rivas, el toldo a rayas y la puerta abierta',
+		caption: 'La fachada, con el toldo a rayas y la puerta abierta',
+	},
+	{
+		src: rotulo,
+		alt: 'Rótulo azul y blanco de Panadería Confitería El Niño Rivas con el teléfono, sobre el toldo azul del local',
+		caption: 'El rótulo y el toldo, en primer plano',
+	},
+	{
+		src: puerta,
+		alt: 'Entrada del local desde un lado, con la puerta de aluminio abierta y el interior iluminado al fondo',
+		caption: 'La entrada, vista desde la acera',
+	},
+	{
+		src: escaparate,
+		alt: 'Ventana con reja y un perro rojo de escayola dentro, junto al cartel circular de rosco de vino de la marca P.PAKY',
+		caption: 'La ventana con reja y el cartel del rosco de vino',
+	},
+	{
+		src: cartelRosco,
+		alt: 'Cartel circular rojo y blanco que anuncia Exquisito Rosco de Vino de la marca P.PAKY, Málaga',
+		caption: 'El cartel de rosco de vino, en la pared',
+	},
+	{
+		src: roscon,
+		alt: 'Roscón de Reyes con fruta confitada y azúcar dentro de su caja roja con ventana transparente',
+		caption: 'El roscón de Reyes, en su caja',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#el-nino-rivas`,
+	name: BUSINESS.name,
+	alternateName: ['El Niño Rivas', 'Panadería El Niño Rivas', 'Confitería El Niño Rivas Málaga'],
+	description:
+		'Panadería y confitería en Av. de Molière, 27 (Carretera de Cádiz, 29004 Málaga): pan del día, bollería, dulces de vitrina y roscones, abierta de lunes a domingo.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 692 34 53 96',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '20:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '07:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	makesOffer: [
+		{ '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Pan del día' } },
+		{ '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Bollería' } },
+		{
+			'@type': 'Offer',
+			itemOffered: { '@type': 'Product', name: 'Dulces de confitería' },
+		},
+		{ '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Roscón de Reyes' } },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: REVIEW_QUOTE,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#mostrador' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1b3f8f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Figtree:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Niño Rivas, panadería Carretera de Cádiz, confitería Málaga, panadería abierta domingos Málaga, Molière 27, roscón de Reyes Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y confitería en Av. de Molière, 27, Carretera de Cádiz. Pan del día, bollería, dulces y roscones, de lunes a domingo. Teléfono 692 34 53 96."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la Panadería Confitería El Niño Rivas con su rótulo azul y el toldo a rayas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1b3f8f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/panaderia-confiteria-el-nino-rivas/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería Confitería El Niño Rivas, inicio">
+					<span class="brand-mark" aria-hidden="true">
+						NR
+					</span>
+					<span class="brand-name">
+						El Niño Rivas
+						<small>Panadería · Confitería · Carretera de Cádiz</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Navegación principal">
+					{nav.map((item) => (
+						<a href={item.href}>{item.label}</a>
+					))}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone}
+				</a>
+			</div>
+			<nav class="mobile-nav wrap" aria-label="Navegación principal en móvil">
+				{nav.map((item) => (
+					<a href={item.href}>{item.label}</a>
+				))}
+			</nav>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Carretera de Cádiz · Málaga
+						</p>
+
+						<div class="sign">
+							<p class="sign-kicker">Panadería · Confitería</p>
+							<h1 id="hero-title" set:html={piezas.portada.titulo} />
+							<p class="sign-meta">
+								Av. de Molière, 27 · 29004 Málaga
+								<br />
+								<span aria-hidden="true">Tlf.</span>{' '}
+								<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+							</p>
+						</div>
+
+						<p class="hero-lede">
+							El pan del día, la bollería y los dulces de siempre, en la misma esquina de la avenida
+							de Molière. Abre los siete días de la semana, también el domingo por la mañana.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={BUSINESS.phoneHref}>
+								Llamar · {BUSINESS.phone}
+							</a>
+							<a
+								class="button button-ghost"
+								href={MAPS.directions}
+								target="_blank"
+								rel="noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<div class="hero-facts">
+							<div>
+								<span>Google</span>
+								<strong>{ratingLabel} / 5</strong>
+								<small>{BUSINESS.reviewsCount} reseñas</small>
+							</div>
+							<div>
+								<span>Horario</span>
+								<strong>7:00–20:00</strong>
+								<small>de lunes a viernes</small>
+							</div>
+							<div>
+								<span>El domingo</span>
+								<strong>Abierto</strong>
+								<small>hasta las 16:00</small>
+							</div>
+						</div>
+					</div>
+
+					<div class="hero-side">
+						<div class="awning" aria-hidden="true"></div>
+						<figure class="hero-photo">
+							<Image
+								src={fachada}
+								alt="Fachada de la panadería: rótulo azul de Panadería Confitería El Niño Rivas, toldo a rayas, puerta abierta y la vitrina al fondo"
+								widths={[520, 760, 1100, 1500]}
+								sizes="(max-width: 980px) 92vw, 46vw"
+								format="avif"
+								quality={74}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+							<figcaption>
+								<span>Foto del perfil de Google Maps</span>
+								<a href={MAPS.place} target="_blank" rel="noreferrer">
+									Ver la ficha ↗
+								</a>
+							</figcaption>
+						</figure>
+					</div>
+				</div>
+			</section>
+
+			<div class="awning awning-wide" aria-hidden="true"></div>
+
+			<section class="facts" aria-label="Datos de la ficha">
+				<div class="wrap facts-grid">
+					<div class="fact">
+						<span class="fact-kicker">La ficha</span>
+						<strong>{ratingLabel} / 5</strong>
+						<p>{BUSINESS.reviewsCount} reseñas en Google.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El teléfono</span>
+						<strong>
+							<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						</strong>
+						<p>El número del rótulo y de la ficha.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El horario</span>
+						<strong>7:00–20:00</strong>
+						<p>Sábado y domingo, hasta las 16:00.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El mostrador</span>
+						<strong>Pan y dulce</strong>
+						<p>Bollería, confitería y roscones.</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-head">
+					<p class="section-label">
+						<span aria-hidden="true"></span> La casa
+					</p>
+					<h2 id="about-title">
+						Una panadería <em>de barrio.</em>
+					</h2>
+					<p>
+						El Niño Rivas es panadería y confitería en la avenida de Molière, 27. Detrás de la
+						puerta abierta están las estanterías de pan y la vitrina de dulces; en la pared, el
+						cartel del rosco de vino y un muñeco de madera con el nombre de la casa.
+					</p>
+				</div>
+
+				<div class="highlights-grid">
+					{HIGHLIGHTS.map((item) => (
+						<article class="highlight">
+							<span class="highlight-number">{item.number}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+
+				<div class="about-photos">
+					<figure>
+						<Image
+							src={interior}
+							alt="Interior del local visto desde la puerta: estantería verde con barras y hogazas, vitrina de bollería y nevera"
+							widths={[380, 560, 760]}
+							sizes="(max-width: 760px) 92vw, 32vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>El pan y la vitrina, desde la puerta.</figcaption>
+					</figure>
+					<figure>
+						<Image
+							src={muneco}
+							alt="Muñeco de madera con gorro de cocinero y delantal con los nombres David, Isa, Gema y Juan, tras la ventana del local"
+							widths={[380, 560, 760]}
+							sizes="(max-width: 760px) 92vw, 32vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>El muñeco de la casa, con los nombres de la familia.</figcaption>
+					</figure>
+				</div>
+
+				<ul class="chips" aria-label="Lo que ofrece El Niño Rivas">
+					{SERVICIOS.map((item) => (
+						<li>{item}</li>
+					))}
+				</ul>
+			</section>
+
+			<section class="counter" id="mostrador" aria-labelledby="counter-title">
+				<div class="wrap">
+					<div class="counter-head">
+						<div>
+							<p class="section-label">
+								<span aria-hidden="true"></span> El mostrador
+							</p>
+							<h2 id="counter-title">
+								Pan, dulce <em>y roscón.</em>
+							</h2>
+						</div>
+						<p>
+							La ficha no publica carta ni precios. Esto es lo que aparece en las fotografías del
+							perfil y lo que citan las reseñas del establecimiento.
+						</p>
+					</div>
+
+					<div class="menu-grid">
+						{MENU.map((group) => (
+							<article class="menu-card">
+								<span class="menu-kicker">{group.kicker}</span>
+								<h3>{group.title}</h3>
+								<ul>
+									{group.items.map((item) => (
+										<li>
+											<strong>{item.name}</strong>
+											<span>{item.note}</span>
+										</li>
+									))}
+								</ul>
+							</article>
+						))}
+					</div>
+
+					<div class="counter-note">
+						<p>
+							<strong>Sin carta ni precios publicados.</strong> Para saber qué hay cada día o
+							reservar un roscón, llama al
+							<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a> o pasa por el mostrador.
+						</p>
+						<a class="button button-primary" href={BUSINESS.phoneHref}>
+							Llamar a El Niño Rivas
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery wrap" id="fotos" aria-labelledby="gallery-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label">
+							<span aria-hidden="true"></span> La casa en fotos
+						</p>
+						<h2 id="gallery-title">
+							La esquina, <em>por fuera y por dentro.</em>
+						</h2>
+					</div>
+					<p>
+						Seis imágenes del perfil de Google Maps: la fachada, el rótulo, la entrada, la ventana
+						con reja, el cartel del rosco de vino y el roscón de Reyes. Son fotos del
+						establecimiento, no de un banco de imágenes.
+					</p>
+				</div>
+
+				<div class="gallery-grid">
+					{galeria.map((photo) => (
+						<figure>
+							<Image
+								src={photo.src}
+								alt={photo.alt}
+								widths={[420, 640, 960, 1200]}
+								sizes="(max-width: 700px) 92vw, 31vw"
+								format="avif"
+								quality={72}
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>{photo.caption}</figcaption>
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes del perfil del establecimiento en Google Maps. Si eres titular de alguna y
+					quieres retirarla, escríbenos y la borramos.
+				</p>
+			</section>
+
+			<section class="reviews" aria-labelledby="reviews-title">
+				<div class="wrap reviews-grid">
+					<div class="reviews-score">
+						<span class="score-number">{ratingLabel}</span>
+						<span class="score-stars" role="img" aria-label="4,7 de 5 estrellas">
+							★★★★★
+						</span>
+						<span class="score-count">{BUSINESS.reviewsCount} reseñas en Google</span>
+					</div>
+					<div class="reviews-copy">
+						<p class="section-label section-label-light">
+							<span aria-hidden="true"></span> Lo que dicen
+						</p>
+						<h2 id="reviews-title">
+							«La atención <em>no podría ser mejor</em>»
+						</h2>
+						<div class="review-list">
+							{REVIEWS.map((item) => (
+								<figure>
+									<blockquote>«{item.text}»</blockquote>
+									<figcaption>{item.note}</figcaption>
+								</figure>
+							))}
+						</div>
+						<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer las 51 reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label">
+						<span aria-hidden="true"></span> Visítanos
+					</p>
+					<h2 id="visit-title">
+						En la avenida <em>de Molière.</em>
+					</h2>
+					<p class="address">
+						{BUSINESS.street}
+						<br />
+						{BUSINESS.district}
+						<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<table class="hours">
+						<caption>Horario de la ficha de Google</caption>
+						<tbody>
+							{HOURS.map((row) => (
+								<tr>
+									<th scope="row">{row.day}</th>
+									<td>{row.value}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+					<p class="hours-note">
+						Horario publicado por el establecimiento en Google, consultado el 28 de octubre de 2026.
+						En festivos puede cambiar: confirma antes de ir.
+					</p>
+
+					<div class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</div>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={BUSINESS.phoneHref}>
+							Llamar ahora
+						</a>
+						<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<p class="visit-note">
+						La ficha indica acceso para sillas de ruedas, pero no aparcamiento adaptado. No consta
+						reparto a domicilio ni venta online.
+					</p>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería Confitería El Niño Rivas en la avenida de Molière, 27, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen
+					></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Av. de Molière, 27
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label">
+					<span aria-hidden="true"></span> Preguntas frecuentes
+				</p>
+				<h2 id="faq-title">
+					Antes de <em>entrar.</em>
+				</h2>
+				<div class="faq-list">
+					{FAQ.map((item) => (
+						<details>
+							<summary>{item.q}</summary>
+							<p>{item.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">
+							NR
+						</span>
+						<p>
+							El Niño Rivas
+							<small>
+								Panadería Confitería · {BUSINESS.street}
+								<br />
+								{BUSINESS.postalCode} {BUSINESS.city} · {BUSINESS.phone}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces de El Niño Rivas">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">
+							Google Maps ↗
+						</a>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Reseñas ↗
+						</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar ↗
+						</a>
+						<a href="/panaderia-confiteria-el-nino-rivas/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos, teléfono, valoración y fotografías
+					del perfil público de Google Maps, consultados en octubre de 2026. Sin carta ni precios
+					publicados por el establecimiento.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/panaderia-confiteria-el-nino-rivas/aviso-legal">Aviso legal</a>
+					<a href="/panaderia-confiteria-el-nino-rivas/aviso-legal#privacidad">Privacidad</a>
+					<a href="/panaderia-confiteria-el-nino-rivas/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>
+						Web creada por{' '}
+						<a href="https://sur-digital.vercel.app/" rel="noopener">
+							Sur Digital
+						</a>
+					</small>
+				</p>
+			</div>
+		</footer>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34692345396?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20M%C3%A1laga." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Málaga"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

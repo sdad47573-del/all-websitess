@@ -1,0 +1,515 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import fachada from '../assets/fotos/cafeteria-panaderia-margarita-apaisada-01.jpg';
+import frente from '../assets/fotos/cafeteria-panaderia-margarita-apaisada-04.jpg';
+import vitrinaPan from '../assets/fotos/cafeteria-panaderia-margarita-vertical-02.jpg';
+import vitrinaDulce from '../assets/fotos/cafeteria-panaderia-margarita-vertical-03.jpg';
+import bocadillo from '../assets/fotos/cafeteria-panaderia-margarita-vertical-05.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, RATING, SERVICIOS } from '../data/site';
+
+const title = 'Cafetería Panadería Margarita · Cruz de Humilladero (Málaga)';
+const description =
+	'Cafetería Panadería Margarita en la calle Corregidor Francisco de Molina, 3 (Cruz de Humilladero, 29006 Málaga). Pan casero del día, abierta todos los días, con terraza y acceso para sillas de ruedas.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#margarita`,
+	name: BUSINESS.name,
+	alternateName: ['Cafeteria panaderia margarita', 'Margarita', 'Panadería Margarita Málaga'],
+	description:
+		'Panadería y cafetería en la calle Corregidor Francisco de Molina, 3, Cruz de Humilladero (29006 Málaga). Pan casero del día y servicio de cafetería.',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: undefined,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [
+		`${BUSINESS.siteUrl}/og.jpg`,
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '09:00',
+			closes: '17:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '09:00',
+			closes: '14:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '09:00',
+			closes: '17:30',
+		},
+	],
+	amenityFeature: {
+		'@type': 'LocationFeatureSpecification',
+		name: 'Acceso para sillas de ruedas',
+		value: true,
+	},
+	servesCuisine: 'Panadería y cafetería',
+	priceRange: undefined,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Horario', href: '#horario' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Dónde está', href: '#visitanos' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#262322" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Margarita Málaga, cafetería Cruz de Humilladero, panadería Corregidor Francisco de Molina, pan casero Málaga 29006, cafetería Los Corregidores"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería y cafetería en Cruz de Humilladero: pan casero del día, terraza y abierto todos los días de la semana."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="La fachada esquinera de Cafetería Panadería Margarita, con su terraza de sillas naranjas"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#262322"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Cafetería Panadería Margarita, inicio">
+					<span class="brand-mark" aria-hidden="true">M</span>
+					<span class="brand-name">
+						Cafetería Panadería Margarita
+						<small>Cruz de Humilladero · Málaga</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={MAPS.directions} target="_blank" rel="noreferrer">
+					Cómo llegar <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Cruz de Humilladero · 29006 Málaga</p>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
+						<p class="hero-lede">
+							Una esquina de barrio con pan del día, vitrina de dulces y terraza para el café. Los
+							tres rótulos de la fachada —panadería, pastelería y cafetería— son los mismos que
+							aparecen en las fotos de su ficha de Google.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href="#horario">Ver el horario</a>
+						</div>
+						<dl class="hero-facts">
+							<div>
+								<dt>Entre semana</dt>
+								<dd>{HORARIO[0].horas}</dd>
+							</div>
+							<div>
+								<dt>Abierta</dt>
+								<dd>Los 7 días</dd>
+							</div>
+							<div>
+								<dt>Valoración</dt>
+								<dd>5,0 · 2 reseñas</dd>
+							</div>
+						</dl>
+					</div>
+
+					<figure class="hero-media">
+						<div class="hero-photo">
+							<Image
+								src={fachada}
+								alt="La esquina del local con los rótulos de pastelería, panadería y cafetería y la terraza de sillas naranjas en la acera"
+								widths={[480, 720, 1024, 1400]}
+								sizes="(max-width: 900px) 92vw, 50vw"
+								format="avif"
+								quality={74}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</div>
+						<figcaption>
+							<span>La esquina, con la terraza</span>
+							<span>Foto de la ficha de Google</span>
+						</figcaption>
+						<span class="hero-seal" aria-hidden="true">
+							<strong>5,0</strong>
+							<small>2 reseñas<br />en Google</small>
+						</span>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que publica la ficha de Google">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Una panadería que también es <em>cafetería.</em></h2>
+						<p>
+							Margarita ocupa una esquina de la calle Corregidor Francisco de Molina, en Cruz de
+							Humilladero. Google la clasifica como panadería, pero el nombre de la ficha y los
+							rótulos de la fachada hablan también de cafetería: en las fotos se ven las mesas y
+							las sillas de la terraza junto a los escaparates del obrador.
+						</p>
+						<p>
+							En la descripción que el propio negocio publica en Google se dice que el pan se hace
+							casero todos los días y es del día. Es la única información sobre el género que
+							recoge la ficha; no hay carta, lista de precios ni catálogo publicados.
+						</p>
+						<p>
+							Bajo el nombre, el rótulo de la fachada añade «Los Corregidores», el mismo apellido
+							que comparten las calles del entorno. La dirección oficial de la ficha es la del
+							número 3 de Corregidor Francisco de Molina.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#fotos">Ver las fotos</a>
+						</div>
+					</div>
+
+					<figure class="about-media">
+						<Image
+							src={vitrinaPan}
+							alt="La vitrina del local con barras de pan y empanada en bandejas, vista a través del cristal"
+							widths={[400, 640, 900]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La vitrina de pan y empanada</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">Abierta <em>todos los días.</em></h2>
+						<p class="hours-lede">
+							La ficha publica horario de lunes a domingo, sin ningún día de cierre. Entre semana y
+							el domingo se alarga hasta la tarde; el viernes y el sábado cierra a mediodía.
+						</p>
+						<p class="hours-note">
+							<strong>Ojo con los festivos.</strong> {HORARIO_AVISO}
+						</p>
+						<a class="hours-link" href={MAPS.place} target="_blank" rel="noreferrer">
+							Comprobar en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="hours-table-wrap">
+						<table class="hours-table">
+							<caption class="visually-hidden">
+								Horario publicado en la ficha de Google
+							</caption>
+							<tbody>
+								{
+									HORARIO.map((row) => (
+										<tr>
+											<th scope="row">{row.dia}</th>
+											<td>{row.horas}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+						<p class="hours-foot">
+							Horario publicado en la ficha pública de Google, consultada en octubre de 2026.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="fotos wrap" id="fotos" aria-labelledby="fotos-title">
+				<div class="fotos-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos</p>
+						<h2 id="fotos-title">La esquina <em>y la vitrina.</em></h2>
+					</div>
+					<p>
+						Las cinco imágenes de esta página salen de la galería de la ficha de Google: la
+						fachada, la terraza y dos vitrinas. No hay fotos de la sala ni del obrador.
+					</p>
+				</div>
+
+				<div class="fotos-grid">
+					<figure class="foto foto-wide">
+						<Image
+							src={frente}
+							alt="La fachada frontal del local con los rótulos Cafetería y Pastelería Margarita y las mesas de la terraza"
+							widths={[560, 800, 1120]}
+							sizes="(max-width: 900px) 92vw, 58vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La fachada y la terraza</figcaption>
+					</figure>
+					<figure class="foto">
+						<Image
+							src={vitrinaDulce}
+							alt="La vitrina de pastelería con tartas, hojaldres y dulces en bandejas y sus etiquetas de precio"
+							widths={[360, 540, 800]}
+							sizes="(max-width: 900px) 92vw, 34vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>La vitrina de dulces</figcaption>
+					</figure>
+					<figure class="foto foto-portrait">
+						<Image
+							src={bocadillo}
+							alt="Un bocadillo servido en un plato sobre una mesa de la terraza, con un café y la carta del local"
+							widths={[360, 540, 760]}
+							sizes="(max-width: 900px) 92vw, 26vw"
+							format="avif"
+							quality={72}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Bocadillo y café en la terraza</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> La ficha de Google</p>
+						<h2 id="rating-title">Cinco sobre cinco, <em>con dos reseñas.</em></h2>
+						<p>
+							La ficha de Google tiene una valoración de 5,0 sobre 5 con 2 reseñas en el momento de
+							consultarla (octubre de 2026). Con tan pocas opiniones la media todavía es
+							orientativa: el estado actualizado y las reseñas completas se ven en Google Maps.
+						</p>
+						<div class="rating-actions">
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Ver las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="rating-figure">
+						<div class="rating-symbol" aria-hidden="true">
+							<span class="rating-value">5,0</span>
+							<span class="rating-stars">★★★★★</span>
+						</div>
+						<p class="rating-caption">
+							valoración media<br />
+							con 2 reseñas publicadas
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En Corregidor <em>Francisco de Molina, 3.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<p class="hours-note">
+						<strong>Sin teléfono ni página web publicados.</strong> La ficha de Google no incluye
+						ninguno de los dos, así que esta página no ofrece número: la atención es en el propio
+						establecimiento.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Acceso</span>
+							Google marca el acceso para sillas de ruedas.
+						</li>
+						<li>
+							<span>Barrio</span>
+							Cruz de Humilladero, junto a la ronda y la avenida de Andalucía.
+						</li>
+						<li>
+							<span>Plus Code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Cafetería Panadería Margarita en Corregidor Francisco de Molina, 3, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Corregidor Francisco de Molina, 3
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>entrar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">M</span>
+						<p>
+							Cafetería Panadería Margarita
+							<small>
+								Panadería, pastelería y cafetería<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/cafeteria-panaderia-margarita/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos y fotografías de la ficha pública de
+					Google Maps, consultada en octubre de 2026. Las cinco fotos de esta página son las de la
+					galería de esa ficha. La web no publica carta, precios ni teléfono porque la ficha no los
+					incluye.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/cafeteria-panaderia-margarita/aviso-legal">Aviso legal</a>
+					<a href="/cafeteria-panaderia-margarita/aviso-legal#privacidad">Privacidad</a>
+					<a href="/cafeteria-panaderia-margarita/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small
+						>Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a>
+						· sur-digital.vercel.app</small
+					>
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

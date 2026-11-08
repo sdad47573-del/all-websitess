@@ -1,0 +1,323 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import terrazaHero from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-01.jpg';
+import terrazaDia from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-07.jpg';
+import carne from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-03.jpg';
+import guiso from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-09.jpg';
+import plazaNoche from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-04.jpg';
+import cafe from '../assets/fotos/cooperativa-sierra-de-espadan-vertical-05.jpg';
+import bocadillo from '../assets/fotos/cooperativa-sierra-de-espadan-vertical-06.jpg';
+import dulces from '../assets/fotos/cooperativa-sierra-de-espadan-vertical-10.jpg';
+import musica from '../assets/fotos/cooperativa-sierra-de-espadan-apaisada-08.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICIOS,
+} from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: terrazaDia,
+		alt: 'Terraza de la Cooperativa con mesas y sillas negras y las montañas de la Sierra de Espadán al fondo',
+	},
+	{
+		src: carne,
+		alt: 'Carne a la brasa con patatas fritas y pan en un plato blanco, en la Cooperativa',
+	},
+	{
+		src: guiso,
+		alt: 'Guiso de cuchara con patata, carne y verduras servido en un plato hondo',
+	},
+	{
+		src: plazaNoche,
+		alt: 'Plaza de la Fuente de noche durante las fiestas, con la hoguera y la fachada de la Cooperativa Agrícola Sierra Espadán iluminada',
+	},
+	{
+		src: cafe,
+		alt: 'Café saliendo del portafiltros de la cafetera a un vaso de cristal en la barra',
+	},
+	{
+		src: bocadillo,
+		alt: 'Bocadillo de longaniza con pimientos asados en un plato, con aceitunas y altramuces en la mesa',
+	},
+	{
+		src: dulces,
+		alt: 'Bandejas de repostería con buñuelos, tartaletas, brownies y rodajas de kiwi',
+	},
+	{
+		src: musica,
+		alt: 'Músicos tocando la guitarra y el acordeón en la terraza de la Cooperativa una noche de verano',
+	},
+];
+
+const estrellas = (nota: number) => '★'.repeat(nota) + '☆'.repeat(5 - nota);
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	acceptsReservations: true,
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: ['Cooperativa Sierra de Espadán', 'Bar Cooperativa Algimia', 'La Cooperativa Algimia de Almonacid'],
+	slogan: BUSINESS.tagline,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34617025914',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Española', 'Casera', 'Mediterránea', 'Carnes a la brasa'],
+	areaServed: [
+		{ '@type': 'City', name: 'Algimia de Almonacid' },
+		{ '@type': 'AdministrativeArea', name: 'Alto Palancia' },
+		{ '@type': 'AdministrativeArea', name: 'Sierra de Espadán' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.province,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	foundingDate: String(BUSINESS.openedYear),
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Wednesday', 'Thursday', 'Sunday'],
+			opens: '08:00',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday'],
+			opens: '08:00',
+			closes: '13:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '23:59',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Opiniones', href: '#opiniones' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Cooperativa Sierra de Espadán · Cocina casera en Algimia de Almonacid';
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"cooperativa-sierra-de-espadan-apaisada-01.jpg": terrazaHero,
+	"cooperativa-sierra-de-espadan-apaisada-07.jpg": terrazaDia,
+	"cooperativa-sierra-de-espadan-apaisada-03.jpg": carne,
+	"cooperativa-sierra-de-espadan-apaisada-09.jpg": guiso,
+	"cooperativa-sierra-de-espadan-apaisada-04.jpg": plazaNoche,
+	"cooperativa-sierra-de-espadan-vertical-05.jpg": cafe,
+	"cooperativa-sierra-de-espadan-vertical-06.jpg": bocadillo,
+	"cooperativa-sierra-de-espadan-vertical-10.jpg": dulces,
+	"cooperativa-sierra-de-espadan-apaisada-08.jpg": musica,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2f4a3c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,300;1,6..72,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Cooperativa Sierra de Espadán, bar restaurante Algimia de Almonacid, restaurante Sierra de Espadán, cocina casera Alto Palancia, menú del día Algimia, terraza plaza de la Fuente, carnes a la brasa Castellón, bocadillos Algimia, Plaza de la Fuente 24"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Cooperativa Sierra de Espadán · Cocina casera en la plaza"
+			ogDescription="Cocina casera, menú del día, carnes a la brasa y terraza con vistas en Algimia de Almonacid. 4,4 en Google con 201 reseñas. Tel. 617 02 59 14."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de la Cooperativa Sierra de Espadán con las montañas al fondo"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#2f4a3c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.province}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34617025914"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Algimia de Almonacid, Castellón"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: `${BUSINESS.city}, ${BUSINESS.province}`,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 617 02 59 14',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[terrazaHero]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="La Cooperativa"
+			subtitle="Sierra de Espadán · Algimia"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, menú y precios antes de la visita."
+			ctaLabel="Llamar a la Cooperativa"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34617025914?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Algimia%20de%20Almonacid." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Algimia de Almonacid"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

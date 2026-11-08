@@ -1,0 +1,332 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import mesa from '../assets/fotos/restaurante-banigala-apaisada-06.jpg';
+import fachadaNoite from '../assets/fotos/restaurante-banigala-apaisada-01.jpg';
+import fachadaDia from '../assets/fotos/restaurante-banigala-vertical-05.jpg';
+import letreiro from '../assets/fotos/restaurante-banigala-apaisada-03.jpg';
+import ruaNoite from '../assets/fotos/restaurante-banigala-vertical-08.jpg';
+import tandoori from '../assets/fotos/restaurante-banigala-vertical-04.jpg';
+import caril from '../assets/fotos/restaurante-banigala-apaisada-10.jpg';
+import doces from '../assets/fotos/restaurante-banigala-apaisada-07.jpg';
+import cartaz from '../assets/fotos/restaurante-banigala-vertical-09.jpg';
+import cliente from '../assets/fotos/restaurante-banigala-vertical-02.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	MAPS,
+	MENU,
+	REVIEWS,
+	SERVICOS,
+} from '../data/site';
+
+const title = 'BaniGala · Paquistanês halal na Mouraria, Lisboa';
+const description =
+	'BaniGala RESTAURANTE Lisbon, na Rua do Benformoso, 230, na Mouraria. Cozinha paquistanesa halal: biryani, caril, daal e tandoori por 5 €, todos os dias.';
+
+const galeria = [
+	{
+		src: fachadaNoite,
+		alt: 'Fachada do BaniGala à noite na Rua do Benformoso, com o letreiro iluminado e cartazes de comida',
+	},
+	{
+		src: cartaz,
+		alt: 'Cartaz do BaniGala com os pratos a 5 euros, as bebidas e os doces da casa',
+	},
+	{
+		src: tandoori,
+		alt: 'Pedaços de frango tandoori numa travessa preta, com coentros por cima',
+	},
+	{
+		src: caril,
+		alt: 'Tigela de caril com coentros, prato de salada e uma tigela de raita numa mesa escura',
+	},
+	{
+		src: cliente,
+		alt: 'Cliente à mesa junto à janela do BaniGala, com um mural de arquitetura mogol ao fundo',
+	},
+	{
+		src: fachadaDia,
+		alt: 'Entrada do BaniGala de dia, com o letreiro da casa e os cartazes de pratos na parede',
+	},
+	{
+		src: doces,
+		alt: 'Vitrine de doces com barras de leite, halwa e bolinhas em calda, na entrada do restaurante',
+	},
+	{
+		src: letreiro,
+		alt: 'Letreiro do BaniGala com a morada, a Rua do Benformoso, 230, em Lisboa',
+	},
+	{
+		src: ruaNoite,
+		alt: 'Rua do Benformoso à noite, com o letreiro do BaniGala ao fundo e um homem em primeiro plano',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Carta do BaniGala',
+	inLanguage: 'pt-PT',
+	url: `${BUSINESS.siteUrl}/#carta`,
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+			...(item.price
+				? {
+						offers: {
+							'@type': 'Offer',
+							price: item.price.replace(' €', '').replace(',', '.'),
+							priceCurrency: 'EUR',
+						},
+					}
+				: {}),
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#banigala`,
+	name: 'BaniGala RESTAURANTE Lisbon',
+	alternateName: ['BaniGala', 'Bani Gala Lisbon', 'Restaurante BaniGala'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 939 201 733',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Cozinha paquistanesa', 'Cozinha asiática'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '09:15',
+			closes: '23:30',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Lugares para pessoas em cadeiras de rodas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'WC acessível a pessoas em cadeiras de rodas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'A carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"restaurante-banigala-apaisada-06.jpg": mesa,
+	"restaurante-banigala-apaisada-01.jpg": fachadaNoite,
+	"restaurante-banigala-vertical-09.jpg": cartaz,
+	"restaurante-banigala-vertical-04.jpg": tandoori,
+	"restaurante-banigala-apaisada-10.jpg": caril,
+	"restaurante-banigala-vertical-02.jpg": cliente,
+	"restaurante-banigala-vertical-05.jpg": fachadaDia,
+	"restaurante-banigala-apaisada-07.jpg": doces,
+	"restaurante-banigala-apaisada-03.jpg": letreiro,
+	"restaurante-banigala-vertical-08.jpg": ruaNoite,
+};
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#0b2f1a" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Rozha+One&family=DM+Sans:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name="BaniGala RESTAURANTE Lisbon"
+			description={description}
+			keywords="BaniGala, Bani Gala Lisboa, restaurante paquistanês Lisboa, comida halal Mouraria, biryani Lisboa, caril paquistanês, tandoori Mouraria, Rua do Benformoso"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Cozinha paquistanesa halal na Rua do Benformoso, 230, na Mouraria. Biryani, caril, daal e tandoori por 5 euros, com três pães do tandoor."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Mesa do BaniGala com caris, naan, arroz e frango tandoori"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author="BaniGala RESTAURANTE Lisbon"
+			themeColor="#0b2f1a"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[mesa]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/restaurante-banigala/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="BaniGala"
+			subtitle="Paquistanês · Mouraria"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+				reviews={REVIEWS}
+				googleMaps={MAPS.place}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name="BaniGala RESTAURANTE Lisbon"
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias do perfil do estabelecimento em Google Maps. Carta e preços do cartaz da casa; confirma horário e valores antes da visita."
+			ctaLabel="Ligar ao BaniGala"
+			navAriaLabel="Ligações do BaniGala"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidade', href: '/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/351939201733?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Carta%20do%20BaniGala." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Carta do BaniGala"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

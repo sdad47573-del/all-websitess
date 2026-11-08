@@ -1,0 +1,178 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+import foto01 from '../assets/fotos/kebab-hits-cuadrada-01.jpg';
+import foto02 from '../assets/fotos/kebab-hits-vertical-02.jpg';
+import foto03 from '../assets/fotos/kebab-hits-vista-3-03.jpg';
+import foto04 from '../assets/fotos/kebab-hits-apaisada-04.jpg';
+import foto05 from '../assets/fotos/kebab-hits-vertical-05.jpg';
+import foto06 from '../assets/fotos/kebab-hits-panoramica-06.jpg';
+import foto07 from '../assets/fotos/kebab-hits-vista-7-07.jpg';
+import foto08 from '../assets/fotos/kebab-hits-vertical-08.jpg';
+import foto09 from '../assets/fotos/kebab-hits-vertical-09.jpg';
+import foto10 from '../assets/fotos/kebab-hits-apaisada-10.jpg';
+import {
+	BUSINESS,
+	FAQ,
+	HORARIO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Kebab Hits · Kebab, durum y pizza turca en Teatinos, Málaga';
+const description = 'Kebab Hits en Av. Plutarco, 28, local 2, Teatinos-Universidad, Málaga. Fotos, horario de Google Maps, opiniones y cómo llegar.';
+const gallery = [
+	{ src: foto01, alt: 'Rótulo de Kebab Hits sobre la fachada de la avenida Plutarco, Málaga.' },
+	{ src: foto02, alt: 'Bandeja con kebab, verduras frescas y salsa en el mostrador de Kebab Hits.' },
+	{ src: foto03, alt: 'Pizza turca con carne, tomate, verduras y hierbas.' },
+	{ src: foto04, alt: 'Preparación de kebab con carne, lechuga, tomate y salsa.' },
+	{ src: foto05, alt: 'Rollo de kebab con pollo, vegetales y salsa.' },
+	{ src: foto06, alt: 'Cartel con platos y ofertas de Kebab Hits en el interior del local.' },
+	{ src: foto07, alt: 'Durum de kebab acompañado de patatas fritas.' },
+	{ src: foto08, alt: 'Kebab servido con vegetales y salsa en una bandeja.' },
+	{ src: foto09, alt: 'Comedor de Kebab Hits con mesas para comer en el local.' },
+	{ src: foto10, alt: 'Bandejas de kebab y verduras en la barra de Kebab Hits.' },
+];
+const businessSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#kebab-hits`,
+	name: BUSINESS.name,
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	servesCuisine: ['Cocina turca', 'Kebab', 'Comida halal', 'Comida rápida'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	aggregateRating: { '@type': 'AggregateRating', ratingValue: RATING.value, reviewCount: RATING.count, bestRating: 5, worstRating: 1 },
+	review: RESENAS.map((review) => ({ '@type': 'Review', reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 }, reviewBody: review.texto })),
+};
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: FAQ.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
+};
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'Especialidades', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"kebab-hits-cuadrada-01.jpg": foto01,
+	"kebab-hits-vertical-02.jpg": foto02,
+	"kebab-hits-vista-3-03.jpg": foto03,
+	"kebab-hits-apaisada-04.jpg": foto04,
+	"kebab-hits-vertical-05.jpg": foto05,
+	"kebab-hits-panoramica-06.jpg": foto06,
+	"kebab-hits-vista-7-07.jpg": foto07,
+	"kebab-hits-vertical-08.jpg": foto08,
+	"kebab-hits-vertical-09.jpg": foto09,
+	"kebab-hits-apaisada-10.jpg": foto10,
+};
+---
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17130f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&display=swap" rel="stylesheet" />
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Kebab Hits Málaga, kebab Teatinos, durum, rollo kebab, pizza turca, restaurante halal Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Kebab, rollo, durum y pizza turca en Teatinos-Universidad. Descubre las fotos y cómo llegar a Kebab Hits."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Kebab Hits en la avenida Plutarco, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#17130f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[foto01]}
+			schemas={[businessSchema, faqSchema]}
+		/>
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<LocalTopbar mark={BUSINESS.mark} name={BUSINESS.name} subtitle="Kebab · Teatinos" nav={nav} cta={{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true }} />
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
+			/>
+		</main>
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps consultada en octubre de 2026. Confirma horario y ofertas antes de la visita."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Kebab Hits"
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	</body>
+</html>

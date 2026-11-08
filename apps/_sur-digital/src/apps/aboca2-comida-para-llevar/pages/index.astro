@@ -1,0 +1,330 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import bodegon from '../assets/fotos/aboca2-comida-para-llevar-apaisada-04.jpg';
+import tortilla from '../assets/fotos/aboca2-comida-para-llevar-apaisada-07.jpg';
+import mostrador from '../assets/fotos/aboca2-comida-para-llevar-apaisada-08.jpg';
+import croqueta from '../assets/fotos/aboca2-comida-para-llevar-cuadrada-05.jpg';
+import tartaLotus from '../assets/fotos/aboca2-comida-para-llevar-cuadrada-06.jpg';
+import asador from '../assets/fotos/aboca2-comida-para-llevar-panoramica-03.jpg';
+import ensalada from '../assets/fotos/aboca2-comida-para-llevar-panoramica-09.jpg';
+import fachada from '../assets/fotos/aboca2-comida-para-llevar-vertical-01.jpg';
+import vitrina from '../assets/fotos/aboca2-comida-para-llevar-vertical-02.jpg';
+import tartaPistacho from '../assets/fotos/aboca2-comida-para-llevar-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Aboca2 · Comida casera y pollos asados en Torrejón';
+const description =
+	'Aboca2, en Carretera de Loeches, 13 (28850 Torrejón de Ardoz, Madrid). Comida casera para llevar: pollos asados, croquetas, tortilla, san jacobos y flamenquines.';
+
+const galeria = [
+	{
+		src: bodegon,
+		alt: 'Un surtido de Aboca2 con medio pollo asado, pimientos verdes, croquetas, empanada, ensaladilla, flamenquín, tortilla de patata y ensalada',
+	},
+	{
+		src: asador,
+		alt: 'Pollos asados ensartados en el asador de Aboca2',
+	},
+	{
+		src: tortilla,
+		alt: 'Una tortilla de patata entera, dorada por fuera, en un plato blanco',
+	},
+	{
+		src: croqueta,
+		alt: 'Una croqueta casera rebozada sobre una pizarra',
+	},
+	{
+		src: tartaLotus,
+		alt: 'Un trozo de tarta de queso con galleta Lotus y caramelo',
+	},
+	{
+		src: tartaPistacho,
+		alt: 'Una tarta de queso de pistacho con pistachos al lado en una pizarra',
+	},
+	{
+		src: ensalada,
+		alt: 'Una ensalada de lechuga, tomate, huevo cocido y atún en un plato cuadrado',
+	},
+	{
+		src: mostrador,
+		alt: 'El mostrador de Aboca2 con las bandejas de comida y el asador de pollos al fondo',
+	},
+	{
+		src: vitrina,
+		alt: 'Bandejas de ensaladilla rusa y otros platos tapados con film en la vitrina de Aboca2',
+	},
+	{
+		src: fachada,
+		alt: 'La fachada de Aboca2 con el rótulo de comida casera y la lista de especialidades en el escaparate',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'Especialidades de Aboca2',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#aboca2`,
+	name: BUSINESS.fullName,
+	alternateName: ['Aboca2 Torrejón', 'Aboca2 Comida para llevar', 'Aboca 2'],
+	description:
+		'Comida casera tradicional para llevar en la carretera de Loeches, 13 (Torrejón de Ardoz, 28850 Madrid). Especialidad en pollos asados, croquetas, san jacobos, flamenquines y tortilla de patata.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34910410626',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Comida casera', 'Comida para llevar', 'Pollo asado'],
+	hasTakeaway: true,
+	areaServed: [
+		{ '@type': 'City', name: 'Torrejón de Ardoz' },
+		{ '@type': 'AdministrativeArea', name: 'Comunidad de Madrid' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.district,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	hasMenu: menuSchema,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '16:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.valor, bestRating: 5 },
+		reviewBody: review.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La cocina', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"aboca2-comida-para-llevar-apaisada-04.jpg": bodegon,
+	"aboca2-comida-para-llevar-panoramica-03.jpg": asador,
+	"aboca2-comida-para-llevar-apaisada-07.jpg": tortilla,
+	"aboca2-comida-para-llevar-cuadrada-05.jpg": croqueta,
+	"aboca2-comida-para-llevar-cuadrada-06.jpg": tartaLotus,
+	"aboca2-comida-para-llevar-vertical-10.jpg": tartaPistacho,
+	"aboca2-comida-para-llevar-panoramica-09.jpg": ensalada,
+	"aboca2-comida-para-llevar-apaisada-08.jpg": mostrador,
+	"aboca2-comida-para-llevar-vertical-02.jpg": vitrina,
+	"aboca2-comida-para-llevar-vertical-01.jpg": fachada,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#9c2f22" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400&family=Work+Sans:wght@400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Aboca2 Torrejón, comida para llevar Torrejón de Ardoz, pollos asados Torrejón, croquetas caseras Torrejón, tortilla de patata, flamenquín cordobés, san jacobo granadino"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida casera para llevar en la carretera de Loeches, 13 (Torrejón de Ardoz). Pollos asados, croquetas, tortilla, san jacobos y flamenquines. De martes a domingo."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Un surtido de pollo asado, croquetas, tortilla y ensaladilla de Aboca2"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#9c2f22"
+			street={BUSINESS.street}
+			city={BUSINESS.district}
+			region={BUSINESS.region}
+			geoRegion="ES-MD"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Torrejón de Ardoz"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.district,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[bodegon]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Aboca2"
+			subtitle="Comida casera · Torrejón"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+								horario={HORARIO}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.district}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, horario y fotografías de la ficha pública de Google Maps, consultada en octubre de 2026. Confirma platos y horario antes de la visita."
+			ctaLabel="Llamar a Aboca2"
+			navAriaLabel="Enlaces de Aboca2"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+			creditNote="sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34910410626?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Especialidades%20de%20Aboca2." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Especialidades de Aboca2"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

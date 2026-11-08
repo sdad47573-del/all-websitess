@@ -1,0 +1,689 @@
+---
+import '../styles/global.css';
+import { LocalSeo } from '@astro-components';
+import { Image } from 'astro:assets';
+
+import heroPhoto from '../assets/fotos/la-fiambrera-malaga-apaisada-04.jpg';
+import fachada from '../assets/fotos/la-fiambrera-malaga-vertical-02.jpg';
+import papasRellenas from '../assets/fotos/la-fiambrera-malaga-vista-1-01.jpg';
+import empanadas from '../assets/fotos/la-fiambrera-malaga-vertical-05.jpg';
+import bandeja from '../assets/fotos/la-fiambrera-malaga-vertical-06.jpg';
+import mesa from '../assets/fotos/la-fiambrera-malaga-apaisada-03.jpg';
+import vitrina from '../assets/fotos/la-fiambrera-malaga-panoramica-07.jpg';
+import papelAluminio from '../assets/fotos/la-fiambrera-malaga-vertical-09.jpg';
+import empanadaMano from '../assets/fotos/la-fiambrera-malaga-cuadrada-10.jpg';
+
+import {
+	BUSINESS,
+	CARTA,
+	CARTA_AVISO,
+	FAQ,
+	HIGHLIGHTS,
+	HORARIO_NOTA,
+	MAPS,
+	MENU,
+	RATING,
+	RESENAS,
+} from '../data/site';
+
+const title = 'La Fiambrera · Comida para llevar en Plaza de Bailén, Málaga';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: mesa,
+		alt: 'Mesa con un pollo asado entero, bocadillos, hamburguesas, croquetas, albóndigas y patatas con queso',
+		caption: 'Mesa de la casa',
+		className: 'g1',
+	},
+	{
+		src: empanadas,
+		alt: 'Empanadas colombianas doradas sobre una pizarra negra',
+		caption: 'Empanadas',
+		className: 'g2',
+	},
+	{
+		src: papasRellenas,
+		alt: 'Plato blanco con papas rellenas colombianas recién fritas',
+		caption: 'Papas rellenas',
+		className: 'g3',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina del local con empanadas, bocadillos y bollería, con el reflejo de la calle en el cristal',
+		caption: 'La vitrina',
+		className: 'g4',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja metálica con empanadas fritas y dos vasos de salsa',
+		caption: 'Bandeja de empanadas',
+		className: 'g5',
+	},
+	{
+		src: papelAluminio,
+		alt: 'Dos papas rellenas envueltas en papel de aluminio sobre papel de estraza',
+		caption: 'Para llevar',
+		className: 'g6',
+	},
+	{
+		src: empanadaMano,
+		alt: 'Mano sosteniendo una empanada con papel de cocina y un vaso de salsa, junto a la nevera de bebidas',
+		caption: 'Un bocado',
+		className: 'g7',
+	},
+];
+
+const menuSchema = {
+	'@type': 'Menu',
+	name: 'La carta de La Fiambrera',
+	inLanguage: 'es-ES',
+	hasMenuSection: MENU.map((group) => ({
+		'@type': 'MenuSection',
+		name: group.title,
+		hasMenuItem: group.items.map((item) => ({
+			'@type': 'MenuItem',
+			name: item.name,
+			description: item.note,
+		})),
+	})),
+};
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-fiambrera`,
+	name: BUSINESS.fullName,
+	alternateName: ['La Fiambrera Málaga', 'Fiambrera Bailén', 'La Fiambrera Take Away'],
+	description:
+		'Comida para llevar en Plaza de Bailén, 5 (Distrito Centro, 29009 Málaga): pollo asado, comidas caseras, papas rellenas colombianas y empanadas sin gluten.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34600689318',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Pollo asado', 'Comida casera', 'Cocina colombiana', 'Comida para llevar'],
+	hasMenu: menuSchema,
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	review: RESENAS.map((resena) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: resena.valor, bestRating: 5 },
+		reviewBody: resena.texto,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const year = new Date().getFullYear();
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#17130f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Serif:ital@0;1&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="La Fiambrera Málaga, comida para llevar Málaga, pollo asado Plaza de Bailén, papas rellenas colombianas Málaga, empanadas sin gluten Málaga, comida casera Distrito Centro, bocadillo de jamón asado, take away Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollo asado, comidas caseras, papas rellenas colombianas y empanadas para llevar en Plaza de Bailén, 5. 4,9 sobre 5 con 28 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pollo asado y patatas fritas de La Fiambrera sobre el mostrador, con la carta del local delante"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#17130f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-MA"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[heroPhoto]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<div class="topline">
+			<div class="wrap topline-inner">
+				<p>Pl. de Bailén, 5 · Distrito Centro</p>
+				<p class="topline-hours">Pollo asado · Comida casera · Para llevar</p>
+				<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
+		</div>
+
+		<header class="site-header" id="inicio">
+			<div class="wrap header-inner">
+				<a class="brand" href="#inicio" aria-label="La Fiambrera, inicio">
+					<span class="brand-stamp" aria-hidden="true">LF</span>
+					<span class="brand-name">Comida para llevar <strong>La Fiambrera</strong></span>
+				</a>
+				<nav class="site-nav" aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="header-call" href={BUSINESS.phoneHref}>
+					<span aria-hidden="true">☎</span> {BUSINESS.phone}
+				</a>
+			</div>
+			<nav class="mobile-nav wrap" aria-label="Navegación principal en móvil">
+				{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+			</nav>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Plaza de Bailén, 5 · Málaga</p>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
+						<p class="hero-lede">
+							La ventana con toldo amarillo de Plaza de Bailén: <strong>pollo asado</strong>,
+							comidas caseras y sabor colombiano en táper. Papas rellenas, empanadas sin gluten y
+							bocadillos de jamón asado, recién hechos.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-primary" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+							<a class="btn btn-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<strong>{RATING.label} / 5</strong>
+								<span>{RATING.count} reseñas en Google</span>
+							</li>
+							<li>
+								<strong>Para llevar</strong>
+								<span>pollo, táper y empanadas</span>
+							</li>
+							<li>
+								<strong>Pl. de Bailén, 5</strong>
+								<span>Distrito Centro · 29009</span>
+							</li>
+						</ul>
+					</div>
+
+					<figure class="hero-figure">
+						<div class="hero-main">
+							<Image
+								src={heroPhoto}
+								alt="Empleado de La Fiambrera con guantes sosteniendo una bandeja de pollo asado y otra de patatas fritas, con la carta del local abierta delante"
+								widths={[520, 760, 1080]}
+								sizes="(max-width: 880px) 92vw, 46vw"
+								loading="eager"
+								fetchpriority="high"
+							/>
+							<span class="hero-tape" aria-hidden="true"></span>
+							<span class="hero-sticker" aria-hidden="true">
+								<small>Take away</small>
+								<strong>al momento</strong>
+							</span>
+						</div>
+						<figure class="hero-side">
+							<Image
+								src={fachada}
+								alt="Fachada de La Fiambrera en Plaza de Bailén, con el toldo amarillo, la vitrina y los carteles de precios"
+								widths={[240, 380, 520]}
+								sizes="(max-width: 720px) 92vw, 18vw"
+							/>
+							<figcaption>El local, en Bailén</figcaption>
+						</figure>
+					</figure>
+				</div>
+			</section>
+
+			<div class="marquee" aria-hidden="true">
+				<div class="marquee-track">
+					<span>Pollo asado</span><span>·</span><span>Papas rellenas</span><span>·</span><span>Empanadas sin gluten</span><span>·</span><span>Comida casera</span><span>·</span><span>Bocadillo de jamón asado</span><span>·</span>
+					<span>Pollo asado</span><span>·</span><span>Papas rellenas</span><span>·</span><span>Empanadas sin gluten</span><span>·</span><span>Comida casera</span><span>·</span><span>Bocadillo de jamón asado</span><span>·</span>
+				</div>
+			</div>
+
+			<section class="about" id="casa" aria-labelledby="about-title">
+				<div class="wrap">
+					<div class="about-grid">
+						<div class="about-intro">
+							<p class="eyebrow"><span aria-hidden="true"></span> 01 — La casa</p>
+							<h2 id="about-title">Una ventana <em>de barrio.</em></h2>
+							<div class="about-copy">
+								<p>
+									En el número 5 de la Plaza de Bailén hay una ventana con toldo amarillo que
+									dice «La Fiambrera Take Away». En las fotos de la ficha se ven la vitrina con
+									empanadas y bocadillos, los carteles de precios pegados al cristal y el pollo
+									asado saliendo del horno.
+								</p>
+								<p>
+									El propio negocio lo resume así en Google: «Pollo asado, comidas caseras y más
+									(papas rellenas colombianas y empanadas)». Es la mezcla de una casa de comidas
+									andaluza y una freidora colombiana, todo pensado para comer fuera de casa.
+								</p>
+								<p>
+									La ficha tiene 4,9 sobre 5 con 28 reseñas. Casi todas repiten lo mismo: comida
+									fresca, papas rellenas y empanadas que merecen el paseo, y un trato cercano en
+									el mostrador.
+								</p>
+							</div>
+							<blockquote class="about-quote">
+								<p>«Para deleitarse el paladar, empanadas y papas rellenas súper deliciosas.»</p>
+								<cite>Reseña publicada en Google</cite>
+							</blockquote>
+						</div>
+
+						<figure class="facade">
+							<Image
+								src={fachada}
+								alt="Fachada de La Fiambrera en Plaza de Bailén con el toldo amarillo y los carteles de papa rellena y bocadillo con patatas"
+								widths={[420, 640, 900]}
+								sizes="(max-width: 980px) 92vw, 38vw"
+							/>
+							<figcaption>
+								<span>Plaza de Bailén, 5</span>
+								Los carteles del cristal anuncian la papa rellena a 2 € y el bocadillo de jamón
+								asado o pollo con patatas de regalo. El horario, en Google.
+							</figcaption>
+						</figure>
+					</div>
+
+					<ul class="highlights">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<li>
+									<span class="highlight-number" aria-hidden="true">0{index + 1}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+
+			<section class="carta" id="carta" aria-labelledby="carta-title">
+				<div class="wrap">
+					<header class="section-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> 02 — La carta</p>
+							<h2 id="carta-title">Lo que se pide <em>en el mostrador.</em></h2>
+						</div>
+						<p>
+							La ficha de Google no publica carta. Estos precios están leídos en la carta impresa
+							que aparece en una de las fotos del local, así que sirven de referencia, no como
+							tarifa oficial.
+						</p>
+					</header>
+
+					<div class="carta-grid">
+						<div class="ticket">
+							<div class="ticket-head">
+								<h3>La Fiambrera</h3>
+								<span>Carta de referencia</span>
+							</div>
+
+							{
+								CARTA.map((group) => (
+									<div class="ticket-group">
+										<h4>{group.title}</h4>
+										<ul>
+											{group.items.map((item) => (
+												<li class="ticket-item">
+													<span class="ticket-name">{item.name}</span>
+													<span class="ticket-dots" aria-hidden="true" />
+													<span class="ticket-price">{item.price}</span>
+												</li>
+											))}
+										</ul>
+									</div>
+								))
+							}
+
+							<p class="ticket-note">{CARTA_AVISO}</p>
+						</div>
+
+						<aside class="carta-card" aria-labelledby="carta-card-title">
+							<p class="card-kicker">Para pedir</p>
+							<h3 id="carta-card-title">El menú del día <em>se pregunta.</em></h3>
+							<p>
+								La carta impresa es una foto y los platos caseros cambian. Antes de ir, llama
+								para saber qué hay hoy, si queda pollo y cuánto tarda el pedido.
+							</p>
+							<a class="card-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+							<p class="card-note">
+								Plaza de Bailén, 5 · Distrito Centro, Málaga. La ficha no publica horario de
+								apertura: consúltalo en Google Maps antes de acercarte.
+							</p>
+						</aside>
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery" id="galeria" aria-labelledby="gallery-title">
+				<div class="wrap">
+					<header class="section-head section-head-light">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> 03 — Las fotos</p>
+							<h2 id="gallery-title">El mostrador, <em>sin filtros.</em></h2>
+						</div>
+						<p>
+							Fotos del perfil público del local en Google Maps: el pollo, las papas rellenas,
+							las empanadas, la vitrina y la mesa de la casa.
+						</p>
+					</header>
+
+					<div class="gallery-grid">
+						{
+							galeria.map((photo) => (
+								<figure class={photo.className}>
+									<Image
+										src={photo.src}
+										alt={photo.alt}
+										widths={[420, 700, 1000, 1400]}
+										sizes="(max-width: 640px) 92vw, (max-width: 980px) 46vw, 48vw"
+									/>
+									<figcaption>{photo.caption}</figcaption>
+								</figure>
+							))
+						}
+					</div>
+
+					<p class="gallery-credit">
+						Fotografías del perfil público de {BUSINESS.fullName} en Google Maps, consultado en
+						octubre de 2026.
+						<a href={MAPS.place} target="_blank" rel="noreferrer">
+							Ver la ficha completa <span aria-hidden="true">↗</span>
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="reviews" aria-labelledby="reviews-title">
+				<div class="wrap reviews-grid">
+					<div class="rating-block">
+						<p class="eyebrow"><span aria-hidden="true"></span> 04 — En Google</p>
+						<p class="big-rating">{RATING.label}</p>
+						<p class="stars" aria-label={`${RATING.label} de 5 estrellas`}>
+							<span aria-hidden="true">★★★★★</span>
+						</p>
+						<p class="rating-count">{RATING.count} reseñas en Google</p>
+						<a class="simple-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer todas las reseñas <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+
+					<div class="review-list">
+						<h2 id="reviews-title" class="visually-hidden">Reseñas de La Fiambrera</h2>
+						{
+							RESENAS.map((resena, index) => (
+								<blockquote class:list={['review', { 'review-lead': index === 0 }]}>
+									<p>«{resena.texto}»</p>
+									<footer>
+										<span aria-label={`${resena.valor} de 5 estrellas`}>
+											{'★'.repeat(resena.valor)}
+										</span>
+										<cite>Reseña publicada en Google</cite>
+									</footer>
+								</blockquote>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="visit" id="visitanos" aria-labelledby="visit-title">
+				<div class="wrap">
+					<header class="section-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> 05 — Visitar</p>
+							<h2 id="visit-title">Plaza de Bailén, 5. <em>Distrito Centro.</em></h2>
+						</div>
+						<p>
+							Una ventana a pie de calle, con la vitrina a la vista. Para recoger el pedido, lo
+							más rápido es llamar antes.
+						</p>
+					</header>
+
+					<div class="visit-grid">
+						<div class="visit-info">
+							<div class="visit-block">
+								<h3>Horario</h3>
+								<p class="notice">{HORARIO_NOTA}</p>
+							</div>
+
+							<div class="visit-block">
+								<h3>Dónde</h3>
+								<address>
+									<strong>{BUSINESS.street}</strong><br />
+									{BUSINESS.district}<br />
+									{BUSINESS.postalCode} {BUSINESS.city}
+								</address>
+								<p class="visit-links">
+									<a href={MAPS.directions} target="_blank" rel="noreferrer">
+										Cómo llegar <span aria-hidden="true">↗</span>
+									</a>
+									<a href={MAPS.streetView} target="_blank" rel="noreferrer">
+										Vista de la calle <span aria-hidden="true">↗</span>
+									</a>
+								</p>
+							</div>
+
+							<div class="visit-block">
+								<h3>Contacto</h3>
+								<p class="visit-phone">
+									<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+								</p>
+								<p>
+									Es el único teléfono que publica la ficha de Google. Las reservas y los
+									pedidos se confirman en el local o por esta vía.
+								</p>
+							</div>
+
+							<div class="visit-block">
+								<h3>Accesibilidad</h3>
+								<p>
+									La ficha marca «Acceso para sillas de ruedas». El local es una ventana a pie de
+									calle, sin sala.
+								</p>
+							</div>
+						</div>
+
+						<div class="map-column">
+							<div class="map-frame">
+								<iframe
+									title="Mapa de La Fiambrera en Plaza de Bailén, 5, Málaga"
+									src={MAPS.embed}
+									loading="lazy"
+									referrerpolicy="no-referrer-when-downgrade"
+									allowfullscreen
+								></iframe>
+							</div>
+							<p class="map-caption">
+								<span>Pl. de Bailén, 5 · 29009 Málaga</span>
+								<a href={MAPS.place} target="_blank" rel="noreferrer">
+									Abrir en Google Maps <span aria-hidden="true">↗</span>
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap faq-grid">
+					<div class="faq-intro">
+						<p class="eyebrow"><span aria-hidden="true"></span> 06 — Preguntas</p>
+						<h2 id="faq-title">Antes de <em>pasar.</em></h2>
+						<p>
+							Lo que la ficha pública permite responder y lo que hay que preguntar por teléfono.
+							Sin cartas ni horarios inventados.
+						</p>
+						<a class="simple-link" href={BUSINESS.phoneHref}>
+							Llamar al {BUSINESS.phone} <span aria-hidden="true">→</span>
+						</a>
+					</div>
+					<div class="faq-list">
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-top">
+					<div class="footer-brand">
+						<span class="brand-stamp brand-stamp-light" aria-hidden="true">LF</span>
+						<p>
+							La Fiambrera
+							<small>Comida para llevar<br />Plaza de Bailén, 5 · Málaga</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del local">
+						<h2>La casa</h2>
+						{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+						<a href="/la-fiambrera-malaga/aviso-legal">Aviso legal</a>
+					</nav>
+					<div class="footer-contact">
+						<h2>Contacto</h2>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<p>{BUSINESS.street}<br />{BUSINESS.postalCode} {BUSINESS.city}</p>
+						<a class="footer-map" href={MAPS.place} target="_blank" rel="noreferrer">
+							Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="footer-bottom">
+					<p>
+						© {year} {BUSINESS.name} · Datos, reseñas y fotografías de la ficha pública de Google
+						Maps, consultada en octubre de 2026. Confirma horario, platos y precios antes de pedir.
+					</p>
+					<nav class="footer-legal" aria-label="Información legal">
+						<a href="/la-fiambrera-malaga/aviso-legal">Aviso legal</a>
+						<a href="/la-fiambrera-malaga/aviso-legal#privacidad">Privacidad</a>
+						<a href="/la-fiambrera-malaga/aviso-legal#cookies">Cookies</a>
+					</nav>
+					<p class="credit">
+						Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+						<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Llamar a La Fiambrera <span>{BUSINESS.phone}</span>
+		</a>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34600689318?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20carta%20de%20La%20Fiambrera." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a La carta de La Fiambrera"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

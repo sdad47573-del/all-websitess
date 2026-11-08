@@ -1,0 +1,376 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/casa-herminia-apaisada-01.jpg';
+import almuerzo from '../assets/fotos/casa-herminia-apaisada-03.jpg';
+import llom from '../assets/fotos/casa-herminia-apaisada-08.jpg';
+import barra from '../assets/fotos/casa-herminia-apaisada-09.jpg';
+import carajilloCalle from '../assets/fotos/casa-herminia-vertical-02.jpg';
+import carajilloCana from '../assets/fotos/casa-herminia-vertical-04.jpg';
+import bocadilloPatatas from '../assets/fotos/casa-herminia-vertical-05.jpg';
+import huevos from '../assets/fotos/casa-herminia-vertical-06.jpg';
+import cartel from '../assets/fotos/casa-herminia-vertical-07.jpg';
+import longaniza from '../assets/fotos/casa-herminia-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: almuerzo,
+		alt: 'Plato de almuerzo con huevos, embutido, patatas, tomate, olivas, cacahuetes y pan en Casa Herminia',
+	},
+	{
+		src: llom,
+		alt: 'Bocadillo de llom con pimiento rojo asado abierto sobre el papel de la mesa',
+	},
+	{
+		src: barra,
+		alt: 'Dos platos con olivas, encurtidos y cacahuetes en la mesa de Casa Herminia',
+	},
+	{
+		src: carajilloCalle,
+		alt: 'Carajillo servido en vaso de caña en la terraza de Casa Herminia, removiéndolo con la cucharilla',
+	},
+	{
+		src: bocadilloPatatas,
+		alt: 'Bocadillo de patatas fritas con cerveza y olivas en la mesa de Casa Herminia',
+	},
+	{
+		src: huevos,
+		alt: 'Plato de almuerzo con huevo frito, jamón, tomate, longaniza y patatas',
+	},
+	{
+		src: longaniza,
+		alt: 'Bocadillo de longaniza con huevo, cerveza y olivas en Casa Herminia',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['BarOrPub', 'Restaurant'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: ['Casa Herminia', 'Bar Casa Herminia', 'Casa Herminia La Pobla Tornesa'],
+	slogan: 'El almuerzo de siempre y el carajillo palmero',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34964338125',
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	acceptsReservations: 'True',
+	servesCuisine: ['Almuerzos', 'Bocadillos', 'Cocina de pueblo', 'Tapas', 'Cafetería'],
+	areaServed: [
+		{ '@type': 'City', name: 'La Pobla Tornesa' },
+		{ '@type': 'AdministrativeArea', name: 'Plana Alta' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.province,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '15:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '07:00',
+			closes: '13:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El almuerzo', href: '#carta' },
+	{ label: 'El carajillo', href: '#carajillo' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Casa Herminia · Almuerzos y carajillo palmero en La Pobla Tornesa';
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1d4e89" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Casa Herminia, bar La Pobla Tornesa, almuerzos La Pobla Tornesa, carajillo palmero, bocadillos, bar de pueblo, Carrer Vilafamés 4, Plana Alta, Castellón"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Casa Herminia · Almuerzos y carajillo palmero en La Pobla Tornesa"
+			ogDescription="Huevos, embutido y bocadillos desde las 7:00, olivas y cacahuetes en la mesa y el carajillo palmero que se inventó aquí. 4,5 en Google con 983 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza de Casa Herminia bajo el toldo azul, en La Pobla Tornesa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#1d4e89"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.province}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34964338125"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="La Pobla Tornesa, Castelló"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 964 33 81 25',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[terraza]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Bar · Almuerzos · La Pobla"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carrer Vilafamés, 4 · La Pobla Tornesa"
+				title={piezas.portada.titulo}
+				lede="Casa Herminia es bar y restaurante de almuerzos en La Pobla Tornesa: huevos, embutido y bocadillos desde las siete de la mañana, olivas y cacahuetes en la mesa, cerveza bien fría y el carajillo palmero que, según el cartel de la casa, se inventó aquí."
+				image={terraza}
+				imageAlt="Terraza de Casa Herminia bajo el toldo azul y la morera, en La Pobla Tornesa"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Carajillo palmero · 1998"
+				facts={[
+					{ label: 'Nota', html: '<b>4,5 en Google</b> con 983 reseñas' },
+					{ label: 'De lunes a viernes', html: '<b>7:00 – 15:30</b>' },
+					{ label: 'Sábado', html: '<b>7:00 – 13:30</b>' },
+					{ label: 'Domingo', html: '<b>Cerrado</b>' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Qué ofrece Casa Herminia" items={SERVICIOS} />
+
+			<LocalAbout
+				label="Bar de almuerzos en La Pobla"
+				title="La mesa puesta<br />antes de las nueve<br /><em>y hasta las tres.</em>"
+				paragraphs={[
+					'En el número 4 de la calle Vilafamés, con la fachada de piedra, el toldo azul de «CASA HERMINIA» y una morera dando sombra a la terraza, Casa Herminia sirve el almuerzo del pueblo y de los que suben desde Castellón hacia Vilafamés. Las mesas de fuera, blancas y de plástico, se llenan en cuanto abre.',
+					'La ficha lo clasifica como bar y restaurante. En sus fotos está el almuerzo completo: huevos fritos, embutido, tomate, patatas, pan de pueblo y cerveza, con olivas y cacahuetes de entrada. También los bocadillos de llom con pimiento y de longaniza con huevo, y el carajillo servido en vaso de caña.',
+					'Abre solo por las mañanas: de lunes a viernes de 7:00 a 15:30 y el sábado hasta las 13:30, con el domingo cerrado. La ficha suma 983 opiniones con un 4,5, y las reseñas repiten el trato de las camareras y el carajillo palmero.',
+				]}
+				note="«Típico bar de almuerzos ciclistas, buen trato y excelente carajillo palmero», dice una reseña. Otra: «buen sitio para almorzar y trato exquisito por parte de las camareras»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="El almuerzo"
+				title="Huevos, pan<br /><em>y carajillo.</em>"
+				description="La ficha de Google no publica carta con precios, así que esta selección sale de lo que aparece en sus fotos y de lo que citan sus reseñas: el plato de almuerzo, los bocadillos de la casa, la mesa de olivas y cacahuetes y el carajillo palmero."
+				cta={{ label: 'Preguntar qué hay hoy', href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin precios: la ficha no los publica y esta web no los inventa. El almuerzo del día, las raciones y los importes se consultan por teléfono en el 964 33 81 25."
+			/>
+
+			<section class="carajillo section-pad" id="carajillo" aria-labelledby="carajillo-titulo">
+				<div class="wrap">
+					<div class="carajillo-fotos">
+						<figure>
+							<Image
+								src={cartel}
+								alt="Cartel del carajillo palmero original de Casa Herminia, creado en 1998"
+								widths={[320, 480, 640]}
+								sizes="(max-width: 980px) 55vw, 24vw"
+								format="avif"
+								quality={70}
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+						<figure>
+							<Image
+								src={carajilloCana}
+								alt="Carajillo palmero en vaso de caña con su rama de canela, servido en Casa Herminia"
+								widths={[240, 360, 480]}
+								sizes="(max-width: 980px) 38vw, 18vw"
+								format="avif"
+								quality={70}
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					</div>
+					<div>
+						<p class="eyebrow"><span aria-hidden="true"></span> La firma de la casa</p>
+						<h2 id="carajillo-titulo">El carajillo<br /><em>palmero.</em></h2>
+						<p>
+							En Casa Herminia el carajillo no se sirve en copa: se sirve en vaso de caña,
+							con el café y el licor en capas que se mezclan al remover. El cartel de la
+							pared lo dice sin rodeos: «Carajillo Palmero, el auténtico», original de Casa
+							Herminia y creado en 1998.
+						</p>
+						<p>
+							Las reseñas lo piden por su nombre —«excelente carajillo palmero»— y hay quien
+							se sienta en la terraza solo a por uno. Se pide junto al café de media mañana,
+							después del plato de huevos y embutido, o como última parada antes de seguir
+							camino hacia Vilafamés.
+						</p>
+						<p class="sello"><span aria-hidden="true">★</span> Original de la casa <b>1998</b></p>
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La terraza,<br />la mesa<br /><em>y el vaso de caña.</em>"
+				description="Estas fotografías proceden del perfil de Restaurant - Bar Casa Herminia en Google Maps: el plato de almuerzo con huevo y embutido, el bocadillo de llom, la mesa de olivas y cacahuetes, el carajillo en la terraza, el bocadillo de patatas, los huevos fritos y el bocadillo de longaniza."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del bar en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Carrer Vilafamés, 4 · 12191 La Pobla Tornesa"
+				title="Te esperamos<br /><em>bajo la morera.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castelló · Plana Alta']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Horario publicado en la ficha de Google: solo mañanas, de lunes a viernes de 7:00 a 15:30 y el sábado hasta las 13:30. Domingo cerrado y sin servicio de cena. En fiestas del pueblo cambia: llama antes."
+				mapTitle="Mapa de Casa Herminia en la calle Vilafamés, 4, La Pobla Tornesa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Casa Herminia · La Pobla Tornesa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="Se reserva por teléfono, llamando al 964 33 81 25: no hay reserva online ni formulario en esta web. La terraza es pequeña y a la hora del almuerzo se llena, así que para grupos conviene avisar el día antes."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>sentarse.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del bar en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Casa Herminia"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34964338125?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20La%20Pobla%20Tornesa." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a La Pobla Tornesa"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

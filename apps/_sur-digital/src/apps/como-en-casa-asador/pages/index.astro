@@ -1,0 +1,619 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS } from '../data/site';
+import '../styles/global.css';
+
+import fotoFachada from '../assets/fotos/como-en-casa-asador-apaisada-01.jpg';
+import fotoCartel from '../assets/fotos/como-en-casa-asador-panoramica-09.jpg';
+import fotoTernera from '../assets/fotos/como-en-casa-asador-vertical-02.jpg';
+import fotoFideos from '../assets/fotos/como-en-casa-asador-vertical-03.jpg';
+import fotoEnsalada from '../assets/fotos/como-en-casa-asador-vertical-04.jpg';
+import fotoCuscus from '../assets/fotos/como-en-casa-asador-vertical-05.jpg';
+import fotoEmpanadas from '../assets/fotos/como-en-casa-asador-vertical-06.jpg';
+import fotoSopa from '../assets/fotos/como-en-casa-asador-vertical-07.jpg';
+import fotoLentejas from '../assets/fotos/como-en-casa-asador-vertical-08.jpg';
+import fotoCalle from '../assets/fotos/como-en-casa-asador-vertical-10.jpg';
+
+const DESC =
+	'Como En Casa, asador de pollos y comida casera para llevar en C. Barcenillas, 4 (Distrito Centro, Málaga). Abierto de 11:30 a 16:00, sábado cerrado. 4,5 sobre 5 con 34 reseñas en Google.';
+
+const marquesina = [
+	'Pollo asado',
+	'Comida casera',
+	'Para llevar',
+	'C. Barcenillas, 4',
+	'Distrito Centro · Málaga',
+	'11:30 a 16:00',
+	`${RATING.label} en Google`,
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Restaurant',
+			'@id': `${BUSINESS.siteUrl}/#restaurante`,
+			name: BUSINESS.fullName,
+			alternateName: BUSINESS.shortName,
+			description: DESC,
+			url: `${BUSINESS.siteUrl}/`,
+			telephone: '+34951993929',
+			image: `${BUSINESS.siteUrl}/og.jpg`,
+			servesCuisine: ['Pollo asado', 'Comida casera'],
+			priceRange: '€€',
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: BUSINESS.street,
+				addressLocality: BUSINESS.city,
+				addressRegion: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				addressCountry: BUSINESS.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			},
+			hasMap: MAPS.place,
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: RATING.value,
+				reviewCount: RATING.count,
+				bestRating: 5,
+			},
+			openingHoursSpecification: [
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'],
+					opens: '11:30',
+					closes: '16:00',
+				},
+			],
+			amenityFeature: [
+				{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+				{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento accesible', value: false },
+				{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: false },
+			],
+			acceptsReservations: false,
+			hasMenu: undefined,
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${BUSINESS.siteUrl}/#faq`,
+			mainEntity: FAQ.map((item) => ({
+				'@type': 'Question',
+				name: item.q,
+				acceptedAnswer: { '@type': 'Answer', text: item.a },
+			})),
+		},
+	],
+};
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Como En Casa · Asador de pollos y comida casera para llevar en Málaga</title>
+		<meta name="description" content={DESC} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#fbf4ea" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/como-en-casa-asador/favicon.svg" />
+
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content="Como En Casa · Asador de pollos en el Centro de Málaga" />
+		<meta property="og:description" content={DESC} />
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Cartel de Asador de Pollos Como En Casa en la calle Barcenillas, Málaga" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Manrope:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#contenido">Saltar al contenido</a>
+
+		<header class="top">
+			<div class="wrap top__bar">
+				<a class="brand" href="/como-en-casa-asador/" aria-label={`${BUSINESS.shortName}, inicio`}>
+					<span class="brand__mark" aria-hidden="true">{BUSINESS.mark}</span>
+					<span class="brand__text">
+						<strong>Como En Casa</strong>
+						<small>Asador de pollos · Málaga</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Secciones">
+					<a href="#casa">La casa</a>
+					<a href="#carta">Qué se come</a>
+					<a href="#galeria">Fotos</a>
+					<a href="#visita">Dónde estamos</a>
+					<a href="#preguntas">Preguntas</a>
+				</nav>
+				<a class="top__call" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero">
+				<div class="wrap hero__grid">
+					<div class="hero__copy">
+						<p class="eyebrow">Asador de pollos · Distrito Centro</p>
+						<h1 class="hero__title" set:html={piezas.portada.titulo} />
+						<p class="hero__lede">
+							Pollo asado y comida casera para llevar en la calle Barcenillas, 4. Cocina de mediodía,
+							raciones de las de verdad y el trato de siempre, a un paso del Centro.
+						</p>
+						<div class="hero__actions">
+							<a class="btn btn--solid" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+							<a class="btn btn--ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+						<p class="hero__meta">
+							<span class="rating">
+								<span class="stars" aria-hidden="true">★★★★★</span>
+								{RATING.label} en Google
+							</span>
+							<span class="dot" aria-hidden="true"></span>
+							<span>{RATING.count} reseñas</span>
+							<span class="dot" aria-hidden="true"></span>
+							<span>11:30–16:00 · sábado cerrado</span>
+						</p>
+					</div>
+
+					<figure class="hero__media">
+						<Image
+							src={fotoCalle}
+							alt="Cartel de Asador de Pollos Como En Casa colgando en la calle Barcenillas al atardecer"
+							widths={[420, 700, 1000]}
+							sizes="(max-width: 960px) 88vw, 30rem"
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<figcaption class="hero__caption">
+							<span>C. Barcenillas, 4</span>
+							<span>Foto: ficha de Google</span>
+						</figcaption>
+						<div class="hero__stamp" aria-hidden="true">
+							<span>Google</span>
+							<strong>{RATING.label}</strong>
+							<span>{RATING.count} reseñas</span>
+						</div>
+					</figure>
+				</div>
+			</section>
+
+			<div class="band" aria-hidden="true">
+				<div class="band__track">
+					{[...marquesina, ...marquesina].map((texto) => (
+						<span>{texto}</span>
+					))}
+				</div>
+			</div>
+
+			<section class="section section--tight">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<p class="eyebrow eyebrow--plain">La propuesta</p>
+							<h2>Comida de casa, para llevar</h2>
+						</div>
+						<p>
+							Todo lo que se puede afirmar de este local sale de su ficha pública: el nombre, la
+							valoración y lo que cuentan quienes han comido aquí.
+						</p>
+					</div>
+					<div class="pillars">
+						{
+							HIGHLIGHTS.map((item, i) => (
+								<article class="pillar">
+									<span class="pillar__num" aria-hidden="true">
+										0{i + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="section casa" id="casa">
+				<div class="wrap casa__grid">
+					<div class="casa__text">
+						<p class="eyebrow">La casa</p>
+						<h2>La cocina que huele a guiso cuando abren la puerta</h2>
+						<p>
+							Como En Casa es un asador de pollos y comida casera para llevar en pleno Distrito Centro.
+							La ficha de Google lo describe como restaurante especializado en pollo y añade al nombre
+							«comida casera para llevar». Se identifica como negocio de propietarias mujeres.
+						</p>
+						<p>
+							El local abre al mediodía, de 11:30 a 16:00, con el sábado como día de cierre. El
+							escaparate da a la calle Barcenillas y en la puerta cuelga el cartel con el teléfono: el
+							mismo 951 99 39 29 que aparece en la ficha.
+						</p>
+						<blockquote class="quote">
+							«Todo casero y muy rico, repetiremos sin duda.»
+							<cite>Reseña publicada en Google</cite>
+						</blockquote>
+					</div>
+					<div class="casa__stack">
+						<figure>
+							<Image
+								src={fotoTernera}
+								alt="Cazuela de carne guisada con verduras y patatas"
+								widths={[400, 700]}
+								sizes="(max-width: 960px) 46vw, 22rem"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+						<figure>
+							<Image
+								src={fotoEmpanadas}
+								alt="Empanadillas fritas recién hechas en bandejas"
+								widths={[300, 520]}
+								sizes="(max-width: 960px) 32vw, 15rem"
+								loading="lazy"
+								decoding="async"
+							/>
+						</figure>
+					</div>
+				</div>
+			</section>
+
+			<section class="section carta" id="carta">
+				<div class="wrap carta__grid">
+					<div class="carta__note">
+						<p class="eyebrow eyebrow--plain">La carta</p>
+						<h2>Qué se come</h2>
+						<p>
+							La ficha de Google <strong>no publica carta ni precios</strong>. Lo que sigue son las
+							familias de producto que nombran el propio negocio y las reseñas de la ficha, no una
+							lista cerrada.
+						</p>
+						<p>
+							Los guisos cambian cada día. Para saber qué hay hoy y cuánto cuesta, lo mejor es llamar
+							antes de ir.
+						</p>
+						<a class="btn btn--solid" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</div>
+
+					<div class="carta__groups">
+						{
+							MENU.map((grupo) => (
+								<div class="carta__group">
+									<h3>{grupo.title}</h3>
+									<div class="carta__sheet">
+										<h3>Como En Casa · {grupo.title}</h3>
+										{grupo.items.map((dish) => (
+											<article class="dish">
+												<h4>{dish.name}</h4>
+												{dish.price ? <span class="dish__price">{dish.price}</span> : <span />}
+												<p>{dish.note}</p>
+											</article>
+										))}
+									</div>
+								</div>
+							))
+						}
+						<p class="visita__notice">
+							Ningún importe publicado en la ficha. Si la casa facilita la carta, esta sección se
+							actualiza con los platos y precios reales.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="section gallery" id="galeria">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<p class="eyebrow">La cocina, en fotos</p>
+							<h2>Lo que sale de las cazuelas</h2>
+						</div>
+						<p>
+							Fotografías de la galería del local en Google Maps: la fachada, los guisos del día y el
+							cartel de la calle. No son fotos de estudio.
+						</p>
+					</div>
+
+					<div class="gallery__grid">
+						<figure class="gallery__item">
+							<Image
+								src={fotoFachada}
+								alt="Fachada del local con el toldo verde y la puerta abierta, mostrando el interior"
+								widths={[420, 760, 1100]}
+								sizes="(max-width: 620px) 92vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>La puerta abierta, con el toldo verde</figcaption>
+						</figure>
+						<figure class="gallery__item">
+							<Image
+								src={fotoCartel}
+								alt="Fachada cerrada con el cartel de Asador de Pollos Como En Casa y el teléfono"
+								widths={[420, 760, 1100]}
+								sizes="(max-width: 620px) 92vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>El cartel de la calle Barcenillas</figcaption>
+						</figure>
+						<figure class="gallery__item">
+							<Image
+								src={fotoFideos}
+								alt="Cazuela de barro con fideos y verduras guisados"
+								widths={[400, 700, 900]}
+								sizes="(max-width: 620px) 48vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Fideos con verduras</figcaption>
+						</figure>
+						<figure class="gallery__item">
+							<Image
+								src={fotoEnsalada}
+								alt="Bandeja de ensalada con huevo, aceitunas verdes, atún y naranja"
+								widths={[400, 700, 900]}
+								sizes="(max-width: 620px) 48vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Ensalada de la casa</figcaption>
+						</figure>
+						<figure class="gallery__item">
+							<Image
+								src={fotoCuscus}
+								alt="Cuscús con garbanzos, verduras, tomate y pollo en cazuela de barro"
+								widths={[400, 700, 900]}
+								sizes="(max-width: 620px) 48vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Cuscús con pollo y verduras</figcaption>
+						</figure>
+						<figure class="gallery__item">
+							<Image
+								src={fotoSopa}
+								alt="Sopa de pollo con verduras en cazuela de barro con cuchara"
+								widths={[400, 700, 900]}
+								sizes="(max-width: 620px) 48vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Sopa de pollo del día</figcaption>
+						</figure>
+						<figure class="gallery__item">
+							<Image
+								src={fotoLentejas}
+								alt="Lentejas guisadas con verduras y chorizo en cazuela de barro"
+								widths={[400, 700, 900]}
+								sizes="(max-width: 620px) 48vw, (max-width: 960px) 48vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Lentejas de cuchara</figcaption>
+						</figure>
+					</div>
+
+					<p class="gallery__more">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">
+							Ver el resto de fotos en la ficha de Google ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section reviews">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<p class="eyebrow eyebrow--plain">Opiniones</p>
+							<h2>{RATING.label} sobre 5 en Google</h2>
+						</div>
+						<p>
+							{RATING.count} reseñas en el momento de consultar la ficha (octubre de 2026). Estas son
+							tres de las publicadas, sin retocar el texto.
+						</p>
+					</div>
+					<div class="reviews__grid">
+						{
+							RESENAS.map((resena) => (
+								<article class="review">
+									<p class="review__stars" aria-label={`${resena.valor} de 5 estrellas`}>
+										{'★'.repeat(resena.valor)}
+									</p>
+									<blockquote>{resena.texto}</blockquote>
+									<footer>Reseña en Google</footer>
+								</article>
+							))
+						}
+					</div>
+					<div class="reviews__foot">
+						<span>
+							Las opiniones son de clientes. La valoración media la calcula Google con todas las
+							publicadas, también las que no están aquí.
+						</span>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas las reseñas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="section visita" id="visita">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<p class="eyebrow eyebrow--plain">Dónde estamos</p>
+							<h2>Un bajo en Barcenillas</h2>
+						</div>
+					</div>
+					<div class="visita__grid">
+						<div>
+							<p class="address">
+								{BUSINESS.street}
+								<span>{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</span>
+							</p>
+
+							<table class="hours">
+								<caption class="skip">Horario publicado en la ficha de Google</caption>
+								<thead>
+									<tr>
+										<th scope="col">Día</th>
+										<th scope="col">Horario</th>
+									</tr>
+								</thead>
+								<tbody>
+									{
+										HORARIO.map((fila) => (
+											<tr class:list={['', { 'is-closed': fila.closed }]}>
+												<th scope="row">{fila.dia}</th>
+												<td>{fila.horas}</td>
+											</tr>
+										))
+									}
+								</tbody>
+							</table>
+							<p class="visita__notice">{HORARIO_AVISO}</p>
+
+							<div class="visita__actions">
+								<a class="btn btn--solid" href={MAPS.directions} target="_blank" rel="noreferrer">
+									Cómo llegar ↗
+								</a>
+								<a class="btn btn--ghost" href={BUSINESS.phoneHref}>Llamar</a>
+								<a class="btn btn--ghost" href={MAPS.streetView} target="_blank" rel="noreferrer">
+									Ver la calle ↗
+								</a>
+							</div>
+
+							<ul class="tags">
+								<li>Acceso para sillas de ruedas</li>
+								<li>Sin aparcamiento accesible</li>
+								<li>Sin asientos adaptados</li>
+								<li>Propiedad de mujeres</li>
+								<li>Comida para llevar</li>
+							</ul>
+						</div>
+
+						<div class="map">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa con la ubicación de ${BUSINESS.name} en ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas">
+				<div class="wrap faq__grid">
+					<div>
+						<p class="eyebrow eyebrow--plain">Antes de venir</p>
+						<h2>Preguntas frecuentes</h2>
+						<p>
+							Todo lo que sigue está sacado de la ficha pública de Google. Si algo no aparece, es
+							porque la casa no lo ha publicado.
+						</p>
+					</div>
+					<div>
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="foot">
+			<div class="wrap">
+				<div class="foot__grid">
+					<div class="foot__brand">
+						<strong>Como En Casa</strong>
+						<p>
+							Asador de pollos y comida casera para llevar. {BUSINESS.street}, {BUSINESS.district},{' '}
+							{BUSINESS.postalCode} {BUSINESS.city}.
+						</p>
+					</div>
+					<div>
+						<h3>La casa</h3>
+						<ul>
+							<li><a href="#casa">Quiénes somos</a></li>
+							<li><a href="#carta">Qué se come</a></li>
+							<li><a href="#galeria">Fotos</a></li>
+							<li><a href="#preguntas">Preguntas frecuentes</a></li>
+						</ul>
+					</div>
+					<div>
+						<h3>Contacto</h3>
+						<ul>
+							<li><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></li>
+							<li><a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></li>
+							<li><a href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps</a></li>
+							<li><a href="/como-en-casa-asador/aviso-legal">Aviso legal y privacidad</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot__bottom">
+					<small>© {new Date().getFullYear()} {BUSINESS.fullName}. Todos los derechos reservados.</small>
+					<p class="credit">
+						<small>
+							Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+							<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+						</small>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Pedir por teléfono <span>{BUSINESS.phone}</span>
+		</a>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34951993929?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Acceso%20para%20sillas%20de%20ruedas." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Acceso para sillas de ruedas"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

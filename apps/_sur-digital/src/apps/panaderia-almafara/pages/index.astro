@@ -1,0 +1,247 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-almafara-vertical-01.jpg';
+import escaparate from '../assets/fotos/panaderia-almafara-vista-2-02.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería ALMAFARA · Cruz de Humilladero, Málaga';
+const description =
+	'Panadería ALMAFARA, panadería, charcutería y tienda de alimentación en la Avenida de José Ortega y Gasset, 139 (Cruz de Humilladero, 29006 Málaga). Pan, embutidos, fruta, despensa y asado de pimientos y batatas.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Bakery', 'GroceryStore'],
+	'@id': `${BUSINESS.siteUrl}/#almafara`,
+	name: BUSINESS.name,
+	alternateName: ['Almafara', 'Panadería Charcutería Almafara', 'Almafara Málaga'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:30',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '09:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '09:00',
+			closes: '14:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Trato inmejorable por parte de la dueña',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Excelente atención y muy buenos precios',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'El trato de la señora que atiende siempre muy amable y con una sonrisa!!',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const galeria = [
+	{
+		src: escaparate,
+		alt: 'Rótulo de Panadería - Charcutería Almafara sobre el escaparate con tarros, conservas y productos de alimentación',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Almafara con la pizarra de «Pimientos asados», cajas de fruta y verdura y la puerta abierta',
+	},
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"panaderia-almafara-vertical-01.jpg": fachada,
+	"panaderia-almafara-vista-2-02.jpg": escaparate,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#4a2a1b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..600;1,400..600&family=Work+Sans:wght@400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Almafara, Charcutería Almafara, panadería Cruz de Humilladero, tienda de alimentación Málaga, pimientos asados Málaga, batatas asadas, José Ortega y Gasset, 29006"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería, charcutería y tienda de alimentación en la Avenida de José Ortega y Gasset, 139. Pan, embutidos, fruta y verdura, despensa y asado de pimientos y batatas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Panadería - Charcutería Almafara con la pizarra de pimientos asados"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#4a2a1b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/panaderia-almafara/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Almafara"
+			subtitle="Panadería · Charcutería"
+			nav={nav}
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone=""
+			phoneHref=""
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Ver en Google Maps"
+			navAriaLabel="Enlaces de Panadería ALMAFARA"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

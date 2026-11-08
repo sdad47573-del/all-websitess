@@ -1,0 +1,633 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, FAQ, HIGHLIGHTS, HORARIO, HORARIO_AVISO, MAPS, MENU, RATING, RESENAS } from '../data/site';
+import '../styles/global.css';
+
+import fotoBandejas from '../assets/fotos/cocina-con-al-ma-apaisada-03.jpg';
+import fotoMostrador from '../assets/fotos/cocina-con-al-ma-apaisada-04.jpg';
+import fotoCroquetas from '../assets/fotos/cocina-con-al-ma-apaisada-09.jpg';
+import fotoAsador from '../assets/fotos/cocina-con-al-ma-vertical-01.jpg';
+import fotoHorno from '../assets/fotos/cocina-con-al-ma-vertical-02.jpg';
+import fotoCarne from '../assets/fotos/cocina-con-al-ma-vertical-05.jpg';
+import fotoPimientos from '../assets/fotos/cocina-con-al-ma-vertical-06.jpg';
+import fotoServir from '../assets/fotos/cocina-con-al-ma-vertical-07.jpg';
+import fotoCurry from '../assets/fotos/cocina-con-al-ma-vertical-08.jpg';
+import fotoSalchichas from '../assets/fotos/cocina-con-al-ma-vertical-10.jpg';
+
+const ticker = [
+	'Pollo asado',
+	'Comida casera',
+	'Pasta',
+	'Ensaladas',
+	'Patatas',
+	'Postres',
+	'Helados',
+	'Bebidas frías',
+	'Hielo',
+	'Av. Gregorio de Diego, 20',
+	`${RATING.label} en Google`,
+];
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Restaurant',
+			'@id': `${BUSINESS.siteUrl}/#negocio`,
+			name: BUSINESS.fullName,
+			description: BUSINESS.description,
+			url: `${BUSINESS.siteUrl}/`,
+			telephone: '+34642213708',
+			image: `${BUSINESS.siteUrl}/og.jpg`,
+			servesCuisine: ['Pollo asado', 'Comida casera'],
+			address: {
+				'@type': 'PostalAddress',
+				streetAddress: BUSINESS.street,
+				addressLocality: BUSINESS.city,
+				addressRegion: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				addressCountry: BUSINESS.country,
+			},
+			geo: {
+				'@type': 'GeoCoordinates',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			},
+			hasMap: MAPS.place,
+			aggregateRating: {
+				'@type': 'AggregateRating',
+				ratingValue: RATING.value,
+				reviewCount: RATING.count,
+				bestRating: 5,
+			},
+			openingHoursSpecification: [
+				{
+					'@type': 'OpeningHoursSpecification',
+					dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+					opens: '08:30',
+					closes: '16:00',
+				},
+			],
+		},
+		{
+			'@type': 'FAQPage',
+			'@id': `${BUSINESS.siteUrl}/#faq`,
+			mainEntity: FAQ.map((item) => ({
+				'@type': 'Question',
+				name: item.q,
+				acceptedAnswer: { '@type': 'Answer', text: item.a },
+			})),
+		},
+	],
+};
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Cocina con AL-MA · Pollo asado y comida casera para llevar en Málaga</title>
+		<meta name="description" content={BUSINESS.description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#25321f" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/cocina-con-al-ma/favicon.svg" />
+
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content="Cocina con AL-MA · Pollo asado y comida casera para llevar" />
+		<meta property="og:description" content={BUSINESS.description} />
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Bandejas de comida casera en el mostrador de Cocina con AL-MA" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#contenido">Saltar al contenido</a>
+
+		<header class="top">
+			<div class="wrap top__in">
+				<a class="brand" href="/cocina-con-al-ma/" aria-label="Cocina con AL-MA, inicio">
+					<span class="brand__mark" aria-hidden="true">AL·MA</span>
+					<span class="brand__name">
+						<strong>Cocina con AL-MA</strong>
+						<small>Pollería · comida para llevar</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Secciones">
+					<a href="#casa">La casa</a>
+					<a href="#carta">Qué hay</a>
+					<a href="#fotos">Fotos</a>
+					<a href="#visita">Visita</a>
+					<a href="#preguntas">Preguntas</a>
+				</nav>
+				<a class="call" href={BUSINESS.phoneHref}>Llamar · {BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero">
+				<div class="wrap hero__grid">
+					<div>
+						<p class="kicker">Pollería · Carretera de Cádiz</p>
+						<h1 class="hero__title" set:html={piezas.portada.titulo} />
+						<p class="hero__lede">
+							Un mostrador en la avenida Gregorio de Diego con el asador encendido y las bandejas
+							llenas: pasta, ensaladas, guisos, patatas y postres para recoger y comer donde
+							quieras.
+						</p>
+						<div class="hero__actions">
+							<a class="btn btn--gold" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+							<a class="btn btn--ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+						<p class="rating">
+							<b>{RATING.label}</b>
+							<span class="stars" aria-hidden="true">★★★★★</span>
+							<span>sobre 5 · {RATING.count} reseñas en Google</span>
+						</p>
+					</div>
+
+					<figure class="hero__media">
+						<Image
+							src={fotoAsador}
+							alt="Horno asador con pollos ensartados asándose en tres niveles tras la puerta de cristal"
+							widths={[420, 700, 1000]}
+							sizes="(max-width: 980px) 88vw, 30rem"
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<figcaption>
+							<span>El asador, encendido</span>
+							<span>Foto: ficha de Google</span>
+						</figcaption>
+						<div class="stamp" aria-hidden="true">
+							<b>{RATING.label}</b>
+							<span>{RATING.count} reseñas</span>
+						</div>
+					</figure>
+				</div>
+			</section>
+
+			<div class="band">
+				<div class="wrap band__in">
+					<div class="band__item">
+						<span>Horario</span>
+						<strong>Miércoles a domingo · 8:30–16:00</strong>
+					</div>
+					<div class="band__item">
+						<span>Descanso</span>
+						<strong>Lunes y martes, cerrado</strong>
+					</div>
+					<div class="band__item">
+						<span>Pedidos</span>
+						<strong><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="ticker" aria-hidden="true">
+				<div class="ticker__track">
+					{[...ticker, ...ticker].map((texto) => <span>{texto}</span>)}
+				</div>
+			</div>
+
+			<section class="sec" id="casa">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La casa</span>
+							<h2>El mostrador de la avenida</h2>
+						</div>
+						<p>
+							Todo lo que cuenta esta página sale de la ficha pública de Cocina con AL-MA en
+							Google: la dirección, el teléfono, la nota y lo que el propio local describe.
+						</p>
+					</div>
+
+					<div class="about__grid">
+						<figure class="about__fig">
+							<Image
+								src={fotoMostrador}
+								alt="Expositor de comidas calientes con bandejas de pasta, guisos, arroz y lasaña"
+								widths={[420, 760, 1100]}
+								sizes="(max-width: 980px) 92vw, 32rem"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>El expositor de calientes, a media mañana</figcaption>
+						</figure>
+						<div class="about__text">
+							<p class="lead">
+								«Local de comidas para llevar. Comida casera, pasta, ensaladas, pollos asados,
+								patatas.» Así se presenta la casa en su propia ficha.
+							</p>
+							<p>
+								Google la clasifica como pollería, y el asador se ve desde la calle: pollos
+								ensartados girando en el horno, troceados y servidos en bandeja de aluminio con su
+								jugo. Al lado, el expositor mantiene calientes las bandejas de pasta, guisos,
+								arroz y verduras.
+							</p>
+							<p>
+								Es un local de recogida, no un restaurante de mesa: se elige del mostrador y se
+								come en casa. La ficha lo puntúa con 4,4 sobre 5 y suma 47 reseñas, casi todas
+								centradas en el sabor casero y en la calidad de los ingredientes.
+							</p>
+							<blockquote class="pull">
+								«Las croquetas están ricas y se ven caseras y las patatas fritas son naturales.»
+								<cite>Reseña publicada en Google</cite>
+							</blockquote>
+						</div>
+					</div>
+
+					<div class="cards">
+						{
+							HIGHLIGHTS.map((item) => (
+								<article class="card">
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="sec sec--paper2" id="carta">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Sin carta publicada</span>
+							<h2>Qué hay en el mostrador</h2>
+						</div>
+						<p>
+							La ficha no publica carta ni precios. Esto es lo que el local describe de sí mismo,
+							más los platos que nombran las reseñas. No hay una lista cerrada.
+						</p>
+					</div>
+
+					<div class="menu__grid">
+						<aside class="menu__aside">
+							<h3>Ni carta ni precios</h3>
+							<p>
+								El perfil de Google no tiene menú ni importes. Lo que haya cada día se pregunta
+								por teléfono o se ve en el mostrador.
+							</p>
+							<a class="btn btn--brick" href={BUSINESS.phoneHref}>Preguntar al {BUSINESS.phone}</a>
+							<figure class="menu__figure">
+								<Image
+									src={fotoCarne}
+									alt="Pollo asado troceado en una bandeja de aluminio con su jugo"
+									widths={[360, 620, 900]}
+									sizes="(max-width: 980px) 92vw, 18rem"
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>Pollo recién troceado, para llevar</figcaption>
+							</figure>
+							<p class="menu__note">
+								Si la casa facilita su carta, esta sección se actualiza con los platos y precios
+								reales.
+							</p>
+						</aside>
+
+						<div class="groups">
+							{
+								MENU.map((grupo) => (
+									<div class="group">
+										<h3>{grupo.title}</h3>
+										<p class="group__src">{grupo.source}</p>
+										{grupo.items.map((dish) => (
+											<article class="dish">
+												<h4>{dish.name}</h4>
+												<p>{dish.note}</p>
+											</article>
+										))}
+									</div>
+								))
+							}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec" id="fotos">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">La galería de la ficha</span>
+							<h2>Siete fotos más del mostrador</h2>
+						</div>
+						<p>
+							Las siete imágenes públicas que no están en la portada ni en la sección de la
+							casa: las bandejas, el horno, las croquetas y el pollo ya troceado. Entre todas
+							suman las diez del perfil de Google, sin repetir ninguna.
+						</p>
+					</div>
+
+					<div class="photos">
+						<figure>
+							<Image
+								src={fotoCroquetas}
+								alt="Tres croquetas en un plato con el nombre Cocina con AL-MA, ante el mostrador"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Croquetas caseras, en el plato de la casa</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoHorno}
+								alt="Trabajadora con gorro azul de lunares revisando los pollos del asador"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Los pollos, uno a uno, en el horno</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoPimientos}
+								alt="Bandeja de pimientos verdes en primer plano y trabajadora tras el mostrador"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Pimientos verdes recién hechos</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoBandejas}
+								alt="Tarrinas de comida para llevar con ensaladas, pasta, gazpacho y cremas"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Raciones listas para llevar</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoServir}
+								alt="Mano enguantada sirviendo albóndigas y macarrones de las bandejas del mostrador"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Albóndigas y macarrones, al peso</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoCurry}
+								alt="Bandejas de pollo al curry y arroz con pasas en el mostrador caliente"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Curry y arroz con pasas</figcaption>
+						</figure>
+						<figure>
+							<Image
+								src={fotoSalchichas}
+								alt="Bandejas de salchichas, ensaladilla y curry en el expositor"
+								widths={[380, 620, 900]}
+								sizes="(max-width: 720px) 92vw, (max-width: 980px) 46vw, 30vw"
+								loading="lazy"
+								decoding="async"
+							/>
+							<figcaption>Salchichas y ensaladilla, en el expositor</figcaption>
+						</figure>
+					</div>
+					<p class="photos__foot">
+						<span>
+							Las diez fotos del perfil están en la página, repartidas entre la portada, la sección
+							de la casa y esta galería, que reúne siete.
+						</span>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha en Google ↗</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="sec revs">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Opiniones</span>
+							<h2>{RATING.label} sobre 5 con {RATING.count} reseñas</h2>
+						</div>
+						<p>
+							Tres de las reseñas publicadas en la ficha, sin retocar el texto. Hablan de
+							croquetas, patatas naturales y raciones generosas.
+						</p>
+					</div>
+
+					<div class="revs__grid">
+						{
+							RESENAS.map((resena) => (
+								<article class="rev">
+									<p class="rev__stars" aria-label={`${resena.valor} de 5 estrellas`}>
+										{'★'.repeat(resena.valor)}
+									</p>
+									<blockquote>{resena.texto}</blockquote>
+									<p class="rev__meta">Reseña en Google</p>
+								</article>
+							))
+						}
+					</div>
+
+					<div class="revs__foot">
+						<span>Las tres están puntuadas con cinco estrellas en la ficha.</span>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leer todas las reseñas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec visit" id="visita">
+				<div class="wrap">
+					<div class="head">
+						<div>
+							<span class="head__label">Dónde estamos</span>
+							<h2>Gregorio de Diego, 20</h2>
+						</div>
+						<p>
+							En Carretera de Cádiz, junto a la avenida, con el asador a la vista. El mapa abre
+							las coordenadas exactas de la ficha y el botón lanza la ruta.
+						</p>
+					</div>
+
+					<div class="visit__grid">
+						<div>
+							<p class="addr">
+								{BUSINESS.street}
+								<span>{BUSINESS.district} · {BUSINESS.postalCode} {BUSINESS.city}</span>
+							</p>
+
+							{
+								HORARIO.length ? (
+									<>
+										<table class="hours">
+											<tbody>
+												{HORARIO.map((fila) => (
+													<tr class:list={['', { 'is-closed': fila.closed }]}>
+														<th scope="row">{fila.dia}</th>
+														<td>{fila.horas}</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+										<p class="hours__note">{HORARIO_AVISO}</p>
+									</>
+								) : (
+									<div class="no-hours">
+										<b>Horario no publicado</b>
+										<p>{HORARIO_AVISO}</p>
+									</div>
+								)
+							}
+
+							<div class="actions">
+								<a class="btn btn--brick" href={BUSINESS.phoneHref}>Llamar antes de venir</a>
+								<a class="btn btn--outline" href={MAPS.directions} target="_blank" rel="noreferrer">
+									Cómo llegar ↗
+								</a>
+								<a class="btn btn--outline" href={MAPS.streetView} target="_blank" rel="noreferrer">
+									Ver la calle ↗
+								</a>
+							</div>
+
+							<ul class="tags">
+								<li>Pollería</li>
+								<li>Comida para llevar</li>
+								<li>Pollo asado</li>
+								<li>Postres y helados</li>
+								<li>Lunes y martes, cerrado</li>
+								<li>Sin datos de accesibilidad en la ficha</li>
+							</ul>
+						</div>
+
+						<div class="map">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa con la ubicación de ${BUSINESS.name} en ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="sec faq" id="preguntas">
+				<div class="wrap faq__grid">
+					<div>
+						<span class="head__label">Antes de venir</span>
+						<h2>Preguntas frecuentes</h2>
+						<p class="faq__intro">
+							Todo lo que sigue está sacado de la ficha pública de Google. Cuando un dato no está,
+							la respuesta lo dice en vez de rellenarlo.
+						</p>
+					</div>
+					<div>
+						{
+							FAQ.map((item) => (
+								<details>
+									<summary>{item.q}</summary>
+									<p>{item.a}</p>
+								</details>
+							))
+						}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="foot">
+			<div class="wrap">
+				<div class="foot__grid">
+					<div class="foot__brand">
+						<strong>Cocina con AL-MA</strong>
+						<p>
+							Pollería y comida casera para llevar en {BUSINESS.street}, {BUSINESS.district},{' '}
+							{BUSINESS.postalCode} {BUSINESS.city}.
+						</p>
+					</div>
+					<div>
+						<h3>La casa</h3>
+						<ul>
+							<li><a href="#casa">Quiénes somos</a></li>
+							<li><a href="#carta">Qué hay</a></li>
+							<li><a href="#fotos">Fotos</a></li>
+							<li><a href="#preguntas">Preguntas frecuentes</a></li>
+						</ul>
+					</div>
+					<div>
+						<h3>Contacto</h3>
+						<ul>
+							<li><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></li>
+							<li><a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></li>
+							<li><a href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps</a></li>
+							<li><a href="/cocina-con-al-ma/aviso-legal">Aviso legal y privacidad</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="foot__bottom">
+					<small>© {new Date().getFullYear()} {BUSINESS.fullName}. Todos los derechos reservados.</small>
+					<p class="credit">
+						<small>
+							Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a> ·
+							<a href="https://sur-digital.vercel.app/" rel="noopener">sur-digital.vercel.app</a>
+						</small>
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>
+			Llamar a Cocina con AL-MA <span>{BUSINESS.phone}</span>
+		</a>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34642213708?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Cocina%20con%20AL-MA." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Cocina con AL-MA"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

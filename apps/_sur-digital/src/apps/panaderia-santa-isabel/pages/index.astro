@@ -1,0 +1,567 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import fachada from '../assets/fotos/panaderia-santa-isabel-apaisada-01.jpg';
+import fachadaToldo from '../assets/fotos/panaderia-santa-isabel-apaisada-02.jpg';
+import fachadaCalle from '../assets/fotos/panaderia-santa-isabel-apaisada-04.jpg';
+import fruta from '../assets/fotos/panaderia-santa-isabel-vertical-03.jpg';
+import esquina from '../assets/fotos/panaderia-santa-isabel-vertical-05.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, MAPS, MENU, REVIEW_NOTES, REVIEW_QUOTE, SERVICIOS } from '../data/site';
+
+const title = 'Panadería Santa Isabel · Puerto de la Torre, Málaga';
+const description =
+	'Panadería Santa Isabel, en Cam. Soliva del Cañaveral, 21 (Puerto de la Torre, 29190 Málaga). Pan, confitería, bocadillos y mini servicio. Teléfono 952 10 70 86.';
+const ratingLabel = BUSINESS.rating.toFixed(1).replace('.', ',');
+
+const galeria = [
+	{
+		src: fachadaToldo,
+		alt: 'Fachada blanca de la Panadería Confitería Santa Isabel con toldo de rayas y el rótulo azul de mini servicio',
+		caption: 'La fachada, con el toldo y el rótulo azul',
+	},
+	{
+		src: fruta,
+		alt: 'Cestas de pan sobre el horno y cajas de sandía, higos, aguacates, manzanas, peras y uvas en el mostrador',
+		caption: 'El mostrador de fruta, junto al horno y las cestas de pan',
+	},
+	{
+		src: fachadaCalle,
+		alt: 'Entrada de la panadería con el rótulo Panadería Confitería Mini Servicio y la calle al fondo',
+		caption: 'La entrada y la calle, desde la esquina',
+	},
+	{
+		src: esquina,
+		alt: 'Rótulo azul de Panadería Confitería Santa Isabel sobre la fachada blanca, junto a la entrada',
+		caption: 'El rótulo de la panadería en la fachada blanca',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Bakery', 'GroceryStore'],
+	'@id': `${BUSINESS.siteUrl}/#santa-isabel`,
+	name: BUSINESS.name,
+	alternateName: ['Santa Isabel', 'Panadería Confitería Santa Isabel', 'Mini servicio Santa Isabel'],
+	description:
+		'Panadería, confitería y mini servicio en Cam. Soliva del Cañaveral, 21 (Puerto de la Torre, 29190 Málaga). Pan, bocadillos, fruta y despensa de barrio.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 952 10 70 86',
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '17:30',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday', 'Sunday'],
+			opens: '09:30',
+			closes: '15:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: false,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: REVIEW_QUOTE,
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#mostrador' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4f75" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gloock&family=Outfit:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería Santa Isabel, panadería Puerto de la Torre, confitería Málaga, mini servicio Puerto de la Torre, bocadillos Málaga, Soliva del Cañaveral 21"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería, confitería y mini servicio en el Camino Soliva del Cañaveral, 21, Puerto de la Torre. Pan, bocadillos, fruta y despensa. Teléfono 952 10 70 86."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de la Panadería Confitería Santa Isabel en Puerto de la Torre, Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1f4f75"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/panaderia-santa-isabel/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Panadería Santa Isabel, inicio">
+					<span class="brand-mark" aria-hidden="true">SI</span>
+					<span class="brand-name">
+						Santa Isabel
+						<small>Panadería · Confitería · Mini servicio</small>
+					</span>
+				</a>
+				<nav class="nav" aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>
+					<span class="topbar-phone-label">Llamar</span> {BUSINESS.phone}
+				</a>
+			</div>
+			<nav class="mobile-nav wrap" aria-label="Navegación principal en móvil">
+				{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+			</nav>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Puerto de la Torre · Málaga</p>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
+						<p class="hero-lede">
+							Una panadería, confitería y tienda de barrio en el Camino Soliva del
+							Cañaveral, 21. Pan del día, dulces, bocadillos y una pequeña despensa para
+							el día a día.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href={BUSINESS.phoneHref}>
+								Llamar · {BUSINESS.phone}
+							</a>
+						</div>
+						<div class="hero-facts">
+							<div>
+								<span>Google</span>
+								<strong>{ratingLabel} / 5</strong>
+								<small>{BUSINESS.reviewsCount} reseñas</small>
+							</div>
+							<div>
+								<span>Horario</span>
+								<strong>9:00–15:00</strong>
+								<small>y 17:30–21:00 de lunes a viernes</small>
+							</div>
+							<div>
+								<span>La casa</span>
+								<strong>Pan y despensa</strong>
+								<small>confitería y mini servicio</small>
+							</div>
+						</div>
+					</div>
+
+					<figure class="hero-photo">
+						<Image
+							src={fachada}
+							alt="Fachada de la Panadería Confitería Santa Isabel en el Camino Soliva del Cañaveral, con toldo de rayas, sillas verdes y el rótulo azul de mini servicio"
+							widths={[480, 720, 960, 1200]}
+							sizes="(max-width: 980px) 92vw, 44vw"
+							format="avif"
+							quality={74}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<span class="hero-plaque" aria-hidden="true">
+							<span>Panadería</span>
+							<span>Confitería</span>
+							<span>Mini servicio</span>
+						</span>
+						<figcaption>
+							<span>Foto del perfil de Google Maps</span>
+							<a href={MAPS.place} target="_blank" rel="noreferrer">Ver la ficha ↗</a>
+						</figcaption>
+					</figure>
+				</div>
+				<div class="tile-strip" aria-hidden="true"></div>
+			</section>
+
+			<section class="facts" aria-label="Datos de la ficha">
+				<div class="wrap facts-grid">
+					<div class="fact">
+						<span class="fact-kicker">La ficha</span>
+						<strong>{ratingLabel} / 5</strong>
+						<p>{BUSINESS.reviewsCount} reseñas en Google.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El teléfono</span>
+						<strong><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></strong>
+						<p>El número publicado en Google.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">El horario</span>
+						<strong>9:00–21:00</strong>
+						<p>Con cierre de 15:00 a 17:30.</p>
+					</div>
+					<div class="fact">
+						<span class="fact-kicker">La tienda</span>
+						<strong>Mini servicio</strong>
+						<p>Pan, confitería, fruta y despensa.</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-head">
+					<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+					<h2 id="about-title">Panadería, confitería <em>y despensa.</em></h2>
+					<p>
+						La fachada lo dice todo: «Panadería Confitería Santa Isabel» y «Mini
+						servicio». Google la clasifica como supermercado, y las reseñas hablan de
+						bocadillos y de una tienda de barrio.
+					</p>
+				</div>
+
+				<div class="highlights-grid">
+					{
+						HIGHLIGHTS.map((item) => (
+							<article class="highlight">
+								<span class="highlight-number">{item.number}</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))
+					}
+				</div>
+
+				<ul class="chips" aria-label="Lo que ofrece Santa Isabel">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="counter" id="mostrador" aria-labelledby="counter-title">
+				<div class="wrap">
+					<div class="counter-head">
+						<div>
+							<p class="section-label"><span aria-hidden="true"></span> El mostrador</p>
+							<h2 id="counter-title">Del horno <em>a la despensa.</em></h2>
+						</div>
+						<p>
+							La ficha no publica carta ni precios. Esto es lo que aparece en el rótulo,
+							en las reseñas y en las fotos del perfil de Google.
+						</p>
+					</div>
+
+					<div class="menu-grid">
+						{
+							MENU.map((group) => (
+								<article class="menu-card">
+									<span class="menu-kicker">{group.kicker}</span>
+									<h3>{group.title}</h3>
+									<ul>
+										{group.items.map((item) => (
+											<li>
+												<strong>{item.name}</strong>
+												<span>{item.note}</span>
+											</li>
+										))}
+									</ul>
+								</article>
+							))
+						}
+					</div>
+
+					<div class="counter-note">
+						<p>
+							<strong>Sin carta ni precios publicados.</strong> Para saber qué hay cada
+							día, llama al <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a> o pasa por
+							el mostrador.
+						</p>
+						<a class="button button-primary" href={BUSINESS.phoneHref}>Llamar a Santa Isabel</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery wrap" id="fotos" aria-labelledby="gallery-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La casa en fotos</p>
+						<h2 id="gallery-title">La esquina, <em>por dentro.</em></h2>
+					</div>
+					<p>
+						Cuatro vistas del perfil de Google Maps: la fachada, la entrada, el rótulo y
+						el mostrador de fruta junto al horno. Son imágenes del establecimiento, no de
+						un banco de fotos.
+					</p>
+				</div>
+
+				<div class="gallery-grid">
+					{
+						galeria.map((photo) => (
+							<figure>
+								<Image
+									src={photo.src}
+									alt={photo.alt}
+									widths={[420, 640, 960, 1200]}
+									sizes="(max-width: 700px) 92vw, 46vw"
+									format="avif"
+									quality={72}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{photo.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+				<p class="gallery-note">
+					Imágenes del perfil del establecimiento en Google Maps. Si eres titular de
+					alguna y quieres retirarla, escríbenos y la borramos.
+				</p>
+			</section>
+
+			<section class="reviews" aria-labelledby="reviews-title">
+				<div class="wrap reviews-grid">
+					<div class="reviews-score">
+						<span class="score-number">{ratingLabel}</span>
+						<span class="score-stars" role="img" aria-label="4,7 de 5 estrellas">★★★★★</span>
+						<span class="score-count">{BUSINESS.reviewsCount} reseñas en Google</span>
+					</div>
+					<div class="reviews-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que dicen</p>
+						<h2 id="reviews-title">«Bocatas muy ricos <em>y personal muy amable</em>»</h2>
+						<div class="review-quote">
+							<blockquote>«{REVIEW_QUOTE}»</blockquote>
+							<p class="review-caption">Reseña de 5 estrellas en Google Maps</p>
+						</div>
+						<ul class="review-notes">
+							{REVIEW_NOTES.map((note) => <li>{note}</li>)}
+						</ul>
+						<a class="reviews-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+							Leer las 20 reseñas en Google <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Visítanos</p>
+					<h2 id="visit-title">En Puerto <em>de la Torre.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<table class="hours">
+						<caption>Horario escrito en la ficha</caption>
+						<tbody>
+							{
+								HOURS.map((row) => (
+									<tr>
+										<th scope="row">{row.day}</th>
+										<td>{row.value}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+					<p class="hours-note">
+						Es el horario que el titular escribe en la descripción de Google; la ficha no
+						tiene un bloque de horario estructurado. Consultado el 28 de octubre de 2026:
+						confirma antes de ir.
+					</p>
+
+					<div class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</div>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={BUSINESS.phoneHref}>Llamar ahora</a>
+						<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<p class="visit-note">
+						La ficha indica acceso para sillas de ruedas, pero no aparcamiento adaptado. No
+						publica información sobre reparto a domicilio.
+					</p>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Panadería Santa Isabel en el Camino Soliva del Cañaveral, 21, Puerto de la Torre, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Soliva del Cañaveral, 21
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>entrar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">SI</span>
+						<p>
+							Santa Isabel
+							<small>Panadería · Confitería · Mini servicio<br />{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces de Panadería Santa Isabel">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Reseñas ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="/panaderia-santa-isabel/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos, teléfono, valoración y
+					fotografías del perfil público de Google Maps, consultados en octubre de 2026.
+					Horario según la descripción del titular. Sin carta ni precios publicados por el
+					establecimiento.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/panaderia-santa-isabel/aviso-legal">Aviso legal</a>
+					<a href="/panaderia-santa-isabel/aviso-legal#privacidad">Privacidad</a>
+					<a href="/panaderia-santa-isabel/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+				</p>
+			</div>
+		</footer>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34952107086?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20M%C3%A1laga." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Málaga"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

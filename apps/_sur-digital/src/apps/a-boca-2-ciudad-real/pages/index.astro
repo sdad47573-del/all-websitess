@@ -1,0 +1,224 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+	LocalSecciones,
+} from '@astro-components';
+
+import envuelto from '../assets/fotos/a-boca-2-ciudad-real-vertical-01.jpg';
+import abierto from '../assets/fotos/a-boca-2-ciudad-real-vertical-02.jpg';
+import quemado from '../assets/fotos/a-boca-2-ciudad-real-vertical-03.jpg';
+import interior from '../assets/fotos/a-boca-2-ciudad-real-vertical-04.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HOURS,
+	HORARIO_AVISO,
+	MAPS,
+	MENU,
+	RATING,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'A boca2 Ciudad Real · bocadillos y patatas en la calle de los Hidalgos';
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: abierto,
+		alt: 'Bocadillo de lomo con queso abierto sobre papel estampado, con lechuga, tomate y mayonesa',
+	},
+	{
+		src: envuelto,
+		alt: 'Bocadillo envuelto en papel de aluminio, sostenido en la mano en la acera',
+	},
+	{
+		src: quemado,
+		alt: 'Bocadillo con lechuga y pollo junto a la otra mitad del pan, tostada de más',
+	},
+	{
+		src: interior,
+		alt: 'Interior de A boca2: barra naranja, taburete alto, nevera de refrescos y el rótulo en la pared',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#a-boca2`,
+	name: BUSINESS.name,
+	alternateName: ['A boca2', 'A boca 2 Ciudad Real', 'Aboca2 Ciudad Real'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Bocadillos', 'Bocatería', 'Comida para llevar'],
+	areaServed: [
+		{ '@type': 'City', name: 'Ciudad Real' },
+		{ '@type': 'AdministrativeArea', name: 'Castilla-La Mancha' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.channel },
+		{ '@type': 'PropertyValue', name: 'Plus Code', value: BUSINESS.plusCode },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		reviewCount: RATING.count,
+		bestRating: 5,
+	},
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Entrada accesible', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Se admiten perros', value: true },
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visita', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+import secciones from '../data/secciones.json';
+
+const piezas = secciones.secciones;
+const fotos = {
+	"a-boca-2-ciudad-real-vertical-02.jpg": abierto,
+	"a-boca-2-ciudad-real-vertical-01.jpg": envuelto,
+	"a-boca-2-ciudad-real-vertical-03.jpg": quemado,
+	"a-boca-2-ciudad-real-vertical-04.jpg": interior,
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#15100d" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="A boca2 Ciudad Real, bocatería Ciudad Real, bocadillos calle de los Hidalgos, bocadillo de lomo con queso Ciudad Real, patatas con kebab Ciudad Real, bocatería 13004, comida para llevar centro Ciudad Real"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Bocadillos de lomo, pollo y kebab, patatas y raciones en la calle de los Hidalgos, 3, de Ciudad Real. Para llevar o en la barra. 3,2 sobre 5 con 65 reseñas en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bocadillo de lomo con queso de A boca2 Ciudad Real"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#15100d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-CM"
+			postalCode={BUSINESS.postalCode}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Ciudad Real"
+			preload={[abierto]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/a-boca-2-ciudad-real/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Bocatería en Ciudad Real"
+			cta={{ label: 'Cómo llegar', href: MAPS.directions, external: true }}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="conteudo">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district ?? '',
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={HOURS}
+				mapas={MAPS}
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías provenientes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario y carta en el local."
+			ctaLabel="Cómo llegar"
+			navAriaLabel="Enlaces de A boca2 Ciudad Real"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

@@ -1,0 +1,382 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terraza from '../assets/fotos/bar-alojamiento-rural-el-castillo-apaisada-01.jpg';
+import chuleton from '../assets/fotos/bar-alojamiento-rural-el-castillo-apaisada-04.jpg';
+import cordero from '../assets/fotos/bar-alojamiento-rural-el-castillo-vertical-03.jpg';
+import parrillada from '../assets/fotos/bar-alojamiento-rural-el-castillo-vertical-10.jpg';
+import embutido from '../assets/fotos/bar-alojamiento-rural-el-castillo-vertical-08.jpg';
+import terrazaExterior from '../assets/fotos/bar-alojamiento-rural-el-castillo-apaisada-07.jpg';
+import cafe from '../assets/fotos/bar-alojamiento-rural-el-castillo-vertical-09.jpg';
+import pueblo from '../assets/fotos/bar-alojamiento-rural-el-castillo-vertical-06.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: chuleton,
+		alt: 'Chuletón de ternera a la brasa con patatas fritas y sal gruesa en El Castillo',
+	},
+	{
+		src: cordero,
+		alt: 'Chuletas de cordero a la brasa con patatas y embutido casero en El Castillo',
+	},
+	{
+		src: parrillada,
+		alt: 'Parrillada de carnes y embutido casero recién hecha en la brasa de El Castillo',
+	},
+	{
+		src: embutido,
+		alt: 'Longanizas y morcilla caseras recién sacadas de la brasa en El Castillo',
+	},
+	{
+		src: terrazaExterior,
+		alt: 'Terraza exterior de El Castillo con mesas y vistas a la sierra del Alto Mijares',
+	},
+	{
+		src: cafe,
+		alt: 'Café servido en vaso de barro sobre plato blanco en El Castillo',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'BarOrPub', 'Hotel'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: [
+		'Bar Rte y Alojamiento Rural el Castillo',
+		'Bar Restaurante y Carnicería el Castillo',
+		'El Castillo de Villamalefa',
+	],
+	slogan: BUSINESS.tagline,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.website, BUSINESS.facebook],
+	telephone: '+34 964 37 51 16',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Carne', 'Barbacoa', 'Española', 'Casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Castillo de Villamalefa' },
+		{ '@type': 'AdministrativeArea', name: 'Alto Mijares' },
+		{ '@type': 'AdministrativeArea', name: 'Castellón' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	hasMenu: 'https://restauranteelcastillo.org/carta/',
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza con vistas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Alojamiento rural',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((body) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+		reviewBody: body,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Alojamiento', href: '#alojamiento' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const title = 'El Castillo · Brasa y alojamiento en Villamalefa';
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7c2d16" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Castillo Castillo de Villamalefa, restaurante Castillo de Villamalefa, carne a la brasa Alto Mijares, chuletón Castillo de Villamalefa, carnicería Castillo de Villamalefa, alojamiento rural Castillo de Villamalefa, menú del día Castellón"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="El Castillo · Carne a la brasa en Castillo de Villamalefa"
+			ogDescription="Chuletón y embutido casero a la brasa, menú del día y habitaciones con vistas al valle del Alto Mijares. 4,5 en Google con 692 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Chuletón de ternera a la brasa con patatas en El Castillo, Castillo de Villamalefa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#7c2d16"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34964375116"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 964 37 51 16',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[terraza]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Brasa y alojamiento · Alto Mijares"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Carretera, 82-70 · Castillo de Villamalefa · Castellón"
+				title={piezas.portada.titulo}
+				lede="El Castillo es bar, restaurante y carnicería a la salida de Castillo de Villamalefa. Chuletón y embutido casero a la parrilla, menú del día de cuchara, terraza sobre el valle del Alto Mijares y habitaciones para quedarse a dormir."
+				image={terraza}
+				imageAlt="Comedor acristalado de El Castillo con las mesas vestidas y vistas al valle de Castillo de Villamalefa"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Brasa · Carnicería · Habitaciones"
+				facts={[
+					{ label: 'Nota', html: '<b>4,5 en Google</b> con 692 reseñas' },
+					{ label: 'Especialidad', html: '<b>Chuletón a la brasa</b> de 800 g' },
+					{ label: 'Carne', html: '<b>Embutido casero</b> de la carnicería' },
+					{ label: 'Alojamiento', html: '<b>Apartamento y habitaciones</b> dobles' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece El Castillo" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Bar, carnicería<br /><em>y brasa.</em>"
+				paragraphs={[
+					'El Castillo está en la C. Carretera, 82-70, en la salida de Castillo de Villamalefa, un pueblo de calles estrechas y escalonadas en la comarca del Alto Mijares. El comedor es un acristalado con vistas abiertas al valle y a la sierra: aquí se come mirando el paisaje.',
+					'La casa es bar, restaurante y carnicería al mismo tiempo. La carne y el embutido salen de su propia elaboración y pasan por la parrilla: chuletón de ternera de unos 800 gramos, chuletas de cordero, secreto, churrasco, galtas, conejo, y longanizas y morcilla caseras. De entrante, jamón y queso, albóndigas en salsa de almendra, caracoles o gazpacho.',
+					'En los días de frío la terraza se calienta con estufas de leña y el resto del año se come fuera, con el valle a los pies. El pan llega de una panadería de la comarca y hay productos de la zona para comprar y llevar a casa. Arriba quedan las habitaciones y el apartamento rural, para quien quiera quedarse a dormir después de comer.',
+				]}
+				note="«Servicio rápido, las brasas geniales, los camarer@s muy atentos», cuenta una reseña de Google. Otra: «Bocadillos y carne a la brasa muy buenos». Y una tercera: «Simplemente espectacular. La comida es más que copiosa, hecha a la parrilla y un precio más que asequible»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Web del local', href: BUSINESS.website, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="La brasa,<br />el embutido<br /><em>y la despensa.</em>"
+				description="La carta es la que publica el propio restaurante en su web: entrantes de cuchara y una parrilla de carne y embutido casero. Los platos cambian con el día y la temporada."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="El menú del día es variado y abundante y se monta con lo que haya ese día en la carnicería. La carta publicada no lleva precios: confírmalos por teléfono en el 964 37 51 16 antes de venir."
+			/>
+
+			<section class="special section-pad" id="alojamiento" aria-labelledby="alojamiento-title">
+				<div class="wrap special-grid">
+					<figure class="special-photo">
+						<Image
+							src={pueblo}
+							alt="Vista de Castillo de Villamalefa en lo alto del cerro desde la carretera, junto a El Castillo"
+							widths={[480, 720, 960]}
+							sizes="(max-width: 980px) 92vw, 44vw"
+							format="avif"
+							quality={68}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Castillo de Villamalefa desde la carretera, en una foto del perfil de Google Maps.</figcaption>
+					</figure>
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Alojamiento rural</p>
+						<h2 id="alojamiento-title">Comer y<br /><em>quedarse.</em></h2>
+						<p>
+							El edificio no es solo restaurante: en la misma casa hay un apartamento rural de
+							unos 40 m² con cocina, lavadora, lavavajillas, nevera, cafetera y menaje, además
+							de habitaciones dobles de unos 10 m². Todas llevan calefacción, ropa de cama y
+							toallas.
+						</p>
+						<p>
+							Es la manera de alargar la comida: subir al pueblo, comer a la brasa, dormir en el
+							Alto Mijares y desayunar con la sierra delante. Las habitaciones se reservan por
+							teléfono, en el 625 28 71 09, o desde la web del alojamiento.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href="https://restauranteelcastillo.org/alojamiento/"
+								>Ver el alojamiento ↗</a
+							>
+							<a class="simple-link" href={BUSINESS.reservationsHref}
+								>Reservas: {BUSINESS.reservationsDisplay}</a
+							>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La brasa,<br />la terraza<br /><em>y el valle.</em>"
+				description="Estas fotografías proceden del perfil de El Castillo en Google Maps: el chuletón, las chuletas de cordero, la parrillada, el embutido casero, la terraza y el café de barro."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="C. Carretera, 82-70 · 12123 Castillo de Villamalefa · Castellón"
+				title="En la salida<br /><em>del pueblo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castellón · Comunitat Valenciana']}
+				hoursCaption="Comidas, cenas y alojamiento"
+				hours={HOURS}
+				hoursNote="La ficha de Google no publica un horario fijo. El restaurante sirve comidas y cenas, así que llama al 964 37 51 16 para confirmar la hora y si queda mesa, sobre todo en fin de semana y en festivos."
+				mapTitle="Mapa de El Castillo en la C. Carretera, 82-70, Castillo de Villamalefa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Castillo · Castillo de Villamalefa"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 964 37 51 16 o en el 625 28 71 09. La ficha marca acceso y aseo adaptados para sillas de ruedas. Avisa al reservar si queréis mesa en la terraza, venís con perro o sois un grupo."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Web del local ↗', href: BUSINESS.website, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a El Castillo"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34964375116?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Castillo%20de%20Villamalefa." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Castillo de Villamalefa"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

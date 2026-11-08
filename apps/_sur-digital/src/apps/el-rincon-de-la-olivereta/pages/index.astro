@@ -1,0 +1,378 @@
+---
+import { Image } from 'astro:assets';
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import bocadillo from '../assets/fotos/el-rincon-de-la-olivereta-vertical-05.jpg';
+import ensalada from '../assets/fotos/el-rincon-de-la-olivereta-vertical-01.jpg';
+import carajillo from '../assets/fotos/el-rincon-de-la-olivereta-vertical-03.jpg';
+import flan from '../assets/fotos/el-rincon-de-la-olivereta-vertical-04.jpg';
+import oreja from '../assets/fotos/el-rincon-de-la-olivereta-vertical-06.jpg';
+import menu from '../assets/fotos/el-rincon-de-la-olivereta-vertical-07.jpg';
+import bravas from '../assets/fotos/el-rincon-de-la-olivereta-vertical-10.jpg';
+import arroz from '../assets/fotos/el-rincon-de-la-olivereta-vertical-09.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: menu,
+		alt: 'Pizarra del menú del día de El Rincón de la Olivereta por 14 €',
+	},
+	{
+		src: carajillo,
+		alt: 'Carajillo servido en vaso de cristal sobre plato blanco en El Rincón de la Olivereta',
+	},
+	{
+		src: oreja,
+		alt: 'Ración de oreja a la plancha con pimentón en El Rincón de la Olivereta',
+	},
+	{
+		src: bravas,
+		alt: 'Patatas bravas con alioli en plato blanco en El Rincón de la Olivereta',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada mixta con atún, huevo, tomate y cebolla en El Rincón de la Olivereta',
+	},
+	{
+		src: flan,
+		alt: 'Flan con nata y caramelo en El Rincón de la Olivereta',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'BarOrPub'],
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['El Rincón de la Olivereta', 'Rincón de la Olivereta Vila-real'],
+	slogan: 'Almuerzos, tapas y carajillos en Vila-real',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place, BUSINESS.instagram],
+	telephone: '+34 635 35 45 30',
+	currenciesAccepted: 'EUR',
+	priceRange: '€',
+	servesCuisine: ['Valenciana', 'Mediterránea', 'Tapas'],
+	areaServed: [
+		{ '@type': 'City', name: 'Vila-real' },
+		{ '@type': 'AdministrativeArea', name: 'Castellón' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '17:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Entrada accesible para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+		{ '@type': 'LocationFeatureSpecification', name: 'Bucle magnético asistencial', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((body, index) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: index === 0 ? 4 : 5, bestRating: 5 },
+		reviewBody: body,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fuera de horario', href: '#especiales' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+];
+
+const title = 'El Rincón de la Olivereta · Bar y almuerzos en Vila-real';
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6b2f3c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="El Rincón de la Olivereta, bar Vila-real, almuerzos Vila-real, bocadillos Vila-real, tapas caseras Vila-real, menú del día Vila-real, carajillo Vila-real, Calle Villavieja 162"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="El Rincón de la Olivereta · Bar y almuerzos en Vila-real"
+			ogDescription="Menú del día por 14 €, almuerzos con bocadillos, tapas caseras y carajillos. De lunes a sábado en la Calle Villavieja, 162. 4,5 en Google con 266 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Bocadillo de calamares con alioli de El Rincón de la Olivereta, Vila-real"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#6b2f3c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34635354530"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 635 35 45 30',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[bocadillo]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			subtitle="Almuerzos y tapas · Vila-real"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Calle Villavieja, 162 · Vila-real · Castellón"
+				title={piezas.portada.titulo}
+				lede="El Rincón de la Olivereta es el bar de almuerzos de la Calle Villavieja: bocadillos como la enterita con pincho moruno, tapas caseras, menú del día a mediodía y carajillos para cerrar. Cocina valenciana y mediterránea, de lunes a sábado."
+				image={bocadillo}
+				imageAlt="Bocadillo de calamares con alioli en El Rincón de la Olivereta, Vila-real"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Bar · Almuerzos"
+				facts={[
+					{ label: 'Nota', html: '<b>4,5 en Google</b> con 266 reseñas' },
+					{ label: 'Menú del día', html: '<b>14 €</b> con postre y café' },
+					{ label: 'Horario', html: '<b>08:00 – 17:00</b> de lunes a sábado' },
+					{ label: 'Domingo', html: '<b>Cerrado</b> todo el día' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece El Rincón de la Olivereta" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El bar de almuerzos<br /><em>de la Olivereta.</em>"
+				paragraphs={[
+					'El Rincón de la Olivereta está en la Calle Villavieja, 162, en el barrio de la Olivereta de Vila-real. Es un bar de los de siempre, con azulejos en las paredes, mesas juntas y una barra donde se pide el café, la cerveza y la tapa del día.',
+					'La cocina es valenciana y mediterránea, sin complicaciones: bocadillos para el almuerzo —la enterita con pincho moruno, el de calamares con alioli, el de panceta y pimiento asado—, tapas como la sepia, los xipirones, la oreja a la plancha o las carrilleras, y platos de cuchara que cambian con el día.',
+					'A mediodía sale el menú por 14 €, con entrante, primero y segundo a elegir, una consumición, pan, postre y café. Y para terminar, el carajillo de la casa, el que más se repite en las fotos del perfil. El local es pequeño, así que en las horas punta conviene reservar.',
+				]}
+				note="«Fui a probar la sepia y la verdad estaba buenísima», cuenta una reseña. Otra: «Ya tengo nuevo sitio para almorzar. Bocatas y tapas espectaculares». Y una tercera: «Se almuerza de maravilla, con menú variado, buenas cantidades y todo muy rico»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del bar', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+					{ label: 'Instagram del local', href: BUSINESS.instagram, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Menú del día,<br />bocadillos<br /><em>y tapas.</em>"
+				description="El menú del día sale de la pizarra publicada en la ficha de Google; los almuerzos y las tapas, de lo que citan las reseñas y de las fotos del perfil."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="El menú del día cuesta 14 € e incluye entrante, primero, segundo, una consumición, pan, postre y café. Los platos cambian con el día y la temporada; llama al 635 35 45 30 para saber qué hay hoy y si queda mesa."
+			/>
+
+			<section class="special section-pad" id="especiales" aria-labelledby="special-title">
+				<div class="wrap special-grid">
+					<figure class="special-photo">
+						<Image
+							src={arroz}
+							alt="Arroz con setas y marisco en la paella, para una comida especial en El Rincón de la Olivereta"
+							widths={[480, 720, 960]}
+							sizes="(max-width: 980px) 92vw, 44vw"
+							format="avif"
+							quality={68}
+							loading="lazy"
+							decoding="async"
+						/>
+						<figcaption>Arroz con setas y marisco, en una foto del perfil de Google Maps.</figcaption>
+					</figure>
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fuera de horario</p>
+						<h2 id="special-title">Cenas y comidas<br /><em>a tu hora.</em></h2>
+						<p>
+							El propio bar lo anuncia en su ficha: si quieres reservar fuera del horario
+							habitual, para cenar o para una comida especial, se puede. Esas reservas se
+							gestionan en el 633 62 48 89.
+						</p>
+						<p>
+							En las fotos del perfil aparece el arroz con setas y marisco que sale para estas
+							celebraciones, además de las tapas de siempre. Llama con antelación y acordad menú,
+							número de comensales y hora.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={BUSINESS.reservationsHref}
+								>Reservas especiales: {BUSINESS.reservationsDisplay}</a
+							>
+							<a class="simple-link" href={BUSINESS.phoneHref}
+								>Teléfono del bar: {BUSINESS.phoneDisplay}</a
+							>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El menú,<br />las tapas<br /><em>y el carajillo.</em>"
+				description="Estas fotografías proceden del perfil de El Rincón de la Olivereta en Google Maps: la pizarra del menú, el carajillo, la oreja a la plancha, las patatas bravas, la ensalada mixta y el flan con nata."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del bar en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Calle Villavieja, 162 · 12540 Vila-real · Castellón"
+				title="En la Olivereta,<br /><em>de lunes a sábado.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castellón · Comunitat Valenciana']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Google marca de 08:00 a 17:00 de lunes a sábado y cierra los domingos. El Instagram del local publica un horario algo más corto: de 08:30 a 17:00 entre semana y hasta las 14:00 los sábados. Llama antes si vas justo de tiempo."
+				mapTitle="Mapa de El Rincón de la Olivereta en la Calle Villavieja, 162, Vila-real"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Rincón de la Olivereta · Vila-real"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 635 35 45 30. Para cenas o comidas especiales fuera del horario habitual, el local indica el 633 62 48 89. Tiene acceso, aseo y aparcamiento adaptados, bucle magnético y servicio de comida para llevar."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del bar en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, platos y precios antes de la visita."
+			ctaLabel="Llamar a El Rincón de la Olivereta"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34635354530?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Vila-real." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Vila-real"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

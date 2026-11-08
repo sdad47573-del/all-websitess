@@ -1,0 +1,417 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/panaderia-el-portillo-apaisada-01.jpg';
+import vitrinaPequeña from '../assets/fotos/panaderia-el-portillo-vertical-02.jpg';
+import vitrina from '../assets/fotos/panaderia-el-portillo-apaisada-03.jpg';
+import mesa from '../assets/fotos/panaderia-el-portillo-vertical-04.jpg';
+import bandeja from '../assets/fotos/panaderia-el-portillo-vertical-05.jpg';
+import entrada from '../assets/fotos/panaderia-el-portillo-vertical-06.jpg';
+import gofre from '../assets/fotos/panaderia-el-portillo-panoramica-07.jpg';
+import mesaDulces from '../assets/fotos/panaderia-el-portillo-vertical-08.jpg';
+import manzana from '../assets/fotos/panaderia-el-portillo-vertical-09.jpg';
+import bandejaSurtida from '../assets/fotos/panaderia-el-portillo-vertical-10.jpg';
+
+import {
+	BUSINESS,
+	FAQ,
+	HIGHLIGHTS,
+	HOURS,
+	HOURS_NOTE,
+	MAPS,
+	MENU_GROUPS,
+	SERVICIOS,
+} from '../data/site';
+
+const title = 'Panadería El Portillo · Desayunos y confitería en Córdoba';
+const description =
+	'Panadería El Portillo S.L., panadería, confitería y desayunos en el Extrarradio Llanos del Castillo, 1B (14005 Córdoba). Pan, tostadas, café, bollería, tartas y dulces. Abierta todos los días.';
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#el-portillo`,
+	name: BUSINESS.name,
+	alternateName: ['El Portillo', 'El Horno de Juan', 'Panadería El Portillo Córdoba'],
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 957 32 91 29',
+	currenciesAccepted: 'EUR',
+	areaServed: [
+		{ '@type': 'City', name: 'Córdoba' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Córdoba' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '06:00',
+			closes: '15:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '06:00',
+			closes: '19:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '07:00',
+			closes: '19:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Se desayuna muy bien, las trabajadoras son muy atentas y las tostadas, enormes.',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 4, bestRating: 5 },
+			reviewBody: 'Pues desayunar tostada o dulces y buen cafe.',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Se pueden pedir de distintos sabores mitad/mitad (trufa, nata, merengue, etc).',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'El mostrador', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de Panadería El Portillo con el rótulo «Maestros Artesanos en Panadería y Bollería» y el toldo de desayunos variados',
+	},
+	{
+		src: vitrina,
+		alt: 'Vitrina de la confitería llena de milhojas, napolitanas, pasteles de nata y dulces de chocolate',
+	},
+	{
+		src: mesa,
+		alt: 'Mesa del desayuno con café, napolitana, tartas y un tenedor en la terraza de El Portillo',
+	},
+	{
+		src: entrada,
+		alt: 'Rótulo ovalado de El Horno de Juan, Panadería El Portillo, sobre la puerta de entrada',
+	},
+	{
+		src: bandeja,
+		alt: 'Bandeja de pasteles variados de El Portillo sobre papel de la panadería',
+	},
+	{
+		src: gofre,
+		alt: 'Gofre con helado, nata, chocolate y galleta servido en un plato',
+	},
+	{
+		src: mesaDulces,
+		alt: 'Mesa con varias porciones de tarta, café y un servilletero de Sandevid',
+	},
+	{
+		src: manzana,
+		alt: 'Porción de tarta de manzana y un dulce redondo con azúcar glas junto a un café',
+	},
+	{
+		src: vitrinaPequeña,
+		alt: 'Detalle de la vitrina con pasteles de crema, chocolate y azúcar glas',
+	},
+	{
+		src: bandejaSurtida,
+		alt: 'Bandeja surtida con pasteles de chocolate, crema, croissants y dulces de pistacho',
+	},
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6f2119" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,400..600;1,400..600&family=Karla:wght@400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Panadería El Portillo, El Horno de Juan, panadería Córdoba, confitería Córdoba, desayunos Córdoba, Llanos del Castillo, bollería artesana, tartas Córdoba"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Panadería, confitería y desayunos en el Extrarradio Llanos del Castillo, 1B. Pan, tostadas, café, bollería, tartas y dulces. Abierta todos los días."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Panadería El Portillo con el toldo rojo de desayunos variados"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#6f2119"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Córdoba"
+			locale="es_ES"
+			countryName="España"
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/panaderia-el-portillo/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="El Portillo"
+			subtitle="Panadería · Confitería"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Extrarradio Llanos del Castillo, 1B · 14005 Córdoba"
+				title={piezas.portada.titulo}
+				lede={`Panadería El Portillo está en el Extrarradio Llanos del Castillo, 1B. El rótulo de la fachada anuncia «Maestros Artesanos en Panadería y Bollería», y el toldo rojo, «Desayunos variados». Dentro hay vitrinas llenas de milhojas, napolitanas, tartas y dulces, y mesas para desayunar o merendar. Abre todos los días. ${BUSINESS.rating.toString().replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de Panadería El Portillo con el rótulo de maestros artesanos y el toldo rojo de desayunos variados"
+				primaryCta={{ label: `Llamar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha y reseñas en Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,4</b> en Google · 697 reseñas' },
+					{ label: 'Horario', html: '<b>6:00</b> · hasta las 15:00 o 19:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phone}</b>` },
+				]}
+				galleryHref={MAPS.streetView}
+				photoCredit="Foto de la ficha de Google Maps"
+				galleryLinkLabel="Ver la calle en Street View"
+				tag="Pan · bollería · desayunos"
+			/>
+
+			<LocalChips label="Lo que hay en El Portillo" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="El horno <br /><em>de Juan.</em>"
+				paragraphs={[
+					'Panadería El Portillo S.L. está en el Extrarradio Llanos del Castillo, 1B, en Córdoba (14005). El edificio blanco lleva el rótulo «Panadería El Portillo · Maestros Artesanos en Panadería y Bollería» y un toldo rojo que anuncia «Desayunos variados».',
+					'En la entrada, el rótulo ovalado dice «El Horno de Juan · Panadería El Portillo · Panadería - Confitería». Las vitrinas del interior están llenas de milhojas, napolitanas, pasteles de nata, tartas y dulces de chocolate.',
+					'La ficha de Google la clasifica como panadería y le da 4,4 sobre 5 con 697 reseñas. Las reseñas hablan sobre todo del desayuno: «Se desayuna muy bien, las trabajadoras son muy atentas y las tostadas, enormes»; «Pues desayunar tostada o dulces y buen café».',
+					'Las fotos del perfil muestran también las mesas de la terraza con café y tartas, y un gofre con helado, nata y chocolate. La ficha publica el teléfono 957 32 91 29, pero no web, correo ni redes.',
+				]}
+				note="La ficha de Google no publica carta ni precios. Esta página solo cuenta lo que muestran las fotos del perfil, lo que dicen los rótulos del local y lo que cuentan las reseñas."
+				links={[
+					{ label: 'Ficha y fotos en Google', href: MAPS.place, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<section class="three section-pad" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<p class="eyebrow">
+							<span aria-hidden="true"></span> Tres cosas de la casa
+						</p>
+						<h2 id="three-title">
+							Desayuno, vitrina <br />
+							<em>y merienda.</em>
+						</h2>
+					</div>
+					<div class="three-grid">
+						{HIGHLIGHTS.map((item, index) => (
+							<article class="three-card">
+								<span class="three-num" aria-hidden="true">
+									{String(index + 1).padStart(2, '0')}
+								</span>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<LocalMenu
+				eyebrow="El mostrador"
+				title="Lo que sale <br /><em>del horno.</em>"
+				description="Sin carta ni precios publicados: esto es lo que muestran las vitrinas y las mesas del local, y lo que cuentan las reseñas de Google."
+				cta={{ label: `Llamar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU_GROUPS}
+				note="La ficha no recoge precios ni métodos de pago, así que esta web no publica importes. El surtido cambia a lo largo del día: de lunes a jueves el local cierra a las 15:00."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos"
+				title="La casa, <br /><em>por dentro.</em>"
+				description="Diez fotos de la ficha de Google Maps: la fachada, la entrada, las vitrinas de la confitería, las mesas del desayuno y los dulces."
+				images={galeria}
+				cta={{ label: 'Ver todas en Google', href: MAPS.place }}
+				note="Imágenes de la galería pública del establecimiento en Google Maps, consultada en octubre de 2026."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="En Llanos <br /><em>del Castillo.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`]}
+				hours={HOURS}
+				hoursCaption="Horario publicado en Google"
+				hoursNote={HOURS_NOTE}
+				mapTitle="Mapa de Panadería El Portillo en el Extrarradio Llanos del Castillo, 1B, Córdoba"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="El Portillo · Córdoba"
+				mapHref={MAPS.place}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha en Google Maps', href: MAPS.place, external: true },
+					{ label: 'Street View', href: MAPS.streetView, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="La ficha de Google indica acceso para sillas de ruedas y aparcamiento adaptado, pero no detalla el mostrador, el aseo ni si se puede reservar mesa. Las consultas se atienden por teléfono o en el local."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Preguntas frecuentes" title="Antes de <em>entrar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Datos, reseñas y fotos de la ficha pública de Google Maps, consultada en octubre de 2026. Horario y surtido pueden cambiar; confirma antes de ir."
+			ctaLabel="Llamar a El Portillo"
+			navAriaLabel="Enlaces de Panadería El Portillo"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+				{ label: 'Privacidad', href: '/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/aviso-legal#cookies' },
+			]}
+			creditLabel="Creado por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34957329129?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20C%C3%B3rdoba." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Córdoba"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

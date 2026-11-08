@@ -1,0 +1,356 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/restaurante-casa-sandra-apaisada-01.jpg';
+import patatas from '../assets/fotos/restaurante-casa-sandra-apaisada-03.jpg';
+import arrozAmarillo from '../assets/fotos/restaurante-casa-sandra-apaisada-05.jpg';
+import desayuno from '../assets/fotos/restaurante-casa-sandra-apaisada-06.jpg';
+import carta from '../assets/fotos/restaurante-casa-sandra-cuadrada-04.jpg';
+import terraza from '../assets/fotos/restaurante-casa-sandra-vertical-02.jpg';
+import arroz from '../assets/fotos/restaurante-casa-sandra-vertical-07.jpg';
+import combinado from '../assets/fotos/restaurante-casa-sandra-vertical-08.jpg';
+import lubina from '../assets/fotos/restaurante-casa-sandra-vertical-09.jpg';
+import ensalada from '../assets/fotos/restaurante-casa-sandra-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: terraza,
+		alt: 'Terraza de Casa Sandra bajo el toldo de la fachada, con sillas blancas y rojas y la máquina de chuches junto a la puerta',
+	},
+	{
+		src: arroz,
+		alt: 'Arroz meloso con gamba, calamar y patata servido en cazuela de barro sobre un plato amarillo',
+	},
+	{
+		src: combinado,
+		alt: 'Chuletillas de cordero y filete con patatas fritas en dos platos, en la mesa de Casa Sandra',
+	},
+	{
+		src: lubina,
+		alt: 'Lubina a la plancha con patatas panaderas, tomate asado y limón en un plato blanco',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada de la casa con lechuga, tomate y queso rallado en un bol negro',
+	},
+	{
+		src: patatas,
+		alt: 'Patatas fritas con queso fundido, bacon y cebolla crujiente en un plato negro',
+	},
+	{
+		src: desayuno,
+		alt: 'Dos tostadas con tomate y un café con leche en la mesa del desayuno de Casa Sandra',
+	},
+	{
+		src: arrozAmarillo,
+		alt: 'Arroz amarillo con costilla de cerdo y pimiento rojo en un plato negro',
+	},
+	{
+		src: carta,
+		alt: 'Carta de Casa Sandra con las ensaladas, los platos combinados, las bebidas y los cafés',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: ['Casa Sandra', 'Restaurante Casa Sandra Oropesa', 'Casa Sandra Oropesa del Mar'],
+	slogan: BUSINESS.tagline,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34964820546',
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	acceptsReservations: 'True',
+	servesCuisine: ['Cocina española', 'Cocina casera', 'Arroces', 'Paellas', 'Platos combinados'],
+	areaServed: [
+		{ '@type': 'City', name: 'Oropesa del Mar' },
+		{ '@type': 'AdministrativeArea', name: 'Plana Alta' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.province,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	hasMenu: `${BUSINESS.siteUrl}/#carta`,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google Place ID', value: BUSINESS.placeId },
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '06:30',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '08:00',
+			closes: '16:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Terraza', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Galería', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Casa Sandra · Restaurante en Oropesa del Mar';
+const cita = REVIEWS[0];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#1f4b4f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Gloock&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Casa Sandra Oropesa, restaurante Oropesa del Mar, menú del día Oropesa, desayunos Oropesa, paellas Plana Alta, platos combinados Oropesa, Av. de Madrid 25, restaurante abierto todo el año"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Casa Sandra · Restaurante en Oropesa del Mar"
+			ogDescription="Desayunos desde las 6:30, almuerzos, menú del día, paellas y platos combinados en la Avenida de Madrid, 25. 4,1 en Google con 291 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada y terraza de Restaurante Casa Sandra, en la Avenida de Madrid de Oropesa del Mar"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#1f4b4f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.province}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone="+34964820546"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Oropesa del Mar, Castelló"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'España',
+				phone: '+34 964 82 05 46',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fachada]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Restaurante · Oropesa del Mar"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. de Madrid, 25 · Oropesa del Mar"
+				title={piezas.portada.titulo}
+				lede="Casa Sandra abre a las 6:30 en la Avenida de Madrid: primero el café y las tostadas, después el almuerzo, y a mediodía el menú del día y la carta de siempre. Cocina casera, platos abundantes y terraza bajo el toldo, todo el año."
+				image={fachada}
+				imageAlt="Fachada de Restaurante Casa Sandra con el rótulo en la Avenida de Madrid, en Oropesa del Mar"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Abierto todo el año"
+				facts={[
+					{ label: 'Nota', html: '<b>4,1 en Google</b> con 291 reseñas' },
+					{ label: 'De lunes a sábado', html: '<b>6:30 – 16:00</b>' },
+					{ label: 'Domingo', html: '<b>8:00 – 16:00</b>' },
+					{ label: 'Menú del día', html: '<b>12 €</b> según una reseña' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto del perfil de Google Maps"
+				galleryLinkLabel="Ver la galería"
+			/>
+
+			<LocalChips label="Qué ofrece Casa Sandra" items={SERVICIOS} />
+
+			<LocalAbout
+				label="Restaurante de cocina casera en la Plana Alta"
+				title="Una casa de avenida,<br />mantel de cuadros<br /><em>y mesa a diario.</em>"
+				paragraphs={[
+					'En la Avenida de Madrid, 25, local 9, Casa Sandra es una de esas casas de comer de Oropesa que no cierran cuando termina el verano. Abre a las 6:30 de lunes a sábado y a las 8:00 los domingos, y la cocina funciona hasta las cuatro de la tarde.',
+					'La carta está expuesta en el local y se puede leer entera antes de sentarse: ensaladas de 8 a 12,50 €, once platos combinados con patatas y guarnición de 10 a 25 €, parrillada de carne para dos, chuletón de 500 gramos, y cafés desde 1,10 €. A eso se suma el menú del día, que una reseña sitúa en 12 € y que cambia cada jornada.',
+					'En las mesas se ven el arroz meloso de marisco con gamba y sepia, el filete con patatas, las chuletillas de cordero, la lubina a la plancha con patatas panaderas y la ensalada de la casa. La ficha de Google reúne 291 opiniones con un 4,1, y las reseñas coinciden en la comida casera, las raciones abundantes y el trato de la casa.',
+				]}
+				note="«La dueña es un encanto», dice una reseña. Otra se queda con el arroz meloso de marisco y el solomillo al roquefort."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Lo de todos<br /><em>los días.</em>"
+				description="La carta de Casa Sandra, con los precios que el local tiene expuestos: ensaladas, platos combinados, desayunos, bebidas y cafés. El menú del día no aparece en esa carta porque cambia cada jornada; los 12 € son los que cita una reseña de Google."
+				cta={{ label: 'Preguntar el menú de hoy', href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Precios de la carta expuesta en el local. Los desayunos no llevan importe en esa carta y el menú del día cambia cada día: se consulta en la mesa o llamando al 964 82 05 46."
+			/>
+
+			<section class="cita" aria-label="Opinión destacada en Google">
+				<div class="wrap">
+					<blockquote>
+						<p>“{cita.text}”</p>
+						<footer>Reseña en Google · {cita.rating} estrellas</footer>
+					</blockquote>
+					<div class="cita-nota">
+						<b>4,1</b>
+						291 reseñas en Google
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Leerlas todas ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La terraza,<br />el arroz<br /><em>y la carta.</em>"
+				description="Estas fotografías proceden del perfil de Casa Sandra en Google Maps: la terraza bajo el toldo, el arroz meloso de marisco, los combinados de cordero y filete, la lubina a la plancha, la ensalada, las patatas con bacon, el desayuno y la propia carta del local."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="Av. de Madrid, 25, local 9 · 12594 Oropesa del Mar"
+				title="En la avenida,<br /><em>todo el año.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Castelló · Plana Alta']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="De lunes a sábado de 6:30 a 16:00 y el domingo de 8:00 a 16:00. Abre todo el año, también fuera de temporada; en festivos conviene llamar antes."
+				mapTitle="Mapa de Restaurante Casa Sandra en la Avenida de Madrid, 25, Oropesa del Mar"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Casa Sandra · Oropesa del Mar"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="Las reservas se atienden por teléfono, en el 964 82 05 46, el mismo número que el local anuncia en su carta. No hay reserva online ni formulario en esta web; para grupos o en temporada alta, mejor llamar con antelación."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>sentarse.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.fullName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Casa Sandra"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34964820546?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Oropesa%20del%20Mar." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Oropesa del Mar"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>

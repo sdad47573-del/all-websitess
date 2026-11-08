@@ -1,0 +1,527 @@
+---
+import { Image } from 'astro:assets';
+import { LocalSeo } from '@astro-components';
+
+import '../styles/global.css';
+
+import vitrina from '../assets/fotos/luz-de-amor-apaisada-01.jpg';
+import interior from '../assets/fotos/luz-de-amor-vertical-02.jpg';
+import boda from '../assets/fotos/luz-de-amor-vertical-03.jpg';
+import terraza from '../assets/fotos/luz-de-amor-vertical-04.jpg';
+import mostrador from '../assets/fotos/luz-de-amor-vertical-06.jpg';
+import desayuno from '../assets/fotos/luz-de-amor-vertical-07.jpg';
+import cumpleanos from '../assets/fotos/luz-de-amor-vertical-08.jpg';
+import cafeTarta from '../assets/fotos/luz-de-amor-vertical-09.jpg';
+import syrniki from '../assets/fotos/luz-de-amor-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HIGHLIGHTS, HOURS, HOURS_NOTE, MAPS, SERVICIOS } from '../data/site';
+
+const title = 'Luz De Amor · Pastelería artesanal en Cruz de Humilladero, Málaga';
+const description =
+	'Luz De Amor, pastelería artesanal en Cmo de S. Rafael, 58 (Cruz de Humilladero, 29006 Málaga): tartas por encargo, café y desayunos. 5,0 sobre 5 con 74 reseñas. Horario, mapa y teléfono.';
+const ratingLabel = BUSINESS.rating.toFixed(1).replace('.', ',');
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Bakery',
+	'@id': `${BUSINESS.siteUrl}/#luz-de-amor`,
+	name: BUSINESS.name,
+	alternateName: ['Luz de Amor Pastelería', 'Pastelería Luz De Amor'],
+	description:
+		'Pastelería artesanal en el Camino de San Rafael, 29006 Málaga, especializada en tartas por encargo. La ficha de Google le da 5,0 sobre 5 con 74 reseñas.',
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Málaga' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Málaga' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	telephone: `+34${BUSINESS.phone.replace(/\s/g, '')}`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:30',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '10:00',
+			closes: '22:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'Galería', href: '#galeria' },
+	{ label: 'Horario', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const shots = [
+	{
+		src: boda,
+		alt: 'Tarta de boda de dos pisos con peonías, eucalipto y topper dorado, firmada por Luz De Amor',
+		caption: 'Tartas por encargo',
+	},
+	{
+		src: mostrador,
+		alt: 'Mostrador de la pastelería con pizarras de precios, flores frescas y vitrina de postres',
+		caption: 'El mostrador',
+	},
+	{
+		src: cumpleanos,
+		alt: 'Tarta de cumpleaños infantil con globo aerostático y nubes de azúcar sobre el mostrador',
+		caption: 'Tartas de cumpleaños',
+	},
+	{
+		src: interior,
+		alt: 'Rincón de mesas del local ante un muro de ladrillo rosa con guirnalda de luces en forma de estrella',
+		caption: 'El rincón de mesas',
+	},
+	{
+		src: cafeTarta,
+		alt: 'Café y porción de tarta de capas con glaseado sobre una mesa clara del local',
+		caption: 'Café y tarta',
+	},
+	{
+		src: terraza,
+		alt: 'Mesa de la terraza con cappuccino, porción de tarta, un libro y un ramo de flores',
+		caption: 'En la terraza',
+	},
+	{
+		src: desayuno,
+		alt: 'Desayuno con café con leche, panqueques con nata, arándanos y rodajas de plátano',
+		caption: 'Desayunos',
+	},
+	{
+		src: syrniki,
+		alt: 'Syrniki dorados con frutos rojos y dos cuencos de crema y miel servidos en una mesa exterior',
+		caption: 'Meriendas caseras',
+	},
+];
+import secciones from '../data/secciones.json';
+
+const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#14555c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Luz De Amor, pastelería Málaga, panadería Cruz de Humilladero, tartas por encargo Málaga, cafetería 29006, tarta de queso San Sebastián, carrot cake Málaga"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pastelería artesanal en el Camino de San Rafael, 29006 Málaga. Tartas por encargo, café y desayunos. 5,0 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Vitrina de tartas de Luz De Amor, pastelería de Málaga"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#14555c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-AN"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Málaga"
+			locale="es_ES"
+			countryName="España"
+			preload={[vitrina]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Luz De Amor, inicio">
+					<span class="brand-mark" aria-hidden="true">L</span>
+					<span class="brand-name">
+						Luz De Amor
+						<small>Pastelería · Málaga</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Cruz de Humilladero · 29006 Málaga</p>
+						<h1 id="hero-title" set:html={piezas.portada.titulo} />
+						<p class="hero-lede">
+							Tartas por encargo para cumpleaños, bodas y celebraciones en el Camino de San
+							Rafael. La ficha de Google le da 5,0 sobre 5 con 74 reseñas y publica café,
+							desayunos y meriendas para tomar en el local.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+							<a class="button button-ghost" href={BUSINESS.phoneHref}> Llamar al {BUSINESS.phone}</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<b>{ratingLabel} / 5</b>
+								{BUSINESS.reviewsCount} reseñas en Google
+							</li>
+							<li>
+								<b>L–V 8:30–22:00</b>
+								Sábado 10:00–22:00 · domingo cerrado
+							</li>
+							<li>
+								<b>Cmo de S. Rafael, 58</b>
+								Cruz de Humilladero, {BUSINESS.city}
+							</li>
+						</ul>
+					</div>
+
+					<figure class="hero-photo">
+						<Image
+							src={vitrina}
+							alt="Vitrina de tartas de Luz De Amor con el rótulo de la pastelería y un cartel de tartas por kilo"
+							widths={[480, 760, 1200]}
+							sizes="(max-width: 980px) 92vw, 46vw"
+							format="avif"
+							quality={74}
+							priority
+							decoding="async"
+						/>
+						<figcaption>
+							<span>Fotos del perfil de Google Maps de la casa</span>
+							<a href={MAPS.place} target="_blank" rel="noreferrer">Ver ficha ↗</a>
+						</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que publica la ficha de Google">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+				<div class="about-grid">
+					<h2 id="about-title">Pastelería artesanal <em>en Cruz de Humilladero.</em></h2>
+					<div class="about-copy">
+						<p>
+							Luz De Amor es una pastelería del Camino de San Rafael, número 58, en el barrio
+							de Cruz de Humilladero. Google la clasifica como pastelería, panadería y
+							cafetería, y le da 5,0 sobre 5 con 74 reseñas.
+						</p>
+						<p>
+							La ficha la presenta como casa de tartas por encargo para cumpleaños, bodas y
+							celebraciones, con encargos que se preparan con antelación y se recogen en la
+							tienda. Entre lo que publica están la tarta de queso al estilo San Sebastián, el
+							carrot cake y la repostería casera.
+						</p>
+						<p>
+							También se puede pasar por un café: la ficha incluye desayunos y meriendas, con
+							mesas para sentarse, wifi gratuito y entrada accesible. No publica carta ni
+							precios, así que esta página no los afirma.
+						</p>
+						<p>
+							El teléfono de la casa es el {BUSINESS.phone}. El horario puede cambiar en
+							festivos: conviene confirmarlo antes de desplazarse.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="three" aria-labelledby="three-title">
+				<div class="wrap">
+					<div class="three-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Tres cosas de la casa</p>
+							<h2 id="three-title">Lo que sí <em>se sabe.</em></h2>
+						</div>
+						<p>
+							Todo lo que sigue sale de la ficha pública de Google Maps: sin carta ni precios
+							publicados, esto es lo que la página puede afirmar.
+						</p>
+					</div>
+					<div class="three-grid">
+						{
+							HIGHLIGHTS.map((item, index) => (
+								<article class="three-card">
+									<span class="three-num" aria-hidden="true">
+										0{index + 1}
+									</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery wrap" id="galeria" aria-labelledby="gallery-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Galería</p>
+						<h2 id="gallery-title">La casa, <em>en fotos.</em></h2>
+					</div>
+					<p>
+						Ocho imágenes de la galería del perfil de Google Maps de Luz De Amor: la vitrina,
+						las tartas de encargo, el mostrador y el rincón de mesas. Se muestran como
+						información del local.
+					</p>
+				</div>
+
+				<div class="gallery-grid">
+					{
+						shots.map((shot) => (
+							<figure class="shot">
+								<Image
+									src={shot.src}
+									alt={shot.alt}
+									widths={[420, 680, 1024]}
+									sizes="(max-width: 700px) 92vw, (max-width: 980px) 46vw, 30vw"
+									format="avif"
+									quality={72}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{shot.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+
+				<p class="gallery-note">
+					Fotografías descargadas de la galería pública de Google Maps (octubre de 2026) e
+					incluidas como información del establecimiento.
+				</p>
+			</section>
+
+			<section class="rating" aria-labelledby="rating-title">
+				<div class="wrap rating-grid">
+					<div class="rating-figure" aria-hidden="true">
+						<span class="rating-number">{ratingLabel}</span>
+						<span class="rating-max">/ 5</span>
+					</div>
+					<div class="rating-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Lo que dice Google</p>
+						<h2 id="rating-title">Setenta y cuatro reseñas, <em>cinco estrellas.</em></h2>
+						<p>
+							La ficha tiene una media de 5,0 sobre 5 con 74 reseñas. Aquí solo se reproduce la
+							valoración publicada: las opiniones completas se leen en Google Maps.
+						</p>
+						<div class="rating-actions">
+							<span class="stars stars-large" role="img" aria-label="5 de 5 estrellas">★★★★★</span>
+							<a class="rating-link" href={MAPS.reviews} target="_blank" rel="noreferrer">
+								Leer las reseñas en Google <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Visítanos</p>
+					<h2 id="visit-title">En el Camino <em>de San Rafael.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.district}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}
+					</p>
+
+					<table class="hours">
+						<caption>Horario publicado en Google</caption>
+						<tbody>
+							{
+								HOURS.map((row) => (
+									<tr class={row.value === 'Cerrado' ? 'closed' : undefined}>
+										<th scope="row">{row.day}</th>
+										<td>{row.value}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+					<p class="hours-note">{HOURS_NOTE}</p>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={BUSINESS.phoneHref}> Llamar al {BUSINESS.phone}</a>
+					</div>
+					<p class="reserve-note">
+						Los pedidos de tartas se preparan con antelación y se recogen en la tienda; para
+						encargar uno conviene llamar. La ficha no publica página web ni redes propias.
+					</p>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Luz De Amor en el Camino de San Rafael, Málaga"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Cmo de S. Rafael, 58 · 29006
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>pasar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">L</span>
+						<p>
+							Luz De Amor
+							<small>
+								Pastelería · Panadería · Cafetería<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces de la pastelería">
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.reviews} target="_blank" rel="noreferrer">Reseñas ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<a href="/luz-de-amor/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()} {BUSINESS.name} · Datos y valoración de la ficha pública
+					de Google Maps, consultada en octubre de 2026. Las fotografías proceden de la galería
+					del perfil del establecimiento en Google Maps. La web no publica carta ni precios porque
+					la ficha no los incluye.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/luz-de-amor/aviso-legal">Aviso legal</a>
+					<a href="/luz-de-amor/aviso-legal#privacidad">Privacidad</a>
+					<a href="/luz-de-amor/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small
+						>Creado por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a>
+						· sur-digital.vercel.app</small
+					>
+				</p>
+			</div>
+		</footer>
+	<!-- contacto-rapido -->
+<style>
+	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+	.contact-fabs .fab-call { background: #c2410c; }
+	.contact-fabs .fab-wa { background: #25d366; }
+	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
+	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
+	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
+	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
+	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
+	.contact-fabs.is-stacked { bottom: 5.75rem; }
+	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
+	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
+</style>
+<nav class="contact-fabs" aria-label="Contacto rápido">
+	<a class="fab-wa" href="https://wa.me/34627951246?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20M%C3%A1laga." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Málaga"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
+</nav>
+	</body>
+</html>
