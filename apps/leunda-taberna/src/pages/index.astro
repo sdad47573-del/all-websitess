@@ -1,0 +1,278 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import barra from '../assets/fotos/leunda-taberna-apaisada-01.jpg';
+import placa from '../assets/fotos/leunda-taberna-apaisada-03.jpg';
+import cartel from '../assets/fotos/leunda-taberna-vertical-07.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Leunda Taberna, en Oarso Kalea 8 (20110 Pasai Antxo, Pasaia). Pintxos caseros, tortilla de bacalao, bocadillos y menú del día. 4,2 sobre 5 y teléfono 943 51 54 14.';
+
+const title = 'Leunda Taberna · Pintxos y menú en Pasai Antxo';
+
+const galeria = [
+	{
+		src: barra,
+		alt: 'Barra de Leunda Taberna con una caña, un pintxo de tortilla y una copa de vino sobre la pizarra',
+	},
+	{
+		src: placa,
+		alt: 'Placa de la taberna con el nombre Leunda en la pared, junto al farol y un altavoz',
+	},
+	{
+		src: cartel,
+		alt: 'Cartel manuscrito de bocadillos pegado en la ventana de Leunda Taberna',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#leunda`,
+	name: BUSINESS.name,
+	alternateName: ['Leunda', 'Leunda Taberna Antxo', 'Leunda Pasaia'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 943 51 54 14',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Vasca', 'Española', 'Taberna'],
+	areaServed: [
+		{ '@type': 'City', name: 'Pasaia' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+			opens: '08:00',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '23:59',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7c2f3c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Leunda Taberna, Leunda Pasaia, taberna Pasai Antxo, pintxos Pasai Antxo, tortilla de bacalao Pasaia, menú del día Pasaia, bocadillos Antxo, bar Pasaia"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Leunda Taberna · Pintxos y menú en Pasai Antxo"
+			ogDescription="Taberna de pintxos caseros, tortilla de bacalao, bocadillos y menú del día en Oarso Kalea 8 (Pasai Antxo, Pasaia). Abre de lunes a sábado desde las 8:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Barra de Leunda Taberna con una caña, un pintxo de tortilla y una copa de vino"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#7c2f3c"
+			street={BUSINESS.street}
+			city={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone="+34943515414"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			preload={[barra]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="LEUNDA TABERNA"
+			subtitle="Pasai Antxo · Pasaia"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Oarso Kalea, 8 · Pasai Antxo"
+				title="Pintxos de barra<br /><em>en Pasai Antxo.</em>"
+				lede={`Leunda Taberna es la taberna de Oarso Kalea, 8, en Pasai Antxo (Pasaia, Gipuzkoa). Abre a las 8:00 de lunes a sábado: pintxos caseros, tortilla de bacalao, bocadillos y menú del día, con cenas los viernes y sábados. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={barra}
+				imageAlt="Barra de Leunda Taberna con una caña, un pintxo de tortilla y una copa de vino sobre la pizarra"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Cocina', html: 'Pintxos caseros · tortilla de bacalao' },
+					{ label: 'Horario', html: 'Lun–sáb desde las 8:00 · domingo cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Leunda Taberna" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="La taberna<br /><em>del barrio.</em>"
+				paragraphs={[
+					'Leunda Taberna está en Oarso Kalea, 8, en el 20110 Pasai Antxo (Pasaia, Gipuzkoa), en plena calle del barrio y a pocos minutos del puerto. Google la clasifica como restaurante, y el registro de actividad de Oarsoaldea la da de alta como bar y restaurante con menú del día.',
+					'Abre de lunes a sábado a las 8:00, así que sirve desayunos y pintxos desde primera hora. De lunes a jueves echa el cierre a las 22:00; los viernes y sábados aguanta hasta medianoche y ofrece cenas. El domingo no abre.',
+					'En las fotos de su perfil de Google se ven la barra con la caña y los pintxos de tortilla, la placa con el nombre de la taberna y el cartel manuscrito de bocadillos de la ventana, con tortilla, lomo y pechuga bechamel.',
+					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Las publicadas destacan los pintxos caseros, la tortilla de bacalao, la cerveza Estrella Galicia y el trato amable.`,
+				]}
+				note="La ficha de Google no publica carta ni precios, así que esta página no los reproduce: los platos son los que citan las reseñas y los que aparecen en el cartel de la ventana."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Pintxos, bocadillos<br /><em>y menú del día.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que citan sus reseñas y el cartel de la ventana; el menú del día se consulta en la barra."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="No hay precios publicados. Para saber el menú de hoy y si hay mesa, llama al 943 51 54 14."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La barra<br /><em>y la casa.</em>"
+				description="Estas tres fotografías proceden del perfil de Leunda Taberna en Google Maps: la barra con los pintxos, la placa con el nombre y el cartel de bocadillos de la ventana. Del resto de fotos del perfil, las que muestran a clientes no se publican aquí."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Oarso Kalea, 8,<br /><em>en Pasai Antxo.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.municipality} · Gipuzkoa`,
+				]}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: de lunes a jueves, de 8:00 a 22:00; viernes y sábado, de 8:00 a 24:00; domingo cerrado. Puede cambiar, así que conviene llamar antes."
+				mapTitle="Mapa de Leunda Taberna en Oarso Kalea, 8, Pasai Antxo (Pasaia)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Leunda Taberna · Pasai Antxo"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 943 51 54 14. La ficha de Google no marca servicios de accesibilidad, así que conviene preguntar por teléfono si necesitas acceso adaptado."
+			/>
+
+			<LocalFaq
+				items={[...FAQ]}
+				eyebrow="Preguntas frecuentes"
+				title="Antes de <em>venir.</em>"
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}, ${BUSINESS.municipality}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Leunda Taberna"
+		/>
+	</body>
+</html>

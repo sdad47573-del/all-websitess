@@ -1,0 +1,389 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import WhatsappFab from '../components/WhatsappFab.astro';
+import * as datos from '../lib/business';
+import '../styles/global.css';
+import {
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	HOURS,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	REVIEWS,
+	SPECIALTIES,
+} from '../lib/business';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+/** La forma viene en el nombre del archivo (`la-tanguela-vertical-04.jpg`). */
+const FORMA: Record<string, string> = {
+	panoramica: 'panorámica',
+	apaisada: 'horizontal',
+	vertical: 'vertical',
+	cuadrada: 'cuadrada',
+};
+
+const galeria = Object.keys(fotos)
+	.sort((a, b) => a.localeCompare(b))
+	.map((ruta) => {
+		const archivo = ruta.split('/').pop() ?? '';
+		const clave = Object.keys(FORMA).find((forma) => archivo.includes(`-${forma}`));
+		return {
+			src: fotos[ruta].default,
+			alt: `Fotografía ${clave ? FORMA[clave] : 'general'} de ${business.name}, publicada en su ficha de Google Maps`,
+		};
+	});
+
+const title = 'La Tanguela | Restaurante andaluz en Corrales, Huelva';
+const description = `La Tanguela, restaurante andaluz en la calle Lazareto 9, Corrales (Huelva): arroces y paellas para compartir. Horario, mapa y reservas por teléfono (${business.phoneDisplay}).`;
+const keywords = `La Tanguela, restaurante Corrales, restaurante Huelva, restaurante andaluz Huelva, arroces Huelva, paellas Corrales, Calle Lazareto 9, comer en Corrales`;
+const address = `${business.streetAddress}, ${business.postalCode} ${business.locality}, ${business.province}`;
+const resumenHorario = 'martes a domingo · lunes cerrado';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#1f3a2d" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-H" />
+		<meta name="geo.placename" content={`${business.locality}, ${business.province}`} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/og.png`} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Tarjeta de La Tanguela, restaurante andaluz en Corrales (Huelva)" />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.locality} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${business.site}/og.png`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="site-header">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">T</span>
+				<span class="brand-copy">
+					{business.name}
+					<small>{business.locality} · {business.province}</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#casa">La casa</a>
+				<a href="#carta">Carta</a>
+				<a href="#horario">Horario</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="header-call" href={phoneHref}><span aria-hidden="true">☎</span> {business.phoneDisplay}</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow eyebrow-light"><span aria-hidden="true"></span> {business.category} · {business.locality}</p>
+					<h1 id="hero-title">La Tanguela,<br /><em>cocina de aquí.</em></h1>
+					<p class="hero-intro">
+						Restaurante andaluz en la calle Lazareto de Corrales: arroces y paellas para compartir,
+						con el {business.rating.toString().replace('.', ',')} de valoración media que le dan
+						sus {business.reviewCount} reseñas en Google.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-clay" href={phoneHref}>Llamar y reservar <span aria-hidden="true">↗</span></a>
+						<a class="button button-outline-light" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a>
+					</div>
+					<div class="hero-meta">
+						<div>
+							<small>Dónde estamos</small>
+							<address>{business.streetAddress}<br />{business.postalCode} {business.locality} · {business.province}</address>
+						</div>
+						<div>
+							<small>Reservas</small>
+							<a href={phoneHref}>{business.phone}</a>
+						</div>
+					</div>
+				</div>
+				<figure class="hero-art">
+					<Image
+						class="hero-photo"
+						src={foto('la-tanguela-apaisada-03.jpg')}
+						alt={`Fotografía de ${business.name}, restaurante andaluz en ${business.locality} (${business.province})`}
+						widths={[520, 780, 1040]}
+						sizes="(max-width: 1000px) 92vw, 42vw"
+						format="avif"
+						quality={70}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<div class="rating-badge">
+						<strong>{business.rating.toString().replace('.', ',')} <span aria-hidden="true">★</span></strong>
+						<small>{business.reviewCount} reseñas en Google</small>
+					</div>
+					<figcaption class="hero-caption">Foto de la ficha de Google Maps</figcaption>
+				</figure>
+			</section>
+
+			<div class="promise" aria-label="Qué encontrarás en La Tanguela">
+				<span>{business.category}</span><span>Arroces y paellas</span><span>Mediodía y cena</span><span>Reservas por teléfono</span>
+			</div>
+
+			<section class="section intro" id="casa" aria-labelledby="casa-title">
+				<div>
+					<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+					<h2 id="casa-title">Un comedor andaluz<br />en <em>Corrales.</em></h2>
+				</div>
+				<div class="intro-copy">
+					<p>
+						La Tanguela es un restaurante de cocina andaluza en la calle Lazareto 9, en Corrales
+						({business.province}). Su ficha de Google Maps lo clasifica como <strong>restaurante
+						andaluz</strong>, y no declara ninguna otra categoría.
+					</p>
+					<p>
+						Las reseñas que acumula en esa misma ficha ({business.reviewCount} opiniones, {business.rating.toString().replace('.', ',')}
+						de media) coinciden en dos cosas: los arroces y las raciones para compartir. La casa abre
+						de martes a domingo, con servicio de mediodía y cena de jueves a sábado.
+					</p>
+					<p class="note">
+						Esta web es informativa y no tiene carta propia: no hay precios, platos ni alérgenos
+						publicados por el negocio. Llama al {business.phoneDisplay} para consultar la carta del día.
+					</p>
+				</div>
+			</section>
+
+			<section class="section specialties" id="carta" aria-labelledby="carta-title">
+				<div class="section-heading">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Qué se come</p>
+						<h2 id="carta-title">Arroces y platos<br /><em>para compartir.</em></h2>
+					</div>
+					<p>
+						Lo que se puede afirmar de la casa está en su ficha pública: la categoría con la que se
+						presenta y lo que repiten las reseñas. Nada más. La carta completa se consulta por
+						teléfono.
+					</p>
+				</div>
+				<div class="special-grid">
+					{SPECIALTIES.map((plato, index) => (
+						<article class="special-card">
+							<small>0{index + 1}</small>
+							<h3>{plato.name}</h3>
+							<p>{plato.detail}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="section hours" id="horario" aria-labelledby="horario-title">
+				<div class="hours-grid">
+					<div>
+						<p class="section-label eyebrow-light"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="horario-title">Abierto de martes<br />a <em>domingo.</em></h2>
+						<p class="hours-intro">
+							El horario que publica la ficha de Google Maps: dos turnos de jueves a sábado y solo
+							mediodía el resto de días abiertos. Confirma por teléfono en festivos.
+						</p>
+					</div>
+					<div>
+						<ul class="hours-list">
+							{HOURS.map((dia) => (
+								<li>
+									<span class="hours-day">{dia.days}</span>
+									<span class={`hours-time${dia.ranges.length === 0 ? ' hours-closed' : ''}`}>
+										{dia.ranges.length === 0
+											? 'Cerrado'
+											: dia.ranges.map((rango) => <span>{rango}</span>)}
+									</span>
+								</li>
+							))}
+						</ul>
+						<p class="hours-note">
+							El lunes permanece cerrado. En festivos el horario puede cambiar; la propia ficha lo
+							avisa. Llama al {business.phoneDisplay} antes de desplazarte.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="section gallery" id="fotos" aria-labelledby="fotos-title">
+				<p class="section-label"><span aria-hidden="true"></span> Fotos · ficha de Google Maps</p>
+				<h2 id="fotos-title">Así es <em>La Tanguela.</em></h2>
+				<p class="gallery-copy">
+					Las {galeria.length} fotografías que el propio negocio publica en su ficha de Google Maps,
+					servidas aquí en AVIF y varios tamaños para que carguen rápido. La ficha completa reúne
+					más contenido.
+				</p>
+				<div class="gallery-grid">
+					{galeria.map((imagen, index) => (
+						<div class="gallery-photo">
+							<Image
+								src={imagen.src}
+								alt={imagen.alt}
+								widths={[320, 480, 720]}
+								sizes="(max-width: 560px) 46vw, (max-width: 1000px) 46vw, 24vw"
+								format="avif"
+								quality={65}
+								loading={index < 2 ? 'eager' : 'lazy'}
+								decoding="async"
+							/>
+						</div>
+					))}
+				</div>
+				<p class="gallery-note">
+					Fotografías de la ficha pública de <a href={mapsUrl} target="_blank" rel="noreferrer">{business.name} en Google Maps ↗</a>.
+					Las imágenes pertenecen a sus autores.
+				</p>
+			</section>
+
+			<section class="section reviews" aria-labelledby="resenas-title">
+				<div class="reviews-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Reseñas de Google</p>
+						<h2 id="resenas-title">Lo que dicen<br /><em>los que vienen.</em></h2>
+					</div>
+					<div class="reviews-score">
+						{business.rating.toString().replace('.', ',')}
+						<small>{business.reviewCount} reseñas<br />en Google Maps</small>
+					</div>
+				</div>
+				<div class="review-grid">
+					{REVIEWS.map((texto) => (
+						<blockquote class="review-card">
+							<p>«{texto}»</p>
+							<small>Reseña publicada en la ficha de Google Maps</small>
+						</blockquote>
+					))}
+				</div>
+			</section>
+
+			<section class="section visit" id="visitanos" aria-labelledby="visitanos-title">
+				<div>
+					<p class="section-label"><span aria-hidden="true"></span> {business.postalCode} · {business.locality}</p>
+					<h2 id="visitanos-title">Calle Lazareto, 9.<br /><em>Corrales.</em></h2>
+					<address>{business.streetAddress}<br />{business.postalCode} {business.locality}, {business.province}<br />Código Plus: {business.plusCode}</address>
+					<div class="contact-list">
+						<div class="contact-row">
+							<span class="contact-icon" aria-hidden="true">☎</span>
+							<div><small>Reservas y consultas</small><a href={phoneHref}>{business.phone}</a></div>
+						</div>
+						<div class="contact-row">
+							<span class="contact-icon" aria-hidden="true">⌖</span>
+							<div><small>Ubicación</small><a href={mapsUrl} target="_blank" rel="noreferrer">Abrir ficha de Google Maps ↗</a></div>
+						</div>
+						<div class="contact-row">
+							<span class="contact-icon" aria-hidden="true">◷</span>
+							<div><small>Horario</small><p>{resumenHorario}</p></div>
+						</div>
+					</div>
+					<div class="visit-actions">
+						<a class="button button-ink" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a>
+						<a class="button button-outline" href={phoneHref}>Llamar para reservar</a>
+					</div>
+				</div>
+				<div class="map-card">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+						title={`Mapa de ${business.name} en ${business.streetAddress}, ${business.locality}`}
+					 src={mapEmbedUrl}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+						<noscript>
+							<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+						</noscript>
+					</div>
+					<div class="map-label">
+						<div>
+							<strong>{business.name}</strong>
+							<small>{business.streetAddress} · {business.postalCode} {business.locality}</small>
+						</div>
+						<a href={directionsUrl} target="_blank" rel="noreferrer">Indicaciones ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="preguntas-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="preguntas-title">Antes de <em>venir.</em></h2>
+				<div class="faq-grid">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.question}</summary>
+							<p>{faq.answer}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+				<span class="brand-mark" aria-hidden="true">T</span>
+				<span class="brand-copy">{business.name}<small>{business.locality} · {business.province}</small></span>
+			</a>
+			<p>{address}<br />Reservas: {business.phone}</p>
+			<nav class="footer-nav" aria-label="Enlaces de la ficha">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} {business.name} · {business.locality}, {business.province}. Confirma horarios y platos por teléfono.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+		<a class="mobile-call" href={phoneHref}>Reservar por teléfono <span>{business.phoneDisplay}</span></a>
+		<WhatsappFab phone={datos.phoneHref} name={datos.business?.name} />
+	</body>
+</html>
+
+

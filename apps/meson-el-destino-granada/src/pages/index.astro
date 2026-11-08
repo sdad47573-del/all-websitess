@@ -1,0 +1,183 @@
+---
+const business = {
+	name: 'Mesón El Destino',
+	street: 'Calle Jesse Owens, 19',
+	city: 'Granada',
+	region: 'Granada',
+	postalCode: '18004',
+	country: 'ES',
+	phone: '+34 622 94 85 80',
+	latitude: 37.1855103,
+	longitude: -3.618564,
+	site: 'https://meson-el-destino-granada.vercel.app',
+};
+
+const mapsUrl = 'https://www.google.com/maps/place/Mes%C3%B3n+el+destino/@37.1855103,-3.618564,17z/data=!3m1!4b1!4m6!3m5!1s0xd71fd61115214b1:0xb65f26e14c055613!8m2!3d37.1855103!4d-3.618564!16s%2Fg%2F11ght11brd?authuser=0&hl=es&entry=ttu';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=16&hl=es&output=embed`;
+const instagramUrl = 'https://www.instagram.com/meson_eldestino/';
+const phoneHref = 'tel:+34622948580';
+const siteUrl = `${business.site}/`;
+const description = 'Mesón El Destino en Jesse Owens, Granada: pescado y marisco fresco, carnes al horno de piedra, tapas y terraza. Consulta teléfono, ubicación y fotos de Google Maps.';
+
+const faqs = [
+	{
+		question: '¿Dónde está Mesón El Destino?',
+		answer: 'Mesón El Destino está en la calle Jesse Owens, 19, 18004 Granada, en la zona de La Rosaleda. Abre el mapa o las indicaciones de Google Maps para consultar el trayecto.',
+	},
+	{
+		question: '¿Cuál es el teléfono de Mesón El Destino?',
+		answer: 'El teléfono de reservas publicado por el restaurante es el 622 94 85 80. Llama para consultar mesas, horario y disponibilidad de los platos.',
+	},
+	{
+		question: '¿Qué tipo de cocina ofrece?',
+		answer: 'Las guías gastronómicas describen una cocina de mercado con pescado, marisco, carnes y frituras. Entre los productos citados figuran atún, chuletón, quisquillas y chopitos; la disponibilidad y la carta pueden cambiar.',
+	},
+	{
+		question: '¿Tiene terraza?',
+		answer: 'Guías públicas mencionan una terraza y un espacio con mesas interiores. Para confirmar el servicio, la disponibilidad o hacer una reserva, llama directamente al 622 94 85 80.',
+	},
+	{
+		question: '¿Cuál es su horario?',
+		answer: 'Los horarios publicados en directorios pueden variar. Comprueba la información de la ficha de Google Maps o llama al restaurante antes de desplazarte.',
+	},
+	{
+		question: '¿Dónde puedo ver fotos del restaurante y sus platos?',
+		answer: 'Abre la ficha de Mesón El Destino en Google Maps desde esta página para consultar las fotos publicadas y las reseñas recientes.',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${siteUrl}#restaurant`,
+	name: business.name,
+	description,
+	url: siteUrl,
+	telephone: business.phone,
+	servesCuisine: ['Cocina de mercado', 'Pescado', 'Marisco', 'Carnes'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: business.region,
+		postalCode: business.postalCode,
+		addressCountry: business.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	sameAs: [mapsUrl, instagramUrl],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+
+import Galeria from '../components/Galeria.astro';---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#304738" />
+		<link rel="canonical" href={siteUrl} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+		<title>Mesón El Destino en Granada | Pescado y cocina de mercado</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Mesón El Destino · Pescado y cocina de mercado en Granada" />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={siteUrl} />
+		<meta property="og:image" content={`${business.site}/og.svg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Mesón El Destino, cocina de mercado en Granada" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+			<meta name="geo.region" content="ES-GR" />
+		<meta name="geo.placename" content="Granada" />
+		<meta name="geo.position" content="37.1855103;-3.618564" />
+		<meta name="ICBM" content="37.1855103, -3.618564" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Mesón El Destino, inicio"><span class="brand-mark" aria-hidden="true">D</span><span>El Destino<small>Mesón · Granada</small></span></a>
+			<nav aria-label="Navegación principal"><a href="#cocina">La cocina</a><a href="#fotos">Fotos</a><a href="#visita">Cómo llegar</a></nav>
+			<a class="header-call" href={phoneHref}>Reservas · 622 94 85 80</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span>La Rosaleda · Granada</span><i aria-hidden="true"></i> Cocina de mercado</p>
+					<h1>Buen producto,<br /><em>mesa compartida.</em></h1>
+					<p class="lede">En Mesón El Destino, la cocina de mercado pone en primer plano los sabores del mar y la tierra. Un mesón de barrio en Granada donde disfrutar de pescado, marisco y carnes; consulta la carta y reserva tu mesa por teléfono.</p>
+					<div class="actions"><a class="button button-gold" href={phoneHref}>Llamar para reservar <span aria-hidden="true">↗</span></a><a class="button button-outline" href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a></div>
+					<div class="hero-details"><span>⌖ Calle Jesse Owens, 19</span><span>✦ Pescado · marisco · carnes</span></div>
+				</div>
+				<div class="hero-art" role="img" aria-label="Ilustración original de una mesa de pescado y productos frescos en un mesón granadino">
+					<div class="sun"></div><div class="hills hills-back"></div><div class="hills hills-front"></div><div class="olive-tree tree-one"></div><div class="olive-tree tree-two"></div><div class="olive-tree tree-three"></div><div class="ground"></div><div class="table"></div><div class="table-top"></div><div class="plate"><span class="fish fish-one"></span><span class="fish fish-two"></span><span class="lemon"></span><span class="greens"></span></div><div class="glass"><span></span></div><div class="art-label">Granada<br /><b>producto de mercado</b></div><span class="sparkle sparkle-one">✦</span><span class="sparkle sparkle-two">✧</span>
+				</div>
+			</section>
+
+			<div class="ticker" aria-label="Especialidades de Mesón El Destino"><span>Pescado fresco</span><b>✳</b><span>Marisco</span><b>✳</b><span>Carnes al horno de piedra</span><b>✳</b><span>Cocina de mercado</span></div>
+
+			<section class="intro section-wrap" id="cocina"><div><p class="eyebrow eyebrow-dark">Del mar y de la tierra</p><h2>Producto bueno,<br /><em>cocina con oficio.</em></h2></div><div class="intro-copy"><p>Mesón El Destino está en la calle Jesse Owens, en Granada. Las guías gastronómicas destacan una cocina de mercado con pescado y marisco, carnes y frituras, en un local con barra, salón y terraza.</p><p>La selección cambia según el producto disponible. Llama para consultar la carta, preguntar por alérgenos y reservar.</p><a class="text-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver opiniones y fotos en Google Maps ↗</a></div></section>
+
+			<section class="specialties section-wrap" aria-labelledby="specialties-title"><div class="section-heading"><p class="eyebrow eyebrow-dark">Una carta para disfrutar sin prisa</p><h2 id="specialties-title">Sabores del mar,<br /><em>y mucho más.</em></h2><p>Una muestra de los productos que destacan las guías del restaurante. Confirma las especialidades y disponibilidad del día.</p></div>
+				<div class="special-grid">
+					<article class="special-card"><span class="special-icon" aria-hidden="true">✦</span><span class="card-kicker">DEL MAR</span><h3>Pescado y marisco</h3><p>Atún, quisquillas, chopitos y frituras entre los productos citados en guías gastronómicas.</p></article>
+					<article class="special-card card-green"><span class="special-icon" aria-hidden="true">♨</span><span class="card-kicker">DE LA BRASA Y EL HORNO</span><h3>Carnes al horno de piedra</h3><p>Una propuesta de mar y tierra que también incluye carnes, como el chuletón.</p></article>
+					<article class="special-card card-terracotta"><span class="special-icon" aria-hidden="true">❋</span><span class="card-kicker">PARA COMPARTIR</span><h3>Raciones y tapas</h3><p>Platos generosos para disfrutar con amigos, familia o en una comida de grupo.</p></article>
+				</div><p class="menu-note">Las especialidades pueden variar según temporada y mercado. Consulta precios, ingredientes y alérgenos directamente con el restaurante.</p>
+			</section>
+
+			<section class="photo-section" id="fotos"><div class="photo-copy"><p class="eyebrow">Mesón El Destino en Google Maps</p><h2>Conoce el mesón<br />a través de sus <em>fotos.</em></h2><p>Entra en la ficha de Google Maps para descubrir imágenes del local y de sus platos, leer reseñas y consultar datos actualizados.</p><a class="button button-gold" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver fotos en Google Maps <span aria-hidden="true">↗</span></a><a class="social-link" href={instagramUrl} target="_blank" rel="noopener noreferrer">Instagram de Mesón El Destino ↗</a><p class="photo-note">Las fotografías se consultan en sus fichas originales; no se copian ni alojan aquí.</p></div>
+				<div class="map-photo"><div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe title="Mapa de Google de Mesón El Destino, calle Jesse Owens, Granada" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+					<noscript>
+						<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+					</noscript>
+				</div><a class="map-caption" href={mapsUrl} target="_blank" rel="noopener noreferrer"><span aria-hidden="true">⌖</span><span><b>Mesón El Destino</b><small>Calle Jesse Owens, 19 · Ver ficha y fotos ↗</small></span></a></div>
+			</section>
+
+			<section class="visit section-wrap" id="visita"><div class="visit-copy"><p class="eyebrow eyebrow-dark">Nos encontramos en Granada</p><h2>Tu próxima mesa<br /><em>está en El Destino.</em></h2><p>El mesón está en la calle Jesse Owens, en el barrio de La Rosaleda. Llama para reservar, preguntar por el horario o consultar qué ofrece la cocina hoy.</p><address>{business.street}<br />{business.postalCode} {business.city}, {business.region}</address><div class="actions"><a class="button button-dark" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir indicaciones ↗</a><a class="text-link" href={phoneHref}>Llamar · 622 94 85 80</a></div></div>
+				<div class="visit-card"><div class="visit-title"><span class="visit-icon" aria-hidden="true">⌖</span><div><p class="eyebrow eyebrow-dark">Ubicación y reservas</p><h3>Granada · La Rosaleda</h3></div></div><dl><div><dt>Dirección</dt><dd>Calle Jesse Owens, 19<br />18004 Granada</dd></div><div><dt>Teléfono</dt><dd><a href={phoneHref}>622 94 85 80</a></dd></div><div><dt>Horario</dt><dd>Consulta antes<br />de tu visita</dd></div></dl><p class="visit-note">Confirma horario, disponibilidad y reservas llamando directamente al mesón.</p><a class="visit-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">Consultar ficha de Google Maps ↗</a></div>
+			</section>
+
+			<section class="faq-section section-wrap" id="preguntas"><p class="eyebrow eyebrow-dark">Preguntas frecuentes</p><h2>Antes de <em>venir.</em></h2><div class="faq-list">{faqs.map(({ question, answer }) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div></section>
+			<Galeria nombre="Mesón El Destino" mapsUrl={mapsUrl} />
+		</main>
+
+		<footer class="footer"><div class="footer-top"><a class="brand footer-brand" href="#inicio"><span class="brand-mark" aria-hidden="true">D</span><span>El Destino<small>Mesón · Granada</small></span></a><p>Cocina de mercado<br />en La Rosaleda.</p><nav aria-label="Enlaces de Mesón El Destino"><a href={mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href={instagramUrl} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={phoneHref}>622 94 85 80</a></nav></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Mesón El Destino · Granada</span><a href="/aviso-legal/">Aviso legal y privacidad</a> <a href="/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a> <span>Confirma horario, carta y disponibilidad directamente con el mesón.</span></div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		</footer>
+		<a class="mobile-call" href={phoneHref}>Reservar <span>622 94 85 80</span></a>
+	</body>
+</html>
+
+<style is:global>
+	:root{font-family:'DM Sans',sans-serif;color:#303b34;background:#f7f3e9;font-synthesis:none;text-rendering:optimizeLegibility;--forest:#304738;--forest-light:#62754f;--gold:#d7b76f;--cream:#f7f3e9;--ink:#303b34;--display:'Playfair Display',Georgia,serif}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;min-width:320px}a{color:inherit;text-decoration:none}a:focus-visible,summary:focus-visible{outline:3px solid #d7b76f;outline-offset:4px}.skip-link{position:absolute;z-index:99;top:-60px;left:16px;padding:12px 16px;background:var(--gold);color:var(--forest)}.skip-link:focus{top:12px}.topbar{height:78px;padding:0 6vw;display:flex;align-items:center;justify-content:space-between;gap:22px;background:var(--forest);color:#fcf9f0}.brand{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:700}.brand small{display:block;margin-top:4px;color:#d9e1d3;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase}.brand-mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;color:#e8cf91;font:700 23px var(--display)}.topbar nav{display:flex;gap:clamp(14px,2.5vw,32px);color:#e8ece2;font-size:12px}.topbar nav a:hover,.footer a:hover{color:#e8cf91}.header-call{padding:11px 17px;border:1px solid #ffffff55;border-radius:99px;font-size:11px;font-weight:700}.hero{display:grid;grid-template-columns:1.05fr .95fr;min-height:560px;background:var(--forest);color:#fcf9f0;overflow:hidden}.hero-copy{padding:73px 4vw 64px 9vw;align-self:center}.eyebrow{margin:0 0 19px;color:#e5ce93;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase}.eyebrow i{display:inline-block;width:22px;height:1px;margin:0 8px 3px;background:currentColor}.hero h1,.intro h2,.section-heading h2,.photo-copy h2,.visit h2,.faq-section h2{margin:0;font:600 clamp(39px,4.8vw,64px)/1.08 var(--display);letter-spacing:-1.2px}.hero h1 em,.intro h2 em,.section-heading h2 em,.photo-copy h2 em,.visit h2 em,.faq-section h2 em{color:var(--gold);font-style:italic}.lede{max-width:475px;margin:24px 0 0;color:#e2e8dd;font-size:14px;line-height:1.85}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:27px}.button{display:inline-flex;min-height:47px;align-items:center;justify-content:center;gap:14px;padding:0 20px;border-radius:99px;font-size:12px;font-weight:700;transition:transform .18s ease}.button:hover{transform:translateY(-2px)}.button-gold{background:var(--gold);color:var(--forest)}.button-outline{border:1px solid #ffffff65;color:#fcf9f0}.hero-details{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:27px;padding-top:20px;border-top:1px solid #ffffff2a;color:#d8e0d5;font-size:10px}.hero-details span:first-child{color:#e8cf91}.hero-art{position:relative;min-height:560px;overflow:hidden;background:linear-gradient(180deg,#d7b985 0%,#be9a6a 50%,#8b8159 51%,#52694a 100%)}.sun{position:absolute;top:11%;right:17%;width:96px;height:96px;border-radius:50%;background:#f1d58d;box-shadow:0 0 48px #f1d58d77}.hills{position:absolute;right:-7%;left:-7%;height:36%;clip-path:polygon(0 85%,18% 49%,31% 64%,47% 25%,61% 57%,79% 16%,100% 62%,100% 100%,0 100%)}.hills-back{bottom:38%;background:#8c966a}.hills-front{bottom:27%;height:31%;clip-path:polygon(0 40%,17% 68%,38% 21%,54% 65%,73% 24%,100% 64%,100% 100%,0 100%);background:#627b53}.ground{position:absolute;right:-10%;bottom:0;left:-10%;height:35%;border-radius:50% 50% 0 0;background:#536d49}.olive-tree{position:absolute;z-index:1;bottom:28%;width:66px;height:81px;border-radius:50%;background:#526948;box-shadow:0 9px 0 #43583d}.olive-tree:after{position:absolute;bottom:-33px;left:29px;width:9px;height:42px;background:#71563b;content:''}.tree-one{left:11%;transform:scale(.75)}.tree-two{left:24%;bottom:25%;transform:scale(1.1)}.tree-three{right:16%;bottom:27%;transform:scale(1.25)}.table{position:absolute;z-index:2;right:-13%;bottom:-18%;left:-13%;height:49%;border-radius:50% 50% 0 0;background:#563d31;box-shadow:0 -9px 25px #33251e66}.table-top{position:absolute;z-index:3;right:-8%;bottom:30%;left:-8%;height:20px;border-radius:50%;background:#896044;box-shadow:0 7px 11px #31221c55}.plate{position:absolute;z-index:4;bottom:12%;left:24%;width:min(270px,58%);aspect-ratio:1;border:13px solid #fff8e8;border-radius:50%;background:#e8dfc9;box-shadow:0 16px 30px #29211e66;transform:rotate(-9deg)}.fish{position:absolute;display:block;width:57%;height:20%;border-radius:50%;background:linear-gradient(150deg,#e5d2aa,#bd9663);box-shadow:0 3px 7px #60493277}.fish:after{position:absolute;top:0;right:-15%;width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:24px solid #b78857;content:''}.fish-one{top:29%;left:17%;transform:rotate(18deg)}.fish-two{top:52%;left:24%;background:linear-gradient(150deg,#d8bf94,#a98457);transform:rotate(-11deg)}.lemon{position:absolute;top:18%;right:20%;width:22%;height:16%;border-radius:50%;background:#e9bd56;transform:rotate(-20deg)}.greens{position:absolute;right:19%;bottom:17%;width:24%;height:13%;border-radius:50%;background:#75864f;box-shadow:7px 8px 0 #94a15a,-7px 5px 0 #526d49}.glass{position:absolute;z-index:5;right:13%;bottom:13%;width:56px;height:98px;border:3px solid #f8ead3;border-top:0;border-radius:4px 4px 23px 23px;background:#ffffff15;transform:rotate(5deg)}.glass:before{position:absolute;top:-3px;left:-6px;width:61px;height:8px;border:3px solid #f8ead3;border-radius:50%;content:''}.glass span{position:absolute;right:3px;bottom:4px;left:3px;height:47%;border-radius:0 0 17px 17px;background:#b28348aa}.art-label{position:absolute;z-index:5;top:14%;left:9%;padding:13px 16px;background:#fcf4e1;color:#385341;font:13px/1.45 var(--display);transform:rotate(-5deg)}.art-label b{font-size:16px}.sparkle{position:absolute;z-index:5;color:#fff0c4}.sparkle-one{top:44%;right:10%;font-size:26px}.sparkle-two{bottom:31%;left:14%;font-size:22px}.ticker{display:flex;min-height:54px;align-items:center;justify-content:center;gap:clamp(12px,4vw,52px);padding:10px 5vw;background:var(--gold);color:var(--forest);font:600 13px var(--display)}.ticker b{font-size:12px}.section-wrap{padding:88px 9vw}.intro{display:grid;grid-template-columns:1fr .85fr;gap:9%;align-items:center;background:var(--cream)}.eyebrow-dark{margin-bottom:16px;color:#8c7449}.intro h2,.section-heading h2,.visit h2,.faq-section h2{font-size:clamp(34px,4vw,50px);color:var(--forest)}.intro h2 em,.section-heading h2 em,.visit h2 em,.faq-section h2 em{color:#8b7751}.intro-copy p,.section-heading>p,.visit-copy>p:not(.eyebrow){color:#6d746c;font-size:14px;line-height:1.85}.intro-copy p{margin:0 0 14px}.text-link{display:inline-block;padding-bottom:4px;border-bottom:1px solid #8b7751;color:#3d5645;font-size:12px;font-weight:700}.specialties{background:#eee8d8}.section-heading{max-width:700px;margin:0 auto 34px;text-align:center}.section-heading h2{margin-bottom:12px}.section-heading>p{max-width:560px;margin:0 auto}.special-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.special-card{min-height:245px;padding:23px 21px;border:1px solid #dcd5c4;border-radius:12px;background:#faf7ee}.card-green{background:#e4e8d9}.card-terracotta{background:#f0e2d2}.special-icon{display:grid;width:57px;height:57px;place-items:center;margin-bottom:17px;border-radius:50%;background:#405d43;color:#e8cf91;font:27px var(--display)}.card-green .special-icon{background:#798454;color:#fbefc9}.card-terracotta .special-icon{background:#a9694d;color:#fbe4b9}.card-kicker{display:block;margin-bottom:8px;color:#827956;font-size:8px;font-weight:700;letter-spacing:1.5px}.special-card h3{margin:0 0 10px;color:var(--forest);font:600 20px var(--display)}.special-card p{margin:0;color:#6d746c;font-size:12px;line-height:1.7}.menu-note{margin:19px 0 0;color:#79736b;font-size:11px;line-height:1.7;text-align:center}.photo-section{display:grid;grid-template-columns:.83fr 1.17fr;min-height:440px;background:var(--forest);color:#fcf9f0}.photo-copy{align-self:center;padding:60px 5vw 60px 10.8vw}.photo-copy h2{margin:0 0 18px;font-size:clamp(37px,4vw,52px)}.photo-copy h2 em{color:var(--gold)}.photo-copy>p:not(.eyebrow){max-width:420px;margin:0 0 24px;color:#e2e8dd;font-size:13px;line-height:1.8}.photo-copy .photo-note{margin:15px 0 0!important;color:#d0dbcb!important;font-size:10px!important}.social-link{display:block;width:max-content;max-width:100%;margin-top:14px;color:#e8cf91;font-size:10px;font-weight:600}.map-photo{position:relative;min-height:440px;background:#d5d2c7}.map-photo iframe{display:block;width:100%;height:100%;min-height:440px;border:0}.map-caption{position:absolute;bottom:17px;left:17px;display:flex;align-items:center;gap:11px;padding:13px 16px;border-radius:9px;background:#fffdf6;color:var(--forest);box-shadow:0 4px 20px #1f201c50}.map-caption>span:first-child{font-size:20px;color:#8b7751}.map-caption b,.map-caption small{display:block}.map-caption b{font-size:11px}.map-caption small{margin-top:3px;color:#6d746c;font-size:9px}.visit{display:grid;grid-template-columns:1fr .98fr;gap:9%;align-items:center;background:var(--cream)}.visit-copy h2{margin:0 0 16px}.visit-copy>p:not(.eyebrow){max-width:440px}.visit-copy address{margin:23px 0 0;color:#3d5645;font-size:13px;font-style:normal;line-height:1.8}.button-dark{background:var(--forest);color:#fcf9f0}.visit-card{padding:29px;border:1px solid #dcd8c9;border-radius:14px;background:#fffdf7;box-shadow:0 14px 38px #38362b0d}.visit-title{display:flex;align-items:center;gap:15px}.visit-icon{display:grid;width:48px;height:48px;place-items:center;border-radius:50%;background:#e9eadc;color:#71804e;font-size:24px}.visit-title .eyebrow{margin:0 0 4px}.visit-title h3{margin:0;color:var(--forest);font:600 22px var(--display)}.visit-card dl{margin:19px 0 0}.visit-card dl>div{display:grid;grid-template-columns:82px 1fr;gap:10px;padding:12px 2px;border-bottom:1px solid #ece9df;font-size:10px;line-height:1.6}.visit-card dt{font-weight:700}.visit-card dd{margin:0;color:#626c5f}.visit-card dd a{color:#405d43;font-weight:700}.visit-note{margin:15px 0 0;color:#73786e;font-size:10px;line-height:1.7}.visit-link{display:inline-block;margin-top:12px;padding-bottom:4px;border-bottom:1px solid #8b7751;color:#3d5645;font-size:11px;font-weight:700}.faq-section{padding-top:12px;background:var(--cream)}.faq-section h2{margin-bottom:25px}.faq-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.faq-list details{padding:17px 19px;border:1px solid #e3dfd1;border-radius:9px;background:#fffdf7}.faq-list summary{cursor:pointer;color:var(--forest);font-size:13px;font-weight:700}.faq-list summary::marker{color:#8b7751}.faq-list details p{margin:12px 0 0;color:#6d746c;font-size:12px;line-height:1.75}.footer{padding:35px 8vw 20px;background:#26362b;color:#f8f6ed}.footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:25px}.footer-brand{flex:none}.footer-top>p{margin:0;color:#dce3d8;font:500 14px/1.6 var(--display)}.footer nav{display:flex;flex-wrap:wrap;gap:15px;font-size:11px}.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-top:15px;border-top:1px solid #ffffff28;color:#cad5c7;font-size:9px}.mobile-call{display:none}@media(max-width:1000px){.hero-copy{padding-left:7vw}.section-wrap{padding-right:7vw;padding-left:7vw}.photo-copy{padding-left:7vw}.footer-top{flex-wrap:wrap}.footer-top>p{margin-right:auto}}@media(max-width:720px){html{scroll-padding-top:16px}.topbar{height:auto;min-height:70px;padding:12px 20px}.topbar nav{display:none}.header-call{font-size:10px}.hero{grid-template-columns:1fr}.hero-copy{padding:57px 24px 49px}.hero h1{font-size:clamp(39px,10.5vw,57px)}.hero-art{min-height:390px}.section-wrap{padding:62px 23px}.intro,.visit{grid-template-columns:1fr;gap:22px}.intro h2,.section-heading h2,.visit h2,.faq-section h2{font-size:38px}.section-heading{text-align:left}.section-heading>p{margin-left:0}.special-grid{grid-template-columns:1fr;gap:10px}.special-card{min-height:180px;padding:20px}.photo-section{grid-template-columns:1fr}.photo-copy{padding:55px 24px 35px}.map-photo,.map-photo iframe{min-height:350px;height:350px}.visit-card{padding:23px 17px}.faq-list{grid-template-columns:1fr}.faq-section{padding-top:0}.footer{padding:28px 22px 86px}.footer-top{align-items:flex-start;flex-direction:column}.footer-top>p{margin:0}.footer-bottom{flex-direction:column}.mobile-call{position:fixed;z-index:10;right:12px;bottom:10px;left:12px;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:99px;background:var(--gold);color:var(--forest);box-shadow:0 5px 22px #17120f50;font-size:12px;font-weight:700}.mobile-call span{font-size:12px}}@media(max-width:390px){.header-call{padding:10px;font-size:9px}.visit-card dl>div{grid-template-columns:73px 1fr;font-size:9px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+
+

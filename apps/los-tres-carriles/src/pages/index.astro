@@ -1,0 +1,374 @@
+---
+import '../styles/global.css';
+
+const business = {
+	name: 'Restaurante Los Tres Carriles',
+	short: 'Los Tres Carriles',
+	aka: 'Venta Hurtado',
+	street: 'Carretera de La Muela, km 3,8',
+	city: 'Vejer de la Frontera',
+	postalCode: '11150',
+	phone: '+34 956 44 84 16',
+	latitude: 36.2686242,
+	longitude: -5.9889609,
+	site: 'https://los-tres-carriles.vercel.app',
+};
+
+const mapsUrl =
+	'https://www.google.com/maps/place/Restaurante+Los+Tres+Carriles/@36.2686242,-5.9889609,17z/data=!3m1!4b1!4m6!3m5!1s0xd0c460c7a0fdfc7:0x496bd618901a5b74!8m2!3d36.2686242!4d-5.9889609!16s%2Fg%2F11b76j722_?authuser=0&hl=es&entry=ttu';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=15&output=embed`;
+const phoneHref = 'tel:+34956448416';
+
+const specialties = [
+	{
+		kicker: 'Desde las 6:00',
+		title: 'Lomo en manteca',
+		text: 'Desayunos con lomo en manteca colorá de elaboración propia, en mollete de El Bosque.',
+	},
+	{
+		kicker: 'Pan de verdad',
+		title: 'Mollete y pan rústico',
+		text: 'Mollete del Molino de Abajo, rebanás rústicas y bocadillos gigantes; al mediodía, pan de Conil.',
+	},
+	{
+		kicker: 'Al mediodía',
+		title: 'Guisoteo y arroces',
+		text: 'Almuerzo campero, guisos de la zona, pollo de campo o conejo con arroz.',
+	},
+	{
+		kicker: 'A la brasa',
+		title: 'Ibérico y retinto',
+		text: 'Venado y carnes a la parrilla: cerdo ibérico y vacuno de raza retinta.',
+	},
+	{
+		kicker: 'El local',
+		title: 'Terraza y 3 salones',
+		text: 'Cruce de caminos en La Muela: terraza, barra para tapear, tres salones y parking amplio.',
+	},
+	{
+		kicker: 'Aviso',
+		title: 'Lunes cerrado',
+		text: 'Cierran los lunes enteros y los domingos por la noche. Admiten reservas: 956 44 84 16.',
+	},
+];
+
+const gallery = [
+	{ src: '/fotos/venta.svg', alt: 'Ilustración de la venta — sustituye por foto propia' },
+	{ src: '/fotos/mollete.svg', alt: 'Ilustración de mollete con lomo — sustituye por foto propia' },
+	{ src: '/fotos/brasa.svg', alt: 'Ilustración de carnes a la brasa — sustituye por foto propia' },
+	{ src: '/fotos/salon.svg', alt: 'Ilustración de los salones — sustituye por foto propia' },
+	{ src: '/fotos/terraza.svg', alt: 'Ilustración de la terraza — sustituye por foto propia' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde están Los Tres Carriles?',
+		a: 'En Carretera de La Muela, km 3,8, 11150 Vejer de la Frontera (La Muela), en un cruce de caminos: de ahí su nombre.',
+	},
+	{
+		q: '¿Cuál es el horario?',
+		a: 'Abren a diario desde el desayuno (desde las 6:00) hasta la noche. Cierran los lunes enteros y los domingos por la noche. Confirma en el 956 44 84 16.',
+	},
+	{
+		q: '¿Hay que reservar?',
+		a: 'Admiten reservas: llama al 956 44 84 16, sobre todo en fin de semana.',
+	},
+	{
+		q: '¿Qué se puede comer?',
+		a: 'Venta Hurtado: desayunos con lomo en manteca y mollete, tapeo, guisoteo, arroces, pollo de campo, conejo, venado y brasa.',
+	},
+	{
+		q: '¿Cómo llego?',
+		a: 'Está en la Ctra. de La Muela km 3,8, con amplio parking. Usa el botón «Cómo llegar» para abrir la ruta en Google Maps.',
+	},
+];
+
+const description =
+	'Los Tres Carriles (Venta Hurtado): venta en Ctra. La Muela km 3,8, Vejer. Desayunos con mollete, guisoteo y brasa. Lunes cerrado. Tel. 956 44 84 16.';
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${business.site}/#restaurante`,
+	name: `${business.name} (${business.aka})`,
+	description,
+	url: `${business.site}/`,
+	telephone: '+34 956 44 84 16',
+	image: [`${business.site}/fotos/venta.svg`],
+	priceRange: '€€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Andaluza'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	acceptsReservations: 'True',
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#16241c" />
+		<meta name="description" content="Los Tres Carriles (Venta Hurtado): venta en Ctra. La Muela km 3,8, Vejer. Mollete, guisoteo y brasa. Lunes cerrado. 956 44 84 16." />
+		<meta name="keywords" content="Tres Carriles Vejer, Venta Hurtado, La Muela comer, desayunos Vejer, mollete manteca, brasa retinto" />
+		<meta name="author" content="Los Tres Carriles" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<title>Los Tres Carriles | Venta Hurtado en La Muela, Vejer</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Los Tres Carriles · Venta Hurtado en Vejer" />
+		<meta property="og:description" content="Desayunos con mollete, guisoteo y brasa en Ctra. La Muela km 3,8. Lunes cerrado." />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/fotos/venta.svg`} />
+		<meta property="og:image:alt" content="Los Tres Carriles, Venta Hurtado, Vejer" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content="Andalucía" />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Los Tres Carriles · Venta Hurtado en Vejer" />
+		<meta name="twitter:description" content="Mollete, guisoteo y brasa en La Muela km 3,8. Lunes cerrado." />
+		<meta name="twitter:image" content={`${business.site}/fotos/venta.svg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<meta name="geo.placename" content="Vejer de la Frontera" />
+		<meta name="geo.position" content="36.2686242;-5.9889609" />
+		<meta name="ICBM" content="36.2686242, -5.9889609" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Los Tres Carriles, inicio">
+				<span class="brand-mark" aria-hidden="true">3C</span>
+				<span class="brand-name">Tres Carriles <small>La Muela · Vejer</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#venta">La venta</a>
+				<a href="#carta">La carta</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>956 44 84 16</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Ctra. La Muela km 3,8 · Vejer</p>
+					<h1 id="hero-title">Venta Hurtado<br />de <em>verdad.</em></h1>
+					<p class="hero-lede">
+						En el cruce de La Muela desde los años ochenta: mollete con lomo en manteca,
+						guisoteo, arroces y brasa de ibérico y retinto.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={phoneHref}>Llamar 956 44 84 16</a>
+						<a class="button button-ghost" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>6:00</b> desayunos</li>
+						<li>Lunes cerrado</li>
+						<li>20–30 €</li>
+						<li>3 salones</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<img src="/fotos/venta.svg" alt="Ilustración de Venta Los Tres Carriles, La Muela, Vejer" fetchpriority="high" decoding="async" width="1200" height="800" />
+					<figcaption>
+						<span>Ctra. La Muela km 3,8 · Vejer</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios">
+				<div class="ratings">
+					<div><b>3,8</b><span>Km Muela</span></div>
+					<div><b>6h</b><span>Desayunos</span></div>
+					<div><b>20–30</b><span>Euros</span></div>
+				</div>
+				<ul class="services">
+					<li>Mollete</li>
+					<li>Guisoteo</li>
+					<li>Brasa</li>
+					<li>Terraza</li>
+					<li>Parking</li>
+					<li>Reservas</li>
+				</ul>
+			</section>
+
+			<section class="about section-pad" id="venta">
+				<p class="section-label"><span aria-hidden="true"></span> La venta</p>
+				<div class="about-grid">
+					<h2>El cruce<br />de <em>La Muela.</em></h2>
+					<div class="about-copy">
+						<p>
+							Venta Los Tres Carriles —Venta Hurtado, por su fundador Juan Hurtado— está en Carretera
+							de La Muela, km 3,8 (11150 Vejer), en un cruce de caminos que le da nombre.
+						</p>
+						<p>
+							Amplio parking, terraza, barra para tapear y tres salones. Empiezan con desayunos de lomo
+							en manteca colorá en mollete de El Bosque; al mediodía, tapeo, almuerzo campero, arroces,
+							pollo de campo, conejo, venado y parrilla.
+						</p>
+						<p class="about-note">
+							Abren a diario desde las 6:00 hasta la noche; cierran los lunes enteros y los domingos por
+							la noche. Confirma en el 956 44 84 16.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="carta">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> De su casa</p>
+						<h2>Lo que sale<br /><em>de cocina.</em></h2>
+					</div>
+					<p>
+						Líneas generales según guía verificada. Confirma la carta del día
+						en la propia venta.
+					</p>
+				</div>
+				<div class="cards">
+					{specialties.map((item) => (
+						<article class="card">
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="gallery section-pad" id="galeria">
+				<div class="gallery-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Galería</p>
+						<h2>La venta<br /><em>y la mesa.</em></h2>
+					</div>
+					<div class="gallery-cta">
+						<p>
+							Estas ilustraciones son marcadores de posición creados para la web. No usamos fotos de Google Maps
+							por derechos de autor: sustitúyelas por fotos propias de la venta.
+						</p>
+						<a class="button button-ink" href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos en Google Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{gallery.map((photo, index) => (
+						<figure class:list={['shot', index === 0 && 'shot-wide']}>
+							<img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width="800" height="800" />
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes propias temporales en SVG. Para publicar, reemplaza los archivos de /public/fotos/ por fotografías
+					del titular con sus textos alt correspondientes.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Ctra. de La Muela, km 3,8</p>
+					<h2>Ven a La Muela<br /><em>a comer.</em></h2>
+					<p class="address">
+						{business.street}<br />
+						{business.postalCode} {business.city}, España
+					</p>
+
+					<p class="hours-note">Lunes cerrado entero; domingos cerrado por la noche. Confirma en el 956 44 84 16 antes de venir.</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={phoneHref}>Llamar a la venta ↗</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<a class="phone-link" href={phoneHref}>+34 956 44 84 16</a>
+				</div>
+
+				<div class="map-frame">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+						<iframe title="Mapa de Los Tres Carriles en La Muela km 3,8, Vejer" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript><p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p></noscript>
+					</div>
+					<a class="map-label" href={mapsUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">⌖</span> Tres Carriles · Vejer</a>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2>Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">3C</span>
+				<p>Tres Carriles<small>{business.street} · {business.city}</small></p>
+			</div>
+			<nav aria-label="Enlaces de la venta">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+				<a href={phoneHref}>{business.phone}</a>
+			</nav>
+			<small>© {new Date().getFullYear()} Tres Carriles · Vejer de la Frontera. Ilustraciones propias temporales, pendientes de fotos del local.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>Llamar a la venta <span>956 44 84 16</span></a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

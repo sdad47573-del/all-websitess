@@ -1,0 +1,274 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import chule from '../assets/fotos/meson-lax-apaisada-03.jpg';
+import salon from '../assets/fotos/meson-lax-apaisada-01.jpg';
+import mesaTeal from '../assets/fotos/meson-lax-apaisada-04.jpg';
+import mesaGrupo from '../assets/fotos/meson-lax-apaisada-07.jpg';
+import vieiras from '../assets/fotos/meson-lax-apaisada-05.jpg';
+import calamares from '../assets/fotos/meson-lax-vertical-06.jpg';
+import tortilla from '../assets/fotos/meson-lax-apaisada-09.jpg';
+import monteagudo from '../assets/fotos/meson-lax-vertical-08.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Mesón Lax, mesón de brasas y banquetes en el Carril Claras, 89 (30160 Monteagudo, Murcia). Chuletón a la brasa, marisco, arroces y menú del día. Salones para grupos y celebraciones. Reservas en el 968 85 01 19.';
+
+const galeria = [
+	{ src: chule, alt: 'Chuletón a la brasa cortado y con sal gorda en Mesón Lax, Monteagudo' },
+	{ src: salon, alt: 'Salón de Mesón Lax con mesas redondas vestidas para un banquete' },
+	{ src: mesaTeal, alt: 'Mesa larga preparada para una celebración en Mesón Lax, Monteagudo' },
+	{ src: mesaGrupo, alt: 'Comedor de Mesón Lax con una mesa larga montada para un grupo' },
+	{ src: vieiras, alt: 'Vieiras gratinadas en su concha servidas en Mesón Lax' },
+	{ src: calamares, alt: 'Calamares a la romana con limón en Mesón Lax, Monteagudo' },
+	{ src: tortilla, alt: 'Tortilla de la casa y gambas con lima en la terraza de Mesón Lax' },
+	{ src: monteagudo, alt: 'Cerro del Cristo de Monteagudo, junto a Mesón Lax, en Murcia' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#meson`,
+	name: BUSINESS.name,
+	alternateName: ['Meson Lax', 'Mesón Lax Monteagudo', 'Mesón Lax Murcia'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 968 85 01 19',
+	priceRange: BUSINESS.priceRange,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Brasas', 'Murciana', 'Mediterránea', 'Arroces'],
+	areaServed: [
+		{ '@type': 'City', name: 'Murcia' },
+		{ '@type': 'AdministrativeArea', name: 'Región de Murcia' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '09:00',
+			closes: '00:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Saturday'],
+			opens: '09:00',
+			closes: '04:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '09:00',
+			closes: '02:30',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aparcamiento adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Salones para celebraciones', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El mesón', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Mesón Lax · Brasas, menús y banquetes en Monteagudo (Murcia)';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6d3324" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Mesón Lax, mesón Lax Monteagudo, restaurante Monteagudo Murcia, brasas Murcia, chuletón Murcia, menú del día Monteagudo, banquetes Murcia, celebraciones Monteagudo, Carril Claras"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Mesón Lax · Brasas y banquetes en Monteagudo"
+			ogDescription="Chuletón a la brasa, marisco, arroces y menú del día en el Carril Claras, 89 (Monteagudo, Murcia). Salones para celebraciones. 4,1 en Google con 409 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Chuletón a la brasa de Mesón Lax, en Monteagudo (Murcia)"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#6d3324"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34968850119"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`Monteagudo, ${BUSINESS.region}`}
+			preload={[chule]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Mesón Lax"
+			subtitle="Brasas · Monteagudo"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Carril Claras · Monteagudo"
+				title="Brasas y banquetes<br /><em>en Monteagudo.</em>"
+				lede={`Chuletón a la brasa, marisco y menú del día en el Carril Claras, 89. Un mesón de toda la vida con salones amplios para comidas de grupo, en Monteagudo. Abierto de martes a domingo; reservas en el ${BUSINESS.phoneDisplay}.`}
+				image={chule}
+				imageAlt="Chuletón a la brasa cortado y con sal gorda en Mesón Lax, Monteagudo"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Horario', html: 'Mar–Sáb 9:00–24:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Mesón Lax" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El mesón"
+				title="Fuego, mantel<br /><em>y salón grande.</em>"
+				paragraphs={[
+					`Mesón Lax está en el Carril Claras, 89, en Monteagudo (${BUSINESS.postalCode}), la pedanía murciana del cerro del Cristo. Es un mesón con comedor y salones amplios: mesas redondas vestidas de banquete y mesas largas para grupos, tal y como se ven en las fotos de su ficha de Google.`,
+					'La brasa manda. El chuletón llega cortado a la mesa, sobre tabla y con sal gorda; junto a él, marisco —vieiras gratinadas, calamares a la romana, gambas—, arroces y guisos de cuchara. Y menú del día, que las reseñas describen como «muy buenos menús económicos».',
+					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: esta web resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para precios, menús y disponibilidad del día se llama al mesón.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repiten las brasas —«buena opción para brasas, buena cocina y género»—, los menús económicos y el trato del servicio.`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Brasa, marisco<br /><em>y menú del día.</em>"
+				description="Resumen de lo que se sirve, sacado de las fotos de la ficha de Google Maps y de las reseñas. No es la carta completa ni tiene precios: se consultan en el mesón."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La carta cambia con el mercado y la temporada. Si vas por un plato concreto, llama antes: no publicamos precios porque el mesón no los tiene publicados."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Los salones<br /><em>y la mesa.</em>"
+				description="Estas fotografías proceden del perfil de Mesón Lax en Google Maps: la brasa, el marisco, los salones montados para banquetes y el cerro del Cristo que hay junto al mesón."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos<br /><em>en el Carril Claras.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google. Los cierres del sábado (4:00) y del domingo (2:30) son ya de madrugada, del día siguiente; el lunes permanece cerrado."
+				mapTitle="Mapa de Mesón Lax en el Carril Claras, 89, Monteagudo (Murcia)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Mesón Lax · Monteagudo"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva llamando al mesón. La ficha de Google marca acceso, aparcamiento, aseo y asientos adaptados. Está en el Carril Claras, fuera del casco urbano de Murcia, así que se llega en coche."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Mesón Lax"
+		/>
+	</body>
+</html>

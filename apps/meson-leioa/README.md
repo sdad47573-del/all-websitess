@@ -1,0 +1,58 @@
+# Mesón Leioa
+
+Web informativa no oficial de **Mesón Leioa**, mesón de cocina vasca casera en
+**Julio Gutiérrez Lumbreras, 6 · 48920 Portugalete (Bizkaia)**,
+teléfono 944 62 08 79.
+
+- Astro 7 (`@astro-config`) y hoja de estilos propia en `src/styles/global.css`.
+- Tipografías **Fraunces** (títulos) y **DM Sans** (texto).
+- Datos en `src/data/site.ts`: ficha, contacto, horario orientativo, servicios, preguntas y datos estructurados.
+- Dos páginas: `/` (portada) y `/aviso-legal`.
+
+## De dónde sale cada dato
+
+Fuentes públicas consultadas el **11 de octubre de 2026**:
+
+| Dato               | Valor                                              |
+| ------------------ | -------------------------------------------------- |
+| Nombre             | Mesón Leioa                                        |
+| Dirección          | Julio Gutiérrez Lumbreras, 6 · 48920 Portugalete   |
+| Teléfono           | +34 944 62 08 79                                   |
+| Coordenadas        | 43.3189453, -3.0232573                             |
+| Horario orientativo| Lunes cerrado; mar–dom 8:00–23:00                  |
+| Valoración         | 3,9 sobre 5 (10 opiniones, Tripadvisor)            |
+| Casa               | Menú casero, pintxos premiados, negocio familiar   |
+
+El horario viene de guías gastronómicas, así que se presenta como orientativo
+y se pide confirmar por teléfono.
+
+## Fotos: por qué no son de Google
+
+Las fotos de la ficha de Google Maps pertenecen a sus autores y las
+condiciones de Google prohíben descargarlas y republicarlas. Por eso esta web
+usa **6 fotos de archivo (Unsplash)** en `src/assets/galeria/` y 3 en `src/assets/hero/`.
+
+Para poner fotos reales del local:
+
+1. Haz tus propias fotos (o pide permiso escrito al autor).
+2. Guárdalas como `public/fotos/meson-leioa-01.svg` … `-06.svg`
+   (o `.jpg` actualizando `src/pages/index.astro`).
+3. Reconstruye: `bun run build`.
+
+## Comprobaciones
+
+```bash
+bun run build      # genera dist/
+bun run typecheck  # tsc --noEmit
+node ../../scripts/check-site-content.mjs meson-leioa
+```
+
+## Pendiente antes de publicar
+
+1. Rellenar `LEGAL` en `src/data/site.ts` (razón social, NIF/CIF y correo).
+2. Confirmar horario y carta con el titular.
+3. Sustituir las ilustraciones por fotos propias con permiso.
+4. Si el dominio final cambia, actualizarlo en `src/data/site.ts`, `astro.config.mjs`,
+   `public/robots.txt` y los canonical/OG de las dos páginas.
+
+Fotos de portada: Unsplash, licencia de uso gratuita (https://unsplash.com/license). Son fotografías de archivo, no del local.

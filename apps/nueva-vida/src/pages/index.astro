@@ -1,0 +1,508 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	avisoFestivo,
+	business,
+	descripcionLocal,
+	directionsUrl,
+	distintivo,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Nueva vida · Restaurante italiano en Benidorm';
+const description =
+	'Nueva vida (New Life), restaurante italiano de cocina casera en la Avenida de la Armada Española, 5 de Benidorm. 5 sobre 5 con 5 reseñas; abre de 9:00 a 24:00.';
+const keywords =
+	'Nueva vida, New Life Benidorm, restaurante italiano Benidorm, pasta fresca Benidorm, pizza artesanal Benidorm, Avenida de la Armada Española Benidorm, Nueva vida teléfono';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas fotografías, así que no se inventa una descripción y
+ * todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada en la ficha de Google Maps de Nueva vida, en Benidorm';
+const altOg = 'Fotografía de Nueva vida publicada en su ficha de Google Maps';
+
+/**
+ * Autor que el manifiesto de la descarga atribuye a las fotos: el propio local.
+ *
+ * Como sí hay a quién citar, cada foto de la galería lleva su pie.
+ */
+const autorFoto = 'Nueva vida';
+
+/**
+ * Galería: las diez fotografías de la ficha.
+ *
+ * Aquí no hay duplicados (los diez ficheros tienen MD5 distinto), así que se publican las diez.
+ */
+const galeria = [
+	'nueva-vida-vertical-01.jpg',
+	'nueva-vida-vertical-02.jpg',
+	'nueva-vida-vertical-03.jpg',
+	'nueva-vida-vista-4-04.jpg',
+	'nueva-vida-vista-5-05.jpg',
+	'nueva-vida-vertical-06.jpg',
+	'nueva-vida-vertical-07.jpg',
+	'nueva-vida-vista-8-08.jpg',
+	'nueva-vida-vertical-09.jpg',
+	'nueva-vida-vista-10-10.jpg',
+];
+
+/**
+ * Tres fotos de avance en el collage de la portada (también están en la galería).
+ *
+ * Esta ficha **no publica ninguna foto apaisada**: las diez son verticales (proporción 0,75) o
+ * casi cuadradas. El hueco apaisado del collage va con la más cuadrada de todas (la vista 10,
+ * 2509 × 2456), recortada a 16/9, y los dos huecos inferiores con dos verticales (01 y 06), que ya
+ * encajan en la proporción 4/5 del repositorio.
+ */
+const collage = [
+	{ name: 'nueva-vida-vista-10-10.jpg', clase: 'collage-item collage-item-a' },
+	{ name: 'nueva-vida-vertical-01.jpg', clase: 'collage-item collage-item-b' },
+	{ name: 'nueva-vida-vertical-06.jpg', clase: 'collage-item collage-item-c' },
+];
+
+/**
+ * Reseñas que destaca la ficha.
+ *
+ * Esta ficha no destaca ninguna (el bloque llega vacío), así que la portada no cita ningún texto y
+ * lo explica en su lugar.
+ */
+const numeroResenas = reviews.length;
+
+/** Número de fotografías de la galería. */
+const numeroFotos = galeria.length;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#1d2a33" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-A" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">NV</span>
+				<span class="brand-text">
+					Nueva vida
+					<small>Avenida de la Armada Española · Benidorm</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La casa</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Benidorm · Avenida de la Armada Española, 5</p>
+						<h1 id="hero-title">
+							Nueva vida,
+							<br />
+							<em>cocina italiana casera.</em>
+						</h1>
+						<p class="hero-lede">
+							Está en la Avenida de la Armada Española, 5, con código postal 03502, en
+							Benidorm. Google solo publica la categoría «{business.category}»: es la
+							descripción del titular la que cuenta que aquí se hace cocina italiana casera,
+							con pasta fresca y pizzas artesanales al horno. La ficha le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas y abre de 9:00 a 24:00.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-collage">
+						{collage.map((item, index) => (
+							<figure class={item.clase}>
+								<Image
+									src={foto(item.name)}
+									alt={altFoto}
+									widths={index === 0 ? [640, 900, 1200] : [320, 480, 640]}
+									sizes={
+										index === 0
+											? '(max-width: 1080px) 92vw, 46vw'
+											: '(max-width: 1080px) 45vw, 23vw'
+									}
+									format="avif"
+									quality={68}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchpriority={index === 0 ? 'high' : undefined}
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>{hoursSummary}</span>
+				<span>{distintivo}</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">La casa</p>
+						<h2 class="title" id="local-title">
+							Pasta fresca,
+							<br />
+							<em>pizza al horno.</em>
+						</h2>
+						<p>
+							Google solo publica una categoría, «{business.category}», sin cocina declarada.
+							La italiana es la que cuenta el propio local en la descripción de su ficha:
+							«restaurante italiano con cocina casera, pasta fresca, pizzas artesanales al
+							horno y recetas tradicionales preparadas con ingredientes 100% italianos». Está
+							en la Avenida de la Armada Española, 5, con código postal 03502, y la ficha
+							publica su plus code GVP5+WW Benidorm.
+						</p>
+						<p class="descripcion">{descripcionLocal}</p>
+						<p>
+							Abre <strong>de 9:00 a 24:00</strong> de martes a domingo, con el{' '}
+							<strong>viernes hasta la 1:00</strong> y el <strong>sábado hasta la 1:30</strong>, y <strong>los lunes cierra</strong>. Google muestra además junto al nombre la
+							etiqueta «{distintivo}», el distintivo que publica esta ficha.
+						</p>
+						<p>
+							Es la ficha del repositorio con más servicios de accesibilidad: cuatro, y los
+							cuatro disponibles (acceso, aparcamiento, aseo y asientos adaptados). Esta web
+							se ha preparado solo con lo que publica esa ficha, consultada el{' '}
+							{site.consultado}: nombre, dirección, teléfono, categoría, horario, valoración,
+							accesibilidad, el distintivo, la descripción del titular y sus propias
+							fotografías.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>
+								{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps
+							</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</div>
+						{numeroResenas > 0 ? (
+							reviews.map((review) => (
+								<blockquote class:list={['quote', { 'is-low': review.rating < 3 }]}>
+									<p>{review.text}</p>
+									<footer>
+										<strong>{review.rating} sobre 5</strong>
+										<span>{review.source}</span>
+									</footer>
+								</blockquote>
+							))
+						) : (
+							<p class="quote-note">
+								La ficha publica la nota (<strong>5 sobre 5</strong>) y el número de reseñas (
+								<strong>5</strong>), pero <strong>no destaca el texto de ninguna</strong>: la
+								respuesta de Google trae ese bloque vacío. Por eso esta web no cita ninguna
+								reseña. Y como son tan pocas, la nota hay que leerla con cautela. Las reseñas
+								completas están en{' '}
+								<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+									el listado público de Google Maps ↗
+								</a>
+							</p>
+						)}
+					</div>
+				</div>
+			</section>
+
+			<section class="section cocina" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La casa <em>por dentro.</em>
+					</h2>
+					<p class="lead">
+						Son las {numeroFotos} fotografías que Nueva vida publica en su ficha de Google Maps.
+						La ficha no publica ninguna apaisada: todas son verticales o casi cuadradas. El
+						manifiesto de la descarga las atribuye al propio local, así que cada una lleva su
+						pie. La ficha no describe su contenido y aquí no se inventa ninguna descripción.
+					</p>
+					<div class="cocina-grid">
+						{galeria.map((name) => (
+							<figure class="cocina-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[380, 560, 800]}
+									sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 30vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>Foto de {autorFoto}</figcaption>
+							</figure>
+						))}
+					</div>
+					<p class="cocina-note">
+						La ficha no publica la carta ni los precios, así que esta web no los reproduce. Para
+						saber qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Avenida de la Armada Española, 5,
+							<br />
+							<em>03502 Benidorm.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							El local <strong>abre de 9:00 a 24:00 de martes a domingo</strong>, con el
+							viernes hasta la 1:00 y el sábado hasta la 1:30, y <strong>cierra los lunes</strong>. Es el horario que publica la ficha consultada el{' '}
+							{site.consultado}, y la propia
+							ficha añade un aviso para el lunes 12 de octubre: «{avisoFestivo}». Conviene
+							confirmar el horario antes de ir.
+						</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>llamar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">NV</span>
+					<span>
+						Nueva vida
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Nueva vida · Avenida de la Armada Española, 5 (03502
+					Benidorm). Web informativa elaborada con los datos y las fotografías que el local
+					publica en su ficha de Google Maps, consultada el {site.consultado}. Confirma horario y
+					disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a Nueva vida <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/aviso-legal">Aviso legal</a>
+			<a href="/aviso-legal#privacidad">Privacidad</a>
+			<a href="/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>
