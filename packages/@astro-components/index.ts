@@ -20,6 +20,7 @@ export { default as LocalFooter } from './src/local/Footer.astro';
 export { default as LocalHighlights } from './src/local/Highlights.astro';
 export { default as LocalGaleria } from './src/local/Galeria.astro';
 export { default as LocalFaqBlock } from './src/local/FaqBlock.astro';
+export { default as LocalFaqList } from './src/local/FaqList.astro';
 export { default as LocalMapFab } from './src/local/MapFab.astro';
 export { default as LocalPhoneFab } from './src/local/PhoneFab.astro';
 export { default as LocalServicios } from './src/local/Servicios.astro';
