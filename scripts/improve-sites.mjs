@@ -15,14 +15,19 @@
  *   node scripts/improve-sites.mjs            # dry-run (informe)
  *   node scripts/improve-sites.mjs --apply    # escribe los cambios
  *   node scripts/improve-sites.mjs --apply bar-el-anzuelo a-jalar   # solo esas apps
+ *   node scripts/improve-sites.mjs --apply --og-only                # solo la tarjeta social
+ *
+ * `--og-only` deja fuera las páginas legales y el resto de pasos: sirve para completar la
+ * vista previa de las webs que se comparten sin tarjeta, sin crear contenido que nadie pidió.
  */
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { regionCode } from './lib/geo-codes.mjs';
 
 const APPS_DIR = 'apps';
 const APPLY = process.argv.includes('--apply');
+const OG_ONLY = process.argv.includes('--og-only');
 const ONLY = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 
 const read = (p) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
@@ -136,7 +141,11 @@ function collect(app) {
 	// Prioridad: datos reales del negocio > title > slug legible.
 	const nameFromData =
 		extractField(businessSrc, ['name', 'nombre', 'businessName']) || fromTitle || app.replace(/-/g, ' ');
-	const siteUrl = (config.match(/site:\s*['"`]([^'"`]+)['"`]/) || [])[1] || null;
+	const configSiteUrl = (config.match(/site:\s*['"`]([^'"`]+)['"`]/) || [])[1] || null;
+	// El dominio del negocio manda: hay apps copiadas de otra web cuyo `astro.config.mjs`
+	// conserva el dominio antiguo. Para la tarjeta social eso publicaría una URL ajena.
+	const dataSiteUrl = extractField(businessSrc, ['siteUrl', 'SITE_URL']);
+	const siteUrl = dataSiteUrl ?? configSiteUrl;
 	const color = (favicon.match(/fill="(#[0-9a-fA-F]{3,8})"/) || [])[1] || '#24503f';
 
 	return {
@@ -248,6 +257,8 @@ function findOgAsset(root) {
 
 function ensureOgImage(info) {
 	if (hasOgImage(info.head)) return;
+	// Sin dominio configurado la URL quedaría relativa y los scrapers no la resuelven.
+	if (!siteUrl(info)) return;
 	// `ensureOgAsset` puede haber creado og.svg justo antes: en dry-run aún no está en disco.
 	const asset =
 		findOgAsset(info.root) ?? (info.name ? { file: 'og.svg', type: 'image/svg+xml', width: 1200, height: 630 } : null);
@@ -265,6 +276,80 @@ function ensureOgImage(info) {
 	write(join(info.root, info.headPath), next);
 	info.head = next;
 	changes.push(`${info.app}: og:image + twitter:card en ${info.headPath}`);
+}
+
+/**
+ * `og:url` y `og:locale` completan la tarjeta social y no dependen del contenido: la URL sale
+ * del canonical si ya existe y, si no, del dominio declarado en `astro.config.mjs`.
+ */
+function ensureOgUrlLocale(info) {
+	if (!siteUrl(info)) return;
+	const canonical = /<link[^>]+rel="canonical"[^>]+href="([^"]+)"/.exec(info.head)?.[1];
+	const tags = [];
+	if (!/property="og:url"/.test(info.head))
+		tags.push(`<meta property="og:url" content="${canonical ?? `${siteUrl(info)}/`}" />`);
+	if (!/property="og:locale"/.test(info.head))
+		tags.push('<meta property="og:locale" content="es_ES" />');
+	if (!tags.length) return;
+	const next = info.head.replace(/<\/head>/, `\t\t${tags.join('\n\t\t')}\n\t</head>`);
+	if (next === info.head) return;
+	write(join(info.root, info.headPath), next);
+	info.head = next;
+	changes.push(`${info.app}: og:url + og:locale en ${info.headPath}`);
+}
+
+/**
+ * `og:title` y `og:description` reutilizan lo que la página ya declara: la constante del
+ * frontmatter si existe (`content={title}`), o el literal del `<title>`/meta description.
+ * No se inventa texto: si no hay ninguno de los dos, la etiqueta se deja fuera.
+ */
+function ensureOgTitleDescription(info) {
+	const tags = [];
+	if (!/property="og:title"/.test(info.head)) {
+		if (/\bconst\s+title\s*=/.test(info.head))
+			tags.push('<meta property="og:title" content={title} />');
+		else {
+			const literal = /<title[^>]*>([^<{]+)<\/title>/.exec(info.head)?.[1]?.trim();
+			if (literal) tags.push(`<meta property="og:title" content="${escape(literal)}" />`);
+		}
+	}
+	if (!/property="og:description"/.test(info.head)) {
+		if (/\bconst\s+description\s*=/.test(info.head))
+			tags.push('<meta property="og:description" content={description} />');
+		else {
+			const literal = /<meta\s+name="description"\s+content="([^"{]*)"/.exec(info.head)?.[1]?.trim();
+			if (literal)
+				tags.push(`<meta property="og:description" content="${escape(literal)}" />`);
+		}
+	}
+	if (!tags.length) return;
+	const next = info.head.replace(/<\/head>/, `\t\t${tags.join('\n\t\t')}\n\t</head>`);
+	if (next === info.head) return;
+	write(join(info.root, info.headPath), next);
+	info.head = next;
+	changes.push(`${info.app}: og:title + og:description en ${info.headPath}`);
+}
+
+/**
+ * Una tarjeta con el dominio de otra web no sirve: corrige `og:url` y `og:image` cuando
+ * apuntan a un host distinto del que declara el negocio.
+ */
+function alignOgHost(info) {
+	if (!siteUrl(info)) return;
+	const host = siteUrl(info);
+	let changed = false;
+	const next = info.head.replace(
+		/(<meta\s+property="og:(?:url|image)"\s+content=")([^"]+)(")/g,
+		(match, start, url, end) => {
+			const fixed = url.replace(/^https?:\/\/[^/"']+/, host);
+			if (fixed !== url) changed = true;
+			return `${start}${fixed}${end}`;
+		},
+	);
+	if (!changed) return;
+	write(join(info.root, info.headPath), next);
+	info.head = next;
+	changes.push(`${info.app}: og:url/og:image al dominio del negocio (${host})`);
 }
 
 const siteUrl = (info) => (info.siteUrl ? info.siteUrl.replace(/\/$/, '') : '');
@@ -328,6 +413,8 @@ function ensureOgAsset(info) {
 	// Sin un </head> donde insertar la etiqueta, la imagen quedaría sin usar: no se crea.
 	if (!/<\/head>/.test(info.head)) return;
 	if (!info.name) return;
+	// Algunas webs no tienen `public/`: sin la carpeta, el SVG no se puede escribir.
+	mkdirSync(publicDir, { recursive: true });
 	const { name, color, locality } = info;
 	// Reparto en dos líneas si el nombre es largo, sin cortar palabras.
 	let lines = [name];
@@ -587,13 +674,20 @@ const apps = readdirSync(APPS_DIR, { withFileTypes: true })
 for (const app of apps) {
 	const info = collect(app);
 	if (info.isDemo) continue;
-	ensureLang(info);
-	ensureSitemapLink(info);
-	ensureGeoTags(info);
+	if (!OG_ONLY) {
+		ensureLang(info);
+		ensureSitemapLink(info);
+		ensureGeoTags(info);
+	}
 	ensureOgAsset(info);
 	ensureOgImage(info);
-	ensureLegalPage(info);
-	ensureLegalLinks(info);
+	ensureOgUrlLocale(info);
+	ensureOgTitleDescription(info);
+	alignOgHost(info);
+	if (!OG_ONLY) {
+		ensureLegalPage(info);
+		ensureLegalLinks(info);
+	}
 }
 
 console.log(`Modo: ${APPLY ? 'APLICANDO' : 'dry-run'} | apps analizadas: ${apps.length} | cambios: ${changes.length}`);
