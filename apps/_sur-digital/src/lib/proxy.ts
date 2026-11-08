@@ -146,6 +146,11 @@ export const proxy = async (
 	if (type.includes('text/html')) {
 		const body = rewriteHtml(await upstream.text(), origin, base, slug);
 		headers.set('content-type', 'text/html; charset=utf-8');
+		// Espejo de la web del cliente bajo nuestro dominio: no debe indexarse ni
+		// competir con su web real, que conserva su propio canonical (y que en 80
+		// clientes no se puede corregir desde este repo). `follow` mantiene el
+		// rastreo de los enlaces internos de la página.
+		headers.set('x-robots-tag', 'noindex, follow');
 		headers.set('cache-control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=600');
 		return new Response(body, { status: upstream.status, headers });
 	}
