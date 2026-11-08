@@ -1,4 +1,14 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+/* Solo se escanean las carpetas del sitio. Las webs de cliente de src/apps/
+   traen su propia hoja plana y no usan Tailwind; con el escaneo automático
+   entraban sus 2446 ficheros y la hoja pasaba de ~30 KB a ~20 MB, que además
+   se incrustaba en cada página. */
+@source "../components/";
+@source "../layouts/";
+@source "../pages/";
+@source "../templates/";
+@source "../i18n/";
 @plugin "@tailwindcss/typography";
 
 /* ── Assets pesados fuera del escaneo de Tailwind ──────────────────────── */
@@ -11,6 +21,12 @@
    grande: ninguna clase vive dentro de un modelo 3D. */
 @source not "../../*.{obj,glb,fbx,zip}";
 @source not "../../**/*.{obj,glb,fbx,zip}";
+
+/* Las webs de cliente migradas viven en src/apps: cada una trae su propia hoja
+   de estilos plana y ninguna usa Tailwind. Si el escáner las recorre, genera
+   utilidades para 780 sitios en una sola hoja (~20 MB) que además se incrusta
+   en cada página; con esto la hoja del sitio vuelve a su tamaño normal. */
+@source not "../../src/apps/**";
 
 @import "./text-wave.css";
 @import "./text-sand.css";
