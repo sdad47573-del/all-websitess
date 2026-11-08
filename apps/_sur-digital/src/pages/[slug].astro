@@ -1,8 +1,12 @@
 ---
-// Las cuatro páginas traducidas, cada una en la URL de su idioma:
-// /precios/ (es), /prices/ (en), /preise/ (de), /tarifs/ (fr), /precos/ (pt),
-// /ceny/ (ru)… Los slugs salen de src/i18n/routes.ts, que es la única fuente:
-// si se añade una página traducida, se añade allí y aquí se genera sola.
+// Páginas con URL propia, sin prefijo de idioma:
+//
+// - Las cuatro traducidas, cada una en la URL de su idioma: /precios/ (es),
+//   /prices/ (en), /preise/ (de), /tarifs/ (fr), /precos/ (pt), /ceny/ (ru)…
+//   Los slugs salen de src/i18n/routes.ts, que es la única fuente: si se añade
+//   una página traducida, se añade allí y aquí se genera sola.
+// - La portada de cada web de `src/apps/`, en `/<slug>/` (las subpáginas las
+//   sirve [slug]/[...rest].astro).
 //
 // La home no pasa por aquí: vive en / y su idioma lo decide la cookie (ver
 // vercel.json y tools/clean-urls.ts).
@@ -18,20 +22,43 @@ import PreciosEs from "../templates/precios/Es.astro";
 import PreciosLang from "../templates/precios/Lang.astro";
 
 export function getStaticPaths() {
-  return SUBPAGES.flatMap((page) =>
+  const localized = SUBPAGES.flatMap((page) =>
     LANGS.map((lang) => ({
       params: { slug: LOCALIZED_PAGES[page][lang].replace(/\//g, "") },
       props: { page, lang },
     }))
   );
+
+  // Cada app es una carpeta de src/apps/: su portada vive en pages/index.astro.
+  // El glob se resuelve aquí dentro (no como constante del módulo) porque el
+  // bundle de prerender solo conserva lo que usa getStaticPaths. Deja entrar
+  // sola a cualquier app nueva, sin listas que mantener.
+  const appPages = import.meta.glob("../apps/*/pages/index.astro");
+
+  const localizedSlugs = new Set(localized.map((entry) => entry.params.slug));
+  const apps = Object.entries(appPages).flatMap(([file, load]) => {
+    const slug = file.match(/\.\.\/apps\/([^/]+)\//)?.[1];
+    // Si un slug de app coincidiera con una página traducida, gana la traducida.
+    if (!slug || localizedSlugs.has(slug)) return [];
+    return [{ params: { slug }, props: { app: slug, load } }];
+  });
+
+  return [...localized, ...apps];
 }
 
 interface Props {
-  page: Exclude<PageKey, "home">;
-  lang: Lang;
+  page?: Exclude<PageKey, "home">;
+  lang?: Lang;
+  app?: string;
+  load?: () => Promise<{ default: any }>;
 }
-const { page, lang } = Astro.props;
+const { page, lang, load } = Astro.props;
+// Cada app trae su documento completo (head, estilos y scripts), así que se
+// renderiza tal cual, sin envolverla en el layout del sitio.
+const AppPage = load ? (await load()).default : null;
 ---
+
+{AppPage && <AppPage />}
 
 {
   page === "precios" && (
