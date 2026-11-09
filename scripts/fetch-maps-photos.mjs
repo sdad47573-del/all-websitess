@@ -27,7 +27,11 @@ import { join, resolve } from 'node:path';
 // sharp se carga desde la propia app que se procesa; si su node_modules aun no
 // existe, se recurre a una app del monorepo que lo declare en sus deps.
 const requireFor = (app) => {
-	for (const anchor of [`apps/${app}/package.json`, 'apps/bar-el-anzuelo/package.json']) {
+	for (const anchor of [
+		`apps/${app}/package.json`,
+		'apps/_sur-digital/package.json',
+		'apps/bar-el-anzuelo/package.json',
+	]) {
 		try {
 			return createRequire(resolve(anchor));
 		} catch {
@@ -165,8 +169,21 @@ function descriptorFor(photo, index) {
 	return `vista-${index + 1}`;
 }
 
+// Las landings viven en apps/<slug> o, ya migradas, dentro del proyecto unico en
+// apps/_sur-digital/src/apps/<slug>. Se admiten las dos ubicaciones.
 const appsDir = 'apps';
-const allApps = readdirSync(appsDir).filter((app) => existsSync(join(appsDir, app, 'src')));
+const surAppsDir = 'apps/_sur-digital/src/apps';
+const srcDirOf = (app) => {
+	const propio = join(appsDir, app, 'src');
+	if (existsSync(propio)) return propio;
+	// En el proyecto unico cada landing ya es la raiz de su codigo (pages, data, assets).
+	const migrado = join(surAppsDir, app);
+	return existsSync(join(migrado, 'pages')) ? migrado : null;
+};
+const allApps = [
+	...readdirSync(appsDir).filter((app) => !app.startsWith('_') && srcDirOf(app)),
+	...(existsSync(surAppsDir) ? readdirSync(surAppsDir) : []).filter((app) => srcDirOf(app)),
+].filter((app, i, lista) => lista.indexOf(app) === i);
 const apps = (all ? allApps : wanted.length ? wanted : allApps)
 	.filter((app) => allApps.includes(app))
 	.sort();
@@ -181,7 +198,7 @@ const totals = { apps: 0, photos: 0, skipped: 0, withoutId: 0, failed: 0 };
 const details = [];
 
 for (const app of apps) {
-	const srcDir = join(appsDir, app, 'src');
+	const srcDir = srcDirOf(app);
 	const fid = featureIdOf(srcDir);
 	if (!fid) {
 		totals.withoutId++;
@@ -241,6 +258,16 @@ for (const app of apps) {
 	}
 
 	if (!dry) {
+		// El manifiesto solo describe fotos de esta app. Al duplicar una landing, el
+		// manifiesto se copia con ids y nombres de la otra ficha: se descartan para que
+		// el cruce no se propague al siguiente que ejecute el script.
+		const ajenas = Object.entries(manifest).filter(
+			([, valor]) => !valor.file.startsWith(`${app}-`) || !existsSync(join(destDir, valor.file)),
+		);
+		for (const [id] of ajenas) delete manifest[id];
+		if (ajenas.length) {
+			console.log(`  ${app}: ${ajenas.length} entradas de otra ficha retiradas del manifiesto`);
+		}
 		mkdirSync(destDir, { recursive: true });
 		writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 	}

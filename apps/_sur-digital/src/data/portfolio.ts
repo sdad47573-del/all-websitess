@@ -96,6 +96,8 @@ import talleresCaldadoPreview from '../assets/talleres-caldado-preview.jpg';
 import theBossPreview from '../assets/the-boss-restaurant-preview.jpg';
 import butibambaPreview from '../assets/venta-la-butibamba-preview.jpg';
 
+import { PORTFOLIO_APPS } from './portfolio-apps';
+
 // Tipo explícito porque con `as const` cada elemento infería su propia forma y
 // `destacado` solo existía en los marcados, lo que rompía el destructuring.
 export interface Project {
@@ -106,7 +108,8 @@ export interface Project {
 	tags: readonly string[];
 	accent: string;
 	url: string;
-	preview: ImageMetadata;
+	/** Captura de la web. Los clientes generados desde su landing no la tienen. */
+	preview?: ImageMetadata;
 	/** Card grande a doble ancho. Ver la nota de PORTFOLIO. */
 	destacado?: boolean;
 }
@@ -1173,4 +1176,8 @@ export const PORTFOLIO: Project[] = [
 		url: 'https://el-garbanzo-negro.netlify.app',
 		preview: garbanzoNegroPreview,
 	},
+	// Landings migradas al proyecto único, generadas desde los datos de cada una
+	// (tools/gen-portfolio-apps.mjs). Van detrás de los curados, que son los que
+	// tienen captura propia y card destacada.
+	...PORTFOLIO_APPS,
 ];
