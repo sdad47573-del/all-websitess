@@ -1,0 +1,314 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import comedor from '../assets/fotos/bar-lasarte-apaisada-01.jpg';
+import postre from '../assets/fotos/bar-lasarte-apaisada-02.jpg';
+import entrada from '../assets/fotos/bar-lasarte-apaisada-03.jpg';
+import pescado from '../assets/fotos/bar-lasarte-apaisada-04.jpg';
+import pintxos from '../assets/fotos/bar-lasarte-apaisada-05.jpg';
+import fachada from '../assets/fotos/bar-lasarte-vertical-06.jpg';
+import historica from '../assets/fotos/bar-lasarte-apaisada-07.jpg';
+import huevos from '../assets/fotos/bar-lasarte-vertical-08.jpg';
+import hamburguesa from '../assets/fotos/bar-lasarte-vertical-09.jpg';
+import barra from '../assets/fotos/bar-lasarte-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Bar Lasarte, restaurante y bar en Arrandegi Kalea, 8, Parte Vieja de Donostia. Pintxos, raciones, menú del día y cocina casera, con 4,4 sobre 5 en Google. Teléfono 943 58 50 96.';
+
+const galeria = [
+	{
+		src: comedor,
+		alt: 'Comedor blanco de Bar Lasarte con mesas y sillas blancas y un mural en blanco y negro',
+	},
+	{
+		src: postre,
+		alt: 'Tarta de chocolate con salsa de chocolate en un plato blanco',
+	},
+	{
+		src: entrada,
+		alt: 'Entrada de Bar Lasarte en la Parte Vieja, con el rótulo y la barra al fondo',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado entero al horno con ajo, guindilla y perejil',
+	},
+	{
+		src: pintxos,
+		alt: 'Dos pintxos de Bar Lasarte: uno de jamón con queso y otro de setas con gamba',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada de Bar Lasarte en Arrandegi Kalea con gente en la puerta',
+	},
+	{
+		src: historica,
+		alt: 'Fotografía antigua en blanco y negro de un equipo de cocina',
+	},
+	{
+		src: huevos,
+		alt: 'Huevos fritos con jamón y patatas en un plato de Bar Lasarte',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa con patatas y ensalada en Bar Lasarte',
+	},
+	{
+		src: barra,
+		alt: 'Barra de Bar Lasarte con tomates, tortilla y un plato de patatas con huevo y jamón',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#lasarte`,
+	name: BUSINESS.name,
+	alternateName: ['Lasarte', 'Bar Lasarte Donostia', 'Restaurante Lasarte', 'Lasarte Parte Vieja'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: `+34 ${BUSINESS.phone}`,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina casera', 'Pintxos', 'Platos combinados'],
+	areaServed: [
+		{ '@type': 'City', name: 'Donostia / San Sebastián' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday'],
+			opens: '10:00',
+			closes: '24:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday', 'Saturday'],
+			opens: '10:00',
+			closes: '01:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La barra', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Bar Lasarte · Pintxos y cocina casera en la Parte Vieja';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#23211f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Gloock&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bar Lasarte, Lasarte Donostia, bar Parte Vieja Donostia, pintxos Parte Vieja, menú del día Donostia, comer en Arrandegi Kalea, Lasarte Arrandegi, restaurante Parte Vieja"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Restaurante y bar en Arrandegi Kalea, 8 (Parte Vieja, Donostia). Pintxos, raciones, menú del día y cocina casera, con 4,4 sobre 5 en Google."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Dos pintxos de Bar Lasarte, uno de jamón con queso y otro de setas con gamba"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#23211f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Parte Vieja, Donostia"
+			preload={[entrada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/bar-lasarte/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Lasarte"
+			subtitle="Bar · Parte Vieja"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Arrandegi Kalea, 8 · Parte Vieja, Donostia"
+				title="De Lasarte <br /><em>a la Parte Vieja.</em>"
+				lede={`Bar Lasarte nació en Lasarte, pasó por Riberas de Loiola y ahora tiene su local en Arrandegi Kalea, 8, en la Parte Vieja de Donostia. Pintxos, raciones, menú del día y cocina casera, con 4,4 sobre 5 en Google y 1.090 reseñas. Cierra los jueves: para venir, llama al ${BUSINESS.phone}.`}
+				image={entrada}
+				imageAlt="Entrada de Bar Lasarte en la Parte Vieja, con el rótulo y la barra al fondo"
+				primaryCta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,4</b> en Google · 1.090 reseñas' },
+					{ label: 'La casa', html: '<b>Pintxos</b> y menú del día' },
+					{ label: 'Horario', html: '<b>Jueves</b> cerrado' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Bar Lasarte" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="De barrio <br /><em>y de la Parte Vieja.</em>"
+				paragraphs={[
+					'Bar Lasarte nació en Lasarte, siguió en Riberas de Loiola y ahora ocupa un local en Arrandegi Kalea, 8, en plena Parte Vieja de Donostia: un espacio blanco y luminoso, con murales en blanco y negro y barra abierta a la calle.',
+					'Google lo clasifica como restaurante y bar, y le da 4,4 sobre 5 con 1.090 reseñas. Su ficha publica teléfono y horario, pero no carta, precios, correo ni web propia, así que esta web no inventa nada de eso.',
+					'El propio local describe una carta amplia: raciones, ensaladas, platos combinados, bocadillos, hamburguesas, sándwiches, carnes, pescados, menús del día y menús especiales de fin de semana.',
+					'Sus reseñas destacan los pintxos «buenos y variados», el menú del día con comida casera, la atención rápida de los camareros y el buen ambiente con música.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount.toLocaleString('es-ES')} opiniones en Google. Una reseña lo resume así: «Buenos y variados pintxos, camareros atentos y rápidos».`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La barra"
+				title="Pintxos, raciones <br /><em>y menú del día.</em>"
+				description="La ficha de Google no publica carta ni precios y el local no tiene web propia. Esto es lo que citan sus reseñas y la descripción del propio bar."
+				cta={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="No hay precios publicados ni carta en la ficha. Para saber qué hay hoy, lo más directo es llamar al 943 58 50 96."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Diez fotos <br /><em>de la casa.</em>"
+				description="Las diez fotografías publicadas en el perfil de Bar Lasarte en Google Maps: el comedor, la barra, la fachada y sus platos."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Ven a la Parte Vieja <br /><em>a picar.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, `${BUSINESS.regionName}, España`]}
+				hours={HOURS}
+				hoursCaption="Horario"
+				hoursNote="Horario de la ficha de Google: de domingo a miércoles de 10:00 a 24:00; viernes y sábado de 10:00 a 1:00. Los jueves cierra. Conviene confirmarlo por teléfono antes de ir."
+				mapTitle="Mapa de Bar Lasarte en Arrandegi Kalea, 8, Parte Vieja de Donostia"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bar Lasarte · Parte Vieja"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+				contactLink={{ label: `Llamar al ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="El teléfono 943 58 50 96 es el único canal de contacto que publica la ficha de Google: no hay correo ni web propia. La ficha marca acceso para sillas de ruedas y asientos adaptados."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/bar-lasarte/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horario, carta y precios antes de la visita."
+			ctaLabel="Llamar a Lasarte"
+		/>
+	</body>
+</html>

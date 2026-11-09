@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fado from '../assets/fotos/bom-garfo-apaisada-08.jpg';
+import fachada from '../assets/fotos/bom-garfo-apaisada-04.jpg';
+import sala from '../assets/fotos/bom-garfo-apaisada-01.jpg';
+import comedor from '../assets/fotos/bom-garfo-apaisada-02.jpg';
+import calle from '../assets/fotos/bom-garfo-vertical-05.jpg';
+import arrozNegro from '../assets/fotos/bom-garfo-apaisada-03.jpg';
+import ameijoas from '../assets/fotos/bom-garfo-vertical-07.jpg';
+import sopa from '../assets/fotos/bom-garfo-apaisada-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante Bom Garfo Bairro Alto, cocina típica portuguesa e italiana en la R. do Diário de Notícias 51, Lisboa. Fado live entre las mesas, todos los días de 18:00 a 1:00. 4,0 en Google con 201 reseñas. Tel. 215 944 881.';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de noche de Bom Garfo Bairro Alto, con el rótulo «Cozinha Típica Portuguesa» y los carteles de la carta junto a la puerta',
+	},
+	{
+		src: sala,
+		alt: 'Comedor de Bom Garfo con mesas de mantel blanco, sillas de madera, lámparas de techo y un cuadro del tranvía de Lisboa',
+	},
+	{
+		src: comedor,
+		alt: 'Sala de Bom Garfo con clientes cenando y un camarero atendiendo entre las mesas',
+	},
+	{
+		src: calle,
+		alt: 'Calle del Bairro Alto de noche, con banderines y farolillos, cerca de Bom Garfo',
+	},
+	{
+		src: arrozNegro,
+		alt: 'Arroz negro con gambas a la plancha servido en un plato blanco en Bom Garfo',
+	},
+	{
+		src: ameijoas,
+		alt: 'Amêijoas con cilantro en una cazuela y en un plato, en Bom Garfo',
+	},
+	{
+		src: sopa,
+		alt: 'Sopa de la casa con pan frito y hierbas frescas en un plato hondo de Bom Garfo',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	alternateName: ['Bom Garfo', 'Bom Garfo Lisboa', 'Restaurante Bom Garfo Bairo Alto'],
+	slogan: 'Cocina portuguesa y fado en directo en Bairro Alto',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 215 944 881',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Portuguesa', 'Italiana', 'Europea'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Bairro Alto' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '18:00',
+			closes: '01:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Estacionamiento accesible para sillas de ruedas',
+			value: true,
+		},
+		{ '@type': 'LocationFeatureSpecification', name: 'Fado en directo', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((body) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+		reviewBody: body,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Bom Garfo · Fado y cocina portuguesa en Bairro Alto';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#3a1a2c" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Bom Garfo Bairro Alto, restaurante Bairro Alto, fado en Lisboa, fado live Lisboa, cenar con fado, cocina portuguesa Lisboa, R. do Diário de Notícias 51, restaurante típico Lisboa, restaurante italiano Bairro Alto"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Bom Garfo · Fado y cocina portuguesa en Bairro Alto"
+			ogDescription="Cocina típica portuguesa e italiana y fado en directo entre las mesas, todos los días de 18:00 a 1:00. 4,0 en Google con 201 reseñas. Tel. 215 944 881."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Bom Garfo Bairro Alto, en la Rua do Diário de Notícias, Lisboa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#3a1a2c"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351215944881"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.regionName}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 215 944 881',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[fado]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Fado live · Bairro Alto"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="R. do Diário de Notícias, 51 · Bairro Alto, Lisboa"
+				title="Fado,<br />mesa<br /><em>e Bairro Alto.</em>"
+				lede="En la Rua do Diário de Notícias, Bom Garfo es cocina típica portuguesa y fado en directo entre las mesas. Arroz negro con gambas, amêijoas con cilantro y sopa de la casa, con una segunda carta italiana, todos los días de 18:00 a 1:00."
+				image={fado}
+				imageAlt="Fadista cantando entre las mesas de Bom Garfo, en Bairro Alto"
+				primaryCta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Fado live"
+				facts={[
+					{ label: 'Nota', html: '<b>4,0 en Google</b> con 201 reseñas' },
+					{ label: 'Todos los días', html: '<b>18:00 – 1:00</b>' },
+					{ label: 'Música', html: '<b>Fado en directo</b>' },
+					{ label: 'Cocina', html: '<b>Portuguesa e italiana</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Bom Garfo" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Una fadista<br />entre <em>las mesas.</em>"
+				paragraphs={[
+					'Bom Garfo ocupa un local de la Rua do Diário de Notícias, 51, en pleno Bairro Alto. El escaparate lo dice todo de un vistazo: «Restaurante Bom Garfo Bairro Alto», «Cozinha Típica Portuguesa» y, debajo, «FADO LIVE». Al lado de la puerta cuelgan los carteles con la carta.',
+					'Dentro, la sala es de mantel blanco, silla de madera y lámpara de techo, con un gran cuadro del tranvía de Lisboa presidiendo la pared y la barra al fondo. En una de las fotos del perfil se ve a una fadista cantando de pie entre los clientes, sin escenario: el fado aquí se escucha a la distancia de una mesa.',
+					'La cocina va de lo portugués a lo italiano: en la misma puerta convive una carta de entradas, omeletes, carnes y pescados con otra de pastas y dolci. De la mesa salen el arroz negro con gambas, las amêijoas con cilantro y la sopa con pan frito que aparecen en las fotos.',
+				]}
+				note="«Bom sabor e boa música», resume una reseña. Otra mezcla el elogio y la queja: «Comida boa e músicos excelentes mas pouca gente no atendimento»."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Cozinha de casa,<br /><em>fado ao vivo.</em>"
+				description="La ficha no publica carta: estos platos salen de las fotos del perfil y de los carteles de la puerta, que anuncian cocina portuguesa e italiana."
+				cta={{ label: `Preguntar por el menú: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Bom Garfo no publica precios en Google y esta web no los inventa. En la puerta hay carteles con la carta; para saber qué hay ese día y cuánto cuesta, llama al 215 944 881. La ficha tampoco ofrece reserva ni pedido online."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El escaparate,<br />la sala<br /><em>y la mesa.</em>"
+				description="Estas fotografías proceden del perfil de Bom Garfo en Google Maps: la fachada de noche con sus carteles, el comedor de manteles blancos, la calle del Bairro Alto y los platos que salen de la cocina."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="R. do Diário de Notícias, 51 · 1200-142 Lisboa"
+				title="En Bairro Alto,<br /><em>hasta la una.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Bairro Alto, Portugal']}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre todos los días, de 18:00 a 1:00, domingo incluido. La ficha avisa de que el horario puede cambiar en festivos; si vas a cenar con fado, llama antes para confirmar la actuación."
+				mapTitle="Mapa de Bom Garfo en la Rua do Diário de Notícias, 51, Bairro Alto (Lisboa)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Bom Garfo · Bairro Alto"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva por teléfono, en el 215 944 881. Conviene llamar con antelación si quieres mesa para cenar durante el fado. La ficha solo marca estacionamiento accesible para sillas de ruedas, no entrada ni aseo adaptados."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>venir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta, precios y actuaciones antes de la visita."
+			ctaLabel="Llamar a Bom Garfo"
+			creditLabel="Creado por"
+		/>
+	</body>
+</html>

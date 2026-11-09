@@ -1,0 +1,537 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	credito,
+	descripcionTitular,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+	tique,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Bar Koke La Niña del Koke · Sanlúcar';
+const description =
+	'Bar Koke La Niña del Koke, en la calle Mar, 17 de Sanlúcar de Barrameda: tapas, pescado frito y manzanilla. 4,2 sobre 5 con 998 reseñas.';
+const keywords =
+	'Bar Koke, La Niña del Koke, bar Koke Sanlúcar, tapas Sanlúcar de Barrameda, calle Mar Sanlúcar, pescado frito Sanlúcar, bar de tapas';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías y el manifiesto de la descarga no
+ * atribuye autor, así que no se inventa una descripción ni una atribución: los `alt` avisan solo
+ * de dónde salen.
+ */
+const altFoto =
+	'Fotografía publicada en la ficha de Google Maps de Bar Koke La Niña del Koke, en Sanlúcar de Barrameda';
+const altOg = 'Fotografía de Bar Koke La Niña del Koke publicada en su ficha de Google Maps';
+
+/** Galería completa: las diez fotografías de la ficha, con el tamaño que les toca en el muro. */
+const galeria = [
+	{ name: 'bar-koke-la-nina-del-koke-apaisada-01.jpg', clase: 'g6' },
+	{ name: 'bar-koke-la-nina-del-koke-vertical-06.jpg', clase: 'g3' },
+	{ name: 'bar-koke-la-nina-del-koke-vertical-07.jpg', clase: 'g3' },
+	{ name: 'bar-koke-la-nina-del-koke-vertical-08.jpg', clase: 'g3' },
+	{ name: 'bar-koke-la-nina-del-koke-apaisada-02.jpg', clase: 'g6' },
+	{ name: 'bar-koke-la-nina-del-koke-vertical-09.jpg', clase: 'g3' },
+	{ name: 'bar-koke-la-nina-del-koke-apaisada-03.jpg', clase: 'g4' },
+	{ name: 'bar-koke-la-nina-del-koke-apaisada-04.jpg', clase: 'g4' },
+	{ name: 'bar-koke-la-nina-del-koke-apaisada-05.jpg', clase: 'g4' },
+	{ name: 'bar-koke-la-nina-del-koke-apaisada-10.jpg', clase: 'g12' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#101820" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-CA" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/bar-koke-la-nina-del-koke/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">
+					BK
+				</span>
+				<span class="brand-text">
+					Bar Koke
+					<small>La Niña del Koke · Sanlúcar</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#tique">El tique</a>
+				<a href="#ficha">La ficha</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="hero-eyebrow">Sanlúcar de Barrameda · C. Mar, 17</p>
+						<h1 id="hero-title">
+							Bar Koke
+							<span>La Niña del Koke, en la calle Mar.</span>
+						</h1>
+						<p class="hero-lede">
+							Bar restaurante y bar de tapas en el número 17 de la calle Mar. La ficha de Google le
+							da {business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas y lo marca{' '}
+							<strong>abierto de 9:00 a 24:00</strong> de lunes a sábado.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>
+								Llamar al {business.phone}
+							</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>{business.streetAddress}</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>9:00 – 24:00</strong>
+							</li>
+							<li>
+								<small>Domingo</small>
+								<strong>11:00 – 24:00</strong>
+							</li>
+							<li>
+								<small>Teléfono</small>
+								<strong>{business.phone}</strong>
+							</li>
+						</ul>
+					</div>
+
+					<figure class="hero-figure">
+						<Image
+							src={foto('bar-koke-la-nina-del-koke-apaisada-01.jpg')}
+							alt={altFoto}
+							widths={[640, 900, 1200]}
+							sizes="(max-width: 1080px) 92vw, 46vw"
+							format="avif"
+							quality={70}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<figcaption>Fotografía de la ficha de Google Maps · {site.consultado}</figcaption>
+						<p class="hero-sticker">
+							<strong>{business.rating.toLocaleString('es-ES')}</strong>
+							<span>{business.reviewCount.toLocaleString('es-ES')} reseñas</span>
+						</p>
+					</figure>
+				</div>
+			</section>
+
+			<div class="band">
+				<strong>De lunes a sábado</strong>
+				<span>9:00 – 24:00</span>
+				<strong>Domingo</strong>
+				<span>11:00 – 24:00</span>
+			</div>
+
+			<section class="section" id="tique" aria-labelledby="tique-title">
+				<div class="wrap tique-grid">
+					<div class="tique-text">
+						<p class="kicker">El tique</p>
+						<h2 class="title" id="tique-title">
+							Lo que se pide,
+							<em> según las reseñas.</em>
+						</h2>
+						<p class="lead">
+							La ficha no publica carta ni precios. Lo que sí publica son tres reseñas destacadas
+							que nombran pescado frito, tapas de marisco, guisos, manzanilla, cerveza de la tierra
+							y vinos. Aquí están reunidas como un tique, sin precios inventados y con la reseña de
+							la que sale cada línea.
+						</p>
+						<p class="menciones-note">
+							Para saber qué hay hoy y cuánto cuesta, lo más rápido es{' '}
+							<a href={phoneHref}>llamar al {business.phone}</a>. La ficha no publica una carta
+							oficial.
+						</p>
+					</div>
+					<div class="tique">
+						<div class="tique-head">
+							<span>Bar Koke · C. Mar, 17</span>
+							<span>{site.consultado}</span>
+						</div>
+						<ul>
+							{tique.map((item) => (
+								<li>
+									<strong>{item.nombre}</strong>
+									<span>{item.nota}</span>
+								</li>
+							))}
+						</ul>
+						<div class="tique-total">
+							<small>Valoración en Google</small>
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+						</div>
+						<p class="tique-foot">
+							{business.reviewCount.toLocaleString('es-ES')} reseñas en la ficha · sin carta ni
+							precios publicados
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="section ficha" id="ficha" aria-labelledby="ficha-title">
+				<div class="wrap ficha-grid">
+					<div>
+						<p class="kicker">La ficha</p>
+						<h2 class="title" id="ficha-title">
+							Lo que publica
+							<em> el titular.</em>
+						</h2>
+						<blockquote class="cita">
+							<p>«{descripcionTitular}»</p>
+							<footer>Descripción del titular en la ficha de Google Maps</footer>
+						</blockquote>
+						<p class="cita-note">
+							Está transcrita tal cual, sin corregir su redacción: es la única descripción que el
+							bar publica en Google.
+						</p>
+					</div>
+					<div>
+						<ul class="datos">
+							<li>
+								<span>Categorías</span>
+								<strong>{business.categories.join(' · ')}</strong>
+							</li>
+							<li>
+								<span>Dirección</span>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<span>Horario</span>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<span>Teléfono</span>
+								<strong>{business.phone}</strong>
+							</li>
+							<li>
+								<span>Valoración</span>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 ·{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+							<li>
+								<span>Plus code</span>
+								<strong>{business.plusCode}</strong>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="section" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						Diez fotos
+						<em> de la ficha.</em>
+					</h2>
+					<p class="lead">
+						Las diez fotografías que Bar Koke La Niña del Koke publica en su ficha de Google Maps.
+						La ficha no las describe y el manifiesto de la descarga no atribuye autor, así que se
+						muestran sin pie inventado.
+					</p>
+					<div class="galeria-grid">
+						{galeria.map((item, index) => (
+							<figure class:list={['galeria-item', item.clase]}>
+								<Image
+									src={foto(item.name)}
+									alt={altFoto}
+									widths={[380, 560, 800, 1100]}
+									sizes="(max-width: 760px) 46vw, (max-width: 1080px) 46vw, 38vw"
+									format="avif"
+									quality={66}
+									loading="lazy"
+									decoding="async"
+								/>
+								<span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+							</figure>
+						))}
+					</div>
+					<p class="galeria-note">
+						Fotos de la ficha consultada el {site.consultado}. Si eres el titular y prefieres que no
+						aparezcan, se retiran: el teléfono de contacto es el{' '}
+						<a href={phoneHref}>{business.phone}</a>.
+					</p>
+				</div>
+			</section>
+
+			<section class="section horario" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y llegada</p>
+						<h2 class="title" id="horario-title">
+							Calle Mar, 17,
+							<em> Sanlúcar.</em>
+						</h2>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'dia-domingo': item.day === 'Domingo' }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							Abre todos los días: de 9:00 a 24:00 de lunes a sábado y de 11:00 a 24:00 el domingo.
+							Es el horario consultado el {site.consultado}; conviene confirmarlo por teléfono antes
+							de ir, sobre todo en festivos.
+						</p>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<p class="access-title">Accesibilidad publicada en la ficha</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+							src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen
+						></iframe>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="resenas" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div class="resenas-head">
+						<div>
+							<p class="kicker">Lo que dicen</p>
+							<h2 class="title" id="resenas-title">
+								Tres reseñas
+								<em> destacadas.</em>
+							</h2>
+						</div>
+						<div class="score">
+							<strong>{business.rating.toLocaleString('es-ES')}</strong>
+							<span>
+								sobre 5 · {business.reviewCount.toLocaleString('es-ES')} reseñas
+								<br />
+								<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+									Ver todas ↗
+								</a>
+							</span>
+						</div>
+					</div>
+					<div class="quote-grid">
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									{review.rating} sobre 5<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de
+						<em> sentarse.</em>
+					</h2>
+					<p class="lead">
+						{business.reviewCount.toLocaleString('es-ES')} reseñas, tres destacadas y cuatro datos
+						de accesibilidad: todo lo que publica la ficha, resumido sin añadir nada.
+					</p>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">
+						BK
+					</span>
+					<span>
+						Bar Koke La Niña del Koke
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del bar">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Bar Koke La Niña del Koke · Calle Mar, 17 (11540 Sanlúcar de
+					Barrameda). Web informativa elaborada con los datos y las fotografías que el bar publica
+					en su ficha de Google Maps, consultada el {site.consultado}. Confirma horario y
+					disponibilidad por teléfono antes de salir.
+					<span class="credit">
+						Web creada por{' '}
+						<a href={credito.url} rel="noopener">
+							{credito.nombre}
+						</a>
+					</span>
+				</small>
+			</div>
+
+			<a class="mobile-call" href={phoneHref}>
+				Llamar a Bar Koke <span>{business.phone}</span>
+			</a>
+
+			<nav class="legal-links" aria-label="Información legal">
+				<a href="/bar-koke-la-nina-del-koke/aviso-legal">Aviso legal</a>
+				<a href="/bar-koke-la-nina-del-koke/aviso-legal#privacidad">Privacidad</a>
+				<a href="/bar-koke-la-nina-del-koke/aviso-legal#cookies">Cookies</a>
+			</nav>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,110 @@
+---
+import Contact from '../components/Contact.astro';
+import Fab from '../components/Fab.astro';
+import Footer from '../components/Footer.astro';
+import Topbar from '../components/Topbar.astro';
+import { breadcrumbs } from '../data/schema';
+import { BUSINESS, SERVICIOS_DETALLE } from '../data/site';
+import Layout from '../layouts/Layout.astro';
+
+const titulo = 'Servicios y precios · NELD, Teatinos Málaga';
+const descripcion = `Corte de caballero 12 €, corte + barba 20 € y corte + barba + cejas 23 € en Calle Doctor Miguel Díaz Recio, 38 (Teatinos, Málaga). Reserva en Booksy.`;
+const h1 = 'Servicios y precios';
+
+const catalogoSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: `${BUSINESS.name}: servicios`,
+	itemListElement: SERVICIOS_DETALLE.flatMap((seccion, indiceSeccion) =>
+		seccion.items.map((item, indice) => ({
+			'@type': 'ListItem',
+			position: indiceSeccion * 100 + indice + 1,
+			item: {
+				'@type': 'Service',
+				name: item.nombre,
+				description: `${item.nombre} en ${BUSINESS.name} — ${item.precio}`,
+				areaServed: BUSINESS.city,
+				provider: { "@type": "BarberShop", name: BUSINESS.name },
+			},
+		})),
+	),
+};
+---
+
+<Layout
+	title={titulo}
+	description={descripcion}
+	path="/neld-barberia/servicios"
+	keywords={`${titulo}, corte Teatinos, ritual barba Málaga, cejas Díaz Recio`}
+	schema={[
+		breadcrumbs([
+			{ name: 'Inicio', path: '/neld-barberia/' },
+			{ name: h1, path: '/neld-barberia/servicios' },
+		]),
+		catalogoSchema,
+	]}
+>
+	<Topbar base="/neld-barberia/" />
+	<main>
+		<section class="hero-astyle text-white">
+			<div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+				<nav class="mb-6 text-xs text-white/60" aria-label="Migas de pan">
+					<a href="/neld-barberia/" class="hover:text-accent">Inicio</a><span class="mx-2">/</span><span
+						class="text-white/90">{h1}</span
+					>
+				</nav>
+				<span class="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
+					{BUSINESS.district} · {BUSINESS.city}
+				</span>
+				<h1 class="font-display mt-3 text-4xl font-bold sm:text-5xl">{h1}</h1>
+				<p class="font-display mt-3 text-xl font-semibold text-white/85">
+					{BUSINESS.name}, en {BUSINESS.city}
+				</p>
+				<p class="mt-5 max-w-2xl leading-relaxed text-white/75">
+					Precios publicados en Booksy (oct 2026). Confirma al reservar por si cambian.
+				</p>
+				<div class="mt-8 flex flex-wrap gap-3">
+					<a
+						href={BUSINESS.booksy}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn btn-secondary gap-2 rounded-full"
+					>
+						<i class="ri-calendar-check-line"></i> Reservar en Booksy
+					</a>
+					<a
+						href={BUSINESS.googleMaps}
+						class="btn btn-outline hover:text-neutral rounded-full border-white/40 bg-white/5 text-white hover:border-white hover:bg-white"
+					>
+						<i class="ri-phone-line"></i> {BUSINESS.shortName}
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<div class="bg-base-200 py-14 sm:py-20">
+			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				{
+					SERVICIOS_DETALLE.map((seccion) => (
+						<div class="mb-14 last:mb-0">
+							<h2 class="font-display text-3xl font-bold sm:text-4xl">{seccion.grupo}</h2>
+							<div class="astyle-divider mt-4 h-px w-24" />
+							<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								{seccion.items.map((item) => (
+									<article class="etiqueta-astyle rounded-box border-base-300 bg-base-100 border p-6">
+										<h3 class="text-lg font-bold">{item.nombre}</h3>
+										<p class="text-primary mt-2 text-sm font-bold">{item.precio}</p>
+									</article>
+								))}
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<Contact />
+	</main>
+	<Footer />
+	<Fab />
+</Layout>

@@ -1,0 +1,48 @@
+---
+/**
+ * Migas de pan visibles. La versión en schema.org la genera `buildSchemaGraph()`
+ * a partir de la misma ruta, así que ambos deben mantenerse en la misma página.
+ */
+interface Props {
+	/** Ruta de la página actual, p. ej. `/carta`. */
+	path: string;
+	/** Nombre de la página actual. */
+	label: string;
+	/** Variante sobre fondo oscuro (cabeceras de subpágina). */
+	inverse?: boolean;
+}
+
+const { path, label, inverse = false } = Astro.props;
+
+const trail =
+	path === '/l-oasis-malaga/'
+		? [{ name: 'Inicio', href: '/l-oasis-malaga/' }]
+		: [
+				{ name: 'Inicio', href: '/l-oasis-malaga/' },
+				{ name: label, href: path },
+			];
+
+const muted = inverse ? 'text-white/60 hover:text-accent' : 'opacity-60 hover:text-primary';
+const current = inverse ? 'text-white/90' : '';
+---
+
+<nav aria-label="Migas de pan" class="mb-6 text-xs">
+	<ol class="flex flex-wrap items-center gap-2">
+		{
+			trail.map((item, index) => (
+				<li class="flex items-center gap-2">
+					{index > 0 && <span class={inverse ? 'text-white/40' : 'opacity-40'} aria-hidden="true">/</span>}
+					{index < trail.length - 1 ? (
+						<a href={item.href} class={muted}>
+							{item.name}
+						</a>
+					) : (
+						<span class={current} aria-current="page">
+							{item.name}
+						</span>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</nav>

@@ -1,0 +1,278 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/cafeteria-restaurante-fezur-apaisada-01.jpg';
+import brasa from '../assets/fotos/cafeteria-restaurante-fezur-apaisada-09.jpg';
+import migas from '../assets/fotos/cafeteria-restaurante-fezur-vertical-02.jpg';
+import chacina from '../assets/fotos/cafeteria-restaurante-fezur-vertical-04.jpg';
+import guiso from '../assets/fotos/cafeteria-restaurante-fezur-vertical-07.jpg';
+import pollo from '../assets/fotos/cafeteria-restaurante-fezur-apaisada-06.jpg';
+import emplatado from '../assets/fotos/cafeteria-restaurante-fezur-vertical-03.jpg';
+import postre from '../assets/fotos/cafeteria-restaurante-fezur-vertical-10.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	'Cafetería Restaurante Fezur, en la Av. de la Constitución, 12 (Jaraíz de la Vera, Cáceres). Codillo asado, paella y migas. De 10:00 a 18:00. Tel. 927 17 07 91.';
+
+const galeria = [
+	{ src: fachada, alt: 'Fachada de Cafetería Restaurante Fezur en la Avenida de la Constitución de Jaraíz de la Vera' },
+	{ src: brasa, alt: 'Presa de cerdo a la brasa con patatas fritas servida en Fezur, Jaraíz de la Vera' },
+	{ src: migas, alt: 'Migas con huevo frito en cazuela de hierro, servidas en Cafetería Restaurante Fezur' },
+	{ src: chacina, alt: 'Tabla de jamón, chorizos y queso con cazuela de garbanzos guisados en Fezur' },
+	{ src: guiso, alt: 'Carne guisada con patatas fritas en cuenco, en Cafetería Restaurante Fezur de Jaraíz' },
+	{ src: pollo, alt: 'Pollo en salsa con patatas fritas caseras servido en Fezur, Jaraíz de la Vera' },
+	{ src: emplatado, alt: 'Plato emplatado en pizarra con salsa verde, frutos secos y toque dulce en Fezur' },
+	{ src: postre, alt: 'Postre casero servido en tarro con cuchara de plata en Cafetería Restaurante Fezur' },
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#fezur`,
+	name: BUSINESS.name,
+	alternateName: ['Fezur', 'Cafetería Fezur Jaraíz', 'Restaurante Fezur Jaraíz de la Vera'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 927 17 07 91',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Extremeña', 'Comida casera'],
+	areaServed: [
+		{ '@type': 'City', name: 'Jaraíz de la Vera' },
+		{ '@type': 'AdministrativeArea', name: 'Cáceres' },
+		{ '@type': 'AdministrativeArea', name: 'Extremadura' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId }],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday'],
+			opens: '10:00',
+			closes: '17:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '10:00',
+			closes: '18:00',
+		},
+	],
+	amenityFeature: [
+		{ '@type': 'LocationFeatureSpecification', name: 'Acceso para sillas de ruedas', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Aseo adaptado', value: true },
+		{ '@type': 'LocationFeatureSpecification', name: 'Asientos adaptados', value: true },
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Buen secreto, paella y berenjenas y riquísimo el codillo asado.',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Si pasas por aquí, buen sitio para comer a precios asequibles y buena cocina.',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El restaurante', href: '#casa' },
+	{ label: 'La cocina', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Cafetería Restaurante Fezur · Comida en Jaraíz de la Vera';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6d3324" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Cafetería Restaurante Fezur, Fezur Jaraíz de la Vera, restaurante Jaraíz de la Vera, comida Jaraíz Cáceres, Av. de la Constitución, codillo asado, menú del día Jaraíz, tapas La Vera"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Cafetería Restaurante Fezur · Comida en Jaraíz de la Vera"
+			ogDescription="Codillo asado, paella, migas y guisos en la Av. de la Constitución, 12 (Jaraíz de la Vera). 4,4 en Google con 621 reseñas. De 10:00 a 18:00."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Presa de cerdo a la brasa con patatas fritas en Cafetería Restaurante Fezur"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#6d3324"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34927170791"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[brasa]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/cafeteria-restaurante-fezur/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Cafetería Restaurante Fezur"
+			subtitle="Comida · Jaraíz de la Vera"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Av. de la Constitución · Jaraíz de la Vera"
+				title="Cocina de casa<br /><em>en la avenida.</em>"
+				lede={`Fezur es cafetería y restaurante en la Av. de la Constitución, 12, de Jaraíz de la Vera (Cáceres). Codillo asado, paella, migas y guisos a precios asequibles, de 10:00 a 18:00. Reservas en el ${BUSINESS.phoneDisplay}.`}
+				image={brasa}
+				imageAlt="Presa de cerdo a la brasa con patatas fritas servida en Fezur, Jaraíz de la Vera"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)` },
+					{ label: 'Horario', html: 'Mar–Dom 10:00–18:00' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Cafetería Restaurante Fezur" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El restaurante"
+				title="Parada de viajeros<br /><em>y de vecinos.</em>"
+				paragraphs={[
+					`Cafetería Restaurante Fezur —Fezur Casa Paco, como dice su toldo— está en la Avenida de la Constitución, 12, del 10400 Jaraíz de la Vera (Cáceres), en plena avenida principal de la comarca de la Vera.`,
+					'La cocina es de comedor de toda la vida: migas con huevo frito en cazuela de hierro, garbanzos guisados con tabla de chacina, carnes a la brasa y guisos de cuchara con patatas caseras. Entre lo que citan sus reseñas están el codillo asado, la paella y las berenjenas.',
+					'La ficha de Google no publica carta ni precios, así que aquí no se inventan: este resume lo que se ve en sus fotos y lo que cuentan sus clientes. Para saber qué hay cada día, se llama.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Se repiten el «codillo asado riquísimo» y la idea de «buen sitio para comer a precios asequibles y buena cocina».`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.cid, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La cocina"
+				title="Migas, garbanzos<br /><em>y brasa.</em>"
+				description="Resumen de lo que publica su ficha de Google: lo que nombran las reseñas y lo que se ve en las fotos del perfil. Sin precios, porque la ficha no los tiene publicados."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="La carta cambia según el día y la temporada. Si vienes por un plato concreto —codillo, paella, migas—, llama antes al 927 17 07 91 y te lo confirman."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La fachada<br /><em>y los platos.</em>"
+				description="Estas fotografías proceden del perfil de Cafetería Restaurante Fezur en Google Maps: el local en la avenida, las migas en cazuela, la chacina con garbanzos y la brasa."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos<br /><em>en la avenida.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote="Horario de la ficha de Google. De martes a domingo, de 10:00 a 18:00; el lunes abre de 10:00 a 17:30. Para comida tardía o cena, conviene llamar antes."
+				mapTitle="Mapa de Cafetería Restaurante Fezur en la Av. de la Constitución, 12, Jaraíz de la Vera (Cáceres)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Cafetería Restaurante Fezur · Jaraíz de la Vera"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva llamando al 927 17 07 91. La ficha de Google marca acceso para sillas de ruedas, aseo y asientos adaptados. Está en la Avenida de la Constitución, avenida principal de Jaraíz de la Vera."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.cid, external: true },
+				{ label: 'Aviso legal', href: '/cafeteria-restaurante-fezur/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Fezur"
+		/>
+	</body>
+</html>

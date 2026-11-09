@@ -1,0 +1,372 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import interior from '../assets/fotos/jardim-das-cerejas-apaisada-03.jpg';
+import buffet from '../assets/fotos/jardim-das-cerejas-apaisada-04.jpg';
+import fachada from '../assets/fotos/jardim-das-cerejas-apaisada-01.jpg';
+import tabuleiros from '../assets/fotos/jardim-das-cerejas-apaisada-09.jpg';
+import prato1 from '../assets/fotos/jardim-das-cerejas-apaisada-05.jpg';
+import prato2 from '../assets/fotos/jardim-das-cerejas-apaisada-07.jpg';
+import sopa from '../assets/fotos/jardim-das-cerejas-vertical-06.jpg';
+import tigelas from '../assets/fotos/jardim-das-cerejas-vertical-08.jpg';
+import linhaBuffet from '../assets/fotos/jardim-das-cerejas-vertical-02.jpg';
+import prato3 from '../assets/fotos/jardim-das-cerejas-vertical-10.jpg';
+
+import { BUFFET, BUSINESS, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICOS } from '../data/site';
+
+const title = 'Jardim das Cerejas · buffet vegano no Chiado, Lisboa';
+const description =
+	'Buffet vegano livre no Chiado, em Lisboa: Calçada do Sacramento, 36. Almoço das 12:00 às 15:30 e jantar das 19:00 às 23:00, todos os dias. Telefone 21 346 9308.';
+
+const galeria = [
+	{
+		src: buffet,
+		alt: 'Mesa do buffet do Jardim das Cerejas com tachos de inox, saladas em travessas brancas e jarros de lírios',
+	},
+	{
+		src: sopa,
+		alt: 'Tigela de sopa de legumes com azeite, ao lado de um prato de azeitonas e salada',
+	},
+	{
+		src: tigelas,
+		alt: 'Tigelas brancas com grão-de-bico, azeitonas, esparguete e um molho verde de ervas',
+	},
+	{
+		src: fachada,
+		alt: 'Fachada do Jardim das Cerejas à noite, na Calçada do Sacramento, com toldos e a porta aberta',
+	},
+	{
+		src: tabuleiros,
+		alt: 'Tabuleiros do buffet vistos de cima: grão-de-bico, azeitonas, pepino, tomate e fatias de polenta',
+	},
+	{
+		src: prato1,
+		alt: 'Prato com caril de legumes, grão-de-bico, cenoura ralada, batata assada e pão',
+	},
+	{
+		src: prato3,
+		alt: 'Prato com estufado de legumes, grão-de-bico, salada de folhas e arroz integral',
+	},
+	{
+		src: linhaBuffet,
+		alt: 'Linha do buffet com travessas de saladas, bolinhos e fatias amarelas de polenta',
+	},
+	{
+		src: prato2,
+		alt: 'Prato com legumes estufados, grão-de-bico com caril e molho de ervas',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#jardim-das-cerejas`,
+	name: BUSINESS.name,
+	alternateName: ['Jardim das Cerejas Chiado', 'Jardim das Cerejas Lisboa'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 346 9308',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Vegana', 'Vegetariana', 'Cozinha caseira'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Distrito de Lisboa' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '12:00',
+			closes: '15:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '19:00',
+			closes: '23:00',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'O buffet', href: '#buffet' },
+	{ label: 'A casa', href: '#casa' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visitar', href: '#visitanos' },
+	{ label: 'Perguntas', href: '#preguntas' },
+];
+---
+
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#22382b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Jardim das Cerejas, buffet vegano Lisboa, restaurante vegano Chiado, buffet vegetariano Lisboa, Calçada do Sacramento, comer vegano Chiado, buffet livre Lisboa, Jardim das Cerejas Chiado"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Buffet vegano livre no Chiado, todos os dias ao almoço e ao jantar. Calçada do Sacramento, 36 · Lisboa."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Sala do Jardim das Cerejas com plantas suspensas, mesas de madeira e cadeiras azuis"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#22382b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Lisboa"
+			locale="pt_PT"
+			countryName="Portugal"
+			preload={[interior]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/jardim-das-cerejas/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Jardim das Cerejas"
+			subtitle="Buffet vegano · Chiado"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="início"
+			navAriaLabel="Navegação principal"
+		/>
+
+		<main id="conteudo">
+			<LocalHero
+				eyebrow="Calçada do Sacramento, 36 · Chiado"
+				title="Um jardim de <br /><em>comida vegetal.</em>"
+				lede={`O Jardim das Cerejas é um restaurante vegano no Chiado, em Lisboa, com buffet livre ao almoço e ao jantar. Abre todos os dias: serves-te à vontade e pagas um preço fixo por pessoa.`}
+				image={interior}
+				imageAlt="Sala do Jardim das Cerejas com plantas suspensas, lambris de madeira, mesas corridas e cadeiras azuis"
+				primaryCta={{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true }}
+				facts={[
+					{ label: 'Nota', html: '<b>4,6</b> no Google · 2 210 críticas' },
+					{ label: 'Almoço', html: '<b>12:00–15:30</b> buffet livre' },
+					{ label: 'Jantar', html: '<b>19:00–23:00</b> todos os dias' },
+				]}
+				galleryHref={MAPS.place}
+				photoCredit="Foto do perfil de Google Maps"
+				galleryLinkLabel="Ver a galeria"
+			/>
+
+			<LocalChips label="O que se serve no Jardim das Cerejas" items={SERVICOS} />
+
+			<section class="buffet" id="buffet" aria-labelledby="buffet-title">
+				<div class="wrap">
+					<div class="buffet-head">
+						<div>
+							<p class="eyebrow"><span aria-hidden="true"></span> Como funciona</p>
+							<h2 id="buffet-title">Um só preço, <br /><em>três passos.</em></h2>
+						</div>
+						<p>
+							A sopa vem à mesa, o resto escolhe-se nas travessas. Não há carta para
+							escolher nem prato a pedir: come-se o que se quiser, quantas vezes se quiser.
+						</p>
+					</div>
+					<div class="buffet-grid">
+						{
+							BUFFET.map((item) => (
+								<article class="buffet-card">
+									<span class="buffet-num" aria-hidden="true">{item.icon}</span>
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</article>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalAbout
+				label="A casa"
+				title="Uma sala com <br /><em>plantas e travessas.</em>"
+				paragraphs={[
+					'O Jardim das Cerejas fica na Calçada do Sacramento, 36, entre o Largo de São Carlos e o Carmo, numa das ruas que sobem do Chiado para o Carmo. A fachada tem dois toldos — «Jardim das Cerejas» e «Restaurante vegan» — e uma porta aberta para a rua.',
+					'Lá dentro, a sala é comprida: lambris de madeira, plantas a cair das paredes, quadros com vistas de Lisboa, candeeiros de vime e cadeiras azuis. Ao fundo, a mesa do buffet, sempre com lírios brancos ao lado dos tachos.',
+					'A cozinha é 100% vegetal. Não há carne, peixe, ovos nem laticínios: tudo o que está nas travessas é feito de legumes, leguminosas, cereais e pão. O buffet tem sopa, pratos quentes que mudam ao longo da semana, uma mesa de frios e saladas e doçaria da casa.',
+					'A casa não tem site próprio nem publica a ementa na ficha de Google. Esta página reúne o que está publicado — morada, horário, telefone, fotografias e críticas — e não inventa preços nem pratos fixos: o buffet muda todos os dias.',
+				]}
+				note="Tem 4,6 sobre 5 com 2 210 críticas no Google. Uma delas diz: «Adoro voltar, comida deliciosa, boa quantidade, bom preço e ótimo serviço.»"
+				links={[
+					{ label: 'Ficha e críticas no Google', href: MAPS.place, external: true },
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="O buffet"
+				title="O que passa <br /><em>pelas travessas.</em>"
+				description="O buffet é uma mesa só, com tachos e travessas que se enchem ao longo do serviço. Estes são os pratos que aparecem nas fotografias e nas críticas — não uma carta fechada."
+				cta={{ label: `Ligar · ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Preço fixo por pessoa, com as bebidas à parte. A composição do buffet muda todos os dias e a casa não publica a ementa: para saber o que há hoje, o caminho é ligar para o 21 346 9308."
+			/>
+
+			<section class="voices" aria-labelledby="voices-title">
+				<div class="wrap">
+					<p class="section-label"><span aria-hidden="true"></span> Quem já comeu aqui</p>
+					<h2 id="voices-title">Três críticas, <br /><em>em três linhas.</em></h2>
+					<div class="voice-grid">
+						{
+							REVIEWS.map((review) => (
+								<figure class="voice">
+									<blockquote>{review.text}</blockquote>
+									<figcaption>{review.rating} de 5 · crítica no Google</figcaption>
+								</figure>
+							))
+						}
+					</div>
+				</div>
+			</section>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="Nove fotografias <br /><em>da casa.</em>"
+				description="As fotografias publicadas no perfil do Jardim das Cerejas em Google Maps: a fachada na Calçada do Sacramento, a sala, a mesa do buffet e os pratos que dela saem."
+				images={galeria}
+				cta={{ label: 'Ver tudo no Google Maps', href: MAPS.place }}
+				note="Imagens alojadas nesta página e provenientes do perfil do estabelecimento em Google Maps. Se tens os direitos de alguma e queres retirá-la, diz-nos e apagamo-la."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Almoçar no <br /><em>Chiado.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Lisboa, Portugal']}
+				hours={HOURS}
+				hoursCaption="Horário do buffet"
+				hoursNote="Horário publicado na ficha de Google: todos os dias, sem dia de fecho. Almoço das 12:00 às 15:30 e jantar das 19:00 às 23:00; em feriados convém confirmar por telefone."
+				mapTitle="Mapa do Jardim das Cerejas na Calçada do Sacramento, 36, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Jardim das Cerejas · Chiado"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: `Ligar ${BUSINESS.phone}`, href: BUSINESS.phoneHref, variant: 'primary' },
+					{ label: 'Como chegar', href: MAPS.directions, external: true },
+					{ label: 'Críticas no Google', href: MAPS.reviews, external: true },
+				]}
+				contactLink={{ label: `Ligar para o ${BUSINESS.phone}`, href: BUSINESS.phoneHref }}
+				reserveNote="Não há reservas em linha nem página própria de reservas: o telefone é o canal da casa. Ao almoço enche com quem trabalha no Chiado, por isso para grupos vale a pena ligar antes. O metro de Baixa-Chiado fica a poucos minutos a pé."
+			/>
+
+			<LocalFaq items={FAQ} eyebrow="Perguntas frequentes" title="Antes de <em>almoçar.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Críticas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Como chegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/jardim-das-cerejas/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografias provenientes do perfil do estabelecimento em Google Maps. Informação elaborada a partir de fontes públicas; confirma horário, buffet e preços antes da visita."
+			ctaLabel="Ligar ao Jardim das Cerejas"
+			navAriaLabel="Ligações do Jardim das Cerejas"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/jardim-das-cerejas/aviso-legal' },
+				{ label: 'Privacidade', href: '/jardim-das-cerejas/aviso-legal#privacidade' },
+				{ label: 'Cookies', href: '/jardim-das-cerejas/aviso-legal#cookies' },
+			]}
+			creditLabel="Web criada por"
+			creditName="Sur Digital"
+			creditHref="https://sur-digital.vercel.app/"
+		/>
+	</body>
+</html>

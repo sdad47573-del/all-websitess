@@ -1,0 +1,467 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	distintivo,
+	faqSchema,
+	faqs,
+	hours,
+	hoursSummary,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Mesón La Paloma · Restaurante en Cartagena';
+const description =
+	'Mesón La Paloma, restaurante de barrio en la C. Postigos, 58 de Cartagena, con el distintivo de brunch. Abierto todos los días desde las 6:00; 4,6 sobre 5 con 108 reseñas.';
+const keywords =
+	'Mesón La Paloma, Mesón La Paloma Cartagena, restaurante Cartagena, C. Postigos Cartagena, almuerzos Cartagena, pulpo Cartagena, brunch Cartagena';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas cuatro fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada en la ficha de Google Maps de Mesón La Paloma, en Cartagena';
+const altOg = 'Fotografía de Mesón La Paloma publicada en su ficha de Google Maps';
+
+/** Portada: la primera de las fotos de la ficha. */
+const fotoHero = 'meson-la-paloma-vertical-01.jpg';
+
+/**
+ * Galería completa: las cuatro fotografías de la ficha, en el orden en que se descargaron.
+ *
+ * Son todas verticales y el manifiesto de la descarga quedó sin autor (`author` vacío), así que se
+ * publican sin pie y sin atribución: no hay nada que citar.
+ */
+const galeria = [
+	'meson-la-paloma-vertical-01.jpg',
+	'meson-la-paloma-vertical-02.jpg',
+	'meson-la-paloma-vertical-03.jpg',
+	'meson-la-paloma-vertical-04.jpg',
+];
+
+/**
+ * Número de reseñas destacadas que publica la ficha.
+ *
+ * Aquí son tres, pero se cuenta en vez de escribirlo a mano para que el texto no se desincronice
+ * si la ficha cambia.
+ */
+const numeroResenas = reviews.length;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#0f1a17" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-MC" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/meson-la-paloma/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">LP</span>
+				<span class="brand-text">
+					Mesón La Paloma
+					<small>Postigos · Cartagena</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#local">La casa</a>
+				<a href="#fotos">Las fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Cartagena · C. Postigos, 58</p>
+						<h1 id="hero-title">
+							Mesón La Paloma,
+							<br />
+							<em>de la mañana a la noche.</em>
+						</h1>
+						<p class="hero-lede">
+							Mesón La Paloma está en la C. Postigos, 58, con código postal 30300,
+							en Cartagena. Google lo clasifica como restaurante y le da{' '}
+							{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+							{business.reviewCount.toLocaleString('es-ES')} reseñas. Abre todos los
+							días, sin ningún día de cierre: de 6:00 a 22:00 de lunes a sábado y de
+							6:00 a 14:00 los domingos.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursSummary}</strong>
+							</li>
+							<li>
+								<small>Valoración</small>
+								<strong>
+									{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+									{business.reviewCount.toLocaleString('es-ES')} reseñas
+								</strong>
+							</li>
+						</ul>
+					</div>
+
+					<figure class="hero-photo">
+						<Image
+							src={foto(fotoHero)}
+							alt={altFoto}
+							widths={[420, 640, 900, 1200]}
+							sizes="(max-width: 1080px) 92vw, 38vw"
+							format="avif"
+							quality={68}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<figcaption>
+							<span>Foto de la ficha de Google Maps</span>
+							<a href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<div class="band">
+				<span>
+					{business.rating.toLocaleString('es-ES')} sobre 5 con{' '}
+					{business.reviewCount.toLocaleString('es-ES')} reseñas
+				</span>
+				<span>
+					{business.streetAddress} · {business.postalCode} {business.city}
+				</span>
+				<span>Abierto todos los días desde las 6:00</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="section" id="local" aria-labelledby="local-title">
+				<div class="wrap bar-grid">
+					<div class="bar-text">
+						<p class="kicker">La casa</p>
+						<h2 class="title" id="local-title">
+							El mesón
+							<br />
+							<em>de todo el día.</em>
+						</h2>
+						<p>
+							Mesón La Paloma está en la C. Postigos, 58, con código postal 30300, en
+							Cartagena. La ficha de Google Maps lo sitúa en esa misma dirección y le
+							da una valoración de {business.rating.toLocaleString('es-ES')} sobre 5
+							con {business.reviewCount.toLocaleString('es-ES')} reseñas.
+						</p>
+						<p>
+							Lo que más llama la atención de su horario es lo temprano que abre: a
+							las 6:00, todos los días, y sigue sirviendo hasta las 22:00 de lunes a
+							sábado y hasta las 14:00 los domingos. La ficha le pone además el
+							distintivo de {distintivo.toLowerCase()}, y en las reseñas que destaca
+							se habla de almorzar, de precios económicos y de un pulpo que
+							«inmejorable».
+						</p>
+						<p>
+							Esta web se ha preparado solo con lo que publica la ficha, consultada
+							el {site.consultado}: nombre, dirección, teléfono, categoría, horario,
+							valoración, servicio de accesibilidad y las {numeroResenas} reseñas que
+							la ficha destaca. No publica la carta ni los precios, así que aquí no
+							se reproducen, ni se inventa una cocina concreta.
+						</p>
+					</div>
+					<div class="quote-row">
+						<div class="quote-score">
+							<strong>{business.rating.toLocaleString('es-ES')} / 5</strong>
+							<span>{business.reviewCount.toLocaleString('es-ES')} reseñas en Google Maps</span>
+							<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver todas ↗</a>
+						</div>
+						{reviews.map((review) => (
+							<blockquote class="quote">
+								<p>{review.text}</p>
+								<footer>
+									<strong>{review.rating} sobre 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section fotos" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La casa <em>por dentro.</em>
+					</h2>
+					<p class="lead">
+						Son las cuatro fotografías que Mesón La Paloma publica en su ficha de
+						Google Maps. El manifiesto de la descarga quedó sin autor, así que se
+						publican sin pie y sin atribución: la ficha no trae una descripción del
+						contenido de estas fotos y aquí no se inventa ninguna, ni se atribuyen a
+						nadie.
+					</p>
+					<div class="fotos-grid">
+						{galeria.map((name) => (
+							<figure class="fotos-item">
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={[320, 480, 640]}
+									sizes="(max-width: 760px) 45vw, (max-width: 1080px) 30vw, 23vw"
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+							</figure>
+						))}
+					</div>
+					<p class="fotos-note">
+						La ficha no publica la carta ni los precios, así que esta web no los
+						reproduce. Para saber qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phone}</a> o mirar las{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							fotos y reseñas de la ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="horario" aria-labelledby="horario-title">
+				<div class="wrap horario-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							C. Postigos, 58,
+							<br />
+							<em>30300 Cartagena.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province} · España
+						</address>
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							La ficha lo da abierto <strong>todos los días</strong>, sin ningún día
+							de cierre: de 6:00 a 22:00 de lunes a sábado y de 6:00 a 14:00 los
+							domingos. Es el horario que publica la ficha consultada el{' '}
+							{site.consultado}, con el aviso de que el lunes 12, Fiesta Nacional de
+							España, podría ser diferente. Conviene confirmar por teléfono antes de
+							ir.
+						</p>
+						<ul class="access-list">
+							{accesibilidad.map((item) => (
+								<li class:list={[{ 'is-no': !item.disponible }]}>{item.label}</li>
+							))}
+						</ul>
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phone}</strong>
+						</a>
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+					<div class="map-card">
+						<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+							title={`Mapa de ${business.name} en ${business.city}, ${business.province}`}
+						 src={mapEmbedUrl}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+							<noscript>
+								<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+							</noscript>
+						</div>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>llamar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">LP</span>
+					<span>
+						Mesón La Paloma
+						<small>
+							{business.streetAddress} · {business.postalCode} {business.city}
+						</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phone}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Mesón La Paloma · C. Postigos, 58 (30300
+					Cartagena). Web informativa elaborada con los datos y las fotografías que el
+					local publica en su ficha de Google Maps, consultada el {site.consultado}.
+					Confirma horario y disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/meson-la-paloma/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/meson-la-paloma/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/meson-la-paloma/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a Mesón La Paloma <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/meson-la-paloma/aviso-legal">Aviso legal</a>
+			<a href="/meson-la-paloma/aviso-legal#privacidad">Privacidad</a>
+			<a href="/meson-la-paloma/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>
+
+

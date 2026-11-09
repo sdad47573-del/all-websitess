@@ -1,0 +1,191 @@
+---
+import { Image } from '@astro-components';
+import { BUSINESS, MENU_SECTIONS } from '../data/site';
+
+interface Props {
+	/**
+	 * `false` (portada): resumen con las tres secciones más representativas y CTA a /carta.
+	 * `true` (/carta): la carta entera, con anclas por sección y sin enlace a sí misma.
+	 */
+	completa?: boolean;
+}
+
+const { completa = false } = Astro.props;
+
+// En la portada basta con lo que más se pide: rollos, media lunas y complementos.
+const secciones = completa
+	? MENU_SECTIONS
+	: MENU_SECTIONS.filter((s) => ['Rollos', 'Media lunas', 'Complementos'].includes(s.title));
+
+const ancla = (titulo: string) => titulo.toLowerCase().replace(/\s+/g, '-');
+---
+
+{
+	completa ? (
+		<section id="carta" class="bg-base-100 py-20 sm:py-24">
+			<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+				<div class="mx-auto max-w-2xl text-center">
+					<span class="text-secondary text-xs font-semibold tracking-[0.2em] uppercase">
+						La carta
+					</span>
+					<h1 class="font-display mt-3 text-4xl font-bold sm:text-5xl">
+						Todo lo que hacemos, plato a plato
+					</h1>
+					<div class="ajalar-divider mx-auto mt-5 h-px w-32" />
+					<p class="text-base-content/70 mt-6 leading-relaxed">
+						El pan es nuestro y la carne se prepara cada día. Pollo, ternera o mixto, con los
+						ingredientes y las salsas que tú elijas.
+					</p>
+				</div>
+
+				<nav class="mt-10 flex flex-wrap justify-center gap-2" aria-label="Secciones de la carta">
+					{MENU_SECTIONS.map((seccion) => (
+						<a href={`#${ancla(seccion.title)}`} class="btn btn-ghost btn-sm rounded-full">
+							{seccion.title}
+						</a>
+					))}
+				</nav>
+
+				<div class="mt-12 space-y-14">
+					{secciones.map((seccion) => (
+						<section
+							id={ancla(seccion.title)}
+							class="scroll-mt-24"
+							aria-labelledby={`h-${ancla(seccion.title)}`}
+						>
+							<div class="flex items-center gap-4">
+								<h2
+									id={`h-${ancla(seccion.title)}`}
+									class="font-display text-2xl font-bold sm:text-3xl"
+								>
+									{seccion.title}
+								</h2>
+								<span class="ajalar-divider h-px flex-1" />
+							</div>
+
+							<ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								{seccion.items.map((item) => (
+									<li class="rounded-box border-base-300 bg-base-200 flex gap-4 border p-4">
+										{item.image && (
+											<div class="shrink-0 overflow-hidden rounded-xl">
+												<Image
+													src={item.image}
+													alt={`${item.name} de A Jalar, Málaga`}
+													widths={[160, 240]}
+													sizes="96px"
+													quality={80}
+													class="size-24 object-cover"
+												/>
+											</div>
+										)}
+										<div class="min-w-0">
+											<div class="flex items-baseline justify-between gap-3">
+												<h3 class="font-display font-bold">{item.name}</h3>
+											</div>
+											{item.description && (
+												<p class="text-base-content/60 mt-1 text-sm leading-relaxed">
+													{item.description}
+												</p>
+											)}
+										</div>
+									</li>
+								))}
+							</ul>
+						</section>
+					))}
+				</div>
+
+				<div class="border-base-300 bg-base-200 rounded-box mt-16 border p-8 text-center">
+					<h2 class="font-display text-2xl font-bold">¿Te lo llevamos a casa?</h2>
+					<p class="text-base-content/70 mx-auto mt-3 max-w-xl text-sm leading-relaxed">
+						El mismo kebab casero por {BUSINESS.delivery} y Uber Eats.
+					</p>
+					<div class="mt-6 flex flex-wrap justify-center gap-3">
+						<a
+							href={BUSINESS.deliveryUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-secondary gap-2 rounded-full"
+						>
+							<i class="ri-bike-line" /> Pedir a domicilio
+						</a>
+						<a
+							href={BUSINESS.uberEatsUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-outline gap-2 rounded-full"
+						>
+							<i class="ri-shopping-bag-line" /> Ver en Uber Eats
+						</a>
+						<a href="/a-jalar/#contacto" class="btn btn-ghost gap-2 rounded-full">
+							<i class="ri-map-pin-line" /> Cómo llegar
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	) : (
+		<section id="carta" class="bg-base-100 py-20 sm:py-24">
+			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div class="flex flex-wrap items-end justify-between gap-6">
+					<div>
+						<span class="text-secondary text-xs font-semibold tracking-[0.2em] uppercase">
+							La carta
+						</span>
+						<h2 class="font-display mt-3 text-3xl font-bold sm:text-4xl">
+							Rollo, media luna o campero
+						</h2>
+						<p class="text-base-content/60 mt-3 max-w-2xl text-sm leading-relaxed">
+							Todo se arma al momento con pan artesanal, ternera premium y pollo macerado con receta
+							propia. Elige ingredientes y salsas.
+						</p>
+					</div>
+					<a href="/a-jalar/carta" class="btn btn-outline gap-2 rounded-full">
+						<i class="ri-menu-line" />
+						Ver la carta completa
+					</a>
+				</div>
+
+				<div class="mt-12 space-y-12">
+					{secciones.map((seccion) => (
+						<div>
+							<h3 class="font-display text-secondary text-xl font-bold">{seccion.title}</h3>
+							<div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								{seccion.items.map((item) => (
+									<article class="rounded-box border-base-300 bg-base-200 flex gap-4 border p-4">
+										{item.image && (
+											<div class="shrink-0 overflow-hidden rounded-xl">
+												<Image
+													src={item.image}
+													alt={item.name}
+													widths={[160, 240]}
+													sizes="96px"
+													quality={80}
+													class="size-24 object-cover"
+												/>
+											</div>
+										)}
+										<div class="min-w-0">
+											<div class="flex items-baseline justify-between gap-3">
+												<h4 class="font-display font-bold">{item.name}</h4>
+											</div>
+											{item.description && (
+												<p class="text-base-content/60 mt-1 text-sm leading-relaxed">
+													{item.description}
+												</p>
+											)}
+										</div>
+									</article>
+								))}
+							</div>
+						</div>
+					))}
+				</div>
+
+				<p class="text-base-content/50 mt-12 text-xs">
+					Reparto a domicilio con {BUSINESS.delivery}.
+				</p>
+			</div>
+		</section>
+	)
+}

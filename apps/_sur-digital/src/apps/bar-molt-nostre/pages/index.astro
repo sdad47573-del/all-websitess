@@ -1,0 +1,536 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	accesibilidad,
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	descripcionLocal,
+	hoursShort,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+	reviews,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+/**
+ * Galería: las diez fotografías de la ficha, alternando panorámicas, verticales y apaisadas para
+ * que la retícula no quede monótona.
+ */
+const galeria = [
+	'bar-molt-nostre-apaisada-01.jpg',
+	'bar-molt-nostre-vertical-02.jpg',
+	'bar-molt-nostre-vertical-03.jpg',
+	'bar-molt-nostre-apaisada-04.jpg',
+	'bar-molt-nostre-vertical-05.jpg',
+	'bar-molt-nostre-vertical-06.jpg',
+	'bar-molt-nostre-vertical-07.jpg',
+	'bar-molt-nostre-apaisada-08.jpg',
+	'bar-molt-nostre-vertical-09.jpg',
+	'bar-molt-nostre-apaisada-10.jpg',
+];
+
+const title = 'Bar Molt Nostre (Bar a la Societat de Castellví) · Restaurante en Castellví de la Marca';
+const description =
+	'Bar Molt Nostre (Bar a la Societat de Castellví), restaurante en la Barri Masets Cosins, 17, Castellví de la Marca (Barcelona). 4,6 sobre 5 con 185 reseñas en Google Maps. Teléfono 640 53 20 25.';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada en la ficha de Google Maps de Bar Molt Nostre (Bar a la Societat de Castellví)';
+const altOg = 'Fotografía de Bar Molt Nostre (Bar a la Societat de Castellví) publicada en su ficha de Google Maps';
+
+const textoResenas = `${business.reviewCount} reseñas`;
+const nota = business.rating.toLocaleString('es-ES');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#191614" />
+		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="Bar Molt Nostre (Bar a la Societat de Castellví), restaurante Castellví de la Marca, reservar mesa Castellví de la Marca, Masets Cosins"
+		/>
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-CT" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/bar-molt-nostre/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Karla:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">MN</span>
+				<span class="brand-text">
+					Bar Molt Nostre (Bar a la Societat de Castellví)
+					<small>Castellví de la Marca</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#casa">La casa</a>
+				<a href="#resenas">Reseñas</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phoneDisplay}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow">Restaurante · Castellví de la Marca</p>
+						<h1 id="hero-title">
+							Bar Molt Nostre (Bar a la Societat de Castellví),
+							<em>a la mesa.</em>
+						</h1>
+						<p class="hero-lede">
+							Restaurante en la <strong>Barri Masets Cosins, 17</strong>, en Castellví de la Marca.
+							Google le da <strong>{nota} sobre 5</strong> con {textoResenas}. De lunes a jueves cierra; viernes y sábado abre de 9:00 a 22:00 y el domingo de 9:00 a 17:00.
+						</p>
+						<div class="hero-actions">
+							<a class="btn btn-solid" href={phoneHref}>
+								Llamar al {business.phoneDisplay}
+							</a>
+							<a
+								class="btn btn-ghost"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<ul class="hero-facts">
+							<li>
+								<small>Dirección</small>
+								<strong>
+									{business.streetAddress} · {business.postalCode}
+									{business.city}
+								</strong>
+							</li>
+							<li>
+								<small>Horario</small>
+								<strong>{hoursShort}</strong>
+							</li>
+							<li>
+								<small>Teléfono</small>
+								<strong>{business.phoneDisplay}</strong>
+							</li>
+						</ul>
+					</div>
+
+					<div class="hero-media">
+						<figure class="media-main">
+							<Image
+								src={foto('bar-molt-nostre-apaisada-01.jpg')}
+								alt={altFoto}
+								widths={[640, 900, 1200]}
+								sizes="(max-width: 1080px) 92vw, 46vw"
+								format="avif"
+								quality={68}
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+							/>
+						</figure>
+						<figure class="media-inset">
+							<Image
+								src={foto('bar-molt-nostre-vertical-02.jpg')}
+								alt={altFoto}
+								widths={[240, 360, 480]}
+								sizes="(max-width: 700px) 34vw, 16vw"
+								format="avif"
+								quality={68}
+								loading="eager"
+								decoding="async"
+							/>
+						</figure>
+						<div class="hero-stamp">
+							<b>{nota}</b>
+							<span>
+								<span aria-hidden="true">★★★★★</span>
+								<br />
+								{textoResenas} en Google
+							</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<div class="band" aria-label="Datos rápidos de Bar Molt Nostre (Bar a la Societat de Castellví)">
+				<span>{nota} sobre 5 · {textoResenas}</span>
+				<span>{business.streetAddress} · {business.postalCode} {business.city}</span>
+				<span>Viernes a domingo · lunes a jueves cerrado</span>
+				<span>Teléfono {business.phoneDisplay}</span>
+			</div>
+
+			<section class="section casa" id="casa" aria-labelledby="casa-title">
+				<div class="wrap casa-grid">
+					<div class="casa-text">
+						<p class="kicker">La casa</p>
+						<h2 class="title" id="casa-title">
+							Un restaurante,
+							<br />
+							<em>sin más etiquetas.</em>
+						</h2>
+						<p class="lead">
+							Google clasifica a Bar Molt Nostre (Bar a la Societat de Castellví) como bar restaurante. Su descripción dice: «{descripcionLocal}» La ficha no publica carta ni precios.
+						</p>
+						<p>
+							El local está en la <strong>Barri Masets Cosins, 17</strong>, con código postal 08732,
+							en Castellví de la Marca, Barcelona. La ficha publica el plus code 8HMV+7F Castellví de la Marca
+							y las coordenadas 41.3331413, 1.5936786.
+						</p>
+						<p>
+							En accesibilidad publica aparcamiento, aseo y asientos adaptados, todos disponibles.
+						</p>
+						<p>
+							Esta web solo reúne lo que el propio negocio publica en Google Maps, consultada el {site.consultado}.
+						</p>
+						<a class="casa-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							Ver la ficha completa en Google Maps ↗
+						</a>
+					</div>
+
+					<aside class="ficha" aria-label="Resumen de la ficha de Google Maps">
+						<div class="ficha-head">
+							<strong>La ficha</strong>
+							<span>Google Maps</span>
+						</div>
+						<div class="ficha-score">
+							<b>{nota}</b>
+							<span>
+								<span class="stars" aria-hidden="true">★★★★★</span>
+								{textoResenas} en Google Maps
+							</span>
+						</div>
+						<dl class="ficha-rows">
+							<div>
+								<dt>Dirección</dt>
+								<dd>{business.streetAddress}, {business.postalCode} {business.city}</dd>
+							</div>
+							<div>
+								<dt>Horario</dt>
+								<dd>{hoursShort}</dd>
+							</div>
+							<div>
+								<dt>Teléfono</dt>
+								<dd>{business.phoneDisplay}</dd>
+							</div>
+							<div>
+								<dt>Plus code</dt>
+								<dd>{business.plusCode}</dd>
+							</div>
+							<div>
+								<dt>Lunes</dt>
+								<dd>Cerrado</dd>
+							</div>
+						</dl>
+						<ul class="tags" aria-label="Categoría publicada por Google">
+							{business.categories.map((categoria) => <li>{categoria}</li>)}
+						</ul>
+						<a class="ficha-reserve" href={phoneHref}>
+								Llamar al {business.phoneDisplay}
+							</a>
+					</aside>
+				</div>
+			</section>
+
+			<section class="section quotes" id="resenas" aria-labelledby="resenas-title">
+				<div class="wrap">
+					<div class="quotes-head">
+						<div>
+							<p class="kicker">Lo que dicen</p>
+							<h2 class="title" id="resenas-title">
+								Tres reseñas,
+								<br />
+								<em>tal como están escritas.</em>
+							</h2>
+						</div>
+						<div class="quotes-rating">
+							<b>{nota}</b>
+							<div>
+								<span class="stars" aria-hidden="true">★★★★★</span>
+								{textoResenas} en Google Maps
+								<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+									Ver todas ↗
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="quote-grid">
+						{reviews.map((review, index) => (
+							<blockquote class="quote">
+								<span class="quote-index">0{index + 1}</span>
+								<p>{review.text}</p>
+								<footer>
+									<strong>{review.rating} / 5</strong>
+									<span>{review.source}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+					<p class="quotes-note">
+						Textos literales de tres de las reseñas que destaca la ficha, con su puntuación
+						original. Google no muestra el nombre de quienes las firman en esta vista, así que se
+						atribuyen a la ficha y no se inventa ninguna autoría.
+					</p>
+				</div>
+			</section>
+
+			<section class="section" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						El restaurante <em>en diez imágenes.</em>
+					</h2>
+					<p class="lead">
+						Son las diez fotografías que Bar Molt Nostre (Bar a la Societat de Castellví) publica en su ficha de Google Maps. El
+						manifiesto de la descarga no atribuye ninguna a un autor con nombre, así que se
+						publican sin pie y sin atribución. La ficha no describe su contenido y aquí no se
+						inventa ninguna descripción.
+					</p>
+					<div class="fotos-grid">
+						{galeria.map((name, index) => (
+							<figure class:list={['foto', { 'foto-wide': index === 0 }]}>
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={index === 0 ? [640, 900, 1200] : [380, 560, 800]}
+									sizes={
+										index === 0
+											? '(max-width: 700px) 92vw, (max-width: 1080px) 62vw, 58vw'
+											: '(max-width: 700px) 45vw, (max-width: 1080px) 30vw, 28vw'
+									}
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{String(index + 1).padStart(2, '0')}</figcaption>
+							</figure>
+						))}
+					</div>
+					<p class="fotos-note">
+						La ficha no publica carta ni precios, así que esta web no los reproduce. Para saber
+						qué hay hoy, lo más rápido es{' '}
+						<a href={phoneHref}>llamar al {business.phoneDisplay}</a> o mirar las fotos y
+						reseñas de la{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section visita" id="horario" aria-labelledby="horario-title">
+				<div class="wrap visita-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Barri Masets Cosins, 17,
+							<br />
+							<em>08732 Castellví de la Marca.</em>
+						</h2>
+						<address>
+							{business.streetAddress}
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province}
+						</address>
+
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr class:list={[{ 'is-closed': item.shifts.length === 0 }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							Es el horario de la ficha consultada el {site.consultado}. Conviene confirmarlo
+							por teléfono antes de ir.
+						</p>
+
+						<ul class="access-list" aria-label="Accesibilidad publicada en la ficha">
+							{accesibilidad.map((item) => (
+								<li>{item.label}</li>
+							))}
+						</ul>
+
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phoneDisplay}</strong>
+						</a>
+
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+
+					<div class="map-card">
+						<div class="map-frame">
+							<iframe
+								title={`Mapa de ${business.name} en ${business.city}`}
+								src={mapEmbedUrl}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+						<div class="map-tag">
+							<div>
+								<strong>{business.shortName}</strong>
+								<small>
+									{business.streetAddress} · {business.postalCode} {business.city}
+								</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>reservar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">MN</span>
+					<span>
+						Bar Molt Nostre (Bar a la Societat de Castellví)
+						<small>{business.streetAddress} · {business.postalCode} {business.city}</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phoneDisplay}</a>
+										<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Bar Molt Nostre (Bar a la Societat de Castellví) · {business.streetAddress} ({business.postalCode}
+					{business.city}). Web informativa elaborada con los datos y las fotografías que el local
+					publica en su ficha de Google Maps, consultada el {site.consultado}. Confirma horario y
+					disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/bar-molt-nostre/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/bar-molt-nostre/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/bar-molt-nostre/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a Molt Nostre <span>{business.phoneDisplay}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/bar-molt-nostre/aviso-legal">Aviso legal</a>
+			<a href="/bar-molt-nostre/aviso-legal#privacidad">Privacidad</a>
+			<a href="/bar-molt-nostre/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

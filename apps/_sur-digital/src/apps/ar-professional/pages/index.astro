@@ -1,0 +1,171 @@
+---
+import WhatsappFab from '../components/WhatsappFab.astro';
+import * as datos from '../lib/business';
+import '../styles/global.css';
+import {
+	business,
+	directionsUrl,
+	facebookUrl,
+	instagramUrl,
+	mapEmbedUrl,
+	mapsUrl,
+	photoUrl,
+	phoneHrefs,
+	structuredData,
+} from '../lib/business';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { galleryPhotosData } from '../lib/gallery';
+
+// Las fotos viven en `src/assets/fotos`: se resuelven aquí a su módulo de imagen para poder
+// servirlas con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const galleryPhotos = galleryPhotosData.map(({ file, alt }) => ({
+	src: fotos[`../assets/fotos/${file}`].default,
+	alt,
+}));
+
+const title = 'AR Professional | Peluquería unisex en Teatinos, Málaga';
+const description =
+	'AR Professional, peluquería y belleza unisex en Carril del Capitán, 3, Teatinos, Málaga. Llama para contactar o consulta cómo llegar.';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#211b1a" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/ar-professional/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="business.business" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={photoUrl} />
+		<meta property="og:image:alt" content="Fotografía de AR Professional compartida en Google Maps" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={photoUrl} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+			<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+			<meta name="geo.placename" content="Málaga" />
+		<meta name="geo.position" content="36.725138;-4.461815" />
+		<meta name="ICBM" content="36.725138, -4.461815" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="site-header">
+			<a class="brand" href="#inicio" aria-label="AR Professional, inicio"><span class="brand-mark" aria-hidden="true">AR</span><span class="brand-label">AR PROFESSIONAL <small>PELUQUERÍA · MÁLAGA</small></span></a>
+			<nav aria-label="Navegación principal"><a href="#salon">El salón</a><a href="#contacto">Contacto</a></nav>
+			<a class="header-phone" href={phoneHrefs[0]}><span aria-hidden="true">☎</span> {business.phones[0]}</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-content">
+					<p class="eyebrow"><span></span> PELUQUERÍA Y BELLEZA UNISEX · TEATINOS</p>
+					<h1 id="hero-title">Belleza con<br /><em>personalidad.</em></h1>
+					<p class="hero-intro">AR Professional, tu salón de estilismo en Teatinos. Un espacio para cuidar tu imagen y encontrar el estilo que va contigo.</p>
+					<div class="hero-actions"><a class="button button-rose" href={phoneHrefs[0]}><span aria-hidden="true">☎</span> Llamar al salón</a><a class="button button-ghost" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a></div>
+					<div class="hero-location"><span class="location-rule" aria-hidden="true"></span><p>{business.district}<br /><strong>{business.city} · Andalucía</strong></p></div>
+				</div>
+				<figure class="hero-photo">
+					<div class="photo-label"><span>AR / 01</span><span>ESTILISMO · MÁLAGA</span></div>
+					<a href={mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver la foto de AR Professional y su galería en Google Maps"><img src={photoUrl} alt="Fotografía de AR Professional publicada en Google Maps" width="900" height="1200" fetchpriority="high" decoding="async" /><span class="photo-open" aria-hidden="true">↗</span></a>
+					<figcaption><span>FOTO DE LA FICHA DE GOOGLE MAPS</span><a href={mapsUrl} target="_blank" rel="noreferrer">Ver ficha ↗</a></figcaption>
+					<span class="photo-stamp" aria-hidden="true">AR<br /><i>✳</i><br />MÁLAGA</span>
+				</figure>
+				<span class="hero-flower" aria-hidden="true">✳</span>
+			</section>
+
+			<section class="photo-gallery" aria-labelledby="gallery-title">
+				<div class="gallery-heading">
+					<div>
+						<p class="section-label"><span>AR /</span> AR PROFESSIONAL · TEATINOS</p>
+						<h2 id="gallery-title">Un vistazo al salón.</h2>
+						<p>Imágenes de AR Professional compartidas en Google Maps.</p>
+					</div>
+					<a href={mapsUrl} target="_blank" rel="noreferrer">Ver ficha en Google Maps <span aria-hidden="true">↗</span></a>
+				</div>
+				<div class="gallery-grid">
+					{galleryPhotos.map(({ src, alt }, index) => (
+						<figure class:list={[`gallery-image gallery-image-${index + 1}`]}>
+							<Image src={src} alt={alt} widths={[320, 480, 640]} sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw" format="avif" quality={65} loading="lazy" decoding="async" />
+						</figure>
+					))}
+				</div>
+			</section>
+
+			<section class="salon-strip" id="salon" aria-label="AR Professional, salón de estilismo">
+				<p class="strip-title"><span>01 /</span> CUIDADO Y ESTILO</p>
+				<div><span>01</span><strong>Peluquería unisex</strong></div>
+				<div><span>02</span><strong>Estilismo</strong></div>
+				<div><span>03</span><strong>Belleza</strong></div>
+			</section>
+
+			<section class="about-section" aria-labelledby="about-title">
+				<p class="section-label"><span>02 /</span> AR PROFESSIONAL · TEATINOS</p>
+				<div class="about-content"><h2 id="about-title">Tu estilo,<br /><em>en buenas manos.</em></h2><div><p>Un salón de peluquería y belleza unisex en Málaga. Ven a AR Professional y recibe una atención cercana para renovar tu look y sentirte bien.</p><a class="social-link" href={instagramUrl} target="_blank" rel="noreferrer">Síguenos en Instagram <span aria-hidden="true">↗</span></a></div></div>
+				<div class="about-footer"><span>PELUQUERÍA UNISEX</span><span>TEATINOS · MÁLAGA</span><span>✳</span></div>
+			</section>
+
+			<section class="contact-section" id="contacto" aria-labelledby="contact-title">
+				<p class="section-label"><span>03 /</span> VISÍTANOS</p>
+				<div class="contact-layout">
+					<div class="contact-copy"><p class="contact-kicker">ESTAMOS EN TEATINOS</p><h2 id="contact-title">Ven al<br /><em>salón.</em></h2>
+						<div class="contact-card">
+							<div class="contact-row"><span aria-hidden="true">⌖</span><div><small>DIRECCIÓN</small><address>{business.streetAddress}<br />{business.postalCode} {business.city}</address></div></div>
+							<div class="contact-row"><span aria-hidden="true">☎</span><div><small>LLÁMANOS</small><a href={phoneHrefs[0]}>{business.phones[0]}</a></div></div>
+							<div class="contact-row"><span aria-hidden="true">☎</span><div><small>TELÉFONO ALTERNATIVO</small><a href={phoneHrefs[1]}>{business.phones[1]}</a></div></div>
+						</div>
+						<a class="button button-dark" href={directionsUrl} target="_blank" rel="noreferrer">Abrir indicaciones <span aria-hidden="true">↗</span></a>
+					</div>
+					<div class="map-card"><div class="map-header"><span><i></i> CARRIL DEL CAPITÁN · MÁLAGA</span><a href={mapsUrl} target="_blank" rel="noreferrer">ABRIR MAPS ↗</a></div><div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe title="Mapa de AR Professional en Carril del Capitán, Málaga" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript>
+							<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+						</noscript>
+					</div><div class="map-footer"><span aria-hidden="true">⌖</span><div><strong>AR Professional</strong><small>{business.streetAddress} · {business.city}</small></div><a href={directionsUrl} target="_blank" rel="noreferrer" aria-label="Cómo llegar a AR Professional">↗</a></div></div>
+				</div>
+				<div class="social-row"><span>ENCUÉNTRANOS TAMBIÉN EN</span><a href={instagramUrl} target="_blank" rel="noreferrer">Instagram ↗</a><a href={facebookUrl} target="_blank" rel="noreferrer">Facebook ↗</a></div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<a class="brand footer-brand" href="#inicio" aria-label="AR Professional, volver al inicio"><span class="brand-mark">AR</span><span class="brand-label">AR PROFESSIONAL <small>PELUQUERÍA · MÁLAGA</small></span></a>
+			<p>{business.streetAddress}, {business.city}<br /><a href={phoneHrefs[0]}>{business.phones[0]}</a></p>
+			<a class="footer-social" href={instagramUrl} target="_blank" rel="noreferrer">Instagram ↗</a>
+			<small>© {new Date().getFullYear()} AR Professional · Málaga · Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/ar-professional/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/ar-professional/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/ar-professional/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+		<a class="phone-cta" href={phoneHrefs[0]}><span aria-hidden="true">☎</span> Llamar a AR Professional <strong>{business.phones[0]}</strong></a>
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/ar-professional/aviso-legal">Aviso legal</a>
+			<a href="/ar-professional/aviso-legal#privacidad">Privacidad</a>
+			<a href="/ar-professional/aviso-legal#cookies">Cookies</a>
+		</nav>
+		<WhatsappFab phone={datos.phoneHrefs[0]} name={datos.business?.name} />
+	</body>
+</html>
+
+

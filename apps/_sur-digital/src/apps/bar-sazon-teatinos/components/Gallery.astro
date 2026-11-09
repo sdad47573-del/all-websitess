@@ -1,0 +1,169 @@
+---
+import { getImage } from 'astro:assets';
+import { Image } from '@astro-components';
+import { BUSINESS, GALLERY } from '../data/site';
+
+// Versión grande de cada foto para el lightbox (se genera en el build).
+const fotos = await Promise.all(
+	GALLERY.map(async (item, index) => {
+		const full = await getImage({ src: item.src, width: 1600, format: 'webp', quality: 82 });
+		return { ...item, index, full: full.src };
+	}),
+);
+---
+
+<section id="galeria" class="bg-base-200 py-20 sm:py-24">
+	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+		<div class="flex flex-wrap items-end justify-between gap-6">
+			<div>
+				<span class="text-primary text-xs font-semibold tracking-[0.2em] uppercase">Galería</span>
+				<h2 class="font-display mt-3 text-3xl font-bold sm:text-4xl">Un vistazo a Sazón</h2>
+				<p class="text-base-content/60 mt-3 text-sm">
+					<i class="ri-zoom-in-line mr-1"></i>
+					Pulsa en cualquier foto para verla a tamaño completo.
+				</p>
+			</div>
+			<a
+				href={BUSINESS.instagram}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn btn-outline gap-2 rounded-full"
+			>
+				<i class="ri-instagram-line text-lg"></i>
+				Síguenos en Instagram
+			</a>
+		</div>
+
+		<div class="mt-12 grid grid-cols-2 gap-3 sm:gap-4">
+			{
+				fotos.map((foto) => (
+					<figure class="group rounded-box bg-base-300 relative aspect-square overflow-hidden sm:aspect-4/3">
+						<a
+							href={foto.full}
+							data-lightbox
+							data-src={foto.full}
+							data-caption={foto.alt}
+							data-index={foto.index}
+							class="block h-full w-full cursor-zoom-in"
+							aria-label={`Ampliar foto: ${foto.alt}`}
+						>
+							<Image
+								src={foto.src}
+								alt={foto.alt}
+								loading="lazy"
+								widths={[400, 600, 900]}
+								sizes="(min-width: 1024px) 24vw, 46vw"
+								class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+							/>
+						</a>
+						<figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-4 pt-10 pb-3 text-xs text-white/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+							{foto.alt}
+						</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</div>
+
+	<dialog
+		id="galeria-lightbox"
+		class="inset-0 m-auto max-h-none max-w-none bg-transparent p-0"
+		aria-label="Galería ampliada"
+	>
+		<div class="flex w-[92vw] max-w-5xl flex-col gap-3">
+			<div class="flex justify-end">
+				<button
+					type="button"
+					data-close
+					aria-label="Cerrar"
+					class="btn btn-sm btn-circle hover:text-neutral border-white/30 bg-white/10 text-white hover:border-white hover:bg-white"
+				>
+					<i class="ri-close-line text-lg"></i>
+				</button>
+			</div>
+
+			<img
+				data-lightbox-img
+				alt=""
+				class="rounded-box max-h-[76svh] w-full object-contain shadow-2xl"
+			/>
+
+			<div class="flex items-center justify-center gap-4">
+				<button
+					type="button"
+					data-prev
+					aria-label="Foto anterior"
+					class="btn btn-sm btn-circle hover:text-neutral border-white/30 bg-white/10 text-white hover:border-white hover:bg-white"
+				>
+					<i class="ri-arrow-left-s-line text-lg"></i>
+				</button>
+				<p data-lightbox-caption class="min-h-5 text-center text-sm text-white/80"></p>
+				<button
+					type="button"
+					data-next
+					aria-label="Foto siguiente"
+					class="btn btn-sm btn-circle hover:text-neutral border-white/30 bg-white/10 text-white hover:border-white hover:bg-white"
+				>
+					<i class="ri-arrow-right-s-line text-lg"></i>
+				</button>
+			</div>
+		</div>
+	</dialog>
+</section>
+
+<script>
+	const dialog = document.getElementById('galeria-lightbox') as HTMLDialogElement | null;
+
+	if (dialog) {
+		const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+		const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+		const closeButton = dialog.querySelector<HTMLButtonElement>('[data-close]')!;
+		const prevButton = dialog.querySelector<HTMLButtonElement>('[data-prev]')!;
+		const nextButton = dialog.querySelector<HTMLButtonElement>('[data-next]')!;
+		const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-lightbox]'));
+		let current = 0;
+
+		const show = (index: number) => {
+			current = (index + links.length) % links.length;
+			const link = links[current];
+			if (!link) return;
+
+			const src = link.dataset.src ?? '';
+			const texto = link.dataset.caption ?? '';
+			img.src = src;
+			img.alt = texto;
+			caption.textContent = texto;
+		};
+
+		links.forEach((link, index) => {
+			link.addEventListener('click', (event: MouseEvent) => {
+				event.preventDefault();
+				show(index);
+				if (!dialog.open) {
+					dialog.showModal();
+					document.body.style.overflow = 'hidden';
+				}
+			});
+		});
+
+		closeButton.addEventListener('click', () => dialog.close());
+		prevButton.addEventListener('click', () => show(current - 1));
+		nextButton.addEventListener('click', () => show(current + 1));
+
+		// Cerrar al pulsar fuera de la imagen
+		dialog.addEventListener('click', (event: MouseEvent) => {
+			if (event.target === dialog) dialog.close();
+		});
+
+		dialog.addEventListener('close', () => {
+			document.body.style.overflow = '';
+			img.removeAttribute('src');
+		});
+
+		document.addEventListener('keydown', (event: KeyboardEvent) => {
+			if (!dialog.open) return;
+			if (event.key === 'ArrowLeft') show(current - 1);
+			if (event.key === 'ArrowRight') show(current + 1);
+		});
+	}
+</script>

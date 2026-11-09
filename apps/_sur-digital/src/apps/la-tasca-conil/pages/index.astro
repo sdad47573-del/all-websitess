@@ -1,0 +1,362 @@
+---
+import '../styles/global.css';
+
+const business = {
+	name: 'La Tasca',
+	full: 'La Tasca de Juan',
+	street: 'C/ Padre Caro, 10',
+	city: 'Conil de la Frontera',
+	postalCode: '11140',
+	latitude: 36.2745229,
+	longitude: -6.0886329,
+	site: 'https://www.sur-digital.com/la-tasca-conil',
+};
+
+const mapsUrl =
+	'https://www.google.com/maps/place/La+Tasca/@36.2745229,-6.0886329,17z/data=!3m1!4b1!4m6!3m5!1s0xd0c38189ba9e2a7:0x2b1536390fff716e!8m2!3d36.2745229!4d-6.0886329!16s%2Fg%2F1q5br7qmj?authuser=0&hl=es&entry=ttu';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&output=embed`;
+
+const specialties = [
+	{
+		kicker: 'Clásico',
+		title: 'Buenas tapas',
+		text: 'Taberna conocida por sus buenas tapas en un lugar con encanto.',
+	},
+	{
+		kicker: 'Casco histórico',
+		title: 'Junto a Santa Catalina',
+		text: 'Cerca de la iglesia de Santa Catalina y la Torre de Guzmán.',
+	},
+	{
+		kicker: 'Taberna',
+		title: 'Lugar con encanto',
+		text: 'Clásico conileño regentado con trato familiar.',
+	},
+	{
+		kicker: 'De tapeo',
+		title: 'Centro de Conil',
+		text: 'Parada de tapeo en el centro histórico, entre sus bares de siempre.',
+	},
+	{
+		kicker: 'Aviso',
+		title: 'Confirma por teléfono',
+		text: 'Teléfono y horario sin fuente verificable sólida: mira la ficha de Maps antes de venir.',
+	},
+	{
+		kicker: 'No confundir',
+		title: 'La de Conil',
+		text: 'Esta es la tasca conileña, no la tapería de Barbate ni la antigua de Zahara.',
+	},
+];
+
+const gallery = [
+	{ src: '/la-tasca-conil/fotos/tasca.svg', alt: 'Ilustración de la taberna — sustituye por foto propia' },
+	{ src: '/la-tasca-conil/fotos/tapas.svg', alt: 'Ilustración de tapas — sustituye por foto propia' },
+	{ src: '/la-tasca-conil/fotos/barra.svg', alt: 'Ilustración de la barra — sustituye por foto propia' },
+	{ src: '/la-tasca-conil/fotos/casco.svg', alt: 'Ilustración del casco histórico — sustituye por foto propia' },
+	{ src: '/la-tasca-conil/fotos/torre.svg', alt: 'Ilustración de la Torre de Guzmán — sustituye por foto propia' },
+];
+
+const faqs = [
+	{
+		q: '¿Dónde está La Tasca?',
+		a: 'En C/ Padre Caro, 10, 11140 Conil de la Frontera (casco histórico), según guías locales y el censo minorista.',
+	},
+	{
+		q: '¿Cuál es el teléfono o el horario?',
+		a: 'Sin fuente verificable sólida: míralos en su ficha de Google Maps antes de venir.',
+	},
+	{
+		q: '¿Qué se puede comer?',
+		a: 'Taberna de tapas con encanto en el centro de Conil. Confirma la carta del día en el local.',
+	},
+	{
+		q: '¿Cómo llego?',
+		a: 'Está en el casco histórico, junto a Santa Catalina. Usa el botón «Cómo llegar» para abrir la ruta en Google Maps.',
+	},
+];
+
+const description =
+	'La Tasca de Juan: taberna de tapas en C/ Padre Caro 10, casco histórico de Conil. Lugar con encanto junto a Santa Catalina.';
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${business.site}/#restaurante`,
+	name: `${business.name} (${business.full})`,
+	description,
+	url: `${business.site}/`,
+	image: [`${business.site}/fotos/tasca.svg`],
+	priceRange: '€',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Andaluza'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: 'Andalucía',
+		postalCode: business.postalCode,
+		addressCountry: 'ES',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${business.site}/#faq`,
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#16241c" />
+		<meta name="description" content="La Tasca de Juan: taberna de tapas en Padre Caro 10, casco histórico de Conil. Junto a Santa Catalina." />
+		<meta name="keywords" content="La Tasca Conil, Tasca de Juan, Padre Caro 10, tapas Conil, casco histórico Conil" />
+		<meta name="author" content="La Tasca de Juan" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="icon" type="image/svg+xml" href="/la-tasca-conil/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<title>La Tasca | Taberna en Conil de la Frontera</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="La Tasca · Taberna en Conil" />
+		<meta property="og:description" content="Tapas con encanto en Padre Caro 10, casco histórico de Conil." />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/fotos/tasca.svg`} />
+		<meta property="og:image:alt" content="La Tasca de Juan, Conil de la Frontera" />
+		<meta property="og:street-address" content={business.street} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content="Andalucía" />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="La Tasca · Taberna en Conil" />
+		<meta name="twitter:description" content="Padre Caro 10: tapas con encanto en el casco histórico." />
+		<meta name="twitter:image" content={`${business.site}/fotos/tasca.svg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<meta name="geo.placename" content="Conil de la Frontera" />
+		<meta name="geo.position" content="36.2745229;-6.0886329" />
+		<meta name="ICBM" content="36.2745229, -6.0886329" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="La Tasca, inicio">
+				<span class="brand-mark" aria-hidden="true">LT</span>
+				<span class="brand-name">La Tasca <small>Conil · Padre Caro</small></span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#tasca">La tasca</a>
+				<a href="#carta">La carta</a>
+				<a href="#galeria">Galería</a>
+				<a href="#visitanos">Visítanos</a>
+			</nav>
+			<a class="topbar-phone" href={mapsUrl} target="_blank" rel="noreferrer">Ver en Maps ↗</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> Padre Caro, 10 · Conil</p>
+					<h1 id="hero-title">Tapas con<br /><em>encanto.</em></h1>
+					<p class="hero-lede">
+						La Tasca de Juan: taberna clásica en el casco histórico de Conil,
+						junto a Santa Catalina y la Torre de Guzmán.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-ember" href={mapsUrl} target="_blank" rel="noreferrer">Ver ficha en Maps ↗</a>
+						<a class="button button-ghost" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>Taberna</b> clásica</li>
+						<li>Buenas tapas</li>
+						<li>Casco histórico</li>
+						<li>Padre Caro 10</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<img src="/la-tasca-conil/fotos/tasca.svg" alt="Ilustración de La Tasca de Juan, Conil de la Frontera" fetchpriority="high" decoding="async" width="1200" height="800" />
+					<figcaption>
+						<span>Padre Caro 10 · Conil</span>
+						<a href={mapsUrl} target="_blank" rel="noreferrer">Ver en Google Maps ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<section class="bands" aria-label="Datos y servicios">
+				<div class="ratings">
+					<div><b>Tapa</b><span>Clásica</span></div>
+					<div><b>Casco</b><span>Histórico</span></div>
+					<div><b>Nº 10</b><span>Padre Caro</span></div>
+				</div>
+				<ul class="services">
+					<li>Tapas</li>
+					<li>Taberna</li>
+					<li>Centro</li>
+					<li>Encanto</li>
+					<li>Santa Catalina</li>
+					<li>Guzmán</li>
+				</ul>
+			</section>
+
+			<section class="about section-pad" id="tasca">
+				<p class="section-label"><span aria-hidden="true"></span> La tasca</p>
+				<div class="about-grid">
+					<h2>Un clásico<br />de <em>Conil.</em></h2>
+					<div class="about-copy">
+						<p>
+							La Tasca de Juan está en C/ Padre Caro, 10 (11140 Conil),
+							en el casco histórico junto a Santa Catalina, con coordenadas
+							36.2745229, -6.0886329.
+						</p>
+						<p>
+							Taberna bien conocida por sus buenas tapas en un lugar con encanto,
+							clásico conileño citado en las guías de tapeo del centro.
+						</p>
+						<p class="about-note">
+							Teléfono y horario sin fuente verificable sólida: no los inventamos.
+							Míralos en su ficha de Google Maps antes de venir. No confundir con la
+							tapería de Barbate ni con la antigua Tasca de Zahara.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="specialties section-pad" id="carta">
+				<div class="specialties-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> De su casa</p>
+						<h2>Lo que sale<br /><em>de cocina.</em></h2>
+					</div>
+					<p>
+						Líneas generales de taberna de tapas. Confirma la carta del día
+						en el propio local.
+					</p>
+				</div>
+				<div class="cards">
+					{specialties.map((item) => (
+						<article class="card">
+							<span class="card-kicker">{item.kicker}</span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="gallery section-pad" id="galeria">
+				<div class="gallery-head">
+					<div>
+						<p class="eyebrow dark"><span aria-hidden="true"></span> Galería</p>
+						<h2>La tasca<br /><em>y la mesa.</em></h2>
+					</div>
+					<div class="gallery-cta">
+						<p>
+							Estas ilustraciones son marcadores de posición creados para la web. No usamos fotos de Google Maps
+							por derechos de autor: sustitúyelas por fotos propias de la taberna.
+						</p>
+						<a class="button button-ink" href={mapsUrl} target="_blank" rel="noreferrer">Ver fotos en Google Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{gallery.map((photo, index) => (
+						<figure class:list={['shot', index === 0 && 'shot-wide']}>
+							<img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width="800" height="800" />
+						</figure>
+					))}
+				</div>
+				<p class="gallery-note">
+					Imágenes propias temporales en SVG. Para publicar, reemplaza los archivos de /public/fotos/ por fotografías
+					del titular con sus textos alt correspondientes.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos">
+				<div class="visit-copy">
+					<p class="eyebrow"><span aria-hidden="true"></span> C/ Padre Caro, 10</p>
+					<h2>Ven al centro<br /><em>de tapeo.</em></h2>
+					<p class="address">
+						{business.street}<br />
+						{business.postalCode} {business.city}, España
+					</p>
+
+					<p class="hours-note">Teléfono y horario sin fuente verificable sólida. Míralos en su ficha de Google Maps.</p>
+
+					<div class="visit-links">
+						<a class="button button-ember" href={mapsUrl} target="_blank" rel="noreferrer">Ver ficha en Maps ↗</a>
+						<a class="button button-line" href={directionsUrl} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+						<iframe title="Mapa de La Tasca en Padre Caro 10, Conil" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+						<noscript><p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p></noscript>
+					</div>
+					<a class="map-label" href={mapsUrl} target="_blank" rel="noreferrer"><span aria-hidden="true">⌖</span> La Tasca · Conil</a>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2>Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<details>
+							<summary>{faq.q}</summary>
+							<p>{faq.a}</p>
+						</details>
+					))}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-brand">
+				<span class="brand-mark" aria-hidden="true">LT</span>
+				<p>La Tasca<small>{business.street} · {business.city}</small></p>
+			</div>
+			<nav aria-label="Enlaces de la tasca">
+				<a href={mapsUrl} target="_blank" rel="noreferrer">Google Maps ↗</a>
+			</nav>
+			<small>© {new Date().getFullYear()} La Tasca · Conil de la Frontera. Ilustraciones propias temporales, pendientes de fotos del local.</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/la-tasca-conil/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/la-tasca-conil/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/la-tasca-conil/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/la-tasca-conil/aviso-legal">Aviso legal</a>
+			<a href="/la-tasca-conil/aviso-legal#privacidad">Privacidad</a>
+			<a href="/la-tasca-conil/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

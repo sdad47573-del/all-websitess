@@ -1,0 +1,213 @@
+---
+import Fab from '../components/Fab.astro';
+import Footer from '../components/Footer.astro';
+import Topbar from '../components/Topbar.astro';
+import { CARTA, PRICE_TIERS } from '../data/carta';
+import { breadcrumbs, menuSchema } from '../data/schema';
+import { BEBIDAS, BUSINESS } from '../data/site';
+import Layout from '../layouts/Layout.astro';
+
+const sectionIds = CARTA.map((section) => ({ id: section.id, name: section.name }));
+const totalPlatos = CARTA.reduce((total, section) => total + section.items.length, 0);
+---
+
+<Layout
+	title={`Carta | ${BUSINESS.name} · Tapas y parrilla en Teatinos`}
+	description={`Carta de ${BUSINESS.name}: gildas, tapas y raciones en tapa, media o ración, croquetas caseras, carnes a la parrilla, huevos rotos y postres.`}
+	path="/bar-sazon-teatinos/carta"
+	keywords="carta Sazón Teatinos, tapas Teatinos Málaga, tapas y raciones, croquetas caseras Málaga, carnes a la parrilla Teatinos, sin gluten Málaga, postres caseros Málaga"
+	schema={[
+		menuSchema,
+		breadcrumbs([
+			{ name: 'Inicio', path: '/bar-sazon-teatinos/' },
+			{ name: 'Carta', path: '/bar-sazon-teatinos/carta' },
+		]),
+	]}
+>
+	<Topbar base="/bar-sazon-teatinos/" />
+
+	<main>
+		<section class="bg-neutral text-neutral-content">
+			<div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+				<nav class="mb-6 text-xs text-white/60" aria-label="Migas de pan">
+					<a href="/bar-sazon-teatinos/" class="hover:text-accent">Inicio</a>
+					<span class="mx-2">/</span>
+					<span class="text-white/90">Carta</span>
+				</nav>
+
+				<div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+					<div>
+						<span class="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
+							Carta {new Date().getFullYear()}
+						</span>
+						<h1 class="font-display mt-3 text-4xl font-bold sm:text-5xl">Nuestra carta completa</h1>
+						<div class="sazon-divider mt-5 h-px w-32"></div>
+						<p class="mt-6 max-w-2xl leading-relaxed text-white/75">
+							{totalPlatos} platos repartidos en {CARTA.length} secciones: gildas, tapas y raciones, ensaladas,
+							especialidades de la casa, carnes a la parrilla, postres y mucho más. Cocina casera, brasa
+							y producto de temporada.
+						</p>
+					</div>
+
+					<div class="rounded-box border border-white/15 bg-white/5 p-6 backdrop-blur-sm">
+						<p class="text-xs tracking-widest text-white/60 uppercase">Tamaños disponibles</p>
+						<p class="font-display mt-2 text-lg font-semibold">
+							{PRICE_TIERS.join(' · ')}
+						</p>
+						<p class="mt-3 text-sm text-white/70">
+							Cada plato indica sus tamaños (tapa, media y ración, o media y entera). Consulta la carta
+							completa en el local o en el menú digital.
+						</p>
+						<div class="mt-5 flex flex-wrap gap-3">
+							<a href={BUSINESS.phoneHref} class="btn btn-primary btn-sm gap-2 rounded-full">
+								<i class="ri-phone-line"></i>
+								{BUSINESS.phoneDisplay}
+							</a>
+							<a
+								href={BUSINESS.digitalMenu}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="btn btn-sm hover:text-neutral gap-2 rounded-full border-white/30 bg-white/10 text-white hover:border-white hover:bg-white"
+							>
+								<i class="ri-qr-code-line"></i>
+								Menú digital
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<div class="border-base-300 bg-base-100/90 sticky top-16 z-30 border-b backdrop-blur-md">
+			<nav
+				class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-3 sm:px-6 lg:px-8"
+				aria-label="Secciones de la carta"
+			>
+				{
+					sectionIds.map((section) => (
+						<a
+							href={`#${section.id}`}
+							class="border-base-300 hover:border-primary hover:text-primary rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors"
+						>
+							{section.name}
+						</a>
+					))
+				}
+				<a
+					href="#bebidas"
+					class="border-base-300 hover:border-primary hover:text-primary rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors"
+				>
+					Bebidas
+				</a>
+			</nav>
+		</div>
+
+		<section class="bg-base-200 py-16 sm:py-20">
+			<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div class="grid gap-6 lg:grid-cols-2">
+					{
+						CARTA.map((section) => (
+							<article id={section.id} class="card border-base-300 bg-base-100 scroll-mt-32 border">
+								<div class="card-body gap-5">
+									<div class="border-base-200 flex items-start gap-3 border-b pb-4">
+										<span class="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
+											<i class={`${section.icon} text-xl`} />
+										</span>
+										<div>
+											<h2 class="font-display text-xl font-semibold">{section.name}</h2>
+											{section.note && (
+												<p class="text-base-content/60 mt-1 text-xs leading-relaxed">
+													{section.note}
+												</p>
+											)}
+										</div>
+									</div>
+
+									<ul class="space-y-4">
+										{section.items.map((item) => (
+											<li class="border-base-200 border-b pb-4 last:border-0 last:pb-0">
+												<h3 class="text-[0.95rem] font-semibold">{item.name}</h3>
+												{item.description && (
+													<p class="text-base-content/70 mt-1 text-sm leading-relaxed">
+														{item.description}
+													</p>
+												)}
+												{item.tags && (
+													<div class="mt-2 flex flex-wrap gap-1.5">
+														{item.tags.map((tag) => (
+															<span class="badge badge-sm border-primary/25 bg-primary/10 text-primary">
+																{tag}
+															</span>
+														))}
+													</div>
+												)}
+											</li>
+										))}
+									</ul>
+								</div>
+							</article>
+						))
+					}
+
+					<article id="bebidas" class="card border-base-300 bg-base-100 scroll-mt-32 border">
+						<div class="card-body gap-5">
+							<div class="border-base-200 flex items-start gap-3 border-b pb-4">
+								<span
+									class="bg-primary/10 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl"
+								>
+									<i class="ri-goblet-line text-xl"></i>
+								</span>
+								<div>
+									<h2 class="font-display text-xl font-semibold">Bebidas</h2>
+									<p class="text-base-content/60 mt-1 text-xs leading-relaxed">
+										La carta de bebidas completa (refrescos, cervezas, vinos y combinados) la tienes
+										en el local y en nuestro menú digital.
+									</p>
+								</div>
+							</div>
+
+							<ul class="space-y-4">
+								{
+									BEBIDAS.map((item) => (
+										<li class="border-base-200 border-b pb-4 last:border-0 last:pb-0">
+											<h3 class="text-[0.95rem] font-semibold">{item.name}</h3>
+											<p class="text-base-content/70 mt-1 text-sm leading-relaxed">
+												{item.description}
+											</p>
+											{item.tags && (
+												<div class="mt-2 flex flex-wrap gap-1.5">
+													{item.tags.map((tag) => (
+														<span class="badge badge-sm border-primary/25 bg-primary/10 text-primary">
+															{tag}
+														</span>
+													))}
+												</div>
+											)}
+										</li>
+									))
+								}
+							</ul>
+						</div>
+					</article>
+				</div>
+
+				<div
+					class="border-base-300 bg-base-100 rounded-box mt-10 flex flex-col items-start gap-4 border p-6 sm:flex-row sm:items-center sm:justify-between"
+				>
+					<p class="text-base-content/70 text-sm">
+						<i class="ri-information-line text-primary mr-1"></i>
+						Alérgenos y opciones sin gluten: pregúntanos y te ayudamos a elegir. Disponemos de cervezas
+						sin gluten y patatas en freidora aparte.
+					</p>
+					<a href={BUSINESS.phoneHref} class="btn btn-primary gap-2 rounded-full">
+						<i class="ri-calendar-check-line"></i>
+						Reservar mesa
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<Footer />
+	<Fab />
+</Layout>

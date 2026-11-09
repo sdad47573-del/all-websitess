@@ -1,0 +1,318 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/dpin-parrilla-vertical-01.jpg';
+import pizza from '../assets/fotos/dpin-parrilla-cuadrada-04.jpg';
+import entrecot from '../assets/fotos/dpin-parrilla-vertical-03.jpg';
+import hamburguesa from '../assets/fotos/dpin-parrilla-apaisada-05.jpg';
+import croquetas from '../assets/fotos/dpin-parrilla-apaisada-06.jpg';
+import cafe from '../assets/fotos/dpin-parrilla-cuadrada-07.jpg';
+import postre from '../assets/fotos/dpin-parrilla-apaisada-08.jpg';
+import pollo from '../assets/fotos/dpin-parrilla-apaisada-09.jpg';
+
+import { AVISO, BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description =
+	"D'PIN Parrilla, Pizzas y Raciones, parrilla, cafetería y bar de tapas en la calle Pedro Ávila, 49 (Zarza de Granadilla, Cáceres). Croquetas, entrecot, churrasco y pizzas caseras. 4,5 en Google con 410 reseñas. Tel. 687 22 55 86.";
+
+const galeria = [
+	{
+		src: fachada,
+		alt: "Rótulo de neón de D'Pin sobre la puerta de cristal del local en Zarza de Granadilla",
+	},
+	{
+		src: pizza,
+		alt: "Pizza casera de D'PIN con salchicha, jamón, aceitunas, champiñones y pimiento verde",
+	},
+	{
+		src: entrecot,
+		alt: "Entrecot a la parrilla con patatas fritas y pimiento en D'PIN, Zarza de Granadilla",
+	},
+	{
+		src: hamburguesa,
+		alt: "Hamburguesa con lechuga, tomate, queso y bacon en D'PIN Parrilla, Pizzas y Raciones",
+	},
+	{
+		src: croquetas,
+		alt: "Ración de croquetas de jamón con patatas paja en D'PIN, Zarza de Granadilla",
+	},
+	{
+		src: pollo,
+		alt: "Tiras de pollo empanadas servidas sobre pizarra negra en D'PIN",
+	},
+	{
+		src: postre,
+		alt: "Postre de chocolate con nata y salsa de chocolate en D'PIN Parrilla",
+	},
+	{
+		src: cafe,
+		alt: "Café con chocolate y tostadas triangulares en la barra de D'PIN, Zarza de Granadilla",
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#dpin`,
+	name: "D'PIN Parrilla, Pizzas y Raciones",
+	alternateName: ["D'PIN", "D'Pin Zarza de Granadilla", 'Bar Pin Zarza de Granadilla'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 687 22 55 86',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Parrilla', 'Pizza', 'Española'],
+	areaServed: [
+		{ '@type': 'City', name: 'Zarza de Granadilla' },
+		{ '@type': 'AdministrativeArea', name: 'Valle del Ambroz' },
+		{ '@type': 'AdministrativeArea', name: 'Cáceres' },
+		{ '@type': 'AdministrativeArea', name: 'Extremadura' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday'],
+			opens: '19:00',
+			closes: '23:30',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Friday'],
+			opens: '10:00',
+			closes: '16:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '12:00',
+			closes: '23:30',
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: [
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Pedimos croquetas de jamón, calamares y entrecot.',
+		},
+		{
+			'@type': 'Review',
+			reviewRating: { '@type': 'Rating', ratingValue: 5, bestRating: 5 },
+			reviewBody: 'Las pizzas caseras muy ricas, y los camareros muy agradables',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = "D'PIN Parrilla, Pizzas y Raciones · Zarza de Granadilla";
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#a3232b" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="D'PIN Zarza de Granadilla, D'Pin parrilla, pizzas Zarza de Granadilla, comer en Zarza de Granadilla, bar de tapas Cáceres, parrilla Valle del Ambroz, croquetas Zarza de Granadilla, C. Pedro Ávila"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="D'PIN Parrilla, Pizzas y Raciones · Zarza de Granadilla"
+			ogDescription="Parrilla, pizzas caseras y raciones en la calle Pedro Ávila, 49 (Zarza de Granadilla): croquetas de jamón, entrecot, churrasco y hamburguesa. 4,5 en Google con 410 reseñas."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Pizza casera de D'PIN con salchicha, jamón, aceitunas y pimiento verde"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#a3232b"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			postalCode={BUSINESS.postalCode}
+			phone="+34687225586"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[croquetas]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="icon" type="image/svg+xml" href="/dpin-parrilla/favicon.svg" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">
+			Saltar al contenido
+		</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="D'PIN"
+			subtitle="Parrilla, pizzas y raciones · Zarza de Granadilla"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="C. Pedro Ávila, 49 · Zarza de Granadilla"
+				title="Parrilla, pizzas<br /><em>y raciones.</em>"
+				lede={`D'PIN es parrilla, cafetería y bar de tapas en la calle Pedro Ávila, 49, de Zarza de Granadilla (Cáceres). Croquetas de jamón, entrecot y churrasco de la parrilla, pizzas caseras y raciones para compartir, con desayunos y meriendas de barra. Reservas en el ${BUSINESS.phoneDisplay}.`}
+				image={croquetas}
+				imageAlt="Ración de croquetas de jamón con patatas paja en D'PIN, Zarza de Granadilla"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${BUSINESS.rating.toFixed(1).replace('.', ',')}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Horario', html: 'Lun–Mié y Vie · comidas y cenas' },
+					{ label: 'Teléfono', html: `<b>${BUSINESS.phoneDisplay}</b>` },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece D'PIN Parrilla, Pizzas y Raciones" items={SERVICIOS} />
+
+			<LocalAbout
+				label="El local"
+				title="Parrilla de pueblo<br /><em>y pizzas caseras.</em>"
+				paragraphs={[
+					"D'PIN Parrilla, Pizzas y Raciones está en la calle Pedro Ávila, 49, de Zarza de Granadilla (Cáceres), en el norte de la provincia, camino del Valle del Ambroz y de las Hurdes.",
+					'El rótulo de neón sobre la puerta de cristal lo dice todo: asados, pizzas y raciones. Dentro hay barra de mármol oscuro para el café y la tostada, y mesas para comer de carta: croquetas, calamares, carnes a la parrilla y pizzas que salen del horno.',
+					'La ficha de Google lo clasifica como parrilla, cafetería y bar de tapas. Sus reseñas repiten las croquetas de jamón, el entrecot, el churrasco y las pizzas caseras, y coinciden en que los camareros son «muy agradables». El propio local avisa en esa ficha de que cierra por descanso la primera quincena de septiembre.',
+				]}
+				note={`Tiene ${BUSINESS.rating.toFixed(1).replace('.', ',')} sobre 5 con ${BUSINESS.reviewsCount} opiniones en Google. Una reseña lo cuenta en una línea: «pedimos croquetas de jamón, calamares y entrecot».`}
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="De la parrilla<br /><em>al horno.</em>"
+				description="La ficha de Google no publica carta ni precios: esto es lo que nombran sus reseñas y lo que se ve en las fotos de sus platos."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Sin carta publicada, los platos cambian según el día. Llama al 687 22 55 86 para confirmar qué hay y el horario, porque la ficha de Google tiene franjas poco habituales."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="El rótulo<br /><em>y los platos.</em>"
+				description="Estas fotografías proceden del perfil de D'PIN en Google Maps: la puerta con el neón, la pizza, el entrecot, las croquetas y los postres."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Nos vemos<br /><em>en Pedro Ávila.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					`${BUSINESS.regionName}, España`,
+				]}
+				hours={HOURS}
+				hoursNote={`Horario de la ficha de Google. Ojo: trae franjas raras —el viernes marca 23:30–24:00 y el sábado abre a las 0:00—, así que conviene llamar antes. ${AVISO}`}
+				mapTitle="Mapa de D'PIN Parrilla, Pizzas y Raciones en la calle Pedro Ávila, 49, Zarza de Granadilla (Cáceres)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="D'PIN Parrilla, Pizzas y Raciones · Zarza de Granadilla"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se reserva llamando al 687 22 55 86. Está en la calle Pedro Ávila, 49, de Zarza de Granadilla, en el norte de Cáceres."
+			/>
+
+			<LocalFaq items={FAQ} />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/dpin-parrilla/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a D'PIN"
+		/>
+	</body>
+</html>

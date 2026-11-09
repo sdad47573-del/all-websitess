@@ -1,0 +1,330 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import terrazaCubierta from '../assets/fotos/gastrobar-oliden-apaisada-01.jpg';
+import hamburguesa from '../assets/fotos/gastrobar-oliden-panoramica-02.jpg';
+import fachada from '../assets/fotos/gastrobar-oliden-cuadrada-04.jpg';
+import mesa from '../assets/fotos/gastrobar-oliden-panoramica-05.jpg';
+import frito from '../assets/fotos/gastrobar-oliden-panoramica-06.jpg';
+import pescado from '../assets/fotos/gastrobar-oliden-apaisada-07.jpg';
+import hamburguesaCorte from '../assets/fotos/gastrobar-oliden-panoramica-09.jpg';
+import exterior from '../assets/fotos/gastrobar-oliden-apaisada-10.jpg';
+
+import { BUSINESS, DESCRIPCION_LOCAL, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'GastroBar Oliden, en la carretera de Rentería a Irún, km 5,3 (Arragua, 20180 Errenteria). Parrilla, hamburguesas y menú del día. Terraza y aparcamiento. Tel. 681 08 64 77.';
+
+const title = 'GastroBar Oliden · Parrilla y terraza en Errenteria';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada naranja del GastroBar Oliden con las sombrillas blancas de la terraza en Errenteria',
+	},
+	{
+		src: terrazaCubierta,
+		alt: 'Terraza cubierta del GastroBar Oliden con toldo verde, mesas y sillas junto al jardín',
+	},
+	{
+		src: hamburguesa,
+		alt: 'Hamburguesa con bacon, queso y cebolla caramelizada en un plato del GastroBar Oliden',
+	},
+	{
+		src: mesa,
+		alt: 'Mesa con pescado frito, arroz con curry, ensalada de langostinos y plátano frito',
+	},
+	{
+		src: pescado,
+		alt: 'Pescado frito entero con patatas y plátano frito, con tomate en rodajas',
+	},
+	{
+		src: hamburguesaCorte,
+		alt: 'Hamburguesa cortada por la mitad, con la carne jugosa y el queso fundido',
+	},
+	{
+		src: exterior,
+		alt: 'Exterior del GastroBar Oliden con el aparcamiento, la terraza y la pérgola de madera',
+	},
+	{
+		src: frito,
+		alt: 'Frito casero dorado servido en un plato de cristal',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#oliden`,
+	name: BUSINESS.name,
+	alternateName: ['Oliden', 'Gastrobar Oliden', 'Oliden Errenteria'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 681 08 64 77',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Vasca', 'Española', 'Parrilla', 'Latinoamericana'],
+	areaServed: [
+		{ '@type': 'City', name: 'Errenteria' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.locality,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			opens: '08:00',
+			closes: '22:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Sunday'],
+			opens: '09:00',
+			closes: '22:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza cubierta',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza descubierta',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#2f6b4f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="GastroBar Oliden, Oliden Errenteria, bar restaurante Errenteria, parrilla Errenteria, hamburguesas Gipuzkoa, menú del día Arragua, terraza Errenteria"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="GastroBar Oliden · Parrilla y terraza en Errenteria"
+			ogDescription="Bar restaurante en Arragua (Errenteria) con parrilla, hamburguesas, menú del día y platos latinoamericanos. Comedor, dos terrazas y aparcamiento exterior."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Terraza cubierta con toldo verde del GastroBar Oliden en Errenteria"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#2f6b4f"
+			street={BUSINESS.street}
+			city={`${BUSINESS.locality}, ${BUSINESS.city}`}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone="+34681086477"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.locality}, ${BUSINESS.city}`}
+			preload={[terrazaCubierta]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="GASTROBAR OLIDEN"
+			subtitle="Arragua · Errenteria"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Ctra. Rentería a Irún, km 5,3 · Arragua"
+				title="Parrilla y terraza<br /><em>en plena naturaleza.</em>"
+				lede={`GastroBar Oliden está en el kilómetro 5,3 de la carretera de Rentería a Irún, en Arragua (Errenteria, Gipuzkoa), en un entorno natural con aparcamiento exterior. Parrilla, hamburguesas, menú del día y algún plato latinoamericano, con amplio comedor y dos terrazas. Cierra los lunes. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={terrazaCubierta}
+				imageAlt="Terraza cubierta del GastroBar Oliden con toldo verde, mesas y sillas junto al jardín"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Cocina', html: 'Parrilla · hamburguesas · menú del día' },
+					{ label: 'Horario', html: 'Cierra lunes · mar–sáb 8:00–22:00' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece el GastroBar Oliden" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comer en el campo<br /><em>sin salir del camino.</em>"
+				paragraphs={[
+					'El GastroBar Oliden está en el kilómetro 5,3 de la carretera de Rentería a Irún, en Arragua (20180 Errenteria, Gipuzkoa), en plena naturaleza y con aparcamiento exterior. Se reconoce por la fachada naranja y el toldo verde que cubre una de las terrazas, con la pérgola de madera al lado.',
+					`${DESCRIPCION_LOCAL} La entrada es libre: no hace falta estar acampado ni alojado para comer o tomar algo.`,
+					'Cierra los lunes. De martes a sábado abre de 8:00 a 22:00 y el domingo de 9:00 a 22:00. Google marca acceso para sillas de ruedas, aparcamiento adaptado y asientos adaptados.',
+					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google. Las publicadas destacan la parrilla y las hamburguesas, el trato del personal y la presencia de menú del día con algún plato típico de Latinoamérica.`,
+				]}
+				note="La ficha de Google no publica carta ni precios, así que esta página no los reproduce: los platos son los que citan las reseñas y los que aparecen en las fotos del perfil."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Parrilla, hamburguesas<br /><em>y menú del día.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que citan sus reseñas y lo que aparece en las fotos del perfil; el menú del día se consulta en el local."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="No hay precios publicados. Para saber el menú de hoy, llama al 681 08 64 77."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La terraza,<br /><em>la parrilla y la mesa.</em>"
+				description="Estas fotografías proceden del perfil del GastroBar Oliden en Google Maps: la fachada naranja, la terraza cubierta, el exterior con el aparcamiento, las hamburguesas, el pescado frito con plátano, la mesa con arroz y curry y un frito casero."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.locality}`}
+				title="Carretera de Irún, km 5,3,<br /><em>en Arragua.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.locality}`,
+					`${BUSINESS.city} · Gipuzkoa`,
+				]}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: cierra los lunes; de martes a sábado, de 8:00 a 22:00; el domingo, de 9:00 a 22:00. Puede cambiar, así que conviene llamar antes."
+				mapTitle="Mapa del GastroBar Oliden en la carretera de Rentería a Irún, km 5,3, Arragua (Errenteria)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="GastroBar Oliden · Arragua, Errenteria"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 681 08 64 77. Hay aparcamiento exterior y la entrada es libre, sin necesidad de estar alojado o acampado. La ficha marca acceso, aparcamiento y asientos adaptados."
+			/>
+
+			<LocalFaq
+				items={[...FAQ]}
+				eyebrow="Preguntas frecuentes"
+				title="Antes de <em>venir.</em>"
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.locality}, ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/gastrobar-oliden/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Oliden"
+		/>
+	</body>
+</html>

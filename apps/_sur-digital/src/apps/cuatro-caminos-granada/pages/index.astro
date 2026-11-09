@@ -1,0 +1,221 @@
+---
+const business = {
+	name: 'Café-Bar Cuatro Caminos',
+	street: 'Carretera de la Sierra, 73',
+	city: 'Granada',
+	region: 'Granada',
+	postalCode: '18008',
+	country: 'ES',
+	phone: '+34 958 22 44 63',
+	latitude: 37.1645244,
+	longitude: -3.5779241,
+	site: 'https://www.sur-digital.com/cuatro-caminos-granada',
+};
+
+const mapsUrl = 'https://www.google.com/maps/place/Cuatro+Caminos/@37.1645244,-3.5779241,17z/data=!3m1!4b1!4m6!3m5!1s0xd71e35324af0d71:0xdd715b9f5186a875!8m2!3d37.1645244!4d-3.5779241!16s%2Fg%2F119vxkfb_?hl=es';
+const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;
+const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(`${business.name}, ${business.street}, ${business.city}`)}&ll=${business.latitude}%2C${business.longitude}&z=17&hl=es&output=embed`;
+const phoneHref = 'tel:+34958224463';
+const facebookUrl = 'https://www.facebook.com/p/Caf%C3%A9-Bar-Cuatro-Caminos-100057396581718/';
+const siteUrl = `${business.site}/`;
+const description = 'Café-Bar Cuatro Caminos en Granada: desayunos, comida casera, menú del día, raciones y platos combinados en Carretera de la Sierra, 73. Llama, consulta el horario y cómo llegar.';
+
+const hours = [
+	{ day: 'Lunes', value: '07:00–17:00 · 20:00–00:00' },
+	{ day: 'Martes', value: '07:00–17:00 · 20:00–00:00' },
+	{ day: 'Miércoles', value: '07:00–17:00 · 20:00–00:00' },
+	{ day: 'Jueves', value: '07:00–17:00 · 20:00–00:00' },
+	{ day: 'Viernes', value: '07:00–17:00 · 20:00–00:00' },
+	{ day: 'Sábado', value: 'Cerrado' },
+	{ day: 'Domingo', value: 'Cerrado' },
+];
+
+const faqs = [
+	{
+		question: '¿Dónde está el Café-Bar Cuatro Caminos?',
+		answer: 'Está en Carretera de la Sierra, 73, 18008 Granada, en el distrito Genil. Abre las indicaciones de Google Maps desde esta página para encontrar la ruta.',
+	},
+	{
+		question: '¿Qué puedo comer en Cuatro Caminos?',
+		answer: 'El bar ofrece desayunos, menús, raciones, platos combinados y comida casera. Entre los platos mencionados en directorios y reseñas aparecen la olla de San Antón, ensaladilla rusa, croquetas caseras, pollo a la brasa, huevos rotos y postres caseros.',
+	},
+	{
+		question: '¿Tienen menú para llevar?',
+		answer: 'La página pública del Café-Bar anuncia menú para llevar. Llama al +34 958 22 44 63 para consultar las opciones y hacer tu pedido.',
+	},
+	{
+		question: '¿Cuál es el horario de apertura?',
+		answer: 'El horario publicado en la página del bar indica de lunes a viernes de 07:00 a 17:00 y de 20:00 a 00:00, y cierre los sábados y domingos. Puede cambiar en festivos: confirma por teléfono antes de venir.',
+	},
+	{
+		question: '¿Dónde puedo ver fotos del bar?',
+		answer: 'Abre la ficha de Cuatro Caminos en Google Maps desde esta página para consultar las fotos del local y la comida, junto con las opiniones recientes.',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': ['Restaurant', 'CafeOrCoffeeShop'],
+	'@id': `${siteUrl}#business`,
+	name: business.name,
+	description,
+	url: siteUrl,
+	telephone: business.phone,
+	priceRange: '10–20 €',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Española', 'Casera', 'Mediterránea'],
+	acceptsReservations: true,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: business.street,
+		addressLocality: business.city,
+		addressRegion: business.region,
+		postalCode: business.postalCode,
+		addressCountry: business.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: business.latitude,
+		longitude: business.longitude,
+	},
+	hasMap: mapsUrl,
+	sameAs: [mapsUrl, facebookUrl],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:00',
+			closes: '17:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '20:00',
+			closes: '23:59',
+		},
+	],
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map(({ question, answer }) => ({
+		'@type': 'Question',
+		name: question,
+		acceptedAnswer: { '@type': 'Answer', text: answer },
+	})),
+};
+
+import { Image } from 'astro:assets';
+import Galeria from '../components/Galeria.astro';
+import heroPhoto from '../assets/fotos/cuatro-caminos-granada-apaisada-02.jpg';---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="theme-color" content="#234539" />
+		<link rel="canonical" href={siteUrl} />
+		<link rel="icon" type="image/svg+xml" href="/cuatro-caminos-granada/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+		<title>Café-Bar Cuatro Caminos en Granada | Desayunos y comida casera</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content="Café-Bar Cuatro Caminos · Comida casera en Granada" />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={siteUrl} />
+		<meta property="og:image" content={`${business.site}/og.svg`} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Café-Bar Cuatro Caminos, desayunos y comida casera en Granada" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+			<meta name="geo.region" content="ES-GR" />
+		<meta name="geo.placename" content="Granada" />
+		<meta name="geo.position" content="37.1645244;-3.5779241" />
+		<meta name="ICBM" content="37.1645244, -3.5779241" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label="Café-Bar Cuatro Caminos, inicio"><span class="brand-mark" aria-hidden="true">4</span><span>Cuatro Caminos <small>Café-Bar · Granada</small></span></a>
+			<nav aria-label="Navegación principal"><a href="#cocina">Qué ofrecemos</a><a href="#especialidades">La cocina</a><a href="#fotos">Fotos</a><a href="#visitanos">Cómo llegar</a></nav>
+			<a class="header-call" href={phoneHref}>Llamar · 958 22 44 63</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow"><span>Granada · Genil</span><i aria-hidden="true"></i> Café-Bar de barrio</p>
+					<h1 id="hero-title">Empieza el día<br />con sabor <em>a casa.</em></h1>
+					<p class="lede">Desayunos, menú del día, raciones y platos combinados en Café-Bar Cuatro Caminos. Cocina casera y trato cercano en Carretera de la Sierra, un punto de encuentro en Granada.</p>
+					<div class="actions"><a class="button button-gold" href={phoneHref}>Llamar al bar <span aria-hidden="true">↗</span></a><a class="button button-outline" href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar <span aria-hidden="true">↗</span></a></div>
+					<div class="hero-details"><span>⌖ Carretera de la Sierra, 73</span><span>☕ Desayunos · comida casera</span></div>
+				</div>
+				<div class="hero-art">
+					<Image
+						src={heroPhoto}
+						alt="Fotografía de Café-Bar Cuatro Caminos publicada en su ficha de Google Maps"
+						widths={[420, 640, 960]}
+						sizes="(max-width: 720px) 100vw, 50vw"
+						format="avif"
+						quality={70}
+						loading="eager"
+						fetchpriority="high"
+						class="hero-photo"
+					/>
+					<div class="art-note">Buenos días<br /><b>y buen provecho</b></div>
+				</div>
+			</section>
+
+			<div class="ticker" aria-label="Servicios y cocina"><span>Desayunos</span><b>✳</b><span>Menú del día</span><b>✳</b><span>Comida casera</span><b>✳</b><span>Raciones</span><b>✳</b><span>Para llevar</span></div>
+
+			<section class="intro section-wrap" id="cocina"><div><p class="eyebrow eyebrow-dark">Tu bar de cada día</p><h2>Lo cotidiano<br /><em>también sabe bien.</em></h2></div><div class="intro-copy"><p>Cuatro Caminos es un café-bar de Granada con una propuesta directa y casera: desayunos para empezar la mañana, menús para la pausa del mediodía, raciones y platos combinados. Un local de barrio donde sentarse, comer a gusto y seguir el día.</p><a class="text-link" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver opiniones y fotos en Google Maps ↗</a></div></section>
+
+			<section class="specialties section-wrap" id="especialidades" aria-labelledby="specialties-title"><div class="section-heading"><p class="eyebrow eyebrow-dark">Sabor casero en Granada</p><h2 id="specialties-title">De la mañana<br /><em>a la hora de comer.</em></h2><p>Una cocina sencilla y abundante para desayunar, hacer una pausa o pedir algo para llevar.</p></div>
+				<div class="special-grid">
+					<article class="special-card special-breakfast"><span class="special-icon" aria-hidden="true">☀</span><span class="card-kicker">PARA EMPEZAR</span><h3>Desayunos</h3><p>Un café y algo rico para comenzar la jornada en el barrio de Genil.</p></article>
+					<article class="special-card special-menu"><span class="special-icon" aria-hidden="true">♨</span><span class="card-kicker">A MEDIODÍA</span><h3>Menú del día</h3><p>Platos caseros y una opción práctica para comer bien durante la semana.</p></article>
+					<article class="special-card special-rations"><span class="special-icon" aria-hidden="true">✿</span><span class="card-kicker">PARA COMPARTIR</span><h3>Raciones y tapas</h3><p>Ensaladilla, croquetas, guisos y raciones para disfrutar sin complicaciones.</p></article>
+					<article class="special-card special-takeaway"><span class="special-icon" aria-hidden="true">⌂</span><span class="card-kicker">TAMBIÉN PARA LLEVAR</span><h3>Platos combinados</h3><p>Comida casera en el local o menú para llevar. Llama para consultar el día.</p></article>
+				</div><p class="menu-note">Platos populares mencionados en fuentes públicas: olla de San Antón, ensaladilla rusa, croquetas caseras, pollo a la brasa y postres. La oferta varía: consulta la carta del día.</p>
+			</section>
+
+			<section class="photo-section" id="fotos"><div class="photo-copy"><p class="eyebrow">Cuatro Caminos en Google Maps</p><h2>Mira el local<br />y sus platos <em>aquí.</em></h2><p>Abre la ficha de Google Maps para explorar fotos del bar y de la comida, consultar reseñas recientes y tener a mano los datos del establecimiento.</p><a class="button button-gold" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver fotos en Google Maps <span aria-hidden="true">↗</span></a><a class="social-link" href={facebookUrl} target="_blank" rel="noopener noreferrer">Facebook del Café-Bar ↗</a></div>
+				<div class="map-photo"><div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe title="Google Maps: Café-Bar Cuatro Caminos en Carretera de la Sierra, Granada" src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+					<noscript>
+						<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+					</noscript>
+				</div><a class="map-caption" href={mapsUrl} target="_blank" rel="noopener noreferrer"><span>⌖</span><span><b>Café-Bar Cuatro Caminos</b><small>Carretera de la Sierra, 73 · Ver fotos ↗</small></span></a></div>
+			</section>
+
+			<section class="visit section-wrap" id="visitanos"><div class="visit-copy"><p class="eyebrow eyebrow-dark">En el distrito Genil</p><h2>Te esperamos<br /><em>en Granada.</em></h2><p>Acércate a desayunar, comer o pedir algo para llevar en Café-Bar Cuatro Caminos.</p><address>{business.street}<br />{business.postalCode} {business.city}, {business.region}</address><div class="actions"><a class="button button-dark" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir indicaciones ↗</a><a class="text-link" href={phoneHref}>Llamar · 958 22 44 63</a></div></div>
+				<div class="hours-card" id="horario"><div class="hours-title"><span class="clock" aria-hidden="true">◷</span><div><p class="eyebrow eyebrow-dark">Planifica tu visita</p><h3>Horario</h3></div></div><dl>{hours.map(({ day, value }) => <div class:list={[{ closed: value === 'Cerrado' }]}><dt>{day}</dt><dd>{value}</dd></div>)}</dl><p class="hours-note">Horario publicado por el Café-Bar en Facebook. Puede cambiar en festivos; llama para confirmar antes de venir.</p></div>
+			</section>
+
+			<section class="faq-section section-wrap" id="preguntas"><p class="eyebrow eyebrow-dark">Información útil</p><h2>Antes de <em>venir.</em></h2><div class="faq-list">{faqs.map(({ question, answer }) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div></section>
+			<Galeria nombre="Café-Bar Cuatro Caminos" mapsUrl={mapsUrl} />
+		</main>
+
+		<footer class="footer"><div class="footer-top"><a class="brand footer-brand" href="#inicio"><span class="brand-mark" aria-hidden="true">4</span><span>Cuatro Caminos <small>Café-Bar · Granada</small></span></a><p>Un bar de barrio.<br />Comida hecha en casa.</p><nav aria-label="Enlaces del Café-Bar"><a href={mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href={facebookUrl} target="_blank" rel="noopener noreferrer">Facebook ↗</a><a href={phoneHref}>958 22 44 63</a></nav></div><div class="footer-bottom"><span>© {new Date().getFullYear()} Café-Bar Cuatro Caminos · Granada</span><a href="/cuatro-caminos-granada/aviso-legal/">Aviso legal y privacidad</a> <a href="/cuatro-caminos-granada/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a> <span>Confirma horario, menú y disponibilidad directamente con el establecimiento.</span></div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		</footer>
+		<a class="mobile-call" href={phoneHref}>Llamar <span>958 22 44 63</span></a>
+	</body>
+</html>
+
+<style is:global>
+	:root{font-family:'DM Sans',sans-serif;color:#29342b;background:#f7f4e9;font-synthesis:none;text-rendering:optimizeLegibility;--green:#234539;--green2:#56765b;--yellow:#ecc35c;--cream:#f7f4e9;--ink:#29342b;--display:'Playfair Display',Georgia,serif}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:80px}body{margin:0;min-width:320px}a{color:inherit;text-decoration:none}a:focus-visible,summary:focus-visible{outline:3px solid #d5a848;outline-offset:4px}.skip-link{position:absolute;z-index:99;top:-60px;left:16px;padding:12px 16px;background:var(--yellow);color:var(--green)}.skip-link:focus{top:12px}.topbar{height:78px;padding:0 6vw;display:flex;align-items:center;justify-content:space-between;gap:22px;background:#234539;color:#faf8ee}.brand{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:700}.brand small{display:block;margin-top:4px;color:#d4dfcf;font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase}.brand-mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--yellow);border-radius:50%;color:var(--yellow);font:700 23px var(--display)}.topbar nav{display:flex;gap:clamp(14px,2.5vw,32px);color:#e8eee3;font-size:12px}.topbar nav a:hover,.footer a:hover{color:var(--yellow)}.header-call{padding:11px 17px;border:1px solid #ffffff59;border-radius:99px;font-size:11px;font-weight:700}.hero{display:grid;grid-template-columns:1.05fr .95fr;min-height:560px;background:#234539;color:#faf8ee;overflow:hidden}.hero-copy{padding:73px 4vw 64px 9vw;align-self:center}.eyebrow{margin:0 0 19px;color:#d6d9ac;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase}.eyebrow i{display:inline-block;width:22px;height:1px;margin:0 8px 3px;background:currentColor}.hero h1,.intro h2,.section-heading h2,.photo-copy h2,.visit h2,.faq-section h2{margin:0;font:600 clamp(39px,4.8vw,64px)/1.08 var(--display);letter-spacing:-1.2px}.hero h1 em,.intro h2 em,.section-heading h2 em,.photo-copy h2 em,.visit h2 em,.faq-section h2 em{color:var(--yellow);font-style:italic}.lede{max-width:475px;margin:24px 0 0;color:#e0e7d9;font-size:15px;line-height:1.8}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:27px}.button{display:inline-flex;min-height:47px;align-items:center;justify-content:center;gap:14px;padding:0 20px;border-radius:99px;font-size:12px;font-weight:700;transition:transform .18s ease}.button:hover{transform:translateY(-2px)}.button-gold{background:var(--yellow);color:#234539}.button-outline{border:1px solid #ffffff65;color:#faf8ee}.hero-details{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:27px;padding-top:20px;border-top:1px solid #ffffff2a;color:#d9e1d6;font-size:11px}.hero-details span:first-child{color:#edcd74}.hero-art{position:relative;min-height:560px;overflow:hidden;background:linear-gradient(155deg,#e2b571,#be8958 54%,#7a593e)}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}.sun{position:absolute;top:11%;right:17%;width:110px;height:110px;border-radius:50%;background:#f8d77e;box-shadow:0 0 65px #f8d77e66}.window{position:absolute;top:8%;right:9%;width:43%;height:42%;border:9px solid #f6edda;background:#dfc17f;box-shadow:0 15px 25px #4938282b}.window:before,.window:after{position:absolute;z-index:1;background:#f6edda;content:''}.window:before{top:0;bottom:0;left:48%;width:7px}.window:after{top:47%;right:0;left:0;height:7px}.window span{position:absolute;right:-5%;bottom:-10%;left:-5%;height:44%;border-radius:50% 50% 0 0;background:#73845b}.counter{position:absolute;right:-15%;bottom:-9%;left:-15%;height:39%;border-radius:50% 50% 0 0;background:#71503a;box-shadow:0 -9px 24px #3c2c2466}.plate{position:absolute;z-index:2;top:44%;left:28%;width:min(300px,60%);aspect-ratio:1;display:flex;align-items:center;justify-content:center;gap:7px;border:13px solid #fff9e8;border-radius:50%;background:#e9dfc8;box-shadow:0 18px 35px #3a30244f;transform:rotate(-9deg)}.toast{position:absolute;z-index:1;width:43%;height:29%;border:5px solid #d7ac5f;border-radius:14px;background:linear-gradient(145deg,#e9c681,#b77a43);box-shadow:0 4px 7px #56412d66}.toast-one{top:24%;left:17%;transform:rotate(-20deg)}.toast-two{right:15%;bottom:25%;transform:rotate(17deg)}.tomato{position:absolute;z-index:2;top:40%;left:42%;width:28%;height:20%;border-radius:50%;background:#ba5940;box-shadow:0 2px 4px #67423055}.olive{position:absolute;z-index:3;right:23%;top:22%;width:12px;height:21px;border-radius:50%;background:#62744b;transform:rotate(22deg)}.coffee{position:absolute;z-index:3;right:11%;bottom:13%;width:77px;height:77px;display:grid;place-items:center;border:8px solid #fff8e6;border-radius:50%;background:#7b4d34;box-shadow:0 8px 15px #3e2c2366}.coffee:after{position:absolute;right:-22px;width:27px;height:31px;border:7px solid #fff8e6;border-left:0;border-radius:0 18px 18px 0;content:''}.coffee span{width:49px;height:49px;border:3px solid #e4c68a;border-radius:50%;background:radial-gradient(circle,#573629 0 61%,#d5b16c 63%)}.spoon{position:absolute;z-index:1;right:30%;bottom:12%;width:12px;height:100px;border-radius:50%;background:#c2b79b;transform:rotate(-28deg)}.art-note{position:absolute;z-index:4;top:16%;left:8%;padding:13px 16px;background:#fbf2d9;color:#43503c;font:13px/1.45 var(--display);transform:rotate(-5deg)}.art-note b{font-size:16px}.steam{position:absolute;z-index:4;right:19%;bottom:33%;width:15px;height:49px;border-left:2px solid #fff9e880;border-radius:50%;filter:blur(1px)}.steam-one{transform:rotate(16deg)}.steam-two{right:13%;bottom:35%;height:37px;transform:rotate(-9deg)}.ticker{display:flex;min-height:54px;align-items:center;justify-content:center;gap:clamp(12px,4vw,52px);padding:10px 5vw;background:var(--yellow);color:#234539;font:600 13px var(--display)}.ticker b{font-size:12px}.section-wrap{padding:88px 9vw}.intro{display:grid;grid-template-columns:1fr .85fr;gap:9%;align-items:center;background:var(--cream)}.eyebrow-dark{margin-bottom:16px;color:#94713d}.intro h2,.section-heading h2,.visit h2,.faq-section h2{font-size:clamp(34px,4vw,50px);color:#234539}.intro h2 em,.section-heading h2 em,.visit h2 em,.faq-section h2 em{color:#8e6b3e}.intro-copy p,.section-heading>p,.visit-copy>p:not(.eyebrow){color:#626c5e;font-size:14px;line-height:1.85}.intro-copy p{margin:0 0 17px}.text-link{display:inline-block;padding-bottom:4px;border-bottom:1px solid #94713d;color:#354639;font-size:12px;font-weight:700}.specialties{background:#eae8d8}.section-heading{max-width:700px;margin:0 auto 34px;text-align:center}.section-heading h2{margin-bottom:12px}.section-heading>p{max-width:560px;margin:0 auto}.special-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.special-card{min-height:250px;padding:23px 21px;border:1px solid #d8dac8;border-radius:12px;background:#f9f7ed}.special-card:nth-child(2){background:#e4e9db}.special-card:nth-child(3){background:#f2e7c9}.special-card:nth-child(4){background:#e2e7dc}.special-icon{display:grid;width:57px;height:57px;place-items:center;margin-bottom:17px;border-radius:50%;background:#335b46;color:#f1cf73;font:27px var(--display)}.special-card:nth-child(2) .special-icon{background:#75885e;color:#fff0c6}.special-card:nth-child(3) .special-icon{background:#b6844a;color:#fff0d0}.special-card:nth-child(4) .special-icon{background:#587a68;color:#f4e1a9}.card-kicker{display:block;margin-bottom:8px;color:#7e7854;font-size:8px;font-weight:700;letter-spacing:1.5px}.special-card h3{margin:0 0 10px;color:#234539;font:600 20px var(--display)}.special-card p{margin:0;color:#626b5e;font-size:12px;line-height:1.7}.menu-note{margin:19px 0 0;color:#6f766a;font-size:11px;line-height:1.7;text-align:center}.photo-section{display:grid;grid-template-columns:.83fr 1.17fr;min-height:440px;background:#234539;color:#faf8ee}.photo-copy{align-self:center;padding:60px 5vw 60px 10.8vw}.photo-copy h2{margin:0 0 18px;font-size:clamp(37px,4vw,52px)}.photo-copy h2 em{color:var(--yellow)}.photo-copy>p:not(.eyebrow){max-width:420px;margin:0 0 24px;color:#e0e7d9;font-size:13px;line-height:1.8}.social-link{display:block;width:max-content;margin-top:14px;color:#edd782;font-size:11px;font-weight:600}.map-photo{position:relative;min-height:440px;background:#d5d2c6}.map-photo iframe{display:block;width:100%;height:100%;min-height:440px;border:0}.map-caption{position:absolute;bottom:17px;left:17px;display:flex;align-items:center;gap:11px;padding:13px 16px;border-radius:9px;background:#fffdf6;color:#234539;box-shadow:0 4px 20px #1f201c50}.map-caption>span:first-child{font-size:20px;color:#94713d}.map-caption b,.map-caption small{display:block}.map-caption b{font-size:11px}.map-caption small{margin-top:3px;color:#626b5e;font-size:9px}.visit{display:grid;grid-template-columns:1fr .92fr;gap:9%;align-items:center;background:var(--cream)}.visit-copy h2{margin:0 0 16px}.visit-copy>p:not(.eyebrow){max-width:440px}.visit address{margin:23px 0 0;color:#354639;font-size:13px;font-style:normal;line-height:1.8}.button-dark{background:#234539;color:#faf8ee}.hours-card{padding:29px;border:1px solid #d8dbc9;border-radius:14px;background:#fffdf7;box-shadow:0 14px 38px #38362b0d}.hours-title{display:flex;align-items:center;gap:15px}.clock{display:grid;width:48px;height:48px;place-items:center;border-radius:50%;background:#eee7cf;color:#8f713e;font-size:29px}.hours-title .eyebrow{margin:0 0 4px}.hours-title h3{margin:0;color:#234539;font:600 23px var(--display)}.hours-card dl{margin:19px 0 0}.hours-card dl>div{display:flex;justify-content:space-between;gap:12px;padding:10px 2px;border-bottom:1px solid #e7e8dc;font-size:9px}.hours-card dt{flex:none;font-weight:700}.hours-card dd{margin:0;color:#626b5e;text-align:right}.hours-card .closed dd{color:#9a5947}.hours-note{margin:15px 0 0;color:#71776b;font-size:10px;line-height:1.7}.faq-section{padding-top:12px;background:var(--cream)}.faq-section h2{margin-bottom:25px}.faq-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.faq-list details{padding:17px 19px;border:1px solid #dfe0d3;border-radius:9px;background:#fffdf7}.faq-list summary{cursor:pointer;color:#234539;font-size:13px;font-weight:700}.faq-list summary::marker{color:#8e6b3e}.faq-list details p{margin:12px 0 0;color:#626b5e;font-size:12px;line-height:1.75}.footer{padding:35px 8vw 20px;background:#1e3c31;color:#f8f6ec}.footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:25px}.footer-brand{flex:none}.footer-top>p{margin:0;color:#d9e2d4;font:500 14px/1.6 var(--display)}.footer nav{display:flex;flex-wrap:wrap;gap:15px;font-size:11px}.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-top:15px;border-top:1px solid #ffffff28;color:#cad7c8;font-size:9px}.mobile-call{display:none}@media(max-width:1000px){.hero-copy{padding-left:7vw}.special-grid{grid-template-columns:repeat(2,1fr)}.section-wrap{padding-right:7vw;padding-left:7vw}.photo-copy{padding-left:7vw}.footer-top{flex-wrap:wrap}.footer-top>p{margin-right:auto}}@media(max-width:720px){html{scroll-padding-top:16px}.topbar{height:auto;min-height:70px;padding:12px 20px}.topbar nav{display:none}.header-call{font-size:10px}.hero{grid-template-columns:1fr}.hero-copy{padding:57px 24px 49px}.hero h1{font-size:clamp(39px,10.5vw,57px)}.hero-art{min-height:390px}.plate{width:min(250px,57%)}.window{height:43%}.section-wrap{padding:62px 23px}.intro,.visit{grid-template-columns:1fr;gap:22px}.intro h2,.section-heading h2,.visit h2,.faq-section h2{font-size:38px}.section-heading{text-align:left}.section-heading>p{margin-left:0}.special-grid{grid-template-columns:repeat(2,1fr);gap:10px}.special-card{min-height:220px;padding:17px}.special-card h3{font-size:18px}.special-card p{font-size:11px}.photo-section{grid-template-columns:1fr}.photo-copy{padding:55px 24px 35px}.map-photo,.map-photo iframe{min-height:350px;height:350px}.hours-card{padding:23px 17px}.hours-card dl>div{font-size:8px}.faq-list{grid-template-columns:1fr}.faq-section{padding-top:0}.footer{padding:28px 22px 86px}.footer-top{align-items:flex-start;flex-direction:column}.footer-top>p{margin:0}.footer-bottom{flex-direction:column}.mobile-call{position:fixed;z-index:10;right:12px;bottom:10px;left:12px;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:99px;background:var(--yellow);color:#234539;box-shadow:0 5px 22px #17120f50;font-size:12px;font-weight:700}.mobile-call span{font-size:12px}}@media(max-width:390px){.special-grid{grid-template-columns:1fr}.special-card{min-height:180px}.header-call{padding:10px;font-size:9px}.hours-card dl>div{font-size:8px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+
+

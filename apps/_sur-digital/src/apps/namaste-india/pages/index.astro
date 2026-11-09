@@ -1,0 +1,311 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import curri from '../assets/fotos/namaste-india-apaisada-10.jpg';
+import terrazaMesa from '../assets/fotos/namaste-india-vertical-05.jpg';
+import terrazaCalle from '../assets/fotos/namaste-india-apaisada-06.jpg';
+import comedorBarra from '../assets/fotos/namaste-india-apaisada-07.jpg';
+import biryani from '../assets/fotos/namaste-india-vertical-03.jpg';
+import biryaniPlato from '../assets/fotos/namaste-india-vertical-04.jpg';
+import tikkaMasala from '../assets/fotos/namaste-india-vertical-02.jpg';
+import curriRojo from '../assets/fotos/namaste-india-vertical-09.jpg';
+import nevera from '../assets/fotos/namaste-india-vertical-08.jpg';
+import comedor from '../assets/fotos/namaste-india-vertical-01.jpg';
+
+import { BUSINESS, FAQ, HOURS, MAPS, MENU, SERVICIOS } from '../data/site';
+
+const description = BUSINESS.description;
+
+const galeria = [
+	{
+		src: terrazaMesa,
+		alt: 'Mesa de la terraza con naan, biryani en cuenco de barro y un curri rojo en su hornillo',
+	},
+	{
+		src: terrazaCalle,
+		alt: 'Terraza de Namaste Índia en la R. da Junqueira, con la calle y los edificios de Belém al fondo',
+	},
+	{
+		src: comedorBarra,
+		alt: 'Comedor de paredes amarillas con cuadros indios, barra y nevera de Super Bock',
+	},
+	{
+		src: biryani,
+		alt: 'Biryani en cuenco de barro con almendra laminada, pasas, tomate y pepino',
+	},
+	{
+		src: biryaniPlato,
+		alt: 'Biryani servido sobre plato cuadrado blanco y mantel individual rojo',
+	},
+	{
+		src: tikkaMasala,
+		alt: 'Detalle de un chicken tikka masala en salsa de tomate y especias',
+	},
+	{
+		src: curriRojo,
+		alt: 'Curri rojo de la casa en cuenco de latón con cucharón, sobre mantel rojo',
+	},
+	{
+		src: nevera,
+		alt: 'Interior del restaurante con la nevera de Super Bock y el rótulo de comida india e italiana',
+	},
+	{
+		src: comedor,
+		alt: 'Rincón del comedor con azulejo, mesas negras, platos blancos y servilletas naranjas',
+	},
+];
+
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.fullName,
+	alternateName: [BUSINESS.alsoKnownAs, 'Namaste Índia Lisboa', 'Namaste India Belém'],
+	slogan: 'Cocina india a dos pasos de Belém',
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+351 21 014 0685',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['India', 'Italiana', 'Tandoori'],
+	areaServed: [
+		{ '@type': 'City', name: 'Lisboa' },
+		{ '@type': 'AdministrativeArea', name: 'Belém' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.cid },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			opens: '11:00',
+			closes: '23:00',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const title = 'Namaste Índia · Cocina india junto a Belém (Lisboa)';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#7b2d43" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Karla:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.fullName}
+			description={description}
+			keywords="Namaste Índia, Namaste India A, restaurante indio Lisboa, comer indio Belém, curri Lisboa, chicken tikka masala Lisboa, biryani Junqueira, naan Belém, reparto indio Lisboa, R. da Junqueira 266A"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Namaste Índia · Cocina india junto a Belém"
+			ogDescription="Curris, tandoori, biryani y naan recién hecho en la R. da Junqueira 266A. Abierto todos los días de 11:00 a 23:00, con reparto. Tel. 21 014 0685."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Curri indio en cuenco de latón con arroz basmati en Namaste Índia, Lisboa"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.fullName}
+			themeColor="#7b2d43"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="PT-11"
+			postalCode={BUSINESS.postalCode}
+			phone="+351210140685"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.municipality}`}
+			countryName="Portugal"
+			contact={{
+				street: BUSINESS.street,
+				locality: `${BUSINESS.city}, ${BUSINESS.municipality}`,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: 'Portugal',
+				phone: '+351 21 014 0685',
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[curri]}
+			schemas={[restaurantSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			subtitle="Restaurante indio · Belém"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="R. da Junqueira, 266A · Belém · Lisboa"
+				title="Curris, naan<br /><em>y biryani.</em>"
+				lede="Namaste Índia es un restaurante indio de barrio en la R. da Junqueira, en el tramo que baja hacia Belém: un comedor de paredes amarillas con cuadros del Taj Mahal, terraza a la calle y una cocina que sirve los curris al momento, en su cuenco de latón sobre el hornillo. Tandoori, biryani, naan recién hecho y también pizza, como anuncia el propio local. Abre todos los días, de 11:00 a 23:00, y reparte a domicilio."
+				image={curri}
+				imageAlt="Curri de patata y guisantes en cuenco de latón con hornillo, junto a un plato de arroz basmati, en Namaste Índia"
+				primaryCta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				secondaryCta={{ label: 'Ver la ficha en Google Maps', href: MAPS.place, external: true }}
+				tag="Comida india"
+				facts={[
+					{ label: 'Nota', html: '<b>4,2 en Google</b> con 488 reseñas' },
+					{ label: 'Todos los días', html: '<b>11:00 – 23:00</b>' },
+					{ label: 'Reparto', html: '<b>A domicilio</b>' },
+					{ label: 'Acceso', html: '<b>Adaptado</b>' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece Namaste Índia" items={SERVICIOS} />
+
+			<LocalAbout
+				label="La casa"
+				title="Paredes amarillas,<br /><em>especias al momento.</em>"
+				paragraphs={[
+					'El restaurante está en la R. da Junqueira, 266A, en el tramo que va de Alcântara a Belém, con la ribera del Tajo a un lado y el Mosteiro dos Jerónimos a un paseo. La sala es sencilla y muy reconocible: paredes amarillas con cuadros de danzas y monumentos de la India, zócalo de azulejo portugués, mesas negras de cristal y una nevera roja de Super Bock presidiendo el comedor. En la puerta, unas mesas de terraza dan a la calle.',
+					'Los curris llegan a la mesa en cuencos de latón con su hornillo debajo y un cucharón de mango largo, como manda la costumbre: el chicken tikka masala en su salsa de tomate y especias, el korma suave de coco y anacardo, o el curri de patata y guisantes. El biryani se sirve en cuenco de barro, con almendra laminada, pasas, tomate y pepino. Y al lado, el naan con ajo y cilantro, aún marcado de la brasa, que es lo que piden todas las mesas.',
+					'La casa anuncia también cocina italiana, con pizza en la carta, y servicio de take away, como se lee en el propio rótulo del comedor. Es un sitio de barrio, sin pretensiones y abierto todos los días de 11:00 a 23:00, lo que lo hace cómodo para comer antes o después de una visita a Belém.',
+				]}
+				note="La ficha de Google no publica carta con precios ni web propia: solo el teléfono, el 21 014 0685. La valoración es de 4,2 sobre 5 con 488 reseñas, y en las plataformas de reparto ronda el 4,4. De accesibilidad solo consta el acceso para sillas de ruedas."
+				links={[
+					{ label: 'Leer reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: 'Ficha del restaurante', href: MAPS.cid, external: true },
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="Del tandoor<br />a la mesa,<br /><em>en su hornillo.</em>"
+				description="No hay carta publicada con precios en Google: estos son los platos de la carta de reparto del restaurante y los que aparecen en las fotos de su perfil."
+				cta={{ label: `Llamar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={MENU}
+				note="Namaste Índia no publica su carta con precios en Google y esta web no los inventa. Los platos se sirven para compartir: un curri, un arroz y un naan salen a cuenta entre dos. Para la carta completa y el precio del día, llama al 21 014 0685."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La mesa,<br />el comedor<br /><em>y la terraza.</em>"
+				description="Estas fotografías proceden del perfil de Namaste Índia en Google Maps: la mesa de la terraza con naan, biryani y curri, la calle desde la terraza, el comedor amarillo con la barra, dos vistas del biryani, el tikka masala, un curri rojo de cerca, la nevera del comedor y el rincón de mesas junto al azulejo."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del restaurante en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow="R. da Junqueira, 266A · 1300-598 Lisboa"
+				title="Camino de Belém,<br /><em>todos los días.</em>"
+				addressLines={[
+					BUSINESS.street,
+					`${BUSINESS.postalCode} ${BUSINESS.city}`,
+					'Belém · Lisboa',
+				]}
+				hoursCaption="Horario de la ficha de Google"
+				hours={HOURS}
+				hoursNote="Abre todos los días de 11:00 a 23:00, sin cerrar al mediodía. En festivos el horario puede cambiar: si vas en una fecha señalada, llama antes al 21 014 0685."
+				mapTitle="Mapa de Namaste Índia en la R. da Junqueira, 266A, Lisboa"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Namaste Índia · Belém"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 21 014 0685. El local ofrece servicio para llevar y reparto a domicilio a través de las plataformas de la ciudad, y su ficha marca acceso para sillas de ruedas. Si vais en grupo o un fin de semana, avisar antes evita esperas."
+			/>
+
+			<LocalFaq items={FAQ} title="Antes de <em>pedir.</em>" />
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del restaurante en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Namaste Índia"
+			creditLabel="Creado por"
+			creditName="Sur Digital · sur-digital.vercel.app"
+		/>
+	</body>
+</html>

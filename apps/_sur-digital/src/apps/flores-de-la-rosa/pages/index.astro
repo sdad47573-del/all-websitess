@@ -1,0 +1,437 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	business,
+	descripcionLocal,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	floristSchema,
+	hours,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	reviewsUrl,
+	site,
+} from '../data/site';
+
+// Las fotos descargadas de la ficha viven en `src/assets/fotos`: se resuelven aquí para servirlas
+// con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+/** Galería: las diez fotografías de la ficha, en el orden en que las devolvió la descarga. */
+const galeria = Object.keys(fotos)
+	.sort((a, b) => a.localeCompare(b))
+	.map((path) => path.split('/flores-de-la-rosa/').pop() as string);
+
+const title = 'Flores de la Rosa · Floristería en Vallecas';
+const description =
+	'Flores de la Rosa, floristería en Puente de Vallecas, 28018 Madrid. 4,1 sobre 5 con 15 reseñas en Google Maps. Teléfono 600 69 59 46.';
+
+/**
+ * Texto alternativo de las fotos.
+ *
+ * La ficha no describe el contenido de estas diez fotografías, así que no se inventa una
+ * descripción y todos los `alt` avisan solo de dónde salen.
+ */
+const altFoto = 'Fotografía publicada en la ficha de Google Maps de Flores de la Rosa, en Madrid';
+const altOg = 'Fotografía de Flores de la Rosa publicada en su ficha de Google Maps';
+
+const textoResenas = `${business.reviewCount} reseñas`;
+const nota = business.rating.toLocaleString('es-ES');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#1f3a2e" />
+		<meta name="description" content={description} />
+		<meta
+			name="keywords"
+			content="Flores de la Rosa, floristería Madrid, Puente de Vallecas, flores a domicilio, ramos Madrid"
+		/>
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-MD" />
+		<meta name="geo.placename" content={business.city} />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${site.siteUrl}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/flores-de-la-rosa/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="business.business" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${site.siteUrl}/`} />
+		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={altOg} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+		<meta name="twitter:image:alt" content={altOg} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(floristSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">R</span>
+				<span class="brand-text">
+					Flores de la Rosa
+					<small>Puente de Vallecas · Madrid</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#casa">La floristería</a>
+				<a href="#fotos">Fotos</a>
+				<a href="#horario">Horario</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="topbar-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phoneDisplay}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow">Floristería · Puente de Vallecas</p>
+					<h1 id="hero-title">
+						Flores de la Rosa,
+						<em>flores de todo tipo.</em>
+					</h1>
+					<p class="hero-lede">
+						Floristería en <strong>Puente de Vallecas, 28018 Madrid</strong>. Google le da
+						<strong>{nota} sobre 5</strong> con {textoResenas}. La ficha no publica calle ni
+						número: solo el distrito, el código postal y las coordenadas.
+					</p>
+					<div class="hero-actions">
+						<a class="btn btn-solid" href={phoneHref}>Llamar al {business.phoneDisplay}</a>
+						<a
+							class="btn btn-ghost"
+							href={directionsUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<ul class="hero-facts">
+						<li>
+							<small>Dirección</small>
+							<strong>Puente de Vallecas · {business.postalCode} {business.city}</strong>
+						</li>
+						<li>
+							<small>Teléfono</small>
+							<strong>{business.phoneDisplay}</strong>
+						</li>
+						<li>
+							<small>Valoración</small>
+							<strong>{nota} sobre 5 con {textoResenas}</strong>
+						</li>
+					</ul>
+				</div>
+
+				<div class="hero-photo">
+					<Image
+						src={foto('flores-de-la-rosa-vertical-02.jpg')}
+						alt={altFoto}
+						widths={[480, 720, 960]}
+						sizes="(max-width: 1080px) 100vw, 46vw"
+						format="avif"
+						quality={68}
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<div class="photo-plaque">
+						<b>28018 Madrid</b>
+						Puente de Vallecas
+					</div>
+				</div>
+			</section>
+
+			<div class="band" aria-label="Datos rápidos de Flores de la Rosa">
+				<span>{nota} sobre 5 · {textoResenas}</span>
+				<span>Puente de Vallecas · {business.postalCode} Madrid</span>
+				<span>Envíos a domicilio según la ficha</span>
+				<span>Teléfono {business.phoneDisplay}</span>
+			</div>
+
+			<section class="section casa" id="casa" aria-labelledby="casa-title">
+				<div class="wrap">
+					<p class="kicker">La floristería</p>
+					<h2 class="title" id="casa-title">
+						Flores de todo tipo,
+						<br />
+						<em>encargos y envíos.</em>
+					</h2>
+					<p class="lead">
+						Es lo que cuenta el propio negocio en su ficha de Google Maps. Aquí se reproduce su
+						descripción literalmente, con sus erratas y sin corregirla, para no poner en su boca
+						nada que no haya escrito.
+					</p>
+
+					<div class="casa-grid">
+						<figure class="owner-quote">
+							<blockquote>{descripcionLocal}</blockquote>
+							<figcaption>
+								Descripción literal del titular · ficha de Google Maps, {site.consultado}
+							</figcaption>
+						</figure>
+
+						<div class="casa-text">
+							<p>
+								Google clasifica a Flores de la Rosa con una sola etiqueta: floristería. La ficha
+								no publica catálogo, precios ni horarios de entrega, así que esta web no los
+								detalla.
+							</p>
+							<p>
+								La dirección publicada es <strong>Puente de Vallecas, 28018 Madrid</strong>. No
+								aparece ni calle ni número: la referencia exacta que da la ficha es el plus code
+								98RW+V9 Madrid y las coordenadas 40.3921949, -3.6540397.
+							</p>
+							<p>
+								La descripción menciona encargos y envíos «ah domicilio oh lugar de encuentro».
+								Se copia tal cual; la ficha no publica zonas, plazos ni tarifas de envío. Para
+								concretar cualquier encargo, lo más rápido es{' '}
+								<a href={phoneHref}>llamar al {business.phoneDisplay}</a>.
+							</p>
+							<ul class="tags" aria-label="Categoría publicada por Google">
+								{business.categories.map((categoria) => <li>{categoria}</li>)}
+							</ul>
+
+							<div class="score-card">
+								<div class="score-row">
+									<b>{nota}</b>
+									<span>
+										<span class="stars" aria-hidden="true">★★★★☆</span>
+										{textoResenas} en Google Maps
+									</span>
+								</div>
+								<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+									Ver las reseñas en Google Maps ↗
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section fotos" id="fotos" aria-labelledby="fotos-title">
+				<div class="wrap">
+					<p class="kicker">Las fotos</p>
+					<h2 class="title" id="fotos-title">
+						La floristería <em>en diez imágenes.</em>
+					</h2>
+					<p class="lead">
+						Son las diez fotografías que Flores de la Rosa publica en su ficha de Google Maps. El
+						manifiesto de la descarga no atribuye ninguna a un autor con nombre, así que se
+						publican sin pie y sin atribución. La ficha no describe su contenido y aquí no se
+						inventa ninguna descripción.
+					</p>
+					<div class="fotos-grid">
+						{galeria.map((name, index) => (
+							<figure class:list={['foto', { 'foto-wide': index === 0 }]}>
+								<Image
+									src={foto(name)}
+									alt={altFoto}
+									widths={index === 0 ? [640, 900, 1200] : [380, 560, 800]}
+									sizes={
+										index === 0
+											? '(max-width: 700px) 92vw, (max-width: 1080px) 62vw, 58vw'
+											: '(max-width: 700px) 45vw, (max-width: 1080px) 30vw, 28vw'
+									}
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{String(index + 1).padStart(2, '0')}</figcaption>
+							</figure>
+						))}
+					</div>
+					<p class="fotos-note">
+						La ficha no publica catálogo ni precios, así que esta web no los reproduce. Para
+						encargar flores, llama al{' '}
+						<a href={phoneHref}>{business.phoneDisplay}</a> o mira las fotos y reseñas de la{' '}
+						<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+							ficha en Google Maps ↗
+						</a>
+					</p>
+				</div>
+			</section>
+
+			<section class="section visita" id="horario" aria-labelledby="horario-title">
+				<div class="wrap visita-grid">
+					<div>
+						<p class="kicker">Horario y ubicación</p>
+						<h2 class="title" id="horario-title">
+							Puente de Vallecas,
+							<br />
+							<em>28018 Madrid.</em>
+						</h2>
+						<address>
+							Puente de Vallecas
+							<br />
+							{business.postalCode} {business.city}
+							<br />
+							{business.province}
+						</address>
+
+						<table class="hours-table">
+							<caption>Horario publicado en la ficha de Google Maps</caption>
+							<tbody>
+								{hours.map((item) => (
+									<tr>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						<p class="hours-note">
+							La ficha publica el horario en tramos, tal como aparece arriba. Es el horario de la
+							ficha consultada el {site.consultado}; conviene confirmarlo por teléfono antes de
+							ir.
+						</p>
+						<p class="hours-note">
+							La ficha no publica ni calle ni número, solo el distrito y el código postal. Tampoco
+							publica datos de accesibilidad, así que esta web no puede confirmarlos.
+						</p>
+
+						<a class="contact-line" href={phoneHref}>
+							<small>Teléfono</small>
+							<strong>{business.phoneDisplay}</strong>
+						</a>
+
+						<div class="place-actions">
+							<a
+								class="btn btn-solid"
+								href={directionsUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Abrir indicaciones <span aria-hidden="true">↗</span>
+							</a>
+							<a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">
+								Ver la ficha en Maps <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+
+					<div class="map-card">
+						<div class="map-frame">
+							<iframe
+								title={`Mapa de ${business.name} en ${business.city}`}
+								src={mapEmbedUrl}
+								loading="lazy"
+								referrerpolicy="no-referrer-when-downgrade"
+								allowfullscreen></iframe>
+						</div>
+						<div class="map-tag">
+							<div>
+								<strong>Flores de la Rosa</strong>
+								<small>Puente de Vallecas · {business.postalCode} {business.city}</small>
+							</div>
+							<a href={directionsUrl} target="_blank" rel="noopener noreferrer">
+								Cómo llegar ↗
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section faq" id="preguntas" aria-labelledby="faq-title">
+				<div class="wrap">
+					<p class="kicker">Preguntas frecuentes</p>
+					<h2 class="title" id="faq-title">
+						Antes de <em>llamar.</em>
+					</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-top">
+				<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+					<span class="brand-mark" aria-hidden="true">R</span>
+					<span>
+						Flores de la Rosa
+						<small>Puente de Vallecas · {business.postalCode} {business.city}</small>
+					</span>
+				</a>
+				<nav class="footer-nav" aria-label="Contacto y ficha del local">
+					<a href={phoneHref}>Llamar al {business.phoneDisplay}</a>
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">
+						Ficha en Google Maps ↗
+					</a>
+					<a href={reviewsUrl} target="_blank" rel="noopener noreferrer">
+						Reseñas en Google Maps ↗
+					</a>
+				</nav>
+				<small class="footer-note">
+					© {new Date().getFullYear()} Flores de la Rosa · Puente de Vallecas ({business.postalCode}
+					{business.city}). Web informativa elaborada con los datos, la descripción y las
+					fotografías que el local publica en su ficha de Google Maps, consultada el {site.consultado}.
+					Confirma horario y disponibilidad por teléfono antes de salir.
+				</small>
+			</div>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/flores-de-la-rosa/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/flores-de-la-rosa/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/flores-de-la-rosa/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a Flores de la Rosa <span>{business.phoneDisplay}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/flores-de-la-rosa/aviso-legal">Aviso legal</a>
+			<a href="/flores-de-la-rosa/aviso-legal#privacidad">Privacidad</a>
+			<a href="/flores-de-la-rosa/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>

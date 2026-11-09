@@ -1,0 +1,323 @@
+---
+import '../styles/global.css';
+import {
+	LocalAbout,
+	LocalChips,
+	LocalFaq,
+	LocalFooter,
+	LocalGallery,
+	LocalHero,
+	LocalMenu,
+	LocalSeo,
+	LocalTopbar,
+	LocalVisit,
+} from '@astro-components';
+
+import fachada from '../assets/fotos/borda-berri-apaisada-01.jpg';
+import terraza from '../assets/fotos/borda-berri-apaisada-09.jpg';
+import entrecot from '../assets/fotos/borda-berri-vertical-07.jpg';
+import fritos from '../assets/fotos/borda-berri-vertical-08.jpg';
+import chuletas from '../assets/fotos/borda-berri-apaisada-04.jpg';
+import ensalada from '../assets/fotos/borda-berri-apaisada-05.jpg';
+import dorada from '../assets/fotos/borda-berri-cuadrada-10.jpg';
+
+import { BUSINESS, DESCRIPCION_LOCAL, FAQ, HOURS, MAPS, MENU, REVIEWS, SERVICIOS } from '../data/site';
+
+const description =
+	'Restaurante Borda Berri, en Aldura Gunea Aldea 53 (20100 Errenteria). Comida tradicional, comuniones, bautizos y comidas de empresa. 4,0 sobre 5 y teléfono 943 52 92 74.';
+
+const title = 'Restaurante Borda Berri · Comida tradicional en Errenteria';
+
+const galeria = [
+	{
+		src: fachada,
+		alt: 'Fachada de piedra del Restaurante Borda Berri con el tejado de teja y la terraza de mesas bajo el porche',
+	},
+	{
+		src: terraza,
+		alt: 'Terraza cubierta de Borda Berri con las mesas preparadas y las montañas y el jardín al fondo',
+	},
+	{
+		src: entrecot,
+		alt: 'Entrecot a la plancha con patatas fritas y pimientos verdes en una bandeja de Borda Berri',
+	},
+	{
+		src: fritos,
+		alt: 'Croquetas y calamares a la romana con una rodaja de limón en un plato',
+	},
+	{
+		src: chuletas,
+		alt: 'Chuletas de cerdo a la parrilla con patatas fritas en un plato del restaurante',
+	},
+	{
+		src: dorada,
+		alt: 'Dorada a la plancha con patatas cocidas y perejil',
+	},
+	{
+		src: ensalada,
+		alt: 'Ensalada con jamón, atún, tomate, aceitunas y huevo en un plato de Borda Berri',
+	},
+];
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#bordaberri`,
+	name: BUSINESS.name,
+	alternateName: ['Borda Berri', 'Borda Berri Errenteria', 'Borda Berri Restaurante'],
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	sameAs: [MAPS.place],
+	telephone: '+34 943 52 92 74',
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Vasca', 'Española', 'Tradicional'],
+	areaServed: [
+		{ '@type': 'City', name: 'Errenteria' },
+		{ '@type': 'AdministrativeArea', name: 'Gipuzkoa' },
+		{ '@type': 'AdministrativeArea', name: 'País Vasco' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: `${BUSINESS.siteUrl}/og.jpg`,
+	identifier: [
+		{ '@type': 'PropertyValue', name: 'Google CID', value: BUSINESS.featureId },
+		{ '@type': 'PropertyValue', name: 'Place ID', value: BUSINESS.placeId },
+	],
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: [
+				'Monday',
+				'Tuesday',
+				'Wednesday',
+				'Thursday',
+				'Friday',
+				'Saturday',
+				'Sunday',
+			],
+			opens: '12:00',
+			closes: '23:45',
+		},
+	],
+	amenityFeature: [
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Acceso para sillas de ruedas',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aparcamiento adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Aseo adaptado',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Asientos adaptados',
+			value: true,
+		},
+		{
+			'@type': 'LocationFeatureSpecification',
+			name: 'Terraza',
+			value: true,
+		},
+	],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: BUSINESS.rating,
+		reviewCount: BUSINESS.reviewsCount,
+		bestRating: 5,
+	},
+	review: REVIEWS.map((review) => ({
+		'@type': 'Review',
+		reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5 },
+		reviewBody: review.text,
+	})),
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#galeria' },
+	{ label: 'Visítanos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
+
+const nota = BUSINESS.rating.toFixed(1).replace('.', ',');
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>{title}</title>
+		<meta name="theme-color" content="#6b4a2f" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Restaurante Borda Berri, Borda Berri Errenteria, comuniones Errenteria, bautizos Errenteria, comidas de empresa Gipuzkoa, restaurante tradicional Errenteria, menú Errenteria"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle="Restaurante Borda Berri · Comida tradicional en Errenteria"
+			ogDescription="Borda de piedra con terraza y jardín en Aldura Gunea, 53 (Errenteria). Comida tradicional, comuniones, bautizos y comidas de empresa. Tel. 943 52 92 74."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de piedra del Restaurante Borda Berri con el tejado de teja y la terraza bajo el porche"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			author={BUSINESS.name}
+			themeColor="#6b4a2f"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-PV"
+			postalCode={BUSINESS.postalCode}
+			phone="+34943529274"
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName={`${BUSINESS.city}, ${BUSINESS.region}`}
+			preload={[fachada]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="BORDA BERRI"
+			subtitle="Errenteria · Gipuzkoa"
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+		/>
+
+		<main id="contenido">
+			<LocalHero
+				eyebrow="Aldura Gunea Aldea, 53 · Errenteria"
+				title="La borda<br /><em>de Aldura.</em>"
+				lede={`Restaurante Borda Berri es una borda de piedra con terraza y jardín en Aldura Gunea Aldea, 53, en Errenteria (Gipuzkoa), en el entorno rural de Aldura. Comida tradicional, platos combinados y celebraciones: comuniones, bautizos y comidas de empresa. Abre todos los días de 12:00 a 23:45. ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas en Google.`}
+				image={fachada}
+				imageAlt="Fachada de piedra del Restaurante Borda Berri con el tejado de teja y la terraza de mesas bajo el porche"
+				primaryCta={{ label: 'Cómo llegar', href: MAPS.directions }}
+				secondaryCta={{ label: 'Ver ficha de Google', href: MAPS.place, external: true }}
+				facts={[
+					{
+						label: 'Nota',
+						html: `<b>${nota}</b> en Google (${BUSINESS.reviewsCount} reseñas)`,
+					},
+					{ label: 'Cocina', html: 'Comida tradicional · celebraciones' },
+					{ label: 'Horario', html: 'Todos los días · 12:00–23:45' },
+				]}
+				galleryHref={MAPS.place}
+			/>
+
+			<LocalChips label="Qué ofrece el Restaurante Borda Berri" items={[...SERVICIOS]} />
+
+			<LocalAbout
+				label="La casa"
+				title="Comida tradicional<br /><em>bajo el porche.</em>"
+				paragraphs={[
+					'El Restaurante Borda Berri está en Aldura Gunea Aldea, 53, en el 20100 Errenteria (Gipuzkoa), en el entorno rural de Aldura, fuera del casco urbano. Es una borda de piedra con tejado de teja, porche con mesas y un jardín con palmeras y árboles al que dan las ventanas del comedor.',
+					`${DESCRIPCION_LOCAL} Así lo cuenta el propio restaurante en su ficha de Google.`,
+					'Abre todos los días, de 12:00 a 23:45, también domingos. Google marca acceso para sillas de ruedas, aparcamiento adaptado, aseo adaptado y asientos adaptados.',
+					`Tiene ${nota} sobre 5 con ${BUSINESS.reviewsCount} reseñas. Las publicadas hablan de comida casera, raciones generosas y buena atención; también hay alguna crítica por el punto de los pinchos de morcilla y chorizo.`,
+				]}
+				note="La ficha de Google no publica carta ni precios, así que esta página no los reproduce: los platos son los que citan las reseñas y los que aparecen en las fotos del perfil."
+				links={[
+					{ label: 'Ficha y reseñas en Google', href: MAPS.reviews, external: true },
+					{ label: `Llamar al ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref },
+				]}
+			/>
+
+			<LocalMenu
+				eyebrow="La carta"
+				title="De la parrilla<br /><em>y de la casa.</em>"
+				description="La ficha de Google no publica carta ni precios. Esto es lo que citan sus reseñas y lo que aparece en las fotos del perfil; para el menú del día hay que llamar."
+				cta={{ label: `Reservar: ${BUSINESS.phoneDisplay}`, href: BUSINESS.phoneHref }}
+				groups={[...MENU]}
+				note="No hay precios publicados. Para el menú del día, las fechas de celebración y la disponibilidad, llama al 943 52 92 74."
+			/>
+
+			<LocalGallery
+				eyebrow="Fotos de Google Maps"
+				title="La borda,<br /><em>la terraza y la mesa.</em>"
+				description="Estas fotografías proceden del perfil del Restaurante Borda Berri en Google Maps: la fachada de piedra, la terraza cubierta con el jardín al fondo, el entrecot, los fritos, las chuletas, la dorada y la ensalada."
+				images={galeria}
+				cta={{ label: 'Ver todo en Google Maps', href: MAPS.place }}
+				note="Imágenes alojadas en esta web procedentes del perfil del establecimiento en Google Maps. Si eres el titular y quieres retirar alguna, escríbenos y la quitamos."
+			/>
+
+			<LocalVisit
+				eyebrow={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+				title="Aldura Gunea, 53,<br /><em>en Errenteria.</em>"
+				addressLines={[BUSINESS.street, `${BUSINESS.postalCode} ${BUSINESS.city}`, 'Gipuzkoa']}
+				hours={[...HOURS]}
+				hoursNote="Horario de la ficha de Google: abre todos los días de 12:00 a 23:45, sin día de cierre. Puede cambiar por celebraciones o temporada, así que conviene llamar antes."
+				mapTitle="Mapa del Restaurante Borda Berri en Aldura Gunea Aldea, 53, Errenteria (Gipuzkoa)"
+				mapEmbedUrl={MAPS.embed}
+				mapLabel="Restaurante Borda Berri · Errenteria"
+				mapHref={MAPS.cid}
+				links={[
+					{ label: 'Cómo llegar', href: MAPS.directions, external: true, variant: 'primary' },
+					{ label: 'Ficha de Google', href: MAPS.place, external: true },
+				]}
+				contactLink={{ label: BUSINESS.phoneDisplay, href: BUSINESS.phoneHref }}
+				reserveNote="No hay reserva online: se llama al 943 52 92 74. Para comuniones, bautizos y comidas de empresa conviene hablar con tiempo. La ficha marca acceso, aparcamiento, aseo y asientos adaptados."
+			/>
+
+			<LocalFaq
+				items={[...FAQ]}
+				eyebrow="Preguntas frecuentes"
+				title="Antes de <em>venir.</em>"
+			/>
+		</main>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.name}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Reseñas ↗', href: MAPS.reviews, external: true },
+				{ label: 'Aviso legal', href: '/borda-berri/aviso-legal' },
+			]}
+			phone={BUSINESS.phoneDisplay}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Fotografías procedentes del perfil del establecimiento en Google Maps. Información elaborada a partir de fuentes públicas; confirma horarios, carta y precios antes de la visita."
+			ctaLabel="Llamar a Borda Berri"
+		/>
+	</body>
+</html>

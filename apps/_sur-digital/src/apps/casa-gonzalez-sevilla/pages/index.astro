@@ -1,0 +1,445 @@
+---
+import '../styles/global.css';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import {
+	business,
+	directionsUrl,
+	faqSchema,
+	faqs,
+	hours,
+	mapEmbedUrl,
+	mapsUrl,
+	phoneHref,
+	restaurantSchema,
+} from '../lib/business';
+
+// Las diez fotos de la ficha de Google Maps viven en `src/assets/fotos`: se resuelven aquí para
+// servirlas con `<Image>` (AVIF, srcset y lazy) en vez de copiarlas a `public`.
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
+
+const title = 'Restaurante Casa Gonzalez en Tabladilla, Sevilla';
+const description =
+	'Restaurante Casa Gonzalez en la calle Tabladilla 10, 41013 Sevilla: cocina de barrio junto al Hospital Universitario, de martes a viernes de 6:00 a 17:00.';
+const keywords =
+	'restaurante Sevilla, Casa Gonzalez Sevilla, comer Tabladilla, restaurante 41013, bar junto al Hospital Universitario Sevilla, Casa Gonzalez telefono';
+
+/** Ficha de la galería: la primera va destacada a doble ancho. */
+const galeria = [
+	{
+		src: foto('casa-gonzalez-sevilla-apaisada-09.jpg'),
+		alt: 'Filete empanado con patatas fritas servido en la mesa de Restaurante Casa Gonzalez',
+		caption: 'Empanado con patatas',
+		featured: true,
+	},
+	{
+		src: foto('casa-gonzalez-sevilla-vertical-03.jpg'),
+		alt: 'Flan con caramelo servido en un plato de Restaurante Casa Gonzalez',
+		caption: 'Flan con caramelo',
+		featured: false,
+	},
+	{
+		src: foto('casa-gonzalez-sevilla-vertical-05.jpg'),
+		alt: 'Guiso de carne con guisantes y patatas fritas de Restaurante Casa Gonzalez',
+		caption: 'Guiso de carne',
+		featured: false,
+	},
+	{
+		src: foto('casa-gonzalez-sevilla-vertical-06.jpg'),
+		alt: 'Postre cremoso en vaso cubierto de cacao servido en Restaurante Casa Gonzalez',
+		caption: 'Postre de la casa',
+		featured: false,
+	},
+	{
+		src: foto('casa-gonzalez-sevilla-vertical-10.jpg'),
+		alt: 'Potaje de garbanzos con carne, chorizo y patata de Restaurante Casa Gonzalez',
+		caption: 'Potaje de garbanzos',
+		featured: false,
+	},
+];
+
+const tieneHorario = hours.some((item) => item.open && item.close);
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#211e1a" />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="author" content={business.name} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+		<meta name="geo.region" content="ES-SE" />
+		<meta name="geo.placename" content="Sevilla" />
+		<meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+		<meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+		<link rel="canonical" href={`${business.site}/`} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+		<link rel="icon" type="image/svg+xml" href="/casa-gonzalez-sevilla/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Karla:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+		<meta property="og:type" content="restaurant.restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={`${business.site}/`} />
+		<meta property="og:image" content={`${business.site}/og.jpg`} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta
+			property="og:image:alt"
+			content="Comedor de Restaurante Casa Gonzalez, en la calle Tabladilla de Sevilla"
+		/>
+		<meta property="og:street-address" content={business.streetAddress} />
+		<meta property="og:locality" content={business.city} />
+		<meta property="og:region" content={business.province} />
+		<meta property="og:postal-code" content={business.postalCode} />
+		<meta property="og:country-name" content="España" />
+		<meta property="og:phone_number" content={business.phone} />
+		<meta property="place:location:latitude" content={String(business.latitude)} />
+		<meta property="place:location:longitude" content={String(business.longitude)} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${business.site}/og.jpg`} />
+		<meta
+			name="twitter:image:alt"
+			content="Comedor de Restaurante Casa Gonzalez, en la calle Tabladilla de Sevilla"
+		/>
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+				<span class="brand-mark" aria-hidden="true">CG</span>
+				<span class="brand-name">
+					Casa Gonzalez
+					<small>Restaurante · Sevilla</small>
+				</span>
+			</a>
+			<nav aria-label="Navegación principal">
+				<a href="#casa">La casa</a>
+				<a href="#cocina">La cocina</a>
+				<a href="#visitanos">Visítanos</a>
+				<a href="#preguntas">Preguntas</a>
+			</nav>
+			<a class="header-phone" href={phoneHref}>
+				<span aria-hidden="true">☎</span>
+				{business.phone}
+			</a>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="hero-copy">
+					<p class="eyebrow eyebrow-light">
+						<span aria-hidden="true"></span>
+						Tabladilla · 41013 Sevilla
+					</p>
+					<h1 id="hero-title">Comer bien<br /><em>en el barrio.</em></h1>
+					<p class="hero-intro">
+						Restaurante Casa Gonzalez, en la calle Tabladilla. Cocina de siempre servida sin
+						ceremonias, a un paso del Hospital Universitario, con la mesa puesta desde primera hora
+						de la mañana.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-clay" href={phoneHref}>
+							Llamar al {business.phone}
+						</a>
+						<a
+							class="button button-ghost"
+							href={mapsUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Ver en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+					<div class="hero-meta">
+						<div>
+							<small>Dirección</small>
+							<address>{business.streetAddress}<br />{business.postalCode} {business.city}</address>
+						</div>
+						<div>
+							<small>Horario</small>
+							<address>Martes a viernes<br />6:00 – 17:00</address>
+						</div>
+					</div>
+					<p class="hero-rating">
+						<i aria-hidden="true">★</i>
+						<strong>{business.rating.toLocaleString('es-ES')}</strong>
+						de 5 · {business.reviewCount} reseñas en la ficha de Google Maps
+					</p>
+				</div>
+
+				<div class="hero-photos">
+					<figure class="hero-shot hero-shot-main">
+						<Image
+							src={foto('casa-gonzalez-sevilla-apaisada-01.jpg')}
+							alt="Comedor de Restaurante Casa Gonzalez con las mesas vestidas y sillas de madera"
+							widths={[640, 900, 1200]}
+							sizes="(max-width: 1000px) 94vw, 46vw"
+							format="avif"
+							quality={70}
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<figcaption>El comedor, en la ficha de Google Maps</figcaption>
+					</figure>
+					<figure class="hero-shot hero-shot-small">
+						<Image
+							src={foto('casa-gonzalez-sevilla-vertical-08.jpg')}
+							alt="Ración de arroz con verduras y carne de la ficha de Google Maps"
+							widths={[320, 480]}
+							sizes="(max-width: 1000px) 38vw, 17vw"
+							format="avif"
+							quality={70}
+							loading="eager"
+							decoding="async"
+						/>
+						<figcaption>Arroz de la casa</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<div class="facts" aria-label="Datos del restaurante">
+				<span>Restaurante en Tabladilla</span>
+				<span>4,8 sobre 290 reseñas</span>
+				<span>41013 Sevilla</span>
+				<span>Teléfono {business.phone}</span>
+			</div>
+
+			<section class="about section-pad" id="casa" aria-labelledby="casa-title">
+				<div class="about-copy">
+					<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+					<h2 id="casa-title">Un restaurante de los que<br /><em>no hacen ruido.</em></h2>
+					<p>
+						Casa Gonzalez aparece en Google como restaurante en la calle Tabladilla, 10, en el
+						código postal 41013 de Sevilla, junto a la zona del Hospital Universitario. La ficha no
+						anuncia carta, precios ni servicios: lo que enseña son sus mesas y sus platos.
+					</p>
+					<p>
+						Es un local con valoración alta y reseñas de vecinos y trabajadores de la zona, de los
+						que se llenan a la hora del almuerzo y siguen abriendo a las seis de la mañana. Si
+						quieres saber qué hay hoy, lo más rápido es llamar.
+					</p>
+					<p class="about-note">
+						Esta web se ha elaborado solo con lo que publica su ficha de Google Maps: nombre,
+						dirección, teléfono, horario, valoración y las fotografías del propio restaurante. No
+						hay carta ni precios publicados, así que no se inventa ninguno.
+					</p>
+				</div>
+				<div class="about-photos">
+					<figure>
+						<Image
+							src={foto('casa-gonzalez-sevilla-vertical-02.jpg')}
+							alt="Mesas del interior de Restaurante Casa Gonzalez con los servicios puestos"
+							widths={[500, 800]}
+							sizes="(max-width: 1000px) 94vw, 40vw"
+							format="avif"
+							quality={70}
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+					<figure>
+						<Image
+							src={foto('casa-gonzalez-sevilla-vertical-04.jpg')}
+							alt="Crema fría de tomate con huevo picado y jamón servida en Restaurante Casa Gonzalez"
+							widths={[320, 480]}
+							sizes="(max-width: 1000px) 45vw, 19vw"
+							format="avif"
+							quality={70}
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+					<figure>
+						<Image
+							src={foto('casa-gonzalez-sevilla-vertical-07.jpg')}
+							alt="Albóndigas en salsa servidas en un plato de Restaurante Casa Gonzalez"
+							widths={[320, 480]}
+							sizes="(max-width: 1000px) 45vw, 19vw"
+							format="avif"
+							quality={70}
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				</div>
+			</section>
+
+			<section class="cocina section-pad" id="cocina" aria-labelledby="cocina-title">
+				<div class="section-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La cocina</p>
+						<h2 id="cocina-title">Lo que se sirve<br /><em>en estas mesas.</em></h2>
+					</div>
+					<p>
+						Las fotografías de esta sección son las que el restaurante publica en su propia ficha
+						de Google Maps. Son platos servidos en el local, no imágenes de catálogo.
+					</p>
+				</div>
+				<div class="photo-grid">
+					{
+						galeria.map(({ src, alt, caption, featured }) => (
+							<figure class:list={['photo-card', { 'photo-card-featured': featured }]}>
+								<Image
+									src={src}
+									alt={alt}
+									widths={featured ? [640, 900, 1200] : [320, 480, 640]}
+									sizes={
+										featured
+											? '(max-width: 720px) 94vw, (max-width: 1000px) 47vw, 30vw'
+											: '(max-width: 720px) 94vw, (max-width: 1000px) 47vw, 15vw'
+									}
+									format="avif"
+									quality={68}
+									loading="lazy"
+									decoding="async"
+								/>
+								<figcaption>{caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+				<p class="photo-note">
+					Puedes ver más fotografías del local y de sus platos en la
+					<a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha de Google Maps</a>. La
+					carta y los precios no están publicados: confírmalos por teléfono.
+				</p>
+			</section>
+
+			<section class="visit section-pad" id="visitanos" aria-labelledby="visit-title">
+				<div>
+					<p class="section-label"><span aria-hidden="true"></span> Visítanos</p>
+					<h2 id="visit-title">Calle Tabladilla, 10.<br /><em>Sevilla.</em></h2>
+					<address>
+						{business.streetAddress}<br />
+						{business.postalCode} {business.city}<br />
+						Junto a la zona del Hospital Universitario
+					</address>
+					<table class="hours">
+						<caption>{tieneHorario ? 'Horario publicado en la ficha de Google Maps' : 'Horario'}</caption>
+						<tbody>
+							{
+								hours.map((item) => (
+									<tr class:list={[{ 'is-closed': !item.open }]}>
+										<th scope="row">{item.day}</th>
+										<td>{item.service}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+					<p class="hours-note">
+						El lunes que mostraba la ficha al consultarla era festivo nacional, así que no se puede
+						confirmar si un lunes normal abre. Antes de desplazarte, llama al {business.phone} y
+						comprueba horario y disponibilidad.
+					</p>
+					<div class="visit-actions">
+						<a
+							class="button button-ink"
+							href={directionsUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-clay" href={phoneHref}>Llamar y preguntar</a>
+					</div>
+				</div>
+				<div class="map-card">
+					<div style="position:relative;width:100%;min-height:300px;overflow:hidden;border-radius:inherit;">
+<iframe
+						title={`Mapa de ${business.name} en la calle Tabladilla, ${business.city}`}
+					 src={mapEmbedUrl}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+						<noscript>
+							<p style="margin:0;padding:1rem;text-align:center;"><a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar en Google Maps ↗</a></p>
+						</noscript>
+					</div>
+					<div class="map-label">
+						<div>
+							<strong>{business.name}</strong>
+							<small>Tabladilla, 10 · Sevilla</small>
+						</div>
+						<a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar ↗</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="faq section-pad" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{
+						faqs.map((faq) => (
+							<details>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<a class="footer-brand" href="#inicio" aria-label={`${business.name}, volver al inicio`}>
+				<span class="brand-mark" aria-hidden="true">CG</span>
+				<span>
+					Casa Gonzalez
+					<small>Tabladilla 10 · 41013 Sevilla</small>
+				</span>
+			</a>
+			<nav class="footer-nav" aria-label="Contacto y ficha del restaurante">
+				<a href={phoneHref}>{business.phone}</a>
+				<a href={mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+				<a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar ↗</a>
+			</nav>
+			<small>
+				© {new Date().getFullYear()} Casa Gonzalez · Sevilla. Web elaborada con los datos y las
+				fotografías que el restaurante publica en su ficha de Google Maps. Confirma horario, carta y
+				precios por teléfono.
+			</small>
+			<p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small></p>
+		<nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+			<a href="/casa-gonzalez-sevilla/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+			<a href="/casa-gonzalez-sevilla/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+			<a href="/casa-gonzalez-sevilla/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+		</nav>
+		</footer>
+
+		<a class="mobile-call" href={phoneHref}>
+			Llamar a Casa Gonzalez <span>{business.phone}</span>
+		</a>
+
+		<nav class="legal-links" aria-label="Información legal">
+			<a href="/casa-gonzalez-sevilla/aviso-legal">Aviso legal</a>
+			<a href="/casa-gonzalez-sevilla/aviso-legal#privacidad">Privacidad</a>
+			<a href="/casa-gonzalez-sevilla/aviso-legal#cookies">Cookies</a>
+		</nav>
+	</body>
+</html>
+
+
