@@ -76,6 +76,24 @@ export default defineConfig({
     "/3": "/",
     "/4": "/",
     "/5": "/",
+    // Duplicados de landing (9 nov 2026): el mismo negocio estaba publicado con
+    // dos slugs. Se queda la ficha más completa y la otra pasa a 301, con sus
+    // subpáginas, para que no compitan entre ellas en Google.
+    "/la-estrella": "/asador-de-pollos-la-estrella/",
+    "/la-estrella/aviso-legal": "/asador-de-pollos-la-estrella/aviso-legal/",
+    "/la-tasca": "/la-tasca-moro/",
+    "/la-tasca/aviso-legal": "/la-tasca-moro/aviso-legal/",
+    "/almirez-comida-para-llevar": "/almirez/",
+    "/almirez-comida-para-llevar/aviso-legal": "/almirez/aviso-legal/",
+    "/cafeteria-restaurante-el-rincon-de-julio": "/el-rincon-de-julio/",
+    "/cafeteria-restaurante-el-rincon-de-julio/aviso-legal": "/el-rincon-de-julio/aviso-legal/",
+    "/cafeteria-restaurante-el-rincon-de-julio/servicios": "/el-rincon-de-julio/servicios/",
+    "/la-isla-tacos-kebab": "/la-isla-tacos-kebab-grill/",
+    "/la-isla-tacos-kebab/aviso-legal": "/la-isla-tacos-kebab-grill/aviso-legal/",
+    "/floristerias-la-abadia": "/floristeria-la-abadia/",
+    "/floristerias-la-abadia/aviso-legal": "/floristeria-la-abadia/aviso-legal/",
+    "/restaurante-la-espada-centro": "/restaurante-la-espadana-centro/",
+    "/restaurante-la-espada-centro/aviso-legal": "/restaurante-la-espadana-centro/aviso-legal/",
   },
   vite: {
     plugins: [tailwindcss(), cleanUrls()],
