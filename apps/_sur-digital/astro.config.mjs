@@ -55,7 +55,7 @@ export default defineConfig({
   // la máquina, no los de local).
   build: {
     inlineStylesheets: "always",
-    concurrency: Math.max(1, os.availableParallelism()),
+    concurrency: Math.min(4, Math.max(1, os.availableParallelism())),
   },
   // Redirecciones permanentes. El artículo antiguo de precios se fusionó en
   // el actual para no competir por la misma búsqueda en Google: se deja 301.
