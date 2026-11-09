@@ -909,6 +909,7 @@ const CITY_GROUPS = (() => {
     accent: string;
     url: string;
     image: string;
+    thumb: string;
   }
   const isCatalog = grid?.dataset.catalog === "full";
   // Tarjetas del escaparate, filas del listado compacto y tarjetas que se
@@ -1184,19 +1185,58 @@ const CITY_GROUPS = (() => {
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.className =
-        "group -mx-2 flex min-w-0 items-baseline justify-between gap-3 rounded-lg border-b border-base-300/60 px-2 py-2 transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+        "group -mx-2 flex min-w-0 items-center gap-3 rounded-lg border-b border-base-300/60 px-2 py-2 transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
+      // Miniatura perezosa: la fila no pide la portada completa de 640×288.
+      // La inicial queda detrás como respaldo si la imagen no carga.
+      const media = document.createElement("span");
+      media.className =
+        "relative h-9 w-20 shrink-0 overflow-hidden rounded-md bg-base-200";
+      const initial = document.createElement("span");
+      initial.className =
+        "absolute inset-0 flex items-center justify-center text-sm font-black text-base-content/25 select-none";
+      initial.textContent = client.title.slice(0, 1).toUpperCase();
+      initial.setAttribute("aria-hidden", "true");
+      media.append(initial);
+
+      const preview = client.thumb || client.image;
+      if (preview) {
+        const image = document.createElement("img");
+        image.src = preview;
+        image.alt = "";
+        image.width = 160;
+        image.height = 72;
+        image.loading = "lazy";
+        image.decoding = "async";
+        image.className = "absolute inset-0 h-full w-full object-cover";
+        image.addEventListener(
+          "error",
+          () => {
+            image.hidden = true;
+          },
+          { once: true }
+        );
+        media.append(image);
+      }
+
+      const body = document.createElement("span");
+      body.className = "min-w-0 flex-1";
       const name = document.createElement("span");
       name.className =
-        "truncate text-sm font-medium text-base-content group-hover:text-primary";
+        "block truncate text-sm font-medium text-base-content group-hover:text-primary";
       name.textContent = client.title;
-
       const meta = document.createElement("span");
-      meta.className =
-        "shrink-0 max-w-[45%] truncate text-[11px] text-base-content/50";
+      meta.className = "mt-0.5 block truncate text-[11px] text-base-content/50";
       meta.textContent = client.city || client.sector;
+      body.append(name, meta);
 
-      link.append(name, meta);
+      const arrow = document.createElement("span");
+      arrow.className =
+        "shrink-0 text-base-content/30 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-primary";
+      arrow.textContent = "→";
+      arrow.setAttribute("aria-hidden", "true");
+
+      link.append(media, body, arrow);
       row.append(link);
       return row;
     };

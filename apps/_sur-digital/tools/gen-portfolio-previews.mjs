@@ -19,6 +19,7 @@ import sharp from "sharp";
 const RAIZ = process.cwd();
 const APPS = join(RAIZ, "src", "apps");
 const SALIDA = join(RAIZ, "public", "clientes");
+const MINIATURAS = join(SALIDA, "thumbs");
 const DATOS = join(RAIZ, "src", "data", "portfolio-apps.ts");
 
 const ANCHO = 640;
@@ -109,57 +110,76 @@ const escribir = async (buffer, destino) => {
 };
 
 mkdirSync(SALIDA, { recursive: true });
+mkdirSync(MINIATURAS, { recursive: true });
 
 const pendientes = apps.filter((app) => {
   if (!existsSync(join(APPS, app.slug, "pages", "index.astro"))) {
     console.warn(`  ${app.slug}: no tiene pages/index.astro, se omite`);
     return false;
   }
-  return fuerza || !existsSync(join(SALIDA, `${app.slug}.jpg`));
+  return (
+    fuerza ||
+    !existsSync(join(SALIDA, `${app.slug}.jpg`)) ||
+    !existsSync(join(MINIATURAS, `${app.slug}.jpg`))
+  );
 });
 
 console.log(`Portadas pendientes: ${pendientes.length} de ${apps.length} clientes.`);
 
 let cursor = 0;
-let generadas = 0;
+let procesadas = 0;
 let conFoto = 0;
 let deMarca = 0;
+let miniaturas = 0;
 let errores = 0;
 
 const trabajar = async () => {
   while (cursor < pendientes.length) {
     const app = pendientes[cursor++];
     const destino = join(SALIDA, `${app.slug}.jpg`);
-    const fotos = fotosDe(app.slug);
+    const miniatura = join(MINIATURAS, `${app.slug}.jpg`);
     try {
-      if (fotos.length) {
-        const origen = join(APPS, app.slug, "assets", "fotos", fotos[0]);
-        let buffer;
-        try {
-          buffer = await sharp(origen, { failOn: "none" })
-            .rotate()
-            .resize(ANCHO, ALTO, { fit: "cover", position: "attention" })
+      if (fuerza || !existsSync(destino)) {
+        const fotos = fotosDe(app.slug);
+        if (fotos.length) {
+          const origen = join(APPS, app.slug, "assets", "fotos", fotos[0]);
+          let buffer;
+          try {
+            buffer = await sharp(origen, { failOn: "none" })
+              .rotate()
+              .resize(ANCHO, ALTO, { fit: "cover", position: "attention" })
+              .jpeg({ quality: CALIDAD, mozjpeg: true })
+              .toBuffer();
+          } catch {
+            buffer = await sharp(origen, { failOn: "none" })
+              .rotate()
+              .resize(ANCHO, ALTO, { fit: "cover", position: "centre" })
+              .jpeg({ quality: CALIDAD, mozjpeg: true })
+              .toBuffer();
+          }
+          await escribir(buffer, destino);
+          conFoto++;
+        } else {
+          const buffer = await sharp(Buffer.from(portadaDeMarca(app)))
             .jpeg({ quality: CALIDAD, mozjpeg: true })
             .toBuffer();
-        } catch {
-          buffer = await sharp(origen, { failOn: "none" })
-            .rotate()
-            .resize(ANCHO, ALTO, { fit: "cover", position: "centre" })
-            .jpeg({ quality: CALIDAD, mozjpeg: true })
-            .toBuffer();
+          await escribir(buffer, destino);
+          deMarca++;
         }
-        await escribir(buffer, destino);
-        conFoto++;
-      } else {
-        const buffer = await sharp(Buffer.from(portadaDeMarca(app)))
-          .jpeg({ quality: CALIDAD, mozjpeg: true })
-          .toBuffer();
-        await escribir(buffer, destino);
-        deMarca++;
       }
-      generadas++;
-      if (generadas % 100 === 0) {
-        console.log(`  ${generadas}/${pendientes.length} portadas…`);
+
+      if (fuerza || !existsSync(miniatura)) {
+        const buffer = await sharp(destino)
+          .resize(160, 72, { fit: "cover", position: "centre" })
+          .jpeg({ quality: 70, mozjpeg: true })
+          .toBuffer();
+        await escribir(buffer, miniatura);
+        miniaturas++;
+      }
+
+      procesadas++;
+      if (procesadas % 100 === 0) {
+        console.log(`  ${procesadas}/${pendientes.length} portadas y miniaturas…`);
       }
     } catch (error) {
       errores++;
@@ -171,10 +191,18 @@ const trabajar = async () => {
 await Promise.all(Array.from({ length: 6 }, trabajar));
 
 const archivos = readdirSync(SALIDA).filter((nombre) => nombre.endsWith(".jpg"));
+const archivosMiniatura = readdirSync(MINIATURAS).filter((nombre) => nombre.endsWith(".jpg"));
 const bytes = archivos.reduce((total, nombre) => total + statSync(join(SALIDA, nombre)).size, 0);
-console.log(
-  `Portadas: ${generadas} generadas (${conFoto} con foto, ${deMarca} de marca), ${errores} errores.`,
+const bytesMiniatura = archivosMiniatura.reduce(
+  (total, nombre) => total + statSync(join(MINIATURAS, nombre)).size,
+  0,
 );
-console.log(`Directorio: ${archivos.length} imágenes · ${(bytes / 1024 / 1024).toFixed(1)} MB.`);
+console.log(
+  `Portadas: ${conFoto} con foto, ${deMarca} de marca; miniaturas nuevas: ${miniaturas}; errores: ${errores}.`,
+);
+console.log(`Directorio: ${archivos.length} portadas · ${(bytes / 1024 / 1024).toFixed(1)} MB.`);
+console.log(
+  `Miniaturas: ${archivosMiniatura.length} · ${(bytesMiniatura / 1024 / 1024).toFixed(1)} MB.`,
+);
 
 if (errores) process.exitCode = 1;

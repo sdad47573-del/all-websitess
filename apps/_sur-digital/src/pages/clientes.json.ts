@@ -15,13 +15,19 @@ interface DirectoryClient {
   accent: string;
   url: string;
   image: string;
+  thumb: string;
 }
 
-// Las portadas se generan en public/clientes/<slug>.jpg con
-// tools/gen-portfolio-previews.mjs; aquí solo se resuelve la URL pública.
+// Las portadas y sus miniaturas se generan en public/clientes/ con
+// tools/gen-portfolio-previews.mjs; aquí solo se resuelven las URLs públicas.
+const slugFor = (url: string) => url.match(/^\/([^/]+)\/$/)?.[1] ?? "";
 const imageFor = (url: string) => {
-  const slug = url.match(/^\/([^/]+)\/$/)?.[1];
+  const slug = slugFor(url);
   return slug ? `/clientes/${slug}.jpg` : "";
+};
+const thumbFor = (url: string) => {
+  const slug = slugFor(url);
+  return slug ? `/clientes/thumbs/${slug}.jpg` : "";
 };
 
 export const GET: APIRoute = () => {
@@ -36,6 +42,7 @@ export const GET: APIRoute = () => {
     accent,
     url,
     image: imageFor(url),
+    thumb: thumbFor(url),
   }));
 
   return new Response(JSON.stringify(clients), {
