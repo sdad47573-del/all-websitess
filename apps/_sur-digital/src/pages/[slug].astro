@@ -33,7 +33,11 @@ export function getStaticPaths() {
   // El glob se resuelve aquí dentro (no como constante del módulo) porque el
   // bundle de prerender solo conserva lo que usa getStaticPaths. Deja entrar
   // sola a cualquier app nueva, sin listas que mantener.
-  const appPages = import.meta.glob("../apps/*/pages/index.astro");
+  const appPages = Object.fromEntries(
+    Object.entries(import.meta.glob("../apps/*/pages/index.astro")).filter(([file]) =>
+      /(almirez|restaurante-22|1111-coffee-and-bakery)\//.test(file),
+    ),
+  );
 
   const localizedSlugs = new Set(localized.map((entry) => entry.params.slug));
   const apps = Object.entries(appPages).flatMap(([file, load]) => {

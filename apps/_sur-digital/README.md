@@ -18,6 +18,7 @@ corporativas, tiendas online y SEO local. Generado con
 
 ```text
 src/
+├── apps/         Webs de clientes: una carpeta por slug, servida en /<slug>/
 ├── components/   Secciones de la home y componentes reutilizables
 ├── content/blog/ Artículos en Markdown (colección "blog")
 ├── data/         Datos de contenido (data.astro, sectors.ts, contact.ts)
