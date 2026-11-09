@@ -1,4 +1,5 @@
 // @ts-check
+import os from "node:os";
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
@@ -48,7 +49,14 @@ export default defineConfig({
   // costaba ~110 ms de render. Al ser un sitio de páginas estáticas que se
   // visitan de una en una, se gana más de lo que se pierde por caché entre
   // páginas.
-  build: { inlineStylesheets: "always" },
+  // El render de páginas va en serie por defecto. Con ~1.300 landings (cada una
+  // con varias subpáginas) eso son horas de build; son páginas independientes,
+  // así que se reparten entre los núcleos disponibles (en Vercel, los que tenga
+  // la máquina, no los de local).
+  build: {
+    inlineStylesheets: "always",
+    concurrency: Math.max(1, os.availableParallelism()),
+  },
   // Redirecciones permanentes. El artículo antiguo de precios se fusionó en
   // el actual para no competir por la misma búsqueda en Google: se deja 301.
   // Sin barra final en la clave a propósito: Astro genera así el 301 para
