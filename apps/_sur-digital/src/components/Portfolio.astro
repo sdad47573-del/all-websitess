@@ -1,5 +1,5 @@
 ---
-// Clientes reales con web publicada. Datos y capturas en data/portfolio.
+// Clientes con web publicada. Datos y capturas en data/portfolio.
 import { Image } from "astro:assets";
 import { PORTFOLIO } from "../data/portfolio";
 import { ORIGINS } from "../data/proxy-origins";
@@ -27,12 +27,12 @@ const CATEGORIES = [
 // proyectos (Tapas, Teatinos, Peluquería…) se amontonan y la fila se ensucia.
 const MAX_TAGS = 2;
 
-// /clientes/ es una muestra curada: solo entran los clientes con captura real
-// (PORTFOLIO), no las fichas generadas sin imagen de data/portfolio-apps.ts,
-// que multiplicaban por trece el peso de la página. Aun así se pagina de 24 en
-// 24 para que la primera pantalla no sea un muro de tarjetas, y se puede buscar
-// por nombre, ciudad o sector.
+// El escaparate son los proyectos con captura propia y se pagina de 24 en 24;
+// el resto de clientes se lista debajo en formato compacto, sin imagen, para
+// que aparezcan todos sin renderizar más de mil tarjetas completas.
 const PAGE_SIZE = 24;
+const CURATED = PORTFOLIO.filter((p) => p.preview);
+const DIRECTORY = PORTFOLIO.filter((p) => !p.preview);
 
 // La home pinta solo las tarjetas visibles (6) y enlaza a /clientes/ para el
 // resto: ya no descarga el catálogo completo para ampliarlo en el sitio.
@@ -41,7 +41,7 @@ interface Props {
 }
 const { limit } = Astro.props;
 const isCatalog = typeof limit !== "number";
-const renderedProjects = isCatalog ? PORTFOLIO : PORTFOLIO.slice(0, limit);
+const renderedProjects = isCatalog ? CURATED : CURATED.slice(0, limit);
 const totalLabel = PORTFOLIO.length.toLocaleString("es-ES");
 
 const slugify = (s: string) =>
@@ -62,8 +62,8 @@ const slugify = (s: string) =>
         Clientes <span class="text-wave">reales</span>
       </h2>
       <p class="text-base-content/70 text-center max-w-2xl mt-3">
-        Una muestra de los negocios que ya trabajan con nosotros. Cada tarjeta
-        abre su web publicada: diseño, velocidad y cómo vende.
+        Webs publicadas para negocios reales. Explora cada cliente y descubre
+        cómo presentamos su marca, sus productos y sus servicios.
       </p>
     </div>
 
@@ -283,8 +283,60 @@ const slugify = (s: string) =>
       </style>
     </noscript>
 
-    <!-- En el catálogo amplía la rejilla de 24 en 24. En la home es un enlace
-         normal a /clientes/: no descarga mil tarjetas para enseñarlas aquí. -->
+    <!-- El resto de clientes, en formato compacto: aparecen todos sin sumar
+         mil tarjetas con imagen, botones y datos al DOM. -->
+    {
+      isCatalog && (
+        <section
+          class="w-full max-w-6xl mt-14 pt-10 border-t border-base-300"
+          aria-labelledby="portfolio-directory-title"
+        >
+          <div class="text-center">
+            <h3
+              id="portfolio-directory-title"
+              class="text-2xl md:text-3xl font-bold text-base-content"
+            >
+              También trabajan con nosotros
+            </h3>
+            <p class="text-base-content/70 mt-2 max-w-2xl mx-auto">
+              {DIRECTORY.length.toLocaleString("es-ES")} negocios más con su web
+              publicada y su enlace directo. Usa el buscador o los filtros de
+              arriba para encontrar el tuyo.
+            </p>
+          </div>
+          <ul
+            data-portfolio-directory
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 mt-6"
+          >
+            {DIRECTORY.map(({ title, sector, category, tags, url }) => (
+              <li
+                data-portfolio-row
+                data-category={slugify(category)}
+                data-search={[title, sector, category, ...tags].join(" ")}
+              >
+                <a
+                  href={proxyPath(url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex min-w-0 items-baseline justify-between gap-3 border-b border-base-300/60 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <span class="truncate text-sm font-medium text-base-content group-hover:text-primary">
+                    {title}
+                  </span>
+                  <span class="shrink-0 max-w-[45%] truncate text-[11px] text-base-content/50">
+                    {sector}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- En el catálogo amplía el escaparate de 24 en 24. En la home es un
+         enlace normal a /clientes/: no descarga mil tarjetas para enseñarlas
+         aquí. -->
     {
       isCatalog ? (
         <button
@@ -294,7 +346,7 @@ const slugify = (s: string) =>
           aria-controls="portafolio-grid"
           hidden
         >
-          Ver más clientes
+          Ver más proyectos
         </button>
       ) : (
         <a
@@ -302,7 +354,7 @@ const slugify = (s: string) =>
           class="btn btn-primary mt-8"
           aria-controls="portafolio-grid"
         >
-          Ver la muestra completa ({totalLabel})
+          Ver todos los clientes ({totalLabel})
         </a>
       )
     }
@@ -409,11 +461,13 @@ const slugify = (s: string) =>
 </style>
 
 <script>
-  // Catálogo de clientes: filtro por categoría, búsqueda por texto y páginas de
-  // 24 tarjetas. La home usa este mismo componente como resumen: allí los
-  // filtros llevan a /clientes/ y «Ver todos» es un enlace normal, de modo que
-  // nunca se descargan mil tarjetas para pintarlas en el inicio.
+  // Catálogo de clientes: escaparate de los proyectos con captura, listado
+  // compacto con el resto (para que aparezcan todos), filtro por categoría,
+  // búsqueda por texto y páginas de 24 tarjetas en el escaparate. La home usa
+  // este mismo componente como resumen: allí los filtros llevan a /clientes/ y
+  // «Ver todos» es un enlace normal.
   const grid = document.querySelector<HTMLElement>("[data-portfolio-grid]");
+  const directory = document.querySelector<HTMLElement>("[data-portfolio-directory]");
   const buttons = Array.from(
     document.querySelectorAll<HTMLButtonElement>("[data-filter]")
   );
@@ -422,8 +476,10 @@ const slugify = (s: string) =>
   const showMore = document.querySelector<HTMLElement>("[data-show-more]");
   const search = document.querySelector<HTMLInputElement>("[data-portfolio-search]");
   const isCatalog = grid?.dataset.catalog === "full";
-  // Tarjetas pintadas ahora mismo. El resto vive en el DOM oculto.
+  // Tarjetas del escaparate y filas del listado compacto. El escaparate pagina;
+  // el listado enseña siempre todas sus coincidencias.
   let cards: HTMLElement[] = [];
+  let rows: HTMLElement[] = [];
 
   const portfolioDialog = document.querySelector<HTMLDialogElement>("[data-portfolio-dialog]");
 
@@ -483,7 +539,10 @@ const slugify = (s: string) =>
 
   if (grid instanceof HTMLElement && buttons.length > 0) {
     const portfolioGrid = grid;
-    cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-category]"));
+    cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-portfolio-card]"));
+    rows = directory
+      ? Array.from(directory.querySelectorAll<HTMLElement>("[data-portfolio-row]"))
+      : [];
     const pageSize =
       Number.parseInt(portfolioGrid.dataset.pageSize ?? "24", 10) || 24;
     let visibleLimit = pageSize;
@@ -499,11 +558,11 @@ const slugify = (s: string) =>
         .trim();
 
     // El texto buscable se resuelve una sola vez: título, sector, categoría y
-    // tags. Normalizar todas las tarjetas en cada tecla sería tirar trabajo.
+    // tags. Normalizar todo el listado en cada tecla sería tirar trabajo.
     const searchable = new Map<HTMLElement, string>(
-      cards.map((card): [HTMLElement, string] => [
-        card,
-        normalize(card.dataset.search ?? ""),
+      [...cards, ...rows].map((element): [HTMLElement, string] => [
+        element,
+        normalize(element.dataset.search ?? ""),
       ])
     );
 
@@ -522,22 +581,27 @@ const slugify = (s: string) =>
       );
     };
 
-    function apply() {
-      const filtering = currentFilter !== "todos";
-      const matching: HTMLElement[] = [];
-      for (const card of cards) {
-        const matchCategory =
-          !filtering || card.dataset.category === currentFilter;
-        const matchQuery =
-          !currentQuery || (searchable.get(card) ?? "").includes(currentQuery);
-        if (matchCategory && matchQuery) matching.push(card);
-      }
+    const matches = (element: HTMLElement) => {
+      const matchCategory =
+        currentFilter === "todos" || element.dataset.category === currentFilter;
+      const matchQuery =
+        !currentQuery ||
+        (searchable.get(element) ?? "").includes(currentQuery);
+      return matchCategory && matchQuery;
+    };
 
-      const shown = new Set(matching.slice(0, visibleLimit));
+    function apply() {
+      const matchingCards = cards.filter(matches);
+      const matchingRows = rows.filter(matches);
+      const shown = new Set(matchingCards.slice(0, visibleLimit));
+      const shownRows = new Set(matchingRows);
+
       for (const card of cards) {
         card.hidden = !shown.has(card);
         card.classList.remove("portfolio-card-enter");
       }
+      // El listado compacto no pagina: si coincide, aparece.
+      for (const row of rows) row.hidden = !shownRows.has(row);
 
       requestAnimationFrame(() => {
         let index = 0;
@@ -559,23 +623,25 @@ const slugify = (s: string) =>
         button.classList.toggle("btn-ghost", !active);
       }
 
+      const totalShown = shown.size + matchingRows.length;
+      const totalMatching = matchingCards.length + matchingRows.length;
       if (status) {
         // data-label y no el texto del botón: el botón incluye el contador
         // de proyectos y ese número no debe colarse en el anuncio.
         const label = buttons.find((b) => b.dataset.filter === currentFilter)
           ?.dataset.label;
-        status.textContent = `Mostrando ${format(shown.size)} de ${format(
-          matching.length
-        )} ${matching.length === 1 ? "cliente" : "clientes"}${
+        status.textContent = `Mostrando ${format(totalShown)} de ${format(
+          totalMatching
+        )} ${totalMatching === 1 ? "cliente" : "clientes"}${
           label ? ` en ${label}` : ""
         }`;
       }
-      if (empty) empty.hidden = matching.length > 0;
+      if (empty) empty.hidden = totalMatching > 0;
 
       if (showMore) {
-        const remaining = matching.length - shown.size;
+        const remaining = matchingCards.length - shown.size;
         showMore.hidden = remaining <= 0;
-        showMore.textContent = `Ver más clientes (${format(remaining)})`;
+        showMore.textContent = `Ver más proyectos con captura (${format(remaining)})`;
       }
 
       // aria-controls apunta a la lista filtrada, no a la sección completa.
@@ -619,8 +685,8 @@ const slugify = (s: string) =>
         visibleLimit += pageSize;
         apply();
         bindQuickViews(portfolioGrid);
-        // Si el botón desaparece al agotar la lista, el foco se pierde con él:
-        // pasa a la primera tarjeta que acaba de aparecer.
+        // Si el botón desaparece al agotar el escaparate, el foco se pierde con
+        // él: pasa a la primera tarjeta que acaba de aparecer.
         if (showMore.hidden) {
           const visible = cards.filter((card) => !card.hidden);
           visible[previous]?.querySelector<HTMLAnchorElement>("a")?.focus();
@@ -639,7 +705,7 @@ const slugify = (s: string) =>
       }
     }
 
-    // Estado inicial: primera página de la vista actual.
+    // Estado inicial: primera página del escaparate y listado completo.
     apply();
   }
 </script>
