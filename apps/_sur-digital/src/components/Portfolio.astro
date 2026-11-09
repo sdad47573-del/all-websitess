@@ -27,10 +27,9 @@ const CATEGORIES = [
 // proyectos (Tapas, Teatinos, Peluquería…) se amontonan y la fila se ensucia.
 const MAX_TAGS = 2;
 
-// El escaparate son los proyectos con captura propia y se pagina de 24 en 24;
-// el resto de clientes se lista debajo en formato compacto, sin imagen, para
-// que aparezcan todos sin renderizar más de mil tarjetas completas.
-const PAGE_SIZE = 24;
+// El escaparate son los proyectos con captura propia; el resto de clientes se
+// lista debajo en formato compacto, sin imagen, para que aparezcan todos sin
+// renderizar más de mil tarjetas completas.
 const CURATED = PORTFOLIO.filter((p) => p.preview);
 const DIRECTORY = PORTFOLIO.filter((p) => !p.preview);
 
@@ -38,8 +37,10 @@ const DIRECTORY = PORTFOLIO.filter((p) => !p.preview);
 // resto: ya no descarga el catálogo completo para ampliarlo en el sitio.
 interface Props {
   limit?: number;
+  // La página /clientes/ pinta su propia cabecera y estadísticas.
+  intro?: boolean;
 }
-const { limit } = Astro.props;
+const { limit, intro = true } = Astro.props;
 const isCatalog = typeof limit !== "number";
 const renderedProjects = isCatalog ? CURATED : CURATED.slice(0, limit);
 const totalLabel = PORTFOLIO.length.toLocaleString("es-ES");
@@ -50,39 +51,126 @@ const slugify = (s: string) =>
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-");
+
+// Ciudades del filtro agrupadas por comunidad. Se calculan sobre PORTFOLIO para
+// que una ciudad nueva aparezca sola y en su grupo.
+type CityEntry = { label: string; count: number };
+const CITY_INDEX = new Map<string, CityEntry & { community: string }>();
+for (const project of PORTFOLIO) {
+  const city = project.city?.trim();
+  if (!city) continue;
+  const key = slugify(city);
+  const entry = CITY_INDEX.get(key);
+  if (entry) {
+    entry.count += 1;
+    if (!entry.community) entry.community = project.community?.trim() || "";
+  } else {
+    CITY_INDEX.set(key, {
+      label: city,
+      count: 1,
+      community: project.community?.trim() || "",
+    });
+  }
+}
+
+const CITY_GROUPS = (() => {
+  const groups = new Map<string, [string, CityEntry][]>();
+  for (const [key, { label, count, community }] of CITY_INDEX) {
+    const name = community || "Sin comunidad";
+    const cities = groups.get(name) ?? [];
+    cities.push([key, { label, count }]);
+    groups.set(name, cities);
+  }
+  return [...groups.entries()]
+    .map(([community, cities]) => ({
+      community,
+      cities: cities.sort((a, b) =>
+        a[1].label.localeCompare(b[1].label, "es"),
+      ),
+      total: cities.reduce((sum, [, city]) => sum + city.count, 0),
+    }))
+    .sort((a, b) => {
+      if (a.community === "Sin comunidad") return 1;
+      if (b.community === "Sin comunidad") return -1;
+      return a.community.localeCompare(b.community, "es");
+    });
+})();
 ---
 
 <section
   id="clientes"
-  class="pt-14 pb-20 bg-gradient-to-b from-base-100 to-base-200 flex flex-col items-center"
+  class={[
+    "bg-gradient-to-b from-base-100 to-base-200 flex flex-col items-center",
+    intro ? "pt-14 pb-20" : "pt-0 pb-0",
+  ].join(" ")}
 >
   <div class="container mx-auto px-6 flex flex-col items-center">
-    <div data-reveal class="flex flex-col items-center">
-      <h2 class="text-4xl md:text-5xl font-bold text-base-content text-center">
-        Clientes <span class="text-wave">reales</span>
-      </h2>
-      <p class="text-base-content/70 text-center max-w-2xl mt-3">
-        Webs publicadas para negocios reales. Explora cada cliente y descubre
-        cómo presentamos su marca, sus productos y sus servicios.
-      </p>
-    </div>
+    {
+      intro && (
+        <div data-reveal class="flex flex-col items-center">
+          <h2 class="text-4xl md:text-5xl font-bold text-base-content text-center">
+            Clientes <span class="text-wave">reales</span>
+          </h2>
+          <p class="text-base-content/70 text-center max-w-2xl mt-3">
+            Webs publicadas para negocios reales. Explora cada cliente y
+            descubre cómo presentamos su marca, sus productos y sus servicios.
+          </p>
+        </div>
+      )
+    }
 
-    <!-- Buscador del catálogo completo. En la home no aparece: allí solo hay
-         seis tarjetas y el enlace a /clientes/. -->
+    <!-- Buscador y ciudad comparten fila: son los dos filtros de texto y
+         quedan alineados con la altura del campo. En la home no aparecen:
+         allí solo hay seis tarjetas y el enlace a /clientes/. -->
     {
       isCatalog && (
-        <div data-reveal class="w-full max-w-xl mt-8">
-          <label for="portfolio-search" class="sr-only">
-            Buscar cliente por nombre, ciudad o sector
-          </label>
-          <input
-            id="portfolio-search"
-            type="search"
-            data-portfolio-search
-            placeholder="Buscar por nombre, ciudad o sector…"
-            autocomplete="off"
-            class="input input-bordered w-full"
-          />
+        <div
+          data-reveal
+          class="mt-8 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-center"
+        >
+          <div class="relative flex-1">
+            <label for="portfolio-search" class="sr-only">
+              Buscar cliente por nombre, ciudad o sector
+            </label>
+            <svg aria-hidden="true" class="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-base-content/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="m16 16 4.5 4.5" />
+            </svg>
+            <input
+              id="portfolio-search"
+              type="search"
+              data-portfolio-search
+              placeholder="Buscar por nombre, ciudad o sector…"
+              autocomplete="off"
+              class="input input-bordered h-12 w-full rounded-full bg-base-100 pl-11 pr-4 shadow-sm"
+            />
+          </div>
+          {
+            CITY_GROUPS.length > 0 && (
+              <button
+                type="button"
+                class="btn btn-outline h-12 w-full shrink-0 justify-between gap-2 rounded-full pl-4 pr-3 font-normal shadow-sm sm:w-auto sm:justify-start"
+                data-city-open
+                aria-haspopup="dialog"
+                aria-controls="portfolio-city-dialog"
+                aria-label="Filtrar por ciudad"
+              >
+                <span class="inline-flex items-center gap-2">
+                  <svg aria-hidden="true" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10Z" />
+                    <circle cx="12" cy="11" r="2.25" />
+                  </svg>
+                  <span class="opacity-70">Ciudad</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5">
+                  <span class="badge badge-sm badge-ghost max-w-36 truncate" data-city-current>Todas</span>
+                  <svg aria-hidden="true" class="size-3 opacity-60" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m4 6 4 4 4-4" />
+                  </svg>
+                </span>
+              </button>
+            )
+          }
         </div>
       )
     }
@@ -121,28 +209,53 @@ const slugify = (s: string) =>
       }
     </div>
 
-    <p data-portfolio-count class="sr-only" role="status" aria-live="polite">
-      Mostrando {totalLabel} clientes
-    </p>
+    <!-- Barra de resultados: el contador es visible y solo aparece «Limpiar
+         filtros» cuando hay algo que limpiar. -->
+    {
+      isCatalog && (
+        <div
+          data-reveal
+          class="mt-7 flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 border-y border-base-300/70 py-2.5"
+        >
+          <p
+            data-portfolio-count
+            class="text-sm text-base-content/60"
+            role="status"
+            aria-live="polite"
+          >
+            Mostrando {totalLabel} clientes
+          </p>
+          <button
+            type="button"
+            data-portfolio-reset
+            hidden
+            class="btn btn-sm btn-ghost gap-1.5 rounded-full text-base-content/60 hover:text-base-content"
+          >
+            <svg aria-hidden="true" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+              <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
+            Limpiar filtros
+          </button>
+        </div>
+      )
+    }
 
     <ul
       id="portafolio-grid"
       data-reveal-group
       data-portfolio-grid
       data-catalog={isCatalog ? "full" : "teaser"}
-      data-page-size={PAGE_SIZE}
-      data-total={PORTFOLIO.length}
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 max-w-6xl w-full mt-8 grid-flow-row-dense"
     >
       {
         renderedProjects.map(
-          ({ title, sector, category, description, tags, accent, url, preview, destacado }, index) => (
+          ({ title, sector, city, category, description, tags, accent, url, preview, destacado }) => (
           <li
             data-category={slugify(category)}
+            data-city={city ? slugify(city) : undefined}
             data-portfolio-card
-            data-search={[title, sector, category, ...tags].join(" ")}
+            data-search={[title, sector, city, category, ...tags].filter(Boolean).join(" ")}
             data-destacado={destacado ? "" : undefined}
-            hidden={isCatalog && index >= PAGE_SIZE ? true : undefined}
             class={[
               "card relative flex w-full flex-col overflow-hidden border border-base-300 bg-base-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:transform-none motion-reduce:transition-none",
               // La destacada ocupa 2×2 celdas del mosaico. Al ser grid item
@@ -210,7 +323,7 @@ const slugify = (s: string) =>
                 <p
                   class={`truncate text-xs font-bold uppercase tracking-wide ${accent.split(" ")[1]}`}
                 >
-                  {sector}
+                  {sector}{city ? ` · ${city}` : ""}
                 </p>
                 <h3
                   class={`font-bold text-base-content leading-snug ${
@@ -275,80 +388,10 @@ const slugify = (s: string) =>
       }
     </ul>
 
-    <!-- Sin JS se ven todas las tarjetas: el atributo hidden de las que
-         quedan fuera de la primera página se anula aquí. -->
-    <noscript>
-      <style>
-        li[data-portfolio-card][hidden] { display: flex !important; }
-      </style>
-    </noscript>
-
-    <!-- El resto de clientes, en formato compacto: aparecen todos sin sumar
-         mil tarjetas con imagen, botones y datos al DOM. -->
+    <!-- En la home, el enlace al catálogo completo. En /clientes/ ya está
+         todo debajo, así que no hace falta paginar ni cargar más. -->
     {
-      isCatalog && (
-        <section
-          class="w-full max-w-6xl mt-14 pt-10 border-t border-base-300"
-          aria-labelledby="portfolio-directory-title"
-        >
-          <div class="text-center">
-            <h3
-              id="portfolio-directory-title"
-              class="text-2xl md:text-3xl font-bold text-base-content"
-            >
-              También trabajan con nosotros
-            </h3>
-            <p class="text-base-content/70 mt-2 max-w-2xl mx-auto">
-              {DIRECTORY.length.toLocaleString("es-ES")} negocios más con su web
-              publicada y su enlace directo. Usa el buscador o los filtros de
-              arriba para encontrar el tuyo.
-            </p>
-          </div>
-          <ul
-            data-portfolio-directory
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 mt-6"
-          >
-            {DIRECTORY.map(({ title, sector, category, tags, url }) => (
-              <li
-                data-portfolio-row
-                data-category={slugify(category)}
-                data-search={[title, sector, category, ...tags].join(" ")}
-              >
-                <a
-                  href={proxyPath(url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group flex min-w-0 items-baseline justify-between gap-3 border-b border-base-300/60 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                >
-                  <span class="truncate text-sm font-medium text-base-content group-hover:text-primary">
-                    {title}
-                  </span>
-                  <span class="shrink-0 max-w-[45%] truncate text-[11px] text-base-content/50">
-                    {sector}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <!-- En el catálogo amplía el escaparate de 24 en 24. En la home es un
-         enlace normal a /clientes/: no descarga mil tarjetas para enseñarlas
-         aquí. -->
-    {
-      isCatalog ? (
-        <button
-          type="button"
-          class="btn btn-primary mt-8"
-          data-show-more
-          aria-controls="portafolio-grid"
-          hidden
-        >
-          Ver más proyectos
-        </button>
-      ) : (
+      !isCatalog && (
         <a
           href="/clientes/"
           class="btn btn-primary mt-8"
@@ -356,6 +399,66 @@ const slugify = (s: string) =>
         >
           Ver todos los clientes ({totalLabel})
         </a>
+      )
+    }
+
+    <!-- El resto de clientes, en formato compacto: aparecen todos sin sumar
+         mil tarjetas con imagen, botones y datos al DOM. -->
+    {
+      isCatalog && (
+        <section
+          data-portfolio-directory-section
+          class="w-full max-w-6xl mt-14 pt-10 border-t border-base-300"
+          aria-labelledby="portfolio-directory-title"
+        >
+          <div class="text-center">
+            <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+              <h3
+                id="portfolio-directory-title"
+                class="text-2xl md:text-3xl font-bold text-base-content"
+              >
+                También trabajan con nosotros
+              </h3>
+              <span
+                data-portfolio-directory-count
+                class="badge badge-outline tabular-nums"
+              >
+                {DIRECTORY.length.toLocaleString("es-ES")}
+              </span>
+            </div>
+            <p class="text-base-content/70 mt-2 max-w-2xl mx-auto">
+              Negocios con su web publicada y su enlace directo. Usa el buscador
+              o los filtros de arriba para encontrar el tuyo.
+            </p>
+          </div>
+          <ul
+            data-portfolio-directory
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 mt-6"
+          >
+            {DIRECTORY.map(({ title, sector, city, category, tags, url }) => (
+              <li
+                data-portfolio-row
+                data-category={slugify(category)}
+                data-city={city ? slugify(city) : undefined}
+                data-search={[title, sector, city, category, ...tags].filter(Boolean).join(" ")}
+              >
+                <a
+                  href={proxyPath(url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group -mx-2 flex min-w-0 items-baseline justify-between gap-3 rounded-lg border-b border-base-300/60 px-2 py-2 transition-colors hover:bg-base-200/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <span class="truncate text-sm font-medium text-base-content group-hover:text-primary">
+                    {title}
+                  </span>
+                  <span class="shrink-0 max-w-[45%] truncate text-[11px] text-base-content/50">
+                    {city || sector}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
       )
     }
 
@@ -402,9 +505,131 @@ const slugify = (s: string) =>
       </form>
     </dialog>
 
-    <p data-portfolio-empty hidden class="text-base-content/70 mt-10 text-center">
-      No hay clientes que coincidan con esta búsqueda.
-    </p>
+    <!-- El filtro de ciudad se elige en un modal: con más de 250 ciudades, un
+         desplegable nativo era incómodo de recorrer. -->
+    {
+      isCatalog && CITY_GROUPS.length > 0 && (
+        <dialog
+          id="portfolio-city-dialog"
+          data-city-dialog
+          class="modal"
+          aria-labelledby="portfolio-city-title"
+        >
+          <div class="modal-box max-w-3xl overflow-hidden p-0">
+            <div class="border-b border-base-300 bg-gradient-to-br from-base-100 via-base-100 to-base-200 px-6 pb-5 pt-6 sm:px-8">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+                    Filtro por ciudad
+                  </p>
+                  <h3
+                    id="portfolio-city-title"
+                    class="mt-1 text-2xl font-bold text-base-content"
+                  >
+                    Ciudades
+                  </h3>
+                  <p class="mt-1 text-sm text-base-content/60">
+                    {CITY_INDEX.size.toLocaleString("es-ES")} ciudades · elige una para ver solo sus clientes.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-circle btn-ghost shrink-0"
+                  data-city-close
+                  aria-label="Cerrar filtro de ciudades"
+                >
+                  <svg aria-hidden="true" class="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                    <path d="m4 4 8 8M12 4l-8 8" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="city-scroll max-h-[55vh] space-y-6 overflow-y-auto px-6 py-5 sm:px-8">
+              <button
+                type="button"
+                class="btn btn-sm btn-primary w-full justify-between rounded-xl px-4"
+                data-city-option="todas"
+                aria-pressed="true"
+              >
+                <span class="inline-flex items-center gap-2">
+                  <svg aria-hidden="true" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M3 12h18M12 3c2.5 2.4 2.5 15.6 0 18M12 3c-2.5 2.4-2.5 15.6 0 18" />
+                  </svg>
+                  Todas las ciudades
+                </span>
+                <span class="badge badge-sm badge-ghost tabular-nums">{totalLabel}</span>
+              </button>
+              {CITY_GROUPS.map(({ community, cities, total }) => (
+                <section>
+                  <div class="sticky top-0 z-[1] flex items-center gap-2 bg-base-100/90 py-2 backdrop-blur">
+                    <span aria-hidden="true" class="size-1.5 rounded-full bg-primary/70"></span>
+                    <h4 class="text-[11px] font-bold uppercase tracking-wider text-base-content/60">
+                      {community}
+                    </h4>
+                    <span class="badge badge-sm badge-ghost tabular-nums">
+                      {total.toLocaleString("es-ES")}
+                    </span>
+                  </div>
+                  <div class="mt-1 flex flex-wrap gap-2">
+                    {cities.map(([key, { label, count }]) => (
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-ghost justify-between gap-2 rounded-full font-normal"
+                        data-city-option={key}
+                        data-label={label}
+                        aria-pressed="false"
+                      >
+                        <span>{label}</span>
+                        <span class="badge badge-sm badge-ghost tabular-nums">
+                          {count.toLocaleString("es-ES")}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </div>
+          <form method="dialog" class="modal-backdrop">
+            <button aria-label="Cerrar filtro de ciudades">Cerrar</button>
+          </form>
+        </dialog>
+      )
+    }
+
+    {
+      isCatalog && (
+        <div data-portfolio-empty hidden class="mt-10 w-full max-w-6xl">
+          <div class="mx-auto flex max-w-lg flex-col items-center gap-4 rounded-2xl border border-dashed border-base-300 bg-base-100/70 px-6 py-12 text-center">
+            <span
+              aria-hidden="true"
+              class="flex size-12 items-center justify-center rounded-full bg-base-200 text-base-content/40"
+            >
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="m16 16 4.5 4.5" />
+                <path d="m8.5 8.5 5 5m0-5-5 5" />
+              </svg>
+            </span>
+            <div>
+              <p class="text-lg font-bold text-base-content">Sin coincidencias</p>
+              <p class="mt-1 text-sm text-base-content/60">
+                No hay clientes que coincidan con estos filtros. Prueba con otro
+                nombre, sector o ciudad.
+              </p>
+            </div>
+            <button
+              type="button"
+              data-portfolio-reset
+              class="btn btn-sm btn-primary rounded-full px-5"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        </div>
+      )
+    }
   </div>
 </section>
 
@@ -445,6 +670,14 @@ const slugify = (s: string) =>
       animation: portfolio-backdrop-enter 200ms ease-out both;
     }
 
+    dialog[data-city-dialog][open] .modal-box {
+      animation: portfolio-dialog-enter 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    dialog[data-city-dialog][open]::backdrop {
+      animation: portfolio-backdrop-enter 200ms ease-out both;
+    }
+
     @keyframes portfolio-backdrop-enter {
       from { background-color: rgb(0 0 0 / 0); }
       to { background-color: rgb(0 0 0 / 0.35); }
@@ -454,18 +687,42 @@ const slugify = (s: string) =>
   @media (prefers-reduced-motion: reduce) {
     [data-portfolio-card].portfolio-card-enter,
     dialog[data-portfolio-dialog][open] .portfolio-dialog-box,
-    dialog[data-portfolio-dialog][open]::backdrop {
+    dialog[data-portfolio-dialog][open]::backdrop,
+    dialog[data-city-dialog][open] .modal-box,
+    dialog[data-city-dialog][open]::backdrop {
       animation: none !important;
     }
+  }
+
+  /* daisyUI da display:inline-flex a .btn, que gana al atributo hidden. */
+  [data-portfolio-reset][hidden] {
+    display: none;
+  }
+
+  .city-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-base-300) transparent;
+  }
+
+  .city-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .city-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .city-scroll::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: var(--color-base-300);
   }
 </style>
 
 <script>
-  // Catálogo de clientes: escaparate de los proyectos con captura, listado
-  // compacto con el resto (para que aparezcan todos), filtro por categoría,
-  // búsqueda por texto y páginas de 24 tarjetas en el escaparate. La home usa
-  // este mismo componente como resumen: allí los filtros llevan a /clientes/ y
-  // «Ver todos» es un enlace normal.
+  // Catálogo de clientes: escaparate de los proyectos con captura y listado
+  // compacto con el resto, para que aparezcan todos. La home usa este mismo
+  // componente como resumen: allí los filtros llevan a /clientes/ y «Ver todos»
+  // es un enlace normal.
   const grid = document.querySelector<HTMLElement>("[data-portfolio-grid]");
   const directory = document.querySelector<HTMLElement>("[data-portfolio-directory]");
   const buttons = Array.from(
@@ -473,11 +730,24 @@ const slugify = (s: string) =>
   );
   const status = document.querySelector<HTMLElement>("[data-portfolio-count]");
   const empty = document.querySelector<HTMLElement>("[data-portfolio-empty]");
-  const showMore = document.querySelector<HTMLElement>("[data-show-more]");
   const search = document.querySelector<HTMLInputElement>("[data-portfolio-search]");
+  const cityOpen = document.querySelector<HTMLButtonElement>("[data-city-open]");
+  const cityDialog = document.querySelector<HTMLDialogElement>("[data-city-dialog]");
+  const cityOptions = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-city-option]")
+  );
+  const cityCurrent = document.querySelector<HTMLElement>("[data-city-current]");
+  const directorySection = document.querySelector<HTMLElement>(
+    "[data-portfolio-directory-section]"
+  );
+  const directoryCount = document.querySelector<HTMLElement>(
+    "[data-portfolio-directory-count]"
+  );
+  const resetButtons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-portfolio-reset]")
+  );
   const isCatalog = grid?.dataset.catalog === "full";
-  // Tarjetas del escaparate y filas del listado compacto. El escaparate pagina;
-  // el listado enseña siempre todas sus coincidencias.
+  // Tarjetas del escaparate y filas del listado compacto.
   let cards: HTMLElement[] = [];
   let rows: HTMLElement[] = [];
 
@@ -516,17 +786,11 @@ const slugify = (s: string) =>
     portfolioDialog.showModal();
   };
 
-  // La vista rápida se engancha también a las tarjetas que llegan después:
-  // se llama al arrancar y otra vez al ampliar la página.
-  const bindQuickViews = (root: ParentNode) => {
-    for (const button of root.querySelectorAll<HTMLButtonElement>("[data-quick-view]")) {
-      if (button.dataset.quickViewBound === "true") continue;
-      button.dataset.quickViewBound = "true";
-      button.addEventListener("click", () => openQuickView(button));
-    }
-  };
-
-  bindQuickViews(document);
+  // La vista rápida solo existe en las tarjetas del escaparate: todas se
+  // enganchan una sola vez al arrancar.
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-quick-view]")) {
+    button.addEventListener("click", () => openQuickView(button));
+  }
 
   if (portfolioDialog) {
     portfolioDialog.querySelector("[data-dialog-close]")?.addEventListener("click", () => {
@@ -537,17 +801,54 @@ const slugify = (s: string) =>
     });
   }
 
+  if (cityDialog) {
+    cityOpen?.addEventListener("click", () => cityDialog.showModal());
+    cityDialog.querySelector("[data-city-close]")?.addEventListener("click", () => {
+      cityDialog.close();
+    });
+    cityDialog.addEventListener("click", (event) => {
+      if (event.target === cityDialog) cityDialog.close();
+    });
+  }
+
   if (grid instanceof HTMLElement && buttons.length > 0) {
     const portfolioGrid = grid;
     cards = Array.from(portfolioGrid.querySelectorAll<HTMLElement>("[data-portfolio-card]"));
     rows = directory
       ? Array.from(directory.querySelectorAll<HTMLElement>("[data-portfolio-row]"))
       : [];
-    const pageSize =
-      Number.parseInt(portfolioGrid.dataset.pageSize ?? "24", 10) || 24;
-    let visibleLimit = pageSize;
     let currentFilter = "todos";
+    let currentCity = "todas";
     let currentQuery = "";
+
+    // El filtro de ciudad vive en un modal: el botón muestra la ciudad activa y
+    // las opciones se marcan al elegir.
+    const cityLabelFor = (key: string) =>
+      cityOptions.find((option) => option.dataset.cityOption === key)?.dataset
+        .label ?? "";
+    const updateCityUi = () => {
+      for (const option of cityOptions) {
+        const active = (option.dataset.cityOption ?? "todas") === currentCity;
+        option.setAttribute("aria-pressed", String(active));
+        option.classList.toggle("btn-primary", active);
+        option.classList.toggle("btn-ghost", !active);
+      }
+      if (cityCurrent) {
+        cityCurrent.textContent = cityLabelFor(currentCity) || "Todas";
+      }
+      cityOpen?.classList.toggle("btn-primary", currentCity !== "todas");
+      cityOpen?.classList.toggle("btn-outline", currentCity === "todas");
+    };
+
+    for (const option of cityOptions) {
+      option.addEventListener("click", () => {
+        currentCity = option.dataset.cityOption ?? "todas";
+        updateCityUi();
+        cityDialog?.close();
+        apply();
+        syncUrl();
+      });
+    }
 
     const format = (value: number) => value.toLocaleString("es-ES");
     const normalize = (value: string) =>
@@ -571,6 +872,8 @@ const slugify = (s: string) =>
       const params = new URLSearchParams(window.location.search);
       if (currentFilter === "todos") params.delete("categoria");
       else params.set("categoria", currentFilter);
+      if (currentCity === "todas") params.delete("ciudad");
+      else params.set("ciudad", currentCity);
       if (search?.value.trim()) params.set("q", search.value.trim());
       else params.delete("q");
       const query = params.toString();
@@ -584,23 +887,24 @@ const slugify = (s: string) =>
     const matches = (element: HTMLElement) => {
       const matchCategory =
         currentFilter === "todos" || element.dataset.category === currentFilter;
+      const matchCity =
+        currentCity === "todas" || element.dataset.city === currentCity;
       const matchQuery =
         !currentQuery ||
         (searchable.get(element) ?? "").includes(currentQuery);
-      return matchCategory && matchQuery;
+      return matchCategory && matchCity && matchQuery;
     };
 
     function apply() {
       const matchingCards = cards.filter(matches);
       const matchingRows = rows.filter(matches);
-      const shown = new Set(matchingCards.slice(0, visibleLimit));
+      const shown = new Set(matchingCards);
       const shownRows = new Set(matchingRows);
 
       for (const card of cards) {
         card.hidden = !shown.has(card);
         card.classList.remove("portfolio-card-enter");
       }
-      // El listado compacto no pagina: si coincide, aparece.
       for (const row of rows) row.hidden = !shownRows.has(row);
 
       requestAnimationFrame(() => {
@@ -623,25 +927,33 @@ const slugify = (s: string) =>
         button.classList.toggle("btn-ghost", !active);
       }
 
-      const totalShown = shown.size + matchingRows.length;
-      const totalMatching = matchingCards.length + matchingRows.length;
+      const total = matchingCards.length + matchingRows.length;
       if (status) {
         // data-label y no el texto del botón: el botón incluye el contador
         // de proyectos y ese número no debe colarse en el anuncio.
         const label = buttons.find((b) => b.dataset.filter === currentFilter)
           ?.dataset.label;
-        status.textContent = `Mostrando ${format(totalShown)} de ${format(
-          totalMatching
-        )} ${totalMatching === 1 ? "cliente" : "clientes"}${
-          label ? ` en ${label}` : ""
-        }`;
+        const cityLabel = currentCity === "todas" ? "" : cityLabelFor(currentCity);
+        const where = [label, cityLabel].filter(Boolean).join(" · ");
+        status.textContent = `Mostrando ${format(total)} ${
+          total === 1 ? "cliente" : "clientes"
+        }${where ? ` en ${where}` : ""}`;
       }
-      if (empty) empty.hidden = totalMatching > 0;
+      if (empty) empty.hidden = total > 0;
 
-      if (showMore) {
-        const remaining = matchingCards.length - shown.size;
-        showMore.hidden = remaining <= 0;
-        showMore.textContent = `Ver más proyectos con captura (${format(remaining)})`;
+      const hasFilters =
+        currentFilter !== "todos" ||
+        currentCity !== "todas" ||
+        currentQuery !== "";
+      for (const button of resetButtons) button.hidden = !hasFilters;
+
+      // El listado compacto puede quedarse sin filas aunque el escaparate
+      // siga teniendo tarjetas: ocultarlo evita un «0 negocios» desconcertante.
+      if (directorySection) {
+        directorySection.hidden = matchingRows.length === 0;
+      }
+      if (directoryCount) {
+        directoryCount.textContent = format(matchingRows.length);
       }
 
       // aria-controls apunta a la lista filtrada, no a la sección completa.
@@ -660,12 +972,22 @@ const slugify = (s: string) =>
       ) {
         currentFilter = requested;
       }
+      const requestedCity = params.get("ciudad") ?? "";
+      if (
+        requestedCity &&
+        cityOptions.some(
+          (option) => option.dataset.cityOption === requestedCity
+        )
+      ) {
+        currentCity = requestedCity;
+      }
+      updateCityUi();
+
       if (search) {
         search.value = params.get("q") ?? "";
         currentQuery = normalize(search.value);
         search.addEventListener("input", () => {
           currentQuery = normalize(search.value);
-          visibleLimit = pageSize;
           apply();
           syncUrl();
         });
@@ -674,24 +996,23 @@ const slugify = (s: string) =>
       for (const button of buttons) {
         button.addEventListener("click", () => {
           currentFilter = button.dataset.filter ?? "todos";
-          visibleLimit = pageSize;
           apply();
           syncUrl();
         });
       }
 
-      showMore?.addEventListener("click", () => {
-        const previous = cards.filter((card) => !card.hidden).length;
-        visibleLimit += pageSize;
-        apply();
-        bindQuickViews(portfolioGrid);
-        // Si el botón desaparece al agotar el escaparate, el foco se pierde con
-        // él: pasa a la primera tarjeta que acaba de aparecer.
-        if (showMore.hidden) {
-          const visible = cards.filter((card) => !card.hidden);
-          visible[previous]?.querySelector<HTMLAnchorElement>("a")?.focus();
-        }
-      });
+      for (const button of resetButtons) {
+        button.addEventListener("click", () => {
+          currentFilter = "todos";
+          currentCity = "todas";
+          currentQuery = "";
+          if (search) search.value = "";
+          updateCityUi();
+          apply();
+          syncUrl();
+          search?.focus();
+        });
+      }
     } else {
       // Resumen de la home: los filtros abren el catálogo completo.
       for (const button of buttons) {
@@ -705,7 +1026,7 @@ const slugify = (s: string) =>
       }
     }
 
-    // Estado inicial: primera página del escaparate y listado completo.
+    // Estado inicial: escaparate completo y listado completo.
     apply();
   }
 </script>

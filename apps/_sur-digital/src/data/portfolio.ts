@@ -104,6 +104,10 @@ export interface Project {
 	title: string;
 	category: string;
 	sector: string;
+	/** Ciudad del negocio (municipio), para el filtro de /clientes/. */
+	city?: string;
+	/** Comunidad autónoma (o país) para agrupar las ciudades del filtro. */
+	community?: string;
 	description: string;
 	tags: readonly string[];
 	accent: string;
@@ -119,15 +123,17 @@ export interface Project {
 // casi todo el listado en la misma categoría, elegir el primero de cada una
 // acumularía el peso visual al principio.
 //
-// Aquí solo viven los clientes con captura propia, que son los que se enseñan
-// en /clientes/. Las fichas generadas desde cada landing están en
-// data/portfolio-apps.ts y no se mezclan: convertían la muestra en un listado
-// de más de mil tarjetas sin imagen.
+// Los primeros son los curados, con captura propia: /clientes/ los pinta como
+// tarjetas grandes. Las fichas generadas (data/portfolio-apps.ts) van detrás y
+// se listan en formato compacto, sin imagen, para que aparezcan todos los
+// clientes sin convertir la página en un muro de tarjetas.
 export const PORTFOLIO: Project[] = [
 	{
 		title: '11:11 Coffee and Bakery',
 		category: 'Restaurantes y bares',
 		sector: 'Cafetería y bakery',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Cafetería y bakery en Teatinos: desayunos y meriendas con pitufos, bocadillos, bollería y una gran variedad de pan, además de tartas artesanales por encargo.',
 		tags: ['Bakery', 'Tartas por encargo', 'Teatinos'],
@@ -139,6 +145,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'A Fuego Brasería',
 		category: 'Restaurantes y bares',
 		sector: 'Brasería',
+		city: 'Córdoba',
+		community: 'Andalucía',
 		description:
 			'Parrilla de carbón de encina en Córdoba con carnes seleccionadas, pescados a la brasa y verduras de la huerta.',
 		tags: ['Brasa de encina', 'Carnes', 'Córdoba'],
@@ -150,6 +158,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'A Jalar',
 		category: 'Restaurantes y bares',
 		sector: 'Kebab artesanal',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Kebab artesanal en Teatinos con carne fresca, pan casero y rollos, medias lunas y campers.',
 		tags: ['Kebab artesanal', 'Pan casero', 'Teatinos'],
@@ -161,6 +171,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'A-Style Beauty Salón',
 		category: 'Peluquería y belleza',
 		sector: 'Salón de belleza',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Salón de belleza en Cruz de Humilladero, Málaga, con cejas, cuidado de la piel, uñas y tratamientos de bienestar.',
 		tags: ['Cejas', 'Piel y uñas', 'Cruz de Humilladero'],
@@ -173,6 +185,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Adrizale',
 		category: 'Restaurantes y bares',
 		sector: 'Taberna de tapeo',
+		city: 'Jaén',
+		community: 'Andalucía',
 		description:
 			'Taberna de tapeo en la C. Arco del Consuelo de Jaén, con 4,6★ y 194 reseñas en Google. Abre a mediodía de martes a domingo.',
 		tags: ['Tapeo', '4,6★ en Google', 'Jaén'],
@@ -184,6 +198,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Agustín El Picoteo',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Cocina española de picoteo en Teatinos, con producto ibérico, tapas y una amplia carta de vinos.',
 		tags: ['Cocina española', 'Tapas', 'Teatinos'],
@@ -195,6 +211,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'AM Industria del Estilo',
 		category: 'Peluquería y belleza',
 		sector: 'Peluquería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Estudio de peluquería en Teatinos especializado en corte, color y tratamientos capilares.',
 		tags: ['Corte y peinado', 'Color', 'Tratamientos'],
@@ -206,6 +224,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Amorato',
 		category: 'Restaurantes y bares',
 		sector: 'Heladería y pastelería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Heladería, cafetería y pastelería artesanal en Teatinos: helado con más de 20 sabores sin gluten, tartas, medialunas, alfajores y desayunos.',
 		tags: ['Helado artesanal', 'Sin gluten', 'Teatinos'],
@@ -218,6 +238,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'AR Professional',
 		category: 'Peluquería y belleza',
 		sector: 'Peluquería unisex',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Salón de peluquería y belleza unisex en Teatinos, Málaga, para cortar, peinar y cuidar tu imagen.',
 		tags: ['Peluquería unisex', 'Color', 'Teatinos'],
@@ -229,6 +251,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Asador La Granja',
 		category: 'Restaurantes y bares',
 		sector: 'Asador argentino',
+		city: 'Mijas',
+		community: 'Andalucía',
 		description:
 			'Asador de cocina argentina en Las Lagunas de Mijas con empanadas caseras, milanesa y cortes a la parrilla.',
 		tags: ['Parrilla argentina', 'Empanadas', 'Las Lagunas'],
@@ -240,6 +264,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Autana Restaurant',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina venezolana',
+		city: 'Mijas',
+		community: 'Andalucía',
 		description:
 			'Cocina venezolana en Mijas Costa: platos para compartir, sabores de casa y una bienvenida cercana.',
 		tags: ['Cocina venezolana', 'Para compartir', 'Mijas Costa'],
@@ -251,6 +277,8 @@ export const PORTFOLIO: Project[] = [
 		title: "Bacchus' Terrace",
 		category: 'Restaurantes y bares',
 		sector: 'Tapas y terraza',
+		city: 'Benalmádena',
+		community: 'Andalucía',
 		description:
 			'Terraza sobre el paseo marítimo de Benalmádena con tapas caseras, sabores mediterráneos y cócteles.',
 		tags: ['Tapas', 'Vistas al mar', 'Benalmádena'],
@@ -263,6 +291,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar La Primera del Naranjo',
 		category: 'Restaurantes y bares',
 		sector: 'Bar de cocina casera',
+		city: 'Córdoba',
+		community: 'Andalucía',
 		description:
 			'Cien años de cocina casera andaluza en el barrio del Naranjo: bacalao, pijotas, carnes a la brasa y guisos de siempre en un patio entoldado.',
 		tags: ['Cocina casera', 'Desde 1924', 'Córdoba'],
@@ -274,6 +304,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Los Granaínos de Miguel',
 		category: 'Restaurantes y bares',
 		sector: 'Bar de mar',
+		city: 'Mijas',
+		community: 'Andalucía',
 		description:
 			'Bar familiar en La Cala de Mijas con cocina española, pescados, mariscos y raciones generosas.',
 		tags: ['Pescado y marisco', 'Raciones', 'La Cala'],
@@ -285,6 +317,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar restaurante Grand Pere',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Almería',
+		community: 'Andalucía',
 		description:
 			'Bar restaurante en el Club Natación de Almería, con 4,4★ y 796 reseñas en Google. Abierto todos los días menos los lunes.',
 		tags: ['Club Natación', '796 reseñas', 'Almería'],
@@ -296,6 +330,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar restaurante Natursur',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Viator',
+		community: 'Andalucía',
 		description:
 			'Cocina española en el Paraje Pisaica de la Virgen, en Viator (Almería), con desayunos desde primera hora y menú del día.',
 		tags: ['Cocina española', 'Menú del día', 'Viator'],
@@ -307,6 +343,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Barbería Hair Cool',
 		category: 'Peluquería y belleza',
 		sector: 'Barbería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Barbería en Teatinos (Málaga): cortes modernos y clásicos, degradados, barba y cejas.',
 		tags: ['Cortes', 'Barba y cejas', 'Teatinos'],
@@ -319,6 +357,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Benavra',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina internacional',
+		city: 'Mijas',
+		community: 'Andalucía',
 		description:
 			'Restaurante familiar en Torrenueva, La Cala de Mijas, con cocina internacional moderna, ingredientes locales y platos caseros.',
 		tags: ['Cocina internacional', 'Producto local', 'La Cala de Mijas'],
@@ -330,6 +370,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Café-Bar Cuatro Caminos',
 		category: 'Restaurantes y bares',
 		sector: 'Café-bar',
+		city: 'Granada',
+		community: 'Andalucía',
 		description:
 			'Desayunos, comida casera, menú del día, raciones y platos combinados en la Carretera de la Sierra, 73, en Granada.',
 		tags: ['Desayunos', 'Menú del día', 'Granada'],
@@ -341,6 +383,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Carbikemoto',
 		category: 'Taller y motor',
 		sector: 'Taller de motos',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Taller de reparación de motos en Málaga, en Calle Antonio Raíz, con atención directa y llamada previa.',
 		tags: ['Taller', 'Motos', 'Málaga'],
@@ -353,6 +397,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Comestibles Pepe',
 		category: 'Comercio',
 		sector: 'Charcutería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Charcutería y tienda de alimentación en Málaga, con embutidos, jamones, quesos y cestas.',
 		tags: ['Charcutería', 'Alimentación', 'Comercio local'],
@@ -365,6 +411,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Destello',
 		category: 'Restaurantes y bares',
 		sector: 'Cafetería y tartas',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Cafetería y bar de tapes en Teatinos: tartas caseras, gofres, café y copas hasta la madrugada.',
 		tags: ['Tartas caseras', 'Gofres', 'Teatinos'],
@@ -376,6 +424,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Gallu',
 		category: 'Restaurantes y bares',
 		sector: 'Sidrería',
+		city: 'Rincón de la Victoria',
+		community: 'Andalucía',
 		description:
 			'Restaurante asturiano y sidrería en Rincón de la Victoria: cachopo, gildas, croquetas caseras y sidra natural.',
 		tags: ['Cocina asturiana', 'Cachopo', 'Rincón de la Victoria'],
@@ -387,6 +437,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Manjar Playa',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante marinero',
+		city: 'Torremolinos',
+		community: 'Andalucía',
 		description:
 			'Cocina mediterránea marinera en La Carihuela: pescados, mariscos, arroces y menú del día.',
 		tags: ['Pescados y mariscos', 'Arroces', 'La Carihuela'],
@@ -398,6 +450,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Pollito Lio',
 		category: 'Restaurantes y bares',
 		sector: 'Asador argentino',
+		city: 'Rincón de la Victoria',
+		community: 'Andalucía',
 		description:
 			'Asador argentino en Rincón de la Victoria: pollo asado al espiedo, milanesas y empanadas caseras, con take away y delivery.',
 		tags: ['Pollo al espiedo', 'Empanadas', 'Rincón de la Victoria'],
@@ -409,6 +463,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Tinglao',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Granada',
+		community: 'Andalucía',
 		description:
 			'Tapas, jamón asado, comida casera, raciones y menú del día en la calle Marqués de Mondéjar, 13, en el centro de Granada.',
 		tags: ['Jamón asado', 'Comida casera', 'Granada'],
@@ -420,6 +476,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Gastrobar 1947',
 		category: 'Restaurantes y bares',
 		sector: 'Gastrobar',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Cocina argentino-española en Teatinos: milanesa, empanadas, tequeños y ensaladilla rusa, con terraza junto al parque infantil.',
 		tags: ['Milanesa', 'Empanadas', 'Teatinos'],
@@ -432,6 +490,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Merci Nails',
 		category: 'Peluquería y belleza',
 		sector: 'Salón de uñas',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Salón de uñas en la Plaza del Teatro, en pleno centro de Málaga: manicura, pedicura, semipermanente y acrílico, sin cita previa.',
 		tags: ['Sin cita previa', 'Semipermanente', 'Centro'],
@@ -443,6 +503,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Mesón Luís',
 		category: 'Restaurantes y bares',
 		sector: 'Pescado y marisco',
+		city: 'Granada',
+		community: 'Andalucía',
 		description:
 			'Pescado y marisco fresco, gambas, frituras y tapas en la calle Pedro Antonio de Alarcón, 41, en Granada.',
 		tags: ['Pescado y marisco', 'Frituras', 'Granada'],
@@ -454,6 +516,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante Casa Alfonso',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina casera',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Cocina casera española en la calle Sófocles, 8 (Teatinos): guisos de siempre, albóndigas y pescado y calamar según la selección del día.',
 		tags: ['Cocina casera', 'Guisos', 'Teatinos'],
@@ -465,6 +529,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante El Nido',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
+		city: 'Aguilar de la Frontera',
+		community: 'Andalucía',
 		description:
 			'Restaurante en Aguilar de la Frontera con carnes a la brasa, cocina casera y menú del día.',
 		tags: ['Carnes a la brasa', 'Cocina casera', 'Aguilar'],
@@ -476,6 +542,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante La Barbacana',
 		category: 'Restaurantes y bares',
 		sector: 'Brasa y pescado',
+		city: 'Marbella',
+		community: 'Andalucía',
 		description: 'Carnes a la brasa, pescados y paellas en el centro de Marbella, con menú diario.',
 		tags: ['Brasa', 'Paellas', 'Marbella'],
 		accent: 'bg-primary/15 text-primary',
@@ -487,6 +555,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante La Masía',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
+		city: 'El Ejido',
+		community: 'Andalucía',
 		description:
 			'Restaurante de cocina española y mediterránea en el Conde de Barcelona de El Ejido, con 4,5★ y 184 reseñas en Google.',
 		tags: ['Cocina española', 'Mediterránea', 'El Ejido'],
@@ -498,6 +568,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante Puerta de la Alhambra',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina mediterránea',
+		city: 'Granada',
+		community: 'Andalucía',
 		description:
 			'Cocina mediterránea y española con tapas y menú del día en la calle Rauda, 2, a un paso de la Alhambra.',
 		tags: ['Cocina mediterránea', 'Menú del día', 'Granada'],
@@ -509,6 +581,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante Rincón Gallego Egabrense',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina gallega',
+		city: 'Cabra',
+		community: 'Andalucía',
 		description:
 			'Cocina gallega en Cabra (Córdoba): pulpo a la brasa, chuletón de rubia gallega, marisco y croquetas caseras, con terraza y patio interior.',
 		tags: ['Pulpo a la brasa', 'Marisco', 'Cabra'],
@@ -520,6 +594,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Sami Beauty Salon',
 		category: 'Peluquería y belleza',
 		sector: 'Peluquería y estética',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Peluquería y estética en el mismo local en Carlos Haya (Málaga): cortes, color, uñas y tratamientos, con cita online y sin esperas.',
 		tags: ['Cita online', 'Pelo y uñas', 'Carlos Haya'],
@@ -531,6 +607,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Sazón Teatinos',
 		category: 'Restaurantes y bares',
 		sector: 'Bar de tapas y parrilla',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Tapas, raciones y parrilla en Teatinos, con gildas, croquetas caseras y platos para compartir.',
 		tags: ['Tapas', 'Parrilla', 'Teatinos'],
@@ -542,6 +620,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Scruz Abogados (Sergio Cruz Chacón)',
 		category: 'Servicios profesionales',
 		sector: 'Despacho de abogados',
+		city: 'Lucena',
+		community: 'Andalucía',
 		description:
 			'Despacho en Lucena, Córdoba y Málaga con más de 20 años de experiencia en civil, penal, laboral, mercantil y familia.',
 		tags: ['Derecho civil', 'Penal y familia', 'Lucena'],
@@ -554,6 +634,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Sofía García Total Beauty',
 		category: 'Peluquería y belleza',
 		sector: 'Salón de belleza',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Salón de belleza en Mesonero Romanos (Teatinos, Málaga): manicuras, diseños de uñas y esmaltados, con cita previa y 5,0★ en Google.',
 		tags: ['Manicuras', 'Diseño de uñas', 'Teatinos'],
@@ -565,6 +647,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Sur Helado Café',
 		category: 'Restaurantes y bares',
 		sector: 'Heladería y cafetería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Helado café en C. Pirandello (Teatinos): helado artesanal, café, tartas y bocadillos, con terraza en la calle y 4,9★ en Google.',
 		tags: ['Helado artesanal', 'Terraza', 'Teatinos'],
@@ -576,6 +660,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Taberna Casa Pino',
 		category: 'Restaurantes y bares',
 		sector: 'Taberna',
+		city: 'Mijas',
+		community: 'Andalucía',
 		description:
 			'Taberna de barrio en La Cala de Mijas con cocina española de siempre: croquetas caseras, ensaladilla rusa y tapas para compartir, con música en directo.',
 		tags: ['Tapas y vinos', 'Música en directo', 'La Cala de Mijas'],
@@ -588,6 +674,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Taberna El Chato',
 		category: 'Restaurantes y bares',
 		sector: 'Taberna',
+		city: 'Córdoba',
+		community: 'Andalucía',
 		description:
 			'Taberna en Villarrubia especializada en carnes maduradas a la brasa y cocina tradicional.',
 		tags: ['Carnes maduradas', 'Brasa', 'Cocina tradicional'],
@@ -599,6 +687,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Taberna La Charata',
 		category: 'Restaurantes y bares',
 		sector: 'Taberna',
+		city: 'Rincón de la Victoria',
+		community: 'Andalucía',
 		description: 'Taberna familiar en Rincón de la Victoria con tapas, guisos y recetas caseras.',
 		tags: ['Tapas', 'Cocina casera', 'Rincón de la Victoria'],
 		accent: 'bg-neutral/15 text-neutral',
@@ -609,6 +699,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Taberna Pura Cepa',
 		category: 'Restaurantes y bares',
 		sector: 'Taberna cordobesa',
+		city: 'Córdoba',
+		community: 'Andalucía',
 		description:
 			'Cocina cordobesa en Ciudad Jardín: salmorejo, flamenquín, rabo de toro y tablas de ibéricos, con terraza, desayunos y vinos Montilla-Moriles.',
 		tags: ['Salmorejo', 'Rabo de toro', 'Córdoba'],
@@ -621,6 +713,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Talleres Caldado',
 		category: 'Taller y motor',
 		sector: 'Taller mecánico',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Taller de coches en la avenida Carlos Haya de Málaga, dentro de la red Eurotaller, para el mantenimiento y la reparación de tu vehículo.',
 		tags: ['Eurotaller', 'Mantenimiento', 'Carlos Haya'],
@@ -632,6 +726,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'The Boss Restaurante',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
+		city: 'Rincón de la Victoria',
+		community: 'Andalucía',
 		description:
 			'Restaurante en La Cala del Moral: pizza al horno de leña, pasta, carnes y desayunos, con terraza.',
 		tags: ['Horno de leña', 'Terraza', 'La Cala del Moral'],
@@ -643,6 +739,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Venta La Butibamba',
 		category: 'Restaurantes y bares',
 		sector: 'Venta tradicional',
+		city: 'Mijas',
+		community: 'Andalucía',
 		description:
 			'Cocina casera y tradición malagueña en La Cala de Mijas, con su famoso bocadillo de lomo en manteca.',
 		tags: ['Lomo en manteca', 'Cocina malagueña', 'La Cala de Mijas'],
@@ -654,6 +752,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Albero Tapas',
 		category: 'Restaurantes y bares',
 		sector: 'Bar de tapas y marisquería',
+		city: 'Isla Cristina',
+		community: 'Andalucía',
 		description:
 			'Bar de tapas y marisquería en Isla Cristina, con 4,8★ y 317 reseñas en Google. Noches de martes a domingo.',
 		tags: ['Tapas y marisco', 'Isla Cristina'],
@@ -665,6 +765,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Bermeotarrak',
 		category: 'Restaurantes y bares',
 		sector: 'Parrilla vasca',
+		city: 'Barakaldo',
+		community: 'País Vasco',
 		description:
 			'Parrilla vasca en Cruces, Barakaldo, con pescados a la parrilla en la Plaza Inmaculada 23.',
 		tags: ['Parrilla vasca', 'Barakaldo'],
@@ -676,6 +778,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Cafetería Sebastián',
 		category: 'Restaurantes y bares',
 		sector: 'Bar cafetería',
+		city: 'Villanueva de los Castillejos',
+		community: 'Andalucía',
 		description:
 			'Bar cafetería en Villanueva de los Castillejos (Huelva), con 4,6★ y 121 reseñas en Google.',
 		tags: ['Desayunos', 'Villanueva de los Castillejos'],
@@ -687,6 +791,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar de Esteban',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina castellana',
+		city: 'Ciudad Real',
+		community: 'Castilla-La Mancha',
 		description:
 			'Bar de cocina castellana con comida casera manchega en Ciudad Real, con 4,6★ y 149 reseñas en Google.',
 		tags: ['Comida casera', 'Ciudad Real'],
@@ -698,6 +804,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Pallares',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante',
+		city: 'Benidorm',
+		community: 'Comunidad Valenciana',
 		description:
 			'Restaurante en Benidorm, con 4,3★ y 252 reseñas en Google. Abierto todos los días de 8:00 a 1:00.',
 		tags: ['Restaurante', 'Benidorm'],
@@ -709,6 +817,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante Sierra Alhamilla',
 		category: 'Restaurantes y bares',
 		sector: 'Tapas y cocina andaluza',
+		city: 'Pechina',
+		community: 'Andalucía',
 		description: 'Tapas y cocina andaluza en Pechina (Almería), con 4,5★ y 942 reseñas en Google.',
 		tags: ['Cocina andaluza', 'Pechina'],
 		accent: 'bg-primary/15 text-primary',
@@ -719,6 +829,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante Ya Lo Sabes',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Jaén',
+		community: 'Andalucía',
 		description: 'Bar restaurante en el Paseo de España de Jaén, con 4,4★ y 729 reseñas en Google.',
 		tags: ['Bar restaurante', 'Jaén'],
 		accent: 'bg-neutral/15 text-neutral',
@@ -729,6 +841,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Seoane',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Calañas',
+		community: 'Andalucía',
 		description:
 			'Bar restaurante en Calañas (Huelva), con 4,6★ y 208 reseñas en Google. Abre de lunes a sábado.',
 		tags: ['Bar restaurante', 'Calañas'],
@@ -740,6 +854,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Clínica Dental Daniela Torres',
 		category: 'Servicios profesionales',
 		sector: 'Clínica dental',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Clínica dental en la Avenida de Andalucía de Málaga: odontología para adultos y niños.',
 		tags: ['Dentista', 'Málaga'],
@@ -751,6 +867,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bodega La Fuente',
 		category: 'Restaurantes y bares',
 		sector: 'Bar de tapas y vinos',
+		city: 'Cartagena',
+		community: 'Región de Murcia',
 		description:
 			'Bar de tapas y tienda de vinos en Cartagena, con 4,2★ y más de 3.800 reseñas en Google.',
 		tags: ['Tapas y vinos', 'Cartagena'],
@@ -762,6 +880,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Delito Smash',
 		category: 'Restaurantes y bares',
 		sector: 'Hamburguesería',
+		city: 'Isla Cristina',
+		community: 'Andalucía',
 		description: 'Hamburguesería en Isla Cristina, con 4,8★ en Google. Cenas de 21:00 a 24:00.',
 		tags: ['Smash burgers', 'Isla Cristina'],
 		accent: 'bg-secondary/15 text-neutral',
@@ -772,6 +892,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Aserradero Tharsis',
 		category: 'Restaurantes y bares',
 		sector: 'Hamburguesería',
+		city: 'Tharsis',
+		community: 'Andalucía',
 		description: 'Hamburguesería en Tharsis (Huelva), con 5,0★ en Google.',
 		tags: ['Hamburguesas', 'Tharsis'],
 		accent: 'bg-neutral/15 text-neutral',
@@ -782,6 +904,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Taberna La New',
 		category: 'Restaurantes y bares',
 		sector: 'Taberna',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Taberna de cocina casera malagueña en Teatinos: guisos a fuego lento, producto fresco y tapas para compartir.',
 		tags: ['Cocina malagueña', 'Teatinos'],
@@ -793,6 +917,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante El Sótano',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante con zona infantil',
+		city: 'Jaén',
+		community: 'Andalucía',
 		description: 'Restaurante con zona infantil en Jaén, con 4,4★ y 588 reseñas en Google.',
 		tags: ['Zona infantil', 'Jaén'],
 		accent: 'bg-primary/15 text-primary',
@@ -803,6 +929,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Cuevas Alí Babá',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina marroquí',
+		city: 'Ciudad Real',
+		community: 'Castilla-La Mancha',
 		description:
 			'Restaurante marroquí de cocina casera en Ciudad Real, con 4,7★ y 303 reseñas en Google.',
 		tags: ['Cocina marroquí', 'Ciudad Real'],
@@ -814,6 +942,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar Restaurante New Naranjo',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Benidorm',
+		community: 'Comunidad Valenciana',
 		description:
 			'Bar restaurante en la Avenida de Andalucía de Benidorm, abierto todos los días de 11:00 a 1:00.',
 		tags: ['Bar restaurante', 'Benidorm'],
@@ -825,6 +955,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bistrot Senséô',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina francesa',
+		city: 'Benidorm',
+		community: 'Comunidad Valenciana',
 		description:
 			'Cocina francesa en Benidorm, con 4,9★ y 106 reseñas en Google. Terraza con vistas al mar y bar de cócteles.',
 		tags: ['Cocina francesa', 'Benidorm'],
@@ -836,6 +968,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Boabdil Restaurante',
 		category: 'Restaurantes y bares',
 		sector: 'Tapas y cocina española',
+		city: 'Granada',
+		community: 'Andalucía',
 		description:
 			'Tapas y cocina española tradicional junto al Albaicín de Granada, a un paso de Plaza Nueva.',
 		tags: ['Tapas', 'Albaicín'],
@@ -878,6 +1012,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bar restaurante La Tapita',
 		category: 'Restaurantes y bares',
 		sector: 'Bar restaurante',
+		city: 'Sanlúcar de Barrameda',
+		community: 'Andalucía',
 		description:
 			'Bar restaurante en el Paseo Jardín Botánico de Sanlúcar de Barrameda: tapas, raciones y arroces, con 4,3★ y 118 reseñas en Google.',
 		tags: ['Tapas y raciones', 'Sanlúcar de Barrameda'],
@@ -889,6 +1025,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante Pizzaria A Paragem',
 		category: 'Restaurantes y bares',
 		sector: 'Pizzería y restaurante',
+		city: 'Mértola',
+		community: 'Portugal',
 		description:
 			'Pizzería y restaurante en Mértola (Portugal), con pizzas de horno y cocina tradicional. Abre de martes a domingo.',
 		tags: ['Pizzería', 'Mértola', 'Portugal'],
@@ -900,6 +1038,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Abacería Tinta de Toro',
 		category: 'Restaurantes y bares',
 		sector: 'Abacería y tapas',
+		city: 'Jaén',
+		community: 'Andalucía',
 		description:
 			'Abacería de tapas y cocina tradicional en el Paseo de la Estación de Jaén, con producto de despensa y vinos.',
 		tags: ['Tapas', 'Jaén', 'Vinos'],
@@ -911,6 +1051,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Actitud Centro de Belleza',
 		category: 'Peluquería y belleza',
 		sector: 'Peluquería y estética',
+		city: 'Córdoba',
+		community: 'Andalucía',
 		description:
 			'Peluquería y estética en el barrio Noroeste de Córdoba: corte, color y tratamientos con trato personalizado.',
 		tags: ['Peluquería', 'Córdoba', 'Estética'],
@@ -922,6 +1064,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Asador de Camilo',
 		category: 'Restaurantes y bares',
 		sector: 'Parrilla',
+		city: 'Jaén',
+		community: 'Andalucía',
 		description:
 			'Parrilla de brasa en la Puerta del Sol de Jaén, con carnes a la parrilla y comidas de martes a domingo.',
 		tags: ['Parrilla', 'Jaén', 'Carnes'],
@@ -933,6 +1077,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'La Bendita Restaurante',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina española y cafetería',
+		city: 'Ciudad Real',
+		community: 'Castilla-La Mancha',
 		description:
 			'Cocina española y cafetería en Ciudad Real, con espacio para gastronomía, arte y entretenimiento.',
 		tags: ['Restaurante', 'Ciudad Real', 'Cafetería'],
@@ -944,6 +1090,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Carolina Centro & Belleza',
 		category: 'Peluquería y belleza',
 		sector: 'Centro de belleza',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Centro de belleza en Ciudad Jardín (Málaga): tratamientos faciales y corporales con cita previa.',
 		tags: ['Belleza', 'Málaga', 'Facial'],
@@ -955,6 +1103,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'La Barbería de Teatinos',
 		category: 'Peluquería y belleza',
 		sector: 'Barbería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Barbería en Teatinos (Málaga): corte, barba y afeitado clásico con reserva online.',
 		tags: ['Barbería', 'Teatinos', 'Málaga'],
@@ -966,6 +1116,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Bquarters',
 		category: 'Peluquería y belleza',
 		sector: 'Barbería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Barbería en Teatinos con corte, ritual de barba y packs combinados; reserva por Booksy o teléfono.',
 		tags: ['Barbería', 'Teatinos', 'Reservas'],
@@ -977,6 +1129,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Barbershop Guillermo Val',
 		category: 'Peluquería y belleza',
 		sector: 'Barbería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Barbería en el centro de Málaga especializada en corte con carácter, barba y afeitado.',
 		tags: ['Barbería', 'Málaga', 'Barba'],
@@ -988,6 +1142,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Medicina & Belleza',
 		category: 'Peluquería y belleza',
 		sector: 'Medicina estética',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Medicina estética en La Malagueta (Málaga): tratamientos faciales y corporales con asesoramiento previo.',
 		tags: ['Estética', 'Málaga', 'Facial'],
@@ -999,6 +1155,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Rincón del Perlita',
 		category: 'Restaurantes y bares',
 		sector: 'Bar de tapas y cervezas',
+		city: 'Cartagena',
+		community: 'Región de Murcia',
 		description:
 			'Bar con terraza en Cartagena, más de 150 cervezas, tapas y hamburguesas; abierto todos los días.',
 		tags: ['Cervezas', 'Cartagena', 'Terraza'],
@@ -1010,6 +1168,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'La Talega',
 		category: 'Restaurantes y bares',
 		sector: 'Restaurante y bar',
+		city: 'Jaén',
+		community: 'Andalucía',
 		description:
 			'Restaurante y bar en el centro de Jaén con tapeo, mediodía y cenas de martes a sábado.',
 		tags: ['Tapas', 'Jaén', 'Restaurante'],
@@ -1021,6 +1181,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Gigantes Street Food',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina americana',
+		city: 'Ciudad Real',
+		community: 'Castilla-La Mancha',
 		description:
 			'Street food americana en Ciudad Real: hamburguesas, alitas y raciones, con dos turnos de servicio.',
 		tags: ['Hamburguesas', 'Ciudad Real', 'Street food'],
@@ -1032,6 +1194,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Chuletón',
 		category: 'Restaurantes y bares',
 		sector: 'Parrilla',
+		city: 'Instinción',
+		community: 'Andalucía',
 		description:
 			'Parrilla y desayunos en Instinción (Almería), con carnes a la brasa y menús de mediodía.',
 		tags: ['Parrilla', 'Almería', 'Desayunos'],
@@ -1043,6 +1207,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Restaurante La Nicoba',
 		category: 'Restaurantes y bares',
 		sector: 'Menú del día',
+		city: 'Huelva',
+		community: 'Andalucía',
 		description:
 			'Menú del día y cocina de siempre en Huelva, de lunes a viernes desde primera hora.',
 		tags: ['Menú del día', 'Huelva', 'Cocina casera'],
@@ -1054,6 +1220,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Terrazeo del Guinda',
 		category: 'Restaurantes y bares',
 		sector: 'Desayunos y tapas',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Desayunos, tapas y comidas en Cruz de Humilladero (Málaga), con terraza y calamares fritos.',
 		tags: ['Desayunos', 'Málaga', 'Terraza'],
@@ -1065,6 +1233,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Gym Krono',
 		category: 'Servicios profesionales',
 		sector: 'Gimnasio',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Gimnasio de barrio en Teatinos (Málaga): musculación, cardio y monitores para entrenar a tu ritmo.',
 		tags: ['Gimnasio', 'Teatinos', 'Musculación'],
@@ -1076,6 +1246,8 @@ export const PORTFOLIO: Project[] = [
 		title: '78 Street Burger',
 		category: 'Restaurantes y bares',
 		sector: 'Hamburguesería',
+		city: 'Cáceres',
+		community: 'Extremadura',
 		description:
 			'Hamburguesería en Cáceres con burgers a la parrilla, menús y servicio para llevar.',
 		tags: ['Hamburguesas', 'Cáceres', 'Para llevar'],
@@ -1087,6 +1259,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'La Mimosa Atelier',
 		category: 'Comercio',
 		sector: 'Floristería',
+		city: 'Córdoba',
+		community: 'Andalucía',
 		description:
 			'Floristería en Córdoba: ramos, plantas y arreglos florales para eventos y regalos.',
 		tags: ['Floristería', 'Córdoba', 'Ramos'],
@@ -1098,6 +1272,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Alcaraván Gastroteca',
 		category: 'Restaurantes y bares',
 		sector: 'Gastroteca',
+		city: 'Cáceres',
+		community: 'Extremadura',
 		description:
 			'Gastroteca en Cáceres con cocina de mercado, tapas y una carta pensada para compartir.',
 		tags: ['Gastroteca', 'Cáceres', 'Tapas'],
@@ -1109,6 +1285,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Alexflor',
 		category: 'Comercio',
 		sector: 'Floristería',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description: 'Floristería en Málaga con ramos personalizados, plantas y entrega a domicilio.',
 		tags: ['Floristería', 'Málaga', 'Plantas'],
 		accent: 'bg-secondary/15 text-neutral',
@@ -1119,6 +1297,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Málaga Supermarket 24/7',
 		category: 'Comercio',
 		sector: 'Supermercado 24 horas',
+		city: 'Málaga',
+		community: 'Andalucía',
 		description:
 			'Supermercado 24 horas en el centro de Málaga: alimentación, bebidas y compra rápida.',
 		tags: ['Supermercado', 'Málaga', '24 horas'],
@@ -1130,6 +1310,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Floristería Amparo',
 		category: 'Comercio',
 		sector: 'Floristería',
+		city: 'Madrid',
+		community: 'Comunidad de Madrid',
 		description:
 			'Floristería en Aluche (Madrid) con ramos, plantas y servicio de entrega para ocasiones especiales.',
 		tags: ['Floristería', 'Madrid', 'Ramos'],
@@ -1141,6 +1323,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Floristería Ana María',
 		category: 'Comercio',
 		sector: 'Floristería',
+		city: 'Leganés',
+		community: 'Comunidad de Madrid',
 		description:
 			'Floristería en Leganés (Madrid) especializada en ramos, bodas y arreglos para eventos.',
 		tags: ['Floristería', 'Leganés', 'Eventos'],
@@ -1152,6 +1336,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Anabel Vegara Estética',
 		category: 'Peluquería y belleza',
 		sector: 'Centro de estética',
+		city: 'Barcelona',
+		community: 'Cataluña',
 		description:
 			'Centro de estética y bienestar en Nou Barris (Barcelona): facial, corporal y tratamientos personalizados.',
 		tags: ['Estética', 'Barcelona', 'Bienestar'],
@@ -1163,6 +1349,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'Ama Leku',
 		category: 'Restaurantes y bares',
 		sector: 'Cocina vasca',
+		city: 'Zaragoza',
+		community: 'Aragón',
 		description:
 			'Cocina vasca en el centro de Zaragoza: pescado del Cantábrico, tapas y menú del día.',
 		tags: ['Cocina vasca', 'Zaragoza', 'Pescado'],
@@ -1174,6 +1362,8 @@ export const PORTFOLIO: Project[] = [
 		title: 'El Garbanzo Negro',
 		category: 'Restaurantes y bares',
 		sector: 'Menú del día',
+		city: 'Cádiz',
+		community: 'Andalucía',
 		description:
 			'Menú del día casero en el centro de Cádiz, con cocina tradicional y servicio de mediodía.',
 		tags: ['Menú del día', 'Cádiz', 'Cocina casera'],

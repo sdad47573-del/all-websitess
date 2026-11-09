@@ -130,6 +130,137 @@ const partirTagline = (tagline) => {
 	return { sector: corte[1].trim(), ciudad: corte[2].trim() };
 };
 
+// Comunidades autónomas (y países vecinos) para agrupar las ciudades del
+// filtro. `region`/`regionName` de las landings a veces traen la comunidad y a
+// veces la provincia; se aceptan las dos formas.
+const COMUNIDADES = new Map([
+	['Andalucía', 'Andalucía'],
+	['Aragón', 'Aragón'],
+	['Asturias', 'Asturias'],
+	['Principado de Asturias', 'Asturias'],
+	['Islas Baleares', 'Islas Baleares'],
+	['Illes Balears', 'Islas Baleares'],
+	['Canarias', 'Canarias'],
+	['Cantabria', 'Cantabria'],
+	['Castilla-La Mancha', 'Castilla-La Mancha'],
+	['Castilla y León', 'Castilla y León'],
+	['Cataluña', 'Cataluña'],
+	['Catalunya', 'Cataluña'],
+	['Comunidad de Madrid', 'Comunidad de Madrid'],
+	['Madrid', 'Comunidad de Madrid'],
+	['Comunidad Valenciana', 'Comunidad Valenciana'],
+	['Comunitat Valenciana', 'Comunidad Valenciana'],
+	['Extremadura', 'Extremadura'],
+	['Galicia', 'Galicia'],
+	['La Rioja', 'La Rioja'],
+	['Región de Murcia', 'Región de Murcia'],
+	['Murcia', 'Región de Murcia'],
+	['Navarra', 'Navarra'],
+	['Comunidad Foral de Navarra', 'Navarra'],
+	['País Vasco', 'País Vasco'],
+	['Euskadi', 'País Vasco'],
+	['Ceuta', 'Ceuta'],
+	['Melilla', 'Melilla'],
+	['Portugal', 'Portugal'],
+	['Andorra', 'Andorra'],
+]);
+
+const PROVINCIAS = new Map([
+	['Almería', 'Andalucía'],
+	['Cádiz', 'Andalucía'],
+	['Córdoba', 'Andalucía'],
+	['Granada', 'Andalucía'],
+	['Huelva', 'Andalucía'],
+	['Jaén', 'Andalucía'],
+	['Málaga', 'Andalucía'],
+	['Sevilla', 'Andalucía'],
+	['Huesca', 'Aragón'],
+	['Teruel', 'Aragón'],
+	['Zaragoza', 'Aragón'],
+	['Las Palmas', 'Canarias'],
+	['Santa Cruz de Tenerife', 'Canarias'],
+	['Albacete', 'Castilla-La Mancha'],
+	['Ciudad Real', 'Castilla-La Mancha'],
+	['Cuenca', 'Castilla-La Mancha'],
+	['Guadalajara', 'Castilla-La Mancha'],
+	['Toledo', 'Castilla-La Mancha'],
+	['Ávila', 'Castilla y León'],
+	['Burgos', 'Castilla y León'],
+	['León', 'Castilla y León'],
+	['Palencia', 'Castilla y León'],
+	['Salamanca', 'Castilla y León'],
+	['Segovia', 'Castilla y León'],
+	['Soria', 'Castilla y León'],
+	['Valladolid', 'Castilla y León'],
+	['Zamora', 'Castilla y León'],
+	['Barcelona', 'Cataluña'],
+	['Girona', 'Cataluña'],
+	['Lleida', 'Cataluña'],
+	['Tarragona', 'Cataluña'],
+	['Alicante', 'Comunidad Valenciana'],
+	['Alacant', 'Comunidad Valenciana'],
+	['Castellón', 'Comunidad Valenciana'],
+	['Castelló', 'Comunidad Valenciana'],
+	['Valencia', 'Comunidad Valenciana'],
+	['València', 'Comunidad Valenciana'],
+	['Badajoz', 'Extremadura'],
+	['Cáceres', 'Extremadura'],
+	['A Coruña', 'Galicia'],
+	['Lugo', 'Galicia'],
+	['Ourense', 'Galicia'],
+	['Pontevedra', 'Galicia'],
+	['Álava', 'País Vasco'],
+	['Araba', 'País Vasco'],
+	['Gipuzkoa', 'País Vasco'],
+	['Guipúzcoa', 'País Vasco'],
+	['Bizkaia', 'País Vasco'],
+	['Vizcaya', 'País Vasco'],
+]);
+
+const CIUDADES_PORTUGAL = new Set([
+	'lisboa', 'setubal', 'sintra', 'almada', 'mertola', 'alentejo', 'porto', 'braga',
+]);
+const CIUDADES_ANDORRA = new Set([
+	'andorra-la-vella', 'encamp', 'canillo', 'ordino', 'escaldes-engordany',
+]);
+
+// Ciudades cuya landing no trae región: se resuelven a mano por provincia.
+const CIUDADES_COMUNIDAD = new Map([
+	['vejer-de-la-frontera', 'Andalucía'],
+	['barbate', 'Andalucía'],
+	['conil-de-la-frontera', 'Andalucía'],
+	['vejer-de-la-frontera-conil', 'Andalucía'],
+	['mijas', 'Andalucía'],
+	['torremolinos', 'Andalucía'],
+	['lucena', 'Andalucía'],
+	['xodos', 'Comunidad Valenciana'],
+	['el-monte-blanco', 'Comunidad Valenciana'],
+	['benicassim', 'Comunidad Valenciana'],
+]);
+
+const normalizarCiudad = (texto) =>
+	String(texto ?? '')
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/[^a-z0-9]+/g, '-');
+
+const comunidadDe = ({ region, regionName, country, city }) => {
+	if (country === 'PT') return 'Portugal';
+	if (country === 'AD') return 'Andorra';
+	for (const valor of [region, regionName]) {
+		const limpio = String(valor ?? '').trim();
+		if (!limpio) continue;
+		if (COMUNIDADES.has(limpio)) return COMUNIDADES.get(limpio);
+		if (PROVINCIAS.has(limpio)) return PROVINCIAS.get(limpio);
+	}
+	const clave = normalizarCiudad(city);
+	if (CIUDADES_COMUNIDAD.has(clave)) return CIUDADES_COMUNIDAD.get(clave);
+	if (CIUDADES_PORTUGAL.has(clave)) return 'Portugal';
+	if (CIUDADES_ANDORRA.has(clave)) return 'Andorra';
+	return '';
+};
+
 const tituloDesdeSlug = (slug) =>
 	slug
 		.split('-')
@@ -202,6 +333,9 @@ for (const slug of slugs) {
 	let nombre = '';
 	let tagline = '';
 	let ciudad = '';
+	let region = '';
+	let regionName = '';
+	let country = '';
 	let descripcion = '';
 
 	// 1) data/site.ts importado: la fuente más fiable.
@@ -216,6 +350,9 @@ for (const slug of slugs) {
 				nombre = limpiarNombre(negocio.name);
 				tagline = String(negocio.tagline ?? negocio.claim ?? '');
 				ciudad = String(negocio.city ?? '');
+				region = String(negocio.region ?? '');
+				regionName = String(negocio.regionName ?? '');
+				country = String(negocio.country ?? '');
 				descripcion = String(negocio.summary ?? negocio.description ?? '');
 				if (nombre) stats.siteTs++;
 			}
@@ -234,9 +371,22 @@ for (const slug of slugs) {
 			nombre ||= limpiarNombre(campoDeTexto(fuente, 'name'));
 			tagline ||= campoDeTexto(fuente, 'tagline');
 			ciudad ||= campoDeTexto(fuente, 'city');
+			region ||= campoDeTexto(fuente, 'region');
+			regionName ||= campoDeTexto(fuente, 'regionName');
+			country ||= campoDeTexto(fuente, 'country');
 			descripcion ||= campoDeTexto(fuente, 'summary') || campoDeTexto(fuente, 'description');
 		}
 		if (nombre) stats.pagina++;
+	}
+
+	// La región puede estar en la página aunque el nombre y la ciudad ya se
+	// hayan encontrado en site.ts: se lee siempre.
+	if (!region || !regionName || !country) {
+		for (const fuente of fuentes) {
+			region ||= campoDeTexto(fuente, 'region');
+			regionName ||= campoDeTexto(fuente, 'regionName');
+			country ||= campoDeTexto(fuente, 'country');
+		}
 	}
 
 	// 3) data/secciones.json: primera sección con título y etiqueta de dirección.
@@ -293,6 +443,10 @@ for (const slug of slugs) {
 		title: nombre,
 		category: categoria,
 		sector,
+		city: ciudad,
+		region,
+		regionName,
+		country,
 		description: detalle,
 		tags: [ciudad, sector].filter(Boolean).slice(0, 2),
 		accent: ACENTOS[categoria] ?? ACENTOS['Servicios profesionales'],
@@ -300,20 +454,59 @@ for (const slug of slugs) {
 	});
 }
 
+for (const entrada of entradas) {
+	entrada.community = comunidadDe(entrada) || '';
+}
+
+// Segunda pasada: las fichas con ciudad pero sin región heredan la comunidad
+// que ya tengan otras landings de la misma ciudad.
+const comunidadesPorCiudad = new Map();
+for (const entrada of entradas) {
+	if (!entrada.city || !entrada.community) continue;
+	const clave = normalizarCiudad(entrada.city);
+	const conteo = comunidadesPorCiudad.get(clave) ?? new Map();
+	conteo.set(entrada.community, (conteo.get(entrada.community) ?? 0) + 1);
+	comunidadesPorCiudad.set(clave, conteo);
+}
+for (const entrada of entradas) {
+	if (entrada.community || !entrada.city) continue;
+	const conteo = comunidadesPorCiudad.get(normalizarCiudad(entrada.city));
+	if (!conteo) continue;
+	entrada.community = [...conteo.entries()].sort((a, b) => b[1] - a[1])[0][0];
+}
+
+for (const entrada of entradas) {
+	delete entrada.region;
+	delete entrada.regionName;
+	delete entrada.country;
+}
+
 entradas.sort((a, b) => a.title.localeCompare(b.title, 'es'));
+
+const sinComunidad = entradas.filter(
+	(entrada) => entrada.city && !entrada.community,
+);
+if (sinComunidad.length) {
+	console.log(
+		`Sin comunidad: ${sinComunidad.length} (${sinComunidad.slice(0, 4).map((e) => e.slug).join(', ')}…)`,
+	);
+}
 
 const cabecera = `/**
  * Clientes con landing publicada en este mismo proyecto.
  *
  * GENERADO por tools/gen-portfolio-apps.mjs — no editar a mano: los cambios se
  * pierden en la siguiente ejecución. Los 96 clientes con captura propia siguen
- * en data/portfolio.ts; aquí van los demás, con los datos de su landing.
+ * en data/portfolio.ts; aquí van los demás, con los datos de su landing
+ * (incluidas la ciudad y la comunidad autónoma, cuando se pueden deducir).
  */
 export interface AppProject {
 	slug: string;
 	title: string;
 	category: string;
 	sector: string;
+	city: string;
+	community: string;
 	description: string;
 	tags: string[];
 	accent: string;

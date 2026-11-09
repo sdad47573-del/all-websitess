@@ -5,6 +5,26 @@ import Layout from "../layouts/Layout.astro";
 import Topbar from "../components/Topbar.astro";
 import Portfolio from "../components/Portfolio.astro";
 import Footer from "../components/Footer.astro";
+import { PORTFOLIO } from "../data/portfolio";
+
+// Mismas cifras que el catálogo: clientes totales, ciudades únicas y sectores.
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-");
+
+const total = PORTFOLIO.length;
+const cityCount = new Set(
+  PORTFOLIO.flatMap((project) => (project.city ? [slugify(project.city)] : [])),
+).size;
+const sectorCount = new Set(PORTFOLIO.map((project) => project.category)).size;
+const stats = [
+  { value: total.toLocaleString("es-ES"), label: "clientes" },
+  { value: cityCount.toLocaleString("es-ES"), label: "ciudades" },
+  { value: sectorCount.toLocaleString("es-ES"), label: "sectores" },
+];
 ---
 
 <Layout
@@ -18,18 +38,40 @@ import Footer from "../components/Footer.astro";
     id="contenido"
     class="page-top pb-20 bg-gradient-to-b from-base-100 to-base-200"
   >
-    <section class="container mx-auto px-6 max-w-3xl text-center mb-6" data-reveal>
+    <section class="container mx-auto px-6 max-w-4xl text-center mb-10" data-reveal>
+      <p
+        class="mb-4 inline-flex items-center gap-2 rounded-full border border-base-300/70 bg-base-100/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-base-content/60"
+      >
+        <span aria-hidden="true" class="size-1.5 rounded-full bg-success"></span>
+        Portfolio de clientes
+      </p>
       <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
         Webs que ya están <span class="text-wave">trabajando</span>
       </h1>
       <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
         Todos los negocios que ya trabajan con nosotros, con su web publicada y
-        su enlace. Filtra por sector o busca por nombre o ciudad: los proyectos
-        con captura abren una vista rápida y el resto, su ficha.
+        su enlace directo. Filtra por sector o busca por nombre o ciudad: los
+        proyectos con captura abren una vista rápida y el resto, su web en una
+        pestaña nueva.
       </p>
+
+      <ul class="mt-8 flex flex-wrap justify-center gap-3">
+        {
+          stats.map(({ value, label }) => (
+            <li class="min-w-28 rounded-2xl border border-base-300/70 bg-base-100/80 px-5 py-3 shadow-sm backdrop-blur">
+              <p class="text-2xl font-bold leading-none tabular-nums text-base-content">
+                {value}
+              </p>
+              <p class="mt-1.5 text-[11px] font-semibold uppercase tracking-wider text-base-content/50">
+                {label}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
     </section>
 
-    <Portfolio />
+    <Portfolio intro={false} />
   </main>
 
   <Footer />
