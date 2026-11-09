@@ -32,7 +32,7 @@ export const FAQ_FR: FaqEntry[] = [
   },
   {
     q: "Aidez-vous pour le blog et le contenu ?",
-    a: "Oui : nous rédigeons les articles et les pages de service à partir d'un entretien, et nous choisissons ensemble les sujets qui valent la peine. Publier du contenu neuf fait partie de la maintenance à 39 €/mois.",
+    a: "Oui : nous rédigeons les articles et les pages de service à partir d'un entretien, et nous choisissons ensemble les sujets qui valent la peine. Publier du contenu neuf fait partie de la maintenance à 49 €/mois.",
   },
   {
     q: "Et si l'activité change de nom, de téléphone ou d'adresse ?",
@@ -97,7 +97,7 @@ export const FAQ_FR: FaqEntry[] = [
   },
   {
     q: "Que se passe-t-il après le lancement ?",
-    a: "En option, nous vous accompagnons avec une maintenance à 39 €/mois : mises à jour, changements de textes et photos, et support. Sans engagement : annulez quand vous voulez.",
+    a: "En option, nous vous accompagnons avec une maintenance à 49 €/mois : mises à jour, changements de textes et photos, et support. Sans engagement : annulez quand vous voulez.",
   },
   {
     q: "Travaillez-vous en dehors de Málaga ?",
@@ -129,11 +129,11 @@ export const FAQ_FR: FaqEntry[] = [
   },
   {
     q: "J'ai déjà domaine et hébergement, sont-ils utilisables ?",
-    a: "Oui. Nous travaillons sur votre domaine et hébergement actuels sans surcoût. S'ils viennent d'un ancien site, la migration avec redirections pour ne pas perdre de positions sur Google coûte 90 €.",
+    a: "Oui. Nous travaillons sur votre domaine et hébergement actuels sans surcoût. S'ils viennent d'un ancien site, la migration avec redirections pour ne pas perdre de positions sur Google coûte 190 €.",
   },
   {
     q: "J'ai déjà mon site gratuit chez vous, comment demander des changements ?",
-    a: "Écrivez-nous sur LinkedIn avec ce que vous voulez changer — textes, photos, prix, couleurs ou sections — et nous le mettons à votre goût. Le premier mois après le lancement est gratuit ; ensuite c'est la maintenance à 39 €/mois, sans engagement.",
+    a: "Écrivez-nous sur LinkedIn avec ce que vous voulez changer — textes, photos, prix, couleurs ou sections — et nous le mettons à votre goût. Le premier mois après le lancement est gratuit ; ensuite c'est la maintenance à 49 €/mois, sans engagement.",
   },
   {
     q: "Une landing gratuite se positionne-t-elle sur Google ?",

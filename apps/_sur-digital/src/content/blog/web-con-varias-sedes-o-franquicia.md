@@ -70,7 +70,7 @@ Es la misma cláusula que deberías exigir a cualquier agencia: [tus cuentas son
 
 ## Cuánto cuesta
 
-Cada sede es una página más del proyecto. En nuestro caso, la [Web Completa son 490 €](/precios/) con hasta cinco páginas y cada página extra son 60 €. Si son varias webs independientes, es un proyecto por marca, no un descuento por volumen.
+Cada sede es una página más del proyecto. En nuestro caso, la [Web Completa son 690 €](/precios/) con hasta cinco páginas y cada página extra son 60 €. Si son varias webs independientes, es un proyecto por marca, no un descuento por volumen.
 
 Y si estás decidiendo el mapa completo del sitio, empieza por [cuántas páginas debe tener tu web](/blog/cuantas-paginas-debe-tener-tu-web/).
 

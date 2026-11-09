@@ -33,7 +33,7 @@ export const FAQ_EN: FaqEntry[] = [
   },
   {
     q: "Do you help with the blog and content?",
-    a: "Yes: we write blog posts and service pages from an interview, and we decide together which topics are worth it. Publishing new content is part of the €39/month maintenance.",
+    a: "Yes: we write blog posts and service pages from an interview, and we decide together which topics are worth it. Publishing new content is part of the €49/month maintenance.",
   },
   {
     q: "What if the business changes name, phone or address?",
@@ -98,7 +98,7 @@ export const FAQ_EN: FaqEntry[] = [
   },
   {
     q: "What happens after launch?",
-    a: "Optionally we stay with you on €39/month maintenance: updates, copy and photo changes and support. No lock-in: cancel whenever you want.",
+    a: "Optionally we stay with you on €49/month maintenance: updates, copy and photo changes and support. No lock-in: cancel whenever you want.",
   },
   {
     q: "Do you work outside Málaga?",
@@ -130,11 +130,11 @@ export const FAQ_EN: FaqEntry[] = [
   },
   {
     q: "I already have a domain and hosting — can you use them?",
-    a: "Yes. We work on your current domain and hosting at no extra cost. If they come from an old site, migration with redirects so you don't lose Google rankings is €90.",
+    a: "Yes. We work on your current domain and hosting at no extra cost. If they come from an old site, migration with redirects so you don't lose Google rankings is €190.",
   },
   {
     q: "I already have my free site with you — how do I request changes?",
-    a: "Message us on LinkedIn with what you want changed — copy, photos, prices, colours or sections — and we'll set it up your way. The first month after launch is free; after that it's the €39/month maintenance, no lock-in.",
+    a: "Message us on LinkedIn with what you want changed — copy, photos, prices, colours or sections — and we'll set it up your way. The first month after launch is free; after that it's the €49/month maintenance, no lock-in.",
   },
   {
     q: "Does a free landing rank on Google?",

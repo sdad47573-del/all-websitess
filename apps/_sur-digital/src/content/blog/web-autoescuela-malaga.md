@@ -33,7 +33,7 @@ Nadie busca «formación vial integral». La gente escribe **«autoescuela en M�
 
 En Sur Digital la **primera landing page es gratis** y sale con formulario de matrícula, teléfono clicable y tu ficha de Google conectada. **La entrega es en menos de 7 días**, con las credenciales a tu nombre.
 
-Si la autoescuela crece, cada página de permiso extra son 60€, y el mantenimiento opcional (actualizar precios, añadir turnos, publicar la lista de aprobados) son 39€/mes sin permanencia.
+Si la autoescuela crece, cada página de permiso extra son 60€, y el mantenimiento opcional (actualizar precios, añadir turnos, publicar la lista de aprobados) son 49€/mes sin permanencia.
 
 ## Por dónde empezar esta semana
 

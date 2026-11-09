@@ -20,7 +20,7 @@ Coge la oferta del agente digitalizador y suma:
 2. **Años 2 y 3**: (hosting + dominio + mantenimiento mensual) × 24 meses. Pregunta la cifra por escrito: hay agentes en 10€/mes y otros en 40€/mes.
 3. **Coste de salida**: ¿qué pasa si al año quieres cambiar de proveedor? ¿La web es tuya? ¿El dominio está a tu nombre? Si la respuesta es vaga, suma el coste de rehacerla.
 
-Compara ese total con una web a medida con [precio cerrado](/precios/): por ejemplo, nuestra Web Completa son 490€ con dominio y hosting el primer año, y el mantenimiento opcional 39€/mes sin permanencia. A 3 años son unos 1.900€ todo incluido, con la web a tu nombre desde el día uno.
+Compara ese total con una web a medida con [precio cerrado](/precios/): por ejemplo, nuestra Web Completa son 690€ con dominio y hosting el primer año, y el mantenimiento opcional 49€/mes sin permanencia. A 3 años son unos 2.450€ todo incluido, con la web a tu nombre desde el día uno.
 
 ## Cuándo SÍ merece la pena
 

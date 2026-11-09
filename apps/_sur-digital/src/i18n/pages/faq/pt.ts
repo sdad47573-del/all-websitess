@@ -32,7 +32,7 @@ export const FAQ_PT: FaqEntry[] = [
   },
   {
     q: "Ajudam com o blog e o conteúdo?",
-    a: "Sim: escrevemos os artigos do blog e as páginas de serviço a partir de uma entrevista, e decidimos juntos que temas valem a pena. Publicar conteúdo novo entra na manutenção de 39 €/mês.",
+    a: "Sim: escrevemos os artigos do blog e as páginas de serviço a partir de uma entrevista, e decidimos juntos que temas valem a pena. Publicar conteúdo novo entra na manutenção de 49 €/mês.",
   },
   {
     q: "E se o negócio mudar de nome, telefone ou morada?",
@@ -97,7 +97,7 @@ export const FAQ_PT: FaqEntry[] = [
   },
   {
     q: "O que acontece depois de lançar o site?",
-    a: "Opcionalmente acompanhamos com manutenção de 39 €/mês: atualizações, mudanças de textos e fotos e suporte. Sem fidelização: cancele quando quiser.",
+    a: "Opcionalmente acompanhamos com manutenção de 49 €/mês: atualizações, mudanças de textos e fotos e suporte. Sem fidelização: cancele quando quiser.",
   },
   {
     q: "Trabalham fora de Málaga?",
@@ -129,11 +129,11 @@ export const FAQ_PT: FaqEntry[] = [
   },
   {
     q: "Já tenho domínio e alojamento, servem?",
-    a: "Sim. Trabalhamos sobre o seu domínio e alojamento atuais sem custo extra. Se vierem de um site antigo, a migração com redirecionamentos para não perder posições no Google são 90 €.",
+    a: "Sim. Trabalhamos sobre o seu domínio e alojamento atuais sem custo extra. Se vierem de um site antigo, a migração com redirecionamentos para não perder posições no Google são 190 €.",
   },
   {
     q: "Já tenho o meu site gratuito convosco, como peço alterações?",
-    a: "Escreva-nos no LinkedIn com o que quer mudar — textos, fotos, preços, cores ou secções — e deixamos ao seu gosto. O primeiro mês após o lançamento é gratuito; depois entra na manutenção de 39 €/mês, sem fidelização.",
+    a: "Escreva-nos no LinkedIn com o que quer mudar — textos, fotos, preços, cores ou secções — e deixamos ao seu gosto. O primeiro mês após o lançamento é gratuito; depois entra na manutenção de 49 €/mês, sem fidelização.",
   },
   {
     q: "Uma landing gratuita posiciona no Google?",

@@ -7,7 +7,7 @@ faq:
   - q: "¿Una landing basta para mi negocio?"
     a: "Si vendes un solo servicio y el cliente decide rápido, sí. Si tienes varios servicios o precios muy distintos, cada uno necesita su página: Google entiende mejor qué ofreces y el cliente no tiene que preguntarlo."
   - q: "¿Cuántas páginas entran en el precio?"
-    a: "La Web Completa incluye hasta cinco páginas por 490 € y cada página extra son 60 €. La primera landing es gratis."
+    a: "La Web Completa incluye hasta cinco páginas por 690 € y cada página extra son 60 €. La primera landing es gratis."
   - q: "¿Más páginas posicionan mejor?"
     a: "No. Diez páginas flojas rinden menos que cuatro bien hechas. Lo que posiciona es responder a una intención concreta, no el número de páginas."
   - q: "¿Puedo empezar con una y añadir después?"
@@ -67,7 +67,7 @@ Mira en Analytics cuáles no reciben ni una visita en tres meses. Suele haber do
 
 ## Lo que de verdad cambia el precio
 
-No es el número de páginas por sí: es el trabajo de cada una. En nuestro caso, la [Web Completa son 490 €](/precios/) con hasta cinco páginas, y cada página extra son 60 €. Una landing sola es gratis como primera web. Si el presupuesto se dispara, pregunta siempre cuánto de eso es contenido y cuánto es plantilla.
+No es el número de páginas por sí: es el trabajo de cada una. En nuestro caso, la [Web Completa son 690 €](/precios/) con hasta cinco páginas, y cada página extra son 60 €. Una landing sola es gratis como primera web. Si el presupuesto se dispara, pregunta siempre cuánto de eso es contenido y cuánto es plantilla.
 
 Y antes de firmar, comprueba el conjunto: [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/) y qué debe entrar en el precio.
 

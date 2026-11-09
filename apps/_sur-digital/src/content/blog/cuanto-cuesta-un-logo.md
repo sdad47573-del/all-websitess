@@ -1,6 +1,6 @@
 ---
 title: "Cuánto cuesta un logo y qué debe incluir"
-description: "Qué incluye un logo desde 150€, qué archivos te deben entregar y los errores que se pagan dos veces. Precios reales de mercado en 2026."
+description: "Qué incluye un logo desde 250€, qué archivos te deben entregar y los errores que se pagan dos veces. Precios reales de mercado en 2026."
 pubDate: 2026-11-03
 category: "Precios"
 ---
@@ -28,7 +28,7 @@ Si te dan «el logo en JPG», no es un logo: es una foto del logo.
 | Identidad básica | Logo + colores + tipografías + versiones | 400–900 € |
 | Manual de marca | Lo anterior + usos, espacios y ejemplos | 900 € en adelante |
 
-Nuestro caso está publicado: **logo + paleta de colores + tipografías desde 150 €**, dentro de los [extras de una web](/precios/). En una web completa suele salir más barato que contratarlo aparte, porque el diseño se piensa junto.
+Nuestro caso está publicado: **logo + paleta de colores + tipografías desde 250 €**, dentro de los [extras de una web](/precios/). En una web completa suele salir más barato que contratarlo aparte, porque el diseño se piensa junto.
 
 ## Qué preguntar antes de pagar
 
@@ -48,7 +48,7 @@ Nuestro caso está publicado: **logo + paleta de colores + tipografías desde 15
 
 ## ¿Vale un logo hecho en Canva?
 
-Para empezar, sí: es mejor que no tener ninguno. Pero tiene tres límites claros: no tendrás vector para imprimir en grande, la licencia de las fuentes y elementos no es tuya, y en cuanto quieras crecer vas a pagar dos veces (el apaño y el bueno). Si tu negocio va a durar, el logo es de las cosas donde 150 € bien puestos ahorran disgustos.
+Para empezar, sí: es mejor que no tener ninguno. Pero tiene tres límites claros: no tendrás vector para imprimir en grande, la licencia de las fuentes y elementos no es tuya, y en cuanto quieras crecer vas a pagar dos veces (el apaño y el bueno). Si tu negocio va a durar, el logo es de las cosas donde 250 € bien puestos ahorran disgustos.
 
 ## ¿Y registrar la marca?
 

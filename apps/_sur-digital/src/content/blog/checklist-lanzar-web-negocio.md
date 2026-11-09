@@ -53,7 +53,7 @@ Publicar la web es el paso fácil. **Que la web trabaje a tu favor desde el prim
 
 ## Después del lanzamiento
 
-No se acaba: actualiza fotos, pide reseñas y añade una página nueva cada vez que el negocio lo pida. Lo que pasa tras publicar lo tienes en [mantenimiento web por 39€/mes](/blog/mantenimiento-web-20-euros-mes/).
+No se acaba: actualiza fotos, pide reseñas y añade una página nueva cada vez que el negocio lo pida. Lo que pasa tras publicar lo tienes en [mantenimiento web por 49€/mes](/blog/mantenimiento-web-20-euros-mes/).
 
 ---
 

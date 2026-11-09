@@ -39,7 +39,7 @@ No con tu sensación ni con la de tu sobrino: con datos.
 - **Caché y compresión**: que la segunda visita sea instantánea.
 - **Menos scripts**: quitar todo lo que no aporta clientes.
 - **Plataforma moderna**: las webs que construimos se sirven desde una CDN global y cargan en menos de 2,5s de serie. [Así construimos](/servicios/) cada web desde cero.
-- **Mantenimiento que lo vigile**: si tu web ya vuela, alguien tiene que comprobar que sigue así. Es una de las cosas que entran en el [mantenimiento de 39€/mes](/blog/mantenimiento-web-20-euros-mes/).
+- **Mantenimiento que lo vigile**: si tu web ya vuela, alguien tiene que comprobar que sigue así. Es una de las cosas que entran en el [mantenimiento de 49€/mes](/blog/mantenimiento-web-20-euros-mes/).
 
 ---
 

@@ -4,13 +4,13 @@ import type { PreciosCopy } from "./types";
 export const PRECIOS_DE: PreciosCopy = {
   metaTitle: "Webdesign-Preise Málaga 2026: ab 0 € | Sur Digital",
   metaDescription:
-    "Preise für Webdesign in Málaga: kostenlose Landingpage, komplette Website 490 €, Onlineshop 890 € und Betreuung 39 €/Monat. Festpreis schriftlich, ohne Laufzeit.",
+    "Preise für Webdesign in Málaga: kostenlose Landingpage, komplette Website 690 €, Onlineshop 1.290 € und Betreuung 49 €/Monat. Festpreis schriftlich, ohne Laufzeit.",
   crumbHome: "Start",
   crumb: "Preise",
   heroTitle: "Klare Preise,",
   heroAccent: "keine Überraschungen",
   heroLead:
-    "Andere Agenturen nehmen 600–900 € für eine Website mit fünf Seiten. Hier siehst du, was jede Leistung kostet – mit MwSt. und Bedingungen schriftlich vor dem Start. Der Vergleich mit Agenturen aus Málaga und ihren veröffentlichten Preisen steht weiter unten.",
+    "Die meisten lokalen Agenturen nehmen 600–1.500 € für eine Website mit fünf Seiten. Hier siehst du, was jede Leistung kostet – mit MwSt. und Bedingungen schriftlich vor dem Start. Der Vergleich mit Agenturen aus Málaga und ihren veröffentlichten Preisen steht weiter unten.",
   guideTitle: "Welcher Plan passt zu dir?",
   guideLead:
     "Finde deinen Fall. Jede Karte unten sagt, für wen sie ist, was sie enthält und was sie kostet.",
@@ -41,7 +41,7 @@ export const PRECIOS_DE: PreciosCopy = {
   monthSuffix: "/Monat",
   tiersTitle: "Jährliche Betreuung",
   tiersLead:
-    "Wenn sich die Website oft ändert, lohnt sich der Jahresplan mehr als einzelne Änderungen. Die monatliche Betreuung für 39 €/Monat bleibt für kleine Anpassungen verfügbar.",
+    "Wenn sich die Website oft ändert, lohnt sich der Jahresplan mehr als einzelne Änderungen. Die monatliche Betreuung für 49 €/Monat bleibt für kleine Anpassungen verfügbar.",
   yearSuffix: "/Jahr",
   enterpriseBadge: "Enterprise",
   enterpriseTitle: "Große Projekte,",
@@ -81,7 +81,7 @@ export const PRECIOS_DE: PreciosCopy = {
     "Deine Website ist nicht aus Stein: ein Text, der dich nicht überzeugt, ein Foto, das getauscht werden soll, oder ein veralteter Preis – sag es uns und wir passen es mit dir an, bis du sagst „so ist es gut“.",
   cambiosChips: ["Texte und Überschriften", "Fotos und Galerie", "Preise und Öffnungszeiten", "Farben und Stil", "Bereiche und Reihenfolge", "Google-Eintrag"],
   cambiosNote:
-    "Im ersten Monat nach dem Launch sind Anpassungen kostenlos. Danach sind sie in der Betreuung für 39 €/Monat enthalten, ohne Laufzeit.",
+    "Im ersten Monat nach dem Launch sind Anpassungen kostenlos. Danach sind sie in der Betreuung für 49 €/Monat enthalten, ohne Laufzeit.",
   cambiosCta: "Änderungen über LinkedIn anfragen",
   comparisonTitle: "Agenturen, Vorlagen",
   comparisonAccent: "und wir",
@@ -90,7 +90,7 @@ export const PRECIOS_DE: PreciosCopy = {
   comparisonSwipe: "Tabelle wischen, um die 3 Spalten zu vergleichen →",
   comparisonHeaders: ["Agentur", "klassisch", "Selbst machen", "oder Vorlage", "Sur Digital", "wir"],
   comparisonRows: [
-    { feature: "Preis einer einfachen Website", agency: "600–900 € (5 Seiten)", diy: "0–300 € + deine Zeit", us: "Ab 0 €" },
+    { feature: "Preis einer einfachen Website", agency: "600–1.500 € (5 Seiten)", diy: "0–300 € + deine Zeit", us: "Ab 0 €" },
     { feature: "Festpreis schriftlich", agency: false, diy: false, us: true },
     { feature: "Lieferung", agency: "3–8 Wochen", diy: "Wenn Zeit ist", us: "Unter 7 Tagen" },
     { feature: "Design nur für deine Marke", agency: "Katalogvorlage", diy: true, us: true },
@@ -103,12 +103,12 @@ export const PRECIOS_DE: PreciosCopy = {
     { feature: "Formulare, die aufs Handy kommen", agency: "Extra (30–80 €)", diy: false, us: true },
     { feature: "Lokales SEO nach Branche und Viertel", agency: "Nur in teuren Paketen", diy: false, us: true },
     { feature: "Text- und Fotoänderungen nach Lieferung", agency: "25–50 € pro Änderung", diy: "Selbst (wenn du es kannst)", us: "Erster Monat gratis" },
-    { feature: "Laufende Betreuung", agency: "40–90 €/Monat", diy: "Wie du willst", us: "39 €/Monat optional" },
-    { feature: "Lokales SEO als Monatsplan", agency: "199–400 €/Monat", diy: false, us: "149 €/Monat" },
-    { feature: "Social Media", agency: "145 €/Monat", diy: "Deine Zeit", us: "145 €/Monat" },
-    { feature: "Google Ads", agency: "150–320 €/Monat + Budget", diy: false, us: "150 €/Monat + Budget" },
+    { feature: "Laufende Betreuung", agency: "45–150 €/Monat", diy: "Wie du willst", us: "49 €/Monat optional" },
+    { feature: "Lokales SEO als Monatsplan", agency: "190–400 €/Monat", diy: false, us: "199 €/Monat" },
+    { feature: "Social Media", agency: "145–750 €/Monat", diy: "Deine Zeit", us: "190 €/Monat" },
+    { feature: "Google Ads", agency: "180–550 €/Monat + Budget", diy: false, us: "190 €/Monat + Budget" },
     { feature: "Schulung bei Lieferung", agency: "Je nach Agentur", diy: false, us: "30 Min. aufgezeichnet + Anleitung" },
-    { feature: "Großes Projekt mit SLA", agency: "Nur große Agenturen", diy: false, us: "Ab 2.500 €" },
+    { feature: "Großes Projekt mit SLA", agency: "Nur große Agenturen", diy: false, us: "Ab 3.500 €" },
     { feature: "Verantwortung, wenn etwas ausfällt", agency: true, diy: false, us: true },
   ],
   comparisonNote:
@@ -129,16 +129,16 @@ export const PRECIOS_DE: PreciosCopy = {
   finalCta: "Schriftliches Angebot anfragen",
   extras: [
     { name: "Zusätzliche Seite", price: "60 €", note: "Pro Zusatzseite in den Plänen Komplette Website und Pro." },
-    { name: "Zusätzliche Sprache", price: "ab 150 €", note: "Struktur und SEO der zweiten Sprache (Übersetzung separat)." },
-    { name: "Logo und Basis-Identität", price: "ab 150 €", note: "Logo in allen Formaten, Farbpalette und Schriften." },
-    { name: "Monatliche Betreuung", price: "39 €/Monat", note: "Updates, Backups und Text-/Fotoänderungen. Ohne Laufzeit." },
-    { name: "Migration einer alten Website", price: "90 €", note: "Weiterleitungen der alten Domain, damit du keine Google-Positionen verlierst." },
+    { name: "Zusätzliche Sprache", price: "ab 190 €", note: "Struktur und SEO der zweiten Sprache (Übersetzung separat)." },
+    { name: "Logo und Basis-Identität", price: "ab 250 €", note: "Logo in allen Formaten, Farbpalette und Schriften." },
+    { name: "Monatliche Betreuung", price: "49 €/Monat", note: "Updates, Backups und Text-/Fotoänderungen. Ohne Laufzeit." },
+    { name: "Migration einer alten Website", price: "190 €", note: "Weiterleitungen der alten Domain, damit du keine Google-Positionen verlierst." },
   ],
   plans: [
     { tagline: "Deine erste Website, ohne Risiko", features: ["Moderne, responsive Landingpage (1 Seite)", "Direkter Kontaktbutton", "Eine Überarbeitung inklusive", "Lieferung in unter 7 Tagen", "SSL-Zertifikat inklusive"] },
     { tagline: "Fotografen, Architekten und Personal Brands", features: ["Auf schnelles Laden optimierte Projektgalerie", "Einleitungstexte gemeinsam geschrieben", "Direkter Kontakt per WhatsApp und Formular", "SSL-Zertifikat und lokales SEO inklusive", "Schulung, damit du Projekte selbst hochlädst"] },
     { tagline: "Bis zu 5 Seiten mit Domain", features: ["Bis zu 5 Seiten nach Maß", "Eigene Domain + 1 Jahr Hosting", "Basis-SEO für Google", "Optimierung für Handys", "Bis zu 3 Überarbeitungen", "SSL-Zertifikat inklusive", "30-Min.-Schulung + Anleitung", "24/7-Überwachung, Antwort in 2 Arbeitsstunden"] },
-    { tagline: "Onlineshop oder große Website", features: ["Onlineshop oder große Unternehmenswebsite", "Integriertes Zahlungsgateway", "Produkt- und E-Mail-Verwaltung", "Lokales SEO (Google Maps)", "Optionale Betreuung 39 €/Monat", "SSL-Zertifikat inklusive", "30-Min.-Schulung + Anleitung", "24/7-Überwachung, Antwort in 2 Arbeitsstunden"] },
+    { tagline: "Onlineshop oder große Website", features: ["Onlineshop oder große Unternehmenswebsite", "Integriertes Zahlungsgateway", "Produkt- und E-Mail-Verwaltung", "Lokales SEO (Google Maps)", "Optionale Betreuung 49 €/Monat", "SSL-Zertifikat inklusive", "30-Min.-Schulung + Anleitung", "24/7-Überwachung, Antwort in 2 Arbeitsstunden"] },
   ],
   retainers: [
     { name: "Lokales SEO", tagline: "Damit man dich nach Leistung und Viertel findet", features: ["Erstanalyse und Keywords nach Leistung und Viertel", "Optimiertes Google-Business-Profil und Bewertungsmanagement", "2 Inhalte pro Monat (Artikel oder Leistungsseite)", "Monatlicher Bericht zu Positionen, Anrufen und Formularen", "Ohne Laufzeit: jederzeit kündbar"] },

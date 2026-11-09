@@ -32,7 +32,7 @@ export interface QuoteInput {
 
 export interface QuoteLine {
   label: string;
-  /** Importe ya formateado, como se publica en /precios/ (490€, 39€/mes). */
+  /** Importe ya formateado, como se publica en /precios/ (690€, 49€/mes). */
   value: string;
   amount: number;
   monthly: boolean;
@@ -53,7 +53,8 @@ export interface Quote {
 }
 
 /** Mismo formato que el resto del sitio: sin decimales y con el euro detrás. */
-export const formatEuros = (value: number) => `${value}€`;
+export const formatEuros = (value: number) =>
+  `${Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€`;
 
 /** Plan que la calculadora trae preseleccionado. */
 export const CALCULATOR_PLAN = "Web Completa";

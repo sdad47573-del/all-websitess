@@ -17,6 +17,11 @@ const site = (
   Astro.site?.toString() ?? "https://www.sur-digital.com"
 ).replace(/\/$/, "");
 const pageUrl = `${site}/precios/`;
+const webPlan = DATA.plans.find((plan) => plan.name === "Web Completa");
+if (!webPlan) throw new Error("Precios: falta el plan Web Completa");
+const webPrice = webPlan.price;
+const formatPrice = (price: number) =>
+  price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 // `links` es opcional y solo se pinta en la página: el JSON-LD de abajo usa
 // únicamente q/a, así que el schema se queda en texto plano.
@@ -128,7 +133,7 @@ const offersSchema = {
     {
       "@type": "Offer",
       name: "Portfolio",
-      price: "390",
+      price: "490",
       priceCurrency: "EUR",
       valueAddedTaxIncluded: false,
       description:
@@ -146,7 +151,7 @@ const offersSchema = {
     {
       "@type": "Offer",
       name: "Web Completa",
-      price: "490",
+      price: "690",
       priceCurrency: "EUR",
       valueAddedTaxIncluded: false,
       description:
@@ -155,7 +160,7 @@ const offersSchema = {
     {
       "@type": "Offer",
       name: "Pro + Tienda",
-      price: "890",
+      price: "1290",
       priceCurrency: "EUR",
       valueAddedTaxIncluded: false,
       description:
@@ -164,7 +169,7 @@ const offersSchema = {
     {
       "@type": "Offer",
       name: "Mantenimiento mensual",
-      price: "39",
+      price: "49",
       priceCurrency: "EUR",
       valueAddedTaxIncluded: false,
       description:
@@ -176,7 +181,7 @@ const offersSchema = {
 
 <Layout
   title="Precios diseño web Málaga 2026: desde 0€ | Sur Digital"
-  description="Precios de diseño web en Málaga: landing gratis, web completa 490€, tienda online 890€ y mantenimiento 39€/mes. Precio cerrado por escrito, sin permanencia."
+  description="Precios de diseño web en Málaga: landing gratis, web completa 690€, tienda online 1.290€ y mantenimiento 49€/mes. Precio cerrado por escrito, sin permanencia."
   image={`${site}/og/precios.png`}
   path="/precios/"
 >
@@ -219,8 +224,9 @@ const offersSchema = {
         Precios claros, <span class="text-wave">sin sorpresas</span>
       </h1>
       <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-        Otras agencias cobran <span class="font-bold">600–900€</span> por una
-        web de 5 páginas. Aquí tienes lo que cuesta cada cosa, con el IVA y las
+        La mayoría de las agencias locales cobran{" "}
+        <span class="font-bold">600–1.500€</span> por una web de 5 páginas; la nuestra cuesta{" "}
+        <span class="font-bold">{formatPrice(webPrice)}€</span>. Aquí tienes lo que cuesta cada cosa, con el IVA y las
         condiciones por escrito antes de empezar. Más abajo tienes la
         comparativa con agencias de Málaga y sus precios publicados.
       </p>
@@ -243,7 +249,7 @@ const offersSchema = {
               <a href="#planes" class="card-body py-4 gap-1">
                 <span class="text-sm text-base-content/70">{necesidad}</span>
                 <span class="font-bold">
-                  {name} · {price === 0 ? "gratis" : `${price}€`}
+                  {name} · {price === 0 ? "gratis" : `${formatPrice(price)}€`}
                 </span>
               </a>
             </li>

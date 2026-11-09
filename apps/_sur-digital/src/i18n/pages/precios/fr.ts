@@ -4,13 +4,13 @@ import type { PreciosCopy } from "./types";
 export const PRECIOS_FR: PreciosCopy = {
   metaTitle: "Prix création de site à Málaga 2026 : dès 0 € | Sur Digital",
   metaDescription:
-    "Prix de création de site à Málaga : landing gratuite, site complet 490 €, boutique en ligne 890 € et maintenance 39 €/mois. Prix ferme par écrit, sans engagement.",
+    "Prix de création de site à Málaga : landing gratuite, site complet 690 €, boutique en ligne 1 290 € et maintenance 49 €/mois. Prix ferme par écrit, sans engagement.",
   crumbHome: "Accueil",
   crumb: "Tarifs",
   heroTitle: "Des prix clairs,",
   heroAccent: "sans surprises",
   heroLead:
-    "D'autres agences facturent 600–900 € pour un site de cinq pages. Ici vous voyez ce que coûte chaque chose, TVA et conditions écrites avant de commencer. La comparaison avec les agences de Málaga et leurs tarifs publiés est plus bas.",
+    "La plupart des agences locales facturent 600–1 500 € pour un site de cinq pages. Ici vous voyez ce que coûte chaque chose, TVA et conditions écrites avant de commencer. La comparaison avec les agences de Málaga et leurs tarifs publiés est plus bas.",
   guideTitle: "Quel forfait est le vôtre ?",
   guideLead:
     "Trouvez votre cas. Chaque carte ci-dessous dit pour qui elle est, ce qu'elle comprend et combien elle coûte.",
@@ -41,7 +41,7 @@ export const PRECIOS_FR: PreciosCopy = {
   monthSuffix: "/mois",
   tiersTitle: "Maintenance annuelle",
   tiersLead:
-    "Si le site change souvent, le forfait annuel revient moins cher que d'additionner des modifications à l'unité. La maintenance mensuelle à 39 €/mois reste disponible pour les petits changements.",
+    "Si le site change souvent, le forfait annuel revient moins cher que d'additionner des modifications à l'unité. La maintenance mensuelle à 49 €/mois reste disponible pour les petits changements.",
   yearSuffix: "/an",
   enterpriseBadge: "Enterprise",
   enterpriseTitle: "Grands projets,",
@@ -81,7 +81,7 @@ export const PRECIOS_FR: PreciosCopy = {
     "Votre site n'est pas en pierre : un texte qui ne vous convainc pas, une photo à remplacer ou un prix dépassé, dites-le et nous l'ajustons avec vous jusqu'à ce que vous disiez « c'est ça ».",
   cambiosChips: ["Textes et titres", "Photos et galerie", "Prix et horaires", "Couleurs et style", "Sections et ordre", "Fiche Google"],
   cambiosNote:
-    "Pendant le premier mois après le lancement, les ajustements sont gratuits. Ensuite, ils restent inclus dans la maintenance à 39 €/mois, sans engagement.",
+    "Pendant le premier mois après le lancement, les ajustements sont gratuits. Ensuite, ils restent inclus dans la maintenance à 49 €/mois, sans engagement.",
   cambiosCta: "Demander des changements sur LinkedIn",
   comparisonTitle: "Agences, templates",
   comparisonAccent: "et nous",
@@ -90,7 +90,7 @@ export const PRECIOS_FR: PreciosCopy = {
   comparisonSwipe: "Faites glisser le tableau pour comparer les 3 colonnes →",
   comparisonHeaders: ["Agence", "classique", "Le faire soi-même", "ou un template", "Sur Digital", "nous"],
   comparisonRows: [
-    { feature: "Prix d'un site basique", agency: "600–900 € (5 pages)", diy: "0–300 € + votre temps", us: "Dès 0 €" },
+    { feature: "Prix d'un site basique", agency: "600–1 500 € (5 pages)", diy: "0–300 € + votre temps", us: "Dès 0 €" },
     { feature: "Prix ferme par écrit", agency: false, diy: false, us: true },
     { feature: "Livraison", agency: "3–8 semaines", diy: "Quand il y a un créneau", us: "Moins de 7 jours" },
     { feature: "Design propre à votre marque", agency: "Template du catalogue", diy: true, us: true },
@@ -103,12 +103,12 @@ export const PRECIOS_FR: PreciosCopy = {
     { feature: "Formulaires qui arrivent sur votre mobile", agency: "Extra (30–80 €)", diy: false, us: true },
     { feature: "SEO local par secteur et quartier", agency: "Seulement dans les packs chers", diy: false, us: true },
     { feature: "Changements de textes et photos après livraison", agency: "25–50 € par changement", diy: "Vous-même (si vous savez)", us: "Gratuit le premier mois" },
-    { feature: "Maintenance ensuite", agency: "40–90 €/mois", diy: "Comme vous voulez", us: "39 €/mois en option" },
-    { feature: "Abonnement SEO local", agency: "199–400 €/mois", diy: false, us: "149 €/mois" },
-    { feature: "Réseaux sociaux", agency: "145 €/mois", diy: "Votre temps", us: "145 €/mois" },
-    { feature: "Google Ads", agency: "150–320 €/mois + budget", diy: false, us: "150 €/mois + budget" },
+    { feature: "Maintenance ensuite", agency: "45–150 €/mois", diy: "Comme vous voulez", us: "49 €/mois en option" },
+    { feature: "Abonnement SEO local", agency: "190–400 €/mois", diy: false, us: "199 €/mois" },
+    { feature: "Réseaux sociaux", agency: "145–750 €/mois", diy: "Votre temps", us: "190 €/mois" },
+    { feature: "Google Ads", agency: "180–550 €/mois + budget", diy: false, us: "190 €/mois + budget" },
     { feature: "Formation à la livraison", agency: "Selon l'agence", diy: false, us: "30 min enregistrées + guide" },
-    { feature: "Grand projet avec SLA", agency: "Grandes agences seulement", diy: false, us: "Dès 2 500 €" },
+    { feature: "Grand projet avec SLA", agency: "Grandes agences seulement", diy: false, us: "Dès 3 500 €" },
     { feature: "Responsabilité en cas de panne", agency: true, diy: false, us: true },
   ],
   comparisonNote:
@@ -129,16 +129,16 @@ export const PRECIOS_FR: PreciosCopy = {
   finalCta: "Demander un devis écrit",
   extras: [
     { name: "Page supplémentaire", price: "60 €", note: "Par page en plus dans les forfaits Site complet et Pro." },
-    { name: "Langue supplémentaire", price: "dès 150 €", note: "Structure et SEO de la deuxième langue (traduction à part)." },
-    { name: "Logo et identité de base", price: "dès 150 €", note: "Logo dans tous les formats, palette de couleurs et typographies." },
-    { name: "Maintenance mensuelle", price: "39 €/mois", note: "Mises à jour, sauvegardes et changements de textes et photos. Sans engagement." },
-    { name: "Migration d'un ancien site", price: "90 €", note: "Redirections de l'ancien domaine pour ne pas perdre de positions sur Google." },
+    { name: "Langue supplémentaire", price: "dès 190 €", note: "Structure et SEO de la deuxième langue (traduction à part)." },
+    { name: "Logo et identité de base", price: "dès 250 €", note: "Logo dans tous les formats, palette de couleurs et typographies." },
+    { name: "Maintenance mensuelle", price: "49 €/mois", note: "Mises à jour, sauvegardes et changements de textes et photos. Sans engagement." },
+    { name: "Migration d'un ancien site", price: "190 €", note: "Redirections de l'ancien domaine pour ne pas perdre de positions sur Google." },
   ],
   plans: [
     { tagline: "Votre premier site, sans risque", features: ["Landing d'une page moderne et responsive", "Bouton de contact direct", "Une révision incluse", "Livraison en moins de 7 jours", "Certificat SSL inclus"] },
     { tagline: "Photographes, architectes et marques personnelles", features: ["Galerie de projets optimisée pour charger vite", "Textes de présentation rédigés avec vous", "Contact direct par WhatsApp et formulaire", "Certificat SSL et SEO local inclus", "Formation pour ajouter vos projets vous-même"] },
     { tagline: "Jusqu'à 5 pages avec domaine", features: ["Jusqu'à 5 pages sur mesure", "Domaine propre + hébergement 1 an", "SEO de base pour Google", "Optimisation mobile", "Jusqu'à 3 révisions", "Certificat SSL inclus", "Formation de 30 min + guide", "Surveillance 24/7, réponse en 2 h ouvrées"] },
-    { tagline: "Boutique en ligne ou grand site", features: ["Boutique en ligne ou grand site corporate", "Passerelle de paiement intégrée", "Gestion des produits et des e-mails", "SEO local (Google Maps)", "Maintenance optionnelle 39 €/mois", "Certificat SSL inclus", "Formation de 30 min + guide", "Surveillance 24/7, réponse en 2 h ouvrées"] },
+    { tagline: "Boutique en ligne ou grand site", features: ["Boutique en ligne ou grand site corporate", "Passerelle de paiement intégrée", "Gestion des produits et des e-mails", "SEO local (Google Maps)", "Maintenance optionnelle 49 €/mois", "Certificat SSL inclus", "Formation de 30 min + guide", "Surveillance 24/7, réponse en 2 h ouvrées"] },
   ],
   retainers: [
     { name: "SEO local", tagline: "Qu'on vous trouve par service et par quartier", features: ["Audit initial et mots-clés par service et quartier", "Fiche Google Business optimisée et gestion des avis", "2 contenus par mois (article ou page de service)", "Rapport mensuel des positions, appels et formulaires", "Sans engagement : annulez quand vous voulez"] },

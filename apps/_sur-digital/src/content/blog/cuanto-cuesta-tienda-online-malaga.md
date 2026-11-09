@@ -29,12 +29,12 @@ Desconfía de los dos extremos: la tienda de 300€ suele ser una plantilla sin 
 Montarla es una vez; mantenerla es cada año:
 
 - **Dominio + hosting**: 60–90€/año a tu nombre.
-- **Mantenimiento**: actualizaciones, copias y cambios de catálogo. Nuestro plan son 39€/mes sin permanencia ([qué debe incluir](/blog/mantenimiento-web-20-euros-mes/)).
+- **Mantenimiento**: actualizaciones, copias y cambios de catálogo. Nuestro plan son 49€/mes sin permanencia ([qué debe incluir](/blog/mantenimiento-web-20-euros-mes/)).
 - **Comisiones de pago**: la pasarela se lleva ~1–3% por venta. No es del diseñador, es del banco: cuéntalo en tus márgenes.
 
 ## Nuestro precio, sin letra pequeña
 
-Tienda online completa por **890€**: catálogo, carrito, pasarela de pago, envíos configurados y SEO local para que te encuentren en Google Maps. Dominio y hosting el primer año incluidos, todo a tu nombre y [precio cerrado por escrito](/precios/). Cada producto o sección extra que necesites después, con su precio a la vista.
+Tienda online completa por **1.290€**: catálogo, carrito, pasarela de pago, envíos configurados y SEO local para que te encuentren en Google Maps. Dominio y hosting el primer año incluidos, todo a tu nombre y [precio cerrado por escrito](/precios/). Cada producto o sección extra que necesites después, con su precio a la vista.
 
 ---
 

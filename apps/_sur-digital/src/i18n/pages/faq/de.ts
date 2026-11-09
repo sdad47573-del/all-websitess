@@ -32,7 +32,7 @@ export const FAQ_DE: FaqEntry[] = [
   },
   {
     q: "Helft ihr bei Blog und Inhalten?",
-    a: "Ja: wir schreiben Blogartikel und Leistungsseiten nach einem Interview und entscheiden gemeinsam, welche Themen sich lohnen. Neue Inhalte veröffentlichen gehört zur Betreuung für 39 €/Monat.",
+    a: "Ja: wir schreiben Blogartikel und Leistungsseiten nach einem Interview und entscheiden gemeinsam, welche Themen sich lohnen. Neue Inhalte veröffentlichen gehört zur Betreuung für 49 €/Monat.",
   },
   {
     q: "Was, wenn der Betrieb Name, Telefon oder Adresse ändert?",
@@ -97,7 +97,7 @@ export const FAQ_DE: FaqEntry[] = [
   },
   {
     q: "Was passiert nach dem Launch?",
-    a: "Optional begleiten wir dich mit Betreuung für 39 €/Monat: Updates, Text- und Fotoänderungen und Support. Ohne Laufzeit: jederzeit kündbar.",
+    a: "Optional begleiten wir dich mit Betreuung für 49 €/Monat: Updates, Text- und Fotoänderungen und Support. Ohne Laufzeit: jederzeit kündbar.",
   },
   {
     q: "Arbeitet ihr außerhalb von Málaga?",
@@ -129,11 +129,11 @@ export const FAQ_DE: FaqEntry[] = [
   },
   {
     q: "Ich habe schon Domain und Hosting – kann ich sie nutzen?",
-    a: "Ja. Wir arbeiten ohne Aufpreis auf deiner aktuellen Domain und deinem Hosting. Kommen sie von einer alten Website, kostet die Migration mit Weiterleitungen, damit du keine Google-Positionen verlierst, 90 €.",
+    a: "Ja. Wir arbeiten ohne Aufpreis auf deiner aktuellen Domain und deinem Hosting. Kommen sie von einer alten Website, kostet die Migration mit Weiterleitungen, damit du keine Google-Positionen verlierst, 190 €.",
   },
   {
     q: "Ich habe schon meine kostenlose Website bei euch – wie beantrage ich Änderungen?",
-    a: "Schreib uns auf LinkedIn, was du ändern willst – Texte, Fotos, Preise, Farben oder Bereiche – und wir richten es nach deinem Wunsch ein. Der erste Monat nach dem Launch ist gratis; danach gilt die Betreuung für 39 €/Monat, ohne Laufzeit.",
+    a: "Schreib uns auf LinkedIn, was du ändern willst – Texte, Fotos, Preise, Farben oder Bereiche – und wir richten es nach deinem Wunsch ein. Der erste Monat nach dem Launch ist gratis; danach gilt die Betreuung für 49 €/Monat, ohne Laufzeit.",
   },
   {
     q: "Rankt eine kostenlose Landing bei Google?",

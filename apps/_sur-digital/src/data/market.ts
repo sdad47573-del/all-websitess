@@ -1,9 +1,10 @@
 // Comparativa con competidores de Málaga por features y precios publicados.
-// Fuente: COMPETENCIA-FEATURES.md (4 nov 2026). Solo se recoge lo que cada
+// Fuente: COMPETENCIA-FEATURES.md (base 4 nov 2026) y revisión de tarifas
+// de competidores (9 nov 2026). Solo se recoge lo que cada
 // proveedor publica en su web; si no publica precio, se dice. La última
 // columna resume la ventaja que le queda al competidor frente a Sur Digital.
 
-export const MARKET_UPDATED = "4 de noviembre de 2026";
+export const MARKET_UPDATED = "9 de noviembre de 2026";
 
 export interface MarketRow {
   provider: string;
@@ -19,10 +20,10 @@ export interface MarketRow {
 export const MARKET_COMPARISON: MarketRow[] = [
   {
     provider: "Sur Digital",
-    web: "Landing 0 € · portfolio 390 € · web 490 € · tienda 890 €; enterprise desde 2.500 €",
-    seo: "SEO técnico incluido; SEO local 149 €/mes",
-    ads: "Redes 145 €/mes; Google Ads 150 €/mes + inversión",
-    maintenance: "39 €/mes; anual 750 € o 900 €",
+    web: "Landing 0 € · portfolio 490 € · web 690 € · tienda 1.290 €; enterprise desde 3.500 €",
+    seo: "SEO técnico incluido; SEO local 199 €/mes",
+    ads: "Redes 190 €/mes; Google Ads 190 €/mes + inversión",
+    maintenance: "49 €/mes; anual 750 € o 900 €",
     edge: "—",
     us: true,
   },
@@ -44,11 +45,43 @@ export const MARKET_COMPARISON: MarketRow[] = [
   },
   {
     provider: "WOM Marketing",
-    web: "WordPress, WooCommerce, PrestaShop, Shopify y código a medida",
+    web: "Web básica 600 €, tienda 900 €; WordPress, WooCommerce, PrestaShop, Shopify y código a medida",
     seo: "SEO como servicio aparte",
     ads: "Community manager y publicidad online",
     maintenance: "Sí",
     edge: "Hosting a elección del cliente y multi-idioma en el paquete base",
+  },
+  {
+    provider: "Velez3D",
+    web: "Web desde 490 €; Web Business 890 €; hasta 6 páginas; WordPress",
+    seo: "SEO local desde 190 €/mes",
+    ads: "No publicado",
+    maintenance: "Desde 45 €/mes",
+    edge: "Precios bajos y trato local en la Axarquía",
+  },
+  {
+    provider: "Dimayou",
+    web: "Diseño desde 790 €; corporativa 1.490 €; estándar 2.900 €; premium desde 4.900 €",
+    seo: "Posicionamiento Google + IA desde 349 €/mes",
+    ads: "No publicado",
+    maintenance: "No publicado",
+    edge: "Posicionamiento en Google y asistentes de IA con casos publicados",
+  },
+  {
+    provider: "Agencia Deseo",
+    web: "Desde 499 € (hasta 5 páginas); desarrollo a medida desde 990 €",
+    seo: "No publicado",
+    ads: "No publicado",
+    maintenance: "No publicado",
+    edge: "Precio de entrada bajo para una web de cinco páginas",
+  },
+  {
+    provider: "Publicidad Mediterránea",
+    web: "Landing 650 €; corporativa 1.100–2.200 €; ecommerce a presupuesto",
+    seo: "SEO desde 350 €/mes",
+    ads: "Redes 250–750 €/mes; Google Ads 180–550 €/mes + inversión",
+    maintenance: "50–150 €/mes",
+    edge: "Catálogo completo de tarifas y servicios",
   },
   {
     provider: "Potencia Redes",
@@ -160,25 +193,25 @@ export interface FeatureRow {
 }
 
 export const FEATURE_COMPARISON: FeatureRow[] = [
-  { feature: "Landing de 1 página", us: "✓ 0 €", local: "✓ 250–400 €", national: "✓ 250–950 €", kit: "✓ (dentro del bono)", freelance: "✓" },
-  { feature: "Web corporativa 5–8 páginas", us: "✓ 490 € (5 páginas)", local: "✓ 800–1.290 €", national: "✓ 550–1.900 €", kit: "✓", freelance: "✓" },
-  { feature: "Portfolio / marca personal", us: "✓ 390 €", local: "✓ 400–450 €", national: "✓ 400 €", kit: "✓", freelance: "✓" },
-  { feature: "Tienda online", us: "✓ 890 €", local: "✓ 1.200–3.000 €", national: "✓ 850–6.000 €", kit: "✓", freelance: "✓" },
-  { feature: "Rediseño / migración", us: "parcial (rediseño se presupuesta; migración 90 €)", local: "✓", national: "✓", kit: "✓", freelance: "✓" },
+  { feature: "Landing de 1 página", us: "✓ 0 €", local: "✓ 250–650 €", national: "✓ 250–950 €", kit: "✓ (dentro del bono)", freelance: "✓" },
+  { feature: "Web corporativa 5–8 páginas", us: "✓ 690 € (5 páginas)", local: "✓ 600–1.500 €", national: "✓ 550–1.900 €", kit: "✓", freelance: "✓" },
+  { feature: "Portfolio / marca personal", us: "✓ 490 €", local: "✓ 400–450 €", national: "✓ 400 €", kit: "✓", freelance: "✓" },
+  { feature: "Tienda online", us: "✓ 1.290 €", local: "✓ 1.200–3.000 €", national: "✓ 850–6.000 €", kit: "✓", freelance: "✓" },
+  { feature: "Rediseño / migración", us: "parcial (rediseño se presupuesta; migración 190 €)", local: "✓", national: "✓", kit: "✓", freelance: "✓" },
   { feature: "SEO técnico (sitemap, Search Console, datos estructurados)", us: "✓", local: "parcial", national: "✓", kit: "✓", freelance: "parcial" },
   { feature: "Ficha de Google Business optimizada", us: "✓ incluida", local: "✓", national: "parcial", kit: "✓", freelance: "parcial" },
-  { feature: "Cuota mensual de SEO", us: "✓ 149 €/mes", local: "✓ 199–400 €/mes", national: "✓", kit: "✓ 12 meses", freelance: "parcial" },
-  { feature: "Gestión de redes sociales", us: "✓ 145 €/mes", local: "✓ 145 €/mes", national: "✓", kit: "✓ 12 meses", freelance: "parcial" },
-  { feature: "Google Ads / SEM", us: "✓ 150 €/mes + inversión aparte", local: "✓ 150–320 €/mes + inversión", national: "✓", kit: "✗", freelance: "parcial" },
-  { feature: "Mantenimiento mensual", us: "✓ 39 €/mes opcional", local: "✓ 25–90 €/mes", national: "✓ 70–90 €/mes", kit: "parcial", freelance: "✓" },
+  { feature: "Cuota mensual de SEO", us: "✓ 199 €/mes", local: "✓ 190–400 €/mes", national: "✓", kit: "✓ 12 meses", freelance: "parcial" },
+  { feature: "Gestión de redes sociales", us: "✓ 190 €/mes", local: "✓ 145–750 €/mes", national: "✓", kit: "✓ 12 meses", freelance: "parcial" },
+  { feature: "Google Ads / SEM", us: "✓ 190 €/mes + inversión aparte", local: "✓ 180–550 €/mes + inversión", national: "✓", kit: "✗", freelance: "parcial" },
+  { feature: "Mantenimiento mensual", us: "✓ 49 €/mes opcional", local: "✓ 45–150 €/mes", national: "✓ 70–90 €/mes", kit: "parcial", freelance: "✓" },
   { feature: "Mantenimiento anual", us: "✓ 750 €/año (Esencial) y 900 €/año (Gestión)", local: "✗", national: "✓ 750–900 €/año", kit: "✗", freelance: "parcial" },
   { feature: "Soporte 24/7 para incidencias críticas", us: "✓ monitorización 24/7; respuesta 2 h laborables", local: "parcial", national: "✓", kit: "✗", freelance: "✗" },
-  { feature: "Proyecto enterprise (integraciones, API, SLA)", us: "✓ desde 2.500 €", local: "parcial", national: "✓ 1.500–10.000 €", kit: "✗", freelance: "parcial" },
+  { feature: "Proyecto enterprise (integraciones, API, SLA)", us: "✓ desde 3.500 €", local: "parcial", national: "✓ 1.500–10.000 €", kit: "✗", freelance: "parcial" },
   { feature: "Hosting y dominio incluidos", us: "✓ 1.er año (Web Completa)", local: "parcial", national: "parcial", kit: "✓ primer año", freelance: "✗" },
   { feature: "Dominio y web a nombre del cliente", us: "✓", local: "parcial (Zaliza sí)", national: "parcial", kit: "parcial", freelance: "✓" },
   { feature: "Panel editable para el cliente", us: "parcial (panel sencillo)", local: "✓ WordPress", national: "✓ WordPress/Shopify", kit: "✓", freelance: "✓" },
   { feature: "Formación al cliente", us: "✓ sesión de 30 min grabada + guía", local: "✓", national: "✓", kit: "✗", freelance: "parcial" },
-  { feature: "Multi-idioma", us: "✓ extra desde 150 €", local: "✓", national: "✓", kit: "parcial", freelance: "parcial" },
+  { feature: "Multi-idioma", us: "✓ extra desde 190 €", local: "✓", national: "✓", kit: "parcial", freelance: "parcial" },
   { feature: "Formulario + WhatsApp clicable", us: "parcial (formulario; WhatsApp solo en Portfolio y sectores con pedido directo)", local: "✓", national: "✓", kit: "✓", freelance: "✓" },
   { feature: "Reservas / cita online", us: "parcial (formulario de cita)", local: "✓", national: "✓", kit: "parcial", freelance: "parcial" },
   { feature: "RGPD (aviso legal y cookies)", us: "parcial (textos los redacta la gestoría)", local: "✓", national: "✓", kit: "✓", freelance: "✗" },

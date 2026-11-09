@@ -46,7 +46,7 @@ La deontología del ilustre colegio es clara: sin resultados garantizados, sin c
 
 ## Cuánto cuesta una web para abogados
 
-Una web de despacho (5–8 páginas: inicio, 3–4 áreas de práctica, el despacho y contacto) encaja en nuestra **Web Completa por 490€**: diseño sobrio a medida, dominio y hosting el primer año, SEO básico y entrega en menos de 7 días. Cada área de práctica extra son 60€, y el mantenimiento opcional 39€/mes. Todo con [precio cerrado](/precios/) y la ficha de Google Business optimizada incluida.
+Una web de despacho (5–8 páginas: inicio, 3–4 áreas de práctica, el despacho y contacto) encaja en nuestra **Web Completa por 690€**: diseño sobrio a medida, dominio y hosting el primer año, SEO básico y entrega en menos de 7 días. Cada área de práctica extra son 60€, y el mantenimiento opcional 49€/mes. Todo con [precio cerrado](/precios/) y la ficha de Google Business optimizada incluida.
 
 La propuesta completa del sector, con ejemplos de secciones, está en [web para abogados en Málaga](/web-para-abogados/).
 

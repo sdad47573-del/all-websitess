@@ -7,13 +7,13 @@ import type { PreciosCopy } from "./types";
 export const PRECIOS_EN: PreciosCopy = {
   metaTitle: "Web design prices Málaga 2026: from €0 | Sur Digital",
   metaDescription:
-    "Web design prices in Málaga: free landing page, full website €490, online shop €890 and maintenance €39/month. Fixed price in writing, no lock-in.",
+    "Web design prices in Málaga: free landing page, full website €690, online shop €1,290 and maintenance €49/month. Fixed price in writing, no lock-in.",
   crumbHome: "Home",
   crumb: "Prices",
   heroTitle: "Clear prices,",
   heroAccent: "no surprises",
   heroLead:
-    "Other agencies charge €600–900 for a five-page website. Here you see what each thing costs, with VAT and terms in writing before we start. The comparison with Málaga agencies and their published prices is further down.",
+    "Most local agencies charge €600–1,500 for a five-page website. Here you see what each thing costs, with VAT and terms in writing before we start. The comparison with Málaga agencies and their published prices is further down.",
   guideTitle: "Which plan is yours?",
   guideLead:
     "Find your case. Each card below says who it's for, what it includes and what it costs.",
@@ -44,7 +44,7 @@ export const PRECIOS_EN: PreciosCopy = {
   monthSuffix: "/month",
   tiersTitle: "Annual care plans",
   tiersLead:
-    "If the site changes often, the annual plan works out better than adding one-off changes. Monthly maintenance at €39/month is still available for small edits.",
+    "If the site changes often, the annual plan works out better than adding one-off changes. Monthly maintenance at €49/month is still available for small edits.",
   yearSuffix: "/year",
   enterpriseBadge: "Enterprise",
   enterpriseTitle: "Large projects,",
@@ -84,7 +84,7 @@ export const PRECIOS_EN: PreciosCopy = {
     "Your site isn't set in stone: if there's copy you're not sold on, a photo you want swapped or an out-of-date price, tell us and we'll adjust it with you until you say “that's it”.",
   cambiosChips: ["Copy and headlines", "Photos and gallery", "Prices and opening hours", "Colours and style", "Sections and order", "Google listing"],
   cambiosNote:
-    "During the first month after launch, changes are free. After that they're included in the €39/month maintenance, no lock-in.",
+    "During the first month after launch, changes are free. After that they're included in the €49/month maintenance, no lock-in.",
   cambiosCta: "Request changes on LinkedIn",
   comparisonTitle: "Agencies, templates",
   comparisonAccent: "and us",
@@ -93,7 +93,7 @@ export const PRECIOS_EN: PreciosCopy = {
   comparisonSwipe: "Swipe the table to compare the 3 columns →",
   comparisonHeaders: ["Agency", "traditional", "Do it yourself", "or a template", "Sur Digital", "us"],
   comparisonRows: [
-    { feature: "Price of a basic website", agency: "€600–900 (5 pages)", diy: "€0–300 + your time", us: "From €0" },
+    { feature: "Price of a basic website", agency: "€600–1,500 (5 pages)", diy: "€0–300 + your time", us: "From €0" },
     { feature: "Fixed price in writing", agency: false, diy: false, us: true },
     { feature: "Delivery", agency: "3–8 weeks", diy: "When there's a gap", us: "Under 7 days" },
     { feature: "Design unique to your brand", agency: "Catalogue template", diy: true, us: true },
@@ -106,12 +106,12 @@ export const PRECIOS_EN: PreciosCopy = {
     { feature: "Forms that reach your phone", agency: "Extra (€30–80)", diy: false, us: true },
     { feature: "Local SEO by sector and neighbourhood", agency: "Only in expensive packs", diy: false, us: true },
     { feature: "Copy and photo changes after delivery", agency: "€25–50 per change", diy: "Yourself (if you can)", us: "Free the first month" },
-    { feature: "Ongoing maintenance", agency: "€40–90/month", diy: "Up to you", us: "€39/month optional" },
-    { feature: "Local SEO retainer", agency: "€199–400/month", diy: false, us: "€149/month" },
-    { feature: "Social media", agency: "€145/month", diy: "Your time", us: "€145/month" },
-    { feature: "Google Ads", agency: "€150–320/month + spend", diy: false, us: "€150/month + spend" },
+    { feature: "Ongoing maintenance", agency: "€45–150/month", diy: "Up to you", us: "€49/month optional" },
+    { feature: "Local SEO retainer", agency: "€190–400/month", diy: false, us: "€199/month" },
+    { feature: "Social media", agency: "€145–750/month", diy: "Your time", us: "€190/month" },
+    { feature: "Google Ads", agency: "€180–550/month + spend", diy: false, us: "€190/month + spend" },
     { feature: "Training on delivery", agency: "Depends on the agency", diy: false, us: "30 min recorded + guide" },
-    { feature: "Large project with SLA", agency: "Large agencies only", diy: false, us: "From €2,500" },
+    { feature: "Large project with SLA", agency: "Large agencies only", diy: false, us: "From €3,500" },
     { feature: "Responsibility if something breaks", agency: true, diy: false, us: true },
   ],
   comparisonNote:
@@ -132,16 +132,16 @@ export const PRECIOS_EN: PreciosCopy = {
   finalCta: "Ask for a written quote",
   extras: [
     { name: "Extra page", price: "€60", note: "Per extra page in the Full website and Pro plans." },
-    { name: "Additional language", price: "from €150", note: "Structure and SEO for the second language (translation separate)." },
-    { name: "Logo and basic identity", price: "from €150", note: "Logo in all formats, colour palette and typefaces." },
-    { name: "Monthly maintenance", price: "€39/month", note: "Updates, backups and copy/photo changes. No lock-in." },
-    { name: "Old site migration", price: "€90", note: "Redirects from the previous domain so you don't lose Google rankings." },
+    { name: "Additional language", price: "from €190", note: "Structure and SEO for the second language (translation separate)." },
+    { name: "Logo and basic identity", price: "from €250", note: "Logo in all formats, colour palette and typefaces." },
+    { name: "Monthly maintenance", price: "€49/month", note: "Updates, backups and copy/photo changes. No lock-in." },
+    { name: "Old site migration", price: "€190", note: "Redirects from the previous domain so you don't lose Google rankings." },
   ],
   plans: [
     { tagline: "Your first website, no risk", features: ["Modern, responsive single-page landing", "Direct contact button", "One revision included", "Delivered in under 7 days", "SSL certificate included"] },
     { tagline: "Photographers, architects and personal brands", features: ["Project gallery optimised to load fast", "Intro copy written with you", "Direct contact by WhatsApp and form", "SSL certificate and local SEO included", "Training so you can add projects yourself"] },
     { tagline: "Up to 5 pages with domain", features: ["Up to 5 custom pages", "Your own domain + 1 year hosting", "Basic SEO for Google", "Mobile optimisation", "Up to 3 revisions", "SSL certificate included", "30-min training + user guide", "24/7 monitoring, reply within 2 working hours"] },
-    { tagline: "Online shop or large website", features: ["Online shop or large corporate site", "Integrated payment gateway", "Product and email management", "Local SEO (Google Maps)", "Optional maintenance €39/month", "SSL certificate included", "30-min training + user guide", "24/7 monitoring, reply within 2 working hours"] },
+    { tagline: "Online shop or large website", features: ["Online shop or large corporate site", "Integrated payment gateway", "Product and email management", "Local SEO (Google Maps)", "Optional maintenance €49/month", "SSL certificate included", "30-min training + user guide", "24/7 monitoring, reply within 2 working hours"] },
   ],
   retainers: [
     { name: "Local SEO", tagline: "So people find you by service and neighbourhood", features: ["Initial audit and keywords by service and neighbourhood", "Optimised Google Business profile and review management", "2 pieces of content a month (article or service page)", "Monthly report on rankings, calls and forms", "No lock-in: cancel anytime"] },

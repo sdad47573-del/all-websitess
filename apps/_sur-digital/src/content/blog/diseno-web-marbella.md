@@ -10,13 +10,13 @@ Marbella, Fuengirola, Estepona, Benalmádena, Torremolinos: la Costa del Sol con
 
 ## Los precios son los mismos que en Málaga
 
-No hay "precio Marbella": una web cuesta lo mismo la hagas donde la hagas, porque el trabajo es el mismo. Los rangos reales: landing gratis, web completa 490€ y tienda desde 890€ ([desglose completo](/blog/cuanto-cuesta-una-web-malaga-2026/)). Si un presupuesto de la zona multiplica eso sin justificarlo, estás pagando la oficina con vistas, no tu web.
+No hay "precio Marbella": una web cuesta lo mismo la hagas donde la hagas, porque el trabajo es el mismo. Los rangos reales: landing gratis, web completa 690€ y tienda desde 1.290€ ([desglose completo](/blog/cuanto-cuesta-una-web-malaga-2026/)). Si un presupuesto de la zona multiplica eso sin justificarlo, estás pagando la oficina con vistas, no tu web.
 
 ## Lo que sí cambia: idioma y competencia
 
-- **Inglés casi obligatorio**: turismo y residentes extranjeros. Tu web en español + inglés capta un mercado que la competencia monolingüe pierde ([idioma adicional desde 150€](/precios/)).
+- **Inglés casi obligatorio**: turismo y residentes extranjeros. Tu web en español + inglés capta un mercado que la competencia monolingüe pierde ([idioma adicional desde 190€](/precios/)).
 - **Más competencia por clic**: en Marbella pelean más negocios por las mismas búsquedas. La web sola no basta: necesitas ficha de Google trabajada y reseñas desde el día uno ([cómo salir en Google Maps](/blog/salir-en-google-maps-malaga/)).
-- **Estacionalidad**: restaurantes y servicios trabajan picos. Tu web debe actualizarse (carta, horarios, precios) sin depender de nadie: eso entra en el [mantenimiento de 39€/mes](/blog/mantenimiento-web-20-euros-mes/).
+- **Estacionalidad**: restaurantes y servicios trabajan picos. Tu web debe actualizarse (carta, horarios, precios) sin depender de nadie: eso entra en el [mantenimiento de 49€/mes](/blog/mantenimiento-web-20-euros-mes/).
 
 ## Bilingüe de verdad, no con un botón
 

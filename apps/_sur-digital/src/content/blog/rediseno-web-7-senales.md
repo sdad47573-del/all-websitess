@@ -38,7 +38,7 @@ Lo estético importa menos que lo anterior, pero si a ti te da vergüenza pasar 
 
 ## Cuánto cuesta un rediseño honesto
 
-Depende del tamaño, pero los rangos de mercado para un negocio local están entre lo gratuito (una landing nueva) y unos pocos miles para proyectos con tienda o mucho contenido. Los números reales, con lo que incluye cada tramo, están en [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/). Y si lo que quieres es arreglar sin partir de cero, el [mantenimiento por 39 €/mes](/blog/mantenimiento-web-20-euros-mes/) cubre las tareas pequeñas que evitan llegar a este punto.
+Depende del tamaño, pero los rangos de mercado para un negocio local están entre lo gratuito (una landing nueva) y unos pocos miles para proyectos con tienda o mucho contenido. Los números reales, con lo que incluye cada tramo, están en [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/). Y si lo que quieres es arreglar sin partir de cero, el [mantenimiento por 49 €/mes](/blog/mantenimiento-web-20-euros-mes/) cubre las tareas pequeñas que evitan llegar a este punto.
 
 ---
 

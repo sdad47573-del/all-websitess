@@ -69,7 +69,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
   en: {
     title: "Web design in Málaga — free landing page | Sur Digital",
     description:
-      "Fast, custom websites for local businesses in Málaga. Free landing page, full website €490, online shop €890. Fixed price agreed in writing.",
+      "Fast, custom websites for local businesses in Málaga. Free landing page, full website €690, online shop €1,290. Fixed price agreed in writing.",
     eyebrow: "Web studio for businesses in Málaga",
     h1: "A website that",
     h1Accent: "brings you customers.",
@@ -107,7 +107,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       {
         when: "After launch",
         title: "We stay in touch",
-        text: "The first month, changes are free. After that, €39/month if you want us to keep going.",
+        text: "The first month, changes are free. After that, €49/month if you want us to keep going.",
       },
     ],
     pricingTitle: "Prices",
@@ -137,7 +137,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       },
       {
         q: "How much does a website cost?",
-        a: "Landing page free, full website €490, online shop €890. The quote is fixed in writing and everything is registered in your name.",
+        a: "Landing page free, full website €690, online shop €1,290. The quote is fixed in writing and everything is registered in your name.",
       },
       {
         q: "How long does it take?",
@@ -155,13 +155,13 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     summaryNote:
       "This page is a summary in your language. The rest of the site (services, blog and sector pages) is in Spanish — and we work with you in English.",
     summaryLink: "Read the full site in Spanish",
-    formatPrice: (price) => (price === 0 ? "Free" : `€${price}`),
+    formatPrice: (price) => (price === 0 ? "Free" : `€${price.toLocaleString("en-US")}`),
   },
 
   de: {
     title: "Webdesign in Málaga — Landingpage gratis | Sur Digital",
     description:
-      "Schnelle, individuelle Websites für lokale Unternehmen in Málaga. Landingpage gratis, komplette Website 490 €, Onlineshop 890 €. Fester Preis schriftlich.",
+      "Schnelle, individuelle Websites für lokale Unternehmen in Málaga. Landingpage gratis, komplette Website 690 €, Onlineshop 1.290 €. Fester Preis schriftlich.",
     eyebrow: "Webstudio für Unternehmen in Málaga",
     h1: "Eine Website, die",
     h1Accent: "Ihnen Kunden bringt.",
@@ -199,7 +199,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       {
         when: "Nach dem Start",
         title: "Wir bleiben da",
-        text: "Im ersten Monat sind Änderungen kostenlos. Danach 39 €/Monat, wenn Sie möchten.",
+        text: "Im ersten Monat sind Änderungen kostenlos. Danach 49 €/Monat, wenn Sie möchten.",
       },
     ],
     pricingTitle: "Preise",
@@ -229,7 +229,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       },
       {
         q: "Was kostet eine Website?",
-        a: "Landingpage kostenlos, komplette Website 490 €, Onlineshop 890 €. Der Preis steht schriftlich fest und alles läuft auf Ihren Namen.",
+        a: "Landingpage kostenlos, komplette Website 690 €, Onlineshop 1.290 €. Der Preis steht schriftlich fest und alles läuft auf Ihren Namen.",
       },
       {
         q: "Wie lange dauert es?",
@@ -247,13 +247,13 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     summaryNote:
       "Diese Seite ist eine Zusammenfassung in Ihrer Sprache. Der Rest der Website (Leistungen, Blog und Branchenseiten) ist auf Spanisch – wir arbeiten aber auf Deutsch mit Ihnen.",
     summaryLink: "Die ganze Website auf Spanisch ansehen",
-    formatPrice: (price) => (price === 0 ? "Gratis" : `${price} €`),
+    formatPrice: (price) => (price === 0 ? "Gratis" : `${price.toLocaleString("de-DE")} €`),
   },
 
   fr: {
     title: "Création de sites à Málaga — landing gratuite | Sur Digital",
     description:
-      "Sites rapides et sur mesure pour les commerces de Málaga. Landing gratuite, site complet 490 €, boutique en ligne 890 €. Prix fixe par écrit.",
+      "Sites rapides et sur mesure pour les commerces de Málaga. Landing gratuite, site complet 690 €, boutique en ligne 1 290 €. Prix fixe par écrit.",
     eyebrow: "Studio web pour les entreprises de Málaga",
     h1: "Un site qui",
     h1Accent: "vous apporte des clients.",
@@ -291,7 +291,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       {
         when: "Après le lancement",
         title: "Nous restons là",
-        text: "Le premier mois, les modifications sont gratuites. Ensuite, 39 €/mois si vous le souhaitez.",
+        text: "Le premier mois, les modifications sont gratuites. Ensuite, 49 €/mois si vous le souhaitez.",
       },
     ],
     pricingTitle: "Des prix",
@@ -321,7 +321,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       },
       {
         q: "Combien coûte un site ?",
-        a: "Landing gratuite, site complet 490 €, boutique en ligne 890 €. Le prix est fixé par écrit et tout est à votre nom.",
+        a: "Landing gratuite, site complet 690 €, boutique en ligne 1 290 €. Le prix est fixé par écrit et tout est à votre nom.",
       },
       {
         q: "Combien de temps ?",
@@ -339,13 +339,13 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     summaryNote:
       "Cette page est un résumé dans votre langue. Le reste du site (services, blog et pages par secteur) est en espagnol — et nous travaillons avec vous en français.",
     summaryLink: "Voir le site complet en espagnol",
-    formatPrice: (price) => (price === 0 ? "Gratuit" : `${price} €`),
+    formatPrice: (price) => (price === 0 ? "Gratuit" : `${price.toLocaleString("fr-FR")} €`),
   },
 
   pt: {
     title: "Criação de sites em Málaga — landing gratuita | Sur Digital",
     description:
-      "Sites rápidos e à medida para negócios locais em Málaga. Landing gratuita, site completo 490 €, loja online 890 €. Preço fixo por escrito.",
+      "Sites rápidos e à medida para negócios locais em Málaga. Landing gratuita, site completo 690 €, loja online 1.290 €. Preço fixo por escrito.",
     eyebrow: "Estúdio web para negócios em Málaga",
     h1: "Um site que",
     h1Accent: "lhe traz clientes.",
@@ -383,7 +383,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       {
         when: "Depois do lançamento",
         title: "Continuamos por aqui",
-        text: "No primeiro mês, as alterações são gratuitas. Depois, 39 €/mês se quiser.",
+        text: "No primeiro mês, as alterações são gratuitas. Depois, 49 €/mês se quiser.",
       },
     ],
     pricingTitle: "Preços",
@@ -413,7 +413,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       },
       {
         q: "Quanto custa um site?",
-        a: "Landing gratuita, site completo 490 €, loja online 890 €. O preço é fixado por escrito e tudo fica em seu nome.",
+        a: "Landing gratuita, site completo 690 €, loja online 1.290 €. O preço é fixado por escrito e tudo fica em seu nome.",
       },
       {
         q: "Quanto tempo demora?",
@@ -431,13 +431,13 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     summaryNote:
       "Esta página é um resumo na sua língua. O resto do site (serviços, blog e páginas por setor) está em espanhol — e trabalhamos consigo em português.",
     summaryLink: "Ver o site completo em espanhol",
-    formatPrice: (price) => (price === 0 ? "Grátis" : `${price} €`),
+    formatPrice: (price) => (price === 0 ? "Grátis" : `${price.toLocaleString("pt-PT")} €`),
   },
 
   ru: {
     title: "Создание сайтов в Малаге — лендинг бесплатно | Sur Digital",
     description:
-      "Быстрые сайты под заказ для местного бизнеса в Малаге. Лендинг бесплатно, сайт 490 €, интернет-магазин 890 €. Фиксированная цена по договору.",
+      "Быстрые сайты под заказ для местного бизнеса в Малаге. Лендинг бесплатно, сайт 690 €, интернет-магазин 1 290 €. Фиксированная цена по договору.",
     eyebrow: "Веб-студия для бизнеса в Малаге",
     h1: "Сайт, который",
     h1Accent: "приводит клиентов.",
@@ -475,7 +475,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       {
         when: "После запуска",
         title: "Остаёмся на связи",
-        text: "Первый месяц правки бесплатны. Дальше — 39 €/мес, если захотите.",
+        text: "Первый месяц правки бесплатны. Дальше — 49 €/мес, если захотите.",
       },
     ],
     pricingTitle: "Цены",
@@ -505,7 +505,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
       },
       {
         q: "Сколько стоит сайт?",
-        a: "Лендинг бесплатно, полный сайт 490 €, интернет-магазин 890 €. Цена фиксируется письменно, всё оформляется на вас.",
+        a: "Лендинг бесплатно, полный сайт 690 €, интернет-магазин 1 290 €. Цена фиксируется письменно, всё оформляется на вас.",
       },
       {
         q: "Сколько времени занимает?",
@@ -523,7 +523,7 @@ export const LOCALE_CONTENT: Record<Locale, LocaleContent> = {
     summaryNote:
       "Эта страница — краткое описание на русском. Остальной сайт (услуги, блог и страницы по сферам) на испанском, но работаем с вами мы на русском.",
     summaryLink: "Полная версия сайта на испанском",
-    formatPrice: (price) => (price === 0 ? "Бесплатно" : `${price} €`),
+    formatPrice: (price) => (price === 0 ? "Бесплатно" : `${price.toLocaleString("ru-RU")} €`),
   },
 };
 

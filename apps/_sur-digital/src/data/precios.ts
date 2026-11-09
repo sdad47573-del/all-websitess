@@ -15,7 +15,7 @@ export interface Plan {
 
 export interface Extra {
   name: string;
-  /** Importe tal y como se publica: "60€", "desde 150€", "39€/mes". */
+  /** Importe tal y como se publica: "60€", "desde 190€", "49€/mes". */
   price: string;
   /** Importe numérico que usan la calculadora y los esquemas de precio. */
   amount: number;
@@ -43,7 +43,7 @@ export const PLANS: Plan[] = [
   },
   {
     name: "Portfolio",
-    price: 390,
+    price: 490,
     tagline: "Fotógrafos, arquitectos y marca personal",
     features: [
       "Galería de proyectos optimizada para cargar rápido",
@@ -56,7 +56,7 @@ export const PLANS: Plan[] = [
   },
   {
     name: "Web Completa",
-    price: 490,
+    price: 690,
     tagline: "Hasta 5 páginas con dominio",
     features: [
       "Hasta 5 páginas a tu medida",
@@ -72,14 +72,14 @@ export const PLANS: Plan[] = [
   },
   {
     name: "Pro + Tienda",
-    price: 890,
+    price: 1290,
     tagline: "Tienda online o web grande",
     features: [
       "Tienda online o web corporativa grande",
       "Pasarela de pago integrada",
       "Gestión de productos y emails",
       "SEO local (Google Maps)",
-      "Mantenimiento opcional 39€/mes",
+      "Mantenimiento opcional 49€/mes",
       "Certificado SSL incluido",
       "Formación de 30 min + guía de uso",
       "Monitorización 24/7 y respuesta en 2 h laborables",
@@ -100,27 +100,27 @@ export const EXTRAS: Extra[] = [
   },
   {
     name: "Idioma adicional",
-    price: "desde 150€",
-    amount: 150,
+    price: "desde 190€",
+    amount: 190,
     note: "Estructura y SEO del segundo idioma (traducción aparte).",
   },
   {
     name: "Logo e identidad básica",
-    price: "desde 150€",
-    amount: 150,
+    price: "desde 250€",
+    amount: 250,
     note: "Logo en todos los formatos, paleta de colores y tipografías.",
   },
   {
     name: "Mantenimiento mensual",
-    price: "39€/mes",
-    amount: 39,
+    price: "49€/mes",
+    amount: 49,
     monthly: true,
     note: "Actualizaciones, copias de seguridad y cambios de textos y fotos. Sin permanencia.",
   },
   {
     name: "Migración de web antigua",
-    price: "90€",
-    amount: 90,
+    price: "190€",
+    amount: 190,
     note: "Redirecciones del dominio anterior para no perder posiciones en Google.",
   },
 ];

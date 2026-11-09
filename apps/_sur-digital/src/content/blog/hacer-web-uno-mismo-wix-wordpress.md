@@ -24,7 +24,7 @@ category: "Guías"
 
 ## Opción C: encargarla con precio cerrado
 
-Nuestra **Web Completa por 490€**: diseño a medida, dominio y hosting el primer año, SEO básico, entrega en menos de 7 días y 20 minutos de tu tiempo (el brief). La [landing gratis](/blog/cuanto-cuesta-landing-page-2026/) directamente cuesta 0€ y 0 horas.
+Nuestra **Web Completa por 690€**: diseño a medida, dominio y hosting el primer año, SEO básico, entrega en menos de 7 días y 20 minutos de tu tiempo (el brief). La [landing gratis](/blog/cuanto-cuesta-landing-page-2026/) directamente cuesta 0€ y 0 horas.
 
 ## La regla para decidir
 

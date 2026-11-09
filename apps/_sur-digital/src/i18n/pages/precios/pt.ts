@@ -4,13 +4,13 @@ import type { PreciosCopy } from "./types";
 export const PRECIOS_PT: PreciosCopy = {
   metaTitle: "Preços de sites em Málaga 2026: desde 0 € | Sur Digital",
   metaDescription:
-    "Preços de criação de sites em Málaga: landing gratuita, site completo 490 €, loja online 890 € e manutenção 39 €/mês. Preço fechado por escrito, sem fidelização.",
+    "Preços de criação de sites em Málaga: landing gratuita, site completo 690 €, loja online 1.290 € e manutenção 49 €/mês. Preço fechado por escrito, sem fidelização.",
   crumbHome: "Início",
   crumb: "Preços",
   heroTitle: "Preços claros,",
   heroAccent: "sem surpresas",
   heroLead:
-    "Outras agências cobram 600–900 € por um site de cinco páginas. Aqui vê quanto custa cada coisa, com IVA e condições por escrito antes de começar. A comparação com agências de Málaga e os preços publicados está mais abaixo.",
+    "A maioria das agências locais cobra 600–1.500 € por um site de cinco páginas. Aqui vê quanto custa cada coisa, com IVA e condições por escrito antes de começar. A comparação com agências de Málaga e os preços publicados está mais abaixo.",
   guideTitle: "Qual plano é o seu?",
   guideLead:
     "Encontre o seu caso. Cada cartão abaixo diz para quem é, o que inclui e quanto custa.",
@@ -41,7 +41,7 @@ export const PRECIOS_PT: PreciosCopy = {
   monthSuffix: "/mês",
   tiersTitle: "Manutenção anual",
   tiersLead:
-    "Se o site vai mudar com frequência, o plano anual sai melhor do que somar alterações avulsas. A manutenção mensal de 39 €/mês continua disponível para pequenas mudanças.",
+    "Se o site vai mudar com frequência, o plano anual sai melhor do que somar alterações avulsas. A manutenção mensal de 49 €/mês continua disponível para pequenas mudanças.",
   yearSuffix: "/ano",
   enterpriseBadge: "Enterprise",
   enterpriseTitle: "Projetos grandes,",
@@ -81,7 +81,7 @@ export const PRECIOS_PT: PreciosCopy = {
     "O seu site não é de pedra: se há um texto que não o convence, uma foto que quer trocar ou um preço desatualizado, diga-nos e ajustamos consigo até dizer «assim sim».",
   cambiosChips: ["Textos e títulos", "Fotos e galeria", "Preços e horários", "Cores e estilo", "Secções e ordem", "Ficha Google"],
   cambiosNote:
-    "Durante o primeiro mês após o lançamento, os ajustes são gratuitos. Depois continuam incluídos na manutenção de 39 €/mês, sem fidelização.",
+    "Durante o primeiro mês após o lançamento, os ajustes são gratuitos. Depois continuam incluídos na manutenção de 49 €/mês, sem fidelização.",
   cambiosCta: "Pedir alterações no LinkedIn",
   comparisonTitle: "Agências, templates",
   comparisonAccent: "e nós",
@@ -90,7 +90,7 @@ export const PRECIOS_PT: PreciosCopy = {
   comparisonSwipe: "Deslize a tabela para comparar as 3 colunas →",
   comparisonHeaders: ["Agência", "tradicional", "Fazer sozinho", "ou template", "Sur Digital", "nós"],
   comparisonRows: [
-    { feature: "Preço de um site básico", agency: "600–900 € (5 páginas)", diy: "0–300 € + o seu tempo", us: "Desde 0 €" },
+    { feature: "Preço de um site básico", agency: "600–1.500 € (5 páginas)", diy: "0–300 € + o seu tempo", us: "Desde 0 €" },
     { feature: "Preço fechado por escrito", agency: false, diy: false, us: true },
     { feature: "Entrega", agency: "3–8 semanas", diy: "Quando houver tempo", us: "Menos de 7 dias" },
     { feature: "Design único para a sua marca", agency: "Template do catálogo", diy: true, us: true },
@@ -103,12 +103,12 @@ export const PRECIOS_PT: PreciosCopy = {
     { feature: "Formulários que chegam ao seu telemóvel", agency: "Extra (30–80 €)", diy: false, us: true },
     { feature: "SEO local por setor e bairro", agency: "Só em pacotes caros", diy: false, us: true },
     { feature: "Mudanças de textos e fotos após a entrega", agency: "25–50 € por alteração", diy: "Você mesmo (se souber)", us: "Grátis no primeiro mês" },
-    { feature: "Manutenção posterior", agency: "40–90 €/mês", diy: "Como quiser", us: "39 €/mês opcional" },
-    { feature: "Mensalidade de SEO local", agency: "199–400 €/mês", diy: false, us: "149 €/mês" },
-    { feature: "Redes sociais", agency: "145 €/mês", diy: "O seu tempo", us: "145 €/mês" },
-    { feature: "Google Ads", agency: "150–320 €/mês + investimento", diy: false, us: "150 €/mês + investimento" },
+    { feature: "Manutenção posterior", agency: "45–150 €/mês", diy: "Como quiser", us: "49 €/mês opcional" },
+    { feature: "Mensalidade de SEO local", agency: "190–400 €/mês", diy: false, us: "199 €/mês" },
+    { feature: "Redes sociais", agency: "145–750 €/mês", diy: "O seu tempo", us: "190 €/mês" },
+    { feature: "Google Ads", agency: "180–550 €/mês + investimento", diy: false, us: "190 €/mês + investimento" },
     { feature: "Formação na entrega", agency: "Conforme a agência", diy: false, us: "30 min gravados + guia" },
-    { feature: "Projeto grande com SLA", agency: "Só grandes agências", diy: false, us: "Desde 2.500 €" },
+    { feature: "Projeto grande com SLA", agency: "Só grandes agências", diy: false, us: "Desde 3.500 €" },
     { feature: "Responsabilidade se algo falhar", agency: true, diy: false, us: true },
   ],
   comparisonNote:
@@ -129,16 +129,16 @@ export const PRECIOS_PT: PreciosCopy = {
   finalCta: "Pedir orçamento por escrito",
   extras: [
     { name: "Página adicional", price: "60 €", note: "Por página extra nos planos Site Completo e Pro." },
-    { name: "Idioma adicional", price: "desde 150 €", note: "Estrutura e SEO do segundo idioma (tradução à parte)." },
-    { name: "Logótipo e identidade básica", price: "desde 150 €", note: "Logótipo em todos os formatos, paleta de cores e tipografias." },
-    { name: "Manutenção mensal", price: "39 €/mês", note: "Atualizações, cópias de segurança e mudanças de textos e fotos. Sem fidelização." },
-    { name: "Migração de site antigo", price: "90 €", note: "Redirecionamentos do domínio anterior para não perder posições no Google." },
+    { name: "Idioma adicional", price: "desde 190 €", note: "Estrutura e SEO do segundo idioma (tradução à parte)." },
+    { name: "Logótipo e identidade básica", price: "desde 250 €", note: "Logótipo em todos os formatos, paleta de cores e tipografias." },
+    { name: "Manutenção mensal", price: "49 €/mês", note: "Atualizações, cópias de segurança e mudanças de textos e fotos. Sem fidelização." },
+    { name: "Migração de site antigo", price: "190 €", note: "Redirecionamentos do domínio anterior para não perder posições no Google." },
   ],
   plans: [
     { tagline: "O seu primeiro site, sem risco", features: ["Landing de 1 página moderna e responsiva", "Botão de contacto direto", "Uma revisão incluída", "Entrega em menos de 7 dias", "Certificado SSL incluído"] },
     { tagline: "Fotógrafos, arquitetos e marcas pessoais", features: ["Galeria de projetos otimizada para carregar rápido", "Textos de apresentação escritos consigo", "Contacto direto por WhatsApp e formulário", "Certificado SSL e SEO local incluídos", "Formação para subir os seus projetos"] },
     { tagline: "Até 5 páginas com domínio", features: ["Até 5 páginas à sua medida", "Domínio próprio + alojamento 1 ano", "SEO básico para o Google", "Otimização para telemóveis", "Até 3 revisões", "Certificado SSL incluído", "Formação de 30 min + guia", "Monitorização 24/7, resposta em 2 h úteis"] },
-    { tagline: "Loja online ou site grande", features: ["Loja online ou site corporativo grande", "Gateway de pagamento integrado", "Gestão de produtos e emails", "SEO local (Google Maps)", "Manutenção opcional 39 €/mês", "Certificado SSL incluído", "Formação de 30 min + guia", "Monitorização 24/7, resposta em 2 h úteis"] },
+    { tagline: "Loja online ou site grande", features: ["Loja online ou site corporativo grande", "Gateway de pagamento integrado", "Gestão de produtos e emails", "SEO local (Google Maps)", "Manutenção opcional 49 €/mês", "Certificado SSL incluído", "Formação de 30 min + guia", "Monitorização 24/7, resposta em 2 h úteis"] },
   ],
   retainers: [
     { name: "SEO local", tagline: "Que o encontrem pelo serviço e pelo bairro", features: ["Auditoria inicial e palavras-chave por serviço e bairro", "Ficha Google Business otimizada e gestão de avaliações", "2 conteúdos por mês (artigo ou página de serviço)", "Relatório mensal de posições, chamadas e formulários", "Sem fidelização: cancele quando quiser"] },

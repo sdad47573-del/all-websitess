@@ -9,7 +9,7 @@ category: "Precios"
 
 ## 1. La web: de 0 a 1.200 € (una vez)
 
-Una landing, 0–400 €; una web corporativa, 400–1.200 €; una tienda, desde 900 €. El desglose completo está en [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/). En Sur Digital la hacemos por [490 € la completa y 890 € la tienda](/precios/), con la primera landing gratis: úsanos como referencia para comparar.
+Una landing, 0–400 €; una web corporativa, 400–1.200 €; una tienda, desde 900 €. El desglose completo está en [cuánto cuesta una web en Málaga](/blog/cuanto-cuesta-una-web-malaga-2026/). En Sur Digital la hacemos por [690 € la completa y 1.290 € la tienda](/precios/), con la primera landing gratis: úsanos como referencia para comparar.
 
 ## 2. El SEO local: 50–400 €/mes
 
@@ -19,7 +19,7 @@ Trabajo básico de ficha y contenidos, 50–150 €/mes; posicionar de verdad en
 
 Google Ads se paga dos veces: la gestión (cuota o porcentaje) y el dinero que va a Google por cada clic, que depende de tu sector. Los números por sector están en [cuánto cuesta Google Ads en Málaga](/blog/cuanto-cuesta-google-ads-malaga/). Regla práctica: si nadie te pregunta cuánto estás dispuesto a pagar por cliente, no saben gestionar anuncios.
 
-## 4. El mantenimiento: 39 €/mes
+## 4. El mantenimiento: 49 €/mes
 
 Que la web siga cargando rápido, sin errores ni spam. [Esto es lo que debe incluir](/blog/mantenimiento-web-20-euros-mes/): si te cobran 90 € por «actualizar WordPress», estás pagando de más.
 

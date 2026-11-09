@@ -30,7 +30,7 @@ Gran parte de tus pacientes no llegará a tu web: decidirá en tu ficha. Fotos d
 
 ## Qué cuesta una web así
 
-Web dental con páginas por tratamiento, primera visita destacada y reseñas integradas: **Web Completa por 490€**, entrega en menos de 7 días, con la ficha optimizada incluida. Cada tratamiento extra después son 60€ y el mantenimiento 39€/mes. La propuesta del sector, con ejemplos de secciones, en [web para dentistas en Málaga](/web-para-dentistas/).
+Web dental con páginas por tratamiento, primera visita destacada y reseñas integradas: **Web Completa por 690€**, entrega en menos de 7 días, con la ficha optimizada incluida. Cada tratamiento extra después son 60€ y el mantenimiento 49€/mes. La propuesta del sector, con ejemplos de secciones, en [web para dentistas en Málaga](/web-para-dentistas/).
 
 ---
 

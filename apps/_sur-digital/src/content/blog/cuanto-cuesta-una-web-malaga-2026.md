@@ -18,7 +18,7 @@ Varias páginas: inicio, servicios, sobre nosotros, blog, contacto. Tiene sentid
 **3. Tienda online: desde 900€.**
 Catálogo, carrito, pagos y envíos. El coste no está en montarla, está en mantenerla: fotos, stock, incidencias. Entra aquí solo si ya vendes. El desglose completo, en [cuánto cuesta una tienda online en Málaga](/blog/cuanto-cuesta-tienda-online-malaga/).
 
-Nuestros precios publicados —landing gratis, web completa 490€, tienda 890€— y los extras sueltos están en [planes y precios](/precios/).
+Nuestros precios publicados —landing gratis, web completa 690€, tienda 1.290€— y los extras sueltos están en [planes y precios](/precios/).
 
 ## Por qué hay tanta diferencia de precios
 
@@ -45,7 +45,7 @@ Vas a ver presupuestos de 300€ y de 3.000€ para lo que parece la misma web. 
 | "Precio orientativo, según horas" | Acabarás pagando 2x lo presupuestado |
 | "No incluye versión móvil" | Inaceptable en 2026 |
 
-El "hosting incluido 12 meses, luego 30€/mes" da para un artículo entero: así funcionan de verdad el [dominio y el hosting de un negocio local](/blog/dominio-hosting-negocios-guia/), y esto es lo que debería cubrir un [mantenimiento de 39€/mes](/blog/mantenimiento-web-20-euros-mes/).
+El "hosting incluido 12 meses, luego 30€/mes" da para un artículo entero: así funcionan de verdad el [dominio y el hosting de un negocio local](/blog/dominio-hosting-negocios-guia/), y esto es lo que debería cubrir un [mantenimiento de 49€/mes](/blog/mantenimiento-web-20-euros-mes/).
 
 ## Y el IVA, ¿quién lo pone?
 
@@ -63,7 +63,7 @@ Puedes. Cuenta con 20–40 horas de tu tiempo, un resultado correcto pero genér
 Tiene que estar por escrito: dominio a tu nombre y cuántos años de hosting entran. En nuestras webs el dominio es tuyo y el primer año de hosting va incluido.
 
 **¿Cuánto cuesta mantenerla al año?**
-El mantenimiento son 39 €/mes, más la renovación anual del dominio. Todo lo demás (textos nuevos, secciones nuevas) es mejora y se presupuesta aparte.
+El mantenimiento son 49 €/mes, más la renovación anual del dominio. Todo lo demás (textos nuevos, secciones nuevas) es mejora y se presupuesta aparte.
 
 **¿Me vale con la opción más barata?**
 Para la mayoría de negocios locales, una landing es todo lo que necesitas para empezar a aparecer en Google. La web grande llega cuando el negocio la pide, no antes.

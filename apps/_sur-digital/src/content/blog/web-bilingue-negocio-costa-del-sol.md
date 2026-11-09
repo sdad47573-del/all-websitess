@@ -39,13 +39,13 @@ Un formulario solo en español pierde al visitante en el último paso. Y las res
 
 ## Qué cuesta de verdad
 
-En nuestro caso, el idioma adicional de una web hecha por nosotros parte de **150 €**, con páginas propias en inglés y hreflang configurado. Está publicado en [los extras de una web](/precios/).
+En nuestro caso, el idioma adicional de una web hecha por nosotros parte de **190 €**, con páginas propias en inglés y hreflang configurado. Está publicado en [los extras de una web](/precios/).
 
 Pero el coste real tiene tres partes:
 
 | Concepto | Cuándo se paga | Orden de magnitud |
 | --- | --- | --- |
-| Segunda versión de las páginas | Una vez, al hacer la web | Desde 150 € |
+| Segunda versión de las páginas | Una vez, al hacer la web | Desde 190 € |
 | Traducción profesional (si el texto es largo) | Una vez o por campaña | Según volumen |
 | Mantenimiento de dos versiones | Cada mes | Dentro del mantenimiento, si son cambios pequeños |
 

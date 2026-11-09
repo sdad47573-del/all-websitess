@@ -39,7 +39,7 @@ export const FAQ_EXTRA: FaqItem[] = [
   },
   {
     q: "¿Me ayudáis con el blog y el contenido?",
-    a: `Sí: redactamos los artículos del blog y las páginas de servicio a partir de una entrevista. También decidimos juntos qué temas merecen la pena, que es lo que de verdad trae visitas. Publicar contenido nuevo entra en el mantenimiento de <span class="font-bold">39€/mes</span>.`,
+    a: `Sí: redactamos los artículos del blog y las páginas de servicio a partir de una entrevista. También decidimos juntos qué temas merecen la pena, que es lo que de verdad trae visitas. Publicar contenido nuevo entra en el mantenimiento de <span class="font-bold">49€/mes</span>.`,
   },
   {
     q: "¿Qué pasa si el negocio cambia de nombre, teléfono o dirección?",

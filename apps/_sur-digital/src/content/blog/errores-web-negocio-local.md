@@ -77,7 +77,7 @@ Es obligatorio, y Google también lo tiene en cuenta. Un formulario que recoge d
 
 Una web con la promoción del verano pasado y sin publicaciones nuevas transmite justo lo contrario de lo que buscas.
 
-**Arreglo:** presupuesta un mantenimiento pequeño y sostenible (39€/mes en Sur Digital) para no pensar en ella: precios, horarios, novedades y copias de seguridad.
+**Arreglo:** presupuesta un mantenimiento pequeño y sostenible (49€/mes en Sur Digital) para no pensar en ella: precios, horarios, novedades y copias de seguridad.
 
 ## Por dónde empezar
 

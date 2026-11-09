@@ -38,11 +38,11 @@ describe("precios de DATA que consume la calculadora", () => {
   });
 
   test("los importes que usa la calculadora son los publicados", () => {
-    expect(defaultPlan.price).toBe(490);
+    expect(defaultPlan.price).toBe(690);
     expect(prices.pagePrice).toBe(60);
-    expect(prices.language).toBe(150);
-    expect(prices.logo).toBe(150);
-    expect(prices.maintenance).toBe(39);
+    expect(prices.language).toBe(190);
+    expect(prices.logo).toBe(250);
+    expect(prices.maintenance).toBe(49);
     expect(prices.maintenanceMonthly).toBe(true);
   });
 
@@ -71,10 +71,10 @@ describe("precios de DATA que consume la calculadora", () => {
     });
 
     // Web Completa + 2 páginas + segundo idioma.
-    expect(quote.total).toBe(490 + 120 + 150);
-    expect(quote.monthly).toBe(39);
-    expect(quote.summary).toContain("Total: 760€");
-    expect(quote.summary).toContain("Mantenimiento mensual: 39€/mes");
+    expect(quote.total).toBe(690 + 120 + 190);
+    expect(quote.monthly).toBe(49);
+    expect(quote.summary).toContain("Total: 1.000€");
+    expect(quote.summary).toContain("Mantenimiento mensual: 49€/mes");
   });
 });
 
