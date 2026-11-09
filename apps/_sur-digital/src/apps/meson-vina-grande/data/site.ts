@@ -11,14 +11,14 @@
  *   Las fuentes consultadas se contradicen o no se pudieron leer.
  */
 
-import fotoPortada from '../assets/fotos/meson-vina-grande-vertical-01.jpg';
+import fotoPortada from '../assets/fotos/meson-vina-grande-apaisada-01.jpg';
 import fotoCentro from '../assets/fotos/meson-vina-grande-vertical-02.jpg';
 import fotoBarra from '../assets/fotos/meson-vina-grande-vertical-03.jpg';
 import fotoSala from '../assets/fotos/meson-vina-grande-vertical-04.jpg';
 import fotoExtra1 from '../assets/fotos/meson-vina-grande-vertical-05.jpg';
 import fotoExtra2 from '../assets/fotos/meson-vina-grande-vertical-06.jpg';
-import fotoExtra3 from '../assets/fotos/meson-vina-grande-vertical-08.jpg';
-import fotoExtra4 from '../assets/fotos/meson-vina-grande-vertical-09.jpg';
+import fotoExtra3 from '../assets/fotos/meson-vina-grande-apaisada-07.jpg';
+import fotoExtra4 from '../assets/fotos/meson-vina-grande-apaisada-08.jpg';
 import logo from '../assets/fotos/meson-vina-grande-logo.svg';
 
 export const IMAGES = {
