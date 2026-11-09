@@ -125,8 +125,8 @@ export interface Project {
 //
 // Los primeros son los curados, con captura propia: /clientes/ los pinta como
 // tarjetas grandes. Las fichas generadas (data/portfolio-apps.ts) van detrás y
-// se listan en formato compacto, sin imagen, para que aparezcan todos los
-// clientes sin convertir la página en un muro de tarjetas.
+// se listan en formato compacto; al buscar o filtrar se convierten en tarjetas
+// con una portada generada, para que aparezcan todos sin un muro de imágenes.
 export const PORTFOLIO: Project[] = [
 	{
 		title: '11:11 Coffee and Bakery',

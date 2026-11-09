@@ -1,5 +1,8 @@
 /**
- * Mapa `subdominio → despliegue real` para el proxy de /<slug>/.
+ * Mapa `subdominio → despliegue real` de cada cliente.
+ *
+ * Se usa para enlazar con su página estática /<slug>/ cuando existe en src/apps;
+ * si no, el portfolio enlaza directamente con la URL externa.
  *
  * Generado desde la columna `web_actual` de docs/subdominios-clientes.csv.
  * Si una web cambia de proyecto, se actualiza aquí y en el CSV.

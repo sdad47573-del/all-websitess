@@ -26,7 +26,8 @@ export default defineConfig({
         return (
           !pathname.startsWith("/i18n/") &&
           pathname !== "/404/" &&
-          pathname !== "/social-kit/"
+          pathname !== "/social-kit/" &&
+          !pathname.endsWith(".json")
         );
       },
       // Solo la home: se compila en /i18n/<lang>/ y su URL pública es /, que
