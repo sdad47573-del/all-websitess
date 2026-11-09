@@ -1,4 +1,6 @@
-// Genera el listado de clientes del portfolio a partir de las landings migradas.
+// Genera el listado auxiliar de landings migradas (src/data/portfolio-apps.ts).
+// No se mezcla con PORTFOLIO: /clientes/ enseña solo los clientes con captura
+// propia, para que la página sea una muestra y no un listado de mil fichas.
 //
 // Cada landing guarda sus datos en uno de estos sitios:
 //   - data/site.ts        (BUSINESS: name, tagline, city, summary…)

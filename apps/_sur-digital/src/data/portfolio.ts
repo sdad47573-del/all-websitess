@@ -96,8 +96,6 @@ import talleresCaldadoPreview from '../assets/talleres-caldado-preview.jpg';
 import theBossPreview from '../assets/the-boss-restaurant-preview.jpg';
 import butibambaPreview from '../assets/venta-la-butibamba-preview.jpg';
 
-import { PORTFOLIO_APPS } from './portfolio-apps';
-
 // Tipo explícito porque con `as const` cada elemento infería su propia forma y
 // `destacado` solo existía en los marcados, lo que rompía el destructuring.
 export interface Project {
@@ -108,7 +106,7 @@ export interface Project {
 	tags: readonly string[];
 	accent: string;
 	url: string;
-	/** Captura de la web. Los clientes generados desde su landing no la tienen. */
+	/** Captura de la web publicada. */
 	preview?: ImageMetadata;
 	/** Card grande a doble ancho. Ver la nota de PORTFOLIO. */
 	destacado?: boolean;
@@ -118,6 +116,11 @@ export interface Project {
 // marca a mano (y no se calcula) para controlar el ritmo de la rejilla: con
 // casi todo el listado en la misma categoría, elegir el primero de cada una
 // acumularía el peso visual al principio.
+//
+// Aquí solo viven los clientes con captura propia, que son los que se enseñan
+// en /clientes/. Las fichas generadas desde cada landing están en
+// data/portfolio-apps.ts y no se mezclan: convertían la muestra en un listado
+// de más de mil tarjetas sin imagen.
 export const PORTFOLIO: Project[] = [
 	{
 		title: '11:11 Coffee and Bakery',
@@ -1176,8 +1179,4 @@ export const PORTFOLIO: Project[] = [
 		url: 'https://el-garbanzo-negro.netlify.app',
 		preview: garbanzoNegroPreview,
 	},
-	// Landings migradas al proyecto único, generadas desde los datos de cada una
-	// (tools/gen-portfolio-apps.mjs). Van detrás de los curados, que son los que
-	// tienen captura propia y card destacada.
-	...PORTFOLIO_APPS,
 ];
