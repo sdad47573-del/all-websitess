@@ -5,6 +5,9 @@ const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{j
 });
 const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
+/** Foto de la fachada para el hero; la URL de Google Maps devuelve 403. */
+export const heroPhoto = foto('am-industria-del-estilo-panoramica-01.jpg');
+
 export const business = {
 	name: 'AM Industria del Estilo',
 	streetAddress: 'Avenida de Gregorio Prieto, 3, Portal 5, Local 11',
