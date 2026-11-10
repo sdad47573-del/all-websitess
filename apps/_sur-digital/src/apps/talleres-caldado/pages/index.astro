@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
-import { business, directionsUrl, emailHref, mapEmbedUrl, mapsUrl, phoneHref, photoUrl, structuredData } from '../lib/business';
+import { Image, getImage } from 'astro:assets';
+import fotoPrincipal from '../assets/fotos/talleres-caldado-apaisada-01.jpg';
+import { business, directionsUrl, emailHref, mapEmbedUrl, mapsUrl, phoneHref, structuredData } from '../lib/business';
 import Galeria from '../components/Galeria.astro';
 
 const title = 'Talleres Caldado | Taller de coches en Málaga';
@@ -9,6 +11,14 @@ const description =
 import secciones from '../data/secciones.json';
 
 const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+
+// Imagen para redes y JSON-LD: se genera a partir de la foto local. Antes se
+// enlazaba la URL de lh3.googleusercontent.com, que Google responde con 403
+// (bloquea el hotlinking), así que la tarjeta social salía sin imagen.
+const ogImage = new URL(
+	(await getImage({ src: fotoPrincipal, width: 1200, height: 630, format: 'jpg', fit: 'cover' })).src,
+	business.site,
+).href;
 ---
 
 <!doctype html>
@@ -34,13 +44,17 @@ const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={`${business.site}/`} />
-		<meta property="og:image" content={photoUrl} />
+		<meta property="og:image" content={ogImage} />
 		<meta property="og:image:alt" content="Fotografía de Talleres Caldado en su perfil de Google Maps" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={photoUrl} />
-		<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+		<meta name="twitter:image" content={ogImage} />
+		<script
+			type="application/ld+json"
+			is:inline
+			set:html={JSON.stringify({ ...structuredData, image: ogImage })}
+		/>
 			<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 			<meta name="geo.placename" content="Málaga" />
 		<meta name="geo.position" content="36.7250617;-4.4583111" />
@@ -85,11 +99,14 @@ const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.
 				<figure class="hero-photo">
 					<div class="photo-frame">
 						<span class="photo-label"><i aria-hidden="true"></i> TALLER · MÁLAGA</span>
-						<img
-							src={photoUrl}
+						<Image
+							src={fotoPrincipal}
 							alt="Fotografía de Talleres Caldado compartida en su ficha de Google Maps, Málaga"
-							width="1200"
-							height="675"
+							widths={[600, 900, 1200, 1600]}
+							sizes="(max-width: 900px) 92vw, 46vw"
+							format="webp"
+							quality={70}
+							loading="eager"
 							fetchpriority="high"
 							decoding="async"
 						/>
