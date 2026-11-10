@@ -9,6 +9,7 @@ import { appRoutes } from "./integrations/app-routes.ts";
 import { cleanUrls } from "./tools/clean-urls.ts";
 import { skipAppsDepScan } from "./tools/skip-apps-dep-scan.ts";
 import { appPages } from "./tools/app-pages.ts";
+import { inlineFontCss } from "./tools/inline-font-css.ts";
 
 // Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
 // no existen como archivo (las versiones por idioma viven en /i18n/<lang>/ y la
@@ -103,7 +104,7 @@ export default defineConfig({
     "/restaurante-la-espada-centro/aviso-legal": "/restaurante-la-espadana-centro/aviso-legal/",
   },
   vite: {
-    plugins: [tailwindcss(), cleanUrls(), skipAppsDepScan(), appPages()],
+    plugins: [tailwindcss(), cleanUrls(), skipAppsDepScan(), appPages(), inlineFontCss()],
     // Three.js y sus loaders entran por un import() dinámico en el hero. Si
     // Vite los descubre en caliente, reoptimiza y responde 504 a la URL que el
     // navegador ya tenía cacheada («Outdated Optimize Dep»): el hero se queda
