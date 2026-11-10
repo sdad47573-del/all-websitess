@@ -13,22 +13,27 @@
  *   precios ni recuento de reseñas verificable desde fuera, así que no se
  *   publican. Todo remite a "consultar la ficha de Google Maps".
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: los JPG de src/assets/fotos/ son las fotos que el centro
+ * publica en su ficha pública de Google Maps, descargadas con
+ * scripts/fetch-maps-photos.mjs (ids en .maps-manifest.json). El logo es propio.
  */
 
-import fotoPortada from '../assets/fotos/carolina-belleza-malaga.svg';
-import fotoCentro from '../assets/fotos/carolina-belleza-ciudad-jardin.svg';
-import fotoFacial from '../assets/fotos/carolina-belleza-facial.svg';
-import fotoCorporal from '../assets/fotos/carolina-belleza-corporal.svg';
+import fotoPortada from '../assets/fotos/carolina-centro-belleza-apaisada-03.jpg';
+import fotoInterior from '../assets/fotos/carolina-centro-belleza-vertical-04.jpg';
+import fotoDetalle from '../assets/fotos/carolina-centro-belleza-cuadrada-01.jpg';
+import fotoAnillos from '../assets/fotos/carolina-centro-belleza-vertical-02.jpg';
 import logo from '../assets/fotos/carolina-belleza-logo.svg';
 
+/**
+ * Las claves son las que ya usan los componentes (fachada, interior, detalle y
+ * calle). Las fotos que publica el centro son de manicura, no del local, así
+ * que cada texto alternativo describe lo que se ve realmente en la imagen.
+ */
 export const IMAGES = {
 	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
+	fotoInterior: fotoInterior,
+	fotoCejas: fotoDetalle,
+	fotoCalle: fotoAnillos,
 	logo,
 };
 
@@ -221,8 +226,8 @@ export const FAQ = [
 		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha del centro para ver apertura actual, festivos y cambios.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales del centro (ver README_IMAGENES.md).',
+		q: '¿Qué fotos hay del centro?',
+		a: 'Las cuatro que publica el propio centro en su ficha de Google Maps, todas de trabajos de manicura y uñas. Se muestran aquí como referencia del trabajo del centro; en la ficha puedes ver si hay más.',
 	},
 ];
 
@@ -236,19 +241,19 @@ export const FEATURES = [
 export const GALLERY = [
 	{
 		src: IMAGES.fotoFachada,
-		alt: 'Carolina Centro y Belleza en Ciudad Jardín, Málaga',
+		alt: 'Manicura con uñas negras, plateadas y decoradas con corazones, delante de un clavel blanco, en Carolina Centro & Belleza',
 	},
 	{
 		src: IMAGES.fotoInterior,
-		alt: 'Carolina Centro y Belleza en López López, Málaga',
+		alt: 'Manos con manicura en negro, plata y blanco con dibujos, sosteniendo un clavel blanco en el centro',
 	},
 	{
 		src: IMAGES.fotoCejas,
-		alt: 'Cuidado facial en Carolina Centro y Belleza (Málaga)',
+		alt: 'Detalle de uñas negras y plateadas con corazones pintados y un pequeño brillante',
 	},
 	{
 		src: IMAGES.fotoCalle,
-		alt: 'Cuidado corporal y bienestar en Carolina Centro y Belleza',
+		alt: 'Mano con anillos y uñas en rosa y verde metalizado sobre una tela azul',
 	},
 ];
 
