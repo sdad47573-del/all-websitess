@@ -5,7 +5,10 @@ import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import pagefind from "astro-pagefind";
 import { socialCards } from "./integrations/social-cards.ts";
+import { appRoutes } from "./integrations/app-routes.ts";
 import { cleanUrls } from "./tools/clean-urls.ts";
+import { skipAppsDepScan } from "./tools/skip-apps-dep-scan.ts";
+import { appPages } from "./tools/app-pages.ts";
 
 // Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
 // no existen como archivo (las versiones por idioma viven en /i18n/<lang>/ y la
@@ -38,6 +41,9 @@ export default defineConfig({
     pagefind(),
     // Tarjetas cuadradas 1080×1080 para Instagram a partir de las OG
     socialCards(),
+    // En dev, una ruta por página de src/apps para que Astro no precargue las
+    // ~2.800 webs al inyectar el CSS de una ruta dinámica (ver el archivo).
+    appRoutes(),
   ],
   // Sitio 100% estático: no hay endpoints de servidor (el contacto es un
   // enlace a LinkedIn). El adapter de Vercel solo se usa para el formato de
@@ -97,7 +103,7 @@ export default defineConfig({
     "/restaurante-la-espada-centro/aviso-legal": "/restaurante-la-espadana-centro/aviso-legal/",
   },
   vite: {
-    plugins: [tailwindcss(), cleanUrls()],
+    plugins: [tailwindcss(), cleanUrls(), skipAppsDepScan(), appPages()],
     // Three.js y sus loaders entran por un import() dinámico en el hero. Si
     // Vite los descubre en caliente, reoptimiza y responde 504 a la URL que el
     // navegador ya tenía cacheada («Outdated Optimize Dep»): el hero se queda
@@ -112,10 +118,29 @@ export default defineConfig({
       ],
     },
     server: {
-      // En .tmp viven los perfiles de Chrome de las comprobaciones locales: son
-      // miles de archivos que el watcher no necesita y que Windows bloquea
-      // mientras Chrome está abierto (EBUSY en bucle).
-      watch: { ignored: ["**/.tmp/**"] },
+      // El watcher recorre el proyecto entero y en Windows abre un `fs.watch`
+      // por carpeta: las 7.831 de src/apps y las 1.337 de public costaban ~4
+      // minutos de arranque, y mientras tanto los `fetchModule` del module
+      // runner agotaban su timeout de 60 s («Failed to create the dev server
+      // app: transport invoke timed out», «[content] Content config not
+      // loaded»). Ninguna de las dos necesita HMR: las webs de src/apps se
+      // sirven igual (son documentos completos; si se editan, hay que
+      // reiniciar `astro dev`), public son assets estáticos que el navegador
+      // recarga solo y dist es la salida del build. En .tmp viven los perfiles
+      // de Chrome de las comprobaciones locales, que Windows bloquea mientras
+      // Chrome está abierto (EBUSY en bucle).
+      watch: {
+        ignored: [
+          "**/.tmp",
+          "**/.tmp/**",
+          "**/src/apps",
+          "**/src/apps/**",
+          "**/public",
+          "**/public/**",
+          "**/dist",
+          "**/dist/**",
+        ],
+      },
     },
   },
 });

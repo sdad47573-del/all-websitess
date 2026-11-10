@@ -5,13 +5,15 @@
 //
 // No se pueden enumerar las rutas dinámicas de una app (`blog/[...slug].astro`,
 // `[sector].astro`) ni sus endpoints (`api/`): se quedan fuera a propósito.
-// El glob vive dentro de getStaticPaths porque el bundle de prerender solo
-// conserva lo que esa función usa.
-export function getStaticPaths() {
-  const pages = import.meta.glob("../../apps/*/pages/**/*.astro");
+// APP_SUBPAGES lo resuelve tools/app-pages.ts: en build es el glob (vive dentro
+// de getStaticPaths para que el bundle de prerender solo conserve lo que esa
+// función usa) y en dev llega vacío, porque cada subpágina tiene su ruta
+// inyectada (integrations/app-routes.ts).
+import { APP_SUBPAGES } from "virtual:sur-digital/app-pages";
 
-  return Object.entries(pages).flatMap(([file, load]) => {
-    const match = file.match(/\.\.\/\.\.\/apps\/([^/]+)\/pages\/(.+)\.astro$/);
+export function getStaticPaths() {
+  return Object.entries(APP_SUBPAGES).flatMap(([file, load]) => {
+    const match = file.match(/\/apps\/([^/]+)\/pages\/(.+)\.astro$/);
     if (!match) return [];
 
     const [, slug, page] = match;
