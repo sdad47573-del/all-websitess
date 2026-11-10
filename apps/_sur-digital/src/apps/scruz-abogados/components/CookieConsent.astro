@@ -95,8 +95,32 @@ const copy =
 		/* Consultas en el momento del uso: en navegaciones SPA el DOM es nuevo. */
 		const banners = () => document.querySelectorAll('[data-cookie-banner]');
 		const feeds = () => document.querySelectorAll('[data-consent-embed]');
-		const show = () => banners().forEach((el) => el.classList.remove('hidden'));
-		const hide = () => banners().forEach((el) => el.classList.add('hidden'));
+
+		/* El FAB de WhatsApp vive fijo en la esquina inferior derecha y, con el
+		 * banner abierto, tapaba el botón «Solo necesarias». Mientras hay banner
+		 * visible se publica su altura en <html> y el CSS sube el FAB justo
+		 * encima (regla `html[data-cookie-visible] .fab` en styles/index.css).
+		 * Se mide después de quitar `hidden`, que es cuando ya tiene altura. */
+		const syncFab = () => {
+			const open = document.querySelector('[data-cookie-banner]:not(.hidden)');
+			const root = document.documentElement;
+			if (!open) {
+				delete root.dataset.cookieVisible;
+				root.style.removeProperty('--cookie-banner-h');
+				return;
+			}
+			root.dataset.cookieVisible = '';
+			root.style.setProperty('--cookie-banner-h', `${open.offsetHeight}px`);
+		};
+
+		const show = () => {
+			banners().forEach((el) => el.classList.remove('hidden'));
+			syncFab();
+		};
+		const hide = () => {
+			banners().forEach((el) => el.classList.add('hidden'));
+			syncFab();
+		};
 
 		const loadEmbed = (wrapper) => {
 			const iframe = wrapper.querySelector('iframe[data-consent-src]');
@@ -126,6 +150,8 @@ const copy =
 		 * navegación SPA y, sin esta guarda, se acumularían handlers. */
 		if (!window.__scruzCookieInit) {
 			window.__scruzCookieInit = true;
+			/* El alto del banner cambia al girar el móvil o redimensionar. */
+			window.addEventListener('resize', syncFab);
 			document.addEventListener('click', (event) => {
 				const target = event.target instanceof Element ? event.target : null;
 				if (!target) return;
