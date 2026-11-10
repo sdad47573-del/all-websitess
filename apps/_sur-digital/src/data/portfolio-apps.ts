@@ -64,21 +64,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": ""
 	},
 	{
-		"slug": "78-street-burger",
-		"title": "78 Street Burger",
-		"category": "Restaurantes y bares",
-		"sector": "Hamburguesería",
-		"city": "Cáceres",
-		"description": "78 Street Burger, Cáceres. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Cáceres",
-			"Hamburguesería"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/78-street-burger/",
-		"community": "Extremadura"
-	},
-	{
 		"slug": "restaurante-8848",
 		"title": "8848",
 		"category": "Restaurantes y bares",
@@ -993,21 +978,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Cataluña"
 	},
 	{
-		"slug": "bar-restaurante-new-naranjo",
-		"title": "Bar - Restaurante New Naranjo",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Benidorm",
-		"description": "Bar - Restaurante New Naranjo, Benidorm. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Benidorm",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-restaurante-new-naranjo/",
-		"community": "Comunidad Valenciana"
-	},
-	{
 		"slug": "bar-venta-el-cruce",
 		"title": "Bar / Venta El Cruce",
 		"category": "Restaurantes y bares",
@@ -1185,20 +1155,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/bar-koke-la-nina-del-koke/",
-		"community": "Andalucía"
-	},
-	{
-		"slug": "bar-la-primera-del-naranjo-cordoba",
-		"title": "Bar La Primera del Naranjo",
-		"category": "Restaurantes y bares",
-		"sector": "Bar",
-		"city": "",
-		"description": "Bar La Primera del Naranjo. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Bar"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-la-primera-del-naranjo-cordoba/",
 		"community": "Andalucía"
 	},
 	{
@@ -1574,21 +1530,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Comunidad Valenciana"
 	},
 	{
-		"slug": "bar-restaurante-el-sotano",
-		"title": "Bar Restaurante El Sótano",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Jaén",
-		"description": "Bar Restaurante El Sótano, Jaén. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Jaén",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-restaurante-el-sotano/",
-		"community": "Andalucía"
-	},
-	{
 		"slug": "el-templo-de-santi",
 		"title": "Bar restaurante El Templo de Santi",
 		"category": "Restaurantes y bares",
@@ -1601,21 +1542,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/el-templo-de-santi/",
-		"community": "Andalucía"
-	},
-	{
-		"slug": "bar-restaurante-grand-pere",
-		"title": "Bar restaurante Grand Pere",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Almería",
-		"description": "Bar restaurante Grand Pere, Almería. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Almería",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-restaurante-grand-pere/",
 		"community": "Andalucía"
 	},
 	{
@@ -1709,21 +1635,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Extremadura"
 	},
 	{
-		"slug": "bar-restaurante-natursur",
-		"title": "Bar restaurante Natursur",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Viator",
-		"description": "Bar restaurante Natursur, Viator. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Viator",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-restaurante-natursur/",
-		"community": "Andalucía"
-	},
-	{
 		"slug": "bar-restaurante-paquera",
 		"title": "Bar Restaurante Paquera",
 		"category": "Restaurantes y bares",
@@ -1754,21 +1665,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Comunidad Valenciana"
 	},
 	{
-		"slug": "bar-restaurante-sierra-alhamilla",
-		"title": "Bar Restaurante Sierra Alhamilla",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Pechina",
-		"description": "Bar Restaurante Sierra Alhamilla, Pechina. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Pechina",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-restaurante-sierra-alhamilla/",
-		"community": "Andalucía"
-	},
-	{
 		"slug": "bar-restaurante-vilches",
 		"title": "Bar Restaurante Vilches",
 		"category": "Restaurantes y bares",
@@ -1797,21 +1693,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"accent": "bg-accent/15 text-primary",
 		"url": "/bar-alojamiento-rural-el-castillo/",
 		"community": "Comunidad Valenciana"
-	},
-	{
-		"slug": "bar-restaurante-ya-lo-sabes",
-		"title": "Bar Restaurante Ya Lo Sabes",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Jaén",
-		"description": "Bar Restaurante Ya Lo Sabes, Jaén. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Jaén",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-restaurante-ya-lo-sabes/",
-		"community": "Andalucía"
 	},
 	{
 		"slug": "bar-restaurant-la-esquinita",
@@ -2351,21 +2232,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Aragón"
 	},
 	{
-		"slug": "cafe-restaurante-las-rias",
-		"title": "Café Restaurante Las Rías",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Torremolinos",
-		"description": "Café Restaurante Las Rías en La Carihuela, Torremolinos, con cocina española, tapas, pescados y arroces.",
-		"tags": [
-			"Torremolinos",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/cafe-restaurante-las-rias/",
-		"community": "Andalucía"
-	},
-	{
 		"slug": "cafe-restaurante-villa-blanca",
 		"title": "Café Restaurante Villa Blanca",
 		"category": "Restaurantes y bares",
@@ -2378,21 +2244,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/cafe-restaurante-villa-blanca/",
-		"community": "Andalucía"
-	},
-	{
-		"slug": "cafeteria-el-destello",
-		"title": "Cafetería El Destello",
-		"category": "Restaurantes y bares",
-		"sector": "Cafetería con tartas caseras y tapes",
-		"city": "Málaga",
-		"description": "Cafetería El Destello, Málaga. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Málaga",
-			"Cafetería con tartas caseras y tapes"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/cafeteria-el-destello/",
 		"community": "Andalucía"
 	},
 	{
@@ -2603,21 +2454,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		],
 		"accent": "bg-secondary/15 text-neutral",
 		"url": "/canadu-artesanos/",
-		"community": "Andalucía"
-	},
-	{
-		"slug": "carbikemoto",
-		"title": "Carbikemoto",
-		"category": "Taller y motor",
-		"sector": "Taller y motor",
-		"city": "Málaga",
-		"description": "Taller de reparación de motos en Málaga.",
-		"tags": [
-			"Málaga",
-			"Taller y motor"
-		],
-		"accent": "bg-neutral/15 text-neutral",
-		"url": "/carbikemoto/",
 		"community": "Andalucía"
 	},
 	{
@@ -5207,21 +5043,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		],
 		"accent": "bg-secondary/15 text-neutral",
 		"url": "/floristeria-usera/",
-		"community": "Comunidad de Madrid"
-	},
-	{
-		"slug": "ana-maria",
-		"title": "Floristería Ana María",
-		"category": "Comercio",
-		"sector": "Floristería",
-		"city": "Leganés",
-		"description": "Floristería Ana María, Leganés. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Leganés",
-			"Floristería"
-		],
-		"accent": "bg-secondary/15 text-neutral",
-		"url": "/ana-maria/",
 		"community": "Comunidad de Madrid"
 	},
 	{
@@ -11388,21 +11209,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Andalucía"
 	},
 	{
-		"slug": "scruz-abogados",
-		"title": "Preguntas frecuentes | Scruz Abogados",
-		"category": "Servicios profesionales",
-		"sector": "Servicios profesionales",
-		"city": "Lucena",
-		"description": "Abogados en Lucena, Córdoba y Málaga. Sergio Cruz Chacón, asesoramiento legal para particulares y empresas.",
-		"tags": [
-			"Lucena",
-			"Servicios profesionales"
-		],
-		"accent": "bg-primary/15 text-primary",
-		"url": "/scruz-abogados/",
-		"community": "Andalucía"
-	},
-	{
 		"slug": "puesto-flores",
 		"title": "Puesto de Flores",
 		"category": "Servicios profesionales",
@@ -13435,21 +13241,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/restaurante-el-minero/",
-		"community": "Andalucía"
-	},
-	{
-		"slug": "restaurante-el-nido-aguilar",
-		"title": "Restaurante El Nido",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "Aguilar de la Frontera",
-		"description": "La especialidad que el restaurante destaca en sus perfiles oficiales.",
-		"tags": [
-			"Aguilar de la Frontera",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/restaurante-el-nido-aguilar/",
 		"community": "Andalucía"
 	},
 	{
@@ -16450,21 +16241,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Portugal"
 	},
 	{
-		"slug": "sami-beauty-salon",
-		"title": "Sami Beauty Salon",
-		"category": "Peluquería y belleza",
-		"sector": "Peluquería y estética en Carlos Haya, Málaga",
-		"city": "Málaga",
-		"description": "Sami Beauty Salon es peluquería y centro de estética en la avenida de Carlos Haya, 23, Local 3 (Cruz de Humilladero, Málaga). Cortes, color, uñas y tratamientos de estética, con cita por teléfono o reserva online. Valorado con 4,7 sobre 5…",
-		"tags": [
-			"Málaga",
-			"Peluquería y estética en Carlos Haya, Málaga"
-		],
-		"accent": "bg-neutral/15 text-neutral",
-		"url": "/sami-beauty-salon/",
-		"community": "Andalucía"
-	},
-	{
 		"slug": "sant-jordi-restaurante",
 		"title": "Sant Jordi Restaurante",
 		"category": "Restaurantes y bares",
@@ -16493,21 +16269,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"accent": "bg-neutral/15 text-neutral",
 		"url": "/santa-maria/",
 		"community": "Región de Murcia"
-	},
-	{
-		"slug": "bar-sazon-teatinos",
-		"title": "Sazón Teatinos",
-		"category": "Restaurantes y bares",
-		"sector": "Taberna de tapas, raciones y parrilla",
-		"city": "Málaga",
-		"description": "Cocina casera, carnes a la brasa y tapeo sin complicaciones en el corazón de Teatinos. Terraza, pantallas para el fútbol y show de magia los jueves.",
-		"tags": [
-			"Málaga",
-			"Taberna de tapas, raciones y parrilla"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-sazon-teatinos/",
-		"community": "Andalucía"
 	},
 	{
 		"slug": "seleccion-gourmet-jose-luis",
@@ -17196,21 +16957,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"accent": "bg-accent/15 text-primary",
 		"url": "/teulada-kebabish/",
 		"community": ""
-	},
-	{
-		"slug": "the-boss-restaurante",
-		"title": "The Boss Restaurante",
-		"category": "Restaurantes y bares",
-		"sector": "Restaurante",
-		"city": "La Cala del Moral",
-		"description": "Restaurante en La Cala del Moral (Málaga) con pizza al horno de leña, pasta, carnes y desayunos, y terraza.",
-		"tags": [
-			"La Cala del Moral",
-			"Restaurante"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/the-boss-restaurante/",
-		"community": "Andalucía"
 	},
 	{
 		"slug": "the-cut-salon-men",
