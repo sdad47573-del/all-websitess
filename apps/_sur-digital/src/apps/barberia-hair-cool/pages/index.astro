@@ -3,6 +3,8 @@ import WhatsappFab from '../components/WhatsappFab.astro';
 import * as datos from '../lib/business';
 import '../styles/global.css';
 import Galeria from '../components/Galeria.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import {
 	business,
 	directionsUrl,
@@ -13,6 +15,14 @@ import {
 	phoneHrefs,
 	structuredData,
 } from '../lib/business';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+
+/** Foto del salón para el hero; la URL de Google Maps devuelve 403. */
+const heroPhoto = fotos['../assets/fotos/barberia-hair-cool-vertical-04.jpg'].default;
 
 const title = 'Barbería Hair Cool | Barbería en Teatinos, Málaga';
 const description =
@@ -74,7 +84,7 @@ const description =
 				</div>
 				<figure class="hero-photo">
 					<div class="photo-label"><span>HC / 01</span><span>BARBERÍA · MÁLAGA</span></div>
-					<a href={mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver la foto de Barbería Hair Cool y su galería en Google Maps"><img src={photoUrl} alt="Fotografía de Barbería Hair Cool publicada en Google Maps" width="900" height="1200" fetchpriority="high" decoding="async" /><span class="photo-open" aria-hidden="true">↗</span></a>
+					<a href={mapsUrl} target="_blank" rel="noreferrer" aria-label="Ver la foto de Barbería Hair Cool y su galería en Google Maps"><Image src={heroPhoto} alt="Cliente en el sillón de Barbería Hair Cool, barbería en Teatinos, Málaga" widths={[600, 900, 1200]} sizes="(max-width: 900px) 100vw, 40vw" format="webp" quality={70} fetchpriority="high" decoding="async" /><span class="photo-open" aria-hidden="true">↗</span></a>
 					<figcaption><span>FOTO DE LA FICHA DE GOOGLE MAPS</span><a href={mapsUrl} target="_blank" rel="noreferrer">Ver ficha ↗</a></figcaption>
 					<span class="photo-stamp" aria-hidden="true">HC<br /><i>✦</i><br />MÁLAGA</span>
 				</figure>
