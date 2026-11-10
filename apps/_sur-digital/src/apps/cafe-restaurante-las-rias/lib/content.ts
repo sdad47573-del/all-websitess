@@ -47,7 +47,7 @@ export const content = {
 		photosCta: 'Ver fotos en Google Maps',
 		photoCaption: 'Galería de la ficha oficial',
 		photoDisclaimer:
-			'La ficha de Maps no facilitó archivos de imagen directos para integrar en esta página. Las fotografías se abren en Google Maps y pertenecen a sus autores.',
+			'Fotografías del perfil público del establecimiento en Google Maps, incluidas como referencia del local. Pertenecen a sus autores y puede que no coincidan con la carta del día.',
 		visitEyebrow: 'La Carihuela · Torremolinos',
 		visitTitle: 'Junto al paseo marítimo de La Carihuela.',
 		addressLabel: 'Dirección',
@@ -132,7 +132,7 @@ export const content = {
 		photosCta: 'View photos on Google Maps',
 		photoCaption: 'Official listing gallery',
 		photoDisclaimer:
-			'The Maps listing did not provide direct image files to embed on this page. Photos open on Google Maps and remain the property of their authors.',
+			'Photos from the establishment’s public Google Maps profile, included as a reference of the venue. They remain the property of their authors and may not match today’s menu.',
 		visitEyebrow: 'La Carihuela · Torremolinos',
 		visitTitle: 'By the La Carihuela seafront.',
 		addressLabel: 'Address',
