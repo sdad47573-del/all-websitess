@@ -1,136 +1,96 @@
-# Turborepo starter
-crea una web con astro y descarga las imagenes de google para 
+# Sur Digital · webs de clientes
 
-This Turborepo starter is maintained by the Turborepo core team.
+Monorepo con las webs de clientes de Sur Digital. Casi todas las landings viven dentro del
+proyecto único de Astro `apps/_sur-digital`; algunas webs antiguas siguen como apps
+independientes en `apps/*`, cada una con su propio `astro.config.mjs`.
 
-## Using this example
+## Requisitos
 
-Run the following command:
+- Node 18 o superior.
+- [bun](https://bun.sh) 1.4 (es el `packageManager` del repo).
 
-```sh
-npx create-turbo@latest
+## Arranque
+
+```bash
+bun install
+bun run dev
 ```
 
-## What's inside?
+`bun run dev` levanta todo el monorepo con Turborepo. Para trabajar solo en la web principal:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@astro-components`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+cd apps/_sur-digital
+bun run dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+El servidor de desarrollo escucha en <http://localhost:4321>.
+
+## Dónde está cada web
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+apps/_sur-digital/src/apps/<slug>/pages/     landing del cliente
+apps/_sur-digital/src/apps/<slug>/data/      datos verificados del negocio
+apps/_sur-digital/src/apps/<slug>/styles/    hoja de estilos de la landing
+apps/_sur-digital/src/apps/<slug>/assets/    fotos procesadas con <Image>
+apps/_sur-digital/public/<slug>/             favicon, og.jpg, robots.txt
 ```
 
-### Develop
+Cada landing se sirve en `/<slug>/` (por ejemplo, `/astuy-taberna/`). Las webs de `apps/*`
+son proyectos Astro completos que siguen en el workspace.
 
-To develop all apps and packages, run the following command:
+## Recargar el servidor tras editar una landing
 
-```
-cd my-turborepo
+El watcher de `apps/_sur-digital` ignora `src/apps` y `public` a propósito: recorrer esas
+carpetas abría miles de `fs.watch` y en Windows el arranque tardaba minutos (el motivo está
+comentado en `astro.config.mjs`). Por eso, después de cambiar una landing hay que reiniciar
+el watcher:
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+bun run dev:refresh
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Espera unos segundos hasta que el HTML o el CSS nuevos se sirvan antes de recargar el
+navegador.
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+## Fotos de Google Maps
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+Las fotos de la ficha pública se descargan con:
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+node scripts/fetch-maps-photos.mjs <slug> [<slug>...]
+node scripts/fetch-maps-photos.mjs --dry      # solo informa
+node scripts/fetch-maps-photos.mjs --all      # todas las apps
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+El script saca el *feature id* del enlace de Maps que ya está en el código de la landing,
+descarga la portada de la galería (10 fotos por ficha), normaliza a JPEG y guarda el
+manifiesto en `assets/fotos/.maps-manifest.json` para no repetir descargas.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## Comprobaciones
 
+```bash
+bun run check:sites     # auditoría de contenido de las webs
+bun run lint            # ESLint / Biome según el paquete
+bun run check-types     # TypeScript
+bun run build           # build de todo el monorepo
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+En `apps/_sur-digital` también hay pruebas con `bun test` y Playwright:
+
+```bash
+cd apps/_sur-digital
+bun test
+bun run test:e2e
 ```
 
-## Useful Links
+## Convenciones de las landings
 
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- **No inventar datos del negocio**: nombre, dirección, teléfono, valoración, horario y
+  categoría salen solo de la ficha pública o de una fuente verificable. Si no consta, no se
+  publica (ni carta, ni precios, ni reseñas inventadas).
+- **Fotos**: se usan las del perfil público de Google Maps, con nota de origen y oferta de
+  retirada para quien tenga los derechos.
+- **Legal**: toda landing que enlace a aviso legal debe tener `pages/aviso-legal.astro`.
+- **Idioma**: los textos visibles van en castellano.
+- Antes de dar una landing por terminada, comprueba que el dev server la sirve con 200, que
+  las imágenes cargan y que no hay desbordamiento horizontal.
