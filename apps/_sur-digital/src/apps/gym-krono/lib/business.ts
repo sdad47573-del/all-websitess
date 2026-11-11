@@ -31,31 +31,18 @@ export const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%
 export const instagramUrl = 'https://www.instagram.com/gymkronok03/';
 export const facebookUrl = 'https://www.facebook.com/p/Gym-Krono-100063526751564/';
 
+/** Foto principal del hero: rack de mancuernas y bancos de la sala. */
+export const heroPhoto = foto('gym-krono-apaisada-10.jpg');
+
 export const galleryPhotos = [
-	{
-		src: foto('krono-01.jpg'),
-		width: 1600,
-		height: 1200,
-		alt: 'Fotografía de Gym Krono publicada en Google Maps',
-	},
-	{
-		src: foto('krono-02.jpg'),
-		width: 900,
-		height: 1600,
-		alt: 'Zona de entrenamiento de Gym Krono en Teatinos, Málaga',
-	},
-	{
-		src: foto('krono-03.jpg'),
-		width: 900,
-		height: 1600,
-		alt: 'Instalaciones de Gym Krono publicadas en Google Maps',
-	},
-	{
-		src: foto('krono-04.jpg'),
-		width: 1600,
-		height: 1200,
-		alt: 'Sala del gimnasio Gym Krono en Calle Juan Margarit, Málaga',
-	},
+	{ src: foto('gym-krono-vertical-01.jpg'), alt: 'Sala de entrenamiento de Gym Krono con máquinas y bancos' },
+	{ src: foto('gym-krono-apaisada-10.jpg'), alt: 'Rack de mancuernas y bancos de Gym Krono en Teatinos' },
+	{ src: foto('gym-krono-vertical-06.jpg'), alt: 'Máquina de poleas de Gym Krono en Calle Juan Margarit, Málaga' },
+	{ src: foto('gym-krono-vertical-07.jpg'), alt: 'Prensa de piernas y máquinas junto a la ventana de Gym Krono' },
+	{ src: foto('gym-krono-vertical-08.jpg'), alt: 'Máquinas de polea y musculación en la sala de Gym Krono' },
+	{ src: foto('gym-krono-vertical-09.jpg'), alt: 'Zona de cardio con cintas y máquinas al fondo en Gym Krono' },
+	{ src: foto('gym-krono-vertical-04.jpg'), alt: 'Cinta de correr en la zona de cardio de Gym Krono' },
+	{ src: foto('gym-krono-apaisada-02.jpg'), alt: 'Entrada de Gym Krono en Calle Juan Margarit, 4, Teatinos' },
 ] as const;
 
 export const services = [

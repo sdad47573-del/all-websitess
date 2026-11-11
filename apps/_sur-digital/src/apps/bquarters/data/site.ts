@@ -11,22 +11,22 @@
  *   09:00–14:00 y 16:00–20:30)
  * - Instagram: @bquarters.co — reserva en Booksy, Tlf 951 01 84 22, C/ Píndaro 7
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Fotos: las de la ficha de Google Maps del local (src/assets/fotos/, ver
+ * .maps-manifest.json), descargadas con scripts/fetch-maps-photos.mjs. El logo
+ * es el SVG propio de la marca.
  */
 
-import fotoPortada from '../assets/fotos/bquarters-malaga.svg';
-import fotoCentro from '../assets/fotos/bquarters-pindaro.svg';
-import fotoCorte from '../assets/fotos/bquarters-corte.svg';
-import fotoBarba from '../assets/fotos/bquarters-barba.svg';
+import fotoSalon from '../assets/fotos/bquarters-vertical-01.jpg';
+import fotoPasaje from '../assets/fotos/bquarters-vertical-03.jpg';
+import fotoCorte from '../assets/fotos/bquarters-vertical-04.jpg';
+import fotoSillon from '../assets/fotos/bquarters-vertical-05.jpg';
 import logo from '../assets/fotos/bquarters-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoCorte,
-	fotoCalle: fotoBarba,
+	fotoSalon,
+	fotoPasaje,
+	fotoCorte,
+	fotoSillon,
 	logo,
 };
 
@@ -235,10 +235,6 @@ export const FAQ = [
 		q: '¿Qué opinan los clientes?',
 		a: '5,0/5 con 241 reseñas en Booksy (oct 2026), 239 de ellas de 5 estrellas. Destacan la atención y el ritual de barba.',
 	},
-	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales (ver README_IMAGENES.md).',
-	},
 ];
 
 export const FEATURES = [
@@ -250,20 +246,20 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'Bquarters, barbería en Málaga',
+		src: IMAGES.fotoSalon,
+		alt: 'Recepción y sala de Bquarters, barbería en Teatinos (Málaga)',
 	},
 	{
-		src: IMAGES.fotoInterior,
-		alt: 'Bquarters en Calle Píndaro, Málaga',
+		src: IMAGES.fotoCorte,
+		alt: 'Corte caballero en Bquarters, Calle Píndaro (Málaga)',
 	},
 	{
-		src: IMAGES.fotoCejas,
-		alt: 'Corte caballero en Bquarters (Málaga)',
+		src: IMAGES.fotoSillon,
+		alt: 'Sillones y espejos del salón de Bquarters',
 	},
 	{
-		src: IMAGES.fotoCalle,
-		alt: 'Ritual de barba en Bquarters',
+		src: IMAGES.fotoPasaje,
+		alt: 'Pasaje de acceso a Bquarters en Calle Píndaro, Teatinos',
 	},
 ];
 

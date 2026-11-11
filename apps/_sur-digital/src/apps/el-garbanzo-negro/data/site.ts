@@ -8,8 +8,15 @@
  *   elgarbanzonegrocadiz, cocina tradicional reinterpretada, menú del día,
  *   horario Lun-Sáb 13:00-16:00, especialidad menú del día.
  *
- * NO se copian fotos, reseñas literales ni valoraciones de Google Maps.
+ * Las fotos son las de la ficha de Google Maps del local (src/assets/fotos/, con
+ * su .maps-manifest.json), descargadas con scripts/fetch-maps-photos.mjs.
+ * No se reproducen reseñas literales ni valoraciones.
  */
+
+import type { ImageMetadata } from 'astro';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}', { eager: true });
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
 export const site = {
   siteUrl: 'https://www.sur-digital.com/el-garbanzo-negro',
@@ -52,6 +59,22 @@ export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination
 
 export const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&output=embed`;
 
+/** Collage de la portada: fachada de la taberna y dos platos del menú. */
+export const heroPhotos = {
+  main: { src: foto('el-garbanzo-negro-vertical-01.jpg'), alt: 'Fachada de la taberna El Garbanzo Negro en la Calle Sacramento 18, Cádiz' },
+  top: { src: foto('el-garbanzo-negro-apaisada-02.jpg'), alt: 'Potaje de garbanzos con verduras de El Garbanzo Negro' },
+  bottom: { src: foto('el-garbanzo-negro-apaisada-09.jpg'), alt: 'Salmorejo con huevo picado, primer plato del menú' },
+} as const;
+
+export const galleryPhotos = [
+  { src: foto('el-garbanzo-negro-vertical-03.jpg'), alt: 'Arroz negro con alioli' },
+  { src: foto('el-garbanzo-negro-vertical-04.jpg'), alt: 'Garbanzos con langostinos y ensalada de queso de cabra' },
+  { src: foto('el-garbanzo-negro-vertical-05.jpg'), alt: 'Croquetas caseras con patatas fritas y salsa' },
+  { src: foto('el-garbanzo-negro-vertical-10.jpg'), alt: 'Pescado a la plancha con patatas fritas' },
+  { src: foto('el-garbanzo-negro-vertical-06.jpg'), alt: 'Ensalada de queso de cabra con nueces y tomate' },
+  { src: foto('el-garbanzo-negro-vertical-07.jpg'), alt: 'Mesa con varios platos del menú del día' },
+] as const;
+
 export const hours = [
   { day: 'Lunes', service: '13:00 – 16:00', shifts: [{ open: '13:00', close: '16:00' }], dayOfWeek: 'Monday' },
   { day: 'Martes', service: '13:00 – 16:00', shifts: [{ open: '13:00', close: '16:00' }], dayOfWeek: 'Tuesday' },
@@ -89,7 +112,7 @@ export const faqs = [
   {
     question: '¿Dónde puedo ver fotos y opiniones?',
     answer:
-      'En la ficha del local en Google Maps y en su Instagram @elgarbanzonegrocadiz, enlazados desde esta web. Aquí solo se usarán fotos propias con permiso.',
+      'La galería de esta web muestra fotos del local; en la ficha de Google Maps y en su Instagram @elgarbanzonegrocadiz, enlazados desde aquí, tienes más fotos y las opiniones de los clientes.',
   },
   {
     question: '¿De quién es esta web?',
