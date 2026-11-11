@@ -8,8 +8,15 @@
  *   paseo marítimo, especialidad pavía de merluza, horario Mié-Jue 13-00,
  *   Vie-Sáb 13-02, Dom 13-20, Lun 13-17.
  *
- * NO se copian fotos, reseñas literales ni valoraciones de Google Maps.
+ * Las fotos son las de la ficha de Google Maps del local (assets/fotos/, con su
+ * .maps-manifest.json), descargadas con scripts/fetch-maps-photos.mjs.
+ * No se reproducen reseñas literales ni valoraciones.
  */
+
+import type { ImageMetadata } from 'astro';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}', { eager: true });
+const foto = (name: string) => fotos[`../assets/fotos/${name}`].default;
 
 export const site = {
   siteUrl: 'https://www.sur-digital.com/aguatapa-cadiz',
@@ -49,6 +56,23 @@ export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination
 
 export const mapEmbedUrl = `https://maps.google.com/maps?q=${business.latitude}%2C${business.longitude}&z=17&output=embed`;
 
+/** Collage de la portada: la fachada con la terraza, un plato de pescaíto y el salmorejo. */
+export const heroPhotos = {
+  main: { src: foto('aguatapa-cadiz-vertical-08.jpg'), alt: 'Fachada de Aguatapá en la Av. Amílcar Barca, con el rótulo del local y la terraza llena' },
+  top: { src: foto('aguatapa-cadiz-vertical-03.jpg'), alt: 'Plato de pescaíto frito con ensalada de lechuga y tomate' },
+  bottom: { src: foto('aguatapa-cadiz-apaisada-02.jpg'), alt: 'Salmorejo con jamón y huevo picado en plato de raya' },
+} as const;
+
+export const galleryPhotos = [
+  { src: foto('aguatapa-cadiz-apaisada-01.jpg'), alt: 'Comedor de Aguatapá con lámparas de mimbre y las ventanas abiertas a la terraza' },
+  { src: foto('aguatapa-cadiz-apaisada-04.jpg'), alt: 'Barra con taburetes y pared azul con platos decorativos' },
+  { src: foto('aguatapa-cadiz-vista-5-05.jpg'), alt: 'Terraza del local con sombrillas y mesas en el paseo marítimo' },
+  { src: foto('aguatapa-cadiz-panoramica-06.jpg'), alt: 'Bocadillo de la casa con patatas paja en plato de cerámica' },
+  { src: foto('aguatapa-cadiz-vertical-09.jpg'), alt: 'Bocadillo caliente con carne y pimientos junto a patatas paja' },
+  { src: foto('aguatapa-cadiz-vertical-07.jpg'), alt: 'Chocos fritos sobre ensalada de tomate y cebolla' },
+  { src: foto('aguatapa-cadiz-vertical-10.jpg'), alt: 'Ensalada de fideos con gambas, tomate cherry y vinagreta' },
+] as const;
+
 export const hours = [
   { day: 'Lunes', service: '13:00 – 17:00', shifts: [{ open: '13:00', close: '17:00' }], dayOfWeek: 'Monday' },
   { day: 'Martes', service: 'Cerrado', shifts: [], dayOfWeek: 'Tuesday' },
@@ -86,7 +110,7 @@ export const faqs = [
   {
     question: '¿Dónde puedo ver fotos y opiniones?',
     answer:
-      'En la ficha del local en Google Maps y en su Instagram @aguatapa.cadiz, enlazados desde esta web. Aquí solo se usarán fotos propias con permiso.',
+      'La galería de esta web muestra fotos del local; en la ficha de Google Maps y en su Instagram @aguatapa.cadiz, enlazados desde aquí, tienes más fotos y las opiniones de los clientes.',
   },
   {
     question: '¿De quién es esta web?',
