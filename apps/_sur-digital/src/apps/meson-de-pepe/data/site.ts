@@ -83,7 +83,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/meson-de-pepe',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'Mesón de Pepe',

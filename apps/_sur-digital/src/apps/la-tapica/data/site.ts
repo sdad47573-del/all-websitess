@@ -82,7 +82,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/la-tapica',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'La Tapica Restaurante, Carmen & Francisco',

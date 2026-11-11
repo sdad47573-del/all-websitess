@@ -23,7 +23,7 @@ const ONLY = process.argv.slice(2).filter((arg) => !arg.startsWith('--') && arg 
 const LEGAL = { label: 'Aviso legal', href: '/aviso-legal' };
 const PRIVACY = { label: 'Privacidad', href: '/aviso-legal#privacidad' };
 const COOKIES = { label: 'Cookies', href: '/aviso-legal#cookies' };
-const CREDIT_URL = 'https://sur-digital.vercel.app/';
+const CREDIT_URL = 'https://www.sur-digital.com/';
 
 const WALK_SKIP = new Set(['node_modules', 'dist', '.astro', '.turbo', '.vercel']);
 

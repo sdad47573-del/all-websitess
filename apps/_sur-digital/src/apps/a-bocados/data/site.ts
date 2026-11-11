@@ -90,7 +90,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/a-bocados',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'A Bocados',

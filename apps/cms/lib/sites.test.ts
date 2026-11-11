@@ -211,7 +211,7 @@ describe("edición", () => {
 describe("validación", () => {
 	test("acepta teléfonos y URLs razonables", () => {
 		expect(validateValue("phone", "+34 951 99 62 58")).toBeNull();
-		expect(validateValue("siteUrl", "https://sur-digital.vercel.app")).toBeNull();
+		expect(validateValue("siteUrl", "https://www.sur-digital.com")).toBeNull();
 		expect(validateValue("postalCode", "29010")).toBeNull();
 	});
 

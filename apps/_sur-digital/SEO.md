@@ -1,4 +1,4 @@
-# 🎯 SEO — Sur Digital (sur-digital.vercel.app)
+# 🎯 SEO — Sur Digital (www.sur-digital.com)
 
 > **Última verificación: 22 oct 2026.**
 > **Fuente de datos:** `google_search/*.csv` (exporte Search Console del **22 oct 2026**,

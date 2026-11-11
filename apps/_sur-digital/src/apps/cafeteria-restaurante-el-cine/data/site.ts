@@ -94,7 +94,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/cafeteria-restaurante-el-cine',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'Cafetería Restaurante El Cine',

@@ -31,7 +31,7 @@ for (const [w, h, label] of [
 			imgs: [...document.images].map((i) => ({ src: i.currentSrc.split('/').pop(), w: i.naturalWidth })),
 			brokenImgs: [...document.images].filter((i) => !i.complete || i.naturalWidth === 0).length,
 			emptyAlt: [...document.images].filter((i) => !i.alt || !i.alt.trim()).length,
-			credit: !!document.querySelector('a[href*="sur-digital.vercel.app"]'),
+			credit: !!document.querySelector('a[href*="www.sur-digital.com"]'),
 			anchors: [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href')),
 			missingAnchors: [...document.querySelectorAll('a[href^="#"]')]
 				.map((a) => a.getAttribute('href'))
@@ -85,7 +85,7 @@ for (const [w, h, label] of [
 	const legal = await page.evaluate(() => ({
 		h1: document.querySelector('h1')?.textContent.trim(),
 		overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
-		credit: !!document.querySelector('a[href*="sur-digital.vercel.app"]'),
+		credit: !!document.querySelector('a[href*="www.sur-digital.com"]'),
 		back: !!document.querySelector('a[href="/"]'),
 	}));
 	console.log('legal:', legal);

@@ -604,7 +604,7 @@ export default function Landing() {
         </div>
       
 			<p style={{ fontSize: "0.75rem", opacity: 0.7, margin: "0.5rem 0 0" }}>
-				<small>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></small>
+				<small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small>
 			</p>
 </footer>
     </div>

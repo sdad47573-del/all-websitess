@@ -92,7 +92,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/la-fonda-alagon',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'La Fonda',

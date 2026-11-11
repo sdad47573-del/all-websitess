@@ -17,7 +17,7 @@ function walk(dir, out) {
 
 const CREDIT_RE = /sur[\s-]?digital/i;
 const SHARED_RE = /\bLocalFooter\b/;
-const URL = 'https://sur-digital.vercel.app/';
+const URL = 'https://www.sur-digital.com/';
 
 function indentUnit(src) {
 	if (/\n\t/.test(src)) return '\t';

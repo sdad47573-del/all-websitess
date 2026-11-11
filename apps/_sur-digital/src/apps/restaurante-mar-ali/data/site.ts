@@ -91,7 +91,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/restaurante-mar-ali',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'Restaurante Mar Ali',

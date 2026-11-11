@@ -81,7 +81,7 @@ export const BUSINESS = {
 	siteUrl: 'https://www.sur-digital.com/inesperado-restaurante-al-mar',
 };
 
-export const SUR_DIGITAL_URL = 'https://sur-digital.vercel.app/';
+export const SUR_DIGITAL_URL = 'https://www.sur-digital.com/';
 
 export const LEGAL = {
 	razonSocial: 'Inesperado Restaurante al Mar',

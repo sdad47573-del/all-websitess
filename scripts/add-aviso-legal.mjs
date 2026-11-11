@@ -225,7 +225,7 @@ const business = {
 				<a href="/aviso-legal">Aviso legal</a>
 				<a href="/aviso-legal#privacidad">Privacidad</a>
 				<a href="/aviso-legal#cookies">Cookies</a>
-				<span>Web creada por <a href="https://sur-digital.vercel.app/" rel="noopener">Sur Digital</a></span>
+				<span>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></span>
 			</nav>
 		</footer>
 

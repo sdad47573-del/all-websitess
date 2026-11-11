@@ -316,5 +316,5 @@ export const LEGAL = {
 /** Crédito del estudio que ha construido la web, tal como se muestra en el pie. */
 export const credito = {
 	nombre: 'Sur Digital',
-	url: 'https://sur-digital.vercel.app/',
+	url: 'https://www.sur-digital.com/',
 } as const;
