@@ -7,7 +7,8 @@
  *   teléfono 678 55 90 84, bar familiar de cocina casera andaluza fundado en 1981,
  *   horario Mar-Dom 11:00-16:30, lunes cerrado, especialidad cocina casera.
  *
- * NO se copian fotos, reseñas literales ni valoraciones de Google Maps.
+ * Las fotos de la web son las del perfil público del local en Google Maps; no se
+ * reproducen reseñas literales ni valoraciones.
  */
 
 export const site = {
@@ -91,7 +92,7 @@ export const faqs = [
   {
     question: '¿Dónde puedo ver fotos y opiniones?',
     answer:
-      'En la ficha del local en Google Maps y en su Facebook e Instagram, enlazados desde esta web. Aquí solo se usarán fotos propias con permiso.',
+      'En esta misma página hay fotos del perfil público del local en Google Maps. Las opiniones y valoraciones se leen en la ficha del local, en Facebook o en Instagram, enlazados desde esta web.',
   },
   {
     question: '¿De quién es esta web?',

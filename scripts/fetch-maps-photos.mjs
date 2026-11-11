@@ -173,12 +173,14 @@ function descriptorFor(photo, index) {
 // apps/_sur-digital/src/apps/<slug>. Se admiten las dos ubicaciones.
 const appsDir = 'apps';
 const surAppsDir = 'apps/_sur-digital/src/apps';
+// En el proyecto unico cada landing ya es la raiz de su codigo (pages, data, assets).
 const srcDirOf = (app) => {
-	const propio = join(appsDir, app, 'src');
-	if (existsSync(propio)) return propio;
-	// En el proyecto unico cada landing ya es la raiz de su codigo (pages, data, assets).
+	// La app migrada manda: la carpeta legacy puede seguir en disco con un src
+	// vacio o desactualizado y no es la que sirve astro dev.
 	const migrado = join(surAppsDir, app);
-	return existsSync(join(migrado, 'pages')) ? migrado : null;
+	if (existsSync(join(migrado, 'pages'))) return migrado;
+	const propio = join(appsDir, app, 'src');
+	return existsSync(propio) ? propio : null;
 };
 const allApps = [
 	...readdirSync(appsDir).filter((app) => !app.startsWith('_') && srcDirOf(app)),
