@@ -1,117 +1,423 @@
 ---
-const name = 'Asador Pollos La Cúpula';
-const mapsUrl =
-	'https://www.google.com/maps/place/ASADOR+POLLOS+LA+CUPULA/@38.598607,-0.0556723,17z/data=!3m1!4b1!4m6!3m5!1s0xd6201cc599ef35d:0x3cd53f08435ee032!8m2!3d38.598607!4d-0.0556723!16s%2Fg%2F11lcc7j1r0';
-const title = `${name} · Alicante`;
-const description = `${name} en Alicante. Encuentra el local en Google Maps.`;
-import secciones from '../data/secciones.json';
+import { LocalSeo } from '@astro-components';
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+import '../styles/global.css';
+
+import { BUSINESS, FICHA, FAQ, HIGHLIGHTS, HORARIO_NOTA, MAPS, RATING, SERVICIOS } from '../data/site';
+
+const title = 'Asador Pollos La Cúpula · Pollos asados y comida para llevar en Altea';
+const description =
+	"Asador Pollos La Cúpula, en el carrer d'Alcoi, 9 (03590 Altea, Alicante). Restaurante de comida para llevar con 4,6 sobre 5 en Google. Pedidos por teléfono: 965 84 31 10.";
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#la-cupula`,
+	name: BUSINESS.name,
+	alternateName: ['La Cúpula Altea', 'Asador Pollos La Cúpula Altea', 'Pollos La Cúpula'],
+	description:
+		'Asador de pollos y restaurante de comida para llevar en el carrer d\'Alcoi, 9 (03590 Altea, Alicante).',
+	url: `${BUSINESS.siteUrl}/`,
+	telephone: '+34965843110',
+	sameAs: [MAPS.place],
+	areaServed: [
+		{ '@type': 'City', name: 'Altea' },
+		{ '@type': 'AdministrativeArea', name: 'Provincia de Alicante' },
+	],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+	image: [`${BUSINESS.siteUrl}/og.png`],
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: RATING.value,
+		bestRating: 5,
+		worstRating: 1,
+	},
+	servesCuisine: ['Pollo asado', 'Comida para llevar'],
+	hasTakeaway: true,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La ficha', href: '#ficha' },
+	{ label: 'Horario', href: '#horario' },
+	{ label: 'Dónde está', href: '#visitanos' },
+];
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title}</title>
-		<meta name="description" content={description} />
-		<link rel="canonical" href="https://www.sur-digital.com/asador-pollos-la-cupula/" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:type" content="website" />
-		<style>
-			* {
-				box-sizing: border-box;
-			}
-			body {
-				margin: 0;
-				min-height: 100vh;
-				display: flex;
-				flex-direction: column;
-				font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-				color: #1f1f1f;
-				background: #fbf7f0;
-				line-height: 1.6;
-			}
-			main {
-				flex: 1;
-				display: grid;
-				place-content: center;
-				text-align: center;
-				padding: 3rem 1.5rem;
-				gap: 1rem;
-			}
-			h1 {
-				margin: 0;
-				font-size: clamp(2.2rem, 6vw, 3.6rem);
-				color: #7a2e0e;
-			}
-			p {
-				margin: 0 auto;
-				max-width: 36rem;
-			}
-			a.button {
-				display: inline-block;
-				justify-self: center;
-				margin-top: 0.5rem;
-				padding: 0.8rem 1.5rem;
-				background: #c2410c;
-				color: #fff;
-				text-decoration: none;
-				border-radius: 6px;
-				font-weight: 600;
-			}
-			a.button:hover {
-				background: #9a3412;
-			}
-			footer {
-				padding: 1.5rem;
-				text-align: center;
-				font-size: 0.9rem;
-				background: #1f1f1f;
-				color: rgba(255, 255, 255, 0.8);
-			}
-			footer a {
-				color: #fdba74;
-			}
-		</style>
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/asador-pollos-la-cupula/#negocio",
-	"name": "Asador Pollos La Cúpula",
-	"url": "https://www.sur-digital.com/asador-pollos-la-cupula/",
-	"description": "${name} en Alicante. Encuentra el local en Google Maps.",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 38.598607,
-		"longitude": -0.0556723
-	},
-	"hasMap": "https://www.google.com/maps/place/ASADOR+POLLOS+LA+CUPULA/@38.598607,-0.0556723,17z/data=!3m1!4b1!4m6!3m5!1s0xd6201cc599ef35d:0x3cd53f08435ee032!8m2!3d38.598607!4d-0.0556723!16s%2Fg%2F11lcc7j1r0"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/asador-pollos-la-cupula/og.png" />
-		<meta property="og:image:type" content="image/png" />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/asador-pollos-la-cupula/" />
-		<meta property="og:locale" content="es_ES" />
+		<meta name="theme-color" content="#1c1a17" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Source+Sans+3:ital,wght@0,300..700;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Asador Pollos La Cúpula Altea, pollos asados Altea, comida para llevar Altea, asador Carrer d'Alcoi, pollo asado Alicante"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Pollos asados y comida para llevar en el carrer d'Alcoi, 9. Pedidos por teléfono al 965 84 31 10."
+			ogImage={`${BUSINESS.siteUrl}/og.png`}
+			ogImageAlt="Tarjeta de Asador Pollos La Cúpula, en Altea"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="business.business"
+			author={BUSINESS.name}
+			themeColor="#1c1a17"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-VC"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Altea"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 	</head>
 	<body>
-		<main>
-			<h1 set:html={piezas.portada.titulo} />
-			<p>Alicante. Consulta el local, las fotos y cómo llegar en Google Maps.</p>
-			<a class="button" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver en Google Maps</a>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="topbar-inner wrap">
+				<a class="brand" href="#inicio" aria-label="Asador Pollos La Cúpula, inicio">
+					<span class="brand-mark" aria-hidden="true">{BUSINESS.mark}</span>
+					<span class="brand-name">
+						Asador Pollos La Cúpula
+						<small>Pollos asados · Altea</small>
+					</span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-cta" href={BUSINESS.phoneHref}>
+					{BUSINESS.phone} <span aria-hidden="true">↗</span>
+				</a>
+			</div>
+		</header>
+
+		<main id="contenido">
+			<section class="hero" id="inicio" aria-labelledby="hero-title">
+				<div class="wrap hero-grid">
+					<div class="hero-copy">
+						<p class="eyebrow"><span aria-hidden="true"></span> Altea · Carrer d'Alcoi, 9</p>
+						<h1 id="hero-title">Pollos asados y comida para llevar <em>en Altea.</em></h1>
+						<p class="hero-lede">
+							Asador Pollos La Cúpula está en el carrer d'Alcoi, 9, en Altea. Google lo
+							clasifica como restaurante de comida para llevar y le da un 4,6 sobre 5. La
+							ficha no publica web ni reservas: se pide por teléfono.
+						</p>
+						<div class="hero-actions">
+							<a class="button button-primary" href={BUSINESS.phoneHref}>
+								Llamar · {BUSINESS.phone}
+							</a>
+							<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+								Cómo llegar <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+						<dl class="hero-facts">
+							<div>
+								<dt>Valoración</dt>
+								<dd>{RATING.label} en Google</dd>
+							</div>
+							<div>
+								<dt>Categoría</dt>
+								<dd>Comida para llevar</dd>
+							</div>
+							<div>
+								<dt>Plus code</dt>
+								<dd>{BUSINESS.plusCode}</dd>
+							</div>
+						</dl>
+					</div>
+				</div>
+			</section>
+
+			<section class="chips-wrap wrap" aria-label="Lo que publica la ficha de Google">
+				<ul class="chips">
+					{SERVICIOS.map((item) => <li>{item}</li>)}
+				</ul>
+			</section>
+
+			<section class="about wrap" id="casa" aria-labelledby="about-title">
+				<div class="about-grid">
+					<div class="about-copy">
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="about-title">Un asador de pollos <em>en el casco de Altea.</em></h2>
+						<p>
+							El nombre lo dice entero: Asador Pollos La Cúpula. La ficha de Google lo
+							clasifica como restaurante de comida para llevar y lo sitúa en el número 9 del
+							carrer d'Alcoi, en Altea (03590, Alicante).
+						</p>
+						<p>
+							De puertas adentro la ficha no cuenta nada más: no publica descripción del
+							negocio, ni carta, ni precios, ni página web, ni perfiles sociales. Lo que sí
+							da es el teléfono, el 965 84 31 10, y una valoración media de 4,6 sobre 5.
+						</p>
+						<p>
+							Esta página recoge exactamente eso. Ni una carta inventada ni un horario de
+							relleno: para saber qué hay hoy, cuánto cuesta o si queda pollo, hay que
+							llamar.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+								Ficha en Google Maps <span aria-hidden="true">↗</span>
+							</a>
+							<a class="simple-link" href="#ficha">Ver lo que publica la ficha</a>
+						</div>
+					</div>
+				</div>
+
+				<ul class="highlights">
+					{
+						HIGHLIGHTS.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="menu" id="ficha" aria-labelledby="menu-title">
+				<div class="wrap menu-grid">
+					<div class="menu-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> La ficha</p>
+						<h2 id="menu-title">Lo que Google <em>publica del local.</em></h2>
+						<p class="menu-lede">
+							Estos son los datos que aparecen en la ficha pública: los únicos que esta web
+							puede afirmar sin inventar nada.
+						</p>
+
+						<div class="menu-groups">
+							<div class="menu-group">
+								<h3>Datos publicados</h3>
+								<ul>
+									{
+										FICHA.map((item) => (
+											<li>
+												<strong>{item.label}</strong>
+												<span>{item.value}</span>
+											</li>
+										))
+									}
+								</ul>
+							</div>
+						</div>
+
+						<p class="menu-note">
+							Sin carta y sin precios en la web: la ficha no los publica. Para encargar, llama
+							al <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="hours" id="horario" aria-labelledby="hours-title">
+				<div class="wrap hours-grid">
+					<div class="hours-copy">
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Horario</p>
+						<h2 id="hours-title">El horario, <em>en la ficha.</em></h2>
+						<p class="hours-lede">
+							Google no publica el horario completo de la semana de este local. Lo que marca
+							es que el miércoles cierra y que la siguiente apertura es el domingo a las
+							9:00.
+						</p>
+						<p class="hours-note">
+							<strong>Antes de ir, compruébalo.</strong> {HORARIO_NOTA}
+						</p>
+						<a class="hours-link" href={BUSINESS.phoneHref}>
+							Llamar al {BUSINESS.phone} <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="visit wrap" id="visitanos" aria-labelledby="visit-title">
+				<div class="visit-copy">
+					<p class="section-label"><span aria-hidden="true"></span> Dónde está</p>
+					<h2 id="visit-title">En el carrer <em>d'Alcoi, 9.</em></h2>
+					<p class="address">
+						{BUSINESS.street}<br />
+						{BUSINESS.postalCode} {BUSINESS.city}<br />
+						{BUSINESS.region}
+					</p>
+
+					<p class="visit-phone">
+						<span>Teléfono</span>
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					</p>
+
+					<p class="hours-note">
+						<strong>El teléfono es el que publica la ficha.</strong> No consta página web ni perfil
+						social del negocio, así que esta página no enlaza ninguno.
+					</p>
+
+					<ul class="visit-list">
+						<li>
+							<span>Categoría</span>
+							{BUSINESS.googleCategory}
+						</li>
+						<li>
+							<span>Valoración</span>
+							{RATING.label} sobre 5 en Google
+						</li>
+						<li>
+							<span>Plus code</span>
+							{BUSINESS.plusCode}
+						</li>
+					</ul>
+
+					<div class="visit-links">
+						<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+							Cómo llegar <span aria-hidden="true">↗</span>
+						</a>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+							Ficha en Google Maps <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="map-frame">
+					<iframe
+						title="Mapa de Asador Pollos La Cúpula en el carrer d'Alcoi, 9, Altea"
+						src={MAPS.embed}
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">⌖</span> Carrer d'Alcoi, 9
+					</a>
+				</div>
+			</section>
+
+			<section class="faq wrap" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>llamar.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
 		</main>
-		<footer>
-			<p>
-				Web creada por
-				<a href="https://sur-digital.vercel.app/" target="_blank" rel="noopener noreferrer">Sur Digital</a>
-				· sur-digital.vercel.app
-			</p>
+
+		<footer class="site-footer">
+			<div class="wrap">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<span class="brand-mark" aria-hidden="true">{BUSINESS.mark}</span>
+						<p>
+							{BUSINESS.name}
+							<small>
+								Pollos asados y comida para llevar<br />
+								{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+							</small>
+						</p>
+					</div>
+					<nav aria-label="Enlaces del establecimiento">
+						<a href={BUSINESS.phoneHref}>Llamar</a>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+						<a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+						<a href="#horario">Horario</a>
+						<a href="/asador-pollos-la-cupula/aviso-legal">Aviso legal</a>
+					</nav>
+				</div>
+				<small class="legal">
+					© {new Date().getFullYear()}
+					{BUSINESS.name} · Datos de la ficha pública de Google Maps, consultada en noviembre de
+					2026. La web no publica carta, precios ni horario completo porque la ficha no los incluye.
+				</small>
+				<nav class="legal-links" aria-label="Información legal">
+					<a href="/asador-pollos-la-cupula/aviso-legal">Aviso legal</a>
+					<a href="/asador-pollos-la-cupula/aviso-legal#privacidad">Privacidad</a>
+					<a href="/asador-pollos-la-cupula/aviso-legal#cookies">Cookies</a>
+				</nav>
+				<p class="credit">
+					<small>Creado por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small>
+				</p>
+			</div>
 		</footer>
+		<!-- contacto-rapido -->
+		<style>
+			/* Esta ficha no tiene fotos propias en la galería de Google: el hero, la
+			   sección de la casa y la de la ficha van a una columna de lectura. */
+			.hero-grid,
+			.about-grid,
+			.menu-grid,
+			.hours-grid {
+				display: block;
+			}
+
+			.hero-copy,
+			.about-copy,
+			.hours-copy {
+				max-width: 46rem;
+			}
+		</style>
+		<nav class="contact-fabs" aria-label="Contacto rápido">
+			<a
+				class="fab-call"
+				href={BUSINESS.phoneHref}
+				aria-label={`Llamar a ${BUSINESS.name}`}
+			>
+				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+					<path
+						fill="currentColor"
+						d="M6.6 10.8c1.2 2.4 3.2 4.4 5.6 5.6l1.9-1.9c.3-.3.7-.4 1-.2 1.2.4 2.5.6 3.9.6.6 0 1 .4 1 1V19c0 .6-.4 1-1 1C10.5 20 4 13.5 4 5.5c0-.6.4-1 1-1h3.1c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.9.1.4 0 .8-.2 1l-1.9 1.9Z"
+					/>
+				</svg>
+			</a>
+		</nav>
 	</body>
 </html>
