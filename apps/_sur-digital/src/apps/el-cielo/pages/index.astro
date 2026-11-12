@@ -1,99 +1,523 @@
 ---
 import { Image } from 'astro:assets';
+import '../styles/global.css';
+import { BUSINESS, FAQ, FICHA, HIGHLIGHTS, HOURS, MAPS, RATING, SERVICIOS, VITRINA } from '../data/site';
 
-const MAPS_URL =
-  'https://www.google.com/maps/place/El+Cielo/@40.4123415,-3.6957058,17z/data=!3m1!4b1!4m6!3m5!1s0xd422629ce881633:0x63bbabd0e44c556d!8m2!3d40.4123415!4d-3.6957058!16s%2Fg%2F1ptxfnbl5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D';
+import fachada from '../assets/fotos/el-cielo-apaisada-01.jpg';
+import vitrina from '../assets/fotos/el-cielo-apaisada-05.jpg';
+import tarrinas from '../assets/fotos/el-cielo-vertical-03.jpg';
+import carne from '../assets/fotos/el-cielo-vertical-07.jpg';
+import etiquetas from '../assets/fotos/el-cielo-vertical-10.jpg';
+import escaparate from '../assets/fotos/el-cielo-vertical-02.jpg';
+import hamburguesa from '../assets/fotos/el-cielo-apaisada-09.jpg';
 
-const photoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/fotos/*.jpg', {
-  eager: true,
-});
-const photos = Object.keys(photoModules)
-  .sort()
-  .map((path) => photoModules[path].default);
-import secciones from '../data/secciones.json';
+const title = `${BUSINESS.name} · Comida casera para llevar en Madrid`;
+const description = BUSINESS.description;
+const year = new Date().getFullYear();
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const nav = [
+  { label: 'La tienda', href: '#casa' },
+  { label: 'La vitrina', href: '#vitrina' },
+  { label: 'Fotos', href: '#fotos' },
+  { label: 'Dónde está', href: '#visitanos' },
+  { label: 'Preguntas', href: '#preguntas' },
+];
 ---
 
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>El Cielo</title>
-    <link rel="canonical" href="https://www.sur-digital.com/el-cielo/" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
-    <style>
-      body {
-        margin: 0;
-        font-family: system-ui, sans-serif;
-        color: #1f2937;
-        background: #fafafa;
+    <link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+    <meta name="theme-color" content="#5a1f17" />
+    <link rel="icon" href="/el-cielo/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Mulish:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "@id": "https://www.sur-digital.com/el-cielo/#negocio",
+        "name": "El Cielo",
+        "url": "https://www.sur-digital.com/el-cielo/",
+        "description": "El Cielo, tienda de comida casera para llevar en C. de Fúcar, 4 (Barrio de las Letras, 28014 Madrid). Vitrina de platos preparados y pedidos por teléfono.",
+        "image": "https://www.sur-digital.com/el-cielo/og.jpg",
+        "telephone": "+34914204465",
+        "takeaway": true,
+        "servesCuisine": ["Casera", "Española"],
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 40.4123415,
+          "longitude": -3.6957058
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "C. de Fúcar, 4",
+          "addressLocality": "Madrid",
+          "addressRegion": "Comunidad de Madrid",
+          "postalCode": "28014",
+          "addressCountry": "ES"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": 4.7,
+          "reviewCount": 191,
+          "bestRating": 5,
+          "worstRating": 1
+        },
+        "hasMap": "https://www.google.com/maps/place/El+Cielo/@40.4123415,-3.6957058,17z/data=!3m1!4b1!4m6!3m5!1s0xd422629ce881633:0x63bbabd0e44c556d!8m2!3d40.4123415!4d-3.6957058!16s%2Fg%2F1ptxfnbl5",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+            "opens": "12:30",
+            "closes": "21:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Friday",
+            "opens": "12:30",
+            "closes": "16:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Friday",
+            "opens": "18:30",
+            "closes": "21:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "12:30",
+            "closes": "15:30"
+          }
+        ]
       }
-      main {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-      }
-      h1 {
-        margin: 0 0 0.5rem;
-      }
-      .gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-      }
-      .gallery img {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        display: block;
-      }
-      footer {
-        border-top: 1px solid #e5e7eb;
-        padding: 1.5rem 1rem;
-        text-align: center;
-        font-size: 0.875rem;
-        color: #6b7280;
-      }
-      footer a {
-        color: inherit;
-      }
-    </style>
-  <script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "LocalBusiness",
-	"@id": "https://www.sur-digital.com/el-cielo/#negocio",
-	"name": "El cielo",
-	"url": "https://www.sur-digital.com/el-cielo/",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 40.4123415,
-		"longitude": -3.6957058
-	},
-	"hasMap": "https://www.google.com/maps/place/El+Cielo/@40.4123415,-3.6957058,17z/data=!3m1!4b1!4m6!3m5!1s0xd422629ce881633:0x63bbabd0e44c556d!8m2!3d40.4123415!4d-3.6957058!16s%2Fg%2F1ptxfnbl5?authuser=0&hl=es&entry=ttu&g_ep=EgoyMDI2MTAyNy4wIKXMDSoASAFQAw%3D%3D"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/el-cielo/og.png" />
-		<meta property="og:image:type" content="image/png" />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/el-cielo/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content="El Cielo" />
-	</head>
+    </script>
+    <meta property="og:image" content="https://www.sur-digital.com/el-cielo/og.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" content="https://www.sur-digital.com/el-cielo/" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </head>
   <body>
-    <main>
-      <h1 set:html={piezas.portada.titulo} />
-      <p><a href={MAPS_URL} rel="noopener">Ver en Google Maps</a></p>
-      <section class="gallery">
-        {photos.map((photo) => <Image src={photo} alt="El Cielo" loading="lazy" />)}
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="topbar">
+      <div class="topbar-inner wrap">
+        <a class="brand" href="#inicio" aria-label={`${BUSINESS.name}, inicio`}>
+          <span class="brand-mark" aria-hidden="true">{BUSINESS.mark}</span>
+          <span class="brand-name">
+            El Cielo
+            <small>Comida casera · Para llevar</small>
+          </span>
+        </a>
+        <nav aria-label="Navegación principal">
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+        <a class="topbar-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span aria-hidden="true"></span> C. de Fúcar, 4 · Barrio de las Letras · Madrid</p>
+          <h1 id="hero-title">Comida casera <em>para llevar.</em></h1>
+          <p class="hero-lede">
+            Una tienda pequeña de fachada roja en la calle Fúcar, entre Atocha y la plaza de Santa
+            Ana. Dentro, una vitrina de cristal con bandejas de pasta, pollo, guisos, ensaladas y
+            horno: se elige a la vista, se envasa al momento y se come donde quieras.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href={BUSINESS.phoneHref}>
+              Llamar · {BUSINESS.phone}
+            </a>
+            <a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">
+              Cómo llegar <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <ul class="hero-facts">
+            <li><b>{RATING.label}</b> sobre 5 · {RATING.count} reseñas</li>
+            <li><b>12:30–21:00</b> lunes a jueves</li>
+            <li><b>Para llevar</b> categoría de la ficha</li>
+          </ul>
+        </div>
+
+        <figure class="hero-photo">
+          <Image
+            src={fachada}
+            alt="Fachada roja de El Cielo en la calle Fúcar, con el rótulo «el cielo», «tienda · shop» y «para llevar · take away»"
+            widths={[480, 720, 1024]}
+            sizes="(max-width: 900px) 92vw, 46vw"
+            format="webp"
+            quality={74}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <figcaption>
+            <span>Foto del perfil de Google</span>
+            <a href={MAPS.place} target="_blank" rel="noreferrer">Ver la ficha ↗</a>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="wrap" aria-label="Lo que ofrece la tienda">
+        <ul class="chips">
+          {SERVICIOS.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+
+      <section class="about" id="casa" aria-labelledby="about-title">
+        <div class="wrap">
+          <div class="about-grid">
+            <h2 id="about-title">La tienda roja <em>de Fúcar.</em></h2>
+            <div class="about-copy">
+              <p>
+                «el cielo» se lee en la fachada, entre dos pájaros dibujados y dos carteles que lo
+                aclaran todo: «tienda · shop» a un lado y «para llevar · take away» al otro. Es un
+                local de barrio, con la cocina al fondo y el mostrador de cristal en primera línea.
+              </p>
+              <p>
+                La ficha pública de Google lo clasifica como «restaurante de comida para llevar», le
+                da un {RATING.label} sobre 5 con {RATING.count} reseñas y publica el teléfono y el
+                horario. No enlaza ninguna web propia: esta página solo reúne lo que se puede
+                consultar en esa ficha.
+              </p>
+              <p>
+                En la vitrina aparecen bandejas de pasta y guisos, ensaladas, lasaña, quiche de
+                espinacas y tartas, con los nombres y algunos precios escritos a mano en el cristal.
+                También salen platos como la hamburguesa con quinoa o la carne rellena gratinada.
+              </p>
+              <p class="about-note">
+                Aquí no hay carta con precios: cambian con el día y se consultan en el mostrador.
+                Para saber qué hay hoy o encargar algo, llama al
+                <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.
+              </p>
+              <div class="about-links">
+                <a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">
+                  Ficha en Google Maps <span aria-hidden="true">↗</span>
+                </a>
+                <a class="simple-link" href="#vitrina">Ver la vitrina</a>
+              </div>
+            </div>
+          </div>
+
+          <ul class="highlights">
+            {
+              HIGHLIGHTS.map((item, index) => (
+                <li class={index === HIGHLIGHTS.length - 1 ? 'highlight-wide' : undefined}>
+                  <span class="highlight-mark">{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <section class="menu" id="vitrina" aria-labelledby="vitrina-title">
+        <div class="wrap">
+          <div class="menu-head">
+            <div>
+              <p class="section-label"><span aria-hidden="true"></span> La vitrina</p>
+              <h2 id="vitrina-title">Lo que hay <em>en el mostrador.</em></h2>
+            </div>
+            <div>
+              <p>
+                Platos preparados que se ven en la vitrina y en las fotos del perfil. Sin carta
+                cerrada ni precios fijos: lo que hay cada día se mira al llegar o se pregunta por
+                teléfono.
+              </p>
+              <a class="button button-primary" href={BUSINESS.phoneHref}>
+                Preguntar por teléfono
+              </a>
+            </div>
+          </div>
+
+          <div class="menu-groups">
+            <div class="menu-group">
+              <h3>En el mostrador</h3>
+              <ul class="dishes">
+                {
+                  VITRINA.map((item) => (
+                    <li>
+                      <span class="dish">
+                        {item.name}
+                        <em>{item.text}</em>
+                      </span>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div class="menu-group">
+              <h3>Datos de la ficha</h3>
+              <ul class="dishes">
+                {
+                  FICHA.map((item) => (
+                    <li>
+                      <span class="dish">
+                        {item.label}
+                        <em>{item.value}</em>
+                      </span>
+                    </li>
+                  ))
+                }
+                <li>
+                  <span class="dish">
+                    Teléfono
+                    <em><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>, el que publica la ficha</em>
+                  </span>
+                </li>
+                <li>
+                  <span class="dish">
+                    Cómo llegar
+                    <em><a href={MAPS.directions} target="_blank" rel="noreferrer">Ruta en Google Maps ↗</a></em>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="menu-note">
+            Los platos y las etiquetas cambian a diario. Para encargar una tortilla o una bandeja,
+            llama al <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="rating-section" id="opiniones" aria-labelledby="rating-title">
+        <div class="wrap rating-grid">
+          <div class="rating-copy">
+            <p class="section-label"><span aria-hidden="true"></span> Opiniones</p>
+            <h2 id="rating-title">Cuatro y siete <em>en la ficha.</em></h2>
+            <p>
+              Es la valoración media que publica Google Maps para El Cielo al consultarla (noviembre
+              de 2026), con {RATING.count} reseñas. Esta página no reproduce reseñas de terceros:
+              para leerlas todas, abre la ficha del local.
+            </p>
+          </div>
+          <div class="rating-badge">
+            <strong>{RATING.label}</strong>
+            <span aria-hidden="true">★★★★★</span>
+            <small>Valoración en la ficha de Google · sobre 5</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-pad" id="fotos" aria-labelledby="fotos-title">
+        <div class="wrap">
+          <div class="gallery-head">
+            <div>
+              <p class="section-label"><span aria-hidden="true"></span> Fotos del perfil</p>
+              <h2 id="fotos-title">La fachada, la vitrina <em>y los platos.</em></h2>
+            </div>
+            <p>
+              Imágenes del perfil público de El Cielo en Google Maps: la tienda desde la calle, el
+              mostrador con las bandejas, la cocina al fondo y algunos platos servidos.
+            </p>
+          </div>
+          <div class="gallery-grid">
+            <figure class="shot">
+              <Image
+                src={vitrina}
+                alt="Vitrina de El Cielo con bandejas de pasta, guisos, ensaladas y tartas"
+                widths={[640, 960, 1280]}
+                sizes="(max-width: 900px) 92vw, 72rem"
+                format="webp"
+                quality={70}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <figure class="shot">
+              <Image
+                src={tarrinas}
+                alt="Dos tarrinas de cartón para llevar con pollo con espinacas y quiche de verduras"
+                widths={[320, 480, 640]}
+                sizes="(max-width: 900px) 46vw, 24vw"
+                format="webp"
+                quality={68}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <figure class="shot">
+              <Image
+                src={carne}
+                alt="Carne rellena gratinada cortada por la mitad en un plato"
+                widths={[320, 480, 640]}
+                sizes="(max-width: 900px) 46vw, 24vw"
+                format="webp"
+                quality={68}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <figure class="shot">
+              <Image
+                src={etiquetas}
+                alt="Mostrador de El Cielo con etiquetas escritas a mano y la cocina al fondo"
+                widths={[320, 480, 640]}
+                sizes="(max-width: 900px) 46vw, 24vw"
+                format="webp"
+                quality={68}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <figure class="shot">
+              <Image
+                src={escaparate}
+                alt="Escaparate de El Cielo en la calle Fúcar, con el rótulo de para llevar"
+                widths={[320, 480, 640]}
+                sizes="(max-width: 900px) 46vw, 24vw"
+                format="webp"
+                quality={68}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <figure class="shot">
+              <Image
+                src={hamburguesa}
+                alt="Hamburguesa con salsa y quinoa en un plato de El Cielo"
+                widths={[640, 960, 1280]}
+                sizes="(max-width: 900px) 92vw, 48vw"
+                format="webp"
+                quality={68}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </div>
+          <p class="gallery-note">
+            Imágenes alojadas en esta página y tomadas del perfil del establecimiento en Google
+            Maps. Si tienes los derechos de alguna y quieres retirarla, avísanos y la borramos.
+          </p>
+        </div>
+      </section>
+
+      <section class="visit" id="visitanos" aria-labelledby="visit-title">
+        <div class="wrap visit-grid">
+          <div class="visit-copy">
+            <p class="section-label section-label-light"><span aria-hidden="true"></span> Dónde está</p>
+            <h2 id="visit-title">En la calle Fúcar, <em>4.</em></h2>
+            <p class="address">
+              {BUSINESS.street}<br />
+              {BUSINESS.postalCode} {BUSINESS.city}<br />
+              {BUSINESS.region}
+            </p>
+            <table class="hours">
+              <caption>Horario publicado</caption>
+              <tbody>
+                {
+                  HOURS.map((item) => (
+                    <tr>
+                      <th scope="row">{item.day}</th>
+                      <td>{item.value}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+            <p class="hours-note">
+              Horario que publica la ficha de Google en noviembre de 2026; puede cambiar en festivos.
+              El teléfono es el del local: esta página no tramita pedidos ni reservas.
+            </p>
+            <a class="phone-link" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+            <div class="visit-links">
+              <a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">
+                Cómo llegar <span aria-hidden="true">↗</span>
+              </a>
+              <a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">
+                Ficha en Google Maps <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="map-frame">
+            <iframe
+              title={`Mapa de ${BUSINESS.name} en ${BUSINESS.street}, ${BUSINESS.city}`}
+              src={MAPS.embed}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+            <a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+              <span aria-hidden="true">⌖</span> {BUSINESS.street}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq section-pad" id="preguntas" aria-labelledby="faq-title">
+        <div class="wrap">
+          <p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+          <h2 id="faq-title">Antes de <em>pasar.</em></h2>
+          <div class="faq-list">
+            {
+              FAQ.map((item) => (
+                <details>
+                  <summary>{item.q}</summary>
+                  <p>{item.a}</p>
+                </details>
+              ))
+            }
+          </div>
+        </div>
       </section>
     </main>
-    <footer>
-      <p>Web creada por <a href="https://www.sur-digital.com" rel="noopener">Sur Digital</a></p>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <span class="brand-mark" aria-hidden="true">{BUSINESS.mark}</span>
+            <p>
+              {BUSINESS.name}
+              <small>
+                Comida casera para llevar<br />
+                {BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}
+              </small>
+            </p>
+          </div>
+          <nav aria-label="Enlaces del establecimiento">
+            <a href={BUSINESS.phoneHref}>Llamar</a>
+            <a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+            <a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+            <a href="/el-cielo/aviso-legal">Aviso legal</a>
+          </nav>
+        </div>
+        <small class="legal">
+          © {year} {BUSINESS.name} · Datos de la ficha pública de Google Maps, consultada en noviembre de
+          2026. Las fotografías proceden del mismo perfil.
+        </small>
+        <nav class="legal-links" aria-label="Información legal">
+          <a href="/el-cielo/aviso-legal">Aviso legal</a>
+          <a href="/el-cielo/aviso-legal#privacidad">Privacidad</a>
+          <a href="/el-cielo/aviso-legal#cookies">Cookies</a>
+        </nav>
+        <p class="credit">
+          Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a>
+        </p>
+      </div>
     </footer>
+
+    <a class="mobile-call" href={BUSINESS.phoneHref}>Llamar <span>{BUSINESS.phone}</span></a>
   </body>
 </html>

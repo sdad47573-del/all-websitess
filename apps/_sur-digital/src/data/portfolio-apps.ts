@@ -3951,16 +3951,17 @@ export const PORTFOLIO_APPS: AppProject[] = [
 	{
 		"slug": "el-cielo",
 		"title": "El Cielo",
-		"category": "Servicios profesionales",
-		"sector": "Servicios profesionales",
-		"city": "",
-		"description": "El Cielo. Ficha con horario, teléfono y ubicación.",
+		"category": "Restaurantes y bares",
+		"sector": "Comida casera para llevar",
+		"city": "Madrid",
+		"description": "El Cielo, tienda de comida casera para llevar en C. de Fúcar, 4 (Barrio de las Letras, 28014 Madrid). Vitrina de platos preparados y pedidos por teléfono, según su ficha de Google Maps.",
 		"tags": [
-			"Servicios profesionales"
+			"Madrid",
+			"Comida casera para llevar"
 		],
 		"accent": "bg-primary/15 text-primary",
 		"url": "/el-cielo/",
-		"community": ""
+		"community": "Comunidad de Madrid"
 	},
 	{
 		"slug": "el-cocinero-en-casa",
