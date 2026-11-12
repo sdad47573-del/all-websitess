@@ -53,7 +53,6 @@ https://restaurante-parritas.netlify.app
 https://restaurante-yumas.netlify.app
 https://restaurante-pescaito-la-espera.netlify.app
 https://abaceria-tinta-de-toro.netlify.app
-https://bar-panel.netlify.app
 https://restaurante-di-mari.netlify.app
 https://asador-de-camilo.netlify.app
 https://el-rincon-de-fernando.netlify.app

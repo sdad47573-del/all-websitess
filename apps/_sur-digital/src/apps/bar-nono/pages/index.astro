@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import '../styles/global.css';
+import { fotos } from '../data/fotos';
 import {
   business,
   directionsUrl,
@@ -19,6 +21,8 @@ const title = 'Bar Nono · Calle Valverde 13, Cádiz';
 const description =
   'Bar Nono en Calle Valverde 13, 11004 Cádiz. Cocina casera desde 1987, 679 33 42 80, mapa y preguntas. Web informativa no oficial.';
 const keywords = 'Bar Nono, tapas Cádiz, Valverde, cocina casera Cádiz';
+
+const [fachada, barra, tapas] = fotos;
 ---
 
 <!doctype html>
@@ -88,7 +92,7 @@ const keywords = 'Bar Nono, tapas Cádiz, Valverde, cocina casera Cádiz';
               {business.name} está en {business.streetAddress}, {business.postalCode} {business.city}.
               Tapeo casero desde {business.founded}. Web informativa no oficial:
               teléfono, cómo llegar, mapa y preguntas.
-              Las fotos de Google Maps no se copian aquí por derechos de autor.
+              Las fotos de esta página proceden del perfil público del bar en Google Maps.
             </p>
             <div class="hero-actions">
               <a class="btn btn-solid" href={phoneHref}>Llamar: {business.phone}</a>
@@ -104,18 +108,16 @@ const keywords = 'Bar Nono, tapas Cádiz, Valverde, cocina casera Cádiz';
           </div>
 
           <div class="hero-media">
-            <div class="hero-collage hero-collage--sin-fotos" role="img" aria-label="Ilustración de Bar Nono, sin fotografías">
-              <div class="collage-item collage-item-main foto-ph">
-                <span class="foto-ph-mark" aria-hidden="true">N</span>
-                <span class="foto-ph-text">Foto propia pendiente</span>
-                <small>Valverde 13</small>
-              </div>
-              <div class="collage-item collage-item-top foto-ph foto-ph--alt">
-                <span class="foto-ph-text">Salmorejo</span><small>pendiente</small>
-              </div>
-              <div class="collage-item collage-item-bottom foto-ph">
-                <span class="foto-ph-text">Cola de toro</span><small>pendiente</small>
-              </div>
+            <div class="hero-collage">
+              <figure class="collage-item collage-item-main">
+                <Image src={fachada.src} alt={fachada.alt} loading="eager" fetchpriority="high" />
+              </figure>
+              <figure class="collage-item collage-item-top">
+                <Image src={barra.src} alt={barra.alt} loading="eager" />
+              </figure>
+              <figure class="collage-item collage-item-bottom">
+                <Image src={tapas.src} alt={tapas.alt} loading="eager" />
+              </figure>
             </div>
             <p class="hero-stamp" aria-hidden="true"><span>Desde 1987</span><strong>Bar Nono</strong><span>Cádiz</span></p>
           </div>
@@ -142,8 +144,10 @@ const keywords = 'Bar Nono, tapas Cádiz, Valverde, cocina casera Cádiz';
               {business.categories.map((c) => <li>{c}</li>)}
             </ul>
             <p class="local-note">
-              Esta web no copia fotos, reseñas literales ni valoraciones de Google Maps.
-              Para fotos y opiniones usa la <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha en Google Maps ↗</a>.
+              Las fotos de esta web proceden del perfil público del bar en Google Maps y se muestran
+              como referencia del local; si eres el titular y quieres retirar alguna, escríbenos y la
+              quitamos. Para ver las opiniones, usa la
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha en Google Maps ↗</a>.
             </p>
           </div>
           <div class="quote-row">
@@ -163,17 +167,17 @@ const keywords = 'Bar Nono, tapas Cádiz, Valverde, cocina casera Cádiz';
       <section class="section fotos" id="fotos" aria-labelledby="fotos-title">
         <div class="wrap">
           <p class="kicker">Las fotos</p>
-          <h2 class="title" id="fotos-title">Fotos <em>propias.</em></h2>
+          <h2 class="title" id="fotos-title">El bar y su mesa, <em>en fotos.</em></h2>
           <p class="lead">
-            De momento no hay galería: las imágenes de Google Maps pertenecen a sus autores y sus
-            condiciones prohíben descargarlas automáticamente. Cuando tengas fotos propias (hechas por
-            ti o con permiso escrito del autor), guárdalas en <code>src/assets/fotos/</code> y aparecerán aquí.
+            Imágenes alojadas en esta web procedentes del perfil público del bar en Google Maps: la
+            fachada, la barra y los platos que salen de su cocina. Si eres el titular y quieres retirar
+            alguna, escríbenos y la quitamos.
           </p>
           <div class="fotos-grid">
-            {[1, 2, 3].map((n) => (
-              <figure class="foto-item foto-ph foto-ph--galeria">
-                <span class="foto-ph-text">Espacio para foto {n}</span>
-                <small>1200 × 800 · JPG</small>
+            {fotos.map((foto) => (
+              <figure class="foto-item">
+                <Image src={foto.src} alt={foto.alt} loading="lazy" />
+                <figcaption>{foto.pie}</figcaption>
               </figure>
             ))}
           </div>

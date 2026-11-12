@@ -9,7 +9,8 @@
  *   ensaladilla, cola de toro, albóndigas y berza; abre todos los días excepto
  *   sábados por la noche y domingos; sin horas exactas publicadas.
  *
- * NO se copian fotos, reseñas literales ni valoraciones de Google Maps.
+ * Fotos: las del perfil público del establecimiento en Google Maps (src/assets/fotos/), con
+ * nota de origen y oferta de retirada. No se copian reseñas literales ni valoraciones.
  */
 
 export const site = {
@@ -86,7 +87,7 @@ export const faqs = [
   {
     question: '¿Dónde puedo ver fotos y opiniones?',
     answer:
-      'En la ficha del local en Google Maps, enlazada desde esta web. Aquí solo se usarán fotos propias con permiso.',
+      'La galería de esta web reúne fotos del perfil público del local en Google Maps. En la ficha enlazada hay más fotos y las opiniones de los clientes.',
   },
   {
     question: '¿De quién es esta web?',

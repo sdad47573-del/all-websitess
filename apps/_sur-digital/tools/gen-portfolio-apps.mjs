@@ -306,11 +306,6 @@ const leerJson = (ruta) => {
 	}
 };
 
-// Aplicaciones que no son landings de cliente, así que no entran en el
-// listado del portfolio: el panel de gestión (bar-panel) es una app aparte,
-// con su propio dashboard, y no una ficha de negocio.
-const APPS_APARTE = new Set(['bar-panel']);
-
 // Los clientes ya curados a mano se quedan con su tarjeta y su captura.
 const yaCurados = new Set();
 if (existsSync(ORIGINS)) {
@@ -330,7 +325,6 @@ const stats = { siteTs: 0, secciones: 0, pagina: 0, slug: 0, curados: 0 };
 for (const slug of slugs) {
 	const dir = join(APPS, slug);
 	if (!existsSync(join(dir, 'pages'))) continue;
-	if (APPS_APARTE.has(slug)) continue;
 	if (yaCurados.has(slug)) {
 		stats.curados++;
 		continue;
