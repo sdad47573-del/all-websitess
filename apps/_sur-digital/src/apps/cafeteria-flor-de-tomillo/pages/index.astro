@@ -1,172 +1,268 @@
 ---
-import '../styles/global.css';
 import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
+import '../styles/global.css';
+import { fotos } from '../data/fotos';
 import {
-	business,
-	directionsUrl,
-	hours,
-	mapEmbedUrl,
-	mapsUrl,
-	resenas,
-	site,
+  business,
+  cafeSchema,
+  directionsUrl,
+  faqs,
+  faqSchema,
+  hours,
+  hoursSource,
+  hoursSummary,
+  mapEmbedUrl,
+  mapsUrl,
+  phoneHref,
+  site,
 } from '../data/site';
 
-// Fotos descargadas de la ficha de Google Maps, en `src/assets/fotos`, servidas con `<Image>`.
-const fotos = import.meta.glob<{ default: ImageMetadata }>(
-	'../assets/fotos/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
-	{ eager: true },
-);
-const listaFotos = Object.keys(fotos)
-	.sort()
-	.map((ruta) => fotos[ruta].default);
-
-const title = 'Cafetería Flor de Tomillo · Cafetería en Ciudad Real';
+const title = 'Cafetería Flor de Tomillo · Ciudad Real';
 const description =
-	'Cafetería Flor de Tomillo en la C. Paloma de Ciudad Real. Horario, teléfono y fotos tomados de su ficha de Google Maps.';
-import secciones from '../data/secciones.json';
+  'Cafetería Flor de Tomillo en C. Paloma, 3, Loc 1, 13001 Ciudad Real. Bocadillos, platos del día y raciones. Teléfono 657 27 44 86, horario, mapa y preguntas. Web informativa no oficial.';
+const keywords = 'Cafetería Flor de Tomillo, cafetería Ciudad Real, bocadillos Ciudad Real, calle Paloma, menú del día Ciudad Real';
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const [fachada, bocadillos, plato] = fotos;
 ---
 
+<!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<link rel="icon" href="/cafeteria-flor-de-tomillo/favicon.svg" type="image/svg+xml" />
-		<link rel="canonical" href={`${site.siteUrl}/`} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:type" content="website" />
-		<meta property="og:locale" content="es_ES" />
-		<meta name="robots" content="index, follow" />
-		<meta property="og:url" content={`${site.siteUrl}/`} />
-		<meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
-		<meta name="twitter:card" content="summary_large_image" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/cafeteria-flor-de-tomillo/#negocio",
-	"name": "Cafetería Flor de Tomillo",
-	"url": "https://www.sur-digital.com/cafeteria-flor-de-tomillo/",
-	"description": "Cafetería Flor de Tomillo en la C. Paloma de Ciudad Real. Horario, teléfono y fotos tomados de su ficha de Google Maps.",
-	"image": "https://www.sur-digital.com/cafeteria-flor-de-tomillo/og.jpg",
-	"telephone": "+34657274486",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 38.9853479,
-		"longitude": -3.927276
-	},
-	"hasMap": "https://www.google.com/maps/place/Cafeter%C3%ADa+Flor+de+Tomillo/@38.9853479,-3.927276,17z/data=!3m1!4b1!4m6!3m5!1s0xd6bc3cc99fb4379:0x607db30fbdeac580!8m2!3d38.9853479!4d-3.927276!16s%2Fg%2F11y223435x?hl=es"
-}
-</script>
-</head>
-	<body>
-		<header class="hero" id="inicio">
-			<div class="hero-grid">
-				<div class="hero-copy">
-					<p class="eyebrow">{business.category} · Ciudad Real</p>
-					<h1 set:html={piezas.portada.titulo} />
-					<p class="hero-lede">
-						Cafetería en la C. Paloma, Ciudad Real. {business.reviewCount} reseñas en Google.
-					</p>
-					<div class="hero-actions">
-						<a class="button" href={mapsUrl} rel="noopener">Ver ficha en Google Maps</a>
-						<a class="button secondary" href={directionsUrl} rel="noopener">Cómo llegar</a>
-					</div>
-				</div>
-				{listaFotos[0] && (
-					<Image src={listaFotos[0]} alt={`Fotografía de ${business.name} publicada en Google Maps`} widths={[640, 960]} sizes="(min-width: 800px) 50vw, 100vw" />
-				)}
-			</div>
-		</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1e4b57" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content={business.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="ES-CM" />
+    <meta name="geo.placename" content={business.city} />
+    <meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+    <meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+    <link rel="canonical" href={`${site.siteUrl}/`} />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/svg+xml" href="/cafeteria-flor-de-tomillo/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={business.shortName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`${site.siteUrl}/`} />
+    <meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="place:location:latitude" content={String(business.latitude)} />
+    <meta property="place:location:longitude" content={String(business.longitude)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(cafeSchema)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-		<main>
-			<section class="section" id="local" aria-labelledby="local-title">
-				<h2 id="local-title">Dónde estamos</h2>
-				<p>{business.streetAddress}, {business.postalCode} {business.city}. Teléfono: <a href={`tel:${business.phone.replace(/\s/g, '')}`}>{business.phone}</a>.</p>
-				<p>
-					<a href={mapsUrl} rel="noopener">Abrir en Google Maps</a> ·
-					<a href={directionsUrl} rel="noopener">Cómo llegar</a>
-				</p>
-				<iframe
-					title={`Mapa de ${business.name}`}
-					src={mapEmbedUrl}
-					width="100%"
-					height="320"
-					style="border:0"
-					loading="lazy"
-					referrerpolicy="no-referrer-when-downgrade"
-				></iframe>
-			</section>
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-text">Flor de Tomillo<small>Cafetería · Ciudad Real</small></span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="#local">La casa</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#horario">Horario</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <a class="topbar-phone" href={phoneHref}><span aria-hidden="true">☎</span>{business.phone}</a>
+    </header>
 
-			<section class="section" id="horario" aria-labelledby="horario-title">
-				<h2 id="horario-title">Horario</h2>
-				<table>
-					<tbody>
-						{hours.map((item) => (
-							<tr>
-								<th scope="row">{item.day}</th>
-								<td>{item.service}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Ciudad Real · C. Paloma, 3</p>
+            <h1 id="hero-title">Flor de<br /><em>Tomillo.</em></h1>
+            <p class="hero-lede">
+              {business.name} está en {business.streetAddress}, {business.postalCode} {business.city}:
+              cafetería de barrio con bocadillos, platos del día y raciones. Web informativa no
+              oficial con teléfono, horario, mapa y fotos del perfil público del local en Google Maps.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-solid" href={phoneHref}>Llamar: {business.phone}</a>
+              <a class="btn btn-ghost" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+                Cómo llegar <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <ul class="hero-facts">
+              <li><small>Dirección</small><strong>{business.streetAddress} · {business.postalCode} {business.city}</strong></li>
+              <li><small>Horario</small><strong>{hoursSummary}</strong></li>
+              <li><small>Google</small><strong>{business.rating} · {business.reviewCount} reseñas</strong></li>
+            </ul>
+          </div>
 
-			<section class="section" id="resenas" aria-labelledby="resenas-title">
-				<h2 id="resenas-title">Lo que dicen</h2>
-				<p>{business.reviewCount} reseñas en Google.</p>
-				{resenas.map((r) => (
-					<blockquote>« {r.texto} »</blockquote>
-				))}
-			</section>
+          <div class="hero-media">
+            <div class="hero-collage">
+              <figure class="collage-item collage-item-main">
+                <Image src={fachada.src} alt={fachada.alt} loading="eager" fetchpriority="high" />
+              </figure>
+              <figure class="collage-item collage-item-top">
+                <Image src={bocadillos.src} alt={bocadillos.alt} loading="eager" />
+              </figure>
+              <figure class="collage-item collage-item-bottom">
+                <Image src={plato.src} alt={plato.alt} loading="eager" />
+              </figure>
+            </div>
+            <p class="hero-stamp" aria-hidden="true"><span>Ciudad Real</span><strong>Flor de Tomillo</strong><span>Paloma, 3</span></p>
+          </div>
+        </div>
+      </section>
 
-			{listaFotos.length > 1 && (
-				<section class="section" id="fotos" aria-labelledby="fotos-title">
-					<h2 id="fotos-title">Fotos</h2>
-					<div class="galeria">
-						{listaFotos.map((foto) => (
-							<Image src={foto} alt={`Fotografía de ${business.name} publicada en Google Maps`} widths={[480, 800]} sizes="(min-width: 800px) 33vw, 50vw" />
-						))}
-					</div>
-				</section>
-			)}
-		</main>
+      <div class="band">
+        <span>{business.streetAddress} · {business.postalCode} {business.city}</span>
+        <span>{hoursSummary}</span>
+        <span>Teléfono {business.phone}</span>
+      </div>
 
-		<footer class="site-footer">
-			<p>
-				© {new Date().getFullYear()} {business.name}. Datos tomados de la ficha pública de Google Maps el {site.consultado}.
-			</p>
-			<p>
-				<small>Creado por <a href="https://www.sur-digital.com" rel="noopener">Sur Digital</a></small>
-			</p>
-		</footer>
-	<!-- contacto-rapido -->
-<style>
-	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
-	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
-	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
-	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
-	.contact-fabs .fab-call { background: #c2410c; }
-	.contact-fabs .fab-wa { background: #25d366; }
-	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
-	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
-	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
-	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
-	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
-	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
-	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
-	.contact-fabs.is-stacked { bottom: 5.75rem; }
-	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
-	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
-</style>
-<nav class="contact-fabs" aria-label="Contacto rápido">
-	<a class="fab-call" href="tel:+34657274486" aria-label="Llamar a Cafetería Flor de Tomillo al +34 657 27 44 86"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg></a>
-	<a class="fab-wa" href="https://wa.me/34657274486?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Cafeter%C3%ADa%20Flor%20de%20Tomillo." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Cafetería Flor de Tomillo"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
-</nav>
-	</body>
+      <section class="section local" id="local" aria-labelledby="local-title">
+        <div class="wrap local-grid">
+          <div class="local-text">
+            <p class="kicker">La casa</p>
+            <h2 class="title" id="local-title">Cafetería de barrio,<br /><em>cocina de cada día.</em></h2>
+            <p>
+              {business.name} está en {business.streetAddress} ({business.postalCode} {business.city},
+              {business.region}), a pie de calle y con el rótulo rosa sobre la puerta. Su ficha
+              pública la clasifica como cafetería.
+            </p>
+            <p>
+              En las fotos de su perfil se ven bocadillos de tortilla y de fiambre en la vitrina,
+              platos del día recién emplatados y raciones para compartir. La ficha reúne
+              {' '}{business.reviewCount} reseñas, con una valoración de {business.rating} sobre 5.
+            </p>
+            <ul class="category-list" aria-label="Qué se puede encontrar">
+              {business.categories.map((c) => <li>{c}</li>)}
+            </ul>
+            <p class="local-note">
+              Las fotos de esta web proceden del perfil público del local en Google Maps y se muestran
+              como referencia; si eres el titular y quieres retirar alguna, escríbenos y la quitamos.
+              Para ver las opiniones, usa la
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha en Google Maps ↗</a>.
+            </p>
+          </div>
+          <div class="quote-row">
+            <div class="quote-score">
+              <strong>{business.rating}</strong>
+              <span>sobre 5 con {business.reviewCount} reseñas en Google</span>
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver reseñas en Maps ↗</a>
+            </div>
+            <blockquote class="quote">
+              <p>Abre de lunes a sábado al mediodía y cierra los domingos.</p>
+              <footer><strong>Horario</strong><span>{hoursSource}</span></footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="section fotos" id="fotos" aria-labelledby="fotos-title">
+        <div class="wrap">
+          <p class="kicker">Las fotos</p>
+          <h2 class="title" id="fotos-title">La barra, la vitrina <em>y los platos.</em></h2>
+          <p class="lead">
+            Imágenes alojadas en esta web procedentes del perfil público del local en Google Maps: la
+            fachada, el mostrador y los platos que salen de la cocina. Si eres el titular y quieres
+            retirar alguna, escríbenos y la quitamos.
+          </p>
+          <div class="fotos-grid">
+            {fotos.map((foto) => (
+              <figure class="foto-item">
+                <Image src={foto.src} alt={foto.alt} loading="lazy" />
+                <figcaption>{foto.pie}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p class="fotos-note">
+            ¿Quieres ver más? Mira la
+            <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha con fotos en Google Maps ↗</a>
+            o <a href={phoneHref}>llama al {business.phone}</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="section horario" id="horario" aria-labelledby="horario-title">
+        <div class="wrap horario-grid">
+          <div>
+            <p class="kicker">Horario y ubicación</p>
+            <h2 class="title" id="horario-title">Calle Paloma,<br /><em>13001 Ciudad Real.</em></h2>
+            <address>{business.streetAddress}<br />{business.postalCode} {business.city}<br />{business.province} · España</address>
+            <table class="hours-table">
+              <caption>Horario de la ficha pública · {hoursSource}</caption>
+              <tbody>
+                {hours.map((item) => (
+                  <tr><th scope="row">{item.day}</th><td>{item.service}</td></tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="hours-note">Llama al {business.phone} para confirmar festivos y puentes.</p>
+            <a class="contact-line" href={phoneHref}><small>Teléfono</small><strong>{business.phone}</strong></a>
+            <div class="place-actions">
+              <a class="btn btn-solid" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir indicaciones ↗</a>
+              <a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver la ficha en Maps ↗</a>
+            </div>
+          </div>
+          <div class="map-card">
+            <iframe title={`Mapa de ${business.name} en ${business.city}`} src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <div class="map-tag">
+              <div><strong>{business.shortName}</strong><small>{business.streetAddress} · {business.postalCode} {business.city}</small></div>
+              <a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq" id="preguntas" aria-labelledby="faq-title">
+        <div class="wrap">
+          <p class="kicker">Preguntas frecuentes</p>
+          <h2 class="title" id="faq-title">Antes de <em>venir.</em></h2>
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <a class="footer-brand" href="#inicio" aria-label={`${business.shortName}, volver al inicio`}>
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>{business.name}<small>{business.streetAddress} · {business.postalCode} {business.city}</small></span>
+        </a>
+        <nav class="footer-nav" aria-label="Contacto y ficha del local">
+          <a href={phoneHref}>Llamar: {business.phone}</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer">Ficha en Google Maps ↗</a>
+        </nav>
+        <small class="footer-note">
+          © {new Date().getFullYear()} {business.name} · {business.streetAddress} ({business.postalCode} {business.city}).
+          Web informativa no oficial con datos públicos de la ficha de Google Maps. Confirma horario por teléfono.
+        </small>
+      </div>
+      <p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small></p>
+      <nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+        <a href="/cafeteria-flor-de-tomillo/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+        <a href="/cafeteria-flor-de-tomillo/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+        <a href="/cafeteria-flor-de-tomillo/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+      </nav>
+    </footer>
+
+    <a class="mobile-call" href={phoneHref}>Llamar a Flor de Tomillo <span>{business.phone}</span></a>
+  </body>
 </html>

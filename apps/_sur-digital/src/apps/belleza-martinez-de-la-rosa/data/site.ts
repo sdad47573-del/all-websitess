@@ -17,22 +17,26 @@
  *   precios ni recuento de reseñas verificable desde fuera, así que no se
  *   publican. Todo remite a "consultar la ficha de Google Maps".
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: las fotografías son las de la ficha pública del negocio en
+ * Google Maps (scripts/fetch-maps-photos.mjs; la ficha no declara autor). Se usan
+ * con fines informativos y se retiran si el titular lo pide. Se descartaron la
+ * captura de otra web (apaisada-03), el macro de ojo (vertical-07) y la foto de
+ * uñas (vertical-10) por no ser fotos del salón.
  */
 
-import fotoPortada from '../assets/fotos/belleza-mdlr-malaga.svg';
-import fotoSalon from '../assets/fotos/belleza-mdlr-salon.svg';
-import fotoFacial from '../assets/fotos/belleza-mdlr-facial.svg';
-import fotoCorporal from '../assets/fotos/belleza-mdlr-corporal.svg';
+import fotoFachada from '../assets/fotos/belleza-martinez-de-la-rosa-vista-5-05.jpg';
+import fotoInterior from '../assets/fotos/belleza-martinez-de-la-rosa-vertical-02.jpg';
+import fotoPeinado from '../assets/fotos/belleza-martinez-de-la-rosa-vertical-01.jpg';
+import fotoOndas from '../assets/fotos/belleza-martinez-de-la-rosa-vertical-06.jpg';
+import fotoRecogido from '../assets/fotos/belleza-martinez-de-la-rosa-vertical-04.jpg';
+import fotoRecogidoLado from '../assets/fotos/belleza-martinez-de-la-rosa-vertical-09.jpg';
+import fotoLocal from '../assets/fotos/belleza-martinez-de-la-rosa-cuadrada-08.jpg';
 import logo from '../assets/fotos/belleza-mdlr-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoSalon,
-	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
+	fotoFachada,
+	fotoInterior,
+	fotoCorte: fotoPeinado,
 	logo,
 };
 
@@ -219,8 +223,8 @@ export const FAQ = [
 		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha para ver apertura actual, festivos y cambios.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales del salón (ver README_IMAGENES.md).',
+		q: '¿De dónde salen las fotos?',
+		a: 'De la ficha pública del salón en Google Maps: la fachada, el interior y peinados hechos allí. Se muestran con fines informativos y se retiran si el titular lo pide.',
 	},
 ];
 
@@ -232,10 +236,36 @@ export const FEATURES = [
 ];
 
 export const GALLERY = [
-	{ src: IMAGES.fotoFachada, alt: 'Belleza en Suárez, Bailén-Miraflores (Málaga)' },
-	{ src: IMAGES.fotoInterior, alt: 'Salón Belleza en Calle Martínez de la Rosa' },
-	{ src: IMAGES.fotoCejas, alt: 'Tratamiento facial en Belleza' },
-	{ src: IMAGES.fotoCalle, alt: 'Tratamiento corporal en Belleza' },
+	{
+		src: IMAGES.fotoInterior,
+		alt: 'Interior del salón, con la estilista peinando a una clienta',
+		pie: 'El salón, por dentro',
+	},
+	{
+		src: fotoLocal,
+		alt: 'Sillas y espejo del salón, junto a la planta de la entrada',
+		pie: 'Puesto de trabajo y espejo',
+	},
+	{
+		src: fotoPeinado,
+		alt: 'Melena con ondas y mechas rubias vista desde atrás',
+		pie: 'Ondas y mechas',
+	},
+	{
+		src: fotoOndas,
+		alt: 'Cabello largo y liso con mechas rubias',
+		pie: 'Alisado y color',
+	},
+	{
+		src: fotoRecogido,
+		alt: 'Recogido con trenza y adorno para novia',
+		pie: 'Recogido de novia',
+	},
+	{
+		src: fotoRecogidoLado,
+		alt: 'Recogido despeinado con mechas, de perfil',
+		pie: 'Recogido con volumen',
+	},
 ];
 
 export const SCHEMA = {
