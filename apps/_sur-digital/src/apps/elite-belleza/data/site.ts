@@ -16,19 +16,34 @@
  * - Sin carta de precios publicada, no se publican importes.
  * - Sin recuento de reseñas consolidado, no se publica aggregateRating
  *   (la muestra agregada es pequeña y dispar).
+ * - Fotografías: la ficha de Google de este salón no publica fotos, así que la
+ *   web usa imágenes de ambiente de Pexels (no son del local). Ids: 10318038
+ *   (salón), 28743778 (facial), 10318040 (rizador), 10028673 (secado),
+ *   28994396 (corte), 10182680 (manicura), 12115040 (mascarilla),
+ *   2301842 (recogido) y 28994563 (espejo).
  */
 
-import fotoPortada from '../assets/fotos/elite-belleza-malaga.svg';
-import fotoEstudio from '../assets/fotos/elite-belleza-estudio.svg';
-import fotoFacial from '../assets/fotos/elite-belleza-facial.svg';
-import fotoCorporal from '../assets/fotos/elite-belleza-corporal.svg';
+import fotoSalon from '../assets/fotos/elite-belleza-salon.jpg';
+import fotoInterior from '../assets/fotos/elite-belleza-interior.jpg';
+import fotoFacial from '../assets/fotos/elite-belleza-facial.jpg';
+import fotoManicura from '../assets/fotos/elite-belleza-manicura.jpg';
+import fotoPeinado from '../assets/fotos/elite-belleza-peinado.jpg';
+import fotoCorte from '../assets/fotos/elite-belleza-corte.jpg';
+import fotoTratamiento from '../assets/fotos/elite-belleza-tratamiento.jpg';
+import fotoNovia from '../assets/fotos/elite-belleza-novia.jpg';
+import fotoEspejo from '../assets/fotos/elite-belleza-espejo.jpg';
 import logo from '../assets/fotos/elite-belleza-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoEstudio,
+	fotoFachada: fotoSalon,
+	fotoInterior,
 	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
+	fotoCalle: fotoManicura,
+	fotoPeinado,
+	fotoCorte,
+	fotoTratamiento,
+	fotoNovia,
+	fotoEspejo,
 	logo,
 };
 
@@ -232,10 +247,12 @@ export const FEATURES = [
 ];
 
 export const GALLERY = [
-	{ src: IMAGES.fotoFachada, alt: 'Élite Belleza en el Centro (Córdoba)' },
-	{ src: IMAGES.fotoInterior, alt: 'Élite en Pintor Cuenca Muñoz' },
-	{ src: IMAGES.fotoCejas, alt: 'Servicios de belleza en Élite Córdoba' },
-	{ src: IMAGES.fotoCalle, alt: 'Peluquería Élite Córdoba' },
+	{ src: IMAGES.fotoPeinado, alt: 'Estilista secando y peinando el pelo con secador y cepillo redondo' },
+	{ src: IMAGES.fotoCorte, alt: 'Peluquera cortando las puntas de una clienta con tijeras y peine' },
+	{ src: IMAGES.fotoManicura, alt: 'Manicura en tono nude con las manos sobre una mesa blanca' },
+	{ src: IMAGES.fotoTratamiento, alt: 'Esteticista aplicando una mascarilla facial a una clienta' },
+	{ src: IMAGES.fotoNovia, alt: 'Recogido de novia con flores y perlas' },
+	{ src: IMAGES.fotoEspejo, alt: 'Clienta cepillándose el pelo frente a un espejo de mano' },
 ];
 
 export const SCHEMA = {
