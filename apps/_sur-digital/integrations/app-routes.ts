@@ -1,13 +1,16 @@
-// En `astro dev` cada página de src/apps se registra como ruta propia.
+// Cada página de src/apps se registra como ruta propia, en dev y en build.
 //
-// En build las webs las atienden las dos rutas dinámicas de src/pages (su
-// registro es el glob de tools/app-pages.ts). En dev ese glob no puede existir:
-// Astro precarga todo el grafo de la página para inyectar CSS y tardaba más de
-// 60 s en compilar las ~2.800 páginas de src/apps, así que la petición moría
-// con «transport invoke timed out». El CSS de cada web solo se recoge si su
-// página es el componente de la ruta que se pide; de ahí una ruta inyectada
-// por página, con las mismas URLs y los mismos filtros que aplican
-// [slug].astro y [slug]/[...rest].astro.
+// Con las dos rutas dinámicas que había antes en src/pages, el glob que
+// enumeraba las webs metía todas en el grafo de la misma ruta: Astro asocia a
+// una ruta el CSS de todos sus componentes, así que las ~1.250 hojas de
+// src/apps acababan en TODAS las páginas. Con inlineStylesheets: "always" eso
+// eran 26 MB de CSS por página y mergeInlineCss se llevaba el 93 % del tiempo
+// de build (36 s por página). El CSS de cada web solo se recoge si su página es
+// el componente de la ruta que se pide; de ahí una ruta inyectada por página,
+// con las mismas URLs y los mismos filtros que aplicaban [slug].astro y
+// [slug]/[...rest].astro. En dev, además, evita que Astro precargue las ~2.800
+// páginas al inyectar el CSS de una ruta dinámica (tardaba más de 60 s y la
+// petición moría con «transport invoke timed out»).
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -54,9 +57,7 @@ export function appRoutes(): AstroIntegration {
   return {
     name: "sur-digital:app-routes",
     hooks: {
-      "astro:config:setup": ({ command, injectRoute }) => {
-        if (command !== "dev") return;
-
+      "astro:config:setup": ({ injectRoute }) => {
         const reserved = reservedSlugs();
         for (const slug of fs.readdirSync(APPS_DIR)) {
           if (reserved.has(slug)) continue;

@@ -8,7 +8,6 @@ import { socialCards } from "./integrations/social-cards.ts";
 import { appRoutes } from "./integrations/app-routes.ts";
 import { cleanUrls } from "./tools/clean-urls.ts";
 import { skipAppsDepScan } from "./tools/skip-apps-dep-scan.ts";
-import { appPages } from "./tools/app-pages.ts";
 import { inlineFontCss } from "./tools/inline-font-css.ts";
 
 // Dominio del sitio. También se usa para anunciar en el sitemap las rutas que
@@ -42,8 +41,9 @@ export default defineConfig({
     pagefind(),
     // Tarjetas cuadradas 1080×1080 para Instagram a partir de las OG
     socialCards(),
-    // En dev, una ruta por página de src/apps para que Astro no precargue las
-    // ~2.800 webs al inyectar el CSS de una ruta dinámica (ver el archivo).
+    // Una ruta por página de src/apps, en dev y en build: con una ruta
+    // dinámica compartida, Astro metía el CSS de las ~1.250 webs en todas las
+    // páginas (ver el archivo).
     appRoutes(),
   ],
   // Sitio 100% estático: no hay endpoints de servidor (el contacto es un
@@ -104,7 +104,7 @@ export default defineConfig({
     "/restaurante-la-espada-centro/aviso-legal": "/restaurante-la-espadana-centro/aviso-legal/",
   },
   vite: {
-    plugins: [tailwindcss(), cleanUrls(), skipAppsDepScan(), appPages(), inlineFontCss()],
+    plugins: [tailwindcss(), cleanUrls(), skipAppsDepScan(), inlineFontCss()],
     // Three.js y sus loaders entran por un import() dinámico en el hero. Si
     // Vite los descubre en caliente, reoptimiza y responde 504 a la URL que el
     // navegador ya tenía cacheada («Outdated Optimize Dep»): el hero se queda
