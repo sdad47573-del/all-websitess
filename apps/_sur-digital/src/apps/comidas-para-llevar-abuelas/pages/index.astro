@@ -1,74 +1,274 @@
 ---
 import { Image } from 'astro:assets';
-import foto01 from '../assets/fotos/comidas-para-llevar-abuelas-apaisada-01.jpg';
-import foto08 from '../assets/fotos/comidas-para-llevar-abuelas-apaisada-08.jpg';
-import foto05 from '../assets/fotos/comidas-para-llevar-abuelas-panoramica-05.jpg';
-import foto02 from '../assets/fotos/comidas-para-llevar-abuelas-vertical-02.jpg';
-import foto03 from '../assets/fotos/comidas-para-llevar-abuelas-vertical-03.jpg';
-import foto04 from '../assets/fotos/comidas-para-llevar-abuelas-vertical-04.jpg';
-import foto06 from '../assets/fotos/comidas-para-llevar-abuelas-vertical-06.jpg';
-import foto07 from '../assets/fotos/comidas-para-llevar-abuelas-vertical-07.jpg';
+import '../styles/global.css';
+import { fotos } from '../data/fotos';
+import {
+  business,
+  directionsUrl,
+  faqs,
+  faqSchema,
+  fotosNote,
+  hours,
+  hoursNote,
+  hoursSource,
+  hoursSummary,
+  mapEmbedUrl,
+  mapsUrl,
+  phoneHref,
+  restaurantSchema,
+  reviewsUrl,
+  site,
+} from '../data/site';
 
-const fotos = [foto01, foto08, foto05, foto02, foto03, foto04, foto06, foto07];
+const title = 'Comidas para llevar Abuelas · Calle Santiago, 5, Lorca';
+const description =
+  'Comidas para llevar Abuelas, en la calle Santiago, 5, centro de Lorca (30800 Murcia). Teléfono 968 47 15 87, horario publicado, fotos y mapa. Web informativa no oficial.';
+const keywords =
+  'Comidas para llevar Abuelas, comida para llevar Lorca, comer en Lorca, calle Santiago Lorca, Abuelas Lorca, 968 47 15 87';
 
-const MAPS_URL =
-	'https://www.google.com/maps/place/Comidas+para+llevar+Abuelas/@37.6768571,-1.6988302,17z/data=!3m1!4b1!4m6!3m5!1s0xd64e7ffa23195ad:0x673d7cc1e5e0a96c!8m2!3d37.6768571!4d-1.6988302!16s%2Fg%2F11fn00h0y4?authuser=0&hl=es&entry=ttu';
-const CREDIT_URL = 'https://www.sur-digital.com/';
-import secciones from '../data/secciones.json';
-
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const [fachada, puerta, rotulo] = fotos;
 ---
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Comidas para llevar Abuelas</title>
-		<meta name="description" content="Comidas para llevar Abuelas." />
-		<link rel="canonical" href="https://www.sur-digital.com/comidas-para-llevar-abuelas/" />
-		<meta name="robots" content="index, follow" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/comidas-para-llevar-abuelas/#negocio",
-	"name": "Comidas para llevar abuelas",
-	"url": "https://www.sur-digital.com/comidas-para-llevar-abuelas/",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 37.6768571,
-		"longitude": -1.6988302
-	},
-	"hasMap": "https://www.google.com/maps/place/Comidas+para+llevar+Abuelas/@37.6768571,-1.6988302,17z/data=!3m1!4b1!4m6!3m5!1s0xd64e7ffa23195ad:0x673d7cc1e5e0a96c!8m2!3d37.6768571!4d-1.6988302!16s%2Fg%2F11fn00h0y4?authuser=0&hl=es&entry=ttu"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/comidas-para-llevar-abuelas/og.png" />
-		<meta property="og:image:type" content="image/png" />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/comidas-para-llevar-abuelas/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content="Comidas para llevar Abuelas" />
-		<meta property="og:description" content="Comidas para llevar Abuelas." />
-	</head>
-	<body>
-		<header>
-			<h1 set:html={piezas.portada.titulo} />
-			<a href={MAPS_URL} rel="noopener" target="_blank">Ver en Google Maps</a>
-		</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1e4b57" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content={business.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="ES-MC" />
+    <meta name="geo.placename" content={business.city} />
+    <meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+    <meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+    <link rel="canonical" href={`${site.siteUrl}/`} />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/svg+xml" href="/comidas-para-llevar-abuelas/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={business.shortName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`${site.siteUrl}/`} />
+    <meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="place:location:latitude" content={String(business.latitude)} />
+    <meta property="place:location:longitude" content={String(business.longitude)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-		<main>
-			<section class="galeria">
-				{fotos.map((foto) => <Image src={foto} alt="Comidas para llevar Abuelas" loading="lazy" />)}
-			</section>
-		</main>
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-text">Abuelas<small>Comidas para llevar · Lorca</small></span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="#local">La casa</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#horario">Horario</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <a class="topbar-phone" href={phoneHref}><span aria-hidden="true">☎</span>{business.phone}</a>
+    </header>
 
-		<footer>
-			<p>
-				Creado por <a href={CREDIT_URL} rel="noopener">Sur Digital</a>
-			</p>
-		</footer>
-	</body>
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Lorca · Calle Santiago</p>
+            <h1 id="hero-title">Comidas para llevar,<br /><em>en el centro de Lorca.</em></h1>
+            <p class="hero-lede">
+              {business.name} está en la calle Santiago, 5, con la puerta abierta a la calle y el
+              rótulo de forja bien visible. La ficha pública lo clasifica como restaurante, le da un
+              4,8 sobre 5 y publica un horario de 8:30 a 15:00. Web informativa no oficial: teléfono,
+              horario, fotos y mapa.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-solid" href={phoneHref}>Llamar: {business.phone}</a>
+              <a class="btn btn-ghost" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+                Cómo llegar <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <ul class="hero-facts">
+              <li><small>Dirección</small><strong>{business.streetAddress} · {business.postalCode} {business.city}</strong></li>
+              <li><small>Horario</small><strong>{hoursSummary}</strong></li>
+              <li><small>Teléfono</small><strong>{business.phone}</strong></li>
+            </ul>
+          </div>
+
+          <div class="hero-media">
+            <div class="hero-collage">
+              <figure class="collage-item collage-item-main">
+                <Image src={fachada.src} alt={fachada.alt} loading="eager" fetchpriority="high" />
+              </figure>
+              <figure class="collage-item collage-item-top">
+                <Image src={puerta.src} alt={puerta.alt} loading="eager" />
+              </figure>
+              <figure class="collage-item collage-item-bottom">
+                <Image src={rotulo.src} alt={rotulo.alt} loading="eager" />
+              </figure>
+            </div>
+            <p class="hero-stamp" aria-hidden="true"><span>Lorca</span><strong>Abuelas</strong><span>Santiago 5</span></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="band">
+        <span>{business.streetAddress} · {business.postalCode} {business.city}</span>
+        <span>{hoursSummary}</span>
+        <span>Teléfono: {business.phone}</span>
+      </div>
+
+      <section class="section local" id="local" aria-labelledby="local-title">
+        <div class="wrap local-grid">
+          <div class="local-text">
+            <p class="kicker">La casa</p>
+            <h2 class="title" id="local-title">El rótulo lo dice<br /><em>sin rodeos.</em></h2>
+            <p>
+              «Abuelas. Comidas para llevar». Eso es lo que se lee en la fachada de la calle
+              Santiago, 5, en el centro de Lorca. Un local de barrio con la puerta de madera abierta
+              a la calle y dos veladores altos en la acera, junto al quicio.
+            </p>
+            <p>
+              La ficha pública de Google Maps lo clasifica como restaurante, le da una nota de 4,8
+              sobre 5 y publica el teléfono {business.phone}. No hay carta, precios ni platos del día
+              publicados, así que lo que se cocina cada jornada se pregunta por teléfono.
+            </p>
+            <p>
+              Esta web no gestiona pedidos ni reservas: reúne la dirección, el teléfono, el horario
+              publicado y las fotos del local para que puedas llamar o llegar sin buscar en otro
+              sitio.
+            </p>
+            <ul class="category-list" aria-label="Categorías">
+              {business.categories.map((c) => <li>{c}</li>)}
+            </ul>
+            <p class="local-note">
+              {fotosNote} Para ver la ficha completa, usa la
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha en Google Maps ↗</a>.
+            </p>
+          </div>
+          <div class="quote-row">
+            <div class="quote-score">
+              <strong>{business.phone}</strong>
+              <span>Comida para llevar en el centro de Lorca</span>
+              <a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver ficha en Maps ↗</a>
+            </div>
+            <blockquote class="quote">
+              <p>4,8 sobre 5 en la ficha pública del local.</p>
+              <footer><strong>Valoración</strong><span>{hoursSource}</span></footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="section fotos" id="fotos" aria-labelledby="fotos-title">
+        <div class="wrap">
+          <p class="kicker">Las fotos</p>
+          <h2 class="title" id="fotos-title">La fachada, <em>en cuatro miradas.</em></h2>
+          <p class="lead">
+            El rótulo, la puerta y los veladores de la calle Santiago, tal y como aparecen en el
+            perfil público del local en Google Maps.
+          </p>
+          <div class="fotos-grid">
+            {fotos.map((foto) => (
+              <figure class="foto-item">
+                <Image src={foto.src} alt={foto.alt} loading="lazy" />
+                <figcaption>{foto.pie}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p class="fotos-note">
+            ¿Quieres ver más? Mira la
+            <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha con fotos en Google Maps ↗</a>
+            o <a href={phoneHref}>llama al {business.phone}</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="section horario" id="horario" aria-labelledby="horario-title">
+        <div class="wrap horario-grid">
+          <div>
+            <p class="kicker">Horario y ubicación</p>
+            <h2 class="title" id="horario-title">Calle Santiago, 5,<br /><em>Lorca.</em></h2>
+            <address>{business.streetAddress}<br />{business.postalCode} {business.city} · {business.province}<br />España</address>
+            <table class="hours-table">
+              <caption>Horario publicado · {hoursSource}</caption>
+              <tbody>
+                {hours.map((item) => (
+                  <tr><th scope="row">{item.day}</th><td>{item.service}</td></tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="hours-note">{hoursNote}</p>
+            <a class="contact-line" href={phoneHref}><small>Teléfono</small><strong>{business.phone}</strong></a>
+            <div class="place-actions">
+              <a class="btn btn-solid" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir indicaciones ↗</a>
+              <a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver la ficha en Maps ↗</a>
+            </div>
+          </div>
+          <div class="map-card">
+            <iframe title={`Mapa de ${business.name} en ${business.city}`} src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <div class="map-tag">
+              <div><strong>{business.shortName}</strong><small>{business.streetAddress} · {business.postalCode} {business.city}</small></div>
+              <a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq" id="preguntas" aria-labelledby="faq-title">
+        <div class="wrap">
+          <p class="kicker">Preguntas frecuentes</p>
+          <h2 class="title" id="faq-title">Antes de <em>llamar.</em></h2>
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <a class="footer-brand" href="#inicio" aria-label={`${business.shortName}, volver al inicio`}>
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>{business.name}<small>{business.streetAddress} · {business.postalCode} {business.city}</small></span>
+        </a>
+        <nav class="footer-nav" aria-label="Contacto y ficha del local">
+          <a href={phoneHref}>Llamar: {business.phone}</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer">Ficha en Google Maps ↗</a>
+        </nav>
+        <small class="footer-note">
+          © {new Date().getFullYear()} {business.name} · {business.streetAddress} ({business.postalCode} {business.city}).
+          Web informativa no oficial con datos públicos del local, consultados el {site.consultado}. Confirma horario por teléfono.
+        </small>
+      </div>
+      <p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small></p>
+      <nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+        <a href="/comidas-para-llevar-abuelas/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+        <a href="/comidas-para-llevar-abuelas/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+        <a href="/comidas-para-llevar-abuelas/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+      </nav>
+    </footer>
+
+    <a class="mobile-call" href={phoneHref}>Llamar a Abuelas <span>{business.phone}</span></a>
+  </body>
 </html>

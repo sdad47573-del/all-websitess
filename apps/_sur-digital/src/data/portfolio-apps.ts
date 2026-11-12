@@ -3237,14 +3237,15 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"title": "Comidas para llevar Abuelas",
 		"category": "Restaurantes y bares",
 		"sector": "Restaurantes y bares",
-		"city": "",
-		"description": "Comidas para llevar Abuelas. Ficha con horario, teléfono y ubicación.",
+		"city": "Lorca",
+		"description": "Comida para llevar en la calle Santiago, 5, en el centro de Lorca. Teléfono, horario publicado, fotos y mapa.",
 		"tags": [
-			"Restaurantes y bares"
+			"Restaurantes y bares",
+			"Comida para llevar"
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/comidas-para-llevar-abuelas/",
-		"community": ""
+		"community": "Región de Murcia"
 	},
 	{
 		"slug": "comidas-para-llevar-anton",
