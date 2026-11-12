@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import '../styles/global.css';
+import { hayFotos, imagen } from '../data/fotos';
 import {
   business,
   directionsUrl,
@@ -22,6 +24,13 @@ const keywords = 'Taberna de Romero, bar Cádiz, Uruguay Cádiz';
 import secciones from '../data/secciones.json';
 
 const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+
+const fachada = imagen('fachada');
+const salon = imagen('salon');
+const barra = imagen('barra');
+const tapas = imagen('tapas');
+const vinos = imagen('vinos');
+const plato = imagen('plato');
 ---
 
 <!doctype html>
@@ -74,7 +83,7 @@ const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.
       </a>
       <nav aria-label="Navegación principal">
         <a href="#local">El local</a>
-        <a href="#fotos">Fotos</a>
+        <a href="#fotos">Galería</a>
         <a href="#horario">Horario</a>
         <a href="#preguntas">Preguntas</a>
       </nav>
@@ -90,8 +99,9 @@ const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.
             <p class="hero-lede">
               {business.name} está en {business.streetAddress}, {business.postalCode} {business.city}.
               Web informativa no oficial: teléfono, cómo llegar, mapa y preguntas frecuentes.
-              Las fotos de Google Maps no se copian aquí por derechos de autor: esta web usa
-              marcadores propios hasta tener fotos con permiso.
+              {hayFotos
+                ? 'Las fotos de esta página son propias; en la ficha de Google Maps hay más y las opiniones de los clientes.'
+                : 'Las imágenes de esta página son ilustraciones propias; las fotos del local están en su ficha de Google Maps.'}
             </p>
             <div class="hero-actions">
               <a class="btn btn-solid" href={phoneHref}>Llamar al {business.phone}</a>
@@ -107,18 +117,29 @@ const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.
           </div>
 
           <div class="hero-media">
-            <div class="hero-collage hero-collage--sin-fotos" role="img" aria-label="Ilustración de Taberna de Romero, sin fotografías">
-              <div class="collage-item collage-item-main foto-ph">
-                <span class="foto-ph-mark" aria-hidden="true">C</span>
-                <span class="foto-ph-text">Foto propia pendiente</span>
-                <small>Uruguay 1</small>
-              </div>
-              <div class="collage-item collage-item-top foto-ph foto-ph--alt">
-                <span class="foto-ph-text">Salón</span><small>pendiente</small>
-              </div>
-              <div class="collage-item collage-item-bottom foto-ph">
-                <span class="foto-ph-text">Terraza / barra</span><small>pendiente</small>
-              </div>
+            <div class="hero-collage">
+              <figure class="collage-item collage-item-main">
+                <Image
+                  src={fachada.src}
+                  alt={fachada.alt}
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </figure>
+              <figure class="collage-item collage-item-top">
+                <Image
+                  src={salon.src}
+                  alt={salon.alt}
+                  loading="eager"
+                />
+              </figure>
+              <figure class="collage-item collage-item-bottom">
+                <Image
+                  src={barra.src}
+                  alt={barra.alt}
+                  loading="eager"
+                />
+              </figure>
             </div>
             <p class="hero-stamp" aria-hidden="true"><span>Taberna</span><strong>Romero</strong><span>Cádiz</span></p>
           </div>
@@ -167,20 +188,46 @@ const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.
 
       <section class="section fotos" id="fotos" aria-labelledby="fotos-title">
         <div class="wrap">
-          <p class="kicker">Las fotos</p>
-          <h2 class="title" id="fotos-title">Fotos <em>propias.</em></h2>
-          <p class="lead">
-            De momento no hay galería: las imágenes de Google Maps pertenecen a sus autores y sus
-            condiciones prohíben descargarlas automáticamente. Cuando tengas fotos propias (hechas por
-            ti o con permiso escrito del autor), guárdalas en <code>src/assets/fotos/</code> y aparecerán aquí.
-          </p>
+          <p class="kicker">La galería</p>
+          <h2 class="title" id="fotos-title">{hayFotos ? 'Fotos' : 'Ilustraciones'} <em>propias.</em></h2>
+          {hayFotos ? (
+            <p class="lead">
+              Fotos propias del local. Las imágenes de Google Maps pertenecen a sus autores y no se
+              copian aquí: si quieres ver más y leer opiniones, usa la ficha del bar.
+            </p>
+          ) : (
+            <p class="lead">
+              Las fotos de Google Maps pertenecen a sus autores y sus condiciones prohíben descargarlas,
+              así que aquí no se copian. Mientras no haya fotos del local con permiso, esta galería
+              muestra ilustraciones hechas para la web con la paleta y los detalles de la taberna.
+              Cuando tengas fotos propias, guárdalas en <code>src/assets/fotos/</code> y se publicarán aquí.
+            </p>
+          )}
           <div class="fotos-grid">
-            {[1, 2, 3].map((n) => (
-              <figure class="foto-item foto-ph foto-ph--galeria">
-                <span class="foto-ph-text">Espacio para foto {n}</span>
-                <small>1200 × 800 · JPG</small>
-              </figure>
-            ))}
+            <figure class="foto-item">
+              <Image
+                src={tapas.src}
+                alt={tapas.alt}
+                loading="lazy"
+              />
+              <figcaption>Tapas de taberna: aceitunas, tortilla y fritura</figcaption>
+            </figure>
+            <figure class="foto-item">
+              <Image
+                src={vinos.src}
+                alt={vinos.alt}
+                loading="lazy"
+              />
+              <figcaption>Vinos de Jerez en la barra</figcaption>
+            </figure>
+            <figure class="foto-item">
+              <Image
+                src={plato.src}
+                alt={plato.alt}
+                loading="lazy"
+              />
+              <figcaption>Arroz verde con almejas, guiso de la casa</figcaption>
+            </figure>
           </div>
           <p class="fotos-note">
             ¿Quieres ver cómo es por dentro? Mira la

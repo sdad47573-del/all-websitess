@@ -75,7 +75,7 @@ export const faqs = [
   {
     question: '¿Dónde puedo ver fotos y opiniones?',
     answer:
-      'En la ficha del bar en Google Maps, enlazada desde esta web. Aquí solo se usarán fotos propias con permiso.',
+      'En la ficha del bar en Google Maps, enlazada desde esta web. Las imágenes de esta página son propias del local; las de Maps pertenecen a sus autores y no se copian aquí.',
   },
   {
     question: '¿De quién es esta web?',
