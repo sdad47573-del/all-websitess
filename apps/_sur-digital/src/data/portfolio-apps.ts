@@ -3458,14 +3458,15 @@ export const PORTFOLIO_APPS: AppProject[] = [
 	{
 		"slug": "cuina-de-dos",
 		"title": "Cuina de Dos",
-		"category": "Servicios profesionales",
-		"sector": "Servicios profesionales",
-		"city": "",
-		"description": "Fotos del local y acceso a su ficha de Google Maps. Los datos de contacto y el horario se añadirán cuando estén confirmados.",
+		"category": "Restaurantes y bares",
+		"sector": "Restaurantes y bares",
+		"city": "Benissa",
+		"description": "Bar restaurante en el centro de Benissa: cocina de temporada, picaeta para compartir y menú del día. Teléfono, horario, carta, fotos y mapa.",
 		"tags": [
-			"Servicios profesionales"
+			"Restaurantes y bares",
+			"Cocina de temporada"
 		],
-		"accent": "bg-primary/15 text-primary",
+		"accent": "bg-accent/15 text-primary",
 		"url": "/cuina-de-dos/",
 		"community": "Comunidad Valenciana"
 	},
