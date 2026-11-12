@@ -1263,20 +1263,6 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"community": "Andorra"
 	},
 	{
-		"slug": "bar-panel",
-		"title": "Bar Panel",
-		"category": "Restaurantes y bares",
-		"sector": "Bar",
-		"city": "",
-		"description": "Bar Panel. Ficha con horario, teléfono y ubicación.",
-		"tags": [
-			"Bar"
-		],
-		"accent": "bg-accent/15 text-primary",
-		"url": "/bar-panel/",
-		"community": ""
-	},
-	{
 		"slug": "bar-perla",
 		"title": "Bar Perla",
 		"category": "Restaurantes y bares",
