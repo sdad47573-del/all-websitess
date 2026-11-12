@@ -13,22 +13,22 @@
  *   precios ni recuento de reseñas verificable desde fuera, así que no se
  *   publican. Todo remite a "consultar la ficha de Google Maps".
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: las imágenes de esta web proceden del perfil público del
+ * centro en Google Maps (edificio, cabina, trabajos de manicura y resultado
+ * labial). Se muestran como referencia y el titular puede pedir su retirada.
  */
 
-import fotoPortada from '../assets/fotos/medicina-estetica-md-malaga.svg';
-import fotoClinica from '../assets/fotos/medicina-estetica-md-teatinos.svg';
-import fotoFacial from '../assets/fotos/medicina-estetica-md-facial.svg';
-import fotoCorporal from '../assets/fotos/medicina-estetica-md-corporal.svg';
+import fotoPortada from '../assets/fotos/centro-medicina-estetica-md-vertical-04.jpg';
+import fotoInterior from '../assets/fotos/centro-medicina-estetica-md-vertical-01.jpg';
+import fotoManicura from '../assets/fotos/centro-medicina-estetica-md-vista-5-05.jpg';
+import fotoLabios from '../assets/fotos/centro-medicina-estetica-md-vertical-07.jpg';
+import fotoPedicura from '../assets/fotos/centro-medicina-estetica-md-apaisada-03.jpg';
 import logo from '../assets/fotos/medicina-estetica-md-logo.svg';
 
 export const IMAGES = {
 	fotoFachada: fotoPortada,
-	fotoInterior: fotoClinica,
-	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
+	fotoInterior,
+	fotoManicura,
 	logo,
 };
 
@@ -222,8 +222,8 @@ export const FAQ = [
 		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha del centro para ver apertura actual, festivos y cambios.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales del centro (ver README_IMAGENES.md).',
+		q: '¿Las fotos que aparecen son del centro?',
+		a: 'Sí: son fotos del perfil público del centro en Google Maps (edificio, cabina de tratamiento y trabajos realizados). Se muestran como referencia; si eres el titular y prefieres retirarlas, escríbenos y las quitamos.',
 	},
 ];
 
@@ -236,20 +236,24 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'Medicina & Estética MD, medicina estética en Teatinos (Málaga)',
+		src: fotoInterior,
+		alt: 'Cabina de tratamiento del centro Medicina & Estética MD en Teatinos',
+		caption: 'Cabina de tratamiento.',
 	},
 	{
-		src: IMAGES.fotoInterior,
-		alt: 'Centro Medicina & Estética MD en Calle Juan de Jaso, Málaga',
+		src: fotoManicura,
+		alt: 'Manicura en rojo con decoración realizada en Medicina & Estética MD',
+		caption: 'Manicura con decoración.',
 	},
 	{
-		src: IMAGES.fotoCejas,
-		alt: 'Cuidado facial en Medicina & Estética MD (Málaga)',
+		src: fotoLabios,
+		alt: 'Antes y después de un tratamiento labial en Medicina & Estética MD',
+		caption: 'Antes y después de un tratamiento labial.',
 	},
 	{
-		src: IMAGES.fotoCalle,
-		alt: 'Cuidado corporal y bienestar en Medicina & Estética MD',
+		src: fotoPedicura,
+		alt: 'Pedicura realizada en el centro Medicina & Estética MD',
+		caption: 'Pedicura.',
 	},
 ];
 

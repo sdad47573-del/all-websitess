@@ -13,22 +13,25 @@
  *   precios ni recuento de reseñas verificable desde fuera, así que no se
  *   publican. Todo remite a "consultar la ficha de Google Maps".
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: las imágenes de esta web proceden del perfil público del
+ * centro en Google Maps (fachada, interior, cabina y trabajos de manicura). Se
+ * muestran como referencia del local y el titular puede pedir su retirada.
  */
 
-import fotoPortada from '../assets/fotos/centro-belleza-ma-jesus-malaga.svg';
-import fotoCentro from '../assets/fotos/centro-belleza-ma-jesus-huelin.svg';
-import fotoFacial from '../assets/fotos/centro-belleza-ma-jesus-facial.svg';
-import fotoCorporal from '../assets/fotos/centro-belleza-ma-jesus-corporal.svg';
+import fotoPortada from '../assets/fotos/centro-belleza-ma-jesus-vista-8-08.jpg';
+import fotoInterior from '../assets/fotos/centro-belleza-ma-jesus-apaisada-02.jpg';
+import fotoDetalle from '../assets/fotos/centro-belleza-ma-jesus-apaisada-05.jpg';
+import fotoCabina from '../assets/fotos/centro-belleza-ma-jesus-apaisada-07.jpg';
+import fotoEstanteria from '../assets/fotos/centro-belleza-ma-jesus-apaisada-04.jpg';
+import fotoEscaparate from '../assets/fotos/centro-belleza-ma-jesus-apaisada-06.jpg';
+import fotoManicura from '../assets/fotos/centro-belleza-ma-jesus-apaisada-01.jpg';
+import fotoManicuraColor from '../assets/fotos/centro-belleza-ma-jesus-vertical-10.jpg';
 import logo from '../assets/fotos/centro-belleza-ma-jesus-logo.svg';
 
 export const IMAGES = {
 	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
+	fotoInterior,
+	fotoDetalle,
 	logo,
 };
 
@@ -221,8 +224,8 @@ export const FAQ = [
 		a: 'Sin horario verificado fuera de Google Maps. Consulta la ficha del centro para ver apertura actual, festivos y cambios.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales del centro (ver README_IMAGENES.md).',
+		q: '¿Las fotos que aparecen son del centro?',
+		a: 'Sí: son fotos del perfil público del centro en Google Maps (fachada, interior, cabina y trabajos de manicura). Se muestran como referencia del local; si eres el titular y prefieres retirarlas, escríbenos y las quitamos.',
 	},
 ];
 
@@ -235,20 +238,44 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'Centro de belleza Mª Jesús en Huelin, Málaga',
+		src: fotoPortada,
+		alt: 'Fachada del Centro de belleza Mª Jesús en Calle Garcerán, Huelin (Málaga)',
+		caption: 'Fachada en Calle Garcerán, 43.',
 	},
 	{
-		src: IMAGES.fotoInterior,
-		alt: 'Centro de belleza Mª Jesús en Calle Garcerán, Málaga',
+		src: fotoInterior,
+		alt: 'Interior del Centro de belleza Mª Jesús con estanterías de productos',
+		caption: 'Interior y zona de trabajo.',
 	},
 	{
-		src: IMAGES.fotoCejas,
-		alt: 'Cuidado facial en el Centro de belleza Mª Jesús (Málaga)',
+		src: fotoCabina,
+		alt: 'Cabina de tratamiento del Centro de belleza Mª Jesús',
+		caption: 'Cabina de tratamiento.',
 	},
 	{
-		src: IMAGES.fotoCalle,
-		alt: 'Cuidado corporal y bienestar en el Centro de belleza Mª Jesús',
+		src: fotoEscaparate,
+		alt: 'Escaparate del Centro de belleza Mª Jesús en Huelin',
+		caption: 'Escaparate del centro.',
+	},
+	{
+		src: fotoEstanteria,
+		alt: 'Estanterías con productos de belleza del Centro Mª Jesús',
+		caption: 'Productos de la línea de trabajo.',
+	},
+	{
+		src: fotoDetalle,
+		alt: 'Rincón de productos y decoración del Centro de belleza Mª Jesús',
+		caption: 'Rincón de productos y decoración.',
+	},
+	{
+		src: fotoManicura,
+		alt: 'Manicura francesa con acabado plateado hecha en el centro',
+		caption: 'Manicura francesa con brillo.',
+	},
+	{
+		src: fotoManicuraColor,
+		alt: 'Manicura en tonos vivos hecha en el Centro de belleza Mª Jesús',
+		caption: 'Manicura en tonos vivos.',
 	},
 ];
 
