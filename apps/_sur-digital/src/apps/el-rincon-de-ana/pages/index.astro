@@ -26,12 +26,13 @@ const fotos = import.meta.glob<{ default: ImageMetadata }>(
 const rutas = Object.keys(fotos).sort((a, b) => a.localeCompare(b));
 
 /**
- * La foto del hero se elige por la forma que `fetch-maps-photos` pone en el nombre: la vertical,
- * que es la que encaja en el marco 3/4 de la portada, y si no hay, la cuadrada. Así la portada no
- * depende de que Google devuelva un nombre concreto de archivo.
+ * La foto del hero se elige por la forma que `fetch-maps-photos` pone en el nombre: una vertical,
+ * que es la que encaja en el marco 3/4 de la portada, y si no hay, la cuadrada. La vertical-05 es
+ * la carta con los precios, así que se descarta como portada; se prefiere la de los fritos.
  */
 const rutaHero =
-	rutas.find((r) => r.includes('-vertical-')) ??
+	rutas.find((r) => r.includes('-vertical-09')) ??
+	rutas.find((r) => r.includes('-vertical-') && !r.includes('-vertical-05')) ??
 	rutas.find((r) => r.includes('-cuadrada-')) ??
 	rutas[0];
 const heroFoto = rutaHero ? fotos[rutaHero].default : undefined;

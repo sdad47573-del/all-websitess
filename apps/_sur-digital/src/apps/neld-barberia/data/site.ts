@@ -13,22 +13,28 @@
  * La ficha no publica teléfono verificado fuera de Booksy/Google, así que no
  * se publica ninguno: todo remite a reservar en Booksy o a la ficha.
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: las diez fotografías son las de la ficha pública del negocio
+ * en Google Maps (descargadas con scripts/fetch-maps-photos.mjs; la ficha no
+ * declara autor). Se muestran con fines informativos y se retiran si el titular
+ * del salón lo pide.
  */
 
-import fotoPortada from '../assets/fotos/neld-barberia-malaga.svg';
-import fotoCentro from '../assets/fotos/neld-barberia-diaz-recio.svg';
-import fotoCorte from '../assets/fotos/neld-barberia-corte.svg';
-import fotoBarba from '../assets/fotos/neld-barberia-barba.svg';
+import fotoFachada from '../assets/fotos/neld-barberia-vertical-01.jpg';
+import fotoNuca from '../assets/fotos/neld-barberia-vertical-02.jpg';
+import fotoCorteBarba from '../assets/fotos/neld-barberia-vertical-03.jpg';
+import fotoDetalle from '../assets/fotos/neld-barberia-vertical-04.jpg';
+import fotoInterior from '../assets/fotos/neld-barberia-vertical-05.jpg';
+import fotoLateral from '../assets/fotos/neld-barberia-vertical-06.jpg';
+import fotoFlequilloSide from '../assets/fotos/neld-barberia-vertical-07.jpg';
+import fotoFlequillo from '../assets/fotos/neld-barberia-vertical-08.jpg';
+import fotoBarba from '../assets/fotos/neld-barberia-vertical-09.jpg';
+import fotoRapado from '../assets/fotos/neld-barberia-vertical-10.jpg';
 import logo from '../assets/fotos/neld-barberia-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoCorte,
-	fotoCalle: fotoBarba,
+	fotoFachada,
+	fotoInterior,
+	fotoCorte: fotoCorteBarba,
 	logo,
 };
 
@@ -227,8 +233,8 @@ export const FAQ = [
 		a: '5,0/5 con 322 reseñas en Booksy (oct 2026). Destacan el trato y la calidad del corte.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales (ver README_IMAGENES.md).',
+		q: '¿De dónde salen las fotos?',
+		a: 'Son las de la ficha pública del salón en Google Maps: la fachada, el interior y cortes hechos en NELD. Las mostramos con fines informativos y las retiramos si el salón lo pide.',
 	},
 ];
 
@@ -239,22 +245,47 @@ export const FEATURES = [
 	{ icon: 'ri-calendar-check-line', label: 'Reserva en Booksy' },
 ];
 
+/** Cortes hechos en el salón. La fachada y el interior van en el hero y en «El salón». */
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'Barbería NELD en Málaga',
+		src: fotoNuca,
+		alt: 'Degradado corto con la nuca perfilada a máquina',
+		pie: 'Degradado y nuca',
 	},
 	{
-		src: IMAGES.fotoInterior,
-		alt: 'Barbería NELD en Doctor Miguel Díaz Recio, Málaga',
+		src: fotoCorteBarba,
+		alt: 'Corte con degradado alto y barba perfilada',
+		pie: 'Corte y barba',
 	},
 	{
-		src: IMAGES.fotoCejas,
-		alt: 'Corte de caballero en NELD (Málaga)',
+		src: fotoDetalle,
+		alt: 'Detalle de degradado y barba corta junto al oído',
+		pie: 'Detalle del degradado',
 	},
 	{
-		src: IMAGES.fotoCalle,
-		alt: 'Arreglo de barba en NELD',
+		src: fotoLateral,
+		alt: 'Lateral con degradado a máquina y barba recortada',
+		pie: 'Lateral y barba',
+	},
+	{
+		src: fotoFlequilloSide,
+		alt: 'Degradado con el flequillo peinado hacia un lado',
+		pie: 'Degradado con flequillo',
+	},
+	{
+		src: fotoFlequillo,
+		alt: 'Corte con flequillo recto y degradado bajo',
+		pie: 'Flequillo y degradado',
+	},
+	{
+		src: fotoBarba,
+		alt: 'Degradado corto con barba completa perfilada',
+		pie: 'Barba completa',
+	},
+	{
+		src: fotoRapado,
+		alt: 'Degradado a máquina con la parte de arriba larga',
+		pie: 'Degradado a máquina',
 	},
 ];
 

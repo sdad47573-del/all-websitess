@@ -97,7 +97,7 @@ export default function MediaTab(props: { site: Site; onSaved: () => unknown }) 
 											<img
 												src={mediaUrl(props.site.slug, item.name)}
 												alt=""
-												loading="lazy"
+												loading="lazy" decoding="async"
 											/>
 											<figcaption>
 												<span class="media-name" title={item.name}>

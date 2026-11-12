@@ -60,7 +60,7 @@ export default function SeoTab(props: { site: Site }) {
 										when={data().hasOg}
 										fallback={<div class="og-placeholder social-placeholder">Sin imagen OG</div>}
 									>
-										<img src={ogUrl(props.site.slug)} alt="" />
+										<img src={ogUrl(props.site.slug)} alt="" decoding="async" loading="lazy" />
 									</Show>
 									<div class="social-body">
 										<span class="social-domain">

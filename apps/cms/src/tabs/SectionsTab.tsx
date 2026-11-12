@@ -285,7 +285,7 @@ function ImageField(props: {
 			<div class="media-picker">
 				<span class="media-shot" classList={{ empty: !props.value, missing: missing() }}>
 					<Show when={missing() ? undefined : props.value}>
-						{(name) => <img src={mediaUrl(props.slug, name())} alt="" loading="lazy" />}
+						{(name) => <img src={mediaUrl(props.slug, name())} alt="" loading="lazy" decoding="async" />}
 					</Show>
 					<Show when={missing()}>
 						<span class="media-missing" aria-hidden="true">
@@ -943,7 +943,7 @@ export default function SectionsTab(props: {
 															<img
 																src={mediaUrl(props.site.slug, name())}
 																alt=""
-																loading="lazy"
+																loading="lazy" decoding="async"
 															/>
 														)}
 													</Show>
@@ -1154,7 +1154,7 @@ export default function SectionsTab(props: {
 																class="library-shot"
 																src={mediaUrl(piece.slug, name())}
 																alt={piece.imagenAlt ?? ""}
-																loading="lazy"
+																loading="lazy" decoding="async"
 															/>
 														)}
 													</Show>
@@ -1235,7 +1235,7 @@ export default function SectionsTab(props: {
 													{(name) => (
 														<img
 															src={mediaUrl(props.site.slug, name())}
-															alt=""
+															alt="" decoding="async" loading="lazy"
 														/>
 													)}
 												</Show>
@@ -2307,7 +2307,7 @@ export default function SectionsTab(props: {
 											{(name) => (
 												<img
 													src={mediaUrl(entry().slug, name())}
-													alt={entry().seccion.imagenAlt ?? ""}
+													alt={entry().seccion.imagenAlt ?? ""} decoding="async" loading="lazy"
 												/>
 											)}
 										</Show>

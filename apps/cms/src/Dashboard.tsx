@@ -337,7 +337,7 @@ export default function Dashboard(props: { user: AuthUser }) {
 														src={`${ogUrl(site.slug)}?v=${thumbVersion()}`}
 														alt=""
 														loading="lazy"
-														onError={(event) => {
+														onError={(event) = decoding="async"> {
 															event.currentTarget.style.display = "none";
 														}}
 													/>

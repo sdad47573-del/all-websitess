@@ -14,7 +14,7 @@ interface Props {
 	sizes?: string;
 	/** Formatos modernos servidos como `<source>` (por defecto AVIF). */
 	formats?: ImageOutputFormat[];
-	/** Formato del `<img>` de respaldo (por defecto WebP). */
+	/** Formato del `<img decoding="async" loading="lazy">` de respaldo (por defecto WebP). */
 	fallbackFormat?: ImageOutputFormat;
 	/** Atributos extra del `<picture>`; el `style` de layout se añade aquí abajo. */
 	pictureAttributes?: Record<string, unknown>;
@@ -38,7 +38,7 @@ const {
 const meta = (src as { clone?: ImageMetadata }).clone ?? src;
 
 // AVIF + WebP: los navegadores con AVIF (≈95 % del tráfico) cogen la `<source>`
-// avif y el resto recibe el mismo webp de siempre en el `<img>` — no hace falta
+// avif y el resto recibe el mismo webp de siempre en el `<img decoding="async" loading="lazy">` — no hace falta
 // duplicar webp en un `<source>`, el fallback ya lo sirve.
 //
 // Medición propia con sharp 0.35 sobre los assets reales (detalle en el README):
@@ -47,7 +47,7 @@ const meta = (src as { clone?: ImageMetadata }).clone ?? src;
 // Astro (80), así que el respaldo no pierde nada frente a como estaba.
 const isPassThrough = meta.format === 'svg' || meta.format === 'gif';
 
-// `display: contents` deja el `<img>` como caja de layout, igual que antes de
+// `display: contents` deja el `<img decoding="async" loading="lazy">` como caja de layout, igual que antes de
 // envolverlo en `<picture>`: sin esto el wrapper (inline) cambia el contexto
 // donde la imagen es hija de un flex/grid o lleva `absolute inset-0` (hero
 // editorial, iconos de la home, QR…).

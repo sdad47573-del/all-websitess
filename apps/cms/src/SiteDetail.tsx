@@ -149,7 +149,7 @@ export default function SiteDetail(props: {
 									<img
 										class="og-thumb"
 										src={`${ogUrl(current().slug)}?v=${ogVersion()}`}
-										alt={`Miniatura OG de ${current().name}`}
+										alt={`Miniatura OG de ${current().name}`} decoding="async" loading="lazy"
 									/>
 								</Show>
 								<div class="og-actions">
