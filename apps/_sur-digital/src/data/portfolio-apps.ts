@@ -3729,14 +3729,15 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"title": "Doner Kebab Albir",
 		"category": "Restaurantes y bares",
 		"sector": "Kebab",
-		"city": "",
-		"description": "Doner Kebab Albir. Ficha con horario, teléfono y ubicación.",
+		"city": "L'Alfàs del Pi",
+		"description": "Döner kebab, menús y terraza en la avenida de l'Albir, 80, en l'Albir. Teléfono, horario publicado, fotos y mapa.",
 		"tags": [
-			"Kebab"
+			"Kebab",
+			"Terraza"
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/doner-kebab-albir/",
-		"community": ""
+		"community": "Comunidad Valenciana"
 	},
 	{
 		"slug": "doner-kebab-la-nucia",
