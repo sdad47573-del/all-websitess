@@ -6,7 +6,8 @@
  * - Dirección Calle Uruguay 1, 11008 Cádiz (turismo.cadiz.es, El País, Facebook).
  * - Teléfono 663 51 76 46 (turismo.cadiz.es, El País).
  *
- * NO se copian fotos, reseñas literales, horarios ni valoraciones de Google Maps.
+ * Fotos: las del perfil público del establecimiento en Google Maps (src/assets/fotos/), con
+ * nota de origen y oferta de retirada. No se copian reseñas literales, horarios ni valoraciones.
  */
 
 export const site = {
@@ -75,7 +76,7 @@ export const faqs = [
   {
     question: '¿Dónde puedo ver fotos y opiniones?',
     answer:
-      'En la ficha del bar en Google Maps, enlazada desde esta web. Las imágenes de esta página son propias del local; las de Maps pertenecen a sus autores y no se copian aquí.',
+      'La galería de esta web reúne fotos del perfil público del bar en Google Maps. En la ficha enlazada hay más fotos y las opiniones de los clientes.',
   },
   {
     question: '¿De quién es esta web?',
