@@ -1,76 +1,382 @@
 ---
-import f01 from '../assets/fotos/cocina-de-emilio-apaisada-01.jpg';
-import f02 from '../assets/fotos/cocina-de-emilio-apaisada-02.jpg';
-import f03 from '../assets/fotos/cocina-de-emilio-vertical-03.jpg';
-import f04 from '../assets/fotos/cocina-de-emilio-vertical-04.jpg';
-import f05 from '../assets/fotos/cocina-de-emilio-vertical-05.jpg';
-import f06 from '../assets/fotos/cocina-de-emilio-cuadrada-06.jpg';
-import f07 from '../assets/fotos/cocina-de-emilio-vertical-07.jpg';
-import f08 from '../assets/fotos/cocina-de-emilio-vista-8-08.jpg';
-import f09 from '../assets/fotos/cocina-de-emilio-vertical-09.jpg';
+import { Image } from 'astro:assets';
+import '../styles/global.css';
+import { fotos } from '../data/fotos';
+import {
+  business,
+  directionsUrl,
+  faqs,
+  faqSchema,
+  hours,
+  hoursNote,
+  hoursSource,
+  hoursSummary,
+  mapEmbedUrl,
+  mapsUrl,
+  menu,
+  menuExtras,
+  menuNote,
+  phoneHref,
+  restaurantSchema,
+  reviewsUrl,
+  site,
+} from '../data/site';
 
-const fotos = [f01, f02, f03, f04, f05, f06, f07, f08, f09];
+const title = 'La Cocina de Emilio · Comida casera en El Carmen, Murcia';
+const description =
+  'La Cocina de Emilio, comida casera y menú del día en la Alameda de los Capuchinos, 5 (El Carmen, 30002 Murcia). Teléfono 968 26 25 77, menú de la semana, horario, fotos y mapa. Web informativa no oficial.';
+const keywords =
+  'La Cocina de Emilio, comida casera Murcia, menú del día Murcia, comer en El Carmen, comida para llevar Murcia, Alameda de los Capuchinos';
 
-const MAPS_URL =
-	'https://www.google.com/maps/place/Cocina+De+Emilio/@37.9779289,-1.1282832,17z/data=!3m1!4b1!4m6!3m5!1s0xd63820684f46c41:0x23deace13383f124!8m2!3d37.9779289!4d-1.1282832!16s%2Fg%2F11b7gpybqm?authuser=0&hl=es&entry=ttu';
-const CREDIT_URL = 'https://www.sur-digital.com/';
-import secciones from '../data/secciones.json';
-
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const [vitrina, paella, albondigas] = fotos;
 ---
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Cocina De Emilio</title>
-		<meta name="description" content="Cocina De Emilio." />
-		<link rel="canonical" href="https://www.sur-digital.com/cocina-de-emilio/" />
-		<meta name="robots" content="index, follow" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "LocalBusiness",
-	"@id": "https://www.sur-digital.com/cocina-de-emilio/#negocio",
-	"name": "Cocina de emilio",
-	"url": "https://www.sur-digital.com/cocina-de-emilio/",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 37.9779289,
-		"longitude": -1.1282832
-	},
-	"hasMap": "https://www.google.com/maps/place/Cocina+De+Emilio/@37.9779289,-1.1282832,17z/data=!3m1!4b1!4m6!3m5!1s0xd63820684f46c41:0x23deace13383f124!8m2!3d37.9779289!4d-1.1282832!16s%2Fg%2F11b7gpybqm?authuser=0&hl=es&entry=ttu"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/cocina-de-emilio/og.png" />
-		<meta property="og:image:type" content="image/png" />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/cocina-de-emilio/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content="Cocina De Emilio" />
-		<meta property="og:description" content="Cocina De Emilio." />
-	</head>
-	<body>
-		<header>
-			<h1 set:html={piezas.portada.titulo} />
-			<a href={MAPS_URL} rel="noopener" target="_blank">Ver en Google Maps</a>
-		</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1e4b57" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content={business.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="ES-MC" />
+    <meta name="geo.placename" content={business.district} />
+    <meta name="geo.position" content={`${business.latitude};${business.longitude}`} />
+    <meta name="ICBM" content={`${business.latitude}, ${business.longitude}`} />
+    <link rel="canonical" href={`${site.siteUrl}/`} />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/svg+xml" href="/cocina-de-emilio/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <meta property="og:type" content="restaurant.restaurant" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={business.shortName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`${site.siteUrl}/`} />
+    <meta property="og:image" content={`${site.siteUrl}/og.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="place:location:latitude" content={String(business.latitude)} />
+    <meta property="place:location:longitude" content={String(business.longitude)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${site.siteUrl}/og.jpg`} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-		<main>
-			<section>
-				{fotos.map((foto) => (
-					<img src={foto.src} width={foto.width} height={foto.height} alt="Cocina De Emilio" loading="lazy" decoding="async" />
-				))}
-			</section>
-		</main>
+    <header class="topbar">
+      <a class="brand" href="#inicio" aria-label={`${business.name}, inicio`}>
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-text">La Cocina de Emilio<small>El Carmen · Murcia</small></span>
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="#local">La casa</a>
+        <a href="#menu">Menú</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#horario">Horario</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <a class="topbar-phone" href={phoneHref}><span aria-hidden="true">☎</span>{business.phone}</a>
+    </header>
 
-		<footer>
-			<p>
-				Creado por <a href={CREDIT_URL} rel="noopener">Sur Digital</a>
-			</p>
-		</footer>
-	</body>
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Murcia · El Carmen</p>
+            <h1 id="hero-title">Comida casera<br /><em>de la huerta.</em></h1>
+            <p class="hero-lede">
+              {business.name} está en la {business.streetAddress}, junto a la plaza de abastos de El
+              Carmen. Cocina de todos los días con menú semanal, vitrina de platos preparados y
+              encargos por teléfono. Web informativa no oficial: teléfono, horario, menú, fotos y
+              mapa.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-solid" href={phoneHref}>Llamar: {business.phone}</a>
+              <a class="btn btn-ghost" href={directionsUrl} target="_blank" rel="noopener noreferrer">
+                Cómo llegar <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <ul class="hero-facts">
+              <li><small>Dirección</small><strong>{business.streetAddress} · {business.postalCode} {business.city}</strong></li>
+              <li><small>Horario</small><strong>{hoursSummary}</strong></li>
+              <li><small>Encargos</small><strong>{business.phone} · Marta</strong></li>
+            </ul>
+          </div>
+
+          <div class="hero-media">
+            <div class="hero-collage">
+              <figure class="collage-item collage-item-main">
+                <Image src={vitrina.src} alt={vitrina.alt} loading="eager" fetchpriority="high" />
+              </figure>
+              <figure class="collage-item collage-item-top">
+                <Image src={paella.src} alt={paella.alt} loading="eager" />
+              </figure>
+              <figure class="collage-item collage-item-bottom">
+                <Image src={albondigas.src} alt={albondigas.alt} loading="eager" />
+              </figure>
+            </div>
+            <p class="hero-stamp" aria-hidden="true"><span>El Carmen</span><strong>Emilio</strong><span>Murcia</span></p>
+          </div>
+        </div>
+      </section>
+
+      <div class="band">
+        <span>{business.streetAddress} · {business.postalCode} {business.city}</span>
+        <span>{hoursSummary}</span>
+        <span>Encargos: {business.phone}</span>
+      </div>
+
+      <section class="section local" id="local" aria-labelledby="local-title">
+        <div class="wrap local-grid">
+          <div class="local-text">
+            <p class="kicker">La casa</p>
+            <h2 class="title" id="local-title">La cocina de todos<br /><em>los días.</em></h2>
+            <p>
+              Está en la Alameda de los Capuchinos, 5, en El Carmen, a un paso de la plaza de
+              abastos y del centro de Murcia. Se presenta como comida casera con producto fresco de
+              la huerta, y la vitrina lo confirma: bandejas de guisos, arroces, pescado rebozado y
+              tortillas recién hechas.
+            </p>
+            <p>
+              Cada día de la semana tiene su propio cartel: lentejas y bacalao los lunes, albóndigas
+              y paella los martes, potaje y carrillera los miércoles, arroz a banda y merluza los
+              jueves, asado de cordero los viernes. A eso se suman ensaladas, ensaladilla, tortilla
+              de patatas y croquetas todos los días.
+            </p>
+            <p>
+              Además del menú, la casa anuncia comidas por encargo y pan casero a diario, con migas
+              los sábados. Los pedidos se hacen por teléfono, al {business.phone}, a nombre de Marta.
+            </p>
+            <ul class="category-list" aria-label="Categorías">
+              {business.categories.map((c) => <li>{c}</li>)}
+            </ul>
+            <p class="local-note">
+              Las fotos de esta web proceden del perfil público del local en Google Maps y se
+              muestran como referencia; si eres el titular y quieres retirar alguna, escríbenos y la
+              quitamos. Para ver la ficha completa, usa la
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha en Google Maps ↗</a>.
+            </p>
+          </div>
+          <div class="quote-row">
+            <div class="quote-score">
+              <strong>{business.phone}</strong>
+              <span>Menú del día, comida para llevar y encargos</span>
+              <a href={reviewsUrl} target="_blank" rel="noopener noreferrer">Ver ficha en Maps ↗</a>
+            </div>
+            <blockquote class="quote">
+              <p>Abierto de lunes a viernes; sábados y domingos, cerrado.</p>
+              <footer><strong>Horario</strong><span>{hoursSource}</span></footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="section menu" id="menu" aria-labelledby="menu-title">
+        <div class="wrap">
+          <p class="kicker">El menú</p>
+          <h2 class="title" id="menu-title">Menú del día,<br /><em>de lunes a viernes.</em></h2>
+          <p class="lead">
+            Lo que anuncia el cartel de la puerta, plato a plato y con su precio. Cambia cada
+            semana, así que confirma por teléfono qué hay hoy o qué se puede encargar.
+          </p>
+
+          <div class="menu-grid">
+            {menu.map((grupo) => (
+              <div class="menu-group">
+                <h3>{grupo.day}</h3>
+                <ul>
+                  {grupo.items.map((item) => (
+                    <li><span>{item.name}</span><strong>{item.price}</strong></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <ul class="menu-extras">
+            {menuExtras.map((extra) => <li>{extra}</li>)}
+          </ul>
+          <p class="menu-note">{menuNote}</p>
+        </div>
+      </section>
+
+      <section class="section fotos" id="fotos" aria-labelledby="fotos-title">
+        <div class="wrap">
+          <p class="kicker">Las fotos</p>
+          <h2 class="title" id="fotos-title">La vitrina y la mesa, <em>en fotos.</em></h2>
+          <p class="lead">
+            Imágenes alojadas en esta web procedentes del perfil público del local en Google Maps: el
+            rótulo, la vitrina con los platos del día, el cartel del menú y las raciones que salen de
+            la cocina.
+          </p>
+          <div class="fotos-grid">
+            {fotos.map((foto) => (
+              <figure class="foto-item">
+                <Image src={foto.src} alt={foto.alt} loading="lazy" />
+                <figcaption>{foto.pie}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p class="fotos-note">
+            ¿Quieres ver más? Mira la
+            <a href={mapsUrl} target="_blank" rel="noopener noreferrer">ficha con fotos en Google Maps ↗</a>
+            o <a href={phoneHref}>llama al {business.phone}</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="section horario" id="horario" aria-labelledby="horario-title">
+        <div class="wrap horario-grid">
+          <div>
+            <p class="kicker">Horario y ubicación</p>
+            <h2 class="title" id="horario-title">Capuchinos, 5,<br /><em>El Carmen.</em></h2>
+            <address>{business.streetAddress}<br />{business.postalCode} {business.district} · {business.municipality}<br />{business.province} · España</address>
+            <table class="hours-table">
+              <caption>Horario del cartel del local · {hoursSource}</caption>
+              <tbody>
+                {hours.map((item) => (
+                  <tr><th scope="row">{item.day}</th><td>{item.service}</td></tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="hours-note">{hoursNote}</p>
+            <a class="contact-line" href={phoneHref}><small>Teléfono</small><strong>{business.phone}</strong></a>
+            <div class="place-actions">
+              <a class="btn btn-solid" href={directionsUrl} target="_blank" rel="noopener noreferrer">Abrir indicaciones ↗</a>
+              <a class="btn btn-ghost" href={mapsUrl} target="_blank" rel="noopener noreferrer">Ver la ficha en Maps ↗</a>
+            </div>
+          </div>
+          <div class="map-card">
+            <iframe title={`Mapa de ${business.name} en ${business.district}`} src={mapEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <div class="map-tag">
+              <div><strong>{business.shortName}</strong><small>{business.streetAddress} · {business.postalCode} {business.city}</small></div>
+              <a href={directionsUrl} target="_blank" rel="noopener noreferrer">Cómo llegar ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq" id="preguntas" aria-labelledby="faq-title">
+        <div class="wrap">
+          <p class="kicker">Preguntas frecuentes</p>
+          <h2 class="title" id="faq-title">Antes de <em>bajar.</em></h2>
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <a class="footer-brand" href="#inicio" aria-label={`${business.shortName}, volver al inicio`}>
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>{business.name}<small>{business.streetAddress} · {business.postalCode} {business.city}</small></span>
+        </a>
+        <nav class="footer-nav" aria-label="Contacto y ficha del local">
+          <a href={phoneHref}>Llamar: {business.phone}</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer">Ficha en Google Maps ↗</a>
+        </nav>
+        <small class="footer-note">
+          © {new Date().getFullYear()} {business.name} · {business.streetAddress} ({business.postalCode} {business.city}).
+          Web informativa no oficial con datos públicos del local. Confirma horario y menú por teléfono.
+        </small>
+      </div>
+      <p style="font-size: 0.75rem; opacity: 0.7; margin: 0.5rem 0 0;"><small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small></p>
+      <nav class="sur-legal" aria-label="Información legal y créditos" style="box-sizing:border-box;flex:0 0 100%;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem 1.1rem;margin:1.2rem 0 0;padding:0 1.25rem;font-size:.8rem;line-height:1.7;text-align:center;opacity:.85">
+        <a href="/cocina-de-emilio/aviso-legal" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Aviso legal</a>
+        <a href="/cocina-de-emilio/aviso-legal#privacidad" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Privacidad</a>
+        <a href="/cocina-de-emilio/aviso-legal#cookies" style="color:inherit;text-decoration:underline;text-underline-offset:2px">Cookies</a>
+      </nav>
+    </footer>
+
+    <a class="mobile-call" href={phoneHref}>Llamar a La Cocina de Emilio <span>{business.phone}</span></a>
+
+    <style>
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: 1.4rem 2rem;
+        margin: 2.2rem 0 0;
+      }
+      .menu-group {
+        padding: 1.2rem 1.25rem 1.1rem;
+        border: 1px solid var(--linea);
+        border-radius: 0.35rem;
+        background: #fffdf8;
+      }
+      .menu-group h3 {
+        margin: 0 0 0.7rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--oro);
+        font-family: var(--display);
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: var(--marino-oscuro);
+      }
+      .menu-group ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.92rem;
+      }
+      .menu-group li {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.6rem;
+        padding: 0.34rem 0;
+        border-bottom: 1px dashed rgb(34 42 38 / 0.12);
+      }
+      .menu-group li:last-child {
+        border-bottom: 0;
+      }
+      .menu-group li span {
+        color: var(--tinta-suave);
+      }
+      .menu-group li strong {
+        flex: none;
+        color: var(--terracota-oscuro);
+        font-size: 0.86rem;
+        font-variant-numeric: tabular-nums;
+      }
+      .menu-extras {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.4rem;
+        margin: 1.8rem 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.86rem;
+        color: var(--marino);
+      }
+      .menu-extras li::before {
+        content: '· ';
+        color: var(--oro);
+        font-weight: 700;
+      }
+      .menu-note {
+        max-width: 46rem;
+        margin: 1.1rem 0 0;
+        color: var(--apagado);
+        font-size: 0.84rem;
+        line-height: 1.7;
+      }
+    </style>
+  </body>
 </html>
