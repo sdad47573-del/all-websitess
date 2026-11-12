@@ -4085,15 +4085,16 @@ export const PORTFOLIO_APPS: AppProject[] = [
 		"slug": "el-gran-pollo-a-la-brasa",
 		"title": "El Gran Pollo a la Brasa",
 		"category": "Restaurantes y bares",
-		"sector": "Brasa y parrilla",
-		"city": "",
-		"description": "El Gran Pollo a la Brasa. Ficha con horario, teléfono y ubicación.",
+		"sector": "Pollo y carnes a la brasa",
+		"city": "Calpe",
+		"description": "El Gran Pollo a la Brasa, restaurante halal especializado en pollo y carnes a la brasa en Carrer los Almendros, 9 (03710 Calp, Alicante), según su ficha de Google Maps.",
 		"tags": [
-			"Brasa y parrilla"
+			"Calpe",
+			"Pollo y carnes a la brasa"
 		],
 		"accent": "bg-accent/15 text-primary",
 		"url": "/el-gran-pollo-a-la-brasa/",
-		"community": ""
+		"community": "Comunidad Valenciana"
 	},
 	{
 		"slug": "el-horno-de-paco",
