@@ -1,61 +1,48 @@
-integra dentro del footer Aviso legal Privacidad Cookies
-agustin-el-picoteo
-https://taberna-la-charata.netlify.app/
-https://talleres-caldado.netlify.app/
-https://the-boss-restaurant.netlify.app/
-https://bar-taberna-la-new.netlify.app/
-https://el-rincon-del-perlita.netlify.app/
+amplia hasta los bordes los fondos blancos
+http://localhost:4321/tortillas-y-comida-javi-sera/
+http://localhost:4321/to-gueno/
+http://localhost:4321/terraza-la-candela/
+http://localhost:4321/soga-bar/
 
-arregla el hero, no se ven los textos porque es del mismo color que el fondo
-https://clinica-dental-daniela-torres.netlify.app/
+arregla los estilos
+http://localhost:4321/tres-amigos/
+http://localhost:4321/sushi-rairakku/
+http://localhost:4321/sukiya/
+http://localhost:4321/sukaldari-izarra/
+http://localhost:4321/sukai-ramen/
+http://localhost:4321/star-doner-kebab/
+http://localhost:4321/star-chicken-tacos/
+http://localhost:4321/son-y-arepas/
 
-https://restaurante-las-rias.netlify.app/
-https://cafe-bar-la-carretera.netlify.app/
+el mapa debe ocupar todo el cuadrado
+http://localhost:4321/todo-belleza/
+http://localhost:4321/the-merced-barbers/
+http://localhost:4321/the-cut-salon-men/
+http://localhost:4321/the-haircut/
+http://localhost:4321/the-cut-salon-men/
+http://localhost:4321/vikings-barbershop/
+http://localhost:4321/venussa-salon-belleza/
 
-/////////////
+termina la web
+http://localhost:4321/teulada-kebabish/
 
-corregir footer Aviso legal Privacidad Cookies
+arregla imagenes
+http://localhost:4321/tapas-de-pepe-julian/
 
-el footer el logo esta como subrayado, corrige LG
-La Granja
-Las Lagunas de Mijas · Málaga
-https://asador-la-granja.vercel.app/
+añade imagenes del negocio real
 
-el footer el logo esta como subrayado, corrige
-GP
-Bar restaurante Grand Pere
-Club Natacion, Cam. Jaúl Bajo, 3 · 04007 Almería
-https://grand-pere.netlify.app/
+el hero debe ocupar la pantalla, se sale por abajo
+http://localhost:4321/tania-panaderia-pasteleria/
 
-el footer el logo, corrige
-N
-Natursur
-Paraje Pisaica de la Virgen, s/n · 04240 Viator
+pon una imagen real en el hero
+http://localhost:4321/taller-finca-la-palma/
+http://localhost:4321/taller-hermanos-palomo/
 
-el footer el logo, corrige
+deja creado por sur digital, quita ·www.sur-digital.com
+http://localhost:4321/sora-tilde/
+http://localhost:4321/santa-maria/
 
-LM
-La Masía
-Calle Conde de Barcelona, 12 · 04700 El Ejido
-https://restaurante-la-masia.netlify.app/
+el fondo del hero inicial, amplia hasta el borde
+http://localhost:4321/solo-para-llevar/
 
-el footer el logo esta como subrayado, corrige
-
-CP
-Casa Pino
-La Cala de Mijas · Málaga
-https://taberna-casa-pino.netlify.app/
-
-https://cafe-bar-la-carretera.netlify.app/
-https://restaurante-las-rias.netlify.app/
-
-desplegar de nuevo
-https://amorato-malaga.netlify.app/
-https://am-industria-del-estilo.netlify.app/
-https://la-primera-del-naranjo.netlify.app/
-https://barberia-hair-cool.netlify.app/
-https://el-destello.netlify.app/
-https://el-gallu.netlify.app/
-https://el-pollito-lio.netlify.app/
-https://casa-alfonso-teatinos.netlify.app/
-https://sur-helado-cafe.netlify.app/
+http://localhost:4321/tropicana-pasteleria/ la imagen debe ser acorde al contenido en La casa Dulces de siempre en una esquina de Teatinos
