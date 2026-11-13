@@ -35,24 +35,6 @@ export const BUSINESS = {
 	siteUrl: 'https://fruteria-la-alacena-alhaurin.vercel.app',
 };
 
-/** Publicaciones encontradas en el perfil oficial. */
-export const SOCIAL_POSTS = [
-	{
-		url: 'https://www.instagram.com/fruteria.alacena/reel/CphWjn_I8ls/',
-		embedUrl: 'https://www.instagram.com/fruteria.alacena/reel/CphWjn_I8ls/embed',
-		title: 'Un reel de La Alacena',
-		description: 'Publicación de vídeo en el perfil oficial de Instagram.',
-	},
-	{
-		url: 'https://www.facebook.com/CentroAsesorAmbientalMalaga/videos/-presentamos-a-fruter%C3%ADa-la-alacena-de-alhaur%C3%ADn-por-qu%C3%A9-elegir-fruter%C3%ADa-la-alacen/1619889392193775/',
-		embedUrl:
-			'https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FCentroAsesorAmbientalMalaga%2Fvideos%2F1619889392193775%2F&show_text=false',
-		title: 'La Alacena de Alhaurín y su compromiso sostenible',
-		description:
-			'Vídeo de presentación publicado por el Centro Asesor Ambiental de Málaga sobre el comercio y sus productos a granel.',
-	},
-];
-
 export const LEGAL = {
 	razonSocial: '[pendiente de confirmar]',
 	nif: '[pendiente de confirmar]',

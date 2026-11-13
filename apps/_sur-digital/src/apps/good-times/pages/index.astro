@@ -1,92 +1,200 @@
 ---
 import '../styles/global.css';
-import { BUSINESS, MAPS, RATING } from '../data/site';
-import foto from '../assets/fotos/good-times-01.jpg';
+import { LocalFooter, LocalSecciones, LocalSeo, LocalTopbar } from '@astro-components';
 
-const title = `${BUSINESS.name} · ${BUSINESS.city}`;
-const description = BUSINESS.description;
+import foto from '../assets/fotos/good-times-01.jpg';
+import { BUSINESS, FAQ, MAPS } from '../data/site';
 import secciones from '../data/secciones.json';
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const title = 'Good Times · Comida rápida y fresh tacos en Bilbao';
+const description =
+	'Good Times, restaurante de comida rápida en Allende Particular Kalea, 10 (48004 Bilbao). Fresh tacos, teléfono 652 32 24 85, fotos y cómo llegar. Según su ficha de Google Maps.';
+
+const piezas = secciones.secciones;
+const fotos = { 'good-times-01.jpg': foto };
+
+const bizSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FastFoodRestaurant',
+	'@id': `${BUSINESS.siteUrl}/#good-times`,
+	name: BUSINESS.name,
+	description: BUSINESS.description,
+	url: `${BUSINESS.siteUrl}/`,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	telephone: '+34652322485',
+	servesCuisine: ['Comida rápida', 'Tacos'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: BUSINESS.geo.lat,
+		longitude: BUSINESS.geo.lng,
+	},
+	hasMap: MAPS.place,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'El local', href: '#casa' },
+	{ label: 'Dónde estamos', href: '#visitanos' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
 ---
+
 <!doctype html>
 <html lang="es">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title}</title>
-		<meta name="description" content={description} />
-		<link rel="canonical" href="https://www.sur-digital.com/good-times/" />
-		<meta name="robots" content="index, follow" />
-		<link rel="icon" href="/good-times/favicon.svg" type="image/svg+xml" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/good-times/#negocio",
-	"name": "Good Times",
-	"url": "https://www.sur-digital.com/good-times/",
-	"description": "Good Times, restaurante de comida rápida en Allende Particular Kalea, 10 (48004 Bilbao, Bizkaia). Según su ficha de Google Maps.",
-	"image": "https://www.sur-digital.com/good-times/og.jpg",
-	"telephone": "+34652322485",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 43.2523202,
-		"longitude": -2.9134406
-	},
-	"hasMap": "https://www.google.com/maps/place/Good+Times/@43.2523202,-2.9134406,17z/data=!3m1!4b1!4m6!3m5!1s0xd4e4f2138b550cb:0xa87eb01054330ca1!8m2!3d43.2523202!4d-2.9134406!16s%2Fg%2F11shffbl93?authuser=0&hl=es&entry=ttu"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/good-times/og.jpg" />
-		<meta property="og:image:type" content="image/jpeg" />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/good-times/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&family=Rubik:ital,wght@0,400..800;1,400..700&display=swap"
+			rel="stylesheet"
+		/>
+		<LocalSeo
+			name={BUSINESS.name}
+			description={description}
+			keywords="Good Times Bilbao, comida rápida Bilbao, tacos Bilbao, Allende Particular Kalea 10, fast food 48004, Good Times fresh tacos"
+			canonical={`${BUSINESS.siteUrl}/`}
+			site={BUSINESS.siteUrl}
+			ogTitle={title}
+			ogDescription="Comida rápida y fresh tacos en Allende Particular Kalea, 10, Bilbao. Teléfono, fotos y cómo llegar."
+			ogImage={`${BUSINESS.siteUrl}/og.jpg`}
+			ogImageAlt="Fachada de Good Times en Bilbao con el rótulo luminoso de Fresh Tacos"
+			ogImageWidth={1200}
+			ogImageHeight={630}
+			ogType="restaurant.restaurant"
+			author={BUSINESS.name}
+			themeColor="#17181d"
+			street={BUSINESS.street}
+			city={BUSINESS.city}
+			region={BUSINESS.region}
+			geoRegion="ES-BI"
+			postalCode={BUSINESS.postalCode}
+			phone={BUSINESS.phone}
+			latitude={BUSINESS.geo.lat}
+			longitude={BUSINESS.geo.lng}
+			placeName="Bilbao"
+			locale="es_ES"
+			countryName="España"
+			contact={{
+				street: BUSINESS.street,
+				locality: BUSINESS.city,
+				region: BUSINESS.region,
+				postalCode: BUSINESS.postalCode,
+				country: BUSINESS.country,
+				phone: BUSINESS.phone,
+				latitude: BUSINESS.geo.lat,
+				longitude: BUSINESS.geo.lng,
+			}}
+			preload={[foto]}
+			schemas={[bizSchema, faqSchema]}
+		/>
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 	</head>
 	<body>
-		<header class="site-header">
-			<h1 set:html={piezas.portada.titulo} />
-			<p>{BUSINESS.tagline}</p>
-		</header>
-		<main>
-			<img src={foto.src} width={foto.width} height={foto.height} alt={`Foto de ${BUSINESS.name}`} decoding="async" loading="lazy" />
-			<section>
-				<h2>Dirección</h2>
-				<p>{BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}</p>
-				<p>Teléfono: <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></p>
-				{RATING.value !== null && <p>Valoración en Google Maps: {RATING.label}</p>}
-				<p><a href={MAPS.place} target="_blank" rel="noreferrer">Ver en Google Maps</a> · <a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></p>
-			</section>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<LocalTopbar
+			mark={BUSINESS.mark}
+			name="Good Times"
+			subtitle="Fresh tacos · Bilbao"
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			nav={nav}
+			homeLabel="inicio"
+			navAriaLabel="Navegación principal"
+		/>
+
+		<main id="contenido">
+			<LocalSecciones
+				secciones={piezas}
+				fotos={fotos}
+				negocio={{
+					name: BUSINESS.name,
+					street: BUSINESS.street,
+					district: BUSINESS.district,
+					postalCode: BUSINESS.postalCode,
+					city: BUSINESS.city,
+				}}
+				horario={[]}
+				mapas={MAPS}
+			/>
 		</main>
-		<footer class="site-footer">
-			<p>© {new Date().getFullYear()} {BUSINESS.fullName}</p>
-			<small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small>
-		</footer>
-	<!-- contacto-rapido -->
-<style>
-	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
-	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
-	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
-	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
-	.contact-fabs .fab-call { background: #c2410c; }
-	.contact-fabs .fab-wa { background: #25d366; }
-	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
-	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
-	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
-	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
-	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
-	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
-	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
-	.contact-fabs.is-stacked { bottom: 5.75rem; }
-	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
-	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
-</style>
-<nav class="contact-fabs" aria-label="Contacto rápido">
-	<a class="fab-wa" href="https://wa.me/34652322485?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Good%20Times." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Good Times"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
-</nav>
+
+		<LocalFooter
+			mark={BUSINESS.mark}
+			name={BUSINESS.shortName}
+			address={`${BUSINESS.street} · ${BUSINESS.postalCode} ${BUSINESS.city}`}
+			links={[
+				{ label: 'Google Maps ↗', href: MAPS.place, external: true },
+				{ label: 'Cómo llegar ↗', href: MAPS.directions, external: true },
+				{ label: 'Aviso legal', href: '/good-times/aviso-legal' },
+			]}
+			phone={BUSINESS.phone}
+			phoneHref={BUSINESS.phoneHref}
+			legal="Información y fotografías de la ficha pública de Google Maps. Confirma carta, precios y horario con el establecimiento."
+			ctaLabel="Llamar a Good Times"
+			navAriaLabel="Enlaces de Good Times"
+			legalLinks={[
+				{ label: 'Aviso legal', href: '/good-times/aviso-legal' },
+				{ label: 'Privacidad', href: '/good-times/aviso-legal#privacidad' },
+				{ label: 'Cookies', href: '/good-times/aviso-legal#cookies' },
+			]}
+			creditLabel="Web creada por"
+			creditName="Sur Digital"
+			creditHref="https://www.sur-digital.com/"
+		/>
+		<!-- contacto-rapido -->
+		<style>
+			.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
+			.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
+			.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
+			.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
+			.contact-fabs .fab-call { background: #e2402a; }
+			.contact-fabs .fab-wa { background: #25d366; }
+			.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
+			@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
+			@media (max-width: 680px) { .contact-fabs { bottom: 6rem; } }
+		</style>
+		<nav class="contact-fabs" aria-label="Contacto rápido">
+			<a class="fab-call" href={BUSINESS.phoneHref} aria-label={`Llamar a ${BUSINESS.name}`}
+				><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"
+					><path
+						fill="currentColor"
+						d="M6.6 10.8c1.2 2.4 3.2 4.4 5.6 5.6l1.9-1.9c.3-.3.7-.4 1.1-.2 1.2.4 2.4.6 3.7.6.6 0 1 .4 1 1V19c0 .6-.4 1-1 1C10.6 20 4 13.4 4 5c0-.6.4-1 1-1h3.1c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.7.1.4 0 .8-.2 1.1l-1.9 1.9Z"
+					/></svg
+				></a
+			>
+			<a
+				class="fab-wa"
+				href={BUSINESS.whatsappHref}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label={`Escribir por WhatsApp a ${BUSINESS.name}`}
+				><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"
+					><path
+						fill="currentColor"
+						d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"
+					/></svg
+				></a
+			>
+		</nav>
 	</body>
 </html>
