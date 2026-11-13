@@ -16,16 +16,23 @@
  */
 
 import fotoPortada from '../assets/fotos/ibiza-estetica-vertical-01.jpg';
-import fotoEstudio from '../assets/fotos/ibiza-estetica-estudio.svg';
-import fotoFacial from '../assets/fotos/ibiza-estetica-facial.svg';
-import fotoCorporal from '../assets/fotos/ibiza-estetica-corporal.svg';
+import fotoManicura from '../assets/fotos/ibiza-estetica-manicura-01.jpg';
+import fotoManicuraCuadrada from '../assets/fotos/ibiza-estetica-manicura-02.jpg';
+import fotoManicuraDetalle from '../assets/fotos/ibiza-estetica-manicura-detalle-03.jpg';
+import fotoManicuraDetalleAmplio from '../assets/fotos/ibiza-estetica-manicura-detalle-04.jpg';
 import logo from '../assets/fotos/ibiza-estetica-logo.svg';
 
+/**
+ * Fotografías reales del negocio. Todas salen de la ficha pública de Google
+ * Maps: es la única foto que publica (una mano con uñas esculpidas) y las
+ * demás son recortes del mismo original, no imágenes de banco.
+ */
 export const IMAGES = {
 	fotoFachada: fotoPortada,
-	fotoInterior: fotoEstudio,
-	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
+	fotoInterior: fotoManicuraDetalleAmplio,
+	fotoCejas: fotoManicura,
+	fotoCalle: fotoManicuraCuadrada,
+	fotoDetalle: fotoManicuraDetalle,
 	logo,
 };
 
@@ -233,10 +240,14 @@ export const FEATURES = [
 ];
 
 export const GALLERY = [
-	{ src: IMAGES.fotoFachada, alt: 'IBIZA centro de estética en Noroeste (Córdoba) — foto de su ficha de Google Maps' },
-	{ src: IMAGES.fotoInterior, alt: 'IBIZA en Isla Ibiza 4' },
-	{ src: IMAGES.fotoCejas, alt: 'Servicios de estética en IBIZA Córdoba' },
-	{ src: IMAGES.fotoCalle, alt: 'Estética IBIZA Córdoba' },
+	{
+		src: IMAGES.fotoCalle,
+		alt: 'Manicura en tonos nude y gris realizada en IBIZA centro de estética (foto de su ficha de Google Maps)',
+	},
+	{
+		src: IMAGES.fotoDetalle,
+		alt: 'Detalle de una uña decorada con dibujo animal print, trabajo de IBIZA centro de estética en Córdoba',
+	},
 ];
 
 export const SCHEMA = {

@@ -10,22 +10,34 @@
  *   Lun–Vie 10:00–13:30 + 17:30–20:30, Sáb 10:00–14:00, Dom cerrado.
  * - Facebook / Instagram @tonibgarcia72: uñas acrílicas y gel, estética natural.
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Nota sobre fotos: las imágenes son fotografías de trabajos (uñas y maquillaje)
+ * publicadas por el propio salón en su ficha pública de Google Maps, descargadas
+ * con scripts/fetch-maps-photos.mjs. Si el salón quiere retirar alguna, se quita.
  */
 
-import fotoSalon from '../assets/fotos/toni-bravo-salon-alberche-malaga.svg';
-import fotoCorporal from '../assets/fotos/toni-bravo-estetica-corporal-malaga.svg';
-import fotoUnas from '../assets/fotos/toni-bravo-unas-acrilicas-malaga.svg';
-import fotoDepi from '../assets/fotos/toni-bravo-depilacion-masaje-malaga.svg';
+import fotoUnasNacar from '../assets/fotos/toni-bravo-salon-de-belleza-apaisada-04.jpg';
+import fotoUnasRojas from '../assets/fotos/toni-bravo-salon-de-belleza-vertical-01.jpg';
+import fotoUnasGranate from '../assets/fotos/toni-bravo-salon-de-belleza-vertical-05.jpg';
+import fotoUnasEsmaltes from '../assets/fotos/toni-bravo-salon-de-belleza-vertical-09.jpg';
+import fotoUnasVerdes from '../assets/fotos/toni-bravo-salon-de-belleza-vertical-10.jpg';
+import fotoUnasNaranjas from '../assets/fotos/toni-bravo-salon-de-belleza-panoramica-02.jpg';
+import fotoUnasAmbar from '../assets/fotos/toni-bravo-salon-de-belleza-panoramica-06.jpg';
+import fotoUnasDecoradas from '../assets/fotos/toni-bravo-salon-de-belleza-panoramica-07.jpg';
+import fotoUnasAzules from '../assets/fotos/toni-bravo-salon-de-belleza-panoramica-08.jpg';
+import fotoMaquillaje from '../assets/fotos/toni-bravo-salon-de-belleza-vista-3-03.jpg';
 import logo from '../assets/fotos/toni-bravo-salon-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoSalon,
-	fotoInterior: fotoCorporal,
-	fotoCejas: fotoUnas,
-	fotoCalle: fotoDepi,
+	fotoFachada: fotoUnasNacar,
+	fotoInterior: fotoMaquillaje,
+	fotoCejas: fotoUnasRojas,
+	fotoCalle: fotoUnasVerdes,
+	fotoUnasNaranjas,
+	fotoUnasAmbar,
+	fotoUnasDecoradas,
+	fotoUnasAzules,
+	fotoUnasGranate,
+	fotoUnasEsmaltes,
 	logo,
 };
 
@@ -235,20 +247,36 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'Salón de belleza Toñi Bravo en Calle Alberche, Málaga',
+		src: IMAGES.fotoCejas,
+		alt: 'Uñas en rojo con acabado brillante, manicura del salón Toñi Bravo',
 	},
 	{
 		src: IMAGES.fotoInterior,
-		alt: 'Estética corporal en Toñi Bravo: cavitación y presoterapia',
-	},
-	{
-		src: IMAGES.fotoCejas,
-		alt: 'Uñas acrílicas y en gel en el salón de Alberche',
+		alt: 'Maquillaje de ojos en morado y azul realizado en Toñi Bravo',
 	},
 	{
 		src: IMAGES.fotoCalle,
-		alt: 'Depilación y masajes en Carretera de Cádiz, Málaga',
+		alt: 'Uñas verdes con detalle en pan de oro de Toñi Bravo',
+	},
+	{
+		src: IMAGES.fotoUnasAzules,
+		alt: 'Manicura en azul con línea blanca de Toñi Bravo',
+	},
+	{
+		src: IMAGES.fotoUnasNaranjas,
+		alt: 'Manicura blanca con acentos naranjas de Toñi Bravo',
+	},
+	{
+		src: IMAGES.fotoUnasDecoradas,
+		alt: 'Uñas blancas y azules con diseño ondulado de Toñi Bravo',
+	},
+	{
+		src: IMAGES.fotoUnasGranate,
+		alt: 'Uñas en tono granate con acabado brillo de Toñi Bravo',
+	},
+	{
+		src: IMAGES.fotoFachada,
+		alt: 'Manicura en gris nácar y blanco del salón Toñi Bravo',
 	},
 ];
 

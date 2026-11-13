@@ -13,8 +13,12 @@ export const business = {
 export const mapsUrl =
 	'https://www.google.com/maps/place/Vulcanizado+Teatinos/@36.7256508,-4.4601228,3a,75y,90t/data=!3m8!1e2!3m6!1sCIHM0ogKEICAgID7hK7_Zw!2e10!3e12!6shttps:%2F%2Flh3.googleusercontent.com%2Fgps-cs-s%2FAHRPTWkMRE3oeYBH8DtVSMrp4i55cFrr4RLB6ikG-yRkdaSJHKFU6dq4NW6vNuqD_WBNrKn6GzSUbkUIe3Bnqa5bqVZHEw912KDdV9yE3SXWjeMhLfKvXqSkrrrDaPnbCuzubH8zCsO7%3Dw397-h298-k-no!7i4080!8i3060!4m9!3m8!1s0xd72f73dfd379861:0xab0c82e606d19a42!8m2!3d36.7256508!4d-4.4601228!10e5!14m1!1BCgIgAQ!16s%2Fg%2F11g0ftb9mp?authuser=0&hl=es&entry=ttu';
 
-export const photoUrl =
-	'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMRE3oeYBH8DtVSMrp4i55cFrr4RLB6ikG-yRkdaSJHKFU6dq4NW6vNuqD_WBNrKn6GzSUbkUIe3Bnqa5bqVZHEw912KDdV9yE3SXWjeMhLfKvXqSkrrrDaPnbCuzubH8zCsO7=w1200-h900-k-no';
+/**
+ * Imagen para Open Graph y datos estructurados. Las URLs de la CDN de Google
+ * Maps (`lh3.googleusercontent.com`) caducan y responden 403 con el tiempo, así
+ * que se sirve la tarjeta local de la web. La foto del hero es un asset propio.
+ */
+export const photoUrl = `${business.site}/og.jpg`;
 
 export const phoneHref = 'tel:+34646654837';
 export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${business.latitude}%2C${business.longitude}`;

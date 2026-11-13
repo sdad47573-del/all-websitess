@@ -1,92 +1,449 @@
 ---
 import '../styles/global.css';
-import { BUSINESS, MAPS, RATING } from '../data/site';
-import foto from '../assets/fotos/wok-house-01.jpg';
+import { BUSINESS, CARTA_NOTA, FAQ, GALERIA, HORARIO_NOTA, MAPS, MENU } from '../data/site';
 
-const title = `${BUSINESS.name} · ${BUSINESS.city}`;
+const title = 'Wok House · comida para llevar en Goienkale, Bilbao';
 const description = BUSINESS.description;
-import secciones from '../data/secciones.json';
+const hero = GALERIA[0];
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	telephone: BUSINESS.phoneHref,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina asiática', 'Wok'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: 43.2570807, longitude: -2.9224962 },
+	hasMap: MAPS.place,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visita', href: '#visita' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
 ---
+
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#123c36" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href="https://www.sur-digital.com/wok-house/" />
-		<meta name="robots" content="index, follow" />
-		<link rel="icon" href="/wok-house/favicon.svg" type="image/svg+xml" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/wok-house/#negocio",
-	"name": "Wok House",
-	"url": "https://www.sur-digital.com/wok-house/",
-	"description": "Wok House, restaurante de cocina wok en Goienkale, 41 (Ibaiondo, 48005 Bilbao, Bizkaia). Según su ficha de Google Maps.",
-	"image": "https://www.sur-digital.com/wok-house/og.jpg",
-	"telephone": "+34747416322",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 43.2570807,
-		"longitude": -2.9224962
-	},
-	"hasMap": "https://www.google.com/maps/place/Wok+House/@43.2570807,-2.9224962,16z/data=!3m1!4b1!4m6!3m5!1s0xd4e4f1ced85cc5b:0x80a474c35c93c1e5!8m2!3d43.2570807!4d-2.9224962!16s%2Fg%2F11j10v1p2y?authuser=0&hl=es&entry=ttu"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/wok-house/og.jpg" />
-		<meta property="og:image:type" content="image/jpeg" />
+		<meta
+			name="keywords"
+			content="Wok House Bilbao, comida para llevar Bilbao, wok Goienkale, tallarines Bilbao, arroz frito Bilbao, sushi para llevar Bilbao"
+		/>
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/wok-house/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Mulish:wght@400;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preload" as="image" href={hero.src} />
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content={title} />
+		<meta
+			property="og:description"
+			content="Comida rápida para llevar en Goienkale, 41 (Bilbao): tallarines, arroz, sushi, kuotie, rollos y pan chino. Teléfono 747 41 63 22."
+		/>
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Wok House, comida para llevar en Bilbao" />
+		<meta property="place:location:latitude" content="43.2570807" />
+		<meta property="place:location:longitude" content="-2.9224962" />
 		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/wok-house/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
+		<meta name="twitter:title" content="Wok House · comida para llevar en Bilbao" />
+		<meta name="twitter:description" content="Tallarines, arroz, sushi, kuotie, rollos y pan chino en Goienkale, 41." />
+		<meta name="twitter:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 	</head>
 	<body>
-		<header class="site-header">
-			<h1 set:html={piezas.portada.titulo} />
-			<p>{BUSINESS.tagline}</p>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="wrap topbar-inner">
+				<a class="brand" href="#inicio" aria-label="Wok House, inicio">
+					<span class="brand-mark" aria-hidden="true">W</span>
+					<span class="brand-name">Wok House <small>Para llevar · Goienkale</small></span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
 		</header>
-		<main>
-			<img src={foto.src} width={foto.width} height={foto.height} alt={`Foto de ${BUSINESS.name}`} decoding="async" loading="lazy" />
-			<section>
-				<h2>Dirección</h2>
-				<p>{BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}</p>
-				<p>Teléfono: <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></p>
-				{RATING.value !== null && <p>Valoración en Google Maps: {RATING.label}</p>}
-				<p><a href={MAPS.place} target="_blank" rel="noreferrer">Ver en Google Maps</a> · <a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></p>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div>
+					<p class="eyebrow"><span aria-hidden="true"></span> Goienkale · Bilbao · Para llevar</p>
+					<h1 id="hero-title">Wok para llevar<br /><em>en Goienkale.</em></h1>
+					<p class="hero-lede">
+						Wok House está en el número 41 de Goienkale, con la fachada de piedra y el rótulo
+						luminoso sobre la entrada. Comida rápida para llevar: tallarines, arroz, sushi,
+						kuotie, rollos y pan chino, en caja de cartón.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+						<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>{BUSINESS.street}</b>48005 Bilbao · Ibaiondo</li>
+						<li><b>Comida para llevar</b>Según su folleto</li>
+						<li><b>{BUSINESS.phone}</b>Teléfono y WhatsApp</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<span class="hero-tag">Goienkale, 41</span>
+					<img
+						src={hero.src}
+						width={hero.w}
+						height={hero.h}
+						alt={hero.alt}
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<figcaption>
+						<span>Entrada en Goienkale</span>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Ver ficha ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<div class="wrap">
+				<ul class="chips" aria-label="Resumen del local">
+					<li>Para llevar</li>
+					<li>Goienkale</li>
+					<li>Bilbao · 48005</li>
+					<li>Wok</li>
+					<li>Sushi y kuotie</li>
+				</ul>
+			</div>
+
+			<section class="about wrap" id="casa" aria-labelledby="casa-title">
+				<div class="about-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="casa-title">Comida rápida<br /><em>para llevar.</em></h2>
+					</div>
+					<div class="about-copy">
+						<p>
+							Wok House ocupa el número 41 de Goienkale, en Bilbao, con una fachada de piedra
+							en la que se ven el rótulo luminoso y las fotos de los platos junto a la
+							puerta.
+						</p>
+						<p>
+							Su propio folleto lo presenta como «comida rápida para llevar» y anuncia
+							tallarines, arroz, sushi, kuotie, rollos, pan chino y mucho más. En las fotos
+							de la ficha aparecen arroz frito con pollo, pollo frito, tallarines con
+							verdura, pan chino frito y cajas con alitas, salsas y bebida.
+						</p>
+						<p class="about-note">
+							No publicamos horario ni precios porque no están verificados: llama al{' '}
+							{BUSINESS.phone} o abre su ficha de Google antes de ir.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps ↗</a>
+							<a class="simple-link" href="#carta">Qué se puede pedir</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="highlight-strip" aria-labelledby="claves-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Tres cosas claras</p>
+					<h2 id="claves-title">En caja, al wok<br /><em>y sin esperar mesa.</em></h2>
+					<ul class="highlights">
+						<li>
+							<span class="highlight-mark">01 · Para llevar</span>
+							<h3>Todo en caja</h3>
+							<p>El folleto habla de comida rápida para llevar y las fotos muestran los platos en cajas de cartón con palillos.</p>
+						</li>
+						<li>
+							<span class="highlight-mark">02 · La carta</span>
+							<h3>Wok, sushi y kuotie</h3>
+							<p>Tallarines y arroz al wok, sushi, empanadillas kuotie, rollitos y pan chino frito.</p>
+						</li>
+						<li class="highlight-wide">
+							<span class="highlight-mark">03 · La dirección</span>
+							<h3>Goienkale, 41 · Bilbao</h3>
+							<p>En el 48005 de Bilbao, con mesas altas dentro para comer allí o pedir para recoger. Teléfono: {BUSINESS.phone}.</p>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="menu" id="carta" aria-labelledby="carta-title">
+				<div class="wrap">
+					<div class="menu-head">
+						<div>
+							<p class="section-label"><span aria-hidden="true"></span> La carta</p>
+							<h2 id="carta-title">Wok, arroz<br /><em>y para picar.</em></h2>
+						</div>
+						<div>
+							<p>{CARTA_NOTA}</p>
+							<a class="button button-primary" href={MAPS.place} target="_blank" rel="noreferrer">Ver la ficha en Google ↗</a>
+						</div>
+					</div>
+
+					<div class="menu-groups">
+						{
+							MENU.map((grupo) => (
+								<div class="menu-group">
+									<h3>{grupo.titulo}</h3>
+									<ul class="dishes">
+										{grupo.platos.map((plato) => (
+											<li>
+												<span class="dish">
+													{plato.nombre}
+													<em>{plato.nota}</em>
+												</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							))
+						}
+					</div>
+
+					<p class="menu-note">
+						La carta puede cambiar según el día. Llama al
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a> o escribe por <a
+							href={BUSINESS.whatsapp}
+							target="_blank"
+							rel="noreferrer">WhatsApp</a
+						> y pregunta antes de ir.
+					</p>
+				</div>
+			</section>
+
+			<section class="wrap section-pad" id="fotos" aria-labelledby="fotos-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos de la ficha</p>
+						<h2 id="fotos-title">La fachada, el interior<br /><em>y las cajas.</em></h2>
+					</div>
+					<div>
+						<p>
+							Ocho fotos del perfil público del restaurante en Google Maps: la entrada en
+							Goienkale, el rótulo, las mesas altas y varios platos en caja.
+						</p>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">Galería completa en Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{
+						GALERIA.map((foto) => (
+							<figure class="shot">
+								<img src={foto.src} alt={foto.alt} width={foto.w} height={foto.h} loading="lazy" decoding="async" />
+							</figure>
+						))
+					}
+				</div>
+				<p class="gallery-note">
+					Fotografías del perfil del establecimiento en Google Maps. Los platos y el montaje
+					pueden variar respecto a la foto.
+				</p>
+			</section>
+
+			<section class="visit" id="visita" aria-labelledby="visita-title">
+				<div class="wrap visit-grid">
+					<div>
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Visita</p>
+						<h2 id="visita-title">Goienkale, 41<br /><em>Bilbao.</em></h2>
+						<p class="address">
+							{BUSINESS.street}<br />
+							{BUSINESS.postalCode} {BUSINESS.city} · {BUSINESS.region}
+						</p>
+
+						<table class="hours">
+							<caption>Horario</caption>
+							<tbody>
+								<tr>
+									<th scope="row">Horario publicado</th>
+									<td>No disponible</td>
+								</tr>
+								<tr>
+									<th scope="row">Teléfono</th>
+									<td><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="hours-note">
+							{HORARIO_NOTA} <a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha ↗</a>
+						</p>
+
+						<div class="visit-links">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+							<a class="button button-ghost" href={BUSINESS.phoneHref}>Llamar</a>
+						</div>
+						<a class="phone-link" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<p class="reserve-note">
+							No gestionamos pedidos ni reservas desde esta web: el teléfono, el WhatsApp y
+							la ficha de Google son los canales del restaurante.
+						</p>
+					</div>
+
+					<div>
+						<div class="map-frame">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa de ${BUSINESS.name}, ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								allowfullscreen
+								referrerpolicy="no-referrer-when-downgrade"></iframe>
+						</div>
+						<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+							<span aria-hidden="true">⌖</span> Wok House · Goienkale, Bilbao
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="wrap faq section-pad" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>pedir.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
 			</section>
 		</main>
+
 		<footer class="site-footer">
-			<p>© {new Date().getFullYear()} {BUSINESS.fullName}</p>
-			<small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small>
+			<div class="wrap footer-grid">
+				<div class="footer-brand">
+					<span class="brand-mark" aria-hidden="true">W</span>
+					<p>
+						Wok House
+						<small>{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}</small>
+					</p>
+				</div>
+				<nav aria-label="Enlaces del restaurante">
+					<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+					<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					<a href="/wok-house/aviso-legal">Aviso legal</a>
+				</nav>
+				<small class="legal">
+					© {new Date().getFullYear()} Wok House · Bilbao. Fotografías del perfil público del
+					establecimiento en Google Maps. Información elaborada a partir de fuentes públicas:
+					confirma horario y carta antes de la visita.
+					<nav class="legal-links" aria-label="Información legal">
+						<a href="/wok-house/aviso-legal">Aviso legal</a>
+						<a href="/wok-house/aviso-legal#privacidad">Privacidad</a>
+						<a href="/wok-house/aviso-legal#cookies">Cookies</a>
+					</nav>
+					<span class="credit">Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></span>
+				</small>
+			</div>
 		</footer>
-	<!-- contacto-rapido -->
-<style>
-	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
-	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
-	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
-	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
-	.contact-fabs .fab-call { background: #c2410c; }
-	.contact-fabs .fab-wa { background: #25d366; }
-	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
-	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
-	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
-	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
-	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
-	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
-	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
-	.contact-fabs.is-stacked { bottom: 5.75rem; }
-	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
-	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
-</style>
-<nav class="contact-fabs" aria-label="Contacto rápido">
-	<a class="fab-wa" href="https://wa.me/34747416322?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Wok%20House." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Wok House"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
-</nav>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>Llamar <span>{BUSINESS.phone}</span></a>
+
+		<nav class="contact-fabs" aria-label="WhatsApp">
+			<a
+				class="fab-wa"
+				href={BUSINESS.whatsapp}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Escribir por WhatsApp a Wok House"
+			>
+				<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"
+					><path
+						fill="currentColor"
+						d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"
+					/></svg
+				>
+			</a>
+		</nav>
+
+		<style>
+			.contact-fabs {
+				position: fixed;
+				right: clamp(1rem, 4vw, 1.75rem);
+				bottom: clamp(1rem, 4vw, 1.75rem);
+				z-index: 60;
+				display: flex;
+				flex-direction: column;
+				gap: 0.65rem;
+			}
+			.contact-fabs a {
+				display: grid;
+				place-items: center;
+				width: 3.5rem;
+				height: 3.5rem;
+				border-radius: 50%;
+				color: #fff;
+				text-decoration: none;
+				box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+				transition: transform 0.18s ease;
+			}
+			.contact-fabs a:hover,
+			.contact-fabs a:focus-visible {
+				transform: scale(1.06);
+			}
+			.contact-fabs .fab-wa {
+				background: #25d366;
+			}
+			.contact-fabs svg {
+				width: 1.7rem;
+				height: 1.7rem;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.contact-fabs a {
+					transition: none;
+				}
+			}
+			@media (max-width: 780px) {
+				.contact-fabs {
+					bottom: 5rem;
+				}
+			}
+		</style>
 	</body>
 </html>

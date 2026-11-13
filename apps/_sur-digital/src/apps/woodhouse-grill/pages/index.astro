@@ -1,92 +1,456 @@
 ---
 import '../styles/global.css';
-import { BUSINESS, MAPS, RATING } from '../data/site';
-import foto from '../assets/fotos/woodhouse-grill-01.jpg';
+import { BUSINESS, FAQ, GALERIA, HORARIO_NOTA, MAPS, PLATOS } from '../data/site';
 
-const title = `${BUSINESS.name} · ${BUSINESS.city}`;
+const title = 'Woodhouse Grill · parrilla en Ibaiondo, Bilbao';
 const description = BUSINESS.description;
-import secciones from '../data/secciones.json';
+const hero = GALERIA[1];
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	telephone: BUSINESS.phoneHref,
+	currenciesAccepted: 'EUR',
+	servesCuisine: 'Parrilla',
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: 43.2568921, longitude: -2.9315968 },
+	hasMap: MAPS.place,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La parrilla', href: '#parrilla' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visita', href: '#visita' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
 ---
+
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#123c36" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href="https://www.sur-digital.com/woodhouse-grill/" />
-		<meta name="robots" content="index, follow" />
-		<link rel="icon" href="/woodhouse-grill/favicon.svg" type="image/svg+xml" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/woodhouse-grill/#negocio",
-	"name": "Woodhouse Grill",
-	"url": "https://www.sur-digital.com/woodhouse-grill/",
-	"description": "Woodhouse Grill, restaurante en C. Bruno Mauricio Zabala Kalea (Ibaiondo, 48003 Bilbao, Bizkaia). Según su ficha de Google Maps.",
-	"image": "https://www.sur-digital.com/woodhouse-grill/og.jpg",
-	"telephone": "+34643011003",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 43.2568921,
-		"longitude": -2.9315968
-	},
-	"hasMap": "https://www.google.com/maps/place/WOODHOUSE+GRILL/@43.2568921,-2.9315968,17z/data=!3m1!4b1!4m6!3m5!1s0xd4e4f97e3e5cee9:0xa792223eb1d8f1d2!8m2!3d43.2568921!4d-2.9315968!16s%2Fg%2F11js2thyjp?authuser=0&hl=es&entry=ttu"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/woodhouse-grill/og.jpg" />
-		<meta property="og:image:type" content="image/jpeg" />
+		<meta
+			name="keywords"
+			content="Woodhouse Grill Bilbao, parrilla Ibaiondo, brochetas Bilbao, pescado a la brasa Bilbao, Bruno Mauricio Zabala, restaurante Ibaiondo"
+		/>
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/woodhouse-grill/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Mulish:wght@400;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preload" as="image" href={hero.src} />
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content={title} />
+		<meta
+			property="og:description"
+			content="Parrilla en Bruno Mauricio Zabala, Ibaiondo (Bilbao). Brochetas, pescado a la brasa, alitas y bocadillos. Teléfono 643 01 10 03."
+		/>
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Woodhouse Grill, parrilla en Ibaiondo, Bilbao" />
+		<meta property="place:location:latitude" content="43.2568921" />
+		<meta property="place:location:longitude" content="-2.9315968" />
 		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/woodhouse-grill/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
+		<meta name="twitter:title" content="Woodhouse Grill · parrilla en Bilbao" />
+		<meta name="twitter:description" content="Brochetas, pescado a la brasa y alitas en Ibaiondo, Bilbao." />
+		<meta name="twitter:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 	</head>
 	<body>
-		<header class="site-header">
-			<h1 set:html={piezas.portada.titulo} />
-			<p>{BUSINESS.tagline}</p>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="wrap topbar-inner">
+				<a class="brand" href="#inicio" aria-label="Woodhouse Grill, inicio">
+					<span class="brand-mark" aria-hidden="true">W</span>
+					<span class="brand-name">Woodhouse Grill <small>Parrilla · Ibaiondo</small></span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
 		</header>
-		<main>
-			<img src={foto.src} width={foto.width} height={foto.height} alt={`Foto de ${BUSINESS.name}`} decoding="async" loading="lazy" />
-			<section>
-				<h2>Dirección</h2>
-				<p>{BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}</p>
-				<p>Teléfono: <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></p>
-				{RATING.value !== null && <p>Valoración en Google Maps: {RATING.label}</p>}
-				<p><a href={MAPS.place} target="_blank" rel="noreferrer">Ver en Google Maps</a> · <a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></p>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div>
+					<p class="eyebrow"><span aria-hidden="true"></span> Ibaiondo · Bilbao · Parrilla</p>
+					<h1 id="hero-title">Parrilla de barrio<br /><em>en Ibaiondo.</em></h1>
+					<p class="hero-lede">
+						Woodhouse Grill está en la calle Bruno Mauricio Zabala, en Ibaiondo, a un paso
+						del Casco Viejo. Brochetas, pescado entero a la brasa, alitas y bocadillos,
+						según las fotos de su ficha en Google Maps.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+						<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>{BUSINESS.street}</b>48003 Bilbao · Ibaiondo</li>
+						<li><b>Parrilla</b>Según las fotos de su ficha</li>
+						<li><b>{BUSINESS.phone}</b>Teléfono y WhatsApp</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<span class="hero-tag">Ibaiondo · Bilbao</span>
+					<img
+						src={hero.src}
+						width={hero.w}
+						height={hero.h}
+						alt={hero.alt}
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<figcaption>
+						<span>Brochetas de la casa</span>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Ver ficha ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<div class="wrap">
+				<ul class="chips" aria-label="Resumen del local">
+					<li>Parrilla</li>
+					<li>Ibaiondo</li>
+					<li>Bilbao · 48003</li>
+					<li>Brochetas</li>
+					<li>Pescado a la brasa</li>
+				</ul>
+			</div>
+
+			<section class="about wrap" id="casa" aria-labelledby="casa-title">
+				<div class="about-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="casa-title">Un grill de barrio<br />en la <em>calle Zabala.</em></h2>
+					</div>
+					<div class="about-copy">
+						<p>
+							Woodhouse Grill ocupa un local en la calle Bruno Mauricio Zabala, en Ibaiondo,
+							con el rótulo WOODHOUSE GRILL sobre la entrada y los platos anunciados en los
+							paneles iluminados de la fachada.
+						</p>
+						<p>
+							En las fotos de su perfil público se ven brochetas de carne con pimiento y
+							cebolla, pescado entero a la parrilla con patatas y ensalada, alitas de pollo,
+							bocadillos con carne y tortilla, tortitas de maíz con carne y plátano frito
+							junto a una tortilla.
+						</p>
+						<p class="about-note">
+							No publicamos horario ni carta porque no están verificados en la ficha
+							pública: llama al {BUSINESS.phone} o abre su ficha de Google antes de ir.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps ↗</a>
+							<a class="simple-link" href="#parrilla">Qué sale de la parrilla</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="highlight-strip" aria-labelledby="claves-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Tres cosas claras</p>
+					<h2 id="claves-title">Brasa, bandeja<br /><em>y platos para compartir.</em></h2>
+					<ul class="highlights">
+						<li>
+							<span class="highlight-mark">01 · La parrilla</span>
+							<h3>Brochetas y pescado</h3>
+							<p>Las fotos de la ficha muestran brochetas de carne, pescado entero a la brasa y alitas adobadas con limón.</p>
+						</li>
+						<li>
+							<span class="highlight-mark">02 · El local</span>
+							<h3>Un restaurante de barrio</h3>
+							<p>Entrada con rótulo propio en la calle, paneles con platos en la fachada y mesas para comer allí.</p>
+						</li>
+						<li class="highlight-wide">
+							<span class="highlight-mark">03 · La dirección</span>
+							<h3>Bruno Mauricio Zabala · Ibaiondo</h3>
+							<p>En el 48003 de Bilbao, entre el Casco Viejo y Bilbao La Vieja. Teléfono directo del local: {BUSINESS.phone}.</p>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="menu" id="parrilla" aria-labelledby="parrilla-title">
+				<div class="wrap">
+					<div class="menu-head">
+						<div>
+							<p class="section-label"><span aria-hidden="true"></span> Lo que sale de la parrilla</p>
+							<h2 id="parrilla-title">Platos de la casa,<br /><em>sin precios inventados.</em></h2>
+						</div>
+						<div>
+							<p>
+								Estos platos son los que aparecen en las fotos del perfil del restaurante.
+								No publicamos precios ni una carta cerrada porque no están verificados:
+								pídelos en el local o consúltalos por teléfono.
+							</p>
+							<a class="button button-primary" href={MAPS.place} target="_blank" rel="noreferrer">Ver la ficha en Google ↗</a>
+						</div>
+					</div>
+
+					<div class="menu-groups">
+						{
+							[
+								{ titulo: 'De la parrilla', platos: PLATOS.slice(0, 3) },
+								{ titulo: 'Para completar', platos: PLATOS.slice(3) },
+							].map((grupo) => (
+								<div class="menu-group">
+									<h3>{grupo.titulo}</h3>
+									<ul class="dishes">
+										{grupo.platos.map((plato) => (
+											<li>
+												<span class="dish">
+													{plato.nombre}
+													<em>{plato.nota}</em>
+												</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							))
+						}
+					</div>
+
+					<p class="menu-note">
+						La carta puede cambiar según el día y la temporada. Si buscas un plato concreto,
+						llama al <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a> o escribe por <a
+							href={BUSINESS.whatsapp}
+							target="_blank"
+							rel="noreferrer">WhatsApp</a
+						> y pregunta antes de ir.
+					</p>
+				</div>
+			</section>
+
+			<section class="wrap section-pad" id="fotos" aria-labelledby="fotos-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos de la ficha</p>
+						<h2 id="fotos-title">La fachada, la brasa<br /><em>y lo que sale.</em></h2>
+					</div>
+					<div>
+						<p>
+							Ocho fotos del perfil público del restaurante en Google Maps: la entrada en
+							la calle Zabala, las bandejas de parrilla y varios platos.
+						</p>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">Galería completa en Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{
+						GALERIA.map((foto) => (
+							<figure class="shot">
+								<img src={foto.src} alt={foto.alt} width={foto.w} height={foto.h} loading="lazy" decoding="async" />
+							</figure>
+						))
+					}
+				</div>
+				<p class="gallery-note">
+					Fotografías del perfil del establecimiento en Google Maps. Los platos y el montaje
+					pueden variar respecto a la foto.
+				</p>
+			</section>
+
+			<section class="visit" id="visita" aria-labelledby="visita-title">
+				<div class="wrap visit-grid">
+					<div>
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Visita</p>
+						<h2 id="visita-title">Bruno Mauricio Zabala<br /><em>Ibaiondo.</em></h2>
+						<p class="address">
+							{BUSINESS.street}<br />
+							{BUSINESS.postalCode} {BUSINESS.city} · {BUSINESS.region}
+						</p>
+
+						<table class="hours">
+							<caption>Horario</caption>
+							<tbody>
+								<tr>
+									<th scope="row">Horario publicado</th>
+									<td>No disponible</td>
+								</tr>
+								<tr>
+									<th scope="row">Teléfono</th>
+									<td><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="hours-note">
+							{HORARIO_NOTA} <a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha ↗</a>
+						</p>
+
+						<div class="visit-links">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+							<a class="button button-ghost" href={BUSINESS.phoneHref}>Llamar</a>
+						</div>
+						<a class="phone-link" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<p class="reserve-note">
+							No gestionamos reservas desde esta web: el teléfono, el WhatsApp y la ficha de
+							Google son los canales del restaurante.
+						</p>
+					</div>
+
+					<div>
+						<div class="map-frame">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa de ${BUSINESS.name}, ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								allowfullscreen
+								referrerpolicy="no-referrer-when-downgrade"></iframe>
+						</div>
+						<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+							<span aria-hidden="true">⌖</span> Woodhouse Grill · Ibaiondo, Bilbao
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="wrap faq section-pad" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
 			</section>
 		</main>
+
 		<footer class="site-footer">
-			<p>© {new Date().getFullYear()} {BUSINESS.fullName}</p>
-			<small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small>
+			<div class="wrap footer-grid">
+				<div class="footer-brand">
+					<span class="brand-mark" aria-hidden="true">W</span>
+					<p>
+						Woodhouse Grill
+						<small>{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}</small>
+					</p>
+				</div>
+				<nav aria-label="Enlaces del restaurante">
+					<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+					<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					<a href="/woodhouse-grill/aviso-legal">Aviso legal</a>
+				</nav>
+				<small class="legal">
+					© {new Date().getFullYear()} Woodhouse Grill · Ibaiondo, Bilbao. Fotografías del
+					perfil público del establecimiento en Google Maps. Información elaborada a partir
+					de fuentes públicas: confirma horario y carta antes de la visita.
+					<nav class="legal-links" aria-label="Información legal">
+						<a href="/woodhouse-grill/aviso-legal">Aviso legal</a>
+						<a href="/woodhouse-grill/aviso-legal#privacidad">Privacidad</a>
+						<a href="/woodhouse-grill/aviso-legal#cookies">Cookies</a>
+					</nav>
+					<span class="credit">Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></span>
+				</small>
+			</div>
 		</footer>
-	<!-- contacto-rapido -->
-<style>
-	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
-	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
-	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
-	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
-	.contact-fabs .fab-call { background: #c2410c; }
-	.contact-fabs .fab-wa { background: #25d366; }
-	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
-	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
-	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
-	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
-	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
-	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
-	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
-	.contact-fabs.is-stacked { bottom: 5.75rem; }
-	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
-	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
-</style>
-<nav class="contact-fabs" aria-label="Contacto rápido">
-	<a class="fab-wa" href="https://wa.me/34643011003?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Woodhouse%20Grill." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Woodhouse Grill"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
-</nav>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>Llamar <span>{BUSINESS.phone}</span></a>
+
+		<nav class="contact-fabs" aria-label="WhatsApp">
+			<a
+				class="fab-wa"
+				href={BUSINESS.whatsapp}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Escribir por WhatsApp a Woodhouse Grill"
+			>
+				<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"
+					><path
+						fill="currentColor"
+						d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"
+					/></svg
+				>
+			</a>
+		</nav>
+
+		<style>
+			.contact-fabs {
+				position: fixed;
+				right: clamp(1rem, 4vw, 1.75rem);
+				bottom: clamp(1rem, 4vw, 1.75rem);
+				z-index: 60;
+				display: flex;
+				flex-direction: column;
+				gap: 0.65rem;
+			}
+			.contact-fabs a {
+				display: grid;
+				place-items: center;
+				width: 3.5rem;
+				height: 3.5rem;
+				border-radius: 50%;
+				color: #fff;
+				text-decoration: none;
+				box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+				transition: transform 0.18s ease;
+			}
+			.contact-fabs a:hover,
+			.contact-fabs a:focus-visible {
+				transform: scale(1.06);
+			}
+			.contact-fabs .fab-wa {
+				background: #25d366;
+			}
+			.contact-fabs svg {
+				width: 1.7rem;
+				height: 1.7rem;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.contact-fabs a {
+					transition: none;
+				}
+			}
+			@media (max-width: 780px) {
+				.contact-fabs {
+					bottom: 5rem;
+				}
+			}
+		</style>
 	</body>
 </html>

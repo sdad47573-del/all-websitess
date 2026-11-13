@@ -14,22 +14,28 @@
  * - Fresha: C. Félix Gancedo, 1, portal 1 local 7, Puerto de la Torre, 29010;
  *   L-V 10:00–13:30 (tardes según IG), Sáb 10:00–14:00, Dom cerrado
  *
- * Nota sobre fotos: Google Maps no permite descargar y reutilizar las fotos de
- * la ficha (copyright + condiciones de Google). Esta web trae imágenes propias
- * de marcador (SVG en src/assets/fotos/). Ver README_IMAGENES.md.
+ * Fotos: los JPG de src/assets/fotos/ son fotos reales del negocio publicadas
+ * en su ficha de Google Maps (barbería por dentro, cortes y equipo). Solo el
+ * logo sigue siendo SVG.
  */
 
-import fotoPortada from '../assets/fotos/la-barberia-de-soliva-malaga.svg';
-import fotoCentro from '../assets/fotos/la-barberia-de-soliva-gancedo.svg';
-import fotoCorte from '../assets/fotos/la-barberia-de-soliva-corte.svg';
-import fotoBarba from '../assets/fotos/la-barberia-de-soliva-barba.svg';
+import fotoHero from '../assets/fotos/la-barberia-de-soliva-vertical-01.jpg';
+import fotoEquipo from '../assets/fotos/la-barberia-de-soliva-vertical-02.jpg';
+import fotoNino from '../assets/fotos/la-barberia-de-soliva-vertical-03.jpg';
+import fotoNavaja from '../assets/fotos/la-barberia-de-soliva-vertical-05.jpg';
+import fotoSillon from '../assets/fotos/la-barberia-de-soliva-vertical-06.jpg';
+import fotoDegradado from '../assets/fotos/la-barberia-de-soliva-vertical-07.jpg';
+import fotoBarba from '../assets/fotos/la-barberia-de-soliva-vertical-08.jpg';
 import logo from '../assets/fotos/la-barberia-de-soliva-logo.svg';
 
 export const IMAGES = {
-	fotoFachada: fotoPortada,
-	fotoInterior: fotoCentro,
-	fotoCejas: fotoCorte,
-	fotoCalle: fotoBarba,
+	heroFondo: fotoHero,
+	heroRetrato: fotoNavaja,
+	salon: fotoSillon,
+	galeriaNino: fotoNino,
+	galeriaEquipo: fotoEquipo,
+	galeriaDegradado: fotoDegradado,
+	galeriaBarba: fotoBarba,
 	logo,
 };
 
@@ -234,8 +240,8 @@ export const FAQ = [
 		a: '5,0/5 con 267 reseñas en Booksy (oct 2026), 264 de ellas de 5 estrellas. Destacan la profesionalidad del equipo.',
 	},
 	{
-		q: '¿Por qué esta web no muestra fotos del local?',
-		a: 'Las fotos de Google Maps tienen derechos de autor y sus condiciones prohíben descargarlas para reutilizarlas. Esta web usa imágenes propias de marcador hasta tener fotos originales (ver README_IMAGENES.md).',
+		q: '¿Las fotos son del local?',
+		a: 'Sí: la barbería por dentro, el sillón, cortes de niño y de adulto y el equipo son fotos publicadas en la ficha pública del negocio en Google Maps.',
 	},
 ];
 
@@ -248,19 +254,19 @@ export const FEATURES = [
 
 export const GALLERY = [
 	{
-		src: IMAGES.fotoFachada,
-		alt: 'La Barbería de Soliva en Málaga',
+		src: IMAGES.galeriaNino,
+		alt: 'Corte de niño con degradado en La Barbería de Soliva (Málaga)',
 	},
 	{
-		src: IMAGES.fotoInterior,
-		alt: 'La Barbería de Soliva en Félix Gancedo, Málaga',
+		src: IMAGES.galeriaEquipo,
+		alt: 'Barberos trabajando en La Barbería de Soliva, Félix Gancedo 1',
 	},
 	{
-		src: IMAGES.fotoCejas,
-		alt: 'Corte de pelo en La Barbería de Soliva (Málaga)',
+		src: IMAGES.galeriaDegradado,
+		alt: 'Degradado y línea a navaja en La Barbería de Soliva',
 	},
 	{
-		src: IMAGES.fotoCalle,
+		src: IMAGES.galeriaBarba,
 		alt: 'Arreglo de barba en La Barbería de Soliva',
 	},
 ];

@@ -1,92 +1,513 @@
 ---
 import '../styles/global.css';
-import { BUSINESS, MAPS, RATING } from '../data/site';
-import foto from '../assets/fotos/wok-la-familia-01.jpg';
+import { BUSINESS, FAQ, GALERIA, HORARIO_NOTA, MAPS, MENU, MENU_ESPECIAL, MENU_NOTA, PLATOS_DESTACADOS } from '../data/site';
 
-const title = `${BUSINESS.name} · ${BUSINESS.city}`;
+const title = 'Wok La Familia · wok, arroces y sushi en Abando, Bilbao';
 const description = BUSINESS.description;
-import secciones from '../data/secciones.json';
+const hero = GALERIA[4];
 
-const piezas = Object.fromEntries(secciones.secciones.map((seccion) => [seccion.id, seccion])) as Record<string, any>;
+const restaurantSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Restaurant',
+	'@id': `${BUSINESS.siteUrl}/#restaurante`,
+	name: BUSINESS.name,
+	description,
+	url: `${BUSINESS.siteUrl}/`,
+	image: [`${BUSINESS.siteUrl}/og.jpg`],
+	telephone: BUSINESS.phoneHref,
+	currenciesAccepted: 'EUR',
+	servesCuisine: ['Cocina asiática', 'Wok', 'Sushi'],
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: BUSINESS.street,
+		addressLocality: BUSINESS.city,
+		addressRegion: BUSINESS.region,
+		postalCode: BUSINESS.postalCode,
+		addressCountry: BUSINESS.country,
+	},
+	geo: { '@type': 'GeoCoordinates', latitude: 43.2629646, longitude: -2.9293028 },
+	hasMap: MAPS.place,
+};
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	'@id': `${BUSINESS.siteUrl}/#faq`,
+	mainEntity: FAQ.map((item) => ({
+		'@type': 'Question',
+		name: item.q,
+		acceptedAnswer: { '@type': 'Answer', text: item.a },
+	})),
+};
+
+const nav = [
+	{ label: 'La casa', href: '#casa' },
+	{ label: 'La carta', href: '#carta' },
+	{ label: 'Fotos', href: '#fotos' },
+	{ label: 'Visita', href: '#visita' },
+	{ label: 'Preguntas', href: '#preguntas' },
+];
 ---
+
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#123c36" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href="https://www.sur-digital.com/wok-la-familia/" />
-		<meta name="robots" content="index, follow" />
-		<link rel="icon" href="/wok-la-familia/favicon.svg" type="image/svg+xml" />
-	<script type="application/ld+json">
-{
-	"@context": "https://schema.org",
-	"@type": "Restaurant",
-	"@id": "https://www.sur-digital.com/wok-la-familia/#negocio",
-	"name": "Wok La Familia",
-	"url": "https://www.sur-digital.com/wok-la-familia/",
-	"description": "Wok La Familia, restaurante de cocina wok en Colón de Larreátegui K., 8 (Abando, 48001 Bilbao, Bizkaia). Según su ficha de Google Maps.",
-	"image": "https://www.sur-digital.com/wok-la-familia/og.jpg",
-	"telephone": "+34688779376",
-	"geo": {
-		"@type": "GeoCoordinates",
-		"latitude": 43.2629646,
-		"longitude": -2.9293028
-	},
-	"hasMap": "https://www.google.com/maps/place/Wok+La+Familia/@43.2629646,-2.9293028,17z/data=!3m1!4b1!4m6!3m5!1s0xd4e4f10753da581:0x4ccc01abed4c7224!8m2!3d43.2629646!4d-2.9293028!16s%2Fg%2F11ffw4dq5w?authuser=0&hl=es&entry=ttu"
-}
-</script>
-		<meta property="og:image" content="https://www.sur-digital.com/wok-la-familia/og.jpg" />
-		<meta property="og:image:type" content="image/jpeg" />
+		<meta
+			name="keywords"
+			content="Wok La Familia Bilbao, comida asiática Abando, wok Bilbao, sushi Bilbao centro, Colón de Larreátegui, arroz frito Bilbao"
+		/>
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<link rel="canonical" href={`${BUSINESS.siteUrl}/`} />
+		<link rel="icon" type="image/svg+xml" href="/wok-la-familia/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Mulish:wght@400;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preload" as="image" href={hero.src} />
+		<meta property="og:type" content="restaurant" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content={BUSINESS.name} />
+		<meta property="og:title" content={title} />
+		<meta
+			property="og:description"
+			content="Wok, arroces y sushi en Colón de Larreátegui, 8 (Abando, Bilbao). Carta desde 5,50 € y menú especial por 9,95 €. Teléfono 688 77 93 76."
+		/>
+		<meta property="og:url" content={`${BUSINESS.siteUrl}/`} />
+		<meta property="og:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Wok La Familia, cocina wok en Abando, Bilbao" />
+		<meta property="place:location:latitude" content="43.2629646" />
+		<meta property="place:location:longitude" content="-2.9293028" />
 		<meta name="twitter:card" content="summary_large_image" />
-			<meta property="og:url" content="https://www.sur-digital.com/wok-la-familia/" />
-		<meta property="og:locale" content="es_ES" />
-			<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
+		<meta name="twitter:title" content="Wok La Familia · wok y sushi en Bilbao" />
+		<meta name="twitter:description" content="Arroces y tallarines al wok, para picar y sushi en Abando, Bilbao." />
+		<meta name="twitter:image" content={`${BUSINESS.siteUrl}/og.jpg`} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 	</head>
 	<body>
-		<header class="site-header">
-			<h1 set:html={piezas.portada.titulo} />
-			<p>{BUSINESS.tagline}</p>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+		<header class="topbar">
+			<div class="wrap topbar-inner">
+				<a class="brand" href="#inicio" aria-label="Wok La Familia, inicio">
+					<span class="brand-mark" aria-hidden="true">W</span>
+					<span class="brand-name">Wok La Familia <small>Cocina asiática · Abando</small></span>
+				</a>
+				<nav aria-label="Navegación principal">
+					{nav.map((item) => <a href={item.href}>{item.label}</a>)}
+				</nav>
+				<a class="topbar-phone" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+			</div>
 		</header>
-		<main>
-			<img src={foto.src} width={foto.width} height={foto.height} alt={`Foto de ${BUSINESS.name}`} decoding="async" loading="lazy" />
-			<section>
-				<h2>Dirección</h2>
-				<p>{BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}</p>
-				<p>Teléfono: <a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></p>
-				{RATING.value !== null && <p>Valoración en Google Maps: {RATING.label}</p>}
-				<p><a href={MAPS.place} target="_blank" rel="noreferrer">Ver en Google Maps</a> · <a href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar</a></p>
+
+		<main id="contenido">
+			<section class="hero wrap" id="inicio" aria-labelledby="hero-title">
+				<div>
+					<p class="eyebrow"><span aria-hidden="true"></span> Abando · Bilbao · Cocina asiática</p>
+					<h1 id="hero-title">Wok, arroces<br /><em>y sushi en Abando.</em></h1>
+					<p class="hero-lede">
+						Wok La Familia está en Colón de Larreátegui, 8, en Abando, a dos calles de la
+						Gran Vía. Arroces y tallarines al wok, platos para picar y sushi, con menú
+						especial a 9,95 € según el cartel de su carta.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href={BUSINESS.phoneHref}>Llamar al {BUSINESS.phone}</a>
+						<a class="button button-ghost" href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+					</div>
+					<ul class="hero-facts">
+						<li><b>{BUSINESS.street}</b>48001 Bilbao · Abando</li>
+						<li><b>Wok y sushi</b>Según su ficha de Google</li>
+						<li><b>{BUSINESS.phone}</b>Teléfono y WhatsApp</li>
+					</ul>
+				</div>
+
+				<figure class="hero-photo">
+					<span class="hero-tag">Abando · Bilbao</span>
+					<img
+						src={hero.src}
+						width={hero.w}
+						height={hero.h}
+						alt={hero.alt}
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<figcaption>
+						<span>Gambas salteadas en salsa</span>
+						<a href={MAPS.place} target="_blank" rel="noreferrer">Ver ficha ↗</a>
+					</figcaption>
+				</figure>
+			</section>
+
+			<div class="wrap">
+				<ul class="chips" aria-label="Resumen del local">
+					<li>Cocina asiática</li>
+					<li>Abando</li>
+					<li>Bilbao · 48001</li>
+					<li>Wok y arroces</li>
+					<li>Sushi</li>
+				</ul>
+			</div>
+
+			<section class="about wrap" id="casa" aria-labelledby="casa-title">
+				<div class="about-grid">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> La casa</p>
+						<h2 id="casa-title">Un wok en pleno<br /><em>centro de Bilbao.</em></h2>
+					</div>
+					<div class="about-copy">
+						<p>
+							Wok La Familia ocupa el número 8 de Colón de Larreátegui, en Abando, con el
+							local acristalado en la esquina y el rótulo sobre la entrada, junto a la Gran
+							Vía.
+						</p>
+						<p>
+							Su carta combina arroces y tallarines al wok con platos para picar y sushi:
+							arroz frito de la casa o tres delicias, tallarines con ternera, pollo o
+							verduras, rollitos, alitas, maki y California de salmón. En las fotos del
+							perfil también aparecen platos servidos en cajas para llevar.
+						</p>
+						<p class="about-note">
+							La carta de esta web está copiada de la foto del menú publicada en su ficha:
+							los precios pueden haber cambiado. Confírmalos al {BUSINESS.phone} antes de ir.
+						</p>
+						<div class="about-links">
+							<a class="simple-link" href={MAPS.place} target="_blank" rel="noreferrer">Ficha en Google Maps ↗</a>
+							<a class="simple-link" href="#carta">Ver la carta</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="highlight-strip" aria-labelledby="claves-title">
+				<div class="wrap">
+					<p class="section-label section-label-light"><span aria-hidden="true"></span> Tres cosas claras</p>
+					<h2 id="claves-title">Al wok, para llevar<br /><em>y con sushi.</em></h2>
+					<ul class="highlights">
+						<li>
+							<span class="highlight-mark">01 · La cocina</span>
+							<h3>Arroces y tallarines</h3>
+							<p>La base de la carta: arroces fritos y tallarines salteados con ternera, pollo o verduras, entre 5,30 y 7,00 €.</p>
+						</li>
+						<li>
+							<span class="highlight-mark">02 · El local</span>
+							<h3>Comer allí o recoger</h3>
+							<p>Comedor con mesas y sillas de madera, barra al fondo y platos que también salen en caja de cartón.</p>
+						</li>
+						<li class="highlight-wide">
+							<span class="highlight-mark">03 · La dirección</span>
+							<h3>Colón de Larreátegui, 8 · Abando</h3>
+							<p>En el 48001 de Bilbao, a dos calles de la Gran Vía. Teléfono directo del local: {BUSINESS.phone}, también con WhatsApp.</p>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="menu" id="carta" aria-labelledby="carta-title">
+				<div class="wrap">
+					<div class="menu-head">
+						<div>
+							<p class="section-label"><span aria-hidden="true"></span> La carta</p>
+							<h2 id="carta-title">Arroces, tallarines<br /><em>y para picar.</em></h2>
+						</div>
+						<div>
+							<p>{MENU_NOTA}</p>
+							<a class="button button-primary" href={MAPS.place} target="_blank" rel="noreferrer">Ver la ficha en Google ↗</a>
+						</div>
+					</div>
+
+					<div class="menu-groups">
+						{
+							MENU.map((grupo) => (
+								<div class="menu-group">
+									<h3>{grupo.titulo}</h3>
+									<ul class="dishes">
+										{grupo.platos.map((plato) => (
+											<li>
+												<span class="dish">
+													{plato.nombre}
+													<b class="dish-price">{plato.precio}</b>
+												</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							))
+						}
+					</div>
+
+					<div class="menu-especial">
+						<div>
+							<h3>{MENU_ESPECIAL.titulo}</h3>
+							<p>{MENU_ESPECIAL.detalle}</p>
+						</div>
+						<span class="precio">{MENU_ESPECIAL.precio}</span>
+					</div>
+
+					<p class="menu-note">
+						El menú especial y el resto de la carta pueden cambiar según el día. Llama al
+						<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a> o escribe por <a
+							href={BUSINESS.whatsapp}
+							target="_blank"
+							rel="noreferrer">WhatsApp</a
+						> y pregunta antes de ir.
+					</p>
+				</div>
+			</section>
+
+			<section class="wrap section-pad" aria-labelledby="platos-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> En la mesa</p>
+						<h2 id="platos-title">Tres platos<br /><em>de la casa.</em></h2>
+					</div>
+					<div>
+						<p>
+							Salteados de ternera y cerdo con pimiento y arroz, y gambas en salsa, tal y
+							como aparecen en las fotos del perfil.
+						</p>
+						<a class="button button-ghost" href="#carta">Ver toda la carta</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{
+						PLATOS_DESTACADOS.map((plato) => (
+							<figure class="shot">
+								<img src={plato.src} alt={`${plato.nombre} de ${BUSINESS.name}`} width={plato.w} height={plato.h} loading="lazy" decoding="async" />
+							</figure>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="wrap section-pad" id="fotos" aria-labelledby="fotos-title">
+				<div class="gallery-head">
+					<div>
+						<p class="section-label"><span aria-hidden="true"></span> Fotos de la ficha</p>
+						<h2 id="fotos-title">La esquina, el comedor<br /><em>y lo que sale.</em></h2>
+					</div>
+					<div>
+						<p>
+							Ocho fotos del perfil público del restaurante en Google Maps: la fachada
+							acristalada, el comedor, la barra y varios platos.
+						</p>
+						<a class="button button-ghost" href={MAPS.place} target="_blank" rel="noreferrer">Galería completa en Maps ↗</a>
+					</div>
+				</div>
+				<div class="gallery-grid">
+					{
+						GALERIA.map((foto) => (
+							<figure class="shot">
+								<img src={foto.src} alt={foto.alt} width={foto.w} height={foto.h} loading="lazy" decoding="async" />
+							</figure>
+						))
+					}
+				</div>
+				<p class="gallery-note">
+					Fotografías del perfil del establecimiento en Google Maps. Los platos y el montaje
+					pueden variar respecto a la foto.
+				</p>
+			</section>
+
+			<section class="visit" id="visita" aria-labelledby="visita-title">
+				<div class="wrap visit-grid">
+					<div>
+						<p class="section-label section-label-light"><span aria-hidden="true"></span> Visita</p>
+						<h2 id="visita-title">Colón de Larreátegui, 8<br /><em>Abando.</em></h2>
+						<p class="address">
+							{BUSINESS.street}<br />
+							{BUSINESS.postalCode} {BUSINESS.city} · {BUSINESS.region}
+						</p>
+
+						<table class="hours">
+							<caption>Horario</caption>
+							<tbody>
+								<tr>
+									<th scope="row">Horario publicado</th>
+									<td>No disponible</td>
+								</tr>
+								<tr>
+									<th scope="row">Teléfono</th>
+									<td><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="hours-note">
+							{HORARIO_NOTA} <a href={MAPS.place} target="_blank" rel="noreferrer">Abrir la ficha ↗</a>
+						</p>
+
+						<div class="visit-links">
+							<a class="button button-primary" href={MAPS.directions} target="_blank" rel="noreferrer">Cómo llegar ↗</a>
+							<a class="button button-ghost" href={BUSINESS.phoneHref}>Llamar</a>
+						</div>
+						<a class="phone-link" href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+						<p class="reserve-note">
+							No gestionamos reservas ni pedidos desde esta web: el teléfono, el WhatsApp y
+							la ficha de Google son los canales del restaurante.
+						</p>
+					</div>
+
+					<div>
+						<div class="map-frame">
+							<iframe
+								src={MAPS.embed}
+								title={`Mapa de ${BUSINESS.name}, ${BUSINESS.street}, ${BUSINESS.city}`}
+								loading="lazy"
+								allowfullscreen
+								referrerpolicy="no-referrer-when-downgrade"></iframe>
+						</div>
+						<a class="map-label" href={MAPS.place} target="_blank" rel="noreferrer">
+							<span aria-hidden="true">⌖</span> Wok La Familia · Abando, Bilbao
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="wrap faq section-pad" id="preguntas" aria-labelledby="faq-title">
+				<p class="section-label"><span aria-hidden="true"></span> Preguntas frecuentes</p>
+				<h2 id="faq-title">Antes de <em>venir.</em></h2>
+				<div class="faq-list">
+					{
+						FAQ.map((item) => (
+							<details>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
 			</section>
 		</main>
+
 		<footer class="site-footer">
-			<p>© {new Date().getFullYear()} {BUSINESS.fullName}</p>
-			<small>Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></small>
+			<div class="wrap footer-grid">
+				<div class="footer-brand">
+					<span class="brand-mark" aria-hidden="true">W</span>
+					<p>
+						Wok La Familia
+						<small>{BUSINESS.street} · {BUSINESS.postalCode} {BUSINESS.city}</small>
+					</p>
+				</div>
+				<nav aria-label="Enlaces del restaurante">
+					<a href={MAPS.place} target="_blank" rel="noreferrer">Google Maps ↗</a>
+					<a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a>
+					<a href="/wok-la-familia/aviso-legal">Aviso legal</a>
+				</nav>
+				<small class="legal">
+					© {new Date().getFullYear()} Wok La Familia · Abando, Bilbao. Fotografías del perfil
+					público del establecimiento en Google Maps. Precios copiados de la carta publicada
+					en esa ficha: confirma horario y precios antes de la visita.
+					<nav class="legal-links" aria-label="Información legal">
+						<a href="/wok-la-familia/aviso-legal">Aviso legal</a>
+						<a href="/wok-la-familia/aviso-legal#privacidad">Privacidad</a>
+						<a href="/wok-la-familia/aviso-legal#cookies">Cookies</a>
+					</nav>
+					<span class="credit">Web creada por <a href="https://www.sur-digital.com/" rel="noopener">Sur Digital</a></span>
+				</small>
+			</div>
 		</footer>
-	<!-- contacto-rapido -->
-<style>
-	.contact-fabs { position: fixed; right: clamp(1rem, 4vw, 1.75rem); bottom: clamp(1rem, 4vw, 1.75rem); z-index: 60; display: flex; flex-direction: column; gap: 0.65rem; }
-	.contact-fabs a { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; color: #fff; text-decoration: none; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24); transition: transform 0.18s ease; }
-	.contact-fabs a:hover, .contact-fabs a:focus-visible { transform: scale(1.06); }
-	.contact-fabs a:focus-visible { outline: 3px solid #1f1f1f; outline-offset: 3px; }
-	.contact-fabs .fab-call { background: #c2410c; }
-	.contact-fabs .fab-wa { background: #25d366; }
-	.contact-fabs svg { width: 1.7rem; height: 1.7rem; }
-	@media (prefers-reduced-motion: reduce) { .contact-fabs a { transition: none; } }
-	/* En móvil casi todas estas webs llevan una barra de llamada o de menú abajo. El botón sube
-	   siempre: si no hay barra queda algo más alto, y si la hay no se queda tapado. */
-	@media (max-width: 680px) { .contact-fabs { bottom: 5rem; } }
-	/* Con otro botón flotante en la esquina (el de "cómo llegar"), el bloque se apila encima.
-	   Ese botón se oculta a partir de lg, así que en escritorio no hace falta desplazar. */
-	.contact-fabs.is-stacked { bottom: 5.75rem; }
-	@media (max-width: 680px) { .contact-fabs.is-stacked { bottom: 6.25rem; } }
-	@media (min-width: 1024px) { .contact-fabs.is-stacked { bottom: clamp(1rem, 4vw, 1.75rem); } }
-</style>
-<nav class="contact-fabs" aria-label="Contacto rápido">
-	<a class="fab-wa" href="https://wa.me/34688779376?text=Hola%2C%20os%20escribo%20desde%20la%20web%20de%20Wok%20La%20Familia." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp a Wok La Familia"><svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"/></svg></a>
-</nav>
+
+		<a class="mobile-call" href={BUSINESS.phoneHref}>Llamar <span>{BUSINESS.phone}</span></a>
+
+		<nav class="contact-fabs" aria-label="WhatsApp">
+			<a
+				class="fab-wa"
+				href={BUSINESS.whatsapp}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Escribir por WhatsApp a Wok La Familia"
+			>
+				<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"
+					><path
+						fill="currentColor"
+						d="M24 4a20 20 0 0 0-17.1 30.2L4 44l10.1-2.8A20 20 0 1 0 24 4Zm0 36.4a16.4 16.4 0 0 1-8.4-2.3l-.6-.4-6 1.7 1.6-5.9-.4-.6A16.4 16.4 0 1 1 24 40.4Zm9.1-12.3c-.5-.3-3-1.5-3.4-1.6-.5-.2-.8-.2-1.1.2-.3.5-1.3 1.6-1.6 2-.3.3-.6.4-1.1.1a13.4 13.4 0 0 1-3.9-2.4 14.7 14.7 0 0 1-2.7-3.4c-.3-.5 0-.8.2-1.1l.8-.9c.2-.3.3-.5.5-.9.1-.3 0-.6-.1-.9l-1.5-3.4c-.4-.9-.8-.8-1.1-.8h-1c-.3 0-.9.1-1.3.6-.5.5-1.7 1.7-1.7 4.1 0 2.4 1.8 4.7 2 5 .2.3 3.4 5.2 8.2 7.2 1.1.5 2 .8 2.7 1 1.2.4 2.2.3 3 .2.9-.1 2.9-1.2 3.3-2.3.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5Z"
+					/></svg
+				>
+			</a>
+		</nav>
+
+		<style>
+			.contact-fabs {
+				position: fixed;
+				right: clamp(1rem, 4vw, 1.75rem);
+				bottom: clamp(1rem, 4vw, 1.75rem);
+				z-index: 60;
+				display: flex;
+				flex-direction: column;
+				gap: 0.65rem;
+			}
+			.contact-fabs a {
+				display: grid;
+				place-items: center;
+				width: 3.5rem;
+				height: 3.5rem;
+				border-radius: 50%;
+				color: #fff;
+				text-decoration: none;
+				box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+				transition: transform 0.18s ease;
+			}
+			.contact-fabs a:hover,
+			.contact-fabs a:focus-visible {
+				transform: scale(1.06);
+			}
+			.contact-fabs .fab-wa {
+				background: #25d366;
+			}
+			.contact-fabs svg {
+				width: 1.7rem;
+				height: 1.7rem;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.contact-fabs a {
+					transition: none;
+				}
+			}
+			@media (max-width: 780px) {
+				.contact-fabs {
+					bottom: 5rem;
+				}
+			}
+
+			/* Menú especial anunciado en la carta. */
+			.menu-especial {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: space-between;
+				gap: 0.75rem 1.5rem;
+				margin-top: 1.5rem;
+				padding: 1.3rem 1.5rem;
+				background: var(--card);
+				border: 1px dashed var(--ember);
+				border-radius: 0.4rem;
+			}
+			.menu-especial h3 {
+				margin-bottom: 0.35rem;
+				font-size: 1.5rem;
+				color: var(--ink);
+			}
+			.menu-especial p {
+				margin: 0;
+				font-size: 0.9rem;
+				color: var(--ink-soft);
+			}
+			.menu-especial .precio {
+				font-family: var(--serif);
+				font-size: 2rem;
+				font-weight: 600;
+				line-height: 1;
+				color: var(--ember);
+			}
+		</style>
 	</body>
 </html>

@@ -19,25 +19,23 @@
  * - Sin carta de precios propia publicada: no se publican importes fijos.
  */
 
-import fotoPortada from '../assets/fotos/alfonso-m-estilista-malaga.svg';
-import fotoEstudio from '../assets/fotos/alfonso-m-estilista-estudio.svg';
-import fotoFacial from '../assets/fotos/alfonso-m-estilista-facial.svg';
-import fotoCorporal from '../assets/fotos/alfonso-m-estilista-corporal.svg';
-import fotoGaleria1 from '../assets/fotos/alfonso-m-estilista-malaga.svg';
-import fotoGaleria2 from '../assets/fotos/alfonso-m-estilista-estudio.svg';
-import fotoGaleria3 from '../assets/fotos/alfonso-m-estilista-facial.svg';
-import fotoGaleria4 from '../assets/fotos/alfonso-m-estilista-corporal.svg';
+import fotoPortada from '../assets/fotos/alfonso-m-estilista-portada.svg';
+import fotoSalon from '../assets/fotos/alfonso-m-estilista-salon.svg';
+import fotoMechas from '../assets/fotos/alfonso-m-estilista-mechas.svg';
+import fotoMaquillaje from '../assets/fotos/alfonso-m-estilista-maquillaje.svg';
+import fotoDrenaje from '../assets/fotos/alfonso-m-estilista-drenaje.svg';
+import fotoEstetica from '../assets/fotos/alfonso-m-estilista-estetica.svg';
 import logo from '../assets/fotos/alfonso-m-estilista-logo.svg';
 
 export const IMAGES = {
 	fotoFachada: fotoPortada,
-	fotoInterior: fotoEstudio,
-	fotoCejas: fotoFacial,
-	fotoCalle: fotoCorporal,
-	fotoGaleria1,
-	fotoGaleria2,
-	fotoGaleria3,
-	fotoGaleria4,
+	fotoInterior: fotoSalon,
+	fotoCejas: fotoMechas,
+	fotoCalle: fotoEstetica,
+	fotoGaleria1: fotoMechas,
+	fotoGaleria2: fotoMaquillaje,
+	fotoGaleria3: fotoDrenaje,
+	fotoGaleria4: fotoEstetica,
 	logo,
 };
 
@@ -239,10 +237,10 @@ export const FEATURES = [
 ];
 
 export const GALLERY = [
-	{ src: IMAGES.fotoFachada, alt: 'Alfonso.M Estilista en Los Olivos (Córdoba)' },
-	{ src: IMAGES.fotoInterior, alt: 'Alfonso.M en Los Olivos 6' },
-	{ src: IMAGES.fotoCejas, alt: 'Servicios de estética en Alfonso.M Córdoba' },
-	{ src: IMAGES.fotoCalle, alt: 'Alfonso.M Estilista Córdoba' },
+	{ src: IMAGES.fotoGaleria1, alt: 'Mechas en Alfonso.M Estilista, Los Olivos (Córdoba)' },
+	{ src: IMAGES.fotoGaleria2, alt: 'Maquillaje profesional en Alfonso.M Estilista' },
+	{ src: IMAGES.fotoGaleria3, alt: 'Drenaje linfático en Alfonso.M Estilista, Córdoba' },
+	{ src: IMAGES.fotoGaleria4, alt: 'Tratamiento de estética en Alfonso.M Estilista' },
 ];
 
 export const SCHEMA = {
