@@ -308,6 +308,14 @@ export const GALLERY = [
 		src: IMAGES.fotoFachada,
 		alt: 'Manicura en gris nácar y blanco del salón Toñi Bravo',
 	},
+	{
+		src: IMAGES.fotoUnasAmbar,
+		alt: 'Uñas decoradas en naranja con detalle en pan de oro de Toñi Bravo',
+	},
+	{
+		src: IMAGES.fotoUnasEsmaltes,
+		alt: 'Manicura lila y blanca de Toñi Bravo junto a los esmaltes del salón',
+	},
 ];
 
 export const SCHEMA = {
