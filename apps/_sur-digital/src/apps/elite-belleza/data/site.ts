@@ -38,7 +38,7 @@ export const IMAGES = {
 	fotoFachada: fotoSalon,
 	fotoInterior,
 	fotoCejas: fotoFacial,
-	fotoCalle: fotoManicura,
+	fotoManicura,
 	fotoPeinado,
 	fotoCorte,
 	fotoTratamiento,
