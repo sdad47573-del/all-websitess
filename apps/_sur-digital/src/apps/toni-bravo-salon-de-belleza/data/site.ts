@@ -86,7 +86,7 @@ export const LEGAL = {
 	razonSocial: '[pendiente de completar]',
 	nif: '[pendiente de completar]',
 	email: '[pendiente de completar]',
-	actualizado: 'Octubre de 2026',
+	actualizado: 'Noviembre de 2026',
 };
 
 export const NAV = [
@@ -162,18 +162,48 @@ export const SERVICIOS_DETALLE = [
 	{
 		grupo: 'Estética',
 		items: [
-			{ nombre: 'Cavitación', precio: 'A consultar' },
-			{ nombre: 'Mesoterapia', precio: 'A consultar' },
-			{ nombre: 'Presoterapia', precio: 'A consultar' },
-			{ nombre: 'Estética facial y natural', precio: 'A consultar' },
+			{
+				nombre: 'Cavitación',
+				descripcion:
+					'Ultrasonidos para tratar la grasa localizada y la piel de naranja. El número de sesiones se valora en el salón.',
+				precio: 'A consultar',
+			},
+			{
+				nombre: 'Mesoterapia',
+				descripcion:
+					'Aplicación localizada de activos para celulitis y flacidez. La pauta se valora antes de empezar.',
+				precio: 'A consultar',
+			},
+			{
+				nombre: 'Presoterapia',
+				descripcion: 'Botas de presión para drenaje linfático, retención de líquidos y piernas cansadas.',
+				precio: 'A consultar',
+			},
+			{
+				nombre: 'Estética facial y natural',
+				descripcion: 'Limpieza, hidratación y cuidado de la piel con productos de estética natural.',
+				precio: 'A consultar',
+			},
 		],
 	},
 	{
 		grupo: 'Uñas, depilación y masaje',
 		items: [
-			{ nombre: 'Uñas acrílicas y gel', precio: 'A consultar' },
-			{ nombre: 'Depilación por zonas', precio: 'A consultar' },
-			{ nombre: 'Masajes', precio: 'A consultar' },
+			{
+				nombre: 'Uñas acrílicas y gel',
+				descripcion: 'Manicura, acrílicas, gel y esmaltado, con diseños como el efecto nácar de la galería.',
+				precio: 'A consultar',
+			},
+			{
+				nombre: 'Depilación por zonas',
+				descripcion: 'Depilación con cera por zonas (también brazos). El precio depende de la zona: se confirma al llamar.',
+				precio: 'A consultar',
+			},
+			{
+				nombre: 'Masajes',
+				descripcion: 'Masaje de bienestar y descarga muscular. Duración y precio a confirmar por teléfono.',
+				precio: 'A consultar',
+			},
 		],
 	},
 ];

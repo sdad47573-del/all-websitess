@@ -24,15 +24,18 @@ const {
 	noIndex = false,
 } = Astro.props;
 
-const canonical = new URL(path, BUSINESS.siteUrl).toString();
-const ogImage = `${BUSINESS.siteUrl}/og.jpg`;
+// La web vive en un subdirectorio: con `new URL('/servicios', …)` se perdía el prefijo y la
+// canónica salía como sur-digital.com/servicios. Se compone siempre sobre la raíz de la app.
+const SITE = `${BUSINESS.siteUrl.replace(/\/+$/, '')}/`;
+const absolute = (value: string) => new URL(value.replace(/^\/+/, ''), SITE).toString();
+
+const canonical = absolute(path);
+const ogImage = `${SITE}og.jpg`;
 const robots = noIndex
 	? 'noindex, follow'
 	: 'index, follow, max-image-preview:large, max-snippet:-1';
 
-const imagenesSchema = GALLERY.map((foto) =>
-	new URL(foto.src.src, BUSINESS.siteUrl).toString(),
-);
+const imagenesSchema = GALLERY.map((foto) => absolute(foto.src.src));
 
 const webPage = {
 	'@context': 'https://schema.org',

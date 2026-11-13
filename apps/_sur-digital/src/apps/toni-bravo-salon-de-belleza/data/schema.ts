@@ -3,6 +3,10 @@ import { BUSINESS, FAQ } from './site';
 
 const siteUrl = BUSINESS.siteUrl;
 
+// Las rutas de este aviso son de la app, no del dominio: sin esto `new URL('/servicios', …)`
+// resolvía contra la raíz de sur-digital.com y las migas apuntaban fuera de la web.
+const absolute = (path: string) => `${siteUrl.replace(/\/+$/, '')}/${path.replace(/^\/+/, '')}`;
+
 export const breadcrumbs = (items: { name: string; path: string }[]) => ({
 	'@context': 'https://schema.org',
 	'@type': 'BreadcrumbList',
@@ -10,7 +14,7 @@ export const breadcrumbs = (items: { name: string; path: string }[]) => ({
 		'@type': 'ListItem',
 		position: index + 1,
 		name: item.name,
-		item: new URL(item.path, siteUrl).toString(),
+		item: absolute(item.path),
 	})),
 });
 
